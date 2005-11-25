@@ -9,7 +9,7 @@ Object >> environment [
 Object >> isKindOfClassNamed: aClassName [
 	| aClass |
 	aClass := self environment at: aClassName ifAbsent: [^false].
-	self isKindOf: aClass
+	^ self isKindOf: aClass
 ]
 
 { #category : #'*rST' }
