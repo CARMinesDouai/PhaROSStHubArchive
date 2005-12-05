@@ -21,7 +21,7 @@ Class {
 	#classInstVars : [
 		'instance'
 	],
-	#category : 'rST-Core'
+	#category : #'rST-Core'
 }
 
 { #category : #'initialize-release' }
@@ -147,18 +147,12 @@ RSTBroker >> connectTo: brokerIDString [
 	"open a socket to brokerIDString"
 	| addressAndPort socket |
 	addressAndPort := self addressAndPort: brokerIDString.
-	""
 	socket := nil.
-	3
-		timesRepeat: [""
-			socket notNil
-				ifTrue: [socket closeAndDestroy].
-			socket := OldSocket new.
-			socket connectTo: addressAndPort first port: addressAndPort second.
-			socket
-				waitForConnectionUntil: (OldSocket deadlineSecs: 2).
-			socket isConnected
-				ifTrue: [^ socket]].
+	3 timesRepeat: [
+		socket ifNotNil: [socket closeAndDestroy].
+		socket := Socket newTCP.
+		socket connectTo: addressAndPort first port: addressAndPort second.
+		socket isConnected ifTrue: [^ socket]].
 	RSTRemoteObjectUnreachable signal: 'Can''t connect to: ' , brokerIDString asString
 ]
 
@@ -174,6 +168,32 @@ RSTBroker >> export: anObject named: aString [
 	exportedObjects at: aString put: anObject.
 	self
 		logMessage: ['object: ' , anObject asString , ' exported with name:' , aString]
+]
+
+{ #category : #initialization }
+RSTBroker >> initializeClientSide [
+	"mp 11/27/2005 19:41"
+	"initialize client side"
+
+	proxies := WeakValueDictionary new.
+	proxiesMutex := Semaphore forMutualExclusion.
+	lastRemoteBrokers := #()
+]
+
+{ #category : #initialization }
+RSTBroker >> initializeServerSide [
+	"mp 11/27/2005 19:42"
+	"initialize server side"
+
+	exportedObjects := WeakKeyManager new.
+	exportedObjects onNewKey: [:object :key | 
+		"new exported objects will live some time, so the other images  
+		can send me a notification"
+		rememberer 
+			remember: object
+			forSeconds: 6 * 60 * 60
+			naming: brokerID].
+	rememberer := RSTRememberer new
 ]
 
 { #category : #'resolving objects' }
@@ -274,8 +294,8 @@ RSTBroker >> printOn: aStream [
 RSTBroker >> process: aSocket [ 
 	"process a new open socket"
 	[| executor result | 
-	executor _ aSocket getObject.
-	result _ executor executeIn: self.
+	executor := aSocket getObject.
+	result := executor executeIn: self.
 	aSocket sendObject: result]
 		ensure: [""
 			aSocket closeAndDestroy]
@@ -357,27 +377,14 @@ RSTBroker >> remoteObjectIDFor: anObject [
 
 { #category : #initialization }
 RSTBroker >> reset [
-	OldSocket initializeNetwork.
+	"mp 11/27/2005 19:41"
+
+	Socket initializeNetwork.
 	brokerID := NetNameResolver localAddressString , ':' , port asString.
 
-	" 
-	initialize client side"
-	proxies := WeakValueDictionary new.
-	proxiesMutex := Semaphore forMutualExclusion.
-	lastRemoteBrokers := #().
-	" 
-	initialize server side"
-	exportedObjects := WeakKeyManager new.
-	exportedObjects
-		onNewKey: [:object :key | " 
-			new exported objects will live some time, so the other images  
-			can send me a notification"
-			rememberer
-				remember: object
-				forSeconds: 6 * 60 * 60
-				naming: brokerID].
-	rememberer := RSTRememberer new.
-	""
+	self initializeClientSide.
+	self initializeServerSide.
+
 	self startNetwork
 ]
 

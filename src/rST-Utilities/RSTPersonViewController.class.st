@@ -7,7 +7,7 @@ Class {
 		'lastName',
 		'lastEMail'
 	],
-	#category : 'rST-Samples'
+	#category : #'rST-Samples'
 }
 
 { #category : #'instance creation' }

@@ -8,7 +8,7 @@ Class {
 		'type',
 		'object'
 	],
-	#category : 'rST-Core'
+	#category : #'rST-Core'
 }
 
 { #category : #'instance creation' }

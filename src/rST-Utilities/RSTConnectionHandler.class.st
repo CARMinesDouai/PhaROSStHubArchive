@@ -26,7 +26,7 @@ Class {
 	#classVars : [
 		'Registry'
 	],
-	#category : 'rST-Core'
+	#category : #'rST-Core'
 }
 
 { #category : #'instance creation' }
@@ -106,8 +106,7 @@ RSTConnectionHandler >> newListener [
 	| listener |
 
 	self flag: #todo. "listener _ self socketClass newTCP."
-	listener := OldSocket newTCP.
-
+	listener := Socket newTCP.
 	"backlog is how many simultaneous connections to accept at the same time"
 	listener listenOn: portNumber backlogSize: 10.
 	^listener
@@ -161,47 +160,46 @@ RSTConnectionHandler >> pvtNewListenLoop [
 	"If the listener is not valid then the we cannot use the
 	BSD style accept() mechanism."
 	listener isValid ifFalse: [^self pvtOldListenLoop].
-	[ true ] whileTrue: [
-		socket := listener waitForAcceptUntil: (OldSocket deadlineSecs: 10).
+	[true] whileTrue: [
+		socket := listener waitForAcceptFor: 10.
 		(socket notNil and: [ socket isConnected ])
 			ifTrue: [
 				handlerBlock value: socket.
+				"socket closeAndDestroy."
 				socket := nil]
 			ifFalse: [
-				socket notNil ifTrue: [socket destroy].
-				listener isValid
-					ifFalse: [(Delay forMilliseconds: 100) wait.
-						listener destroy.
-						listener := self newListener].
-			].
-	]
+				socket ifNotNil: [socket closeAndDestroy].
+				listener isValid ifFalse: [
+					(Delay forMilliseconds: 100) wait.
+					listener closeAndDestroy.
+					listener := self newListener]]]
 ]
 
 { #category : #private }
 RSTConnectionHandler >> pvtOldListenLoop [
 	"see comment on ConnectionQueue>>oldStyleListenLoop"
 	| socket |
+	self halt.
 	socket := nil.
-
-	[ true ] whileTrue: [
-		(socket == nil) ifTrue: [
+	[true] whileTrue: [
+		socket ifNil: [
 			"try to create a new socket for listening"
-			socket := OldSocket createIfFail: [ nil ]].
+			socket := Socket createIfFail: [nil]].
 
-		(socket == nil)
-		ifTrue: [(Delay forMilliseconds: 100) wait]
-		ifFalse: [
-			socket isUnconnected ifTrue: [ socket listenOn: portNumber ].
-			socket waitForConnectionUntil: (OldSocket deadlineSecs: 10).
-			socket isConnected
-				ifTrue: ["connection established"
-					"mutex critical: [" handlerBlock value: socket "]".
-					socket := nil]
-				ifFalse: [
-					socket isWaitingForConnection
-						ifFalse: [socket destroy. socket := nil]].
-		].
-	]
+		socket 
+			ifNil: [(Delay forMilliseconds: 100) wait]
+			ifNotNil: [
+				socket isUnconnected ifTrue: [ socket listenOn: portNumber ].
+				socket waitForConnectionFor: 10.
+				socket isConnected
+					ifTrue: ["connection established"
+						"mutex critical: [" handlerBlock value: socket "]".
+						socket closeAndDestroy.
+						socket := nil]
+					ifFalse: [
+						socket isWaitingForConnection ifFalse: [
+							socket closeAndDestroy.
+							socket := nil]]]]
 ]
 
 { #category : #registry }

@@ -10,7 +10,7 @@ Class {
 		'remembered',
 		'mutex'
 	],
-	#category : 'rST-Core'
+	#category : #'rST-Core'
 }
 
 { #category : #'instance creation' }

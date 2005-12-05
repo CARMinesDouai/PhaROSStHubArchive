@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'loggingMutex'
 	],
-	#category : 'rST-Core'
+	#category : #'rST-Core'
 }
 
 { #category : #initialization }
