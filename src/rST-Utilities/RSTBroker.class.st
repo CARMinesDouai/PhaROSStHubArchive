@@ -41,6 +41,12 @@ RSTBroker class >> instance [
 		ifFalse: [instance]
 ]
 
+{ #category : #running }
+RSTBroker class >> isStarted [
+	"mp 12/12/2005 13:15"
+	^ instance notNil
+]
+
 { #category : #'instance creation' }
 RSTBroker class >> new [
 	self error: 'you must use #instance'
@@ -151,9 +157,11 @@ RSTBroker >> connectTo: brokerIDString [
 	3 timesRepeat: [
 		socket ifNotNil: [socket closeAndDestroy].
 		socket := Socket newTCP.
-		socket connectTo: addressAndPort first port: addressAndPort second.
+		[socket connectTo: addressAndPort first port: addressAndPort second]
+			on: ConnectionTimedOut
+			do: [RSTRemoteObjectUnreachable signal: 'Cannot connect to: ' , brokerIDString asString].
 		socket isConnected ifTrue: [^ socket]].
-	RSTRemoteObjectUnreachable signal: 'Can''t connect to: ' , brokerIDString asString
+	RSTRemoteObjectUnreachable signal: 'Cannot connect to: ' , brokerIDString asString
 ]
 
 { #category : #'connection - server' }
@@ -448,11 +456,10 @@ RSTBroker >> sendMessage: aMessage to: aRemoteObjectID [
 
 { #category : #'private - running' }
 RSTBroker >> startConnectionHandler [
-	connectionHandler _ RSTConnectionHandler
-				onPort: port
-				handler: self
-				priority: Processor highIOPriority.
-	connectionHandler start.
+	connectionHandler := RSTTcpListener
+				on: port
+				handler: self.
+	connectionHandler forkAndListenWhile: [RSTBroker isStarted].
 ]
 
 { #category : #'private - running' }
@@ -495,10 +502,11 @@ RSTBroker >> stop [
 
 { #category : #'private - running' }
 RSTBroker >> stopConnectionHandler [
-	connectionHandler isNil
-		ifFalse: [""
-			connectionHandler stop.
-			connectionHandler _ nil]
+	"mp 12/12/2005 13:16"
+	
+	connectionHandler ifNotNil: [
+		"connectionHandler stop."
+		connectionHandler := nil]
 ]
 
 { #category : #'private - running' }
