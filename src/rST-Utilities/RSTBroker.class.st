@@ -157,9 +157,10 @@ RSTBroker >> connectTo: brokerIDString [
 	3 timesRepeat: [
 		socket ifNotNil: [socket closeAndDestroy].
 		socket := Socket newTCP.
-		[socket connectTo: addressAndPort first port: addressAndPort second]
-			on: ConnectionTimedOut
-			do: [RSTRemoteObjectUnreachable signal: 'Cannot connect to: ' , brokerIDString asString].
+		socket 
+			connectTo: addressAndPort first 
+			port: addressAndPort second 
+			ifTimedOut: [].
 		socket isConnected ifTrue: [^ socket]].
 	RSTRemoteObjectUnreachable signal: 'Cannot connect to: ' , brokerIDString asString
 ]
@@ -456,7 +457,7 @@ RSTBroker >> sendMessage: aMessage to: aRemoteObjectID [
 
 { #category : #'private - running' }
 RSTBroker >> startConnectionHandler [
-	connectionHandler := RSTTcpListener
+	connectionHandler := TcpListener
 				on: port
 				handler: self.
 	connectionHandler forkAndListenWhile: [RSTBroker isStarted].
