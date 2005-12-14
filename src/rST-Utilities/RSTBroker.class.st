@@ -91,8 +91,8 @@ RSTBroker class >> startUp [
 RSTBroker class >> stop [
 	"stop the running broker"
 	instance notNil
-		ifTrue: [instance stop].
-	instance _ nil
+		ifTrue: [instance stopInstance].
+	instance := nil
 ]
 
 { #category : #'connection - client - sockets' }
@@ -524,18 +524,6 @@ RSTBroker >> startOnPort: portInteger logging: loggingBoolean [
 ]
 
 { #category : #'private - running' }
-RSTBroker >> stop [
-	"PRIVATE: use RSTBroker stop"
-	self stopNetwork.
-	"
-	uncomment when connection error get handled
-	self sendGoodbye."
-	status := #stopped.
-	self
-		logMessage: ['Stoped!']
-]
-
-{ #category : #'private - running' }
 RSTBroker >> stopConnectionHandler [
 	"mp 12/12/2005 13:16"
 	
@@ -544,6 +532,16 @@ RSTBroker >> stopConnectionHandler [
 		connectionHandler := nil]"
 	
 	self unregister.
+]
+
+{ #category : #'private - running' }
+RSTBroker >> stopInstance [
+	"PRIVATE: use RSTBroker stop"
+	self stopNetwork.
+	"uncomment when connection error get handled
+	self sendGoodbye."
+	status := #stopped.
+	self logMessage: ['Stopped!']
 ]
 
 { #category : #'private - running' }
