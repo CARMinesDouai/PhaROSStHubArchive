@@ -4,7 +4,7 @@ I'm the door to other image and the door for other images to come in.
 "
 Class {
 	#name : #RSTBroker,
-	#superclass : #Object,
+	#superclass : #TcpService,
 	#instVars : [
 		'status',
 		'port',
@@ -123,29 +123,21 @@ RSTBroker >> allProxies [
 
 { #category : #maintenance }
 RSTBroker >> clientSideMaintenance [
-	"notify to the remote brokers wich proxies are alive"
+	"notify to the remote brokers wich proxies are alive
+	and delete unused remote brokers"
+
 	| allRemoteObjectID currentRemoteBrokers |
-	allRemoteObjectID _ self allProxies
+	allRemoteObjectID := self allProxies 
 				collect: [:each | each xxxRemoteObjectID].
-	currentRemoteBrokers _ (allRemoteObjectID
+	currentRemoteBrokers := (allRemoteObjectID 
 				collect: [:each | each brokerID]) asSet.
-	""
-	currentRemoteBrokers
-		do: [:remoteImage | 
-			| objectsIDs | 
-			objectsIDs _ allRemoteObjectID
-						select: [:remoteObjectID | remoteObjectID brokerID = remoteImage]
-						thenCollect: [:remoteObjectID | remoteObjectID objectID].
-			self
-				sendExecutor: (RSTLivingReferencesExecutor from: brokerID objectIDs: objectsIDs)
-				toBroker: remoteImage].
-	""
-	(lastRemoteBrokers copyWithoutAll: currentRemoteBrokers)
-		do: [:remoteImage | ""
-			self
-				sendExecutor: (RSTLivingReferencesExecutor from: brokerID objectIDs: #())
-				toBroker: remoteImage].
-	lastRemoteBrokers _ currentRemoteBrokers
+	self 
+		keepAliveRemoteObjects: allRemoteObjectID
+		inCurrentRemoteBrokers: currentRemoteBrokers.
+		
+	self freeRemoteBrokersNotIn: currentRemoteBrokers.
+	
+	lastRemoteBrokers := currentRemoteBrokers
 ]
 
 { #category : #'connection - client - sockets' }
@@ -179,6 +171,19 @@ RSTBroker >> export: anObject named: aString [
 		logMessage: ['object: ' , anObject asString , ' exported with name:' , aString]
 ]
 
+{ #category : #maintenance }
+RSTBroker >> freeRemoteBrokersNotIn: currentRemoteBrokers [ 
+	"mp 12/13/2005 18:10"
+	"Notify obsolete remote brokers that we don't have 
+	references on them anymore"
+	
+	(lastRemoteBrokers copyWithoutAll: currentRemoteBrokers) do: 
+		[:remoteImage | 
+		self 
+			sendExecutor: (RSTLivingReferencesExecutor from: brokerID objectIDs: #())
+			toBroker: remoteImage]
+]
+
 { #category : #initialization }
 RSTBroker >> initializeClientSide [
 	"mp 11/27/2005 19:41"
@@ -203,6 +208,22 @@ RSTBroker >> initializeServerSide [
 			forSeconds: 6 * 60 * 60
 			naming: brokerID].
 	rememberer := RSTRememberer new
+]
+
+{ #category : #maintenance }
+RSTBroker >> keepAliveRemoteObjects: allRemoteObjectID inCurrentRemoteBrokers: currentRemoteBrokers [ 
+	currentRemoteBrokers do: 
+			[:remoteImage | 
+			| objectsIDs |
+			objectsIDs := allRemoteObjectID 
+						select: [:remoteObjectID | remoteObjectID brokerID = remoteImage]
+						thenCollect: [:remoteObjectID | remoteObjectID objectID].
+			
+			[self sendExecutor: (RSTLivingReferencesExecutor from: brokerID
+						objectIDs: objectsIDs)
+				toBroker: remoteImage] 
+					on: RSTRemoteObjectUnreachable
+					do: []]
 ]
 
 { #category : #'resolving objects' }
@@ -455,12 +476,25 @@ RSTBroker >> sendMessage: aMessage to: aRemoteObjectID [
 	^ self sendExecutor: remoteMessage toBroker: aRemoteObjectID brokerID
 ]
 
+{ #category : #'connection - server' }
+RSTBroker >> serve: aSocket [ 
+	"this method is invoked by ConnectioHandler when a new connection is  
+	established"
+	[self process: aSocket]
+		forkAt: Processor lowIOPriority
+]
+
 { #category : #'private - running' }
 RSTBroker >> startConnectionHandler [
-	connectionHandler := TcpListener
+
+	"connectionHandler := TcpListener
 				on: port
 				handler: self.
-	connectionHandler forkAndListenWhile: [RSTBroker isStarted].
+	connectionHandler forkAndListenWhile: [RSTBroker isStarted]."
+	
+	self initializeOnPort: port priority: self defaultPriority.
+	self name: 'rST-Broker'.
+	self start
 ]
 
 { #category : #'private - running' }
@@ -496,7 +530,7 @@ RSTBroker >> stop [
 	"
 	uncomment when connection error get handled
 	self sendGoodbye."
-	status _ #stoped.
+	status := #stopped.
 	self
 		logMessage: ['Stoped!']
 ]
@@ -505,9 +539,11 @@ RSTBroker >> stop [
 RSTBroker >> stopConnectionHandler [
 	"mp 12/12/2005 13:16"
 	
-	connectionHandler ifNotNil: [
-		"connectionHandler stop."
-		connectionHandler := nil]
+	"connectionHandler ifNotNil: [
+		connectionHandler stop.
+		connectionHandler := nil]"
+	
+	self unregister.
 ]
 
 { #category : #'private - running' }
@@ -533,14 +569,6 @@ RSTBroker >> transporterFor: anObject [
 		ifTrue: [RSTObjectTransporter copy: anObject]
 		ifFalse: [RSTObjectTransporter
 				reference: (self remoteObjectIDFor: anObject)]
-]
-
-{ #category : #'connection - server' }
-RSTBroker >> value: aSocket [ 
-	"this method is invoked by ConnectioHandler when a new connection is  
-	established"
-	[self process: aSocket]
-		forkAt: Processor lowIOPriority
 ]
 
 { #category : #'connection - client - sockets' }

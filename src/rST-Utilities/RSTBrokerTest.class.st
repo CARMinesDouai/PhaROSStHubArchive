@@ -64,7 +64,7 @@ RSTBrokerTest >> testLocalObject [
 RSTBrokerTest >> testRemoteObject [
 	"mp 10/17/2005 14:50"
 	
-	| instance |
+	| instance proxy |
 	instance := (RSTBroker basicNew initialize) 
 			startOnPort: 6667
 			logging: false.
@@ -72,6 +72,8 @@ RSTBrokerTest >> testRemoteObject [
 	self 
 		should: [('hello@' , ip , ':6666') asRemoteObjectID asLocalObject = 'hello'] 
 		raise: RSTObjectNotFound.
-	self assert: ('hello@' , ip , ':6667') asRemoteObjectID asLocalObject = 'hello'.
+	proxy := ('hello@' , ip , ':6667') asRemoteObjectID asLocalObject.
+	self assert: proxy isRemote.
+	self assert: proxy = 'hello'.
 	instance stop
 ]
