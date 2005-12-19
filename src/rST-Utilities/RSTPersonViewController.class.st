@@ -30,11 +30,9 @@ RSTPersonViewController >> model [
 { #category : #accessing }
 RSTPersonViewController >> model: anObject [ 
 	"Set my model and make me me a dependent of the given object."
-	model
-		ifNotNil: [model removeDependent: self].
-	anObject
-		ifNotNil: [anObject addDependent: self].
-	model _ anObject
+	model ifNotNil: [model removeDependent: self].
+	anObject ifNotNil: [anObject addDependent: self].
+	model := anObject
 ]
 
 { #category : #testing }

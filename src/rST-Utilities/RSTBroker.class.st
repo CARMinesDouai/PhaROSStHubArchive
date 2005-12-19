@@ -7,7 +7,6 @@ Class {
 	#superclass : #TcpService,
 	#instVars : [
 		'status',
-		'port',
 		'logging',
 		'brokerID',
 		'proxies',
@@ -15,7 +14,6 @@ Class {
 		'lastRemoteBrokers',
 		'exportedObjects',
 		'rememberer',
-		'connectionHandler',
 		'maintenancer'
 	],
 	#classInstVars : [
@@ -36,15 +34,9 @@ RSTBroker class >> initialize [
 { #category : #'instance creation' }
 RSTBroker class >> instance [
 	"answer the broker singleton"
-	^ instance isNil
-		ifTrue: [self error: 'RSTBroker not started! (see methods in category "running")']
-		ifFalse: [instance]
-]
-
-{ #category : #running }
-RSTBroker class >> isStarted [
-	"mp 12/12/2005 13:15"
-	^ instance notNil
+	^ instance 
+		ifNil: [self error: 'RSTBroker not started! (see methods in category "running")']
+		ifNotNil: [instance]
 ]
 
 { #category : #'instance creation' }
@@ -90,8 +82,7 @@ RSTBroker class >> startUp [
 { #category : #running }
 RSTBroker class >> stop [
 	"stop the running broker"
-	instance notNil
-		ifTrue: [instance stopInstance].
+	instance ifNotNil: [instance unregister].
 	instance := nil
 ]
 
@@ -121,6 +112,11 @@ RSTBroker >> allProxies [
 	^ allProxies
 ]
 
+{ #category : #accessing }
+RSTBroker >> brokerID [
+	^brokerID
+]
+
 { #category : #maintenance }
 RSTBroker >> clientSideMaintenance [
 	"notify to the remote brokers wich proxies are alive
@@ -131,12 +127,10 @@ RSTBroker >> clientSideMaintenance [
 				collect: [:each | each xxxRemoteObjectID].
 	currentRemoteBrokers := (allRemoteObjectID 
 				collect: [:each | each brokerID]) asSet.
-	self 
-		keepAliveRemoteObjects: allRemoteObjectID
-		inCurrentRemoteBrokers: currentRemoteBrokers.
-		
-	self freeRemoteBrokersNotIn: currentRemoteBrokers.
-	
+	self keepAliveRemoteObjects: allRemoteObjectID
+		inRemoteBrokers: currentRemoteBrokers.
+	self releaseRemoteBrokers: (lastRemoteBrokers 
+				copyWithoutAll: currentRemoteBrokers).
 	lastRemoteBrokers := currentRemoteBrokers
 ]
 
@@ -153,8 +147,16 @@ RSTBroker >> connectTo: brokerIDString [
 			connectTo: addressAndPort first 
 			port: addressAndPort second 
 			ifTimedOut: [].
-		socket isConnected ifTrue: [^ socket]].
+		socket isConnected ifTrue: [^ SocketStream on: socket]].
 	RSTRemoteObjectUnreachable signal: 'Cannot connect to: ' , brokerIDString asString
+]
+
+{ #category : #'connection - client' }
+RSTBroker >> deserializeObject: aString [
+	"mp 12/15/2005 16:42"
+	"deserialize aString to an Object"
+
+	^ ReferenceStream unStream: aString
 ]
 
 { #category : #'connection - server' }
@@ -162,26 +164,11 @@ RSTBroker >> export: anObject named: aString [
 	"export anObject with name aString, so other squeaks can connect to  
 	anObject with:  
 	remoteObject _ 'aString@localip:port' asRemoteObjectID asLocalObject."
-	anObject remoteType == #copy
-		ifTrue: [self
-				logWarning: ['exporting object with #remoteType == #copy (' , anObject asString , ')']].
+	anObject remoteType = #copy ifTrue: [
+		self logWarning: ['exporting object with #remoteType = #copy (' , anObject asString , ')']].
 	rememberer rememberForEver: anObject naming:aString.
 	exportedObjects at: aString put: anObject.
-	self
-		logMessage: ['object: ' , anObject asString , ' exported with name:' , aString]
-]
-
-{ #category : #maintenance }
-RSTBroker >> freeRemoteBrokersNotIn: currentRemoteBrokers [ 
-	"mp 12/13/2005 18:10"
-	"Notify obsolete remote brokers that we don't have 
-	references on them anymore"
-	
-	(lastRemoteBrokers copyWithoutAll: currentRemoteBrokers) do: 
-		[:remoteImage | 
-		self 
-			sendExecutor: (RSTLivingReferencesExecutor from: brokerID objectIDs: #())
-			toBroker: remoteImage]
+	self logMessage: ['object: ' , anObject asString , ' exported with name:' , aString]
 ]
 
 { #category : #initialization }
@@ -197,21 +184,24 @@ RSTBroker >> initializeClientSide [
 { #category : #initialization }
 RSTBroker >> initializeServerSide [
 	"mp 11/27/2005 19:42"
+
 	"initialize server side"
 
 	exportedObjects := WeakKeyManager new.
-	exportedObjects onNewKey: [:object :key | 
-		"new exported objects will live some time, so the other images  
+	exportedObjects onNewKey: 
+			[:object :key | 
+			"new exported objects will live some time, so the other images  
 		can send me a notification"
-		rememberer 
-			remember: object
-			forSeconds: 6 * 60 * 60
-			naming: brokerID].
+
+			rememberer 
+				remember: object
+				forSeconds: 6 * 60 * 60
+				naming: self brokerID].
 	rememberer := RSTRememberer new
 ]
 
 { #category : #maintenance }
-RSTBroker >> keepAliveRemoteObjects: allRemoteObjectID inCurrentRemoteBrokers: currentRemoteBrokers [ 
+RSTBroker >> keepAliveRemoteObjects: allRemoteObjectID inRemoteBrokers: currentRemoteBrokers [ 
 	currentRemoteBrokers do: 
 			[:remoteImage | 
 			| objectsIDs |
@@ -219,7 +209,7 @@ RSTBroker >> keepAliveRemoteObjects: allRemoteObjectID inCurrentRemoteBrokers: c
 						select: [:remoteObjectID | remoteObjectID brokerID = remoteImage]
 						thenCollect: [:remoteObjectID | remoteObjectID objectID].
 			
-			[self sendExecutor: (RSTLivingReferencesExecutor from: brokerID
+			[self sendExecutor: (RSTLivingReferencesExecutor from: self brokerID
 						objectIDs: objectsIDs)
 				toBroker: remoteImage] 
 					on: RSTRemoteObjectUnreachable
@@ -289,46 +279,48 @@ RSTBroker >> maintenanceLoop [
 ]
 
 { #category : #'resolving objects' }
-RSTBroker >> objectFor: aRemoteObjectID ifRemote: aSelector [
+RSTBroker >> objectFor: aRemoteObjectID ifRemote: aSelector [ 
 	"answer a proxy if the reference points to other VM, otherwise answer  
 	the 'real' object"
-	^ brokerID = aRemoteObjectID brokerID
-		ifTrue: [exportedObjects
-			at: aRemoteObjectID objectID
-			ifAbsent: [RSTObjectNotFound signal: aRemoteObjectID objectID asString]]
+
+	^ self brokerID = aRemoteObjectID brokerID 
+		ifTrue: 
+			[exportedObjects at: aRemoteObjectID objectID
+				ifAbsent: [RSTObjectNotFound signal: aRemoteObjectID objectID asString]]
 		ifFalse: [aRemoteObjectID perform: aSelector]
 ]
 
 { #category : #'private - running' }
 RSTBroker >> pause [
-	status == #running
-		ifTrue: [""
-			self stopNetwork.
-			""
-			status _ #paused.
-			self
-				logMessage: ['Paused!']]
-		ifFalse: [""self
-				logMessage: ['Invalid pause! (status=' , status asString , ')']]
+	status = #running 
+		ifTrue: [
+			self stopMaintenancer.
+			status := #paused.
+			self logMessage: ['Paused!']]
+		ifFalse: [self logMessage: ['Invalid pause! (status=' , status asString , ')']]
 ]
 
 { #category : #printing }
 RSTBroker >> printOn: aStream [ 
 	super printOn: aStream.
-	aStream nextPutAll: ' brokerID:';
-		 nextPutAll: brokerID asString;
-		nextPutAll:' status:'; nextPutAll: status asString
+	aStream
+		nextPutAll: ' brokerID:';
+		nextPutAll: self brokerID;
+		nextPutAll: ' status:';
+		nextPutAll: status asString
 ]
 
 { #category : #'connection - server' }
 RSTBroker >> process: aSocket [ 
 	"process a new open socket"
+	
+	| stream |
 	[| executor result | 
-	executor := aSocket getObject.
+	stream := SocketStream on: aSocket.
+	executor := self deserializeObject: stream nextLine.
 	result := executor executeIn: self.
-	aSocket sendObject: result]
-		ensure: [""
-			aSocket closeAndDestroy]
+	stream sendCommand: (self serializeObject: result)]
+		ensure: [stream close]
 ]
 
 { #category : #'connection - server' }
@@ -375,6 +367,18 @@ RSTBroker >> proxyFor: aRemoteObjectID ifAbsent: aProxyClass [
 	^ proxy
 ]
 
+{ #category : #maintenance }
+RSTBroker >> releaseRemoteBrokers: remoteBrokers [
+	"mp 12/19/2005 13:21"
+	"Notify obsolete remote brokers that we don't have 
+	references on them anymore"
+
+	remoteBrokers do: [:remoteImage | 
+		self 
+			sendExecutor: (RSTLivingReferencesExecutor from: self brokerID objectIDs: #())
+			toBroker: remoteImage]
+]
+
 { #category : #'connection - server' }
 RSTBroker >> remoteBroker: brokerIDString references: objectsIDsCollection [ 
 	"process a notification from a remote image of referenced objects"
@@ -399,10 +403,10 @@ RSTBroker >> remoteBroker: brokerIDString references: objectsIDsCollection [
 { #category : #'resolving objects' }
 RSTBroker >> remoteObjectIDFor: anObject [ 
 	"answer a RemoteObjectID for aObject"
-	| objectID |
 
-	objectID _ exportedObjects keyFor: anObject.
-	^ RSTRemoteObjectID brokerID: brokerID objectID: objectID
+	| objectID |
+	objectID := exportedObjects keyFor: anObject.
+	^RSTRemoteObjectID brokerID: self brokerID objectID: objectID
 ]
 
 { #category : #initialization }
@@ -410,59 +414,48 @@ RSTBroker >> reset [
 	"mp 11/27/2005 19:41"
 
 	Socket initializeNetwork.
-	brokerID := NetNameResolver localAddressString , ':' , port asString.
-
+	brokerID := NetNameResolver localAddressString , ':' , self portNumber asString.
 	self initializeClientSide.
 	self initializeServerSide.
-
-	self startNetwork
+	self startMaintenancer
 ]
 
 { #category : #'private - running' }
 RSTBroker >> resume [
-	status == #paused
-		ifTrue: [""
-			self startNetwork.
-			""
-			status _ #running.
-			self
-				logMessage: ['Resumed!']]
-		ifFalse: [""
-			self
-				logMessage: ['Invalid resume! (status=' , status asString , ')']]
+	status = #paused
+		ifTrue: [
+			self startMaintenancer.
+			status := #running.
+			self logMessage: ['Resumed!']]
+		ifFalse: [self logMessage: ['Invalid resume! (status=' , status asString , ')']]
 ]
 
 { #category : #'connection - client' }
 RSTBroker >> sendExecutor: anExecutor toBroker: brokerIDString [ 
 	"send anExecutor to brokerIDString"
 	| resultTransporter result |
+	self logMessage: ['sending:' , anExecutor asString].
 	self
-		logMessage: ['sending:' , anExecutor asString].
-	self
-		withSocketTo: brokerIDString
-		do: [:socket | 
-			socket sendObject: anExecutor.
-			resultTransporter _ socket getObject].
-	self
-		logMessage: ['sending:' , anExecutor asString , ' answer: ' , resultTransporter asString].
-	result _ resultTransporter resolve.
+		withSocketStreamTo: brokerIDString
+		do: [:socketStream | 
+			socketStream sendCommand: (self serializeObject: anExecutor).
+			resultTransporter := self deserializeObject: socketStream nextLine].
+	self logMessage: ['sending:' , anExecutor asString , ' answer: ' , resultTransporter asString].
+	result := resultTransporter resolve.
 	^ result
 ]
 
 { #category : #'private - running' }
 RSTBroker >> sendGoodbye [
 	"notify to the remote images that I'll never user the references again"
+
 	| remoteImages |
-	remoteImages _ (self allProxies
+	remoteImages := (self allProxies 
 				collect: [:each | each xxxRemoteObjectID brokerID]) asSet.
 	remoteImages addAll: lastRemoteBrokers.
-	""
-	remoteImages
-		do: [:remoteImage | ""
-			"TODO: ignore posible errors"
-			self
-				sendExecutor: (RSTLivingReferencesExecutor from: brokerID objectIDs: #())
-				toBroker: remoteImage]
+	[self releaseRemoteBrokers: remoteImages]
+		on: RSTRemoteObjectUnreachable
+		do: []
 ]
 
 { #category : #'connection - client' }
@@ -476,6 +469,14 @@ RSTBroker >> sendMessage: aMessage to: aRemoteObjectID [
 	^ self sendExecutor: remoteMessage toBroker: aRemoteObjectID brokerID
 ]
 
+{ #category : #'connection - client' }
+RSTBroker >> serializeObject: anObject [
+	"mp 12/15/2005 16:42"
+	"serialize anObject as a String"
+
+	^ (ReferenceStream streamedRepresentationOf: anObject) asString
+]
+
 { #category : #'connection - server' }
 RSTBroker >> serve: aSocket [ 
 	"this method is invoked by ConnectioHandler when a new connection is  
@@ -485,95 +486,60 @@ RSTBroker >> serve: aSocket [
 ]
 
 { #category : #'private - running' }
-RSTBroker >> startConnectionHandler [
-
-	"connectionHandler := TcpListener
-				on: port
-				handler: self.
-	connectionHandler forkAndListenWhile: [RSTBroker isStarted]."
-	
-	self initializeOnPort: port priority: self defaultPriority.
-	self name: 'rST-Broker'.
-	self start
-]
-
-{ #category : #'private - running' }
 RSTBroker >> startMaintenancer [
 maintenancer _ [self maintenanceLoop]
 				forkAt: Processor highIOPriority
 ]
 
-{ #category : #'private - running' }
-RSTBroker >> startNetwork [
-
-	self startMaintenancer.
-	self startConnectionHandler
-]
-
-{ #category : #running }
-RSTBroker >> startOnPort: portInteger logging: loggingBoolean [ 
+{ #category : #initialization }
+RSTBroker >> startOnPort: anInteger logging: aBoolean [ 
 	"start this broker"
-	port _ portInteger.
-	logging _ loggingBoolean.
-	""
+
+	logging := aBoolean.
+
+	"Start myself as a TcpService, since I subclass it"
+	self initializeOnPort: anInteger priority: self defaultPriority.
+	self name: 'rST-Broker'.
 	self reset.
-	""
-	status _ #running.
-	self
-		logMessage: ['rSTBroker running as ' , brokerID asString]
+	self start.
+	status := #running.
+	self logMessage: ['rSTBroker running as ' , self brokerID]
 ]
 
 { #category : #'private - running' }
-RSTBroker >> stopConnectionHandler [
-	"mp 12/12/2005 13:16"
-	
-	"connectionHandler ifNotNil: [
-		connectionHandler stop.
-		connectionHandler := nil]"
-	
-	self unregister.
-]
-
-{ #category : #'private - running' }
-RSTBroker >> stopInstance [
+RSTBroker >> stop [
 	"PRIVATE: use RSTBroker stop"
-	self stopNetwork.
-	"uncomment when connection error get handled
-	self sendGoodbye."
+	super stop.
+	self stopMaintenancer.
+	"uncomment when connection error get handled"
+	self sendGoodbye.
 	status := #stopped.
 	self logMessage: ['Stopped!']
 ]
 
 { #category : #'private - running' }
 RSTBroker >> stopMaintenancer [
-maintenancer isNil ifFalse:[""
+maintenancer ifNotNil:[
 	maintenancer terminate.
-	maintenancer _ nil]
-]
-
-{ #category : #'private - running' }
-RSTBroker >> stopNetwork [
-	self stopMaintenancer.
-
-	self stopConnectionHandler
+	maintenancer := nil]
 ]
 
 { #category : #'resolving objects' }
 RSTBroker >> transporterFor: anObject [ 
 	"answer the appropiate transporter for anObject"
-	anObject isRemote
-		ifTrue: [^ RSTObjectTransporter reference: anObject xxxRemoteObjectID].
-	^ anObject remoteType == #copy
+	anObject isRemote ifTrue: [
+		^ RSTObjectTransporter reference: anObject xxxRemoteObjectID].
+	^ anObject remoteType = #copy
 		ifTrue: [RSTObjectTransporter copy: anObject]
-		ifFalse: [RSTObjectTransporter
-				reference: (self remoteObjectIDFor: anObject)]
+		ifFalse: [RSTObjectTransporter reference: (self remoteObjectIDFor: anObject)]
 ]
 
 { #category : #'connection - client - sockets' }
-RSTBroker >> withSocketTo: brokerIDString do: aBlock [ 
+RSTBroker >> withSocketStreamTo: brokerIDString do: aBlock [ 
+	"mp 12/15/2005 11:02"
 	"evaluate aBlock when an open socket to brokerIDString"
-	| socket |
-	socket _ self connectTo: brokerIDString.
-	[aBlock value: socket]
-		ensure: [socket closeAndDestroy]
+	| socketStream |
+	socketStream := self connectTo: brokerIDString.
+	[aBlock value: socketStream]
+		ensure: [socketStream close]
 ]
