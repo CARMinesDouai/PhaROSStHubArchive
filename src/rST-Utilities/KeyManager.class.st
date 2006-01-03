@@ -14,7 +14,7 @@ Class {
 		'mutex',
 		'onNewKey'
 	],
-	#category : #'rST-Utilities'
+	#category : 'rST-Utilities'
 }
 
 { #category : #'instance creation' }

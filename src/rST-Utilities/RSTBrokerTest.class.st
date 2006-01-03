@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'ip'
 	],
-	#category : #'rST-Tests'
+	#category : 'rST-Tests'
 }
 
 { #category : #accessing }

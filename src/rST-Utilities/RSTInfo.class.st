@@ -1,7 +1,7 @@
 Class {
 	#name : #RSTInfo,
 	#superclass : #PackageInfo,
-	#category : #'rST-Info'
+	#category : 'rST-Info'
 }
 
 { #category : #'as yet unclassified' }

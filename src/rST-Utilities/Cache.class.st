@@ -11,7 +11,7 @@ Class {
 		'hits',
 		'values'
 	],
-	#category : #'rST-Utilities'
+	#category : 'rST-Utilities'
 }
 
 { #category : #'instance creation' }

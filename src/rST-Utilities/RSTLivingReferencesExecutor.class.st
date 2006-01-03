@@ -8,7 +8,7 @@ Class {
 		'from',
 		'objectIDs'
 	],
-	#category : #'rST-Core'
+	#category : 'rST-Core'
 }
 
 { #category : #'instance creation' }

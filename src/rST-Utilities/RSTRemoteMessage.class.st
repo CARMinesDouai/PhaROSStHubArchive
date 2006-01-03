@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'to'
 	],
-	#category : #'rST-Core'
+	#category : 'rST-Core'
 }
 
 { #category : #'instance creation' }

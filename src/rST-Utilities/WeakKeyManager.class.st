@@ -8,7 +8,7 @@ The references to the object are weaks, so the object retain the key while exist
 Class {
 	#name : #WeakKeyManager,
 	#superclass : #KeyManager,
-	#category : #'rST-Utilities'
+	#category : 'rST-Utilities'
 }
 
 { #category : #private }

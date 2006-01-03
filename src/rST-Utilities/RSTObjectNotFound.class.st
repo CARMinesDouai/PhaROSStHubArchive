@@ -1,5 +1,5 @@
 Class {
 	#name : #RSTObjectNotFound,
 	#superclass : #Error,
-	#category : #'rST-Core'
+	#category : 'rST-Core'
 }

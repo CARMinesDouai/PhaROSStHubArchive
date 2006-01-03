@@ -8,7 +8,7 @@ Class {
 		'brokerID',
 		'objectID'
 	],
-	#category : #'rST-Core'
+	#category : 'rST-Core'
 }
 
 { #category : #'instance creation' }
