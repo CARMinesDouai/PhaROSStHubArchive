@@ -30,6 +30,20 @@ RSTBrokerTest >> tearDown [
 ]
 
 { #category : #testing }
+RSTBrokerTest >> testBigRemoteObject [
+	"mp 10/17/2005 14:50"
+
+	| instance |
+	instance := RSTBroker basicNew initialize startOnPort: 6667 logging: false.
+	"a dummy 5000 length string to test Socket>>getObject"
+	instance export: self bigString named: 'bigString'.
+	self 
+		assert: ('bigString@' , ip , ':6667') asRemoteObjectID asLocalObject size 
+				= 5000.
+	instance unregister
+]
+
+{ #category : #testing }
 RSTBrokerTest >> testConnectToRemoteBroker [
 	"mp 12/16/2005 12:49"
 
@@ -124,15 +138,15 @@ RSTBrokerTest >> testStartStop [
 ]
 
 { #category : #testing }
-RSTBrokerTest >> ttestBigRemoteObject [
+RSTBrokerTest >> testVeryBigRemoteObject [
 	"mp 10/17/2005 14:50"
 
-	| instance |
+	| instance file |
 	instance := RSTBroker basicNew initialize startOnPort: 6667 logging: false.
-	"a dummy 5000 length string to test Socket>>getObject"
-	instance export: self bigString named: 'bigString'.
-	self 
-		assert: ('bigString@' , ip , ':6667') asRemoteObjectID asLocalObject size 
-				= 5000.
+	"a 200 Ko file to test SocketStream"
+	file := StandardFileStream readOnlyFileNamed: 'bennett87design.pdf'.
+	instance export: file named: 'pdfFile'.
+	self assert: ('pdfFile@' , ip , ':6667') asRemoteObjectID asLocalObject size = 226028.
+	file close.
 	instance unregister
 ]
