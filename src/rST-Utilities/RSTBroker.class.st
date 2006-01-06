@@ -147,16 +147,23 @@ RSTBroker >> connectTo: brokerIDString [
 			connectTo: addressAndPort first 
 			port: addressAndPort second 
 			ifTimedOut: [].
-		socket isConnected ifTrue: [^ SocketStream on: socket]].
+		socket isConnected ifTrue: [^ FastSocketStream on: socket]].
 	RSTRemoteObjectUnreachable signal: 'Cannot connect to: ' , brokerIDString asString
 ]
 
 { #category : #'connection - client' }
-RSTBroker >> deserializeObject: aString [
+RSTBroker >> deserializeObject: aByteArray [
 	"mp 12/15/2005 16:42"
-	"deserialize aString to an Object"
+	"deserialize aByteArray to an Object"
 
-	^ ReferenceStream unStream: aString
+	^ ReferenceStream unStream: aByteArray
+]
+
+{ #category : #accessing }
+RSTBroker >> endingTag [
+	"mp 1/6/2006 12:43"
+	
+	^ '<RSTEOF>'
 ]
 
 { #category : #'connection - server' }
@@ -315,11 +322,11 @@ RSTBroker >> process: aSocket [
 	"process a new open socket"
 	
 	| stream |
-	[| executor result | 
-	stream := SocketStream on: aSocket.
-	executor := self deserializeObject: stream nextLine.
+	[| executor result |
+	stream := FastSocketStream on: aSocket.
+	executor := self receiveObjectFrom: stream.
 	result := executor executeIn: self.
-	stream sendCommand: (self serializeObject: result)]
+	self sendObject: result through: stream]
 		ensure: [stream close]
 ]
 
@@ -365,6 +372,13 @@ RSTBroker >> proxyFor: aRemoteObjectID ifAbsent: aProxyClass [
 			proxy := aProxyClass remoteObjectID: aRemoteObjectID.
 			proxies at: aRemoteObjectID put: proxy]].
 	^ proxy
+]
+
+{ #category : #'connection - client' }
+RSTBroker >> receiveObjectFrom: socketStream [ 
+	"mp 1/6/2006 12:50"
+	
+	^self deserializeObject: (socketStream upToAll: self endingTag)
 ]
 
 { #category : #maintenance }
@@ -433,16 +447,19 @@ RSTBroker >> resume [
 { #category : #'connection - client' }
 RSTBroker >> sendExecutor: anExecutor toBroker: brokerIDString [ 
 	"send anExecutor to brokerIDString"
+
 	| resultTransporter result |
 	self logMessage: ['sending:' , anExecutor asString].
-	self
-		withSocketStreamTo: brokerIDString
-		do: [:socketStream | 
-			socketStream sendCommand: (self serializeObject: anExecutor).
-			resultTransporter := self deserializeObject: socketStream nextLine].
-	self logMessage: ['sending:' , anExecutor asString , ' answer: ' , resultTransporter asString].
+	self withSocketStreamTo: brokerIDString
+		do: 
+			[:socketStream | 
+			self sendObject: anExecutor through: socketStream.
+			resultTransporter := self receiveObjectFrom: socketStream].
+	self logMessage: 
+			['sending:' , anExecutor asString , ' answer: ' 
+				, resultTransporter asString].
 	result := resultTransporter resolve.
-	^ result
+	^result
 ]
 
 { #category : #'private - running' }
@@ -470,11 +487,33 @@ RSTBroker >> sendMessage: aMessage to: aRemoteObjectID [
 ]
 
 { #category : #'connection - client' }
+RSTBroker >> sendObject: anExecutor through: socketStream [ 
+	"mp 1/6/2006 12:49"
+	
+	socketStream 
+		send: (self serializeObject: anExecutor)
+		withEndingTag: self endingTag
+]
+
+{ #category : #'connection - client' }
+RSTBroker >> serializeAndZipObject: anObject [
+	"mp 12/15/2005 16:42"
+	"serialize anObject as a GZipped ByteArray"
+	
+	| ref zipped |
+	ref := ReferenceStream streamedRepresentationOf: anObject.
+	zipped := GZipWriteStream on: ref.
+	zipped nextPutAll: ref.
+	zipped close.
+	^ zipped
+]
+
+{ #category : #'connection - client' }
 RSTBroker >> serializeObject: anObject [
 	"mp 12/15/2005 16:42"
-	"serialize anObject as a String"
+	"serialize anObject as a ByteArray"
 
-	^ (ReferenceStream streamedRepresentationOf: anObject) asString
+	^ ReferenceStream streamedRepresentationOf: anObject
 ]
 
 { #category : #'connection - server' }
@@ -532,6 +571,26 @@ RSTBroker >> transporterFor: anObject [
 	^ anObject remoteType = #copy
 		ifTrue: [RSTObjectTransporter copy: anObject]
 		ifFalse: [RSTObjectTransporter reference: (self remoteObjectIDFor: anObject)]
+]
+
+{ #category : #'connection - client' }
+RSTBroker >> unzipAndDserializeObject: aGZippedObject [
+	"mp 12/15/2005 16:42"
+	"serialize anObject as a GZipped ByteArray"
+	
+	| ref zipped unzipped buffer |
+
+	ref := (ReferenceStream on: ((RWBinaryOrTextStream with: ByteArray new) reset; binary)).
+	
+	zipped := GZipReadStream on: aGZippedObject encodedStream contents.
+	unzipped := ReadStream on: zipped contents.
+	"buffer := ByteArray new: 50000."
+	"[unzipped atEnd] whileFalse: ["
+		ref nextPutAll: "("unzipped" nextInto: buffer)]".
+	"ref close."
+	zipped close.
+	unzipped close.
+	^ ref next
 ]
 
 { #category : #'connection - client - sockets' }
