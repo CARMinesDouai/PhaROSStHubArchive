@@ -7,13 +7,13 @@ Class {
 	#classInstVars : [
 		'instance'
 	],
-	#category : 'rST-Core'
+	#category : #'rST-Core'
 }
 
 { #category : #'instance creation' }
 RSTDialectIndependency class >> instance [
 	^ instance
-		ifNil: [instance _ RSTDialectIndependencySqueak new initialize]
+		ifNil: [instance := RSTDialectIndependencySqueak new]
 ]
 
 { #category : #logging }

@@ -14,7 +14,8 @@ Class {
 		'lastRemoteBrokers',
 		'exportedObjects',
 		'rememberer',
-		'maintenancer'
+		'maintenancer',
+		'resolved'
 	],
 	#classInstVars : [
 		'instance'
@@ -333,24 +334,21 @@ RSTBroker >> process: aSocket [
 { #category : #'connection - server' }
 RSTBroker >> processRemoteMessage: aRemoteMessage [ 
 	"send aRemoteMessage to the local receiver"
+	
 	| target localArguments |
-	self
-		logMessage: ['received remote message: ' , aRemoteMessage asString].
-	target _ exportedObjects
+	self logMessage: ['received remote message: "' , aRemoteMessage asString , '"'].
+	target := exportedObjects
 				at: aRemoteMessage to objectID
 				ifAbsent: [^ RSTObjectTransporter
 						exception: (RSTObjectNotFound new messageText: aRemoteMessage to objectID asString)].
-	""
-	localArguments _ aRemoteMessage arguments
-				collect: [:each | each resolve].
+	localArguments := aRemoteMessage arguments collect: [:each | each resolve].
 	[| result | 
-	result _ target perform: aRemoteMessage selector withArguments: localArguments.
+	result := target perform: aRemoteMessage selector withArguments: localArguments.
 	^ self transporterFor: result]
 		on: Exception
 		do: [:exception | 
 			self logException: exception.
-			^ RSTObjectTransporter
-				exception: (RSTRemoteException on: exception)]
+			^ RSTObjectTransporter exception: (RSTRemoteException on: exception)]
 ]
 
 { #category : #'resolving objects' }
@@ -377,8 +375,14 @@ RSTBroker >> proxyFor: aRemoteObjectID ifAbsent: aProxyClass [
 { #category : #'connection - client' }
 RSTBroker >> receiveObjectFrom: socketStream [ 
 	"mp 1/6/2006 12:50"
-	
-	^self deserializeObject: (socketStream upToAll: self endingTag)
+	^ [self
+		deserializeObject: (socketStream upToAll: self endingTag)]
+		on: Exception
+		do: [:ex | 
+			|rstException|
+			rstException := RSTRemoteObjectUnreachable new.
+			rstException messageText: ex messageText.
+			ex resignalAs: rstException]
 ]
 
 { #category : #maintenance }
@@ -449,15 +453,13 @@ RSTBroker >> sendExecutor: anExecutor toBroker: brokerIDString [
 	"send anExecutor to brokerIDString"
 
 	| resultTransporter result |
-	self logMessage: ['sending:' , anExecutor asString].
-	self withSocketStreamTo: brokerIDString
-		do: 
-			[:socketStream | 
-			self sendObject: anExecutor through: socketStream.
-			resultTransporter := self receiveObjectFrom: socketStream].
-	self logMessage: 
-			['sending:' , anExecutor asString , ' answer: ' 
-				, resultTransporter asString].
+	"self logMessage: ['sending:' , anExecutor asString]."
+	self withSocketStreamTo: brokerIDString do: [:socketStream | 
+		self sendObject: anExecutor through: socketStream.
+		resultTransporter := self receiveObjectFrom: socketStream].
+	self logMessage: [
+		String cr , 'sending:' , anExecutor asString , 
+		String cr , 'answer: ' , resultTransporter asString].
 	result := resultTransporter resolve.
 	^result
 ]
@@ -551,9 +553,17 @@ RSTBroker >> stop [
 	super stop.
 	self stopMaintenancer.
 	"uncomment when connection error get handled"
-	self sendGoodbye.
+	"self sendGoodbye."
 	status := #stopped.
-	self logMessage: ['Stopped!']
+	self logMessage: ['Stopped!'].
+	self stopLogging
+]
+
+{ #category : #logging }
+RSTBroker >> stopLogging [
+	"mp 4/26/2006 17:00"
+	
+	logging ifTrue: [RSTDialectIndependency instance closeLogFile]
 ]
 
 { #category : #'private - running' }

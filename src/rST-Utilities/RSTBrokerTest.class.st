@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'ip'
 	],
-	#category : 'rST-Tests'
+	#category : #'rST-Tests'
 }
 
 { #category : #accessing }
@@ -64,6 +64,24 @@ RSTBrokerTest >> testParseBrokerIDString [
 	"mp 12/16/2005 12:49"
 
 	self assert: (RSTBroker instance addressAndPort: (ip , ':6666')) = {NetNameResolver addressForName: ip. 6666}
+]
+
+{ #category : #testing }
+RSTBrokerTest >> testProxyUnicity [
+	| instance proxy1 proxy2 |
+	instance := RSTBroker basicNew initialize startOnPort: 6667 logging: false.
+	instance
+		export: (Array with: 12)
+		named: 'array'.
+	proxy1 := ('array@' , ip , ':6667') asRemoteObjectID asLocalObject.
+	proxy2 := ('array@' , ip , ':6667') asRemoteObjectID asLocalObject.
+	self assert: proxy1 isRemote.
+	self assert: proxy2 isRemote.
+	proxy1 size.
+	proxy2 size.
+	self assert: RSTBroker instance allProxies size = 1.
+	instance unregister.
+	instance := nil
 ]
 
 { #category : #testing }

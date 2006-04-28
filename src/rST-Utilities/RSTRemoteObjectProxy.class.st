@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'remoteObjectID'
 	],
-	#category : 'rST-Core'
+	#category : #'rST-Core'
 }
 
 { #category : #'instance creation' }

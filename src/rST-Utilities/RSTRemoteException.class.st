@@ -4,7 +4,7 @@ I represent a remote exception
 Class {
 	#name : #RSTRemoteException,
 	#superclass : #Error,
-	#category : 'rST-Core'
+	#category : #'rST-Core'
 }
 
 { #category : #'instance creation' }

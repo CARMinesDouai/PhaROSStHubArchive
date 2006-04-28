@@ -17,7 +17,7 @@ Class {
 	#instVars : [
 		'strongDependents'
 	],
-	#category : 'rST-Core'
+	#category : #'rST-Core'
 }
 
 { #category : #dependents }

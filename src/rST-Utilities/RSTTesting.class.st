@@ -16,7 +16,7 @@ After run, in both squeaks:
 Class {
 	#name : #RSTTesting,
 	#superclass : #Object,
-	#category : 'rST-Samples'
+	#category : #'rST-Samples'
 }
 
 { #category : #'address configuration' }

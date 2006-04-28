@@ -10,51 +10,50 @@ Class {
 		'remembered',
 		'mutex'
 	],
-	#category : 'rST-Core'
+	#category : #'rST-Core'
 }
 
 { #category : #'instance creation' }
 RSTRememberer class >> new [
-	^ super new initialize
+	^ super new
 ]
 
 { #category : #accessing }
 RSTRememberer >> allNamed: nameObject [ 
-	"answer all object named nameObject"
+	"mp 4/20/2006 16:25"
+	"answer all objects named nameObject"
+	
 	| named |
-	named _ Set new.
-	mutex
-		critical: [""
-			remembered
-				keysAndValuesDo: [:object :names | ""
-(names keys includes:nameObject)
-ifTrue:[named add: object]
-]].
+	named := Bag new.
+	mutex critical: [
+		remembered keysAndValuesDo: [:object :names | 
+			(names keys includes: nameObject) 
+				ifTrue:[named add: object]]].
 	^ named
 ]
 
 { #category : #'remembering & forgetting' }
 RSTRememberer >> forget: anObject named: nameObject [ 
 	"forget anObject"
-	mutex
-		critical: [| names | 
-			names _ remembered
-						at: anObject
+	
+	mutex critical: [
+		| names | 
+		names := remembered 
+						at: anObject 
 						ifAbsent: [^ anObject].
-			names
-				removeKey: nameObject
-				ifAbsent: [].
-			names isEmpty
-				ifTrue: [remembered removeKey: anObject]]
+		names 
+			removeKey: nameObject 
+			ifAbsent: [].
+		names isEmpty ifTrue: [remembered removeKey: anObject]]
 ]
 
 { #category : #'remembering & forgetting' }
 RSTRememberer >> forgetAllNamed: nameObject [ 
 	"forget anObject"
+	
 	| named | 
-			named _ self allNamed: nameObject.
-			named
-				do: [:object | self forget: object named: nameObject]
+	named := self allNamed: nameObject.
+	named do: [:object | self forget: object named: nameObject]
 ]
 
 { #category : #initialization }
@@ -66,30 +65,27 @@ RSTRememberer >> initialize [
 { #category : #maintenance }
 RSTRememberer >> maintenance [
 	"within time and time, check for objects to forget"
-	mutex
-		critical: [| current toForget | 
-			current _ Time totalSeconds.
-			remembered _ remembered
-						select: [:eachRemembered | 
-							""
-							eachRemembered
-								keysAndValuesRemove: [:name :expires | ""
-									expires notNil
-										and: [expires <= current]].
-							eachRemembered notEmpty]]
+	
+	mutex critical: [
+		| current toForget | 
+		current := Time totalSeconds.
+		remembered := remembered select: [:eachRemembered | 
+			eachRemembered keysAndValuesRemove: [:name :expires | 
+				expires notNil and: [expires <= current]].
+			eachRemembered notEmpty]]
 ]
 
 { #category : #'remembering & forgetting' }
 RSTRememberer >> remember: anObject forSeconds: anInteger naming: nameObject [ 
 	"remember anObject at least for anInteger seconds"
-	mutex
-		critical: [| names expires | 
-			names _ remembered
-						at: anObject
-						ifAbsentPut: [Dictionary new].
-			expires _ anInteger isNil
-						ifFalse: [Time totalSeconds + anInteger].
-			names at: nameObject put: expires]
+	
+	mutex critical: [
+		| names expires | 
+		names := remembered
+					at: anObject
+					ifAbsentPut: [Dictionary new].
+		expires := anInteger ifNotNil: [Time totalSeconds + anInteger].
+		names at: nameObject put: expires]
 ]
 
 { #category : #'remembering & forgetting' }

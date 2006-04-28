@@ -6,9 +6,10 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'type',
-		'object'
+		'object',
+		'resolved'
 	],
-	#category : 'rST-Core'
+	#category : #'rST-Core'
 }
 
 { #category : #'instance creation' }
@@ -37,18 +38,20 @@ RSTObjectTransporter >> initializeObject: anObject type: aSymbol [
 
 { #category : #printing }
 RSTObjectTransporter >> printOn: aStream [ 
-	super printOn: aStream.
-	aStream nextPutAll: ' ';
-		 nextPutAll: type asString;
-		 nextPutAll: '=';
-		 nextPutAll: object asString
+	"super printOn: aStream."
+	aStream 
+		"nextPutAll: ' ';"
+		nextPutAll: type asString;
+		nextPutAll: ' = ''';
+		nextPutAll: object asString;
+		nextPut: $'
 ]
 
 { #category : #accessing }
 RSTObjectTransporter >> resolve [
 	"resolve the transported object for local use"
 	^ type caseOf: {
-		[#copy] -> [object].
 		[#reference] -> [object asLocalObject].
+		[#copy] -> [object].
 		[#exception] -> [object signal]}
 ]

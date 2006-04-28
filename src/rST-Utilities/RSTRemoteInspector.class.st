@@ -4,7 +4,7 @@ I'm the Inspector for the Remote Objects
 Class {
 	#name : #RSTRemoteInspector,
 	#superclass : #Inspector,
-	#category : 'rST-Core'
+	#category : #'rST-Core'
 }
 
 { #category : #'user interface' }

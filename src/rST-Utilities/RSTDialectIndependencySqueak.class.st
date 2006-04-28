@@ -5,33 +5,49 @@ Class {
 	#name : #RSTDialectIndependencySqueak,
 	#superclass : #RSTDialectIndependency,
 	#instVars : [
-		'loggingMutex'
+		'loggingMutex',
+		'logFile'
 	],
-	#category : 'rST-Core'
+	#category : #'rST-Core'
 }
+
+{ #category : #initialization }
+RSTDialectIndependencySqueak >> closeLogFile [
+	"mp 4/28/2006 10:28"
+	
+	logFile close.
+	logFile := nil
+]
+
+{ #category : #initialization }
+RSTDialectIndependencySqueak >> createLogFile [
+	"mp 4/28/2006 10:28"
+	
+	logFile := FileDirectory default forceNewFileNamed: 'rST-debug.log'.
+	logFile ensureOpen  "file reports to be closed on windows..."
+]
 
 { #category : #initialization }
 RSTDialectIndependencySqueak >> initialize [
 	super initialize.
-	loggingMutex _ Semaphore forMutualExclusion
+	loggingMutex := Semaphore forMutualExclusion.
+	self createLogFile
 ]
 
 { #category : #logging }
 RSTDialectIndependencySqueak >> logMessage: aBlock [ 
+	"mp 4/21/2006 12:22"
+	"log to a file"
 	
 	loggingMutex critical: [
-		| message | 
-		self flag: #TODO.
-		"log to a file"
-		message := String new writeStream.
-		message
-			nextPutAll: (Date today printFormat: #(3 2 1 $- 1 1 2 ));
+		logFile ifNil: [self createLogFile].
+		logFile
+			cr;
+			nextPutAll: (Date today printFormat: #(3 2 1 $/ 1 1 2 ));
 			space;
 			nextPutAll: Time now print24;
 			nextPut: $:;
 			space;
-			nextPutAll: aBlock value asString.
-		Transcript 
-			cr;
-			show: message contents]
+			nextPutAll: aBlock value asString;
+			cr]
 ]
