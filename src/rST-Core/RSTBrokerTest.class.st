@@ -57,13 +57,11 @@ RSTBrokerTest >> setUp [
 	RSTBroker services do: [:s| 
 		s unregister.
 		s waitForStop].
-	defaultBroker := RSTBroker startOnPort: self defaultPort logging: false.
+	defaultBroker := RSTBroker startOnPort: self defaultPort logging: true.
 	extraBroker := RSTBroker basicNew.
 	extraBroker
 		initialize;
 		startOnPort: self extraPort logging: false.
-	(Delay forMilliseconds: 100) wait
-
 ]
 
 { #category : #'setUp-tearDown' }

@@ -145,9 +145,12 @@ RSTBroker >> connectTo: brokerIDString [
 	3 timesRepeat: [
 		socket ifNotNil: [socket closeAndDestroy].
 		socket := Socket newTCP.
-		socket 
+		[socket 
 			connectTo: addressAndPort first 
-			port: addressAndPort second.
+			port: addressAndPort second] 
+		on: ConnectionTimedOut do: [:timeOutEx|
+				self logException: timeOutEx.
+				(Delay forMilliseconds: 100) wait].
 		socket isConnected ifTrue: [^ SocketStream on: socket]].
 	RSTRemoteObjectUnreachable signal: 'Cannot connect to: ' , brokerIDString asString
 ]
