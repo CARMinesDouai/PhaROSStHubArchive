@@ -1,13 +1,13 @@
 "
-To test rST you need to run 2 squeaks in the same machine or in diferents machines.
+To run rST samples you need to run 2 squeaks in the same machine or in diferents machines.
 
-If you run this examples in diferent machines, don't forget to change the IP address of the ""server"" squeak in RSTTesting class>>runClient
+If you run this examples in diferent machines, don't forget to change the IP address of the ""server"" squeak in RSTSamples class>>runClient
 
 In server squeak:
-	RSTTesting serverStartup.
+	RSTSamples serverStartup.
 
 In client squeak:
-	RSTTesting runClient.
+	RSTSamples runClient.
 
 After run, in both squeaks:
 	RSTBroker stop.
@@ -38,6 +38,7 @@ RSTSamples class >> collectionToString: aCollection [
 
 { #category : #'running client side' }
 RSTSamples class >> runClient [
+	"RSTSamples runClient"
 	"Initialize an broker in the port 8888 and get a remote reference to a  
 	Date named today"
 	Transcript show: 'running client side rST example...';
@@ -60,8 +61,8 @@ RSTSamples class >> runClientCollectionTests [
 	blocks, then the remote collection send #value: and #value to these  
 	locals blocks"
 	| remoteCollection localCollectionAsString remoteCollectionAsString remoteCollectionAsStringConverter |
-	remoteCollection _ ('collection@' , self serverBrokerID) asRemoteObjectID asLocalObject.
-	remoteCollectionAsStringConverter _ ('collectionAsStringConverter@' , self serverBrokerID) asRemoteObjectID asLocalObject.
+	remoteCollection _ ('collection@' , self serverBrokerID) asLocalObject.
+	remoteCollectionAsStringConverter _ ('collectionAsStringConverter@' , self serverBrokerID) asLocalObject.
 	remoteCollectionAsString _ remoteCollectionAsStringConverter value.
 	localCollectionAsString _ self collectionToString: remoteCollection.
 	Transcript show: 'remoteCollection=';
@@ -76,7 +77,7 @@ RSTSamples class >> runClientPerformanceTests [
 	| remoteToday localToday remoteTomorrow |
 	localToday _ Date today.
 	""
-	remoteToday _ ('today@' , self serverBrokerID) asRemoteObjectID asLocalObject.
+	remoteToday _ ('today@' , self serverBrokerID) asLocalObject.
 	remoteTomorrow _ remoteToday addDays: 1.
 	MessageTally
 		spyOn: [100
@@ -87,8 +88,8 @@ RSTSamples class >> runClientPerformanceTests [
 RSTSamples class >> runClientPersonTests [
 	""
 	| remotePerson1 remotePerson2 vc1 vc2 |
-	remotePerson1 _ ('person1@' , self serverBrokerID) asRemoteObjectID asLocalObject.
-	remotePerson2 _ ('person2@' , self serverBrokerID) asRemoteObjectID asLocalObject.
+	remotePerson1 _ ('person1@' , self serverBrokerID) asLocalObject.
+	remotePerson2 _ ('person2@' , self serverBrokerID) asLocalObject.
 	""
 	vc1 _ RSTPersonViewController on: remotePerson1.
 	vc2 _ RSTPersonViewController on: remotePerson2.
@@ -108,7 +109,7 @@ RSTSamples class >> runClientTodayTests [
 	localTomorrow _ localToday addDays: 1.
 	""
 	"you must change the IP if you run the example in diferents machines"
-	remoteToday _ ('today@' , self serverBrokerID) asRemoteObjectID asLocalObject.
+	remoteToday _ ('today@' , self serverBrokerID) asLocalObject.
 	remoteToday inspect.
 	" 
 	hash return an integer so i receive a copy and the #= is a local  
@@ -133,7 +134,7 @@ RSTSamples class >> runClientTodayTests [
 { #category : #'running client side' }
 RSTSamples class >> runClientTranscriptTests [
 	| remoteTranscript |
-	remoteTranscript _ ('Transcript@' , self serverBrokerID) asRemoteObjectID asLocalObject.
+	remoteTranscript _ ('Transcript@' , self serverBrokerID) asLocalObject.
 	remoteTranscript show: 'everything is ok! (from client side)';
 		 cr
 ]
@@ -155,23 +156,24 @@ RSTSamples class >> serverPort [
 
 { #category : #'running server side' }
 RSTSamples class >> serverStartup [
+	"RSTSamples serverStartup"
 	"Initialize an broker in the port 9999 and export some objects for testing"
 	| today collection |
 	RSTBroker
 		startOnPort: self serverPort
 		logging: true.
-	RSTBroker instance export: Transcript named: 'Transcript'.
+	RSTBroker export: Transcript named: 'Transcript'.
 	today := Date today.
 	collection := {1. 'aString'. #aSymbol. today}.
-	RSTBroker instance export: today named: 'today'.
-	RSTBroker instance export: collection named: 'collection'.
-	RSTBroker instance
+	RSTBroker export: today named: 'today'.
+	RSTBroker export: collection named: 'collection'.
+	RSTBroker
 		export: [self collectionToString: collection]
 		named: 'collectionAsStringConverter'.
-	RSTBroker instance
+	RSTBroker
 		export: (RSTPerson name: 'name1' eMail: 'eMail1')
 		named: 'person1'.
-	RSTBroker instance
+	RSTBroker
 		export: (RSTPerson name: 'name2' eMail: 'eMail2')
 		named: 'person2'
 ]

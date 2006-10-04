@@ -23,6 +23,14 @@ Class {
 	#category : #'rST-Core'
 }
 
+{ #category : #'connection - server' }
+RSTBroker class >> export: anObject named: aString [ 
+	"Noury Bouraqadi 10/3/2006 23:57"
+	
+	self instance export: anObject named: aString 
+
+]
+
 { #category : #'initialize-release' }
 RSTBroker class >> initialize [
 	"

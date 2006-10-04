@@ -85,7 +85,7 @@ RSTBrokerTest >> testBigRemoteObject [
 	| remoteObjectIdString proxy |
 	extraBroker export: self bigString named: 'bigString'.
 	remoteObjectIdString := 'bigString@' , self extraIpAndPortString.
-	proxy := remoteObjectIdString asRemoteObjectID asLocalObject.
+	proxy := remoteObjectIdString asLocalObject.
 	self assert: proxy size = 5000.
 	
 ]
@@ -119,7 +119,7 @@ RSTBrokerTest >> testExportedRemoteObjectByCopy [
 	exportedObject := 'hello'.
 	exportedObjectName := 'exported'.
 	extraBroker export: exportedObject named: exportedObjectName.
-	copy := (exportedObjectName, '@' , self extraIpAndPortString) asRemoteObjectID asLocalObject.
+	copy := (exportedObjectName, '@' , self extraIpAndPortString) asLocalObject.
 	self assert: copy = exportedObject.
 	self deny: copy isRemote.
 	self deny: copy == exportedObject.
@@ -133,7 +133,7 @@ RSTBrokerTest >> testLocalObject [
 	exportedObject := Object new.	
 	defaultBroker export: exportedObject named: 'coucou'.
 	remoteIdString := 'coucou@' , self defaultIpAndPortString.
-	retreivedObject := remoteIdString asRemoteObjectID asLocalObject.
+	retreivedObject := remoteIdString asLocalObject.
 	self assert: retreivedObject == exportedObject
 ]
 
@@ -156,8 +156,8 @@ RSTBrokerTest >> testProxyUnicity [
 	extraBroker
 		export: (Array with: 12)
 		named: 'array'.
-	proxy1 := ('array@' , self extraIpAndPortString) asRemoteObjectID asLocalObject.
-	proxy2 := ('array@' , self extraIpAndPortString) asRemoteObjectID asLocalObject.
+	proxy1 := ('array@' , self extraIpAndPortString) asLocalObject.
+	proxy2 := ('array@' , self extraIpAndPortString) asLocalObject.
 	self assert: proxy1 == proxy2.
 	self assert: proxy1 isRemote.
 	self assert: defaultBroker allProxies size = 1.
@@ -172,7 +172,7 @@ RSTBrokerTest >> testRemoteObjectByCopy [
 	exportedArray := #('hello').
 	exportedObjectName := 'exported'.
 	extraBroker export: exportedArray named: exportedObjectName.
-	proxy := (exportedObjectName, '@' , self extraIpAndPortString) asRemoteObjectID asLocalObject.
+	proxy := (exportedObjectName, '@' , self extraIpAndPortString) asLocalObject.
 	copy := proxy at: 1.
 	self assert: copy = exportedArray first.
 	self deny: copy isRemote.
