@@ -53,10 +53,7 @@ RSTBrokerTest >> ip [
 RSTBrokerTest >> setUp [
 	"Noury Bouraqadi 9/21/2006 15:31"
 
-	RSTBroker stop.
-	RSTBroker services do: [:s| 
-		s unregister.
-		s waitForStop].
+	RSTBroker reset.
 	defaultBroker := RSTBroker startOnPort: self defaultPort logging: true.
 	extraBroker := RSTBroker basicNew.
 	extraBroker
@@ -68,13 +65,7 @@ RSTBrokerTest >> setUp [
 RSTBrokerTest >> tearDown [
 	"Noury Bouraqadi 9/21/2006 15:31"
 	
-	RSTBroker stop.
-	defaultBroker waitForStop.
-	extraBroker ifNotNil: [
-		extraBroker 
-			unregister;
-			waitForStop]
-
+	RSTBroker reset
 ]
 
 { #category : #testing }

@@ -53,6 +53,15 @@ RSTBroker class >> new [
 	self error: 'you must use #instance'
 ]
 
+{ #category : #running }
+RSTBroker class >> reset [
+	self stop.
+	RSTBroker services do: [:s| 
+		s unregister.
+		s waitForStop].
+
+]
+
 { #category : #snapshots }
 RSTBroker class >> shutDown [
 	instance isNil ifFalse:[instance pause]
@@ -91,7 +100,9 @@ RSTBroker class >> startUp [
 { #category : #running }
 RSTBroker class >> stop [
 	"stop the running broker"
-	instance ifNotNil: [instance unregister].
+	instance ifNotNil: [
+		instance unregister.
+		instance waitForStop].
 	instance := nil
 ]
 
