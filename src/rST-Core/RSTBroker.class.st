@@ -1,6 +1,7 @@
 "
 I'm the door to other image and the door for other images to come in.
 
+ForwardedExceptionSet is an ExceptionSet with all exceptions that are forwarded to remote clients
 "
 Class {
 	#name : #RSTBroker,
@@ -16,6 +17,9 @@ Class {
 		'rememberer',
 		'maintenancer',
 		'resolved'
+	],
+	#classVars : [
+		'ForwardedExceptionSet'
 	],
 	#classInstVars : [
 		'instance'
@@ -37,7 +41,11 @@ RSTBroker class >> initialize [
 	RSTBroker initialize
 	"
 	Smalltalk addToStartUpList: self.
-	Smalltalk addToShutDownList: self
+	Smalltalk addToShutDownList: self.
+	ForwardedExceptionSet := ExceptionSet new.
+	Exception subclassesDo: [:subclass| 
+		({Halt. UnhandledError} includes: subclass)  ifFalse: 
+			[ForwardedExceptionSet add: subclass]].
 ]
 
 { #category : #'instance creation' }
@@ -155,23 +163,25 @@ RSTBroker >> clientSideMaintenance [
 ]
 
 { #category : #'connection - client - sockets' }
-RSTBroker >> connectTo: brokerIDString [
-	"Noury Bouraqadi 9/21/2006 16:15" 
-	"open a socket to brokerIDString"
+RSTBroker >> connectTo: brokerIDString [ 
 	| addressAndPort socket |
 	addressAndPort := self addressAndPort: brokerIDString.
 	socket := nil.
-	3 timesRepeat: [
-		socket ifNotNil: [socket closeAndDestroy].
-		socket := Socket newTCP.
-		[socket 
-			connectTo: addressAndPort first 
-			port: addressAndPort second] 
-		on: ConnectionTimedOut do: [:timeOutEx|
-				self logException: timeOutEx.
-				(Delay forMilliseconds: 100) wait].
-		socket isConnected ifTrue: [^ SocketStream on: socket]].
-	RSTRemoteObjectUnreachable signal: 'Cannot connect to: ' , brokerIDString asString
+	3 timesRepeat: 
+			[socket ifNotNil: [socket closeAndDestroy].
+			socket := Socket newTCP.
+			
+			[socket 
+				connectTo: addressAndPort first
+				port: addressAndPort second
+				waitForConnectionFor: self secondsToWaitForSocketConnection] 
+					on: ConnectionTimedOut
+					do: [:timeOutEx |
+							self logException: timeOutEx.
+							Processor yield].
+			socket isConnected ifTrue: [^ SocketStream on: socket]].
+	RSTRemoteObjectUnreachable 
+		signal: 'Cannot connect to: ' , brokerIDString asString
 ]
 
 { #category : #'connection - client' }
@@ -368,7 +378,7 @@ RSTBroker >> processRemoteMessage: aRemoteMessage [
 	[| result | 
 	result := target perform: aRemoteMessage selector withArguments: localArguments.
 	^ self transporterFor: result]
-		on: Exception
+		on: ForwardedExceptionSet
 		do: [:exception | 
 			self logException: exception.
 			^ RSTObjectTransporter exception: (RSTRemoteException on: exception)]
@@ -472,6 +482,11 @@ RSTBroker >> resume [
 			status := #running.
 			self logMessage: ['Resumed!']]
 		ifFalse: [self logMessage: ['Invalid resume! (status=' , status asString , ')']]
+]
+
+{ #category : #'connection - client - sockets' }
+RSTBroker >> secondsToWaitForSocketConnection [
+	^ 3
 ]
 
 { #category : #'connection - client' }
