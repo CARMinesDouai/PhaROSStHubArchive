@@ -70,6 +70,13 @@ Class {
 	#category : #DynamicBindings
 }
 
+{ #category : #'class initialization' }
+DynamicBindings class >> clear [
+	"self clear"
+
+	Root := DynamicBindings new
+]
+
 { #category : #accessing }
 DynamicBindings class >> example [
 	" DynamicBindings example "
