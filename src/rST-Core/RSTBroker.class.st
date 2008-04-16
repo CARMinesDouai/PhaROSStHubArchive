@@ -43,9 +43,7 @@ RSTBroker class >> initialize [
 	Smalltalk addToStartUpList: self.
 	Smalltalk addToShutDownList: self.
 	ForwardedExceptionSet := ExceptionSet new.
-	Exception subclassesDo: [:subclass| 
-		({Halt. UnhandledError} includes: subclass)  ifFalse: 
-			[ForwardedExceptionSet add: subclass]].
+	ForwardedExceptionSet add: Error
 ]
 
 { #category : #'instance creation' }

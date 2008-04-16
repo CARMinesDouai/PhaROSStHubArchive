@@ -117,13 +117,37 @@ RSTBrokerTest >> testExportedRemoteObjectByCopy [
 ]
 
 { #category : #testing }
-RSTBrokerTest >> testLocalObject [
+RSTBrokerTest >> testLocalObjectObtainedWithActualIP [
 	"mp 10/17/2005 11:47"
 
 	| exportedObject remoteIdString retreivedObject |
-	exportedObject := Object new.	
+	exportedObject := Object new.
 	defaultBroker export: exportedObject named: 'coucou'.
 	remoteIdString := 'coucou@' , self defaultIpAndPortString.
+	retreivedObject := remoteIdString asLocalObject.
+	self assert: retreivedObject == exportedObject
+]
+
+{ #category : #testing }
+RSTBrokerTest >> testLocalObjectObtainedWithLocalHostAsRemoteBrokerId [
+	"mp 10/17/2005 11:47"
+
+	| exportedObject remoteIdString retreivedObject |
+	exportedObject := Object new.
+	defaultBroker export: exportedObject named: 'coucou'.
+	remoteIdString := 'coucou@localhost:' , self defaultPort printString.
+	retreivedObject := remoteIdString asLocalObject.
+	self assert: retreivedObject == exportedObject
+]
+
+{ #category : #testing }
+RSTBrokerTest >> testLocalObjectObtainedWithLoopBackIP [
+	"mp 10/17/2005 11:47"
+
+	| exportedObject remoteIdString retreivedObject |
+	exportedObject := Object new.
+	defaultBroker export: exportedObject named: 'coucou'.
+	remoteIdString := 'coucou@127.0.0.1:' , self defaultPort printString.
 	retreivedObject := remoteIdString asLocalObject.
 	self assert: retreivedObject == exportedObject
 ]

@@ -54,6 +54,18 @@ RSTRemoteObjectID >> brokerID [
 	^ brokerID
 ]
 
+{ #category : #converting }
+RSTRemoteObjectID >> convertLocalhostAddressIn: brokerIDString [ 
+	| portString ipStream ipString brokerIDStream |
+	brokerIDStream := ReadStream on: brokerIDString.
+	ipStream := brokerIDStream upTo: $:.
+	(ipStream contents = 'localhost' or: [ipStream contents = '127.0.0.1']) 
+		ifTrue: [ipString := NetNameResolver localAddressString]
+		ifFalse: [ipString := ipStream contents].
+	portString := brokerIDStream upToEnd contents.
+	^ ipString , ':' , portString
+]
+
 { #category : #comparing }
 RSTRemoteObjectID >> hash [
 	^ brokerID hash bitXor: objectID hash
@@ -61,8 +73,8 @@ RSTRemoteObjectID >> hash [
 
 { #category : #initialization }
 RSTRemoteObjectID >> initializeBrokerID: brokerIDString objectID: objectIDString [ 
-	brokerID _ brokerIDString.
-	objectID _ objectIDString
+	brokerID := self convertLocalhostAddressIn: brokerIDString.
+	objectID := objectIDString
 ]
 
 { #category : #accessing }
