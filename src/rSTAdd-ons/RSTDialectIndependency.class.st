@@ -7,7 +7,7 @@ Class {
 	#classInstVars : [
 		'instance'
 	],
-	#category : 'rSTAdd-ons'
+	#category : #'rSTAdd-ons'
 }
 
 { #category : #'instance creation' }

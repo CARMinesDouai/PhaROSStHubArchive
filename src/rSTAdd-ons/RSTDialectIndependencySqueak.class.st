@@ -8,7 +8,7 @@ Class {
 		'loggingMutex',
 		'logFile'
 	],
-	#category : 'rSTAdd-ons'
+	#category : #'rSTAdd-ons'
 }
 
 { #category : #initialization }

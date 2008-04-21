@@ -27,7 +27,7 @@ Class {
 	#classInstVars : [
 		'instance'
 	],
-	#category : 'rSTAdd-ons'
+	#category : #'rSTAdd-ons'
 }
 
 { #category : #'*rSTAdd-ons' }
@@ -72,7 +72,7 @@ RSTBroker class >> initialize [
 
 { #category : #'*rSTAdd-ons' }
 RSTBroker class >> initializeInstance [
-	
+
 	^ instance := super new
 
 ]
@@ -128,8 +128,7 @@ RSTBroker class >> startOn: anAddress port: aPort [
 { #category : #'*rSTAdd-ons' }
 RSTBroker class >> startOn: anAddress port: aPort logging: aBoolean [
 	"start the Broker with the default features"
-	^ self stop
-		instance
+	^ self instance
 			startOn: anAddress
 			port: aPort
 			logging: aBoolean 
@@ -236,7 +235,7 @@ RSTBroker >> basicLogMessage: aString [
 	
 ]
 
-{ #category : #accessing }
+{ #category : #'*rSTAdd-ons' }
 RSTBroker >> brokerID [
 	^brokerID
 ]
@@ -491,7 +490,7 @@ RSTBroker >> printOn: aStream [
 	super printOn: aStream.
 	aStream
 		nextPutAll: ' brokerID:';
-		nextPutAll: self brokerID;
+		nextPutAll: (self brokerID ifNotNilDo:[:id| id] ifNil: ['broker whitout ID']);
 		nextPutAll: ' status:';
 		nextPutAll: status asString
 ]
@@ -786,18 +785,22 @@ RSTBroker >> stop [
 	status := #stopped.
 	
 	self stopMaintenancer.
-	"uncomment when connection error get handled"
-	"self sendGoodbye."
-	self waitForStop.
-	self class removeService: self.
-	exportedObjects ifNotNil:[exportedObjects depurate].
+
+	exportedObjects ifNotNilDo:[:eo| eo depurate].
 	exportedObjects := nil.
 	"Purge rememberer"
-	rememberer ifNotNilDo:[:r| r initialize].
+	rememberer ifNotNilDo:[:r| 
+		r forgetAll.
+		rememberer := nil].
 	
 	proxies := nil.
 	proxiesMutex := nil.
 	lastRemoteBrokers := nil.
+	
+	"uncomment when connection error get handled"
+	"self sendGoodbye."
+	self waitForStop.
+	self class removeService: self.
 		
 	self logMessage: ['Stopped!'].
 
