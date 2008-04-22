@@ -9,7 +9,7 @@ RSTRememberer >> allNamed: nameObject [
 		self critical: [
 			remembered keysAndValuesDo: [:object :names | 
 				(names keys includes: nameObject) ifTrue:[
-					objects add: object]]]
+					objects add: object]]].
 		objects] value: Bag new
 ]
 
