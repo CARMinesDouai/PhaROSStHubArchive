@@ -94,6 +94,13 @@ RSTBroker class >> instance [
 
 ]
 
+{ #category : #'*rSTAdd-ons' }
+RSTBroker class >> isStarted [
+
+	^ instance notNil and:[
+	instance isStarted]
+]
+
 { #category : #'instance creation' }
 RSTBroker class >> new [
 	self error: 'you must use #instance'
@@ -361,6 +368,11 @@ RSTBroker >> initializeServerSide [
 				forSeconds: 6 * 60 * 60
 				naming: self brokerID].
 	rememberer := RSTRememberer new
+]
+
+{ #category : #'*rSTAdd-ons' }
+RSTBroker >> isStarted [
+	^ status = #running
 ]
 
 { #category : #maintenance }

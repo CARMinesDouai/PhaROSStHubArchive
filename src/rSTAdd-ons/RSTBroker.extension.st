@@ -192,6 +192,18 @@ RSTBroker classSide >> instance [
 ]
 
 { #category : #'*rSTAdd-ons' }
+RSTBroker >> isStarted [
+	^ status = #running
+]
+
+{ #category : #'*rSTAdd-ons' }
+RSTBroker classSide >> isStarted [
+
+	^ instance notNil and:[
+	instance isStarted]
+]
+
+{ #category : #'*rSTAdd-ons' }
 RSTBroker >> logError: aBlock [ 
 	"Logs the value of aBlog as error "
 	self logMessage: ['** ERROR: ' , aBlock value asString]
