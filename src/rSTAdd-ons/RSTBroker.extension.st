@@ -68,6 +68,14 @@ RSTBroker >> brokerID [
 ]
 
 { #category : #'*rSTAdd-ons' }
+RSTBroker classSide >> brokerID [
+
+	^ self isStarted 
+		ifTrue: [self instance brokerID]
+		ifFalse: [self error: 'rST: the service is stopped']
+]
+
+{ #category : #'*rSTAdd-ons' }
 RSTBroker >> connectTo: brokerIDString [ 
 	| addressAndPort socket |
 	addressAndPort := self addressAndPort: brokerIDString.

@@ -66,7 +66,7 @@ RSTRemoteValuable >> declareAndAssignTempVarsFor: aNiladicBlockSource [
 	src cr; nextPutAll: source.
 	self assignTempVars: temps for: (self compile: src contents)]
 		on: Error
-		do:[:x| RSTRemoteValuableError signal: 'Can''t rebuild the valuable in this host']
+		do:[:x| RSTRemoteValuableError signal: 'rST: can''t rebuild the valuable in ',RSTBroker brokerID]
 	
 ]
 

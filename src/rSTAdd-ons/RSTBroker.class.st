@@ -31,6 +31,14 @@ Class {
 }
 
 { #category : #'*rSTAdd-ons' }
+RSTBroker class >> brokerID [
+
+	^ self isStarted 
+		ifTrue: [self instance brokerID]
+		ifFalse: [self error: 'rST: the service is stopped']
+]
+
+{ #category : #'*rSTAdd-ons' }
 RSTBroker class >> defaultAddress [
 	"Answers the default ip address for the service.
 	Note: to listen only localhost is the safest default 
