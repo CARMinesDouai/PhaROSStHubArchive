@@ -208,6 +208,7 @@ RSTBroker >> allProxies [
 	Note: this query should be made atomically because... (?)"
 
 	self flag: #pleaseCompleteComment.
+	self isStopped ifTrue:[^ #()].
 	
 	^ proxiesMutex	critical: [	
 		proxies values reject: [:each | each isNil]]
@@ -242,8 +243,9 @@ RSTBroker >> brokerID [
 
 { #category : #maintenance }
 RSTBroker >> clientSideMaintenance [
-	"notify to the remote brokers wich proxies are alive
-	and delete unused remote brokers"
+	"Notify to the remote brokers wich proxies are alive
+	and delete unused remote brokers.
+	Ignore if no remote brokers are detected."
 
 	| allRemoteObjectID currentRemoteBrokers |
 	allRemoteObjectID := self allProxies 
@@ -252,8 +254,8 @@ RSTBroker >> clientSideMaintenance [
 				collect: [:each | each brokerID]) asSet.
 	self keepAliveRemoteObjects: allRemoteObjectID
 		inRemoteBrokers: currentRemoteBrokers.
-	self releaseRemoteBrokers: (lastRemoteBrokers 
-				copyWithoutAll: currentRemoteBrokers).
+	lastRemoteBrokers ifNotNilDo:[:lrb|
+		self releaseRemoteBrokers: (lrb copyWithoutAll: currentRemoteBrokers)].
 	lastRemoteBrokers := currentRemoteBrokers
 ]
 
@@ -437,15 +439,13 @@ RSTBroker >> logging: anObject [
 	logging := anObject
 ]
 
-{ #category : #maintenance }
+{ #category : #'*rSTAdd-ons' }
 RSTBroker >> maintenance [
 	"periodical maintenance task"
-	self
-		logMessage: ['starting maintenance'].
-	rememberer maintenance.
+	self	logMessage: ['starting maintenance'].
+	rememberer ifNotNilDo:[:r| r maintenance].
 	self clientSideMaintenance.
-	self
-		logMessage: ['maintenance finished']
+	self	logMessage: ['maintenance finished']
 ]
 
 { #category : #maintenance }
@@ -455,10 +455,13 @@ RSTBroker >> maintenanceInterval [
 	^ 3 * 60
 ]
 
-{ #category : #maintenance }
+{ #category : #'*rSTAdd-ons' }
 RSTBroker >> maintenanceLoop [
 	"send #maintenance between time and time, but asure (with the  
 	semaphore) no workers are running"
+
+	self flag: #deprecated.  "this creates references to the broker making hard to uninstantiate it"
+	
 	[(Delay forSeconds: self maintenanceInterval) wait.
 	[self maintenance] forkAt: Processor highIOPriority ] repeat
 ]
@@ -725,10 +728,13 @@ RSTBroker >> serve: aSocket [
 		forkAt: Processor lowIOPriority
 ]
 
-{ #category : #'private - running' }
+{ #category : #'*rSTAdd-ons' }
 RSTBroker >> startMaintenancer [
-maintenancer _ [self maintenanceLoop]
-				forkAt: Processor highIOPriority
+
+	maintenancer := [
+		"Send #maintenance to the receiver once in a while"
+		[(Delay forSeconds: self maintenanceInterval) wait.
+		[self maintenance] forkAt: Processor highIOPriority ] repeat] forkAt: Processor highIOPriority
 ]
 
 { #category : #'*rSTAdd-ons' }
@@ -817,9 +823,8 @@ RSTBroker >> stopLogging [
 RSTBroker >> stopMaintenancer [
 	"Stops the maintenance process."
 	
-	maintenancer ifNotNil:[
-		maintenancer terminate.
-		maintenancer := nil]
+	maintenancer ifNotNilDo:[:m| m terminate].
+	maintenancer := nil
 ]
 
 { #category : #'resolving objects' }
