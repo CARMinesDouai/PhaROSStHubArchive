@@ -159,7 +159,7 @@ RSTBroker classSide >> initialize [
 
 { #category : #'*rSTAdd-ons' }
 RSTBroker classSide >> initializeInstance [
-self halt.
+
 	^ instance := super new
 
 ]

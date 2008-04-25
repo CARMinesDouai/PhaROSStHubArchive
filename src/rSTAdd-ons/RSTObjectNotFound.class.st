@@ -1,5 +1,5 @@
 Class {
-	#name : #RSTRemoteValuableError,
+	#name : #RSTObjectNotFound,
 	#superclass : #RSTException,
 	#category : #'rSTAdd-ons'
 }
