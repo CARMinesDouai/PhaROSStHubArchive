@@ -80,7 +80,7 @@ RSTBroker class >> initialize [
 
 { #category : #'*rSTAdd-ons' }
 RSTBroker class >> initializeInstance [
-
+self halt.
 	^ instance := super new
 
 ]

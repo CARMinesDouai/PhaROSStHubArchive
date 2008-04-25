@@ -13,7 +13,11 @@ RSTRemoteObjectID >> = anObject [
 RSTRemoteObjectID >> asLocalObject [
 	"Answers a local object related to the receiver.
 	It could be a proxy or a real local object."
-	^ RSTBroker instance localObjectFor: self
+	^ RSTBroker isStarted
+		ifTrue: [RSTBroker instance localObjectFor: self]
+		ifFalse:[self error: 'rST: service not started']
+		
+
 ]
 
 { #category : #'*rSTAdd-ons' }
