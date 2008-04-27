@@ -35,7 +35,7 @@ RSTBroker class >> brokerID [
 
 	^ self isStarted 
 		ifTrue: [self instance brokerID]
-		ifFalse: [self error: 'rST: the service is stopped']
+		ifFalse: [RSTNotStartedService signal: 'rST: the service is stopped']
 ]
 
 { #category : #'*rSTAdd-ons' }

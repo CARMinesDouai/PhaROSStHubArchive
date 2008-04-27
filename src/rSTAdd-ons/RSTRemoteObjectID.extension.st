@@ -15,7 +15,7 @@ RSTRemoteObjectID >> asLocalObject [
 	It could be a proxy or a real local object."
 	^ RSTBroker isStarted
 		ifTrue: [RSTBroker instance localObjectFor: self]
-		ifFalse:[self error: 'rST: service not started']
+		ifFalse:[RSTNotStartedService signal: 'rST: the service is stopped']
 		
 
 ]
