@@ -54,6 +54,15 @@ RSTBroker class >> defaultPort [
 ]
 
 { #category : #'*rSTAdd-ons' }
+RSTBroker class >> ensureServiceStopFor: aBroker [
+	"Perform final class side tasks to stop the service."
+
+	instance := nil.
+	
+	self removeService: aBroker
+]
+
+{ #category : #'*rSTAdd-ons' }
 RSTBroker class >> export: anObject as: aString [
 	"Makes anObject to be remotely accessed as aString"
 
@@ -177,8 +186,12 @@ RSTBroker class >> startUp [
 { #category : #'*rSTAdd-ons' }
 RSTBroker class >> stop [
 	"stop the running broker"
-	instance ifNotNil:[instance stop].
-	instance := nil
+	| decoupled |
+	decoupled := instance.
+	instance := nil.
+
+	decoupled ifNotNil:[decoupled stop].
+
 ]
 
 { #category : #'*rSTAdd-ons' }
@@ -826,8 +839,8 @@ RSTBroker >> stop [
 	"uncomment when connection error get handled"
 	"self sendGoodbye."
 	self waitForStop.
-	self class removeService: self.
-		
+	self class ensureServiceStopFor: self.
+
 	self logMessage: ['Stopped!'].
 
 ]

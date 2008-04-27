@@ -113,6 +113,15 @@ RSTBroker classSide >> defaultPort [
 ]
 
 { #category : #'*rSTAdd-ons' }
+RSTBroker classSide >> ensureServiceStopFor: aBroker [
+	"Perform final class side tasks to stop the service."
+
+	instance := nil.
+	
+	self removeService: aBroker
+]
+
+{ #category : #'*rSTAdd-ons' }
 RSTBroker >> export: anObject as: aString [ 
 	"Exports anObject reacheable with the name aString.
 	Other images will be able to send #someMessage to anObject by evaluating:  
@@ -463,8 +472,8 @@ RSTBroker >> stop [
 	"uncomment when connection error get handled"
 	"self sendGoodbye."
 	self waitForStop.
-	self class removeService: self.
-		
+	self class ensureServiceStopFor: self.
+
 	self logMessage: ['Stopped!'].
 
 ]
@@ -472,8 +481,12 @@ RSTBroker >> stop [
 { #category : #'*rSTAdd-ons' }
 RSTBroker classSide >> stop [
 	"stop the running broker"
-	instance ifNotNil:[instance stop].
-	instance := nil
+	| decoupled |
+	decoupled := instance.
+	instance := nil.
+
+	decoupled ifNotNil:[decoupled stop].
+
 ]
 
 { #category : #'*rSTAdd-ons' }
