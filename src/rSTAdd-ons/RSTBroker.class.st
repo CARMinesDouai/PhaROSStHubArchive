@@ -477,7 +477,9 @@ RSTBroker >> maintenance [
 	"periodical maintenance task"
 	self	logMessage: ['starting maintenance'].
 	rememberer ifNotNilDo:[:r| r maintenance].
-	self clientSideMaintenance.
+	[self clientSideMaintenance]
+		on: RSTException 
+		do:[:x| self logWarning: 'rST: unable to make a client maintenance'].
 	self	logMessage: ['maintenance finished']
 ]
 
