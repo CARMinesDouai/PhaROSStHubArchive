@@ -46,8 +46,8 @@ RSTBrokerTest >> testBasicRemoteBlock [
 	signature := SmalltalkImage current imageName.
 	self assert: ([Transcript cr; show: signature.
 				thisContext assert: SmalltalkImage current imageName = signature. 
-				signature] valueAt: '127.0.0.1' port: self extraPort)
-		equals: SmalltalkImage current imageName.
+				signature] valueAt: '127.0.0.1' port: self extraPort) = SmalltalkImage current imageName
+		
 ]
 
 { #category : #'*rSTAdd-ons' }
@@ -98,6 +98,6 @@ RSTBrokerTest >> testWithRemoteInTemporaryRemoteBlock [
 	signature := SmalltalkImage current imageName.
 	transcript := ('Transcript@127.0.0.1:', self defaultPort asString) asLocalObject.
 	self assert: ([transcript cr; show: signature.
-				signature] valueAt: '127.0.0.1' port: self extraPort)
-		equals: SmalltalkImage current imageName.
+				signature] valueAt: '127.0.0.1' port: self extraPort) = SmalltalkImage current imageName
+
 ]
