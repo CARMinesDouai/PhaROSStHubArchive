@@ -190,9 +190,3 @@ RSTRemoteObjectProxy >> xxxSameImage: aRemoteObjectProxy [
 	"answer if both objects live in the same Image"
 	^ self xxxRemoteObjectID brokerID = aRemoteObjectProxy xxxRemoteObjectID brokerID
 ]
-
-{ #category : #'system primitives' }
-RSTRemoteObjectProxy >> xxxSend: aMessage [ 
-	"send this message to the remote object represented by me"
-	^ RSTBroker instance sendMessage: aMessage to: self xxxRemoteObjectID
-]

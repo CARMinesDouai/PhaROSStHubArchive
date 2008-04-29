@@ -145,11 +145,6 @@ RSTSamples class >> serverAddress [
 ]
 
 { #category : #'address configuration' }
-RSTSamples class >> serverBrokerID [
-	^ self serverAddress asString , ':' , self serverPort asString
-]
-
-{ #category : #'address configuration' }
 RSTSamples class >> serverPort [
 	^ 9999
 ]

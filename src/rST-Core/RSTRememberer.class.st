@@ -13,35 +13,6 @@ Class {
 	#category : #'rST-Core'
 }
 
-{ #category : #accessing }
-RSTRememberer >> allNamed: nameObject [ 
-	"mp 4/20/2006 16:25"
-	"answer all objects named nameObject"
-	
-	| named |
-	named := Bag new.
-	mutex critical: [
-		remembered keysAndValuesDo: [:object :names | 
-			(names keys includes: nameObject) 
-				ifTrue:[named add: object]]].
-	^ named
-]
-
-{ #category : #'remembering & forgetting' }
-RSTRememberer >> forget: anObject named: nameObject [ 
-	"forget anObject"
-	
-	mutex critical: [
-		| names | 
-		names := remembered 
-						at: anObject 
-						ifAbsent: [^ anObject].
-		names 
-			removeKey: nameObject 
-			ifAbsent: [].
-		names isEmpty ifTrue: [remembered removeKey: anObject]]
-]
-
 { #category : #'remembering & forgetting' }
 RSTRememberer >> forgetAllNamed: nameObject [ 
 	"forget anObject"
@@ -55,19 +26,6 @@ RSTRememberer >> forgetAllNamed: nameObject [
 RSTRememberer >> initialize [
 	remembered _ IdentityDictionary new.
 	mutex _ Semaphore forMutualExclusion
-]
-
-{ #category : #maintenance }
-RSTRememberer >> maintenance [
-	"within time and time, check for objects to forget"
-	
-	mutex critical: [
-		| current toForget | 
-		current := Time totalSeconds.
-		remembered := remembered select: [:eachRemembered | 
-			eachRemembered keysAndValuesRemove: [:name :expires | 
-				expires notNil and: [expires <= current]].
-			eachRemembered notEmpty]]
 ]
 
 { #category : #'remembering & forgetting' }

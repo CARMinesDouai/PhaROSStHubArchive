@@ -42,32 +42,6 @@ RSTBrokerTest >> extraPort [
 	^7777
 ]
 
-{ #category : #accessing }
-RSTBrokerTest >> ip [
-	"Noury Bouraqadi 9/21/2006 15:29"
-	
-	^ip ifNil: [ip := NetNameResolver localAddressString]
-]
-
-{ #category : #'setUp-tearDown' }
-RSTBrokerTest >> setUp [
-	"Noury Bouraqadi 9/21/2006 15:31"
-
-	RSTBroker reset.
-	defaultBroker := RSTBroker startOnPort: self defaultPort logging: true.
-	extraBroker := RSTBroker basicNew.
-	extraBroker
-		initialize;
-		startOnPort: self extraPort logging: false.
-]
-
-{ #category : #'setUp-tearDown' }
-RSTBrokerTest >> tearDown [
-	"Noury Bouraqadi 9/21/2006 15:31"
-	
-	RSTBroker reset
-]
-
 { #category : #testing }
 RSTBrokerTest >> testBigRemoteObject [
 	"Noury Bouraqadi 9/21/2006 15:50"
@@ -124,18 +98,6 @@ RSTBrokerTest >> testLocalObjectObtainedWithActualIP [
 	exportedObject := Object new.
 	defaultBroker export: exportedObject named: 'coucou'.
 	remoteIdString := 'coucou@' , self defaultIpAndPortString.
-	retreivedObject := remoteIdString asLocalObject.
-	self assert: retreivedObject == exportedObject
-]
-
-{ #category : #testing }
-RSTBrokerTest >> testLocalObjectObtainedWithLocalHostAsRemoteBrokerId [
-	"mp 10/17/2005 11:47"
-
-	| exportedObject remoteIdString retreivedObject |
-	exportedObject := Object new.
-	defaultBroker export: exportedObject named: 'coucou'.
-	remoteIdString := 'coucou@localhost:' , self defaultPort printString.
 	retreivedObject := remoteIdString asLocalObject.
 	self assert: retreivedObject == exportedObject
 ]
@@ -204,23 +166,4 @@ RSTBrokerTest >> testSerialization [
 	deserializedObject := defaultBroker deserializeObject: serializedObject.
 	self assert: deserializedObject = originalObject.
 	self deny:  deserializedObject == originalObject.
-]
-
-{ #category : #testing }
-RSTBrokerTest >> testStartStop [
-	"mp 12/16/2005 13:21"
-
-	| expectedBrokerID |
-	self assert: defaultBroker isRunning.
-	self assert: extraBroker isRunning.
-	RSTBroker stop.
-	defaultBroker waitForStop.
-	self assert: (RSTBroker instVarNamed: 'instance') isNil.
-	RSTBroker startOnPort: self defaultPort.
-	self assert: RSTBroker instance isRunning.
-	self assert: RSTBroker instance portNumber = self defaultPort.
-	expectedBrokerID := NetNameResolver localAddressString , ':', self defaultPort printString.
-	self assert: RSTBroker instance brokerID = expectedBrokerID.
-	RSTBroker stop.
-	self assert: (RSTBroker instVarNamed: 'instance') isNil
 ]
