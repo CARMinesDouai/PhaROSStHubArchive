@@ -506,3 +506,21 @@ RSTBroker classSide >> uninstall [
 	Smalltalk removeFromShutDownList: self.
 
 ]
+
+{ #category : #'*rSTAdd-ons' }
+RSTBroker >> useTranscript [ 
+	"Answers true if the receiver has to use the transcript"
+	
+	self flag: #provisory.
+	"We can use this until we'll improve logging to allow log level 0, 1, 3.. etc and 
+	support being file or transcript."
+	
+	"Applicability is to see the message sequence in development environments
+	about the objects comunicatin. That way developers can catch 
+	the most costly messages and try to do something about that
+	like lazily caching."
+	
+	^ (Smalltalk at: #Productor ifAbsent:[]) 
+		ifNil:[false] 
+		ifNotNilDo:[:p| (p services at: #rST) useTranscript]
+]

@@ -546,7 +546,7 @@ RSTBroker >> process: aSocket [
 		ensure: [stream close]
 ]
 
-{ #category : #'connection - server' }
+{ #category : #accessing }
 RSTBroker >> processRemoteMessage: aRemoteMessage [ 
 	"send aRemoteMessage to the local receiver"
 	
@@ -557,6 +557,10 @@ RSTBroker >> processRemoteMessage: aRemoteMessage [
 				ifAbsent: [^ RSTObjectTransporter
 						exception: (RSTObjectNotFound new messageText: aRemoteMessage to objectID asString)].
 	localArguments := aRemoteMessage arguments collect: [:each | each resolve].
+
+	self useTranscript ifTrue:[
+		Transcript cr; show: aRemoteMessage asString].
+
 	[| result | 
 	result := target perform: aRemoteMessage selector withArguments: localArguments.
 	^ self transporterFor: result]
@@ -890,6 +894,24 @@ RSTBroker >> unzipAndDserializeObject: aGZippedObject [
 	zipped close.
 	unzipped close.
 	^ ref next
+]
+
+{ #category : #'*rSTAdd-ons' }
+RSTBroker >> useTranscript [ 
+	"Answers true if the receiver has to use the transcript"
+	
+	self flag: #provisory.
+	"We can use this until we'll improve logging to allow log level 0, 1, 3.. etc and 
+	support being file or transcript."
+	
+	"Applicability is to see the message sequence in development environments
+	about the objects comunicatin. That way developers can catch 
+	the most costly messages and try to do something about that
+	like lazily caching."
+	
+	^ (Smalltalk at: #Productor ifAbsent:[]) 
+		ifNil:[false] 
+		ifNotNilDo:[:p| (p services at: #rST) useTranscript]
 ]
 
 { #category : #'connection - client - sockets' }
