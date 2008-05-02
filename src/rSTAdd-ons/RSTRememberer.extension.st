@@ -45,8 +45,9 @@ RSTRememberer >> forget: anObject named: nameObject [
 { #category : #'*rSTAdd-ons' }
 RSTRememberer >> forgetAll [
 	"Removes all objects from the receiver"
-	remembered values do:[:anObject|
-		(remembered keyAtValue: anObject) ifNotNilDo:[:obj| self forget: obj]]
+	remembered ifNotNilDo:[:r|
+		r values  do:[:anObject|
+			(remembered keyAtValue: anObject) ifNotNilDo:[:obj| self forget: obj]]]
 ]
 
 { #category : #'*rSTAdd-ons' }
