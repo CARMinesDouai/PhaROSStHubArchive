@@ -2,15 +2,13 @@ Extension { #name : #RSTRememberer }
 
 { #category : #'*rSTAdd-ons' }
 RSTRememberer >> allNamed: nameObject [ 
-	"mp 4/20/2006 16:25"
-	"answer all objects named nameObject"
+	"Answer all objects named nameObject"
 	
 	^ [:objects|
-		self critical: [
-			remembered keysAndValuesDo: [:object :names | 
-				(names keys includes: nameObject) ifTrue:[
-					objects add: object]]].
-		objects] value: Bag new
+		remembered keysAndValuesDo: [:object :names | 
+			(names keys includes: nameObject) ifTrue:[
+				objects add: object]].
+		objects] value: IdentityBag new
 ]
 
 { #category : #'*rSTAdd-ons' }
@@ -24,22 +22,24 @@ RSTRememberer >> critical: aBlock [
 RSTRememberer >> forget: anObject [
 	"Removes (atomically) anObject from the receiver"
 	
+	"Atomic write"
 	self critical:[remembered removeKey: anObject]
 ]
 
 { #category : #'*rSTAdd-ons' }
 RSTRememberer >> forget: anObject named: nameObject [ 
 	"forget anObject"
-	
-	self critical: [
-		| names | 
-		names := remembered 
-						at: anObject 
-						ifAbsent: [^ anObject].
-		names 
-			removeKey: nameObject 
-			ifAbsent: [].
-		names isEmpty ifTrue: [remembered removeKey: anObject]]
+	| names | 
+	names := remembered 
+				at: anObject 
+				ifAbsent: [^ anObject].
+
+	"Atomic write"
+	self critical: [names 
+					removeKey: nameObject 
+					ifAbsent: [].
+	names isEmpty ifTrue: [remembered removeKey: anObject]]
+
 ]
 
 { #category : #'*rSTAdd-ons' }
@@ -54,11 +54,12 @@ RSTRememberer >> forgetAll [
 RSTRememberer >> maintenance [
 	"Forget expired objects"
 	
-	self critical: [
-		| current toForget | 
-		current := Time totalSeconds.
-		remembered := remembered select: [:eachRemembered | 
+	| current | 
+	current := Time totalSeconds.
+	remembered := remembered select: [:eachRemembered | 
+		self critical:[
 			eachRemembered keysAndValuesRemove: [:name :expires | 
-				expires notNil and: [expires <= current]].
-			eachRemembered notEmpty]]
+				expires notNil and:[
+				expires <= current]]].
+		eachRemembered notEmpty]
 ]
