@@ -1,5 +1,5 @@
 "
-I am a comanche service that listens for inbound TCP connectinos on a given port.
+I am a KomHttpServer service that listens for inbound TCP connections on a given port.
 
 Instance Variables:
 
@@ -14,7 +14,8 @@ Class {
 	#name : #TcpService,
 	#superclass : #ApplicationService,
 	#instVars : [
-		'portNumber'
+		'portNumber',
+		'address'
 	],
 	#classVars : [
 		'PortAssignments'
@@ -31,40 +32,16 @@ TcpService class >> initialize [
 
 { #category : #'instance creation' }
 TcpService class >> on: portNumber [
-
-	^self 
-		on: portNumber
-		priority: self defaultPriority 
-
-]
-
-{ #category : #'instance creation' }
-TcpService class >> on: portNumber named: aString [
-
-	^self 
-		on: portNumber
-		named: aString
-		priority: self defaultPriority 
-
-]
-
-{ #category : #'instance creation' }
-TcpService class >> on: portNumber named: aString priority: priorityNum [
-
 	^self new
-		name: aString;
 		portNumber: portNumber;
-		priority: priorityNum;
 		yourself
 
 ]
 
 { #category : #'instance creation' }
-TcpService class >> on: portNumber priority: priorityNum [
-
-	^self new
-		portNumber: portNumber;
-		priority: priorityNum;
+TcpService class >> on: portNumber named: processName [
+	^(self on: portNumber)
+		name: processName;
 		yourself
 
 ]
@@ -99,15 +76,21 @@ TcpService class >> startOn: portNumber [
 { #category : #'instance creation' }
 TcpService class >> startOn: portNumber named: aString [
 
-	^(self on: portNumber named: aString) start; yourself
+	^(self on: portNumber
+		named: aString)
+		start;
+		yourself
 
 ]
 
-{ #category : #'instance creation' }
-TcpService class >> startOn: portNumber named: aString priority: aPriority [
+{ #category : #accessing }
+TcpService >> address [
+	^ address
+]
 
-	^(self on: portNumber named: aString priority: aPriority) start; yourself
-
+{ #category : #accessing }
+TcpService >> address: anObject [
+	address := anObject
 ]
 
 { #category : #running }
@@ -115,6 +98,15 @@ TcpService >> assignPort [
 
 	self verifyPortAvailability: self portNumber.
 	PortAssignments at: self portNumber put: self.
+
+]
+
+{ #category : #initialization }
+TcpService >> initializeOnPort: portNum address: anAddress priority: priorityLevel [
+
+	portNumber := portNum.
+	address := anAddress.
+	priority := priorityLevel.
 
 ]
 
@@ -159,11 +151,14 @@ TcpService >> printOn: aStream [
 ]
 
 { #category : #running }
-TcpService >> runWhile: aBlock [
-
-	[(TcpListener on: self portNumber handler: self)
-		listenWhile: aBlock] ensure: [self unassignPort]
-
+TcpService >> runWhile: aBlock [ 
+	| listener |
+	[listener := TcpListener 
+		on: self portNumber
+		address: self address
+		handler: self.
+	listener listenWhile: aBlock ]
+		ensure: [ self unassignPort ]
 ]
 
 { #category : #conversation }

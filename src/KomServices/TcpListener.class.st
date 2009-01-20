@@ -24,7 +24,7 @@ In the following example, a TcpListener is established on port 8123.  After eval
 			socket closeAndDestroy].
 	listener forkAndListenWhile: [count < 5].
 
-For an additional example of using TcpListener, see HttpService.
+For an additional example of using TcpListener, see TcpService.
 
 "
 Class {
@@ -33,7 +33,8 @@ Class {
 	#instVars : [
 		'portNumber',
 		'handler',
-		'socketsToDestroy'
+		'socketsToDestroy',
+		'address'
 	],
 	#category : #KomServices
 }
@@ -75,6 +76,14 @@ TcpListener class >> listenerDestroyDelay: milliseconds [
 ]
 
 { #category : #'instance creation' }
+TcpListener class >> on: aPort address: anAddress handler: aBlock [
+
+	^self new initializeOnPort: aPort address: anAddress handler: aBlock 
+
+
+]
+
+{ #category : #'instance creation' }
 TcpListener class >> on: portNumber handler: aValuable [
 
 	^self new
@@ -89,9 +98,33 @@ TcpListener >> acceptTimeout [
 ]
 
 { #category : #accessing }
+TcpListener >> address [
+	^ address
+]
+
+{ #category : #accessing }
+TcpListener >> address: aStringOrCollection [
+	address := aStringOrCollection asIpByteArray
+]
+
+{ #category : #accessing }
 TcpListener >> backlogSize [
 
 	^self class backlogSize
+]
+
+{ #category : #private }
+TcpListener >> bind: listener withBacklogSize: backlogSize [ 
+	address 
+		ifNil: 
+			[ listener 
+				listenOn: portNumber
+				backlogSize: backlogSize ]
+		ifNotNil: 
+			[ listener 
+				listenOn: portNumber
+				backlogSize: backlogSize
+				interface: address ]
 ]
 
 { #category : #'initialize-release' }
@@ -109,11 +142,23 @@ TcpListener >> forkAndListenWhile: aBlock [
 ]
 
 { #category : #'initialize-release' }
-TcpListener >> initializeOnPort: aNumber handler: aValuableObject [
+TcpListener >> initialize [
+	socketsToDestroy := OrderedCollection new
+]
 
-	portNumber _ aNumber.
-	handler _ aValuableObject.
-	socketsToDestroy _ OrderedCollection new
+{ #category : #initialization }
+TcpListener >> initializeOnPort: aPort address: anAddress handler: aValuableObject [ 
+	self 
+		initializeOnPort: aPort
+		handler: aValuableObject.
+	anAddress ifNotNil: [self address: anAddress]
+]
+
+{ #category : #'initialize-release' }
+TcpListener >> initializeOnPort: aNumber handler: aValuableObject [ 
+	portNumber := aNumber.
+	handler := aValuableObject
+
 ]
 
 { #category : #private }
@@ -192,31 +237,32 @@ TcpListener >> pvtListenLoop: aBlock [
 ]
 
 { #category : #private }
-TcpListener >> pvtNewListener: backlogSize [
+TcpListener >> pvtNewListener: backlogSize [ 
 	"Create a new socket that listens on our port.  The backlog is how many simultaneous 
 	connections to accept at the same time"
-
 	| listener |
 	listener := self socketClass newTCP.
 	self socketsToDestroy add: listener.
-	listener listenOn: portNumber backlogSize: backlogSize.
-	^listener
+	self 
+		bind: listener
+		withBacklogSize: backlogSize.
+	^ listener
 ]
 
 { #category : #private }
 TcpListener >> pvtOldListenLoop: aBlock [
 	"see comment on ConnectionQueue>>oldStyleListenLoop"
 	| socket |
-	socket _ nil.
+	socket := nil.
 	aBlock whileTrue:
 		[socket ifNil:
 			["try to create a new socket for listening"
-			socket _ Socket createIfFail: [nil]].
+			socket := Socket createIfFail: [nil]].
 		socket 
 			ifNil: [Process terminationOkDuring: [(Delay forMilliseconds: 100) wait]]
 			ifNotNil:
 				[socket isUnconnected ifTrue: 
-					[socket listenOn: portNumber.
+					[self bind: socket withBacklogSize: self backlogSize.
 					self socketsToDestroy add: socket].
 				Process terminationOkDuring: 
 					[[socket waitForConnectionUntil: (Socket deadlineSecs: 10)]
@@ -225,10 +271,10 @@ TcpListener >> pvtOldListenLoop: aBlock [
 					ifTrue: 
 						["connection established"
 						handler value: socket.
-						socket _ nil]
+						socket := nil]
 					ifFalse:
 						[socket isWaitingForConnection
-							ifFalse: [socket destroy. socket _ nil]]]]
+							ifFalse: [socket destroy. socket := nil]]]]
 ]
 
 { #category : #accessing }

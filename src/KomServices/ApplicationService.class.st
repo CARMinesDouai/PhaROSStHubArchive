@@ -1,9 +1,8 @@
 "
-I am an abstract superclass.  Subclass me to create your own service classes whose instances can be started and stopped.  Subclasses should override the #runWhile: method to do something useful. 
-An instance of an ApplicationService will have a Process associated with it while it is running.  
-If you have the ""Named Process"" package loaded (available on SqueakMap), then processes associated with a ApplicationService will be named like their service name for easier process debugging.
+I am an abstract superclass.  Subclass me to create your own service classes whose instances can be started and stopped.  Subclasses should override the #runWhile: method to do something useful.
 
-A ApplicationService can be in one of three states that are determined by the process and condiction instance variables:
+An instance of an ApplicationService will have a Process associated with it while it is running.  
+An ApplicationService can be in one of three states that are determined by the process and condiction instance variables:
 
 	running: condition == #run & process notNil
 	stopping: condition ~~ #run & process notNil 
@@ -17,11 +16,10 @@ process <Process | nil> - The Process instance for a running service
 
 condition <#run | #stop> - Indicates whether the associated process should continue to run or whether it should stop running
 
-dynamicBindings <DynamicBindings | nil> - A set of dynamic bindings that are active for the associated process; if used instead of global variables, then multiple services can run simultaneously a be bound to different sets of ""globals""; see the class comments for DynamicBindings for more details
+dynamicBindings <DynamicBindings | nil> - A set of dynamic bindings that are active for the associated process; if used instead of global variables, then multiple services can run simultaneously and be bound to different sets of ""globals""; see the class comments for DynamicBindings for more details
 
 priority <Number> - The priority at which the associated process will run
 
-log - not yet implemented
 
 "
 Class {
@@ -50,7 +48,7 @@ ApplicationService class >> addService: aService [
 { #category : #accessing }
 ApplicationService class >> allServices [
 	"Return all registered services.
-	Do not override this methid, override services instead."
+	Do not override this method, override #services instead."
 
 	^Services
 ]
@@ -65,7 +63,7 @@ ApplicationService class >> defaultPriority [
 ApplicationService class >> initialize [
 	"self initialize"
 
-	Services _ Set new.
+	Services := Set new.
 	Smalltalk addToStartUpList: self.
 	Smalltalk addToShutDownList: self
 ]
@@ -86,7 +84,7 @@ ApplicationService class >> removeService: aService [
 { #category : #accessing }
 ApplicationService class >> serviceNamed: aString [
 
-	^self services 
+	^self 
 		serviceNamed: aString
 		ifAbsent: [self error: 'No service by that name']
 ]
@@ -140,7 +138,7 @@ ApplicationService class >> startUp [
 { #category : #private }
 ApplicationService >> addStopSignal [
 
-	stopSignal ifNil: [stopSignal _ OrderedCollection new].
+	stopSignal ifNil: [stopSignal := OrderedCollection new].
 	^stopSignal add: Semaphore new.
 ]
 
