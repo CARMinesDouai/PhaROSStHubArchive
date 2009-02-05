@@ -1,45 +1,12 @@
 Class {
 	#name : #RSTBrokerTest,
-	#superclass : #TestCase,
-	#instVars : [
-		'ip',
-		'defaultBroker',
-		'extraBroker'
-	],
+	#superclass : #RSTTestCase,
 	#category : #'rST-Tests'
 }
 
 { #category : #accessing }
 RSTBrokerTest >> bigString [
 	^'########################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################'
-]
-
-{ #category : #accessing }
-RSTBrokerTest >> defaultIpAndPortString [
-	"Noury Bouraqadi 9/21/2006 15:31"
-	
-	^self ip, ':', self defaultPort printString
-]
-
-{ #category : #accessing }
-RSTBrokerTest >> defaultPort [
-	"Noury Bouraqadi 9/21/2006 15:31"
-	
-	^6666
-]
-
-{ #category : #accessing }
-RSTBrokerTest >> extraIpAndPortString [
-	"Noury Bouraqadi 9/21/2006 15:31"
-	
-	^self ip, ':', self extraPort printString
-]
-
-{ #category : #accessing }
-RSTBrokerTest >> extraPort [
-	"Noury Bouraqadi 9/21/2006 15:31"
-	
-	^7777
 ]
 
 { #category : #testing }
@@ -53,16 +20,6 @@ RSTBrokerTest >> testBigRemoteObject [
 	proxy := remoteObjectIdString asLocalObject.
 	self assert: proxy size = 5000.
 	
-]
-
-{ #category : #testing }
-RSTBrokerTest >> testConnectToRemoteBroker [
-	"Noury Bouraqadi 9/21/2006 15:32"
-
-	| socketStream |
-	socketStream := defaultBroker connectTo: self extraIpAndPortString.
-	self assert: socketStream isConnected.
-
 ]
 
 { #category : #testing }
@@ -103,6 +60,18 @@ RSTBrokerTest >> testLocalObjectObtainedWithActualIP [
 ]
 
 { #category : #testing }
+RSTBrokerTest >> testLocalObjectObtainedWithLocalHostAsRemoteBrokerId [
+	"mp 10/17/2005 11:47"
+
+	| exportedObject remoteIdString retreivedObject |
+	exportedObject := Object new.
+	defaultBroker export: exportedObject named: 'coucou'.
+	remoteIdString := 'coucou@localhost:' , self defaultPort printString.
+	retreivedObject := remoteIdString asLocalObject.
+	self assert: retreivedObject == exportedObject
+]
+
+{ #category : #testing }
 RSTBrokerTest >> testLocalObjectObtainedWithLoopBackIP [
 	"mp 10/17/2005 11:47"
 
@@ -115,13 +84,80 @@ RSTBrokerTest >> testLocalObjectObtainedWithLoopBackIP [
 ]
 
 { #category : #testing }
-RSTBrokerTest >> testParseBrokerIDString [
-	"mp 12/16/2005 12:49"
+RSTBrokerTest >> testProxyAnswersEqualsItSelfEvenIfUnreachable [
+	| actualObject proxy |
+	actualObject := Object new.
+	extraBroker 
+		export: actualObject
+		named: 'someObject'.
+	proxy := ('someObject@' , self extraIpAndPortString) asLocalObject.
+	extraBroker stop.
+	self deny: proxy isReachable.
+	self 
+		shouldnt: [ proxy = proxy ]
+		raise: Exception.
+	self assert: proxy = proxy.
+	self 
+		shouldnt: [ proxy = nil ]
+		raise: Exception.
+	self deny: proxy = nil.
+	self 
+		shouldnt: [ proxy = (100 @ 200) ]
+		raise: Exception.
+	self deny: proxy = (100 @ 200).
+	self 
+		should: [ proxy = Object new ]
+		raise: RSTRemoteObjectUnreachable
+]
 
-	| expectedAnswer actualAnswer |
-	expectedAnswer := {NetNameResolver addressForName: self ip. self defaultPort}.
-	actualAnswer := defaultBroker addressAndPort: self defaultIpAndPortString.
-	self assert: actualAnswer = expectedAnswer.
+{ #category : #testing }
+RSTBrokerTest >> testProxyAnswersEqualsOfOtherObjectsEvenIfUnreachable [
+	|  proxy array |
+	extraBroker
+		export: Object new
+		named: 'someObject'.
+	proxy := ('someObject@' , self extraIpAndPortString) asLocalObject.
+	extraBroker stop.
+	self deny: proxy isReachable.
+	array := #(1 2 3).
+	self shouldnt: [proxy = array] raise: Exception.
+	self deny: proxy = array
+]
+
+{ #category : #testing }
+RSTBrokerTest >> testProxyAnswersEqualsOfOtherProxiesEvenIfUnreachable [
+	| proxy otherProxy |
+	extraBroker 
+		export: Object new
+		named: 'someObject'.
+	proxy := ('someObject@' , self extraIpAndPortString) asLocalObject.
+	extraBroker 
+		export: Array new
+		named: 'array'.
+	otherProxy := ('array@' , self extraIpAndPortString) asLocalObject.
+	extraBroker stop.
+	self deny: proxy isReachable.
+	self deny: otherProxy isReachable.
+	self 
+		shouldnt: [ proxy = otherProxy ]
+		raise: Exception.
+	self deny: proxy = otherProxy
+]
+
+{ #category : #testing }
+RSTBrokerTest >> testProxyStoresHashCode [
+	"Noury 1/20/2009 11:37"
+	
+	| actualObject proxy expectedHashCode |
+	actualObject := Object new.
+	extraBroker
+		export: actualObject
+		named: 'someObject'.
+	proxy := ('someObject@' , self extraIpAndPortString) asLocalObject.
+	expectedHashCode :=  actualObject hash.
+	extraBroker stop.
+	self deny: proxy isReachable.
+	self assert: proxy hash == expectedHashCode
 
 ]
 
@@ -166,4 +202,31 @@ RSTBrokerTest >> testSerialization [
 	deserializedObject := defaultBroker deserializeObject: serializedObject.
 	self assert: deserializedObject = originalObject.
 	self deny:  deserializedObject == originalObject.
+]
+
+{ #category : #testing }
+RSTBrokerTest >> testServerShouldNotFailOnSocketFailure [
+	|socket|
+	socket := Socket newTCP.
+	self shouldnt: [extraBroker process: socket] raise: Exception
+	 
+]
+
+{ #category : #testing }
+RSTBrokerTest >> testStartStop [
+	"mp 12/16/2005 13:21"
+
+	| expectedBrokerID |
+	self assert: defaultBroker isRunning.
+	self assert: extraBroker isRunning.
+	RSTBroker stop.
+	defaultBroker waitForStop.
+	self assert: (RSTBroker instVarNamed: 'instance') isNil.
+	RSTBroker startOnPort: self defaultPort.
+	self assert: RSTBroker instance isRunning.
+	self assert: RSTBroker instance portNumber = self defaultPort.
+	expectedBrokerID := NetNameResolver localAddressString , ':', self defaultPort printString.
+	self assert: RSTBroker instance brokerID = expectedBrokerID.
+	RSTBroker stop.
+	self assert: (RSTBroker instVarNamed: 'instance') isNil
 ]

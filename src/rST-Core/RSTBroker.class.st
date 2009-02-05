@@ -16,7 +16,9 @@ Class {
 		'exportedObjects',
 		'rememberer',
 		'maintenancer',
-		'resolved'
+		'resolved',
+		'socketPoolsDict',
+		'socketPoolsLock'
 	],
 	#classVars : [
 		'ForwardedExceptionSet'
@@ -80,6 +82,24 @@ RSTBroker class >> start [
 ]
 
 { #category : #running }
+RSTBroker class >> startOnIp: ipString port: portNumber [
+	^self startOnIp: ipString port: portNumber logging: false
+
+]
+
+{ #category : #running }
+RSTBroker class >> startOnIp: ipString port: portNumber logging: loggingBoolean [
+	"start the Broker with full control of features"
+	self stop.
+	instance := super new.
+	instance
+			startOnIp: ipString
+			port: portNumber
+			logging: loggingBoolean.
+	^instance
+]
+
+{ #category : #running }
 RSTBroker class >> startOnPort: portInteger [ 
 	"start the Broker with the default features"
 	^ self
@@ -89,12 +109,11 @@ RSTBroker class >> startOnPort: portInteger [
 ]
 
 { #category : #running }
-RSTBroker class >> startOnPort: portInteger logging: loggingBoolean [
-	"start the Broker with full control of features"
-	self stop.
-	^ instance _ super new
-				startOnPort: portInteger
-				logging: loggingBoolean
+RSTBroker class >> startOnPort: portNumber logging: loggingBoolean [
+	^self 
+		startOnIp: NetNameResolver localAddressString 
+		port: portNumber 
+		logging: loggingBoolean
 ]
 
 { #category : #snapshots }
@@ -110,21 +129,6 @@ RSTBroker class >> stop [
 		instance unregister.
 		instance waitForStop].
 	instance := nil
-]
-
-{ #category : #'connection - client - sockets' }
-RSTBroker >> addressAndPort: brokerIDString [ 
-	"parses brokerIDString and get address and port"
-	| colonPos serverAddress serverPort |
-	colonPos _ brokerIDString findString: ':'.
-	colonPos isZero
-		ifTrue: [""
-			serverAddress _ brokerIDString.
-			serverPort _ '9999']
-		ifFalse: [""
-			serverAddress _ brokerIDString first: colonPos - 1.
-			serverPort _ brokerIDString allButFirst: colonPos].
-	^ {NetNameResolver addressForName: serverAddress. serverPort asInteger}
 ]
 
 { #category : #'resolving objects' }
@@ -160,26 +164,9 @@ RSTBroker >> clientSideMaintenance [
 	lastRemoteBrokers := currentRemoteBrokers
 ]
 
-{ #category : #'connection - client - sockets' }
-RSTBroker >> connectTo: brokerIDString [ 
-	| addressAndPort socket |
-	addressAndPort := self addressAndPort: brokerIDString.
-	socket := nil.
-	3 timesRepeat: 
-			[socket ifNotNil: [socket closeAndDestroy].
-			socket := Socket newTCP.
-			
-			[socket 
-				connectTo: addressAndPort first
-				port: addressAndPort second
-				waitForConnectionFor: self secondsToWaitForSocketConnection] 
-					on: ConnectionTimedOut
-					do: [:timeOutEx |
-							self logException: timeOutEx.
-							Processor yield].
-			socket isConnected ifTrue: [^ SocketStream on: socket]].
-	RSTRemoteObjectUnreachable 
-		signal: 'Cannot connect to: ' , brokerIDString asString
+{ #category : #initialization }
+RSTBroker >> defaultPriority [
+	^Processor activePriority  
 ]
 
 { #category : #'connection - client' }
@@ -211,12 +198,13 @@ RSTBroker >> export: anObject named: aString [
 
 { #category : #initialization }
 RSTBroker >> initializeClientSide [
-	"mp 11/27/2005 19:41"
 	"initialize client side"
 
 	proxies := WeakValueDictionary new.
 	proxiesMutex := Semaphore forMutualExclusion.
-	lastRemoteBrokers := #()
+	lastRemoteBrokers := #().
+	socketPoolsDict := Dictionary new.
+	socketPoolsLock := Semaphore forMutualExclusion
 ]
 
 { #category : #initialization }
@@ -352,14 +340,16 @@ RSTBroker >> printOn: aStream [
 { #category : #'connection - server' }
 RSTBroker >> process: aSocket [ 
 	"process a new open socket"
-	
 	| stream |
-	[| executor result |
-	stream := SocketStream on: aSocket.
-	executor := self receiveObjectFrom: stream.
-	result := executor executeIn: self.
-	self sendObject: result through: stream]
-		ensure: [stream close]
+	[[
+		| executor result | 
+		stream := SocketStream on: aSocket.
+		executor := self receiveObjectFrom: stream.
+		result := executor executeIn: self.
+		self sendObject: result through: stream]
+			ensure: [stream close]]
+	on: RSTRemoteObjectUnreachable
+	do: [:ex | "ignore" ]
 ]
 
 { #category : #'connection - server' }
@@ -466,7 +456,6 @@ RSTBroker >> reset [
 	"mp 11/27/2005 19:41"
 
 	Socket initializeNetwork.
-	brokerID := NetNameResolver localAddressString , ':' , self portNumber asString.
 	self initializeClientSide.
 	self initializeServerSide.
 	self startMaintenancer
@@ -480,11 +469,6 @@ RSTBroker >> resume [
 			status := #running.
 			self logMessage: ['Resumed!']]
 		ifFalse: [self logMessage: ['Invalid resume! (status=' , status asString , ')']]
-]
-
-{ #category : #'connection - client - sockets' }
-RSTBroker >> secondsToWaitForSocketConnection [
-	^ 3
 ]
 
 { #category : #'connection - client' }
@@ -518,7 +502,7 @@ RSTBroker >> sendGoodbye [
 RSTBroker >> sendMessage: aMessage to: aRemoteObjectID [ 
 	"send aMessage to aRemoteObjectID"
 	| remoteMessage |
-	remoteMessage _ RSTRemoteMessage
+	remoteMessage := RSTRemoteMessage
 				message: aMessage
 				to: aRemoteObjectID
 				using: self.
@@ -564,37 +548,62 @@ RSTBroker >> serve: aSocket [
 		forkAt: Processor lowIOPriority
 ]
 
+{ #category : #'connection - client - sockets' }
+RSTBroker >> socketStreamPoolFor: brokerIDString [ 
+	^socketPoolsLock critical: [
+		socketPoolsDict 
+			at: brokerIDString
+			ifAbsentPut: [RSTSocketStreamPool addressAndPortFromBrokerID: brokerIDString]]
+]
+
+{ #category : #initialization }
+RSTBroker >> start [
+	super start.
+	Processor yield. "Give chance to listener (server side) processes to start"
+
+]
+
 { #category : #'private - running' }
 RSTBroker >> startMaintenancer [
-maintenancer _ [self maintenanceLoop]
+maintenancer := [self maintenanceLoop]
 				forkAt: Processor highIOPriority
 ]
 
 { #category : #initialization }
-RSTBroker >> startOnPort: anInteger logging: aBoolean [ 
+RSTBroker >> startOnIp: ipString port: portNumInteger logging: loggingBoolean [
 	"start this broker"
 
-	logging := aBoolean.
+	logging := loggingBoolean.
 
 	"Start myself as a TcpService, since I subclass it"
-	self initializeOnPort: anInteger priority: self defaultPriority.
+	self initializeOnPort: portNumInteger priority: self defaultPriority.
 	self name: 'rST-Broker'.
+	brokerID := ipString , ':' , portNumInteger  asString.	
 	self reset.
 	self start.
 	status := #running.
 	self logMessage: ['rSTBroker running as ' , self brokerID]
 ]
 
+{ #category : #initialization }
+RSTBroker >> startOnPort: anInteger logging: aBoolean [ 
+	"start this broker"
+	self startOnIp: NetNameResolver localAddressString port: anInteger logging: aBoolean
+]
+
 { #category : #'private - running' }
 RSTBroker >> stop [
 	"PRIVATE: use RSTBroker stop"
+
 	super stop.
 	self stopMaintenancer.
 	"uncomment when connection error get handled"
 	"self sendGoodbye."
 	status := #stopped.
 	self logMessage: ['Stopped!'].
-	self stopLogging
+	self stopLogging.
+	socketPoolsDict valuesDo: [:pool | pool closeAndDestroy].
+	socketPoolsDict := Dictionary new
 ]
 
 { #category : #logging }
@@ -643,10 +652,9 @@ RSTBroker >> unzipAndDserializeObject: aGZippedObject [
 
 { #category : #'connection - client - sockets' }
 RSTBroker >> withSocketStreamTo: brokerIDString do: aBlock [ 
-	"mp 12/15/2005 11:02"
-	"evaluate aBlock when an open socket to brokerIDString"
-	| socketStream |
-	socketStream := self connectTo: brokerIDString.
-	[aBlock value: socketStream]
-		ensure: [socketStream close]
+	| socketStreamPool socketStream  |
+	socketStreamPool := self socketStreamPoolFor: brokerIDString.
+	socketStream := socketStreamPool socketStream.
+	[aBlock value: socketStream ]
+			ensure: [socketStreamPool releaseStream: socketStream]
 ]

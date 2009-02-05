@@ -27,7 +27,7 @@ RSTSamples class >> clientPort [
 { #category : #private }
 RSTSamples class >> collectionToString: aCollection [
 	| stream |
-	stream _ String new writeStream.
+	stream := String new writeStream.
 	stream nextPutAll: '('.
 	aCollection
 		do: [:each | stream nextPutAll: each asString]
@@ -142,6 +142,11 @@ RSTSamples class >> runClientTranscriptTests [
 { #category : #'address configuration' }
 RSTSamples class >> serverAddress [
 	^ NetNameResolver localAddressString
+]
+
+{ #category : #'address configuration' }
+RSTSamples class >> serverBrokerID [
+	^ self serverAddress asString , ':' , self serverPort asString
 ]
 
 { #category : #'address configuration' }

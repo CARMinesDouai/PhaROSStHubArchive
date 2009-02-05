@@ -7,7 +7,9 @@ Class {
 	#instVars : [
 		'remoteObjectID',
 		'haltOnce',
-		'errorOnce'
+		'errorOnce',
+		'hashCode',
+		'remoteClassName'
 	],
 	#category : #'rST-Core'
 }
@@ -15,6 +17,13 @@ Class {
 { #category : #'instance creation' }
 RSTRemoteObjectProxy class >> remoteObjectID: aRemoteObjectID [
 	^ self new initializeRemoteObjectID: aRemoteObjectID
+]
+
+{ #category : #comparing }
+RSTRemoteObjectProxy >> = anObject [
+	self == anObject ifTrue: [^true].
+	self className = anObject className ifFalse: [^false].
+	^self xxxSend: (Message selector: #= argument: anObject)
 ]
 
 { #category : #'user interface' }
@@ -36,6 +45,11 @@ RSTRemoteObjectProxy >> become: otherObject [
 		xxxSend: (Message selector: #become: argument: otherObject)
 ]
 
+{ #category : #'class membership' }
+RSTRemoteObjectProxy >> className [
+	^remoteClassName
+]
+
 { #category : #'error handling' }
 RSTRemoteObjectProxy >> clearErrorOnce [
 	"Turn off the error once flag."
@@ -53,7 +67,7 @@ RSTRemoteObjectProxy >> defaultLabelForInspector [
 	"Answer the default label to be used for an Inspector window on the 
 	receiver. "
 	| remoteLabel |
-	remoteLabel _ self
+	remoteLabel := self
 				xxxSend: (Message selector: #defaultLabelForInspector).
 	^ 'Remote Object: ' , remoteLabel , ' (' , remoteObjectID asString , ')'
 ]
@@ -106,6 +120,11 @@ RSTRemoteObjectProxy >> haltOnceEnabled [
 	^ haltOnce
 ]
 
+{ #category : #accessing }
+RSTRemoteObjectProxy >> hash [
+	^hashCode
+]
+
 { #category : #initialization }
 RSTRemoteObjectProxy >> initialize [
 	super initialize.
@@ -114,8 +133,20 @@ RSTRemoteObjectProxy >> initialize [
 ]
 
 { #category : #initialization }
+RSTRemoteObjectProxy >> initializeHashCode [
+	hashCode := self xxxSend: (Message selector: #hash)
+]
+
+{ #category : #initialization }
+RSTRemoteObjectProxy >> initializeRemoteClassName [
+	remoteClassName := self xxxSend: (Message selector: #className)
+]
+
+{ #category : #initialization }
 RSTRemoteObjectProxy >> initializeRemoteObjectID: aRemoteObjectID [ 
-	remoteObjectID _ aRemoteObjectID
+	remoteObjectID := aRemoteObjectID.
+	self initializeHashCode.
+	self initializeRemoteClassName 
 ]
 
 { #category : #'user interface' }
@@ -144,7 +175,7 @@ RSTRemoteObjectProxy >> inspectorClass [
 { #category : #'class membership' }
 RSTRemoteObjectProxy >> isKindOf: aClass [
 	"We make the assumption that 2 classes with the same name and located in 2 different images are identical (code replication)"
-	^self isKindOfClassNamed: aClass name
+	^self className = aClass name
 ]
 
 { #category : #testing }
@@ -189,4 +220,10 @@ RSTRemoteObjectProxy >> xxxRemoteObjectID [
 RSTRemoteObjectProxy >> xxxSameImage: aRemoteObjectProxy [ 
 	"answer if both objects live in the same Image"
 	^ self xxxRemoteObjectID brokerID = aRemoteObjectProxy xxxRemoteObjectID brokerID
+]
+
+{ #category : #'system primitives' }
+RSTRemoteObjectProxy >> xxxSend: aMessage [ 
+	"send this message to the remote object represented by me"
+	^ RSTBroker instance sendMessage: aMessage to: self xxxRemoteObjectID
 ]

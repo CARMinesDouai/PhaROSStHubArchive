@@ -29,9 +29,41 @@ RSTRemoteObjectID class >> fromString: aString [
 		objectID: (aString first: atPos - 1)
 ]
 
+{ #category : #comparing }
+RSTRemoteObjectID >> = anObject [ 
+	self class == anObject class
+		ifFalse: [^ false].
+	^ brokerID = anObject brokerID
+		and: [objectID = anObject objectID]
+]
+
+{ #category : #'resolving objects' }
+RSTRemoteObjectID >> asLocalObject [
+	"convert to an apropiate local object, could be a proxy or the real object"
+	^ RSTBroker instance localObjectFor: self
+]
+
+{ #category : #'resolving objects' }
+RSTRemoteObjectID >> asProxy [
+	"convert me to a proxy"
+	^ RSTBroker instance proxyFor: self
+]
+
 { #category : #accessing }
 RSTRemoteObjectID >> brokerID [
 	^ brokerID
+]
+
+{ #category : #converting }
+RSTRemoteObjectID >> convertLocalhostAddressIn: brokerIDString [ 
+	| portString ipStream ipString brokerIDStream |
+	brokerIDStream := ReadStream on: brokerIDString.
+	ipStream := brokerIDStream upTo: $:.
+	(ipStream contents = 'localhost' or: [ipStream contents = '127.0.0.1']) 
+		ifTrue: [ipString := NetNameResolver localAddressString]
+		ifFalse: [ipString := ipStream contents].
+	portString := brokerIDStream upToEnd contents.
+	^ ipString , ':' , portString
 ]
 
 { #category : #comparing }
