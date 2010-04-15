@@ -4,9 +4,6 @@ I am used to find the runtime environment of a given ContextPart.  If no suitabl
 Class {
 	#name : #BindingsLocator,
 	#superclass : #Notification,
-	#classVars : [
-		'Default'
-	],
 	#category : #DynamicBindings
 }
 
@@ -18,10 +15,10 @@ BindingsLocator >> defaultAction [
 	#valueWithBindings:."
 
 	| tmp defaultActionCtx |
-	tmp _ thisContext.
-	[tmp sender notNil] whileTrue: [tmp _ tmp sender].
+	tmp := thisContext.
+	[tmp sender notNil] whileTrue: [tmp := tmp sender].
 
-	defaultActionCtx _ thisContext.
+	defaultActionCtx := thisContext.
 	[	
 		tmp swapSender: thisContext sender.
 		thisContext sender sender sender swapSender: nil.

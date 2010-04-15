@@ -123,8 +123,8 @@ DynamicBindings class >> initialize [
 	"self initialize"
 
 	Root 
-		ifNil: [Root _ DynamicBindings new]
-		ifNotNil: [Root _ DynamicBindings newFrom: Root].
+		ifNil: [Root := DynamicBindings new]
+		ifNotNil: [Root := DynamicBindings newFrom: Root].
 
 ]
 
@@ -132,7 +132,7 @@ DynamicBindings class >> initialize [
 DynamicBindings class >> newFrom: anotherRuntimeEnvironment [
 
 	| answer |
-	answer _ self new.
+	answer := self new.
 	anotherRuntimeEnvironment associationsDo: [ :assn | answer add: assn].
 	^answer
 ]
@@ -145,13 +145,10 @@ DynamicBindings class >> root [
 
 { #category : #accessing }
 DynamicBindings >> at: key ifAbsent: aBlock [
-
 	| assoc tmp |
 	tmp := self.
-	[(assoc _ tmp array at: (tmp findElementOrNil: key)) == nil] 
-		whileTrue: [(tmp := tmp parent) ifNil: [^aBlock value]].
-	^assoc value
-
+	[ (assoc := tmp associationAt: key ifAbsent: nil) isNil ] whileTrue: [ (tmp := tmp parent) ifNil: [ ^ aBlock value ] ].
+	^ assoc value
 ]
 
 { #category : #accessing }
@@ -210,14 +207,14 @@ DynamicBindings >> isBound: anObject [
 
 { #category : #accessing }
 DynamicBindings >> level [
-
 	| tmp level |
 	tmp := self.
 	level := 0.
-	[tmp == nil] whileFalse:
-		[tmp := tmp parent.
-		level := level + 1].
-	^level
+	[ tmp isNil ]
+		whileFalse:
+			[ tmp := tmp parent.
+			level := level + 1 ].
+	^ level
 ]
 
 { #category : #isolation }
@@ -243,10 +240,8 @@ DynamicBindings >> parent: aDynamicBindings [
 
 { #category : #accessing }
 DynamicBindings >> root [
-
-	| tmp |
+	| tmp tmpParent |
 	tmp := self.
-	[tmp parent notNil] whileTrue:
-		[tmp := tmp parent].
-	^tmp
+	[ (tmpParent := tmp parent) isNil ] whileFalse: [ tmp := tmpParent ].
+	^ tmp
 ]
