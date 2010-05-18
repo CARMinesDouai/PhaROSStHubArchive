@@ -12,7 +12,7 @@ Class {
 OCNTCPSocketConnectTest >> setUp [
 	super setUp.
 	socket := OCNSocket new.
-	library := OCNSysSocketLibrary uniqueInstance
+	library := OCNKernel socketLibrary
 ]
 
 { #category : #testing }
@@ -50,7 +50,8 @@ OCNTCPSocketConnectTest >> testSend [
 		port: 30000.
 	socket connectToServer: serverAddress.
 	self assert: socket isConnected.
-	messageText := 'Mon super message from Pharo'.
+	messageText := 'Message from Pharo using SysSocketLibrary'.
+	OCNKernel debug ifTrue: [messageText := messageText, ' [debug]'].
 	self assert: ((socket send: messageText) =  messageText byteSize).
 	self assert: (socket close = 0)
 ]

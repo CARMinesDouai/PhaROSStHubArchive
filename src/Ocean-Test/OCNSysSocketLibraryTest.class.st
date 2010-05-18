@@ -9,7 +9,7 @@ OCNSysSocketLibraryTest >> testCallingHtons [
 	
 	| port encodedPort |
 	port := 80.
-	encodedPort := OCNSysSocketLibrary uniqueInstance htons: port.
+	encodedPort := OCNKernel socketLibrary htons: port.
 	self assert: ((port = 80) & (encodedPort = 20480))
 ]
 
@@ -18,6 +18,6 @@ OCNSysSocketLibraryTest >> testCallingNtohs [
 	
 	| port encodedPort |
 	port := 20480.
-	encodedPort := OCNSysSocketLibrary uniqueInstance ntohs: port.
+	encodedPort := OCNKernel socketLibrary ntohs: port.
 	self assert: ((encodedPort = 80) & (port = 20480))
 ]

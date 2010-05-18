@@ -10,14 +10,14 @@ Class {
 
 { #category : #connection }
 OCNSocket >> close [
-	^ OCNSysSocketLibrary uniqueInstance close: self socketId
+	^ OCNKernel socketLibrary close: self socketId
 ]
 
 { #category : #connection }
 OCNSocket >> connectToServer: serverAddress [
 	| result primitiveAddress |
 	primitiveAddress := serverAddress primitiveAddress.
-	result := OCNDebugSysSocketLibrary uniqueInstance 
+	result := OCNKernel socketLibrary 
 		connect: self socketId serverAddress: primitiveAddress serverAddressSize: serverAddress primitiveAddressSize.
 	primitiveAddress free.
 	(result = 0)  
@@ -28,7 +28,7 @@ OCNSocket >> connectToServer: serverAddress [
 { #category : #'lowlevel initialization' }
 OCNSocket >> createDescriptorWithDomain: communicationDomain type: socketType protocol: socketProtocol [
 	| result |
-	result := OCNSysSocketLibrary uniqueInstance 
+	result := OCNKernel socketLibrary 
 		socketDomain: communicationDomain type: socketType protocol: socketProtocol.
 	self socketId: (result signedLongAt: 1)
 ]
@@ -60,7 +60,7 @@ OCNSocket >> send: data [
 	| alienedData result |
 	self isConnected ifFalse: [Error signal: 'Socket not connected'].
 	alienedData := data asAlien.
-	result := OCNSysSocketLibrary uniqueInstance 
+	result := OCNKernel socketLibrary
 		sendTo: self socketId buffer: alienedData ofSize: data byteSize withFlag: 0.
 	alienedData free.
 	^result
