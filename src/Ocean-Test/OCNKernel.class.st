@@ -72,7 +72,7 @@ OCNKernel class >> socketLibrary [
 
 { #category : #constants }
 OCNKernel class >> socketLibraryClass [
-	^ debug ifTrue: [ OCNDebugSysSocketLibrary ]
+	^ self debug ifTrue: [ OCNDebugSysSocketLibrary ]
 		ifFalse: [OCNSysSocketLibrary ]
 
 ]
