@@ -1,7 +1,7 @@
 Class {
 	#name : #OCNDebugSysSocketLibrary,
 	#superclass : #OCNSysSocketLibrary,
-	#category : #'Ocean-Kernel-Test'
+	#category : #'Ocean-Kernel-TestSupport'
 }
 
 { #category : #compiling }

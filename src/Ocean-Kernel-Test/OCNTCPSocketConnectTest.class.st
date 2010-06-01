@@ -2,6 +2,7 @@ Class {
 	#name : #OCNTCPSocketConnectTest,
 	#superclass : #TestCase,
 	#instVars : [
+		'server',
 		'socket',
 		'library'
 	],
@@ -9,10 +10,22 @@ Class {
 }
 
 { #category : #'setUp-tearDown' }
+OCNTCPSocketConnectTest >> serverPort [
+	^9123
+]
+
+{ #category : #'setUp-tearDown' }
 OCNTCPSocketConnectTest >> setUp [
 	super setUp.
 	socket := OCNSocket new.
-	library := OCNConstants socketLibrary
+	library := OCNConstants socketLibrary.
+	server := OCNNetCatBasedServer port: self serverPort 
+]
+
+{ #category : #'setUp-tearDown' }
+OCNTCPSocketConnectTest >> tearDown [
+	super tearDown.
+	server stop
 ]
 
 { #category : #testing }
@@ -37,6 +50,7 @@ OCNTCPSocketConnectTest >> testConnection [
 OCNTCPSocketConnectTest >> testSend [
 	"this test requires an echo server on 127.0.0.1:30000 "
 	| serverAddress messageText |
+	server start.
 	socket 
 		createDescriptorWithDomain: library PfInet
 	 	type: library SockStream
@@ -47,7 +61,7 @@ OCNTCPSocketConnectTest >> testSend [
 	serverAddress 
 		family: library AfInet;
 		ip: #[127 0 0 1]; "localhost should have a server"
-		port: 30000.
+		port: self serverPort.
 	socket connectToServer: serverAddress.
 	self assert: socket isConnected.
 	messageText := 'Message from Pharo using SysSocketLibrary'.

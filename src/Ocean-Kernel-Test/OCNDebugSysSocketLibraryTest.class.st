@@ -1,7 +1,7 @@
 Class {
 	#name : #OCNDebugSysSocketLibraryTest,
 	#superclass : #TestCase,
-	#category : #'Ocean-Kernel-Test'
+	#category : #'Ocean-Kernel-TestSupport'
 }
 
 { #category : #'setUp-tearDown' }
@@ -35,6 +35,7 @@ OCNDebugSysSocketLibraryTest >> testDynlibFileRebuildAfterBuild [
 	OCNDebugSysSocketLibrary rebuildDebugSysSocketLibraryDylibFile.
 	firstDynlibDirEntry := FileDirectory default entryAt: OCNDebugSysSocketLibrary debugSysSocketLibraryDylibFileName ifAbsent: [self fail].
 	firstDynlibModifTime := firstDynlibDirEntry modificationTime.
+	(Delay forMilliseconds: 1000) wait.
 	OCNDebugSysSocketLibrary rebuildDebugSysSocketLibraryDylibFile.
 	secondDynlibDirEntry := FileDirectory default entryAt: OCNDebugSysSocketLibrary debugSysSocketLibraryDylibFileName ifAbsent: [self fail].
 	secondDynlibModifTime := secondDynlibDirEntry modificationTime.
