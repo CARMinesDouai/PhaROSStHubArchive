@@ -19,7 +19,8 @@ OCNTCPSocketConnectTest >> setUp [
 	super setUp.
 	socket := OCNSocket new.
 	library := OCNConstants socketLibrary.
-	server := OCNNetCatBasedServer port: self serverPort 
+	server := OCNNetCatBasedServer port: self serverPort.
+	server start
 ]
 
 { #category : #'setUp-tearDown' }
@@ -41,7 +42,7 @@ OCNTCPSocketConnectTest >> testConnection [
 	serverAddress 
 		family: library AfInet;
 		ip: #[127 0 0 1]; "localhost should have a server"
-		port: 80.
+		port: self serverPort.
 	socket connectToServer: serverAddress.
 	self assert: socket isConnected
 ]
@@ -50,7 +51,6 @@ OCNTCPSocketConnectTest >> testConnection [
 OCNTCPSocketConnectTest >> testSend [
 	"this test requires an echo server on 127.0.0.1:30000 "
 	| serverAddress messageText |
-	server start.
 	socket 
 		createDescriptorWithDomain: library PfInet
 	 	type: library SockStream
