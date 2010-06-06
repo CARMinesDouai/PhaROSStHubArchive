@@ -20,7 +20,8 @@ OCNTCPSocketTest >> setUp [
 	socket := OCNSocket new.
 	library := OCNConstants socketLibrary.
 	server := OCNNetCatBasedServer port: self serverPort.
-	server start
+	server start.
+	(Delay forMilliseconds: 5) wait.
 ]
 
 { #category : #'setUp-tearDown' }
@@ -32,60 +33,50 @@ OCNTCPSocketTest >> tearDown [
 
 { #category : #testing }
 OCNTCPSocketTest >> testCloseOnClosedSocket [
-	self fail
+	self testCloseOnConnectedSocket.
+	socket close.
+	self assert: socket isClosed 
 ]
 
 { #category : #testing }
 OCNTCPSocketTest >> testCloseOnConnectedSocket [
-	self fail
+	self testConnection.
+	self assert: socket isClosed not.
+	socket close.
+	self assert: socket isClosed
 ]
 
 { #category : #testing }
 OCNTCPSocketTest >> testCloseOnNonConnectedSocket [
-	self fail
+	self testSocketFileDescriptorCreation.
+	self assert: socket isClosed not.
+	socket close.
+	self flag: #LF.
+	"self should: [self socket close] raise: OCNNonConnectedSocketExecption."
+	self assert: socket isClosed not
 ]
 
 { #category : #testing }
 OCNTCPSocketTest >> testConnection [
 	| serverAddress |
-	socket 
-		createDescriptorWithDomain: library PfInet
-	 	type: library SockStream
-		protocol: library IpProtoTcp.
-	self assert: socket isDescriptorCreated.
+	self testSocketFileDescriptorCreation.
 	self deny: socket isConnected.
 	serverAddress := OCNSocketAddress new.
 	serverAddress 
 		family: library AfInet;
 		ip: #[127 0 0 1]; "localhost should have a server"
 		port: self serverPort.
-	(Delay forMilliseconds: 500) wait.
 	socket connectToServer: serverAddress.
 	self assert: socket isConnected
 ]
 
 { #category : #testing }
 OCNTCPSocketTest >> testSend [
-	"this test requires an echo server on 127.0.0.1:30000 "
 	| serverAddress messageText |
-	socket 
-		createDescriptorWithDomain: library PfInet
-	 	type: library SockStream
-		protocol: library IpProtoTcp.
-	self assert: socket isDescriptorCreated.
-	self deny: socket isConnected.
-	serverAddress := OCNSocketAddress new.
-	serverAddress 
-		family: library AfInet;
-		ip: #[127 0 0 1]; "localhost should have a server"
-		port: self serverPort.
-	(Delay forMilliseconds: 500) wait.	
-	socket connectToServer: serverAddress.
-	self assert: socket isConnected.
+	self testConnection.
 	messageText := 'Message from Pharo using SysSocketLibrary'.
 	OCNConstants debug ifTrue: [messageText := messageText, ' [debug]'].
-	self assert: ((socket send: messageText) =  messageText byteSize).
-	self assert: (socket close = 0)
+	self assert: ((socket send: messageText) =  messageText byteSize)
 ]
 
 { #category : #testing }

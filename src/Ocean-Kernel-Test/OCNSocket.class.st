@@ -3,14 +3,17 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'socketId',
-		'isConnected'
+		'isConnected',
+		'isClosed'
 	],
 	#category : #'Ocean-Kernel'
 }
 
 { #category : #connection }
 OCNSocket >> close [
-	^ OCNConstants socketLibrary close: self socketId
+	(self isClosed not & self isConnected) ifTrue: [
+			self isClosed: ((OCNConstants socketLibrary close: self socketId) = 0)
+	]
 ]
 
 { #category : #connection }
@@ -36,7 +39,18 @@ OCNSocket >> createDescriptorWithDomain: communicationDomain type: socketType pr
 { #category : #'initialize-release' }
 OCNSocket >> initialize [ 
 	super initialize.
-	self isConnected: false
+	self isConnected: false.
+	self isClosed: false.
+]
+
+{ #category : #connection }
+OCNSocket >> isClosed [
+	^isClosed
+]
+
+{ #category : #testing }
+OCNSocket >> isClosed: anObject [
+	isClosed := anObject
 ]
 
 { #category : #testing }
@@ -46,6 +60,9 @@ OCNSocket >> isConnected [
 
 { #category : #testing }
 OCNSocket >> isConnected: aBoolean [ 
+	(aBoolean & self isClosed) ifTrue: [ 
+		self isClosed: false
+	].
 	isConnected := aBoolean 
 ]
 
