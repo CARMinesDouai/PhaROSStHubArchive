@@ -116,10 +116,18 @@ OCNTcpSocket >> isDescriptorCreated [
 
 { #category : #communication }
 OCNTcpSocket >> receive [
+	|waitForData|
 	self isConnected ifFalse: [Error signal: 'Socket not connected'].
-	OCNConstants socketLibrary
-		receiveFrom: self socketId buffer: self alienDataBuffer ofSize: self alienDataBufferSize result: self alienResult.
-	self communicationResult = -1 ifTrue: [^''].
+	waitForData := true.
+	[waitForData] whileTrue: [
+		OCNConstants socketLibrary
+			receiveFrom: self socketId 
+			buffer: self alienDataBuffer 
+			ofSize: self alienDataBufferSize 	
+			withFlags: 0 "<--------"
+			result: self alienResult.
+		 waitForData := (self communicationResult == 0 ).
+	].
 	^self alienDataBuffer strcpy
 ]
 

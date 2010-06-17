@@ -565,13 +565,16 @@ OCNSysSocketLibrary >> ntohs: anInt [
 ]
 
 { #category : #'socket functions' }
-OCNSysSocketLibrary >> receiveFrom: socketId buffer: dataBuffer ofSize: dataBufferSize result: result [
+OCNSysSocketLibrary >> receiveFrom: socketId buffer: dataBuffer ofSize: dataBufferSize withFlags: flags [
 
-	| alienMethod |
+	| result alienMethod |
+	result := Alien new: 4.
 	alienMethod := self alienMethodNamed: self receiveFunctionName.
 	alienMethod
 		primFFICallResult: result
-		withArguments: {socketId. dataBuffer pointer. dataBufferSize}.
+		withArguments: {socketId. dataBuffer pointer. dataBufferSize. flags}.
+	
+	^ result signedLongAt: 1
 	
 "#include <sys/socket.h>
 
@@ -640,16 +643,13 @@ There were insufficient STREAMS resources available for the operation to complet
 ]
 
 { #category : #'socket functions' }
-OCNSysSocketLibrary >> receiveFrom: socketId buffer: dataBuffer ofSize: dataBufferSize withFlags: flags [
+OCNSysSocketLibrary >> receiveFrom: socketId buffer: dataBuffer ofSize: dataBufferSize withFlags: flags result: result [
 
-	| result alienMethod |
-	result := Alien new: 4.
+	| alienMethod |
 	alienMethod := self alienMethodNamed: self receiveFunctionName.
 	alienMethod
 		primFFICallResult: result
-		withArguments: {socketId. dataBuffer pointer. dataBufferSize}.
-	
-	^ result signedLongAt: 1
+		withArguments: {socketId. dataBuffer pointer. dataBufferSize. flags}.
 	
 "#include <sys/socket.h>
 
