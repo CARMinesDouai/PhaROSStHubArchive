@@ -124,7 +124,7 @@ OCNTcpSocket >> receive [
 			receiveFrom: self socketId 
 			buffer: self alienDataBuffer 
 			ofSize: self alienDataBufferSize 	
-			withFlags: 0 "<--------"
+			flags: 0 "<--------"
 			result: self alienResult.
 		 waitForData := (self communicationResult == 0 ).
 	].
@@ -146,7 +146,7 @@ OCNTcpSocket >> send: data [
 		sendTo: self socketId
 		buffer: self alienDataBuffer
 		ofSize: sentDataSize
-		withFlag: 0
+		flags: 0
 		result: self alienResult.
 	^ self communicationResult
 ]

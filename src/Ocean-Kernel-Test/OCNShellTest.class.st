@@ -14,7 +14,7 @@ OCNShellTest >> setUp [
 ]
 
 { #category : #testing }
-OCNShellTest >> testExecutionDoesUsePath [
+OCNShellTest >> testExecutionDoesUsePathEnvironmentVariable [
 	shell exec: 'ls ', SmalltalkImage current imageName.
 	shell waitForTermination.
 	self assert: shell isTerminated.
@@ -27,4 +27,16 @@ OCNShellTest >> testExecutionTerminatesAndStdOutContainsExpectedResult [
 	shell waitForTermination.
 	self assert: shell isTerminated.
 	self assert: shell stdOut upToEnd withoutTrailingBlanks = SmalltalkImage current imageName.
+]
+
+{ #category : #testing }
+OCNShellTest >> testFullExecutablePathRetrieval [
+	
+	self assert: (OCNShell new fullExecutablePath:'ls') = '/bin/ls'
+]
+
+{ #category : #testing }
+OCNShellTest >> testFullExecutablePathRetrievalFail [
+	
+	self assert: (OCNShell new fullExecutablePath:'lsNOTEXIST') = ''
 ]

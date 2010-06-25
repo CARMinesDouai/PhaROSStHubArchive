@@ -565,91 +565,13 @@ OCNSysSocketLibrary >> ntohs: anInt [
 ]
 
 { #category : #'socket functions' }
-OCNSysSocketLibrary >> receiveFrom: socketId buffer: dataBuffer ofSize: dataBufferSize withFlags: flags [
-
-	| result alienMethod |
-	result := Alien new: 4.
-	alienMethod := self alienMethodNamed: self receiveFunctionName.
-	alienMethod
-		primFFICallResult: result
-		withArguments: {socketId. dataBuffer pointer. dataBufferSize. flags}.
-	
-	^ result signedLongAt: 1
-	
-"#include <sys/socket.h>
-
-ssize_t recv(int socket, void *buffer, size_t length, int flags);
-
-DESCRIPTION
-
-The recv() function receives a message from a connection-mode or connectionless-mode socket. It is normally used with connected sockets because it does not permit the application to retrieve the source address of received data. The function takes the following arguments:
-socket
-Specifies the socket file descriptor.
-buffer
-Points to a buffer where the message should be stored.
-length
-Specifies the length in bytes of the buffer pointed to by the buffer argument.
-flags
-Specifies the type of message reception. Values of this argument are formed by logically OR'ing zero or more of the following values:
-MSG_PEEK
-Peeks at an incoming message. The data is treated as unread and the next recv() or similar function will still return this data.
-MSG_OOB
-Requests out-of-band data. The significance and semantics of out-of-band data are protocol-specific.
-MSG_WAITALL
-Requests that the function block until the full amount of data requested can be returned. The function may return a smaller amount of data if a signal is caught, if the connection is terminated, if MSG_PEEK was specified, or if an error is pending for the socket.
-The recv() function returns the length of the message written to the buffer pointed to by the buffer argument. For message-based sockets such as SOCK_DGRAM and SOCK_SEQPACKET, the entire message must be read in a single operation. If a message is too long to fit in the supplied buffer, and MSG_PEEK is not set in the flags argument, the excess bytes are discarded. For stream-based sockets such as SOCK_STREAM, message boundaries are ignored. In this case, data is returned to the user as soon as it becomes available, and no data is discarded.
-
-If the MSG_WAITALL flag is not set, data will be returned only up to the end of the first message.
-
-If no messages are available at the socket and O_NONBLOCK is not set on the socket's file descriptor, recv() blocks until a message arrives. If no messages are available at the socket and O_NONBLOCK is set on the socket's file descriptor, recv() fails and sets errno to [EAGAIN] or [EWOULDBLOCK].
-
-RETURN VALUE
-
-Upon successful completion, recv() returns the length of the message in bytes. If no messages are available to be received and the peer has performed an orderly shutdown, recv() returns 0. Otherwise, -1 is returned and errno is set to indicate the error. 
-ERRORS
-
-The recv() function will fail if:
-[EAGAIN] or [EWOULDBLOCK]
-
-The socket's file descriptor is marked O_NONBLOCK and no data is waiting to be received; or MSG_OOB is set and no out-of-band data is available and either the socket's file descriptor is marked O_NONBLOCK or the socket does not support blocking to await out-of-band data.
-[EBADF]
-The socket argument is not a valid file descriptor.
-[ECONNRESET]
-A connection was forcibly closed by a peer.
-[EFAULT]
-The buffer parameter can not be accessed or written.
-[EINTR]
-The recv() function was interrupted by a signal that was caught, before any data was available.
-[EINVAL]
-The MSG_OOB flag is set and no out-of-band data is available.
-[ENOTCONN]
-A receive is attempted on a connection-mode socket that is not connected.
-[ENOTSOCK]
-The socket argument does not refer to a socket.
-[EOPNOTSUPP]
-The specified flags are not supported for this socket type or protocol.
-[ETIMEDOUT]
-The connection timed out during connection establishment, or due to a transmission timeout on active connection.
-The recv() function may fail if:
-
-[EIO]
-An I/O error occurred while reading from or writing to the file system.
-[ENOBUFS]
-Insufficient resources were available in the system to perform the operation.
-[ENOMEM]
-Insufficient memory was available to fulfill the request.
-[ENOSR]
-There were insufficient STREAMS resources available for the operation to complete."
-]
-
-{ #category : #'socket functions' }
-OCNSysSocketLibrary >> receiveFrom: socketId buffer: dataBuffer ofSize: dataBufferSize withFlags: flags result: result [
+OCNSysSocketLibrary >> receiveFrom: socketId buffer: dataBuffer ofSize: dataBufferSize flags: flagsByte result: result [
 
 	| alienMethod |
 	alienMethod := self alienMethodNamed: self receiveFunctionName.
 	alienMethod
 		primFFICallResult: result
-		withArguments: {socketId. dataBuffer pointer. dataBufferSize. flags}.
+		withArguments: {socketId. dataBuffer pointer. dataBufferSize. flagsByte}.
 	
 "#include <sys/socket.h>
 
@@ -723,103 +645,14 @@ OCNSysSocketLibrary >> receiveFunctionName [
 ]
 
 { #category : #'socket functions' }
-OCNSysSocketLibrary >> sendTo: socketId buffer: buffer ofSize: size withFlag: flag [
-"ssize_t send(int socket, const void *buffer, size_t length, int flags);"
-
-	| result alienMethod |
-	result := Alien new: 4.
-	alienMethod := self alienMethodNamed: 'send'.
-	alienMethod
-		primFFICallResult: result
-		withArguments: {socketId. buffer pointer. size. flag}.
-	
-	^ result signedLongAt: 1
-	
-"#include <sys/socket.h>
-
-ssize_t send(int socket, const void *buffer, size_t length, int flags);
-
-DESCRIPTION
-
-socket
-Specifies the socket file descriptor.
-buffer
-Points to the buffer containing the message to send.
-length
-Specifies the length of the message in bytes.
-flags
-Specifies the type of message transmission. Values of this argument are formed by logically OR'ing zero or more of the following flags:
-MSG_EOR
-Terminates a record (if supported by the protocol)
-MSG_OOB
-Sends out-of-band data on sockets that support out-of-band communications. The significance and semantics of out-of-band data are protocol-specific.
-The send() function initiates transmission of a message from the specified socket to its peer. The send() function sends a message only when the socket is connected (including when the peer of a connectionless socket has been set via connect()).
-
-The length of the message to be sent is specified by the length argument. If the message is too long to pass through the underlying protocol, send() fails and no data is transmitted.
-
-Successful completion of a call to send() does not guarantee delivery of the message. A return value of -1 indicates only locally-detected errors.
-
-If space is not available at the sending socket to hold the message to be transmitted and the socket file descriptor does not have O_NONBLOCK set, send() blocks until space is available. If space is not available at the sending socket to hold the message to be transmitted and the socket file descriptor does have O_NONBLOCK set, send() will fail. The select() and poll() functions can be used to determine when it is possible to send more data.
-
-The socket in use may require the process to have appropriate privileges to use the send() function.
-
-RETURN VALUE
-
-Upon successful completion, send() returns the number of bytes sent. Otherwise, -1 is returned and errno is set to indicate the error.
-APPLICATION USAGE
-
-The send() function is identical to sendto() with a null pointer dest_len argument, and to write() if no flags are used.
-ERRORS
-
-The send() function will fail if:
-[EAGAIN] or [EWOULDBLOCK]
-
-The socket's file descriptor is marked O_NONBLOCK and the requested operation would block.
-[EBADF]
-The socket argument is not a valid file descriptor.
-[ECONNRESET]
-A connection was forcibly closed by a peer.
-[EDESTADDRREQ]
-The socket is not connection-mode and no peer address is set.
-[EFAULT]
-The buffer parameter can not be accessed.
-[EINTR]
-A signal interrupted send() before any data was transmitted.
-[EMSGSIZE]
-The message is too large be sent all at once, as the socket requires.
-[ENOTCONN]
-The socket is not connected or otherwise has not had the peer prespecified.
-[ENOTSOCK]
-The socket argument does not refer to a socket.
-[EOPNOTSUPP]
-The socket argument is associated with a socket that does not support one or more of the values set in flags.
-[EPIPE]
-The socket is shut down for writing, or the socket is connection-mode and is no longer connected. In the latter case, and if the socket is of type SOCK_STREAM, the SIGPIPE signal is generated to the calling process.
-The send() function may fail if:
-
-[EACCES]
-The calling process does not have the appropriate privileges.
-[EIO]
-An I/O error occurred while reading from or writing to the file system.
-[ENETDOWN]
-The local interface used to reach the destination is down.
-[ENETUNREACH]
-No route to the network is present.
-[ENOBUFS]
-Insufficient resources were available in the system to perform the operation.
-[ENOSR]
-There were insufficient STREAMS resources available for the operation to complete."
-]
-
-{ #category : #'socket functions' }
-OCNSysSocketLibrary >> sendTo: socketId buffer: buffer ofSize: size withFlag: flag result: result [
+OCNSysSocketLibrary >> sendTo: socketId buffer: buffer ofSize: size flags: flagsByte result: result [
 "ssize_t send(int socket, const void *buffer, size_t length, int flags);"
 
 	|  alienMethod |
 	alienMethod := self alienMethodNamed: 'send'.
 	alienMethod
 		primFFICallResult: result
-		withArguments: {socketId. buffer pointer. size. flag}.
+		withArguments: {socketId. buffer pointer. size. flagsByte}.
 	
 	
 "#include <sys/socket.h>

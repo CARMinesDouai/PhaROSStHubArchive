@@ -46,7 +46,7 @@ stdOutReader := self readerAttachedTo: stdOutHandles first.
 stdOutWriter := self writerAttachedTo: stdOutHandles second.
 
 process := ExternalUnixOSProcess new
-		programName: self programName;
+		programName: self programNameWithFullPath ;
 		arguments: self arguments;
 		initialEnvironment: nil.
 
@@ -54,6 +54,22 @@ process initialStdIn: stdInReader.
 process initialStdOut: stdOutWriter.
 process initialStdErr: stdOutWriter. "Err -> OUT"
 process value.
+]
+
+{ #category : #'Path Environment' }
+OCNShell >> fullExecutablePath: stringCommandName [
+	"OCNShell new fullExecutablePath:'lsZ' "
+	
+	
+	 | allPossiblesFullCommand |
+	
+	allPossiblesFullCommand := (ThisOSProcess thisOSProcess path findTokens: ':')	collect: [ :directory | 
+			directory , FileDirectory pathNameDelimiter asString, stringCommandName 
+	].
+		
+	^ allPossiblesFullCommand detect: [ :path |
+		((OSProcess accessor fileStat: path) isKindOf: String) not  	
+	] ifNone: [ '' ]
 ]
 
 { #category : #testing }
@@ -74,6 +90,11 @@ OCNShell >> process: anObject [
 { #category : #'command line' }
 OCNShell >> programName [
 	^self commandLine substrings first
+]
+
+{ #category : #'command line' }
+OCNShell >> programNameWithFullPath [
+	^self fullExecutablePath: self programName 
 ]
 
 { #category : #'execution-internal' }
