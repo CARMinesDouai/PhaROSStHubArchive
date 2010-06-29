@@ -14,6 +14,12 @@ OCNShellTest >> setUp [
 ]
 
 { #category : #testing }
+OCNShellTest >> testExecutableRetrievedFromFullPath [
+	
+	self assert: (OCNShell new fullExecutablePath:'/bin/ls') = '/bin/ls'
+]
+
+{ #category : #testing }
 OCNShellTest >> testExecutionDoesUsePathEnvironmentVariable [
 	shell exec: 'ls ', SmalltalkImage current imageName.
 	shell waitForTermination.

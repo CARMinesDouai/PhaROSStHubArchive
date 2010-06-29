@@ -61,7 +61,11 @@ OCNShell >> fullExecutablePath: stringCommandName [
 	"OCNShell new fullExecutablePath:'lsZ' "
 	
 	
-	 | allPossiblesFullCommand |
+	| allPossiblesFullCommand |
+	
+	(stringCommandName beginsWith: '/') ifTrue: [ 
+		((OSProcess accessor fileStat: stringCommandName) isKindOf: String) ifFalse: [ ^stringCommandName] ifTrue: [^''] 
+	].
 	
 	allPossiblesFullCommand := (ThisOSProcess thisOSProcess path findTokens: ':')	collect: [ :directory | 
 			directory , FileDirectory pathNameDelimiter asString, stringCommandName 
