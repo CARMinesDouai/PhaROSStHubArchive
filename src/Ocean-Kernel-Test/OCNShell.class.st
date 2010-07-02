@@ -57,23 +57,20 @@ process value.
 ]
 
 { #category : #'Path Environment' }
+OCNShell >> fileExists: path [
+	^ ((OSProcess accessor fileStat: path) isKindOf: String) not
+]
+
+{ #category : #'Path Environment' }
 OCNShell >> fullExecutablePath: stringCommandName [
 	"OCNShell new fullExecutablePath:'lsZ' "
-	
-	
+
 	| allPossiblesFullCommand |
 	
-	(stringCommandName beginsWith: '/') ifTrue: [ 
-		((OSProcess accessor fileStat: stringCommandName) isKindOf: String) ifFalse: [ ^stringCommandName] ifTrue: [^''] 
-	].
-	
-	allPossiblesFullCommand := (ThisOSProcess thisOSProcess path findTokens: ':')	collect: [ :directory | 
-			directory , FileDirectory pathNameDelimiter asString, stringCommandName 
-	].
-		
-	^ allPossiblesFullCommand detect: [ :path |
-		((OSProcess accessor fileStat: path) isKindOf: String) not  	
-	] ifNone: [ '' ]
+	(self fileExists: stringCommandName) ifTrue: [ ^ stringCommandName ].
+	allPossiblesFullCommand := (ThisOSProcess thisOSProcess path findTokens: ':')
+		collect: [ :directory | directory , FileDirectory pathNameDelimiter asString , stringCommandName ].
+	^ allPossiblesFullCommand detect: [ :path | self fileExists: path ] ifNone: [ '' ]
 ]
 
 { #category : #testing }

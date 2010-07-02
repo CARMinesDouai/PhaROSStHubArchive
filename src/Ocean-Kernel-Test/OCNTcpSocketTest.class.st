@@ -107,3 +107,9 @@ OCNTcpSocketTest >> testSocketFileDescriptorCreation [
 		protocol: library IpProtoTcp.
 	self assert: socket isDescriptorCreated
 ]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testSocketStatus [
+	"use OCNShell with lsof to really test socket state"
+	self fail.
+]
