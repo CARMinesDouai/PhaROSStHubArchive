@@ -34,8 +34,7 @@ OCNConstants class >> displaySnippets [
 { #category : #GUI }
 OCNConstants class >> displayWorkspace: title withContents: aString highlight: highlightOn [
 	| window |
-	SHWorkspace stylingActive: highlightOn.
-	window := SHWorkspace new 
+	window := Workspace new 
 		acceptContents: aString; 
 		openLabel: title ;
 		yourself.
