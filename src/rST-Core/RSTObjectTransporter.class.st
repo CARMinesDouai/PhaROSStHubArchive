@@ -32,8 +32,8 @@ RSTObjectTransporter class >> reference: aRemoteObjectID [
 
 { #category : #initialization }
 RSTObjectTransporter >> initializeObject: anObject type: aSymbol [
-	object _ anObject.
-	type _ aSymbol
+	object := anObject.
+	type := aSymbol
 ]
 
 { #category : #printing }

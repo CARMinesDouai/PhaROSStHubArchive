@@ -53,8 +53,8 @@ RSTRememberer >> forgetAllNamed: nameObject [
 
 { #category : #initialization }
 RSTRememberer >> initialize [
-	remembered _ IdentityDictionary new.
-	mutex _ Semaphore forMutualExclusion
+	remembered := IdentityDictionary new.
+	mutex := Semaphore forMutualExclusion
 ]
 
 { #category : #maintenance }

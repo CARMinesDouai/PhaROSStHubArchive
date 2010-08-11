@@ -21,14 +21,14 @@ RSTPerson >> eMail [
 { #category : #accessing }
 RSTPerson >> eMail: aString [ 
 	
-			eMail _ aString.
+			eMail := aString.
 			self changed: #eMail
 ]
 
 { #category : #initialization }
 RSTPerson >> initializeName: nameString eMail: eMailString [
-	name _ nameString.
-	eMail _ eMailString
+	name := nameString.
+	eMail := eMailString
 ]
 
 { #category : #accessing }
@@ -39,7 +39,7 @@ RSTPerson >> name [
 { #category : #accessing }
 RSTPerson >> name: aString [ 
 	
-			name _ aString.
+			name := aString.
 			self changed: #name
 ]
 

@@ -61,10 +61,10 @@ RSTSamples class >> runClientCollectionTests [
 	blocks, then the remote collection send #value: and #value to these  
 	locals blocks"
 	| remoteCollection localCollectionAsString remoteCollectionAsString remoteCollectionAsStringConverter |
-	remoteCollection _ ('collection@' , self serverBrokerID) asLocalObject.
-	remoteCollectionAsStringConverter _ ('collectionAsStringConverter@' , self serverBrokerID) asLocalObject.
-	remoteCollectionAsString _ remoteCollectionAsStringConverter value.
-	localCollectionAsString _ self collectionToString: remoteCollection.
+	remoteCollection := ('collection@' , self serverBrokerID) asLocalObject.
+	remoteCollectionAsStringConverter := ('collectionAsStringConverter@' , self serverBrokerID) asLocalObject.
+	remoteCollectionAsString := remoteCollectionAsStringConverter value.
+	localCollectionAsString := self collectionToString: remoteCollection.
 	Transcript show: 'remoteCollection=';
 		 show: localCollectionAsString;
 		 cr.
@@ -75,10 +75,10 @@ RSTSamples class >> runClientCollectionTests [
 { #category : #'running client side' }
 RSTSamples class >> runClientPerformanceTests [
 	| remoteToday localToday remoteTomorrow |
-	localToday _ Date today.
+	localToday := Date today.
 	""
-	remoteToday _ ('today@' , self serverBrokerID) asLocalObject.
-	remoteTomorrow _ remoteToday addDays: 1.
+	remoteToday := ('today@' , self serverBrokerID) asLocalObject.
+	remoteTomorrow := remoteToday addDays: 1.
 	MessageTally
 		spyOn: [100
 				timesRepeat: [remoteTomorrow subtractDate: localToday]]
@@ -88,11 +88,11 @@ RSTSamples class >> runClientPerformanceTests [
 RSTSamples class >> runClientPersonTests [
 	""
 	| remotePerson1 remotePerson2 vc1 vc2 |
-	remotePerson1 _ ('person1@' , self serverBrokerID) asLocalObject.
-	remotePerson2 _ ('person2@' , self serverBrokerID) asLocalObject.
+	remotePerson1 := ('person1@' , self serverBrokerID) asLocalObject.
+	remotePerson2 := ('person2@' , self serverBrokerID) asLocalObject.
 	""
-	vc1 _ RSTPersonViewController on: remotePerson1.
-	vc2 _ RSTPersonViewController on: remotePerson2.
+	vc1 := RSTPersonViewController on: remotePerson1.
+	vc2 := RSTPersonViewController on: remotePerson2.
 	""
 	vc1 test
 		ifFalse: [self error: 'something wrong!'].
@@ -105,11 +105,11 @@ RSTSamples class >> runClientTodayTests [
 	"Initialize an broker in the port 8888 and get a remote reference to a  
 	Date named today"
 	| remoteToday localToday remoteTomorrow localTomorrow elapsed |
-	localToday _ Date today.
-	localTomorrow _ localToday addDays: 1.
+	localToday := Date today.
+	localTomorrow := localToday addDays: 1.
 	""
 	"you must change the IP if you run the example in diferents machines"
-	remoteToday _ ('today@' , self serverBrokerID) asLocalObject.
+	remoteToday := ('today@' , self serverBrokerID) asLocalObject.
 	remoteToday inspect.
 	" 
 	hash return an integer so i receive a copy and the #= is a local  
@@ -118,13 +118,13 @@ RSTSamples class >> runClientTodayTests [
 		ifFalse: [self error: 'something wrong!'].
 	" 
 	remoteTomorrow is an remote object"
-	remoteTomorrow _ remoteToday addDays: 1.
+	remoteTomorrow := remoteToday addDays: 1.
 	remoteTomorrow isRemote
 		ifFalse: [self error: 'something wrong!'].
 	localTomorrow julianDayNumber = remoteTomorrow julianDayNumber
 		ifFalse: [self error: 'something wrong!'].
 	"pass a reference to a local object (localTomorrow)"
-	elapsed _ remoteTomorrow subtractDate: localTomorrow.
+	elapsed := remoteTomorrow subtractDate: localTomorrow.
 	elapsed isRemote
 		ifTrue: [self error: 'something wrong!'].
 	elapsed isZero
@@ -134,7 +134,7 @@ RSTSamples class >> runClientTodayTests [
 { #category : #'running client side' }
 RSTSamples class >> runClientTranscriptTests [
 	| remoteTranscript |
-	remoteTranscript _ ('Transcript@' , self serverBrokerID) asLocalObject.
+	remoteTranscript := ('Transcript@' , self serverBrokerID) asLocalObject.
 	remoteTranscript show: 'everything is ok! (from client side)';
 		 cr
 ]

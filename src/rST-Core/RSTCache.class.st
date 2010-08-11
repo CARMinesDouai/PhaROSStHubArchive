@@ -25,7 +25,7 @@ RSTCache class >> test [
 	RSTCache test
 	"
 	| c |
-	c _ RSTCache size: 5 factory: [:key | key * 2].
+	c := RSTCache size: 5 factory: [:key | key * 2].
 	c at: 1.
 	c at: 2.
 	c at: 3.
@@ -47,7 +47,7 @@ RSTCache class >> test2 [
 	MessageTally spyOn:[RSTCache test2]. 
 	"
 	| c |
-	c _ RSTCache size: 600 factory: [:key | key * 2].
+	c := RSTCache size: 600 factory: [:key | key * 2].
 	1 to: 6000 do: [:each | c at: each].
 	^ c
 ]
@@ -56,18 +56,18 @@ RSTCache class >> test2 [
 RSTCache >> at: aKey [ 
 	"answer the object for aKey, if not present in the cache creates it"
 	| element keyHash |
-	calls _ calls + 1.
-	keyHash _ aKey hash.
+	calls := calls + 1.
+	keyHash := aKey hash.
 	1
 		to: size
 		do: [:index | 
-			element _ values at: index.
+			element := values at: index.
 			(keyHash
 						= (element at: 2)
 					and: [aKey
 							= (element at: 1)])
 				ifTrue: ["Found!"
-					hits _ hits + 1.
+					hits := hits + 1.
 					values
 						replaceFrom: 2
 						to: index
@@ -75,7 +75,7 @@ RSTCache >> at: aKey [
 					values at: 1 put: element.
 					^ element at: 3]].
 	"Not found!"
-	element _ {aKey. keyHash. factory value: aKey}.
+	element := {aKey. keyHash. factory value: aKey}.
 	values
 		replaceFrom: 2
 		to: size
@@ -86,11 +86,11 @@ RSTCache >> at: aKey [
 
 { #category : #initialization }
 RSTCache >> initializeSize: aNumber factory: aBlock [ 
-	size _ aNumber.
-	values _ Array new: aNumber withAll:{nil. nil. nil}.
-	factory _ aBlock.
-	calls _ 0.
-	hits _ 0
+	size := aNumber.
+	values := Array new: aNumber withAll:{nil. nil. nil}.
+	factory := aBlock.
+	calls := 0.
+	hits := 0
 ]
 
 { #category : #printing }

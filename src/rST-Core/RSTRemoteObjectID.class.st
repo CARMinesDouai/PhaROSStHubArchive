@@ -21,7 +21,7 @@ RSTRemoteObjectID class >> brokerID: brokerIDString objectID: objectIDString [
 RSTRemoteObjectID class >> fromString: aString [ 
 	"creates an instance from aString with the format objectID@brokerID"
 	| atPos |
-	atPos _ aString indexOf: $@.
+	atPos := aString indexOf: $@.
 	atPos isZero
 		ifTrue: [self error: 'invalid format'].
 	^ self

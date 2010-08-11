@@ -25,8 +25,8 @@ RSTLivingReferencesExecutor >> executeIn: aBroker [
 
 { #category : #initialization }
 RSTLivingReferencesExecutor >> initializeFrom: brokerIDString objectIDs: aCollection [ 
-	from _ brokerIDString.
-	objectIDs _ aCollection
+	from := brokerIDString.
+	objectIDs := aCollection
 ]
 
 { #category : #printing }

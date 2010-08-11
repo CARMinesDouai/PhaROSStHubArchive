@@ -25,5 +25,5 @@ RSTWeakKeyManager >> depurate [
 { #category : #initialization }
 RSTWeakKeyManager >> initializeDictionary [
 	"hook method"
-	dictionary _ WeakValueDictionary new
+	dictionary := WeakValueDictionary new
 ]

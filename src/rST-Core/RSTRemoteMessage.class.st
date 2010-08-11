@@ -14,7 +14,7 @@ Class {
 RSTRemoteMessage class >> message: aMessage to: aRemoteObjectId using: aBroker [ 
 	"creates an remote message but first wrap all parameters in transporters"
 	| transportableArguments |
-	transportableArguments _ aMessage arguments
+	transportableArguments := aMessage arguments
 				collect: [:each | aBroker transporterFor: each].
 	^ (self selector: aMessage selector arguments: transportableArguments)
 		initializeTo: aRemoteObjectId
@@ -28,7 +28,7 @@ RSTRemoteMessage >> executeIn: aBroker [
 
 { #category : #initialization }
 RSTRemoteMessage >> initializeTo: aRemoteObjectId [
-	to _ aRemoteObjectId.
+	to := aRemoteObjectId.
 ]
 
 { #category : #printing }

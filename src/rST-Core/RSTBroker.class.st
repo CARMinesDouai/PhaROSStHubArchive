@@ -137,7 +137,7 @@ RSTBroker >> allProxies [
 	| allProxies |
 	proxiesMutex
 		critical: [""
-			allProxies _ proxies values
+			allProxies := proxies values
 						reject: [:each | each isNil]].
 	^ allProxies
 ]
@@ -188,7 +188,7 @@ RSTBroker >> endingTag [
 RSTBroker >> export: anObject named: aString [ 
 	"export anObject with name aString, so other squeaks can connect to  
 	anObject with:  
-	remoteObject _ 'aString@localip:port' asRemoteObjectID asLocalObject."
+	remoteObject := 'aString@localip:port' asRemoteObjectID asLocalObject."
 	anObject remoteType = #copy ifTrue: [
 		self logWarning: ['exporting object with #remoteType = #copy (' , anObject asString , ')']].
 	rememberer rememberForEver: anObject naming:aString.
@@ -425,7 +425,7 @@ RSTBroker >> releaseRemoteBrokers: remoteBrokers [
 RSTBroker >> remoteBroker: brokerIDString references: objectsIDsCollection [ 
 	"process a notification from a remote image of referenced objects"
 	| referencedObjects |
-	referencedObjects _ objectsIDsCollection
+	referencedObjects := objectsIDsCollection
 				collect: [:objectID | ""
 					exportedObjects
 						at: objectID

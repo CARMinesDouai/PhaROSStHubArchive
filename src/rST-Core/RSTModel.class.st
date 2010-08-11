@@ -34,7 +34,7 @@ RSTModel >> breakDependents [
 
 { #category : #private }
 RSTModel >> clearStrongDependents [
-	strongDependents _ nil
+	strongDependents := nil
 ]
 
 { #category : #dependents }
@@ -50,5 +50,5 @@ RSTModel >> removeDependent: anObject [
 { #category : #private }
 RSTModel >> strongDependents [
 	^ strongDependents
-		ifNil: [strongDependents _ IdentitySet new]
+		ifNil: [strongDependents := IdentitySet new]
 ]

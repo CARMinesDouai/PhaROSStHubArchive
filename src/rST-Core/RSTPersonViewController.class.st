@@ -18,7 +18,7 @@ RSTPersonViewController class >> on: aPerson [
 
 { #category : #initialization }
 RSTPersonViewController >> initializeOn: aPerson [ 
-	person _ aPerson.
+	person := aPerson.
 
 ]
 
@@ -38,24 +38,24 @@ RSTPersonViewController >> model: anObject [
 { #category : #testing }
 RSTPersonViewController >> test [
 	| testName testEMail ok |
-	ok _ true.
+	ok := true.
 	self model: person.
 	""
-	testName _ 'Diego Gomez Deck'.
+	testName := 'Diego Gomez Deck'.
 	person name: testName.
 	lastName = testName
 		ifFalse: [""
 			Transcript show: '*** INVALID LAST NAME ***';
 				 cr.
-			ok _ false].
+			ok := false].
 	""
-	testEMail _ 'DiegoGomezDeck@ConsultAr.com'.
+	testEMail := 'DiegoGomezDeck@ConsultAr.com'.
 	person eMail: testEMail.
 	lastEMail = testEMail
 		ifFalse: [""
 			Transcript show: '*** INVALID LAST EMAIL ***';
 				 cr.
-			ok _ false].
+			ok := false].
 	""
 	self model: nil.
 	^ ok
@@ -64,7 +64,7 @@ RSTPersonViewController >> test [
 { #category : #updating }
 RSTPersonViewController >> update: anEvent [ 
 	anEvent = #name
-		ifTrue: [lastName _ self model name].
+		ifTrue: [lastName := self model name].
 	anEvent = #eMail
-		ifTrue: [lastEMail _ self model eMail]
+		ifTrue: [lastEMail := self model eMail]
 ]

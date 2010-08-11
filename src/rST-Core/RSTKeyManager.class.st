@@ -30,11 +30,11 @@ RSTKeyManager >> at: keyObject ifAbsent: absentBlock [
 	mutex
 		critical: [self flag: #TODO.
 			"TODO: be carefull when WeakDictionary will be used"
-			value _ dictionary
+			value := dictionary
 						at: keyObject
 						ifAbsent: [].
 			value
-				ifNil: [value _ absentBlock value]].
+				ifNil: [value := absentBlock value]].
 	^ value
 ]
 
@@ -66,16 +66,16 @@ RSTKeyManager >> hasKey: anObject [
 
 { #category : #initialization }
 RSTKeyManager >> initialize [
-	lastKey _ 0.
-	mutex _ Semaphore forMutualExclusion.
+	lastKey := 0.
+	mutex := Semaphore forMutualExclusion.
 	self initializeDictionary.
-	onNewKey _ nil
+	onNewKey := nil
 ]
 
 { #category : #initialization }
 RSTKeyManager >> initializeDictionary [
 	"hook method"
-	dictionary _ Dictionary new
+	dictionary := Dictionary new
 ]
 
 { #category : #accessing }
@@ -85,7 +85,7 @@ RSTKeyManager >> keyFor: anObject [
 	anObject isNil
 		ifTrue: [^ self error: 'can store a nil'].
 	mutex
-		critical: [key _ dictionary
+		critical: [key := dictionary
 						keyAtIdentityValue: anObject
 						ifAbsent: [self newKeyFor: anObject]].
 	^ key
@@ -96,8 +96,8 @@ RSTKeyManager >> newKeyFor: anObject [
 	"PRIVATE: This method is called from a critical section, be carefull to call 
 	it without synchronization"
 	| lastKeyAsString |
-	lastKey _ lastKey + 1.
-	lastKeyAsString _ 'OID-'
+	lastKey := lastKey + 1.
+	lastKeyAsString := 'OID-'
 				, (self printHexFrom: 65535 atRandom)
 				, (self printHexFrom: lastKey)
 				, (self printHexFrom: 65535 atRandom).
@@ -110,7 +110,7 @@ RSTKeyManager >> newKeyFor: anObject [
 
 { #category : #accessing }
 RSTKeyManager >> onNewKey: aBlock [
-	onNewKey _ aBlock
+	onNewKey := aBlock
 ]
 
 { #category : #private }
