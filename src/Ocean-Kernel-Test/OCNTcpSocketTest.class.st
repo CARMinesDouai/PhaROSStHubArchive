@@ -9,6 +9,16 @@ Class {
 	#category : #'Ocean-Kernel-Test'
 }
 
+{ #category : #testing }
+OCNTcpSocketTest >> assertSendingDataOfSize: dataSize [
+	| dataToSendStream dataToSend |
+	dataToSendStream := FileStream fileNamed: SmalltalkImage current sourcesName.
+	[dataToSend := dataToSendStream next: dataSize] ensure:  [dataToSendStream close].
+	self assert: (socket send: dataToSend) = dataSize.
+	(Delay forMilliseconds: 50) wait.
+	self assert: server stdOut upToEnd withoutTrailingBlanks = dataToSend
+]
+
 { #category : #'setUp-tearDown' }
 OCNTcpSocketTest >> serverPort [
 	^9123
@@ -19,15 +29,15 @@ OCNTcpSocketTest >> setUp [
 	super setUp.
 	socket := OCNTcpSocket new.
 	library := OCNConstants socketLibrary.
-	server := OCNNetCatBasedServer port: self serverPort.
-	server start.
-	(Delay forMilliseconds: 5) wait.
+	server := OCNShell new. 
+	server exec: 'nc -4 -l localhost', String space, self serverPort printString.
+	(Delay forMilliseconds: 50) wait
 ]
 
 { #category : #'setUp-tearDown' }
 OCNTcpSocketTest >> tearDown [
 	super tearDown.
-	server stop.
+	server kill.
 	socket close
 ]
 
@@ -83,18 +93,13 @@ OCNTcpSocketTest >> testReceivingLargeAmountOfData [
 
 { #category : #testing }
 OCNTcpSocketTest >> testSend [
-	| serverAddress messageText |
-	self testConnection.
-	messageText := 'Message from Pharo using SysSocketLibrary'.
-	OCNConstants debug ifTrue: [messageText := messageText, ' [debug]'].
-	self assert: ((socket send: messageText) =  messageText byteSize).
-	self signalFailure: 'Need to rewrite the test using NetCat to check that the other side really receives the exact bytes'
-]
+	"Go beyond Socket>>defaultDataBufferSize"
 
-{ #category : #testing }
-OCNTcpSocketTest >> testSendingLargeAmountOfData [
-	"Go beyond Socket>>alienDataBufferSize"
-	self fail
+	self testConnection.
+	{socket defaultDataBufferSize//2 . 2 * socket defaultDataBufferSize} do: [:dataSize|
+		self assertSendingDataOfSize: dataSize].
+	self signalFailure: 'Does not handle sending large amounts of data e.g. 1000 or 5000'.
+
 ]
 
 { #category : #testing }

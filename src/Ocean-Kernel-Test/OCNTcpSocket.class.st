@@ -21,9 +21,17 @@ OCNTcpSocket >> alienDataBuffer: anObject [
 	alienDataBuffer := anObject
 ]
 
+{ #category : #'initialize-release' }
+OCNTcpSocket >> alienDataBufferOfSize: bytesCount [
+	self alienDataBuffer: (Alien newGC: bytesCount + 1).
+	
+]
+
 { #category : #accessing }
 OCNTcpSocket >> alienDataBufferSize [
-	^1000
+	^self alienDataBuffer 
+		ifNil: [self defaultDataBufferSize] 
+		ifNotNil: [self alienDataBuffer dataSize - 1]
 ]
 
 { #category : #accessing }
@@ -70,6 +78,11 @@ OCNTcpSocket >> createDescriptorWithDomain: communicationDomain type: socketType
 	self socketId: (result signedLongAt: 1)
 ]
 
+{ #category : #accessing }
+OCNTcpSocket >> defaultDataBufferSize [
+	^1000
+]
+
 { #category : #'initialize-release' }
 OCNTcpSocket >> initialize [ 
 	super initialize.
@@ -80,7 +93,7 @@ OCNTcpSocket >> initialize [
 
 { #category : #'initialize-release' }
 OCNTcpSocket >> initializeAlienIVs [
-	self alienDataBuffer: (Alien newGC: self alienDataBufferSize + 1).
+	self alienDataBuffer: (Alien newGC: self defaultDataBufferSize).
 	self alienResult: (Alien newGC: 4).
 
 ]
@@ -136,7 +149,8 @@ OCNTcpSocket >> send: data [
 	| sentDataSize |
 	self isConnected
 		ifFalse: [ Error signal: 'Socket not connected' ].
-	sentDataSize := data byteSize min: self alienDataBufferSize.
+	sentDataSize := data byteSize.
+	sentDataSize > self alienDataBufferSize ifTrue: [self alienDataBufferOfSize: sentDataSize].
 	self alienDataBuffer
 		replaceFrom: 1
 		to: sentDataSize

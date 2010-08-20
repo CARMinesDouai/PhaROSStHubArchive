@@ -50,6 +50,8 @@ process := ExternalUnixOSProcess new
 		arguments: self arguments;
 		initialEnvironment: nil.
 
+self stdOut setNonBlocking. "Allows sending upToEnd and reading the contents without blocking"
+
 process initialStdIn: stdInReader.
 process initialStdOut: stdOutWriter.
 process initialStdErr: stdOutWriter. "Err -> OUT"
@@ -74,8 +76,14 @@ OCNShell >> fullExecutablePath: stringCommandName [
 ]
 
 { #category : #testing }
-OCNShell >> isTerminated [
+OCNShell >> isStopped [
 	^self process isComplete 
+]
+
+{ #category : #'execution-public' }
+OCNShell >> kill [
+	self isStopped ifTrue: [^self]. 
+	self process terminate
 ]
 
 { #category : #accessing }
@@ -111,14 +119,20 @@ OCNShell >> stdOut [
 ]
 
 { #category : #'execution-public' }
-OCNShell >> waitForTermination [
-	self waitForTerminationTimeOutMilliseconds: 500
+OCNShell >> stop [
+	self isStopped ifTrue: [^self].
+	self waitForStop 
 ]
 
 { #category : #'execution-public' }
-OCNShell >> waitForTerminationTimeOutMilliseconds: duration [
+OCNShell >> waitForStop [
+	self waitForStopTimeOutMilliseconds: 500
+]
+
+{ #category : #'execution-public' }
+OCNShell >> waitForStopTimeOutMilliseconds: duration [
 	(Delay forMilliseconds: duration) wait.
-	self isTerminated ifFalse: [OCNTimeOutException signal: 'Shell not terminated yet!']
+	self isStopped ifFalse: [OCNTimeOutException signal: 'Shell not terminated yet!']
 ]
 
 { #category : #'execution-internal' }

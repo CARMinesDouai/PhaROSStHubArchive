@@ -22,16 +22,16 @@ OCNShellTest >> testExecutableRetrievedFromFullPath [
 { #category : #testing }
 OCNShellTest >> testExecutionDoesUsePathEnvironmentVariable [
 	shell exec: 'ls ', SmalltalkImage current imageName.
-	shell waitForTermination.
-	self assert: shell isTerminated.
+	shell waitForStop.
+	self assert: shell isStopped.
 	self assert: shell stdOut upToEnd withoutTrailingBlanks = SmalltalkImage current imageName.
 ]
 
 { #category : #testing }
 OCNShellTest >> testExecutionTerminatesAndStdOutContainsExpectedResult [
 	shell exec: '/bin/ls ', SmalltalkImage current imageName.
-	shell waitForTermination.
-	self assert: shell isTerminated.
+	shell waitForStop.
+	self assert: shell isStopped.
 	self assert: shell stdOut upToEnd withoutTrailingBlanks = SmalltalkImage current imageName.
 ]
 
