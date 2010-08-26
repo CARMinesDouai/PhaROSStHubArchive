@@ -115,17 +115,42 @@ ConfigurationOfOcean >> baseline01: spec [
 	]
 ]
 
-{ #category : #versions }
-ConfigurationOfOcean >> pharo11: spec [
-	<version: '0.1' imports: #('0.1-baseline')>
+{ #category : #baselines }
+ConfigurationOfOcean >> baseline02: spec [
+	<version: '0.2-baseline'>
 	
 	spec for: #common do: [
-		spec
-			blessing: #development; 
-			project: 'OSProcess' with: '4.3.12'; 
-			project: 'Alien' with:  'Pharo 1.1'
-			"; package: 'Ocean' with: 'Ocean-NouryBouraqadi.18' " "do not fix a particular version to load the latest one"
-	].
+		spec blessing: #baseline.
+
+		spec package: 'OSProcess' with: [
+			spec repository: 'http://www.squeaksource.com/OSProcess'.
+		].
+
+		spec package: 'OSProcess-Tests' with: [
+			spec repository: 'http://www.squeaksource.com/OSProcess';
+				requires: 'OSProcess'
+		].
+
+		spec project: 'Alien' with: [
+			spec 
+				className: 'ConfigurationOfAlien' ; 
+				loads: {'Core' . 'Tests' . 'LibC' . 'MacOSX'}; 
+				file: 'ConfigurationOfAlien';
+				repository: 'http://www.squeaksource.com/Alien'
+		].
+
+		spec package: 'Ocean' with: [
+			spec requires: #('Alien' 'OSProcess' ).
+			spec repository: 'http://www.squeaksource.com/Ocean'.
+		].
+	]
+]
+
+{ #category : #versions }
+ConfigurationOfOcean >> pharo11: spec [
+	<version: 'Pharo 1.1' imports: #('0.1-baseline')>
+	
+	^ self version02: spec
 ]
 
 { #category : #accessing }
@@ -139,4 +164,31 @@ ConfigurationOfOcean >> project [
 		project := constructor project.
 		project loadType: #linear. "change to #atomic if desired"
 		project ]
+]
+
+{ #category : #versions }
+ConfigurationOfOcean >> version01: spec [
+	<version: '0.1' imports: #('0.1-baseline')>
+	
+	spec for: #common do: [
+		spec
+			blessing: #development; 
+			project: 'OSProcess' with: '4.3.12'; 
+			project: 'Alien' with:  'Pharo 1.1'
+			"; package: 'Ocean' with: 'Ocean-NouryBouraqadi.18' " "do not fix a particular version to load the latest one"
+	].
+]
+
+{ #category : #versions }
+ConfigurationOfOcean >> version02: spec [
+	<version: '0.2' imports: #('0.2-baseline')>
+	
+	spec for: #common do: [
+		spec 
+			blessing: #development; 
+			project: 'Alien' with:  'Pharo 1.1';
+			package: 'OSProcess' with: 'OSProcess-dtl.53'; "there is a bug introduced in 54"
+			package: 'OSProcess-Tests' with: 'OSProcess-Tests-dtl.2'
+			"; package: 'Ocean' with: 'Ocean-NouryBouraqadi.18' " "do not fix a particular version to load the latest one"
+	] 
 ]
