@@ -1,6 +1,6 @@
 Class {
 	#name : #OCNDebugSysSocketLibrary,
-	#superclass : #OCNSysSocketLibrary,
+	#superclass : #OCNMacOSXSysSocketLibrary,
 	#category : #'Ocean-Kernel-TestSupport'
 }
 

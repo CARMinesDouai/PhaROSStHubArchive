@@ -72,7 +72,7 @@ OCNConstants class >> socketLibrary [
 { #category : #constants }
 OCNConstants class >> socketLibraryClass [
 	^ self debug ifTrue: [ OCNDebugSysSocketLibrary ]
-		ifFalse: [OCNSysSocketLibrary ]
+		ifFalse: [OCNMacOSXSysSocketLibrary ]
 
 ]
 

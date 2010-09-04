@@ -1,6 +1,6 @@
 Class {
 	#name : #OCNTcpSocket,
-	#superclass : #Object,
+	#superclass : #OCNSocket,
 	#instVars : [
 		'socketId',
 		'isConnected',

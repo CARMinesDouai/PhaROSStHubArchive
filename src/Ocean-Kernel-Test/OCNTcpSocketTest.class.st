@@ -11,12 +11,13 @@ Class {
 
 { #category : #testing }
 OCNTcpSocketTest >> assertSendingDataOfSize: dataSize [
-	| dataToSendStream dataToSend |
+	| dataToSendStream wideStringToSend byteStringToSend|
 	dataToSendStream := FileStream fileNamed: SmalltalkImage current sourcesName.
-	[dataToSend := dataToSendStream next: dataSize] ensure:  [dataToSendStream close].
-	self assert: (socket send: dataToSend) = dataSize.
+	[wideStringToSend := dataToSendStream next: dataSize] ensure:  [dataToSendStream close].
+	byteStringToSend := ByteString fromByteArray: (wideStringToSend asByteArray).
+	self assert: (socket send: byteStringToSend) = dataSize.
 	(Delay forMilliseconds: 50) wait.
-	self assert: server stdOut upToEnd withoutTrailingBlanks = dataToSend
+	self assert: server stdOut upToEnd withoutTrailingBlanks = byteStringToSend
 ]
 
 { #category : #'setUp-tearDown' }
@@ -30,7 +31,7 @@ OCNTcpSocketTest >> setUp [
 	socket := OCNTcpSocket new.
 	library := OCNConstants socketLibrary.
 	server := OCNShell new. 
-	server exec: 'nc -4 -l localhost', String space, self serverPort printString.
+	server exec: 'nc -4 -lk localhost', String space, self serverPort printString.
 	(Delay forMilliseconds: 50) wait
 ]
 
@@ -71,7 +72,7 @@ OCNTcpSocketTest >> testConnection [
 	| serverAddress |
 	self testSocketFileDescriptorCreation.
 	self deny: socket isConnected.
-	serverAddress := OCNSocketAddress new.
+	serverAddress := OCNIPV4SocketAddress new.
 	serverAddress 
 		family: library AfInet;
 		ip: #[127 0 0 1]; "localhost should have a server"
@@ -96,9 +97,11 @@ OCNTcpSocketTest >> testSend [
 	"Go beyond Socket>>defaultDataBufferSize"
 
 	self testConnection.
-	{socket defaultDataBufferSize//2 . 2 * socket defaultDataBufferSize} do: [:dataSize|
+	{socket defaultDataBufferSize//2 . 
+		2 * socket defaultDataBufferSize. 
+		1000 * socket defaultDataBufferSize
+	} do: [:dataSize| 
 		self assertSendingDataOfSize: dataSize].
-	self signalFailure: 'Does not handle sending large amounts of data e.g. 1000 or 5000'.
 
 ]
 
