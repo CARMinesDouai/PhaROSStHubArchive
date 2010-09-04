@@ -11,13 +11,15 @@ Class {
 
 { #category : #testing }
 OCNTcpSocketTest >> assertSendingDataOfSize: dataSize [
-	| dataToSendStream wideStringToSend byteStringToSend|
-	dataToSendStream := FileStream fileNamed: SmalltalkImage current sourcesName.
-	[wideStringToSend := dataToSendStream next: dataSize] ensure:  [dataToSendStream close].
-	byteStringToSend := ByteString fromByteArray: (wideStringToSend asByteArray).
-	self assert: (socket send: byteStringToSend) = dataSize.
+	| dataToSendStream allCharacters dataToSend |
+	allCharacters := Character allCharacters. 
+	dataToSendStream := WriteStream on: (String new: dataSize).
+	dataSize timesRepeat: [
+		dataToSendStream nextPut: allCharacters atRandom].
+	dataToSend := dataToSendStream contents.
+	self assert: (socket send: dataToSend) = dataSize.
 	(Delay forMilliseconds: 50) wait.
-	self assert: server stdOut upToEnd withoutTrailingBlanks = byteStringToSend
+	self assert: server stdOut upToEnd withoutTrailingBlanks = dataToSend
 ]
 
 { #category : #'setUp-tearDown' }
