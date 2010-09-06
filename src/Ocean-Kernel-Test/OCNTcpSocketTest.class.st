@@ -11,16 +11,21 @@ Class {
 
 { #category : #testing }
 OCNTcpSocketTest >> assertSendingDataOfSize: dataSize [
-	| dataToSendStream allCharacters dataToSend receivedData |
-	allCharacters := Character allCharacters. 
-	dataToSendStream := WriteStream on: (String new: dataSize).
-	dataSize timesRepeat: [
-		dataToSendStream nextPut: allCharacters atRandom].
-	dataToSend := dataToSendStream contents.
+	| dataToSend receivedData |
+	dataToSend := self randomAsciiStringOfSize: dataSize.
 	self assert: (socket send: dataToSend) = dataSize.
 	(Delay forMilliseconds: 50) wait.
-	receivedData := server stdOut upToEnd withoutTrailingBlanks.
+	receivedData := server stdOut contents.
 	self assert: receivedData = dataToSend
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> randomAsciiStringOfSize: dataSize [
+	| allCharacters dataToSendStream |
+	allCharacters := Character alphabet.
+	dataToSendStream := WriteStream on: (String new: dataSize).
+	dataSize timesRepeat: [ dataToSendStream nextPut: allCharacters atRandom ].
+	^ dataToSendStream contents
 ]
 
 { #category : #'setUp-tearDown' }
@@ -33,7 +38,8 @@ OCNTcpSocketTest >> setUp [
 	super setUp.
 	socket := OCNTcpSocket new.
 	library := OCNConstants socketLibrary.
-	server := OCNShell new. 
+	server := OCNFileStdOutShell new. 
+	server stdOutFilename: 'test.log'.
 	server exec: 'nc -4 -l localhost', String space, self serverPort printString.
 	(Delay forMilliseconds: 50) wait
 ]

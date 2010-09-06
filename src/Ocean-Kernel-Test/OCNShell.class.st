@@ -5,7 +5,8 @@ Class {
 		'stdInWriter',
 		'stdOutReader',
 		'process',
-		'commandLine'
+		'commandLine',
+		'stdOutWriter'
 	],
 	#category : #'Ocean-Kernel-TestSupport'
 }
@@ -35,22 +36,18 @@ OCNShell >> commandLine: commandLineString [
 
 { #category : #'execution-public' }
 OCNShell >> exec: commandLineString [ 
-	| stdInHandles stdInReader stdOutHandles stdOutWriter |
+	| stdInHandles stdInReader |
 	self commandLine: commandLineString.
 	
 stdInHandles := OSProcess accessor makePipeHandles. 
 stdInReader := self readerAttachedTo: stdInHandles first. 
 stdInWriter := self writerAttachedTo: stdInHandles second.
-stdOutHandles := OSProcess accessor makePipeHandles. 
-stdOutReader := self readerAttachedTo: stdOutHandles first. 
-stdOutWriter := self writerAttachedTo: stdOutHandles second.
+self setupStdOut.
 
 process := ExternalUnixOSProcess new
 		programName: self programNameWithFullPath ;
 		arguments: self arguments;
 		initialEnvironment: nil.
-
-self stdOut setNonBlocking. "Allows sending upToEnd and reading the contents without blocking"
 
 process initialStdIn: stdInReader.
 process initialStdOut: stdOutWriter.
@@ -111,6 +108,16 @@ OCNShell >> readerAttachedTo: aHandle [
  	^self attachableFileStreamNamed: 'Reader'
 							attachedTo: aHandle
 							writable: false 
+]
+
+{ #category : #'execution-internal' }
+OCNShell >> setupStdOut [
+	| stdOutHandles |
+	stdOutHandles := OSProcess accessor makePipeHandles. 
+	stdOutReader := self readerAttachedTo: stdOutHandles first. 
+	stdOutWriter := self writerAttachedTo: stdOutHandles second.
+	self stdOut setNonBlocking. "Allows sending upToEnd and reading the contents without blocking"
+
 ]
 
 { #category : #accessing }
