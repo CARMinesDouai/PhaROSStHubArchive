@@ -11,7 +11,7 @@ Class {
 
 { #category : #testing }
 OCNTcpSocketTest >> assertSendingDataOfSize: dataSize [
-	| dataToSendStream allCharacters dataToSend |
+	| dataToSendStream allCharacters dataToSend receivedData |
 	allCharacters := Character allCharacters. 
 	dataToSendStream := WriteStream on: (String new: dataSize).
 	dataSize timesRepeat: [
@@ -19,7 +19,8 @@ OCNTcpSocketTest >> assertSendingDataOfSize: dataSize [
 	dataToSend := dataToSendStream contents.
 	self assert: (socket send: dataToSend) = dataSize.
 	(Delay forMilliseconds: 50) wait.
-	self assert: server stdOut upToEnd withoutTrailingBlanks = dataToSend
+	receivedData := server stdOut upToEnd withoutTrailingBlanks.
+	self assert: receivedData = dataToSend
 ]
 
 { #category : #'setUp-tearDown' }
@@ -33,7 +34,7 @@ OCNTcpSocketTest >> setUp [
 	socket := OCNTcpSocket new.
 	library := OCNConstants socketLibrary.
 	server := OCNShell new. 
-	server exec: 'nc -4 -lk localhost', String space, self serverPort printString.
+	server exec: 'nc -4 -l localhost', String space, self serverPort printString.
 	(Delay forMilliseconds: 50) wait
 ]
 

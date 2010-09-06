@@ -644,12 +644,17 @@ OCNMacOSXSysSocketLibrary >> receiveFunctionName [
 	^'recv'
 ]
 
+{ #category : #'function names' }
+OCNMacOSXSysSocketLibrary >> sendFunctionName [
+	^'send'
+]
+
 { #category : #'socket functions' }
 OCNMacOSXSysSocketLibrary >> sendTo: socketId buffer: buffer ofSize: size flags: flagsByte result: result [
 "ssize_t send(int socket, const void *buffer, size_t length, int flags);"
 
 	|  alienMethod |
-	alienMethod := self alienMethodNamed: 'send'.
+	alienMethod := self alienMethodNamed: self sendFunctionName.
 	alienMethod
 		primFFICallResult: result
 		withArguments: {socketId. buffer pointer. size. flagsByte}.

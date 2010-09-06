@@ -223,7 +223,7 @@ OCNDebugSysSocketLibrary >> libraryName [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'printing utilities' }
 OCNDebugSysSocketLibrary >> printTab: aByteArray size: size [
 "int myPrintTab(int* tab,int size);"
 
@@ -237,7 +237,7 @@ OCNDebugSysSocketLibrary >> printTab: aByteArray size: size [
 	^ result
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'printing utilities' }
 OCNDebugSysSocketLibrary >> printTabOfByte: aByteArray size: size [
 "int myPrintTab(int* tab,int size);"
 
@@ -251,7 +251,7 @@ OCNDebugSysSocketLibrary >> printTabOfByte: aByteArray size: size [
 	^ result
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'printing utilities' }
 OCNDebugSysSocketLibrary >> printTabOfChar: anArrayOfChar size: size [
 
 	| result alienMethod |
@@ -264,7 +264,7 @@ OCNDebugSysSocketLibrary >> printTabOfChar: anArrayOfChar size: size [
 	^ result
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'printing utilities' }
 OCNDebugSysSocketLibrary >> printTabOfInt: aByteArray size: size [
 "int myPrintTab(int* tab,int size);"
 
@@ -276,4 +276,9 @@ OCNDebugSysSocketLibrary >> printTabOfInt: aByteArray size: size [
 		with: aByteArray 
 		with: size.	
 	^ result
+]
+
+{ #category : #'socket functions' }
+OCNDebugSysSocketLibrary >> sendFunctionName [
+	^'send_for_debug'
 ]
