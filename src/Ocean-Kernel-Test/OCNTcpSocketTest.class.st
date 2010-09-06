@@ -2,21 +2,24 @@ Class {
 	#name : #OCNTcpSocketTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'server',
 		'socket',
-		'library'
+		'library',
+		'serverShell'
 	],
 	#category : #'Ocean-Kernel-Test'
 }
 
 { #category : #testing }
 OCNTcpSocketTest >> assertSendingDataOfSize: dataSize [
-	| dataToSend receivedData |
+	| dataToSend receivedData | 
+	self testConnection.
 	dataToSend := self randomAsciiStringOfSize: dataSize.
 	self assert: (socket send: dataToSend) = dataSize.
 	(Delay forMilliseconds: 50) wait.
-	receivedData := server stdOut contents.
-	self assert: receivedData = dataToSend
+	receivedData := serverShell stdOut contents.
+	self assert: receivedData size = dataSize.
+	self assert: receivedData = dataToSend.
+
 ]
 
 { #category : #testing }
@@ -38,16 +41,21 @@ OCNTcpSocketTest >> setUp [
 	super setUp.
 	socket := OCNTcpSocket new.
 	library := OCNConstants socketLibrary.
-	server := OCNFileStdOutShell new. 
-	server stdOutFilename: 'test.log'.
-	server exec: 'nc -4 -l localhost', String space, self serverPort printString.
+	serverShell := OCNFileStdOutShell onStdOutFileNamed: 'test.log'.
+	self startServer
+]
+
+{ #category : #'setUp-tearDown' }
+OCNTcpSocketTest >> startServer [
+	serverShell exec: 'nc -4 -l ' , String space , self serverPort printString.
 	(Delay forMilliseconds: 50) wait
 ]
 
 { #category : #'setUp-tearDown' }
 OCNTcpSocketTest >> tearDown [
 	super tearDown.
-	server kill.
+	serverShell deleteStdOutFile.
+	serverShell kill.
 	socket close
 ]
 
@@ -102,15 +110,20 @@ OCNTcpSocketTest >> testReceivingLargeAmountOfData [
 ]
 
 { #category : #testing }
-OCNTcpSocketTest >> testSend [
-	"Go beyond Socket>>defaultDataBufferSize"
+OCNTcpSocketTest >> testSendingLargeAmountOfDataComparedToSizeOfSocketsDataBuffer [
+	self assertSendingDataOfSize: 1000 * socket defaultDataBufferSize.
 
-	self testConnection.
-	{socket defaultDataBufferSize//2 . 
-		2 * socket defaultDataBufferSize. 
-		1000 * socket defaultDataBufferSize
-	} do: [:dataSize| 
-		self assertSendingDataOfSize: dataSize].
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testSendingLessDataThanSocketsDataBufferSize [
+	self assertSendingDataOfSize: socket defaultDataBufferSize//2 .
+
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testSendingMoreDataThanSizeOfSocketsDataBuffer [
+	self assertSendingDataOfSize: 2 * socket defaultDataBufferSize.
 
 ]
 
