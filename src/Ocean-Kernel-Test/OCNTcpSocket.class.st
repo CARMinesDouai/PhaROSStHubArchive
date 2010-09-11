@@ -44,6 +44,17 @@ OCNTcpSocket >> alienResult: anObject [
 	alienResult := anObject
 ]
 
+{ #category : #communication }
+OCNTcpSocket >> basicReceive [
+	OCNConstants socketLibrary
+		receiveFrom: self socketId 
+		buffer: self alienDataBuffer 
+		ofSize: self alienDataBufferSize 	
+		flags: 0 "<--------"
+		result: self alienResult.
+	^self communicationResult
+]
+
 { #category : #connection }
 OCNTcpSocket >> close [
 	(self isClosed not & self isConnected) ifTrue: [
@@ -129,18 +140,9 @@ OCNTcpSocket >> isDescriptorCreated [
 
 { #category : #communication }
 OCNTcpSocket >> receive [
-	|waitForData|
 	self isConnected ifFalse: [Error signal: 'Socket not connected'].
-	waitForData := true.
-	[waitForData] whileTrue: [
-		OCNConstants socketLibrary
-			receiveFrom: self socketId 
-			buffer: self alienDataBuffer 
-			ofSize: self alienDataBufferSize 	
-			flags: 0 "<--------"
-			result: self alienResult.
-		 waitForData := (self communicationResult == 0 ).
-	].
+	self basicReceive == 0 ifTrue: [
+		^''].
 	^self alienDataBuffer strcpy
 ]
 

@@ -121,6 +121,11 @@ OCNShell >> setupStdOut [
 ]
 
 { #category : #accessing }
+OCNShell >> stdIn [
+	^stdInWriter 
+]
+
+{ #category : #accessing }
 OCNShell >> stdOut [
 	^stdOutReader 
 ]
