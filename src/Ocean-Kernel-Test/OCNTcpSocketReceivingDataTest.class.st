@@ -6,7 +6,7 @@ Class {
 
 { #category : #testing }
 OCNTcpSocketReceivingDataTest >> assertReceivingDataOfSize: dataSize [
-	| dataToSend waitForData stdIn receivedDataSize dataPacket receptionDelay receivedData receptionStream |
+	| dataToSend stdIn receptionStream waitForData dataPacket receivedData |
 	dataToSend := self randomAsciiStringOfSize: dataSize.
 	serverShell deleteStdInFile.
 	stdIn := FileStream fileNamed: serverShell stdInFileName.
@@ -15,12 +15,11 @@ OCNTcpSocketReceivingDataTest >> assertReceivingDataOfSize: dataSize [
 	self testConnection.
 	receptionStream := WriteStream on: (ByteArray new: dataSize).
 	waitForData := true.
-	receivedDataSize := 0.
-	[ receivedDataSize < dataSize ]
+	[ waitForData ]
 		whileTrue: [ 
 			dataPacket := socket receive.
-			receivedDataSize := receivedDataSize + dataPacket size.
-			receptionStream nextPutAll: dataPacket ].
+			receptionStream nextPutAll: dataPacket.
+			waitForData := dataPacket size > 0].
 	receivedData := receptionStream contents asString.
 	self assert: receivedData = dataToSend
 ]
