@@ -565,6 +565,53 @@ OCNMacOSXSysSocketLibrary >> ntohs: anInt [
 ]
 
 { #category : #'socket functions' }
+OCNMacOSXSysSocketLibrary >> readFrom: socketId buffer: buffer ofSize: bufferSize result: result [
+
+	| alienMethod |
+	alienMethod := self alienMethodNamed: self readFunctionName.
+	alienMethod
+		primFFICallResult: result
+		withArguments: {socketId. buffer pointer. bufferSize}.
+
+"#include <sys/types.h>#include <unistd.h>
+ssize_t read(int fd, void *buf, size_t count);
+Description
+
+read lit jusqu'à count octets depuis le descripteur de fichier fd dans le buffer pointé par buf.
+Si count vaut zéro, read renvoie zéro et n'a pas d'autres effets.
+
+Si count est supérieur à SSIZE_MAX, le résultat est indéfini.
+
+Valeur Renvoyée
+
+read renvoie -1 s'il échoue, auquel cas errno contient le code d'erreur, et la position de la tête de lecture est indéfinie.
+Sinon, read renvoie le nombre d'octets lus (0 en fin de fichier), et avance la tête de lecture de ce nombre. Le fait que le nombre renvoyé soit plus petit que le nombre demandé n'est pas une erreur. Ceci se produit à la fin du fichier, ou si on lit depuis un tube ou un terminal, ou encore si read a été interrompu par un signal.
+
+Erreurs
+
+EINTR
+read a été interrompu par un signal avant d'avoir eu le temps de lire quoi que ce soit.
+EAGAIN
+On utilise une lecture non bloquante (attribut O_NONBLOCK du descripteur de fichier) et aucune donnée n'était disponible.
+EIO
+Erreur d'entrée/sortie. Ceci arrive si un processus est dans un groupe en arrière-plan et tente de lire depuis le terminal. Il reçoit un signal SIGTTIN mais il l'ignore ou le bloque. Ceci se produit également si une erreur d'entrée/sortie bas-niveau s'est produite pendant la lecture d'un disque ou d'une bande.
+EISDIR
+fd est un répertoire.
+EBADF
+fd n'est pas un descripteur valide, ou n'est pas ouvert en lecture.
+EINVAL
+fd corrrespond à un objet ne permettant pas la lecture.
+EFAULT
+buf pointe en dehors de l'espace d'adressage accessible.
+D'autres erreurs peuvent se produire, suivant le type d'objet associé à fd. POSIX permet à un read interrompu par un signal de renvoyer soit le nombre d'octets lus à ce point, soit -1, et de placer errno à EINTR."
+]
+
+{ #category : #'function names' }
+OCNMacOSXSysSocketLibrary >> readFunctionName [
+	^'read'
+]
+
+{ #category : #'socket functions' }
 OCNMacOSXSysSocketLibrary >> receiveFrom: socketId buffer: dataBuffer ofSize: dataBufferSize flags: flagsByte result: result [
 
 	| alienMethod |

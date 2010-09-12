@@ -45,6 +45,16 @@ OCNTcpSocket >> alienResult: anObject [
 ]
 
 { #category : #communication }
+OCNTcpSocket >> basicRead [
+ 	OCNConstants socketLibrary
+		readFrom: self socketId 
+		buffer: self alienDataBuffer  
+		ofSize: self alienDataBufferSize 	
+		result: self alienResult.
+	^self communicationResult
+]
+
+{ #category : #communication }
 OCNTcpSocket >> basicReceive [
 	OCNConstants socketLibrary
 		receiveFrom: self socketId 
@@ -140,10 +150,12 @@ OCNTcpSocket >> isDescriptorCreated [
 
 { #category : #communication }
 OCNTcpSocket >> receive [
+	| numberOfBytesReceived |
 	self isConnected ifFalse: [Error signal: 'Socket not connected'].
-	self basicReceive == 0 ifTrue: [
+	numberOfBytesReceived := self basicRead.
+	numberOfBytesReceived == 0 ifTrue: [
 		^''].
-	^self alienDataBuffer strcpy
+	^self alienDataBuffer strcpyFrom: 1 ofSize: numberOfBytesReceived
 ]
 
 { #category : #communication }

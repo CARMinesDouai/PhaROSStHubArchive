@@ -3,6 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'stdInWriter',
+		'stdInReader',
 		'stdOutReader',
 		'process',
 		'commandLine',
@@ -35,24 +36,18 @@ OCNShell >> commandLine: commandLineString [
 ]
 
 { #category : #'execution-public' }
-OCNShell >> exec: commandLineString [ 
-	| stdInHandles stdInReader |
+OCNShell >> exec: commandLineString [
 	self commandLine: commandLineString.
-	
-stdInHandles := OSProcess accessor makePipeHandles. 
-stdInReader := self readerAttachedTo: stdInHandles first. 
-stdInWriter := self writerAttachedTo: stdInHandles second.
-self setupStdOut.
-
-process := ExternalUnixOSProcess new
-		programName: self programNameWithFullPath ;
+	self setupStdIn.
+	self setupStdOut.
+	process := (ExternalUnixOSProcess new)
+		programName: self programNameWithFullPath;
 		arguments: self arguments;
 		initialEnvironment: nil.
-
-process initialStdIn: stdInReader.
-process initialStdOut: stdOutWriter.
-process initialStdErr: stdOutWriter. "Err -> OUT"
-process value.
+	process initialStdIn: stdInReader.
+	process initialStdOut: stdOutWriter.
+	process initialStdErr: stdOutWriter.	"Err -> OUT"
+	process value
 ]
 
 { #category : #'Path Environment' }
@@ -108,6 +103,14 @@ OCNShell >> readerAttachedTo: aHandle [
  	^self attachableFileStreamNamed: 'Reader'
 							attachedTo: aHandle
 							writable: false 
+]
+
+{ #category : #'execution-internal' }
+OCNShell >> setupStdIn [
+	| stdInHandles |
+	stdInHandles := OSProcess accessor makePipeHandles.
+	stdInReader := self readerAttachedTo: stdInHandles first.
+	stdInWriter := self writerAttachedTo: stdInHandles second.
 ]
 
 { #category : #'execution-internal' }
