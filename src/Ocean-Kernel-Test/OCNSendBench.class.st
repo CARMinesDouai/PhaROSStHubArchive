@@ -27,9 +27,10 @@ OCNSendBench >> createServerShell [
 { #category : #benchmarking }
 OCNSendBench >> timeToSendWithOcean [
 	"OCNSendBench new timeToSendWithOcean"
+
 	self startServer.
 	self connectOceanSocket.
-	[ self timeToRun: [ socket send: dataToSend ] times: 10 ]
+	[ self timeToRun: [ socket send: dataToSend ] ]
 		ensure: [ 
 			self stopServerAndCleanUp.
 			socket close ].
@@ -42,7 +43,7 @@ OCNSendBench >> timeToSendWithOldSocket [
 
 	self startServer.
 	self connectOldSocket.
-	[ self timeToRun: [ socket sendData: dataToSend ] times: 10 ]
+	[ self timeToRun: [ socket sendData: dataToSend ] ]
 		ensure: [ 
 			self stopServerAndCleanUp.
 			socket close ].

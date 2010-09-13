@@ -5,10 +5,19 @@ Class {
 		'socket',
 		'serverShell',
 		'dataToSend',
-		'timeToRunValues'
+		'timeToRunValues',
+		'iterationsCount'
+	],
+	#classVars : [
+		'randomStringsDict'
 	],
 	#category : #'Ocean-Benchmarks'
 }
+
+{ #category : #'class initialization' }
+OCNBench class >> initialize [ 
+	randomStringsDict := Dictionary new
+]
 
 { #category : #benchmarking }
 OCNBench >> connectOceanSocket [
@@ -35,10 +44,14 @@ OCNBench >> connectOldSocket [
 { #category : #'initialize-release' }
 OCNBench >> createRandomString [
 	| allCharacters dataToSendStream |
+	randomStringsDict 
+		at: self randomStringSize 
+		ifPresent: [:value| ^dataToSend := value].
 	allCharacters := Character alphabet.
 	dataToSendStream := WriteStream on: (String new: self randomStringSize).
 	self randomStringSize timesRepeat: [ dataToSendStream nextPut: allCharacters atRandom ].
 	dataToSend := dataToSendStream contents.
+	randomStringsDict at: self randomStringSize put: dataToSend
 
 ]
 
@@ -48,9 +61,25 @@ OCNBench >> createServerShell [
 ]
 
 { #category : #'initialize-release' }
+OCNBench >> defaultIterationsCount [
+	^10
+]
+
+{ #category : #'initialize-release' }
 OCNBench >> initialize [ 
 	super initialize.
-	self createRandomString
+	self createRandomString.
+	self iterationsCount: self defaultIterationsCount
+]
+
+{ #category : #accessing }
+OCNBench >> iterationsCount [
+	^ iterationsCount
+]
+
+{ #category : #accessing }
+OCNBench >> iterationsCount: anObject [
+	iterationsCount := anObject
 ]
 
 { #category : #'initialize-release' }
@@ -88,14 +117,14 @@ OCNBench >> stopServerAndCleanUp [
 ]
 
 { #category : #benchmarking }
-OCNBench >> timeToRun: aBlock times: iterationsCount [
-	self timeToRun: aBlock  times: iterationsCount  setUpBlock: [] tearDownBlock: [] 
+OCNBench >> timeToRun: aBlock [
+	self timeToRun: aBlock setUpBlock: [  ] tearDownBlock: [  ]
 ]
 
 { #category : #benchmarking }
-OCNBench >> timeToRun: aBlock times: iterationsCount setUpBlock: setUpBlock tearDownBlock: tearDownBlock. [
+OCNBench >> timeToRun: aBlock setUpBlock: setUpBlock tearDownBlock: tearDownBlock. [
 	self resetTimeToRunValues.
-	iterationsCount timesRepeat: [ 
+	self iterationsCount timesRepeat: [ 
 		setUpBlock value.
 		[
 			timeToRunValues add: [aBlock value] timeToRun

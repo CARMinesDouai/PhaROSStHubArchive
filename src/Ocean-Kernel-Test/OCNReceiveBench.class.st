@@ -19,6 +19,22 @@ OCNReceiveBench class >> timeToReceive [
 
 ]
 
+{ #category : #benchmarking }
+OCNReceiveBench class >> timeToReceive: iterationsCount [
+	"self timeToReceive: 1"
+	|bench|
+	Transcript open.
+	bench := self new.
+	bench iterationsCount: iterationsCount.
+	Transcript cr; show: 'Ocean>>receive'.
+	bench timeToReceiveWithOcean do: [:time|
+		Transcript cr; show: time].
+	Transcript cr; show: 'OldSocket>>receive'.
+	bench timeToReceiveWithOldSocket do: [:time|
+		Transcript cr; show: time].
+
+]
+
 { #category : #server }
 OCNReceiveBench >> createServerShell [ 
 	| shell stdIn |
@@ -36,42 +52,35 @@ OCNReceiveBench >> createServerShell [
 { #category : #benchmarking }
 OCNReceiveBench >> timeToReceiveWithOcean [
 	"OCNReceiveBench new timeToReceiveWithOcean"
+
 	| waitForData dataPacket blockToBench setUpBlock tearDownBlock |
 	blockToBench := [ 
-			waitForData := true.
-			[ waitForData ]
-				whileTrue: [
-					waitForData := socket receive size > 0]
-			].
+	waitForData := true.
+	[ waitForData ] whileTrue: [ waitForData := socket receive size > 0 ] ].
 	setUpBlock := [ 
-		self startServer.
-		self connectOceanSocket].
+	self startServer.
+	self connectOceanSocket ].
 	tearDownBlock := [ 
-			self stopServerAndCleanUp.
-			socket close ].
-	self 
-		timeToRun: blockToBench times: 10 setUpBlock: setUpBlock tearDownBlock: tearDownBlock.
+	self stopServerAndCleanUp.
+	socket close ].
+	self timeToRun: blockToBench setUpBlock: setUpBlock tearDownBlock: tearDownBlock.
 	^ timeToRunValues
 ]
 
 { #category : #benchmarking }
 OCNReceiveBench >> timeToReceiveWithOldSocket [
 	"OCNReceiveBench new timeToReceiveWithOldSocket"
-	| waitForData dataPacket blockToBench setUpBlock tearDownBlock |
 
- 	blockToBench := [ 
-			waitForData := true.
-			[ waitForData ]
-				whileTrue: [
-					waitForData := socket receiveData size > 0]
-			].
+	| waitForData dataPacket blockToBench setUpBlock tearDownBlock |
+	blockToBench := [ 
+	waitForData := true.
+	[ waitForData ] whileTrue: [ waitForData := socket receiveData size > 0 ] ].
 	setUpBlock := [ 
-		self startServer.
-		self connectOldSocket].
+	self startServer.
+	self connectOldSocket ].
 	tearDownBlock := [ 
-			self stopServerAndCleanUp.
-			socket close ].
-	self 
-		timeToRun: blockToBench times: 10 setUpBlock: setUpBlock tearDownBlock: tearDownBlock.
+	self stopServerAndCleanUp.
+	socket close ].
+	self timeToRun: blockToBench setUpBlock: setUpBlock tearDownBlock: tearDownBlock.
 	^ timeToRunValues
 ]
