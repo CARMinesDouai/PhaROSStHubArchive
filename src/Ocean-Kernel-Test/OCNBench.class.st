@@ -24,6 +24,14 @@ OCNBench >> connectOceanSocket [
 	socket connectToServer: serverAddress
 ]
 
+{ #category : #benchmarking }
+OCNBench >> connectOldSocket [
+	| serverAddress |
+	socket := Socket newTCP.
+	serverAddress := NetNameResolver addressForName: '127.0.0.1'.
+	socket connectTo: serverAddress port: self serverPort
+]
+
 { #category : #'initialize-release' }
 OCNBench >> createRandomString [
 	| allCharacters dataToSendStream |
@@ -69,7 +77,7 @@ OCNBench >> startServer [
 
 { #category : #server }
 OCNBench >> stopServer [ 
-	serverShell kill
+	serverShell kill ; waitForStop 
 ]
 
 { #category : #server }
@@ -81,6 +89,16 @@ OCNBench >> stopServerAndCleanUp [
 
 { #category : #benchmarking }
 OCNBench >> timeToRun: aBlock times: iterationsCount [
+	self timeToRun: aBlock  times: iterationsCount  setUpBlock: [] tearDownBlock: [] 
+]
+
+{ #category : #benchmarking }
+OCNBench >> timeToRun: aBlock times: iterationsCount setUpBlock: setUpBlock tearDownBlock: tearDownBlock. [
 	self resetTimeToRunValues.
-	iterationsCount timesRepeat: [ timeToRunValues add: [aBlock value] timeToRun ]
+	iterationsCount timesRepeat: [ 
+		setUpBlock value.
+		[
+			timeToRunValues add: [aBlock value] timeToRun
+		] ensure: tearDownBlock
+	]
 ]

@@ -36,20 +36,42 @@ OCNReceiveBench >> createServerShell [
 { #category : #benchmarking }
 OCNReceiveBench >> timeToReceiveWithOcean [
 	"OCNReceiveBench new timeToReceiveWithOcean"
-	| waitForData dataPacket |
-	self startServer.
-	self connectOceanSocket.
-	[ self timeToRun: [ 
-	waitForData := true.
-	[ waitForData ]
-		whileTrue: [
-			waitForData := socket receive size > 0]] times: 10 
-	]ensure: [ 
+	| waitForData dataPacket blockToBench setUpBlock tearDownBlock |
+	blockToBench := [ 
+			waitForData := true.
+			[ waitForData ]
+				whileTrue: [
+					waitForData := socket receive size > 0]
+			].
+	setUpBlock := [ 
+		self startServer.
+		self connectOceanSocket].
+	tearDownBlock := [ 
 			self stopServerAndCleanUp.
 			socket close ].
+	self 
+		timeToRun: blockToBench times: 10 setUpBlock: setUpBlock tearDownBlock: tearDownBlock.
 	^ timeToRunValues
 ]
 
 { #category : #benchmarking }
 OCNReceiveBench >> timeToReceiveWithOldSocket [
+	"OCNReceiveBench new timeToReceiveWithOldSocket"
+	| waitForData dataPacket blockToBench setUpBlock tearDownBlock |
+
+ 	blockToBench := [ 
+			waitForData := true.
+			[ waitForData ]
+				whileTrue: [
+					waitForData := socket receiveData size > 0]
+			].
+	setUpBlock := [ 
+		self startServer.
+		self connectOldSocket].
+	tearDownBlock := [ 
+			self stopServerAndCleanUp.
+			socket close ].
+	self 
+		timeToRun: blockToBench times: 10 setUpBlock: setUpBlock tearDownBlock: tearDownBlock.
+	^ timeToRunValues
 ]

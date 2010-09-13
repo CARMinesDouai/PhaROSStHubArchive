@@ -134,12 +134,6 @@ OCNShell >> stdOut [
 ]
 
 { #category : #'execution-public' }
-OCNShell >> stop [
-	self isStopped ifTrue: [^self].
-	self waitForStop 
-]
-
-{ #category : #'execution-public' }
 OCNShell >> waitForStop [
 	self waitForStopTimeOutMilliseconds: 500
 ]

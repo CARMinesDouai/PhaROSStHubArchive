@@ -40,15 +40,11 @@ OCNSendBench >> timeToSendWithOcean [
 OCNSendBench >> timeToSendWithOldSocket [
 	"OCNBench new timeToSendWithOldSocket"
 
-	| serverAddress |
 	self startServer.
-	socket := Socket newTCP.
-	serverAddress := NetNameResolver addressForName: '127.0.0.1'.
-	socket connectTo: serverAddress port: self serverPort.
-	[ self timeToRun: [ 
-		socket sendData: dataToSend ] times: 10
-	] ensure: [ 
-		self stopServerAndCleanUp.
-		socket close ].
+	self connectOldSocket.
+	[ self timeToRun: [ socket sendData: dataToSend ] times: 10 ]
+		ensure: [ 
+			self stopServerAndCleanUp.
+			socket close ].
 	^ timeToRunValues
 ]

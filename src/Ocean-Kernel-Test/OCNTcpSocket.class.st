@@ -101,7 +101,7 @@ OCNTcpSocket >> createDescriptorWithDomain: communicationDomain type: socketType
 
 { #category : #accessing }
 OCNTcpSocket >> defaultDataBufferSize [
-	^1000
+	^2000
 ]
 
 { #category : #'initialize-release' }
