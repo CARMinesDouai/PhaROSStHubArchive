@@ -44,7 +44,7 @@ OCNReceiveBench >> createServerShell [
 		yourself.
 	shell deleteStdInFile.
 	stdIn := FileStream fileNamed: shell stdInFileName.
-	[ stdIn nextPutAll: dataToSend ] ensure: [ stdIn close ].	
+	[ stdIn nextPutAll: self dataToSend ] ensure: [ stdIn close ].	
 	^shell
 
 ]

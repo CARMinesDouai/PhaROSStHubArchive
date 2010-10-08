@@ -51,8 +51,8 @@ OCNSockAddrIn >> sinFamily [
 { #category : #accessing }
 OCNSockAddrIn >> sinFamily: newFamily [
 	"really strange that htons is required here since it does not in C"
-	self signedShortAt: 1 put: (OCNConstants socketLibrary htons: newFamily)
-	
+
+	self signedShortAt: 1 put: (OCNNetworkLibraryProxyFactory networkLibraryProxy htons: newFamily)
 ]
 
 { #category : #accessing }
@@ -62,7 +62,5 @@ OCNSockAddrIn >> sinPort [
 
 { #category : #accessing }
 OCNSockAddrIn >> sinPort: newPort [
-	self unsignedShortAt: 3 put: (OCNConstants socketLibrary htons: newPort)
-	
-
+	self unsignedShortAt: 3 put: (OCNNetworkLibraryProxyFactory networkLibraryProxy htons: newPort)
 ]

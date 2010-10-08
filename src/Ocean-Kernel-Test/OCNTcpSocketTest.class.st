@@ -11,9 +11,10 @@ Class {
 
 { #category : #testing }
 OCNTcpSocketTest >> assertSendingDataOfSize: dataSize [
-	| dataToSend receivedData | 
+	| dataToSend receivedData randomStringGenerator | 
 	self testConnection.
-	dataToSend := self randomAsciiStringOfSize: dataSize.
+	randomStringGenerator := OCNBench new.
+	dataToSend := randomStringGenerator createRandomStringOfSize: dataSize..
 	self assert: (socket send: dataToSend) = dataSize.
 	(Delay forMilliseconds: 50) wait.
 	receivedData := serverShell stdOut contents.
@@ -45,7 +46,7 @@ OCNTcpSocketTest >> serverPort [
 OCNTcpSocketTest >> setUp [
 	super setUp.
 	socket := OCNTcpSocket new.
-	library := OCNConstants socketLibrary.
+	library := OCNNetworkLibraryProxyFactory networkLibraryProxy.
 	self createServerShell.
 	self startServer
 ]
@@ -115,19 +116,19 @@ OCNTcpSocketTest >> testDisconnectionWhileSending [
 
 { #category : #testing }
 OCNTcpSocketTest >> testSendingLargeAmountOfDataComparedToSizeOfSocketsDataBuffer [
-	self assertSendingDataOfSize: 1000 * socket defaultDataBufferSize.
+	self assertSendingDataOfSize: 1000 * library defaultDataBufferSize.
 
 ]
 
 { #category : #testing }
 OCNTcpSocketTest >> testSendingLessDataThanSocketsDataBufferSize [
-	self assertSendingDataOfSize: socket defaultDataBufferSize//2 .
+	self assertSendingDataOfSize: library defaultDataBufferSize//2 .
 
 ]
 
 { #category : #testing }
 OCNTcpSocketTest >> testSendingMoreDataThanSizeOfSocketsDataBuffer [
-	self assertSendingDataOfSize: 2 * socket defaultDataBufferSize.
+	self assertSendingDataOfSize: 2 * library defaultDataBufferSize.
 
 ]
 

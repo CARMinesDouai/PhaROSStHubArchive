@@ -1,8 +1,25 @@
 Class {
 	#name : #OCNPOSIXLibrary,
 	#superclass : #AlienLibrary,
+	#instVars : [
+		'alienResult',
+		'alienDataBuffer'
+	],
+	#classInstVars : [
+		'default'
+	],
 	#category : #'Ocean-Libraries'
 }
+
+{ #category : #'instance creation' }
+OCNPOSIXLibrary class >> default [
+	^default ifNil: [default := self new]
+]
+
+{ #category : #'instance creation' }
+OCNPOSIXLibrary class >> proxy [
+	^self default
+]
 
 { #category : #'communication domain' }
 OCNPOSIXLibrary >> AfInet [
@@ -128,6 +145,39 @@ A protocol error has occurred; for example, the STREAMS protocol stack has not b
 { #category : #'function names' }
 OCNPOSIXLibrary >> acceptFunctionName [
 	^'accept'
+]
+
+{ #category : #accessing }
+OCNPOSIXLibrary >> alienDataBuffer [
+	^ alienDataBuffer
+]
+
+{ #category : #accessing }
+OCNPOSIXLibrary >> alienDataBuffer: anObject [
+	alienDataBuffer := anObject
+]
+
+{ #category : #'initialize-release' }
+OCNPOSIXLibrary >> alienDataBufferOfSize: bytesCount [
+	self alienDataBuffer: (Alien newGC: bytesCount + 1).
+	
+]
+
+{ #category : #accessing }
+OCNPOSIXLibrary >> alienDataBufferSize [
+	^self alienDataBuffer 
+		ifNil: [self defaultDataBufferSize] 
+		ifNotNil: [self alienDataBuffer dataSize - 1]
+]
+
+{ #category : #accessing }
+OCNPOSIXLibrary >> alienResult [
+	^ alienResult
+]
+
+{ #category : #accessing }
+OCNPOSIXLibrary >> alienResult: anObject [
+	alienResult := anObject
 ]
 
 { #category : #'socket functions' }
@@ -328,6 +378,11 @@ OCNPOSIXLibrary >> closeFunctionName [
 	^ 'close'
 ]
 
+{ #category : #accessing }
+OCNPOSIXLibrary >> communicationResult [
+	^ self alienResult signedLongAt: 1
+]
+
 { #category : #'socket functions' }
 OCNPOSIXLibrary >> connect: socketId serverAddress: serverSocketAddress serverAddressSize: serverSocketAddressSize [
 "int connect(int socket, const struct sockaddr *address,
@@ -442,9 +497,28 @@ The socket is listening and cannot be connected.
 "
 ]
 
+{ #category : #'TCP API' }
+OCNPOSIXLibrary >> connect: socketId toServerWithIpv4Address: serverAddress [
+	| result primitiveAddress |
+	primitiveAddress := serverAddress primitiveAddress.
+	result := OCNNetworkLibraryProxyFactory networkLibraryProxy
+		connect: socketId
+		serverAddress: primitiveAddress
+		serverAddressSize: serverAddress primitiveAddressSize.
+	primitiveAddress free.
+	result = 0 ifTrue: [ 
+			self initializeAlienIVs].
+	^result
+]
+
 { #category : #'function names' }
 OCNPOSIXLibrary >> connectFunctionName [
 	^'connect'
+]
+
+{ #category : #accessing }
+OCNPOSIXLibrary >> defaultDataBufferSize [
+	^2000
 ]
 
 { #category : #'byte conversions' }
@@ -471,6 +545,13 @@ uint16_t htons(uint16_t hostshort);"
 		primFFICallResult: result
 		with: anInt.
 	^ result unsignedShortAt: 1
+]
+
+{ #category : #'initialize-release' }
+OCNPOSIXLibrary >> initializeAlienIVs [
+	self alienDataBuffer: (Alien newGC: self defaultDataBufferSize).
+	self alienResult: (Alien newGC: 4).
+
 ]
 
 { #category : #'socket functions' }
@@ -559,6 +640,16 @@ OCNPOSIXLibrary >> ntohs: anInt [
 	^ result unsignedShortAt: 1
 ]
 
+{ #category : #'TCP API' }
+OCNPOSIXLibrary >> readFrom: socketId [
+	self
+		readFrom: socketId
+		buffer: self alienDataBuffer
+		ofSize: self alienDataBufferSize
+		result: self alienResult.
+	^ self receivedString
+]
+
 { #category : #'socket functions' }
 OCNPOSIXLibrary >> readFrom: socketId buffer: buffer ofSize: bufferSize result: result [
 
@@ -604,6 +695,17 @@ D'autres erreurs peuvent se produire, suivant le type d'objet associé à fd. PO
 { #category : #'function names' }
 OCNPOSIXLibrary >> readFunctionName [
 	^'read'
+]
+
+{ #category : #'TCP API' }
+OCNPOSIXLibrary >> receiveFrom: socketId [
+	self
+		receiveFrom: self socketId
+		buffer: self alienDataBuffer
+		ofSize: self alienDataBufferSize
+		flags: 0
+		result: self alienResult.	"<--------"
+	^ self receivedString
 ]
 
 { #category : #'socket functions' }
@@ -684,6 +786,35 @@ There were insufficient STREAMS resources available for the operation to complet
 { #category : #'function names' }
 OCNPOSIXLibrary >> receiveFunctionName [
 	^'recv'
+]
+
+{ #category : #accessing }
+OCNPOSIXLibrary >> receivedString [
+	| numberOfBytesReceived |
+	numberOfBytesReceived := self communicationResult.
+	numberOfBytesReceived == 0
+		ifTrue: [ ^ '' ].
+	^ self alienDataBuffer strcpyFrom: 1 ofSize: numberOfBytesReceived
+]
+
+{ #category : #'TCP API' }
+OCNPOSIXLibrary >> sendData: data to: socketId [
+	| sentDataSize |
+	sentDataSize := data byteSize.
+	sentDataSize > self alienDataBufferSize
+		ifTrue: [ self alienDataBufferOfSize: sentDataSize ].
+	self alienDataBuffer
+		replaceFrom: 1
+		to: sentDataSize
+		with: data
+		startingAt: 1.
+	self
+		sendTo: socketId
+		buffer: self alienDataBuffer
+		ofSize: sentDataSize
+		flags: 0
+		result: self alienResult.
+	^ self communicationResult
 ]
 
 { #category : #'function names' }

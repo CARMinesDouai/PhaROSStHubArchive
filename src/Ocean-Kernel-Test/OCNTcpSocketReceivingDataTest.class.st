@@ -34,8 +34,8 @@ OCNTcpSocketReceivingDataTest >> createServerShell [
 { #category : #'setUp-tearDown' }
 OCNTcpSocketReceivingDataTest >> setUp [
 	socket := OCNTcpSocket new.
-	library := OCNConstants socketLibrary.
-	self createServerShell.
+	library := OCNNetworkLibraryProxyFactory networkLibraryProxy.
+	self createServerShell
 ]
 
 { #category : #'setUp-tearDown' }
@@ -46,14 +46,14 @@ OCNTcpSocketReceivingDataTest >> tearDown [
 
 { #category : #testing }
 OCNTcpSocketReceivingDataTest >> testReceivingLargeAmountOfDataComparedToSizeOfSocketsDataBuffer [
-	self assertReceivingDataOfSize: 1000 * socket defaultDataBufferSize.
+	self assertReceivingDataOfSize: 1000 * library defaultDataBufferSize.
 
 ]
 
 { #category : #testing }
 OCNTcpSocketReceivingDataTest >> testReceivingLessDataThanSocketsDataBufferSize [
 	| dataSize dataToSend  receivedData | 
-	dataSize := socket defaultDataBufferSize//2 .
+	dataSize := library defaultDataBufferSize//2 .
 	self assertReceivingDataOfSize: dataSize
 
 ]
@@ -61,6 +61,6 @@ OCNTcpSocketReceivingDataTest >> testReceivingLessDataThanSocketsDataBufferSize 
 { #category : #testing }
 OCNTcpSocketReceivingDataTest >> testReceivingMoreDataThanSizeOfSocketsDataBuffer [
 	| dataSize |
-	dataSize := 2 * socket defaultDataBufferSize.
+	dataSize := 2 * library defaultDataBufferSize.
 	self assertReceivingDataOfSize: dataSize
 ]

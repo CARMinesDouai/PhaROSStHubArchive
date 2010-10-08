@@ -6,7 +6,8 @@ Class {
 		'serverShell',
 		'dataToSend',
 		'timeToRunValues',
-		'iterationsCount'
+		'iterationsCount',
+		'randomStringSize'
 	],
 	#classVars : [
 		'randomStringsDict'
@@ -23,7 +24,7 @@ OCNBench class >> initialize [
 OCNBench >> connectOceanSocket [
 	| library serverAddress |
 	socket := OCNTcpSocket new.
-	library := OCNConstants socketLibrary.
+	library := OCNNetworkLibraryProxyFactory networkLibraryProxy.
 	socket createDescriptorWithDomain: library PfInet type: library SockStream protocol: library IpProtoTcp.
 	serverAddress := OCNIPV4SocketAddress new.
 	serverAddress
@@ -46,18 +47,35 @@ OCNBench >> createRandomString [
 	| allCharacters dataToSendStream |
 	randomStringsDict 
 		at: self randomStringSize 
-		ifPresent: [:value| ^dataToSend := value].
+		ifPresent: [:value| ^self dataToSend: value].
 	allCharacters := Character alphabet.
 	dataToSendStream := WriteStream on: (String new: self randomStringSize).
 	self randomStringSize timesRepeat: [ dataToSendStream nextPut: allCharacters atRandom ].
-	dataToSend := dataToSendStream contents.
-	randomStringsDict at: self randomStringSize put: dataToSend
+	self dataToSend: dataToSendStream contents.
+	randomStringsDict at: self randomStringSize put: self dataToSend
 
+]
+
+{ #category : #'initialize-release' }
+OCNBench >> createRandomStringOfSize: dataSize [
+	self randomStringSize: dataSize.
+	self createRandomString.
+	^self dataToSend
 ]
 
 { #category : #server }
 OCNBench >> createServerShell [ 
 	self subclassResponsibility 
+]
+
+{ #category : #accessing }
+OCNBench >> dataToSend [
+	^ dataToSend
+]
+
+{ #category : #accessing }
+OCNBench >> dataToSend: anObject [
+	^ dataToSend := anObject
 ]
 
 { #category : #'initialize-release' }
@@ -84,7 +102,12 @@ OCNBench >> iterationsCount: anObject [
 
 { #category : #'initialize-release' }
 OCNBench >> randomStringSize [
-	^10000000
+	^randomStringSize ifNil: [randomStringSize := 10000000]
+]
+
+{ #category : #accessing }
+OCNBench >> randomStringSize: anObject [
+	^ randomStringSize := anObject
 ]
 
 { #category : #'initialize-release' }
