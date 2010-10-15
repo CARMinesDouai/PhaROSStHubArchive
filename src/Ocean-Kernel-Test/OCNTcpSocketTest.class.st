@@ -11,10 +11,9 @@ Class {
 
 { #category : #testing }
 OCNTcpSocketTest >> assertSendingDataOfSize: dataSize [
-	| dataToSend receivedData randomStringGenerator | 
+	| dataToSend receivedData | 
 	self testConnection.
-	randomStringGenerator := OCNBench new.
-	dataToSend := randomStringGenerator createRandomStringOfSize: dataSize..
+	dataToSend := self randomAsciiStringOfSize: dataSize.
 	self assert: (socket send: dataToSend) = dataSize.
 	(Delay forMilliseconds: 50) wait.
 	receivedData := serverShell stdOut contents.
@@ -30,11 +29,10 @@ OCNTcpSocketTest >> createServerShell [
 
 { #category : #testing }
 OCNTcpSocketTest >> randomAsciiStringOfSize: dataSize [
-	| allCharacters dataToSendStream |
-	allCharacters := Character alphabet.
-	dataToSendStream := WriteStream on: (String new: dataSize).
-	dataSize timesRepeat: [ dataToSendStream nextPut: allCharacters atRandom ].
-	^ dataToSendStream contents
+	| randomStringGenerator |
+	randomStringGenerator := OCNBench new.
+	^ randomStringGenerator createRandomStringOfSize: dataSize.
+
 ]
 
 { #category : #'setUp-tearDown' }

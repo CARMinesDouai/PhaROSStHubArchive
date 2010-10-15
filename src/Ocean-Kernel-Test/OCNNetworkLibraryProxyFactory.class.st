@@ -9,7 +9,7 @@ Class {
 
 { #category : #accessing }
 OCNNetworkLibraryProxyFactory class >> allNetworkLibraryProxyClasses [
-	^#(OCNMacOSXPOSIXDebugLibrary OCNMacOSXPOSIXLibrary)
+	^#(#OCNMacOSXPosixDebugLibrary #OCNMacOSXPosixLibrary)
 ]
 
 { #category : #'building socket proxies' }
@@ -32,7 +32,7 @@ OCNNetworkLibraryProxyFactory class >> defaultNetworkLibraryProxyClassesDict: an
 { #category : #'class initialization' }
 OCNNetworkLibraryProxyFactory class >> initialize [ 
 	self defaultNetworkLibraryProxyClassesDict: Dictionary new.
-	self defaultNetworkLibraryProxyClassesDict at: 'Mac OS' put: OCNMacOSXPOSIXLibrary 
+	self defaultNetworkLibraryProxyClassesDict at: 'Mac OS' put: OCNMacOSXPosixLibrary 
 ]
 
 { #category : #'building socket proxies' }
