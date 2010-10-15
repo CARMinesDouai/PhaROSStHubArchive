@@ -12,7 +12,7 @@ Class {
 { #category : #connection }
 OCNTcpSocket >> close [
 	self isClosed not & self isConnected
-		ifTrue: [ self isClosed: (OCNNetworkLibraryProxyFactory networkLibraryProxy close: self socketId) = 0 ]
+		ifTrue: [ self isClosed: (self  networkLibrary close: self socketId) = 0 ]
 ]
 
 { #category : #connection }
@@ -26,7 +26,7 @@ OCNTcpSocket >> connectToServer: serverAddress [
 { #category : #'lowlevel initialization' }
 OCNTcpSocket >> createDescriptorWithDomain: communicationDomain type: socketType protocol: socketProtocol [
 	| result |
-	result := OCNNetworkLibraryProxyFactory networkLibraryProxy
+	result := self networkLibrary
 		socketDomain: communicationDomain
 		type: socketType
 		protocol: socketProtocol.

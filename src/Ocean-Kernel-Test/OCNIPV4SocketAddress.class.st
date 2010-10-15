@@ -68,18 +68,3 @@ OCNIPV4SocketAddress >> port [
 OCNIPV4SocketAddress >> port: anObject [
 	port := anObject
 ]
-
-{ #category : #'primitive address' }
-OCNIPV4SocketAddress >> primitiveAddress [
-	| primitiveAddress |
-	primitiveAddress := OCNPosixAlienBasedSockAddrIn newC.
-	primitiveAddress sinFamily: self family.
-	primitiveAddress sinPort: self port.
-	primitiveAddress sinAddr: self ip.
-	^primitiveAddress
-]
-
-{ #category : #'primitive address' }
-OCNIPV4SocketAddress >> primitiveAddressSize [
-	^OCNPosixAlienBasedSockAddrIn dataSize 
-]

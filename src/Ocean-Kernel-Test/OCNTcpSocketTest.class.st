@@ -10,86 +10,7 @@ Class {
 }
 
 { #category : #testing }
-OCNTcpSocketTest >> assertSendingDataOfSize: dataSize [
-	| dataToSend receivedData | 
-	self testConnection.
-	dataToSend := self randomAsciiStringOfSize: dataSize.
-	self assert: (socket send: dataToSend) = dataSize.
-	(Delay forMilliseconds: 50) wait.
-	receivedData := serverShell stdOut contents.
-	self assert: receivedData size = dataSize.
-	self assert: receivedData = dataToSend.
-
-]
-
-{ #category : #'setUp-tearDown' }
-OCNTcpSocketTest >> createServerShell [
-	serverShell := OCNFileStdOutShell onStdOutFileNamed: 'test.log'
-]
-
-{ #category : #testing }
-OCNTcpSocketTest >> randomAsciiStringOfSize: dataSize [
-	| randomStringGenerator |
-	randomStringGenerator := OCNBench new.
-	^ randomStringGenerator createRandomStringOfSize: dataSize.
-
-]
-
-{ #category : #'setUp-tearDown' }
-OCNTcpSocketTest >> serverPort [
-	^9123
-]
-
-{ #category : #'setUp-tearDown' }
-OCNTcpSocketTest >> setUp [
-	super setUp.
-	socket := OCNTcpSocket new.
-	library := OCNNetworkLibraryProxyFactory networkLibraryProxy.
-	self createServerShell.
-	self startServer
-]
-
-{ #category : #'setUp-tearDown' }
-OCNTcpSocketTest >> startServer [
-	serverShell exec: 'nc -4 -l ' , String space , self serverPort printString.
-	(Delay forMilliseconds: 50) wait
-]
-
-{ #category : #'setUp-tearDown' }
-OCNTcpSocketTest >> tearDown [
-	super tearDown.
-	serverShell deleteStdOutFile.
-	serverShell kill.
-	socket close
-]
-
-{ #category : #testing }
-OCNTcpSocketTest >> testCloseOnClosedSocket [
-	self testCloseOnConnectedSocket.
-	socket close.
-	self assert: socket isClosed 
-]
-
-{ #category : #testing }
-OCNTcpSocketTest >> testCloseOnConnectedSocket [
-	self testConnection.
-	self assert: socket isClosed not.
-	socket close.
-	self assert: socket isClosed
-]
-
-{ #category : #testing }
-OCNTcpSocketTest >> testCloseOnNonConnectedSocket [
-	self testSocketFileDescriptorCreation.
-	self assert: socket isClosed not.
-	socket close.
-	self flag: #LF.
-	"self should: [self socket close] raise: OCNNonConnectedSocketExecption."
-	self assert: socket isClosed not
-]
-
-{ #category : #testing }
-OCNTcpSocketTest >> testConnection [
+OCNTcpSocketTest >> assertConnection [
 	| serverAddress |
 	self testSocketFileDescriptorCreation.
 	self deny: socket isConnected.
@@ -102,32 +23,60 @@ OCNTcpSocketTest >> testConnection [
 	self assert: socket isConnected
 ]
 
-{ #category : #testing }
-OCNTcpSocketTest >> testDisconnectionWhileReceiving [
-	self fail
-]
-
-{ #category : #testing }
-OCNTcpSocketTest >> testDisconnectionWhileSending [
-	self fail
-]
-
-{ #category : #testing }
-OCNTcpSocketTest >> testSendingLargeAmountOfDataComparedToSizeOfSocketsDataBuffer [
-	self assertSendingDataOfSize: 1000 * library defaultDataBufferSize.
+{ #category : #generating }
+OCNTcpSocketTest >> randomAsciiStringOfSize: dataSize [
+	| randomStringGenerator |
+	randomStringGenerator := OCNBench new.
+	^ randomStringGenerator createRandomStringOfSize: dataSize.
 
 ]
 
-{ #category : #testing }
-OCNTcpSocketTest >> testSendingLessDataThanSocketsDataBufferSize [
-	self assertSendingDataOfSize: library defaultDataBufferSize//2 .
+{ #category : #accessing }
+OCNTcpSocketTest >> serverPort [
+	^9123
+]
+
+{ #category : #accessing }
+OCNTcpSocketTest >> serverShellClass [ 
+	^OCNFileStdOutShell
+]
+
+{ #category : #'setUp-tearDown' }
+OCNTcpSocketTest >> setUp [
+	super setUp.
+	socket := OCNTcpSocket new.
+	library := OCNNetworkLibraryProxyFactory networkLibraryProxy.
+	self setUpServerShell.
 
 ]
 
-{ #category : #testing }
-OCNTcpSocketTest >> testSendingMoreDataThanSizeOfSocketsDataBuffer [
-	self assertSendingDataOfSize: 2 * library defaultDataBufferSize.
+{ #category : #'setUp-tearDown' }
+OCNTcpSocketTest >> setUpServerShell [
+	serverShell := self serverShellClass onStdOutFileNamed: 'test.log'
+]
 
+{ #category : #'server management' }
+OCNTcpSocketTest >> startServer [
+	serverShell exec: 'nc -4 -l ' , String space , self serverPort printString.
+	(Delay forMilliseconds: 50) wait
+]
+
+{ #category : #'setUp-tearDown' }
+OCNTcpSocketTest >> tearDown [
+	super tearDown.
+	serverShell deleteStdOutFile.
+	serverShell kill.
+	socket close.
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testCloseOnNonConnectedSocket [
+	self testSocketFileDescriptorCreation.
+	self assert: socket isClosed not.
+	socket close.
+	"self should: [self socket close] raise: OCNNonConnectedSocketExecption."
+	self assert: socket isClosed not.
+	self signalFailure:  'TODO should raise an execption'.
 ]
 
 { #category : #testing }

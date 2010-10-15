@@ -69,13 +69,14 @@ OCNShell >> fullExecutablePath: stringCommandName [
 
 { #category : #testing }
 OCNShell >> isStopped [
-	^self process isComplete 
+	self process ifNil: [ ^true ].
+	^ self process isComplete 
 ]
 
 { #category : #'execution-public' }
 OCNShell >> kill [
 	self isStopped ifTrue: [^self]. 
-	self process terminate
+	self process ifNotNil: [self process terminate]
 ]
 
 { #category : #accessing }

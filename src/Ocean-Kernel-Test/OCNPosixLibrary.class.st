@@ -12,13 +12,8 @@ Class {
 }
 
 { #category : #'instance creation' }
-OCNPosixLibrary class >> default [
-	^default ifNil: [default := self new]
-]
-
-{ #category : #'instance creation' }
 OCNPosixLibrary class >> proxy [
-	^self default
+	^self new
 ]
 
 { #category : #'communication domain' }
@@ -500,11 +495,10 @@ The socket is listening and cannot be connected.
 { #category : #'TCP API' }
 OCNPosixLibrary >> connect: socketId toServerWithIpv4Address: serverAddress [
 	| result primitiveAddress |
-	primitiveAddress := serverAddress primitiveAddress.
-	result := OCNNetworkLibraryProxyFactory networkLibraryProxy
-		connect: socketId
+	primitiveAddress := self posixIPV4AddressFrom: serverAddress.
+	result := self connect: socketId
 		serverAddress: primitiveAddress
-		serverAddressSize: serverAddress primitiveAddressSize.
+		serverAddressSize: primitiveAddress dataSize.
 	primitiveAddress free.
 	result = 0 ifTrue: [ 
 			self initializeAlienIVs].
@@ -638,6 +632,17 @@ OCNPosixLibrary >> ntohs: anInt [
 		primFFICallResult: result
 		with: anInt.
 	^ result unsignedShortAt: 1
+]
+
+{ #category : #'socket address' }
+OCNPosixLibrary >> posixIPV4AddressFrom: aSocketAddress [
+
+	| posixAddress |
+	posixAddress := OCNPosixAlienBasedSockAddrIn newC.
+	posixAddress sinFamily: (self htons: aSocketAddress family).
+	posixAddress sinPort: (self htons: aSocketAddress port).
+	posixAddress sinAddr: aSocketAddress ip.
+	^posixAddress
 ]
 
 { #category : #'TCP API' }

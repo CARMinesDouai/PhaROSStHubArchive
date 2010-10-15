@@ -12,7 +12,7 @@ OCNTcpSocketReceivingDataTest >> assertReceivingDataOfSize: dataSize [
 	stdIn := FileStream fileNamed: serverShell stdInFileName.
 	[ stdIn nextPutAll: dataToSend ] ensure: [ stdIn close ].
 	self startServer.
-	self testConnection.
+	self assertConnection.
 	receptionStream := WriteStream on: (ByteArray new: dataSize).
 	waitForData := true.
 	[ waitForData ]
@@ -24,24 +24,27 @@ OCNTcpSocketReceivingDataTest >> assertReceivingDataOfSize: dataSize [
 	self assert: receivedData = dataToSend
 ]
 
-{ #category : #'setUp-tearDown' }
-OCNTcpSocketReceivingDataTest >> createServerShell [
-	serverShell := OCNFileStdInOutShell new.
-	serverShell stdOutFileName: 'test.log' ; 
-		stdInFileName: 'test.in'
+{ #category : #accessing }
+OCNTcpSocketReceivingDataTest >> serverShellClass [ 
+	^OCNFileStdInOutShell
 ]
 
 { #category : #'setUp-tearDown' }
-OCNTcpSocketReceivingDataTest >> setUp [
-	socket := OCNTcpSocket new.
-	library := OCNNetworkLibraryProxyFactory networkLibraryProxy.
-	self createServerShell
+OCNTcpSocketReceivingDataTest >> setUpServerShell [
+	super setUpServerShell.
+	serverShell	stdInFileName: 'test.in'
+
 ]
 
 { #category : #'setUp-tearDown' }
 OCNTcpSocketReceivingDataTest >> tearDown [
 	super tearDown.
-	serverShell deleteStdInFile.
+	serverShell deleteStdInFile
+]
+
+{ #category : #testing }
+OCNTcpSocketReceivingDataTest >> testDisconnectionWhileReceiving [
+	self fail
 ]
 
 { #category : #testing }

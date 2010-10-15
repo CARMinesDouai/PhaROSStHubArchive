@@ -49,10 +49,10 @@ OCNPosixAlienBasedSockAddrIn >> sinFamily [
 ]
 
 { #category : #accessing }
-OCNPosixAlienBasedSockAddrIn >> sinFamily: newFamily [
+OCNPosixAlienBasedSockAddrIn >> sinFamily: aByteArray [
 	"really strange that htons is required here since it does not in C"
 
-	self signedShortAt: 1 put: (OCNNetworkLibraryProxyFactory networkLibraryProxy htons: newFamily)
+	self signedShortAt: 1 put: aByteArray
 ]
 
 { #category : #accessing }
@@ -61,6 +61,6 @@ OCNPosixAlienBasedSockAddrIn >> sinPort [
 ]
 
 { #category : #accessing }
-OCNPosixAlienBasedSockAddrIn >> sinPort: newPort [
-	self unsignedShortAt: 3 put: (OCNNetworkLibraryProxyFactory networkLibraryProxy htons: newPort)
+OCNPosixAlienBasedSockAddrIn >> sinPort: aByteArray [
+	self unsignedShortAt: 3 put: aByteArray
 ]
