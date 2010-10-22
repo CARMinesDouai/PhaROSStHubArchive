@@ -500,14 +500,23 @@ OCNPosixLibrary >> connect: socketId toServerWithIpv4Address: serverAddress [
 		serverAddress: primitiveAddress
 		serverAddressSize: primitiveAddress dataSize.
 	primitiveAddress free.
-	result = 0 ifTrue: [ 
-			self initializeAlienIVs].
 	^result
 ]
 
 { #category : #'function names' }
 OCNPosixLibrary >> connectFunctionName [
 	^'connect'
+]
+
+{ #category : #'TCP API' }
+OCNPosixLibrary >> createTcpSocketDescriptorId [
+
+ ^ self 
+		socketDomain: self PfInet
+		type: self SockStream
+		protocol: self IpProtoTcp
+	
+	
 ]
 
 { #category : #accessing }
@@ -542,7 +551,8 @@ uint16_t htons(uint16_t hostshort);"
 ]
 
 { #category : #'initialize-release' }
-OCNPosixLibrary >> initializeAlienIVs [
+OCNPosixLibrary >> initialize [
+	super initialize.
 	self alienDataBuffer: (Alien newGC: self defaultDataBufferSize).
 	self alienResult: (Alien newGC: 4).
 
@@ -959,16 +969,16 @@ OCNPosixLibrary >> socketDomain: communicationDomain type: socketType protocol: 
 See description in comment below
 "
 
-	| result alienMethod |
-	result := Alien new: 4.
+	|  alienMethod |
 	alienMethod := self alienMethodNamed: self socketCreationFunctionName.
 	alienMethod
-		primFFICallResult: result
+		primFFICallResult: self alienResult
 		withArguments:
 			{communicationDomain.
 			socketType.
 			socketProtocol}.
-	^ result	"#include <sys/socket.h>
+	^ self communicationResult 
+		"#include <sys/socket.h>
 
 int socket(int domain, int type, int protocol);
 

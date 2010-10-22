@@ -11,7 +11,6 @@ OCNTcpSocketReceivingDataTest >> assertReceivingDataOfSize: dataSize [
 	serverShell deleteStdInFile.
 	stdIn := FileStream fileNamed: serverShell stdInFileName.
 	[ stdIn nextPutAll: dataToSend ] ensure: [ stdIn close ].
-	self startServer.
 	self assertConnection.
 	receptionStream := WriteStream on: (ByteArray new: dataSize).
 	waitForData := true.
@@ -44,7 +43,7 @@ OCNTcpSocketReceivingDataTest >> tearDown [
 
 { #category : #testing }
 OCNTcpSocketReceivingDataTest >> testDisconnectionWhileReceiving [
-	self fail
+	self signalFailure: 'Needs non-blocking (multi-threading)'
 ]
 
 { #category : #testing }

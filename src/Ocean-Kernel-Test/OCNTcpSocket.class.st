@@ -1,78 +1,60 @@
 Class {
 	#name : #OCNTcpSocket,
 	#superclass : #OCNSocket,
-	#instVars : [
-		'socketId',
-		'isConnected',
-		'isClosed'
-	],
 	#category : #'Ocean-Kernel'
 }
 
 { #category : #connection }
 OCNTcpSocket >> close [
-	self isClosed not & self isConnected
-		ifTrue: [ self isClosed: (self  networkLibrary close: self socketId) = 0 ]
+	self isClosed
+		ifTrue: [ ^ self ].
+	(self networkLibrary close: self socketId) = 0
+		ifTrue: [ self state: self closedStateSymbol ]
+]
+
+{ #category : #'state names' }
+OCNTcpSocket >> closedStateSymbol [
+	^ #closed
 ]
 
 { #category : #connection }
 OCNTcpSocket >> connectToServer: serverAddress [
 	| result |
 	result := self networkLibrary connect: self socketId toServerWithIpv4Address: serverAddress.
-	self isConnected: (result = 0).
+	(result = 0) ifTrue: [ self state:  self connectedStateSymbol]
 
 ]
 
-{ #category : #'lowlevel initialization' }
-OCNTcpSocket >> createDescriptorWithDomain: communicationDomain type: socketType protocol: socketProtocol [
-	| result |
-	result := self networkLibrary
-		socketDomain: communicationDomain
-		type: socketType
-		protocol: socketProtocol.
-	self socketId: (result signedLongAt: 1)
+{ #category : #'state names' }
+OCNTcpSocket >> connectedStateSymbol [
+	^#connected
+
 ]
 
 { #category : #'initialize-release' }
 OCNTcpSocket >> initialize [ 
 	super initialize.
-	self isConnected: false.
-	self isClosed: false.
-
+	self state: self closedStateSymbol
 ]
 
 { #category : #connection }
 OCNTcpSocket >> isClosed [
-	^isClosed
-]
-
-{ #category : #testing }
-OCNTcpSocket >> isClosed: anObject [
-	isClosed := anObject
+	^self state = self closedStateSymbol
 ]
 
 { #category : #testing }
 OCNTcpSocket >> isConnected [ 
-	^isConnected
+	^self state = self connectedStateSymbol 
 ]
 
-{ #category : #testing }
-OCNTcpSocket >> isConnected: aBoolean [ 
-	(aBoolean & self isClosed) ifTrue: [ 
-		self isClosed: false
-	].
-	isConnected := aBoolean 
-]
-
-{ #category : #testing }
-OCNTcpSocket >> isDescriptorCreated [
-	self socketId ifNil: [^false].
-	^self socketId ~= -1
+{ #category : #'initialize-release' }
+OCNTcpSocket >> newSocketId [
+	^ self networkLibrary createTcpSocketDescriptorId 
 ]
 
 { #category : #communication }
 OCNTcpSocket >> receive [
-	self isConnected ifFalse: [Error signal: 'Socket not connected'].
+	self isConnected ifFalse: [OCNSocketConnectedException signal].
 	^self networkLibrary readFrom: self socketId	
 ]
 
@@ -80,17 +62,7 @@ OCNTcpSocket >> receive [
 OCNTcpSocket >> send: data [
 	| sentDataSize |
 	self isConnected
-		ifFalse: [ Error signal: 'Socket not connected' ].
+		ifFalse: [ OCNSocketConnectedException signal  ].
 	^self networkLibrary sendData: data to: self socketId
 	
-]
-
-{ #category : #accessing }
-OCNTcpSocket >> socketId [
-	^ socketId
-]
-
-{ #category : #accessing }
-OCNTcpSocket >> socketId: anObject [
-	socketId := anObject
 ]

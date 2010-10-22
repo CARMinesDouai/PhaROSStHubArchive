@@ -25,7 +25,6 @@ OCNBench >> connectOceanSocket [
 	| library serverAddress |
 	socket := OCNTcpSocket new.
 	library := OCNNetworkLibraryProxyFactory networkLibraryProxy.
-	socket createDescriptorWithDomain: library PfInet type: library SockStream protocol: library IpProtoTcp.
 	serverAddress := OCNIPV4SocketAddress new.
 	serverAddress
 		family: library AfInet;

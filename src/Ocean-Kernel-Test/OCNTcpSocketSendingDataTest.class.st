@@ -17,30 +17,9 @@ OCNTcpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
 
 ]
 
-{ #category : #'setUp-tearDown' }
-OCNTcpSocketSendingDataTest >> setUp [
-	super setUp.
-	self startServer
-]
-
-{ #category : #testing }
-OCNTcpSocketSendingDataTest >> testCloseOnClosedSocket [
-	self testCloseOnConnectedSocket.
-	socket close.
-	self assert: socket isClosed 
-]
-
-{ #category : #testing }
-OCNTcpSocketSendingDataTest >> testCloseOnConnectedSocket [
-	self assertConnection.
-	self assert: socket isClosed not.
-	socket close.
-	self assert: socket isClosed
-]
-
 { #category : #testing }
 OCNTcpSocketSendingDataTest >> testDisconnectionWhileSending [
-	self fail
+	self signalFailure: 'Needs non-blocking (multi-threading)'
 ]
 
 { #category : #testing }

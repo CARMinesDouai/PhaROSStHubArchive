@@ -12,6 +12,7 @@ Class {
 { #category : #testing }
 OCNTcpSocketTest >> assertConnection [
 	| serverAddress |
+	self startServer.
 	self testSocketFileDescriptorCreation.
 	self deny: socket isConnected.
 	serverAddress := OCNIPV4SocketAddress new.
@@ -70,24 +71,33 @@ OCNTcpSocketTest >> tearDown [
 ]
 
 { #category : #testing }
-OCNTcpSocketTest >> testCloseOnNonConnectedSocket [
-	self testSocketFileDescriptorCreation.
-	self assert: socket isClosed not.
+OCNTcpSocketTest >> testCloseOnClosedSocket [
+	self assert: socket isClosed.
+	self signalFailure: 'it is not true (socket is NOT closed) since it has a valid socketId. close deallocate the socketId!'.
+	self deny: socket isConnected.
 	socket close.
-	"self should: [self socket close] raise: OCNNonConnectedSocketExecption."
-	self assert: socket isClosed not.
-	self signalFailure:  'TODO should raise an execption'.
+	self assert: socket isClosed.
+	self deny: socket isConnected.
+	"self testCloseOnConnectedSocket."
+
+
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testCloseOnConnectedSocket [
+	self assertConnection.
+	self deny: socket isClosed.
+	self assert: socket isConnected.
+	socket close.
+	self assert: socket isClosed.
+	self deny: socket isConnected
 ]
 
 { #category : #testing }
 OCNTcpSocketTest >> testSocketFileDescriptorCreation [
-	| communicationDomain socketType socketProtocol |
-	self deny: socket isDescriptorCreated.
-	socket 
-		createDescriptorWithDomain: library PfInet
-	 	type: library SockStream
-		protocol: library IpProtoTcp.
-	self assert: socket isDescriptorCreated
+	self assert: socket socketId notNil.
+	self deny: socket isConnected.
+	self assert: socket isClosed.
 ]
 
 { #category : #testing }
