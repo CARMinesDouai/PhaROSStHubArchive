@@ -62,7 +62,7 @@ OCNReceiveBench >> timeToReceiveWithOcean [
 	self connectOceanSocket ].
 	tearDownBlock := [ 
 	self stopServerAndCleanUp.
-	socket close ].
+	socket destroy ].
 	self timeToRun: blockToBench setUpBlock: setUpBlock tearDownBlock: tearDownBlock.
 	^ timeToRunValues
 ]
@@ -80,7 +80,7 @@ OCNReceiveBench >> timeToReceiveWithOldSocket [
 	self connectOldSocket ].
 	tearDownBlock := [ 
 	self stopServerAndCleanUp.
-	socket close ].
+	socket destroy ].
 	self timeToRun: blockToBench setUpBlock: setUpBlock tearDownBlock: tearDownBlock.
 	^ timeToRunValues
 ]

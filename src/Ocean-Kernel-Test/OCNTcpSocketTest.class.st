@@ -10,18 +10,37 @@ Class {
 }
 
 { #category : #testing }
-OCNTcpSocketTest >> assertConnection [
+OCNTcpSocketTest >> assertSocketState: aSelectorToAssert [
+
+	| selectorsToDeny |
+	
+	self assert: (socket perform: aSelectorToAssert).
+	
+	selectorsToDeny := #(#isUnconnected #isBound #isConnected isDestroyed) copyWithout: aSelectorToAssert.
+	
+	selectorsToDeny do: [ :aSelectorToDeny | 
+		self deny: (socket perform: aSelectorToDeny)
+	]
+
+	
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> clientPort [
+	^ 2222
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> connect [
 	| serverAddress |
 	self startServer.
-	self testSocketFileDescriptorCreation.
-	self deny: socket isConnected.
 	serverAddress := OCNIPV4SocketAddress new.
 	serverAddress 
 		family: library AfInet;
 		ip: #[127 0 0 1]; "localhost should have a server"
 		port: self serverPort.
 	socket connectToServer: serverAddress.
-	self assert: socket isConnected
+
 ]
 
 { #category : #generating }
@@ -67,41 +86,110 @@ OCNTcpSocketTest >> tearDown [
 	super tearDown.
 	serverShell deleteStdOutFile.
 	serverShell kill.
-	socket close.
+	socket destroy.
 ]
 
 { #category : #testing }
-OCNTcpSocketTest >> testCloseOnClosedSocket [
-	self assert: socket isClosed.
-	self signalFailure: 'it is not true (socket is NOT closed) since it has a valid socketId. close deallocate the socketId!'.
-	self deny: socket isConnected.
-	socket close.
-	self assert: socket isClosed.
-	self deny: socket isConnected.
-	"self testCloseOnConnectedSocket."
-
-
+OCNTcpSocketTest >> testBindBoundSocket [
+	self fail
 ]
 
 { #category : #testing }
-OCNTcpSocketTest >> testCloseOnConnectedSocket [
-	self assertConnection.
-	self deny: socket isClosed.
-	self assert: socket isConnected.
-	socket close.
-	self assert: socket isClosed.
-	self deny: socket isConnected
+OCNTcpSocketTest >> testBindConnectedSocket [
+	self fail
 ]
 
 { #category : #testing }
-OCNTcpSocketTest >> testSocketFileDescriptorCreation [
+OCNTcpSocketTest >> testBindDestroyedSocket [
+	self fail
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testBindUnconnectedSocket [
+	| socketAddress expectedClientPort |
+	self testSocketUnconnectedOnCreation.
+	socketAddress := (OCNIPV4SocketAddress new)
+		family: library AfInet;
+		ip: #[127 0 0 1];
+		port: self clientPort.	
+	socket bindToAddress: socketAddress.
+	self assertSocketState: #isBound.
+	self signalFailure: 'Ensures that client socket is bount to clientPort '
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testConnectBoundSocket [
+	self testBindUnconnectedSocket.
+	self connect.
+	self assertSocketState: #isConnected
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testConnectConnectedSocket [
+	self fail
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testConnectDestroyedSocket [
+	self fail
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testConnectUnconnectedSocket [
+	self fail
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testDestroyBoundSocket [
+	self fail
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testDestroyConnectedSocket [
+	self connect.
+	self assertSocketState: #isConnected.
+	socket destroy.
+	self assertSocketState: #isDestroyed
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testDestroyDestroyedSocket [
+	self fail
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testDestroyUnconnectedSocket [
+	self fail
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testSocketUnconnectedOnCreation [
 	self assert: socket socketId notNil.
-	self deny: socket isConnected.
-	self assert: socket isClosed.
+	self assertSocketState:  #isUnconnected.
+
 ]
 
 { #category : #testing }
-OCNTcpSocketTest >> testSocketStatus [
-	"use OCNShell with lsof to really test socket state"
-	self fail.
+OCNTcpSocketTest >> testTcpAPIRaiseExecptions [
+	self signalFailure: 'bind, connect, ... should raise exceptions on failure'
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testUnconnectBoundSocket [
+	self fail
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testUnconnectConnectedSocket [
+	self fail
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testUnconnectDestroyedSocket [
+	self fail
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testUnconnectUnconnectedSocket [
+	self fail
 ]

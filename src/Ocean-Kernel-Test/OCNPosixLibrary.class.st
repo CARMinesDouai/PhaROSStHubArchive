@@ -176,17 +176,18 @@ OCNPosixLibrary >> alienResult: anObject [
 ]
 
 { #category : #'socket functions' }
-OCNPosixLibrary >> bind: socketID address: socketAddress [ 
-"int bind(int socket, const struct sockaddr *address,
-       socklen_t address_len);
+OCNPosixLibrary >> bind: socketId address: socketAddress size: socketAddressSize [
+"int bind(int socket, const struct sockaddr *address, socklen_t address_len);
 See description in comment below
 "
 
-
-
-
-
-
+	| alienMethod |
+	alienMethod := self alienMethodNamed: self bindFunctionName.
+	alienMethod
+		primFFICallResult: self alienResult
+		withArguments: {socketId. socketAddress pointer. socketAddressSize}.
+	
+	^ self communicationResult
 
 " int bind(int socket, const struct sockaddr *address,
        socklen_t address_len);
@@ -262,93 +263,14 @@ Insufficient resources were available to complete the call.
 "
 ]
 
-{ #category : #'socket functions' }
-OCNPosixLibrary >> bind: socketId address: socketAddress size: socketAddressSize [
-"int bind(int socket, const struct sockaddr *address, socklen_t address_len);
-See description in comment below
-"
-
-	| result alienMethod |
-	result := Alien new: 4.
-	alienMethod := self alienMethodNamed: self bindFunctionName.
-	alienMethod
-		primFFICallResult: result
-		withArguments: {socketId. socketAddress pointer. socketAddressSize}.
+{ #category : #'TCP API' }
+OCNPosixLibrary >> bind: socketId toIpv4Address: anAddress [
 	
-	^ result signedLongAt: 1
-
-" int bind(int socket, const struct sockaddr *address,
-       socklen_t address_len);
-
-DESCRIPTION
-
-The bind() function shall assign a local socket address address to a socket identified by descriptor socket that has no local socket address assigned. Sockets created with the socket() function are initially unnamed; they are identified only by their address family.
-
-The bind() function takes the following arguments:
-
-socket
-Specifies the file descriptor of the socket to be bound.
-address
-Points to a sockaddr structure containing the address to be bound to the socket. The length and format of the address depend on the address family of the socket.
-address_len
-Specifies the length of the sockaddr structure pointed to by the address argument.
-The socket specified by socket may require the process to have appropriate privileges to use the bind() function.
-
-RETURN VALUE
-
-Upon successful completion, bind() shall return 0; otherwise, -1 shall be returned and errno set to indicate the error.
-
-ERRORS
-
-The bind() function shall fail if:
-
-[EADDRINUSE]
-The specified address is already in use.
-[EADDRNOTAVAIL]
-The specified address is not available from the local machine.
-[EAFNOSUPPORT]
-The specified address is not a valid address for the address family of the specified socket.
-[EBADF]
-The socket argument is not a valid file descriptor.
-[EINVAL]
-The socket is already bound to an address, and the protocol does not support binding to a new address; or the socket has been shut down.
-[ENOTSOCK]
-The socket argument does not refer to a socket.
-[EOPNOTSUPP]
-The socket type of the specified socket does not support binding to an address.
-If the address family of the socket is AF_UNIX, then bind() shall fail if:
-
-[EACCES]
-A component of the path prefix denies search permission, or the requested name requires writing in a directory with a mode that denies write permission.
-[EDESTADDRREQ] or [EISDIR]
-The address argument is a null pointer.
-[EIO]
-An I/O error occurred.
-[ELOOP]
-A loop exists in symbolic links encountered during resolution of the pathname in address.
-[ENAMETOOLONG]
-A component of a pathname exceeded {NAME_MAX} characters, or an entire pathname exceeded {PATH_MAX} characters.
-[ENOENT]
-A component of the pathname does not name an existing file or the pathname is an empty string.
-[ENOTDIR]
-A component of the path prefix of the pathname in address is not a directory.
-[EROFS]
-The name would reside on a read-only file system.
-The bind() function may fail if:
-
-[EACCES]
-The specified address is protected and the current user does not have permission to bind to it.
-[EINVAL]
-The address_len argument is not a valid length for the address family.
-[EISCONN]
-The socket is already connected.
-[ELOOP]
-More than {SYMLOOP_MAX} symbolic links were encountered during resolution of the pathname in address.
-[ENAMETOOLONG]
-Pathname resolution of a symbolic link produced an intermediate result whose length exceeds {PATH_MAX}.
-[ENOBUFS]
-Insufficient resources were available to complete the call.
-"
+	| result primitiveAddress |
+	primitiveAddress := self posixIPV4AddressFrom: anAddress.
+	[result := self bind: socketId address: primitiveAddress size: primitiveAddress dataSize] 
+	ensure: [primitiveAddress free].
+	^result
 ]
 
 { #category : #'function names' }

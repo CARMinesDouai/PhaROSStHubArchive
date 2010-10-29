@@ -29,12 +29,43 @@ OCNSocket class >> newWithNetworkLibrary: aNetworkLibraryProxy [
 		yourself
 ]
 
+{ #category : #connecting }
+OCNSocket >> bindToAddress: aSocketAddress [ 
+	
+	self networkLibrary bind: self socketId toIpv4Address: aSocketAddress.
+	self state: self boundStateSymbol
+	
+]
+
+{ #category : #connection }
+OCNSocket >> destroy [
+	self isDestroyed 
+		ifTrue: [ ^ self ].
+	(self networkLibrary close: self socketId) = 0
+		ifTrue: [ self state: self destroyedStateSymbol ]
+]
+
+{ #category : #'state names' }
+OCNSocket >> destroyedStateSymbol [
+	^ #destroyed
+]
+
 { #category : #'initialize-release' }
 OCNSocket >> initialize [ 
 	super initialize.
 	self networkLibrary: OCNNetworkLibraryProxyFactory networkLibraryProxy.
 	self socketId: self newSocketId.
-	self state: #undefined
+	self state: self unconnectedStateSymbol 
+]
+
+{ #category : #'state testing' }
+OCNSocket >> isDestroyed [
+	^self state = self destroyedStateSymbol
+]
+
+{ #category : #'state testing' }
+OCNSocket >> isUnconnected [ 
+	^self state = self unconnectedStateSymbol
 ]
 
 { #category : #accessing }
@@ -70,4 +101,9 @@ OCNSocket >> state [
 { #category : #private }
 OCNSocket >> state: anObject [
 	state := anObject
+]
+
+{ #category : #'state names' }
+OCNSocket >> unconnectedStateSymbol [
+	^ #unconnected
 ]

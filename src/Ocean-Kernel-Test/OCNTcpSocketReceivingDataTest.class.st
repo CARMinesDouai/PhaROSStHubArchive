@@ -11,7 +11,7 @@ OCNTcpSocketReceivingDataTest >> assertReceivingDataOfSize: dataSize [
 	serverShell deleteStdInFile.
 	stdIn := FileStream fileNamed: serverShell stdInFileName.
 	[ stdIn nextPutAll: dataToSend ] ensure: [ stdIn close ].
-	self assertConnection.
+	self connect.
 	receptionStream := WriteStream on: (ByteArray new: dataSize).
 	waitForData := true.
 	[ waitForData ]

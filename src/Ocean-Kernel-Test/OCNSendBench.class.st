@@ -33,7 +33,7 @@ OCNSendBench >> timeToSendWithOcean [
 	[ self timeToRun: [ socket send: self dataToSend ] ]
 		ensure: [ 
 			self stopServerAndCleanUp.
-			socket close ].
+			socket destroy ].
 	^ timeToRunValues
 ]
 
@@ -46,6 +46,6 @@ OCNSendBench >> timeToSendWithOldSocket [
 	[ self timeToRun: [ socket sendData: self dataToSend ] ]
 		ensure: [ 
 			self stopServerAndCleanUp.
-			socket close ].
+			socket destroy ].
 	^ timeToRunValues
 ]

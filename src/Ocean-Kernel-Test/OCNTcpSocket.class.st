@@ -4,17 +4,10 @@ Class {
 	#category : #'Ocean-Kernel'
 }
 
-{ #category : #connection }
-OCNTcpSocket >> close [
-	self isClosed
-		ifTrue: [ ^ self ].
-	(self networkLibrary close: self socketId) = 0
-		ifTrue: [ self state: self closedStateSymbol ]
-]
-
 { #category : #'state names' }
-OCNTcpSocket >> closedStateSymbol [
-	^ #closed
+OCNTcpSocket >> boundStateSymbol [
+	^#bound
+
 ]
 
 { #category : #connection }
@@ -31,20 +24,14 @@ OCNTcpSocket >> connectedStateSymbol [
 
 ]
 
-{ #category : #'initialize-release' }
-OCNTcpSocket >> initialize [ 
-	super initialize.
-	self state: self closedStateSymbol
+{ #category : #'state testing' }
+OCNTcpSocket >> isBound [
+	^self state = self boundStateSymbol
 ]
 
-{ #category : #connection }
-OCNTcpSocket >> isClosed [
-	^self state = self closedStateSymbol
-]
-
-{ #category : #testing }
+{ #category : #'state testing' }
 OCNTcpSocket >> isConnected [ 
-	^self state = self connectedStateSymbol 
+	^self state = self connectedStateSymbol
 ]
 
 { #category : #'initialize-release' }
