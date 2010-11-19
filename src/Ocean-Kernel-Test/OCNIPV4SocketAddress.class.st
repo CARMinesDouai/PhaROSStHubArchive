@@ -39,6 +39,15 @@ Class {
 	#category : #'Ocean-Kernel'
 }
 
+{ #category : #'instance creation' }
+OCNIPV4SocketAddress class >> loopbackAddressWithPort: aPortNumber [
+	^ self new
+		family: self afInetFamily;
+		ip: #[127 0 0 1]; 
+		port: aPortNumber ;
+		yourself
+]
+
 { #category : #accessing }
 OCNIPV4SocketAddress >> family [
 	^ family

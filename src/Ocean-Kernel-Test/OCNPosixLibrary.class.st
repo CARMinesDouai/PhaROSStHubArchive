@@ -177,7 +177,8 @@ OCNPosixLibrary >> alienResult: anObject [
 
 { #category : #'socket functions' }
 OCNPosixLibrary >> bind: socketId address: socketAddress size: socketAddressSize [
-"int bind(int socket, const struct sockaddr *address, socklen_t address_len);
+"
+int bind(int socket, const struct sockaddr *address, socklen_t address_len);
 See description in comment below
 "
 
@@ -265,12 +266,20 @@ Insufficient resources were available to complete the call.
 
 { #category : #'TCP API' }
 OCNPosixLibrary >> bind: socketId toIpv4Address: anAddress [
+	"anAddress represents the local address of the network interface to use"
 	
 	| result primitiveAddress |
 	primitiveAddress := self posixIPV4AddressFrom: anAddress.
 	[result := self bind: socketId address: primitiveAddress size: primitiveAddress dataSize] 
 	ensure: [primitiveAddress free].
 	^result
+]
+
+{ #category : #'TCP API' }
+OCNPosixLibrary >> bind: socketId toPort: aPortNumber [
+	| localhostAddress |
+	localhostAddress := OCNIPV4SocketAddress loopbackAddressWithPort: aPortNumber.
+	^ self bind: socketId toIpv4Address: localhostAddress 
 ]
 
 { #category : #'function names' }
@@ -569,9 +578,12 @@ OCNPosixLibrary >> ntohs: anInt [
 { #category : #'socket address' }
 OCNPosixLibrary >> posixIPV4AddressFrom: aSocketAddress [
 
-	| posixAddress |
+	| posixAddress family |
 	posixAddress := OCNPosixAlienBasedSockAddrIn newC.
-	posixAddress sinFamily: (self htons: aSocketAddress family).
+	(aSocketAddress isOfAfInetFamily) 
+		ifTrue: [ family := self AfInet ]
+		ifFalse: [ self error: 'Only AfInet socket family are supported' ].
+	posixAddress sinFamily: (self htons: family).
 	posixAddress sinPort: (self htons: aSocketAddress port).
 	posixAddress sinAddr: aSocketAddress ip.
 	^posixAddress

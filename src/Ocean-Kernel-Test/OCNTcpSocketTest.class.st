@@ -34,11 +34,7 @@ OCNTcpSocketTest >> clientPort [
 OCNTcpSocketTest >> connect [
 	| serverAddress |
 	self startServer.
-	serverAddress := OCNIPV4SocketAddress new.
-	serverAddress 
-		family: library AfInet;
-		ip: #[127 0 0 1]; "localhost should have a server"
-		port: self serverPort.
+	serverAddress := OCNIPV4SocketAddress loopbackAddressWithPort:  self serverPort.	
 	socket connectToServer: serverAddress.
 
 ]
@@ -89,9 +85,20 @@ OCNTcpSocketTest >> tearDown [
 	socket destroy.
 ]
 
-{ #category : #testing }
+{ #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testBindBoundSocket [
-	self fail
+	
+	| initialPort otherPort |
+	initialPort := self clientPort.
+	otherPort := 9125.
+	self assertSocketState: #isUnconnected.
+	socket bindToPort: initialPort.	
+	self assertSocketState: #isBound.
+	self should: [socket bindToPort: initialPort] raise: OCNSocketAlreadyBoundExecption.	
+	self assertSocketState: #isBound.
+	self should: [socket bindToPort: otherPort] raise: OCNSocketAlreadyBoundExecption.	
+	self assertSocketState: #isBound
+	
 ]
 
 { #category : #testing }
@@ -105,13 +112,15 @@ OCNTcpSocketTest >> testBindDestroyedSocket [
 ]
 
 { #category : #testing }
+OCNTcpSocketTest >> testBindFailureOfUnconnectedSocket [
+	self fail
+]
+
+{ #category : #testing }
 OCNTcpSocketTest >> testBindUnconnectedSocket [
 	| socketAddress expectedClientPort |
 	self testSocketUnconnectedOnCreation.
-	socketAddress := (OCNIPV4SocketAddress new)
-		family: library AfInet;
-		ip: #[127 0 0 1];
-		port: self clientPort.	
+	socketAddress := OCNIPV4SocketAddress loopbackAddressWithPort:  self serverPort.	
 	socket bindToAddress: socketAddress.
 	self assertSocketState: #isBound.
 	self signalFailure: 'Ensures that client socket is bount to clientPort '
@@ -126,11 +135,28 @@ OCNTcpSocketTest >> testConnectBoundSocket [
 
 { #category : #testing }
 OCNTcpSocketTest >> testConnectConnectedSocket [
-	self fail
+	self connect.
+	self assertSocketState: #isConnected.
+	self shouldnt: [ self connect ] raise: Error.
+	self assertSocketState: #isConnected
+	
 ]
 
 { #category : #testing }
 OCNTcpSocketTest >> testConnectDestroyedSocket [
+	socket destroy.
+	self assertSocketState: #isDestroyed.
+	self should: [self connect] raise: Error.
+	self assertSocketState: #isDestroyed
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testConnectFailureOfBountSocket [
+	self fail
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testConnectFailureOfUnconnectedSocket [
 	self fail
 ]
 
@@ -158,8 +184,23 @@ OCNTcpSocketTest >> testDestroyDestroyedSocket [
 ]
 
 { #category : #testing }
+OCNTcpSocketTest >> testDestroyFailureOfSocketInAnyState [
+	self fail
+]
+
+{ #category : #testing }
 OCNTcpSocketTest >> testDestroyUnconnectedSocket [
 	self fail
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testSocketFinalization [
+	self signalFailure: 'socket finalized before GC collection'
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testSocketRestoredAtImageStartup [
+	self signalFailure: 'socket restored in the same state when image startup'
 ]
 
 { #category : #testing }
@@ -172,24 +213,4 @@ OCNTcpSocketTest >> testSocketUnconnectedOnCreation [
 { #category : #testing }
 OCNTcpSocketTest >> testTcpAPIRaiseExecptions [
 	self signalFailure: 'bind, connect, ... should raise exceptions on failure'
-]
-
-{ #category : #testing }
-OCNTcpSocketTest >> testUnconnectBoundSocket [
-	self fail
-]
-
-{ #category : #testing }
-OCNTcpSocketTest >> testUnconnectConnectedSocket [
-	self fail
-]
-
-{ #category : #testing }
-OCNTcpSocketTest >> testUnconnectDestroyedSocket [
-	self fail
-]
-
-{ #category : #testing }
-OCNTcpSocketTest >> testUnconnectUnconnectedSocket [
-	self fail
 ]

@@ -33,3 +33,18 @@ Class {
 	#superclass : #Object,
 	#category : #'Ocean-Kernel'
 }
+
+{ #category : #constants }
+OCNSocketAddress class >> afInetFamily [
+	^#AfInet
+]
+
+{ #category : #constants }
+OCNSocketAddress >> afInetFamily [
+	^self class afInetFamily
+]
+
+{ #category : #testing }
+OCNSocketAddress >> isOfAfInetFamily [
+	^ self family = self afInetFamily
+]

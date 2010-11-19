@@ -37,6 +37,14 @@ OCNSocket >> bindToAddress: aSocketAddress [
 	
 ]
 
+{ #category : #connecting }
+OCNSocket >> bindToPort: aPortNumber [ 
+	self isBound ifTrue: [ OCNSocketAlreadyBoundExecption signal ].
+	self networkLibrary bind: self socketId toPort: aPortNumber. 
+	self state: self boundStateSymbol
+	
+]
+
 { #category : #connection }
 OCNSocket >> destroy [
 	self isDestroyed 
@@ -100,6 +108,7 @@ OCNSocket >> state [
 
 { #category : #private }
 OCNSocket >> state: anObject [
+	
 	state := anObject
 ]
 
