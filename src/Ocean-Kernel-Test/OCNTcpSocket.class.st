@@ -41,7 +41,7 @@ OCNTcpSocket >> newSocketId [
 
 { #category : #communication }
 OCNTcpSocket >> receive [
-	self isConnected ifFalse: [OCNSocketConnectedException signal].
+	self isConnected ifFalse: [OCNSocketOperationForbiddenError signal: 'Socket should be connected before receiving'].
 	^self networkLibrary readFrom: self socketId	
 ]
 
@@ -49,7 +49,7 @@ OCNTcpSocket >> receive [
 OCNTcpSocket >> send: data [
 	| sentDataSize |
 	self isConnected
-		ifFalse: [ OCNSocketConnectedException signal  ].
+		ifFalse: [ OCNSocketOperationForbiddenError signal: 'Socket should be connected before sending'  ].
 	^self networkLibrary sendData: data to: self socketId
 	
 ]

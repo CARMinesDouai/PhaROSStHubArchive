@@ -198,7 +198,7 @@ OCNMacOSXPosixDebugLibrary class >> generateDebugSysSocketLibraryCFile [
 
 { #category : #initialization }
 OCNMacOSXPosixDebugLibrary class >> initialize [
-	self rebuildDebugSysSocketLibraryDylibFile
+	"self rebuildDebugSysSocketLibraryDylibFile"
 ]
 
 { #category : #compiling }

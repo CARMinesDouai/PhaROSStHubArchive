@@ -31,18 +31,23 @@ OCNSocket class >> newWithNetworkLibrary: aNetworkLibraryProxy [
 
 { #category : #connecting }
 OCNSocket >> bindToAddress: aSocketAddress [ 
-	
-	self networkLibrary bind: self socketId toIpv4Address: aSocketAddress.
+	self isUnconnected ifFalse: [ 
+		OCNSocketOperationForbiddenError signal: self state asString capitalized, ' socket can not be bound' ].
+	[
+		self networkLibrary bind: self socketId toIpv4Address: aSocketAddress
+	] on: OCNSocketOperationFailureError do: [:ex|
+		self state: self destroyedStateSymbol.
+		ex pass.
+	].
 	self state: self boundStateSymbol
 	
 ]
 
 { #category : #connecting }
-OCNSocket >> bindToPort: aPortNumber [ 
-	self isBound ifTrue: [ OCNSocketAlreadyBoundExecption signal ].
-	self networkLibrary bind: self socketId toPort: aPortNumber. 
-	self state: self boundStateSymbol
-	
+OCNSocket >> bindToLocalHostPort: aPortNumber [ 
+	| localhostAddress |
+	localhostAddress := OCNIPV4SocketAddress loopbackAddressWithPort: aPortNumber.
+	self bindToAddress: localhostAddress 	
 ]
 
 { #category : #connection }

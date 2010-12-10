@@ -10,19 +10,24 @@ Class {
 }
 
 { #category : #testing }
-OCNTcpSocketTest >> assertSocketState: aSelectorToAssert [
+OCNTcpSocketTest >> assertSocket: aSocket state: aSelectorToAssert [
 
 	| selectorsToDeny |
 	
-	self assert: (socket perform: aSelectorToAssert).
+	self assert: (aSocket perform: aSelectorToAssert).
 	
 	selectorsToDeny := #(#isUnconnected #isBound #isConnected isDestroyed) copyWithout: aSelectorToAssert.
 	
 	selectorsToDeny do: [ :aSelectorToDeny | 
-		self deny: (socket perform: aSelectorToDeny)
+		self deny: (aSocket perform: aSelectorToDeny)
 	]
 
 	
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> assertSocketState: aSelectorToAssert [
+	self assertSocket: socket state: aSelectorToAssert
 ]
 
 { #category : #testing }
@@ -92,28 +97,47 @@ OCNTcpSocketTest >> testBindBoundSocket [
 	initialPort := self clientPort.
 	otherPort := 9125.
 	self assertSocketState: #isUnconnected.
-	socket bindToPort: initialPort.	
+	socket bindToLocalHostPort: initialPort.	
 	self assertSocketState: #isBound.
-	self should: [socket bindToPort: initialPort] raise: OCNSocketAlreadyBoundExecption.	
+	self should: [socket bindToLocalHostPort: initialPort] raise: OCNSocketOperationForbiddenError.	
 	self assertSocketState: #isBound.
-	self should: [socket bindToPort: otherPort] raise: OCNSocketAlreadyBoundExecption.	
+	self should: [socket bindToLocalHostPort: otherPort] raise: OCNSocketOperationForbiddenError.	
 	self assertSocketState: #isBound
 	
 ]
 
-{ #category : #testing }
+{ #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testBindConnectedSocket [
-	self fail
+	self connect.
+	self assertSocketState: #isConnected.
+	self should: [socket bindToLocalHostPort: self serverPort] raise: OCNSocketOperationForbiddenError.
+	self assertSocketState: #isConnected
+	
 ]
 
-{ #category : #testing }
+{ #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testBindDestroyedSocket [
-	self fail
+	socket destroy.
+	self assertSocketState: #isDestroyed.
+	self should: [socket bindToLocalHostPort: self serverPort] raise: OCNSocketOperationForbiddenError.
+	self assertSocketState: #isDestroyed
+	
 ]
 
 { #category : #testing }
 OCNTcpSocketTest >> testBindFailureOfUnconnectedSocket [
-	self fail
+	| socketThatShouldFail |
+	socket bindToLocalHostPort: self serverPort.
+	self assertSocketState: #isBound.
+	socketThatShouldFail :=  OCNTcpSocket new.
+	self assertSocket: socketThatShouldFail state: #isUnconnected.
+	[
+		self should: [socketThatShouldFail bindToLocalHostPort: self serverPort] raise: OCNSocketOperationFailureError.
+		self assertSocket: socketThatShouldFail state: #isDestroyed.
+	] ensure: [
+	socketThatShouldFail destroy].
+	self assertSocketState: #isBound.
+	
 ]
 
 { #category : #testing }

@@ -272,14 +272,7 @@ OCNPosixLibrary >> bind: socketId toIpv4Address: anAddress [
 	primitiveAddress := self posixIPV4AddressFrom: anAddress.
 	[result := self bind: socketId address: primitiveAddress size: primitiveAddress dataSize] 
 	ensure: [primitiveAddress free].
-	^result
-]
-
-{ #category : #'TCP API' }
-OCNPosixLibrary >> bind: socketId toPort: aPortNumber [
-	| localhostAddress |
-	localhostAddress := OCNIPV4SocketAddress loopbackAddressWithPort: aPortNumber.
-	^ self bind: socketId toIpv4Address: localhostAddress 
+	result = -1 ifTrue: [OCNSocketOperationFailureError signal: 'Bind failure']
 ]
 
 { #category : #'function names' }
