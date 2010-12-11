@@ -5,6 +5,9 @@ Class {
 		'alienResult',
 		'alienDataBuffer'
 	],
+	#pools : [
+		'OCNSysSocketConstants'
+	],
 	#classInstVars : [
 		'default'
 	],
@@ -14,47 +17,6 @@ Class {
 { #category : #'instance creation' }
 OCNPosixLibrary class >> proxy [
 	^self new
-]
-
-{ #category : #'communication domain' }
-OCNPosixLibrary >> AfInet [
-	^2
-]
-
-{ #category : #'socket protocol' }
-OCNPosixLibrary >> IpProtoTcp [
-	^6
-]
-
-{ #category : #'communication domain' }
-OCNPosixLibrary >> PfInet [
-	^self AfInet
-]
-
-{ #category : #'shutdown constants' }
-OCNPosixLibrary >> ShutRD [
-	"Disables further receive operations on a socket"
-	^0
-
-]
-
-{ #category : #'shutdown constants' }
-OCNPosixLibrary >> ShutRdwr [
-	"Disables further send and receive operations."
-	^2
-
-]
-
-{ #category : #'shutdown constants' }
-OCNPosixLibrary >> ShutWr [
-	"Disables further send operations."
-	^1
-
-]
-
-{ #category : #'socket type' }
-OCNPosixLibrary >> SockStream [
-	^1
 ]
 
 { #category : #'socket functions' }
@@ -436,9 +398,9 @@ OCNPosixLibrary >> connectFunctionName [
 OCNPosixLibrary >> createTcpSocketDescriptorId [
 
  ^ self 
-		socketDomain: self PfInet
-		type: self SockStream
-		protocol: self IpProtoTcp
+		socketDomain: PF_INET
+		type: SOCK_STREAM
+		protocol: IPPROTO_TCP
 	
 	
 ]
@@ -574,7 +536,7 @@ OCNPosixLibrary >> posixIPV4AddressFrom: aSocketAddress [
 	| posixAddress family |
 	posixAddress := OCNPosixAlienBasedSockAddrIn newC.
 	(aSocketAddress isOfAfInetFamily) 
-		ifTrue: [ family := self AfInet ]
+		ifTrue: [ family := AF_INET ]
 		ifFalse: [ self error: 'Only AfInet socket family are supported' ].
 	posixAddress sinFamily: (self htons: family).
 	posixAddress sinPort: (self htons: aSocketAddress port).
