@@ -192,3 +192,17 @@ ConfigurationOfOcean >> version02: spec [
 			"; package: 'Ocean' with: 'Ocean-NouryBouraqadi.18' " "do not fix a particular version to load the latest one"
 	] 
 ]
+
+{ #category : #versions }
+ConfigurationOfOcean >> version03: spec [
+	<version: '0.3' imports: #('0.2-baseline')>
+	
+	spec for: #common do: [
+		spec 
+			blessing: #development; 
+			project: 'Alien' with:  'Pharo 1.1';
+			package: 'OSProcess' with: 'OSProcess-dtl.59';
+			package: 'OSProcess-Tests' with: 'OSProcess-Tests-dtl.4'
+			"; package: 'Ocean' with: 'Ocean-LucFabresse.37' " "do not fix a particular version to load the latest one"
+	] 
+]
