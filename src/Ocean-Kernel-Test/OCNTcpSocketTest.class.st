@@ -38,7 +38,6 @@ OCNTcpSocketTest >> clientPort [
 { #category : #testing }
 OCNTcpSocketTest >> connect [
 	| serverAddress |
-	self startServer.
 	serverAddress := OCNIPV4SocketAddress loopbackAddressWithPort:  self serverPort.	
 	socket connectToServer: serverAddress.
 
@@ -108,6 +107,7 @@ OCNTcpSocketTest >> testBindBoundSocket [
 
 { #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testBindConnectedSocket [
+	self startServer.
 	self connect.
 	self assertSocketState: #isConnected.
 	self should: [socket bindToLocalHostPort: self serverPort] raise: OCNSocketOperationForbiddenError.
@@ -124,97 +124,108 @@ OCNTcpSocketTest >> testBindDestroyedSocket [
 	
 ]
 
-{ #category : #testing }
-OCNTcpSocketTest >> testBindFailureOfUnconnectedSocket [
-	| socketThatShouldFail |
-	socket bindToLocalHostPort: self serverPort.
-	self assertSocketState: #isBound.
-	socketThatShouldFail :=  OCNTcpSocket new.
-	self assertSocket: socketThatShouldFail state: #isUnconnected.
-	[
-		self should: [socketThatShouldFail bindToLocalHostPort: self serverPort] raise: OCNSocketOperationFailureError.
-		self assertSocket: socketThatShouldFail state: #isDestroyed.
-	] ensure: [
-	socketThatShouldFail destroy].
-	self assertSocketState: #isBound.
-	
-]
-
-{ #category : #testing }
+{ #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testBindUnconnectedSocket [
-	| socketAddress expectedClientPort |
+	| socketAddress |
 	self testSocketUnconnectedOnCreation.
-	socketAddress := OCNIPV4SocketAddress loopbackAddressWithPort:  self serverPort.	
-	socket bindToAddress: socketAddress.
+	self assertSocketState: #isUnconnected.
+	socketAddress := OCNIPV4SocketAddress loopbackAddressWithPort:  self clientPort.	
+	self shouldnt: [socket bindToAddress: socketAddress] raise: OCNSocketOperationFailureError.
 	self assertSocketState: #isBound.
-	self signalFailure: 'Ensures that client socket is bount to clientPort '
+	"self signalFailure: 'Ensures that client socket is bount to clientPort '"
 ]
 
-{ #category : #testing }
-OCNTcpSocketTest >> testConnectBoundSocket [
-	self testBindUnconnectedSocket.
-	self connect.
-	self assertSocketState: #isConnected
-]
-
-{ #category : #testing }
+{ #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testConnectConnectedSocket [
-	self connect.
-	self assertSocketState: #isConnected.
-	self shouldnt: [ self connect ] raise: Error.
+	self testConnectUnconnectedSocket.
+	self should: [ self connect ] raise: OCNSocketOperationForbiddenError .
 	self assertSocketState: #isConnected
 	
 ]
 
-{ #category : #testing }
+{ #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testConnectDestroyedSocket [
+	self startServer.
 	socket destroy.
 	self assertSocketState: #isDestroyed.
-	self should: [self connect] raise: Error.
+	self should: [self connect] raise: OCNSocketOperationForbiddenError.
 	self assertSocketState: #isDestroyed
 ]
 
-{ #category : #testing }
-OCNTcpSocketTest >> testConnectFailureOfBountSocket [
-	self fail
+{ #category : #'testing lifecylce' }
+OCNTcpSocketTest >> testConnectFailureOfBoundSocket [
+	self testBindUnconnectedSocket.
+	self should: [self connect] raise: OCNSocketOperationFailureError.
+	self assertSocketState: #isDestroyed
 ]
 
-{ #category : #testing }
+{ #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testConnectFailureOfUnconnectedSocket [
-	self fail
+	self assertSocketState: #isUnconnected.
+	self should: [self connect] raise: OCNSocketOperationFailureError.
+	self assertSocketState: #isDestroyed
 ]
 
-{ #category : #testing }
+{ #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testConnectUnconnectedSocket [
-	self fail
+	self startServer.
+	self assertSocketState: #isUnconnected.
+	self connect.
+	self assertSocketState: #isConnected.
+
 ]
 
-{ #category : #testing }
+{ #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testDestroyBoundSocket [
-	self fail
+	self testBindUnconnectedSocket.
+	self assertSocketState: #isBound.
+	socket destroy.
+	self assertSocketState: #isDestroyed.
+
 ]
 
-{ #category : #testing }
+{ #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testDestroyConnectedSocket [
+	self startServer.
 	self connect.
 	self assertSocketState: #isConnected.
 	socket destroy.
 	self assertSocketState: #isDestroyed
 ]
 
-{ #category : #testing }
+{ #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testDestroyDestroyedSocket [
-	self fail
+	self testDestroyUnconnectedSocket.
+	self assertSocketState: #isDestroyed.
+	self shouldnt: [socket destroy] raise: Error.
+	self assertSocketState: #isDestroyed.
+	
 ]
 
-{ #category : #testing }
-OCNTcpSocketTest >> testDestroyFailureOfSocketInAnyState [
-	self fail
-]
-
-{ #category : #testing }
+{ #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testDestroyUnconnectedSocket [
-	self fail
+	self assertSocketState: #isUnconnected.
+	socket destroy.
+	self assertSocketState: #isDestroyed.
+
+]
+
+{ #category : #'testing lifecylce' }
+OCNTcpSocketTest >> testReceiveOnDestroyedSocket [
+	self testDestroyUnconnectedSocket.
+	self assertSocketState: #isDestroyed.
+	self should: [ socket receive ] raise: OCNSocketOperationForbiddenError.
+	self assertSocketState: #isDestroyed.
+
+]
+
+{ #category : #'testing lifecylce' }
+OCNTcpSocketTest >> testSendOnDestroyedSocket [
+	self testDestroyUnconnectedSocket.
+	self assertSocketState: #isDestroyed.
+	self should: [socket send: 'hello'] raise: OCNSocketOperationForbiddenError.
+	self assertSocketState: #isDestroyed.
+	
 ]
 
 { #category : #testing }
@@ -227,14 +238,9 @@ OCNTcpSocketTest >> testSocketRestoredAtImageStartup [
 	self signalFailure: 'socket restored in the same state when image startup'
 ]
 
-{ #category : #testing }
+{ #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testSocketUnconnectedOnCreation [
 	self assert: socket socketId notNil.
 	self assertSocketState:  #isUnconnected.
 
-]
-
-{ #category : #testing }
-OCNTcpSocketTest >> testTcpAPIRaiseExecptions [
-	self signalFailure: 'bind, connect, ... should raise exceptions on failure'
 ]

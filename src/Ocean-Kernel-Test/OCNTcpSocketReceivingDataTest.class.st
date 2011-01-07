@@ -11,6 +11,7 @@ OCNTcpSocketReceivingDataTest >> assertReceivingDataOfSize: dataSize [
 	serverShell deleteStdInFile.
 	stdIn := FileStream fileNamed: serverShell stdInFileName.
 	[ stdIn nextPutAll: dataToSend ] ensure: [ stdIn close ].
+	self startServer.
 	self connect.
 	receptionStream := WriteStream on: (ByteArray new: dataSize).
 	waitForData := true.
@@ -44,6 +45,23 @@ OCNTcpSocketReceivingDataTest >> tearDown [
 { #category : #testing }
 OCNTcpSocketReceivingDataTest >> testDisconnectionWhileReceiving [
 	self signalFailure: 'Needs non-blocking (multi-threading)'
+]
+
+{ #category : #'testing lifecylce' }
+OCNTcpSocketReceivingDataTest >> testReceiveOnBoundSocket [
+	self testBindUnconnectedSocket.
+	self assertSocketState: #isBound.
+	self should: [ socket receive ] raise: OCNSocketOperationForbiddenError.
+	self assertSocketState: #isBound.
+	self signalFailure: 'should send testReceivingLessDataThanSocketsDataBufferSize, but a MYSTERIOUS error happens. It looks like the OS does not release the port used by bind'
+]
+
+{ #category : #'testing lifecylce' }
+OCNTcpSocketReceivingDataTest >> testReceiveOnUnconnectedSocket [
+	self assertSocketState: #isUnconnected.
+	self should: [ socket receive ] raise: OCNSocketOperationForbiddenError.
+	self assertSocketState: #isUnconnected.
+	self testReceivingLessDataThanSocketsDataBufferSize
 ]
 
 { #category : #testing }

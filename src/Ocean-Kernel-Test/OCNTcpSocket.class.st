@@ -12,9 +12,15 @@ OCNTcpSocket >> boundStateSymbol [
 
 { #category : #connection }
 OCNTcpSocket >> connectToServer: serverAddress [
-	| result |
-	result := self networkLibrary connect: self socketId toServerWithIpv4Address: serverAddress.
-	(result = 0) ifTrue: [ self state:  self connectedStateSymbol]
+	(self isUnconnected | self isBound ) ifFalse:  [ 
+		OCNSocketOperationForbiddenError signal: self state asString capitalized, ' socket can not be connected' ].
+	[
+		self networkLibrary connect: self socketId toServerWithIpv4Address: serverAddress.
+	] on: OCNSocketOperationFailureError do: [:ex|
+		self destroy.
+		ex pass.
+	].
+	self state:  self connectedStateSymbol
 
 ]
 
@@ -39,13 +45,13 @@ OCNTcpSocket >> newSocketId [
 	^ self networkLibrary createTcpSocketDescriptorId 
 ]
 
-{ #category : #communication }
+{ #category : #communicating }
 OCNTcpSocket >> receive [
 	self isConnected ifFalse: [OCNSocketOperationForbiddenError signal: 'Socket should be connected before receiving'].
 	^self networkLibrary readFrom: self socketId	
 ]
 
-{ #category : #communication }
+{ #category : #communicating }
 OCNTcpSocket >> send: data [
 	| sentDataSize |
 	self isConnected

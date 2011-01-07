@@ -36,7 +36,7 @@ OCNSocket >> bindToAddress: aSocketAddress [
 	[
 		self networkLibrary bind: self socketId toIpv4Address: aSocketAddress
 	] on: OCNSocketOperationFailureError do: [:ex|
-		self state: self destroyedStateSymbol.
+		self destroy.
 		ex pass.
 	].
 	self state: self boundStateSymbol
@@ -54,8 +54,9 @@ OCNSocket >> bindToLocalHostPort: aPortNumber [
 OCNSocket >> destroy [
 	self isDestroyed 
 		ifTrue: [ ^ self ].
-	(self networkLibrary close: self socketId) = 0
-		ifTrue: [ self state: self destroyedStateSymbol ]
+	self state: self destroyedStateSymbol.
+	self networkLibrary close: self socketId.
+
 ]
 
 { #category : #'state names' }

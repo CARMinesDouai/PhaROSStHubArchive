@@ -150,7 +150,7 @@ See description in comment below
 		primFFICallResult: self alienResult
 		withArguments: {socketId. socketAddress pointer. socketAddressSize}.
 	
-	^ self communicationResult
+	^ self latestPosixResult
 
 " int bind(int socket, const struct sockaddr *address,
        socklen_t address_len);
@@ -242,12 +242,12 @@ OCNPosixLibrary >> bindFunctionName [
 	^'bind'
 ]
 
-{ #category : #'socket functions' }
+{ #category : #'TCP API' }
 OCNPosixLibrary >> close: socketId [
-	| result |
-	result := Alien new: 4.
-	(self alienMethodNamed: self closeFunctionName) primFFICallResult: result with: socketId.
-	^ result unsignedLongAt: 1	"#include <unistd.h>
+	(self alienMethodNamed: self closeFunctionName) primFFICallResult: self alienResult with: socketId.
+	self latestPosixResult 	= -1  ifTrue: [OCNSocketOperationFailureError signal: 'Close failed']
+		
+"#include <unistd.h>
 int close(int fildes);
 RETURN VALUES
 If successful, close() returns a value of zero. On failure, it returns a value of -1 and sets errno to one of the following:
@@ -259,11 +259,6 @@ OCNPosixLibrary >> closeFunctionName [
 	^ 'close'
 ]
 
-{ #category : #accessing }
-OCNPosixLibrary >> communicationResult [
-	^ self alienResult signedLongAt: 1
-]
-
 { #category : #'socket functions' }
 OCNPosixLibrary >> connect: socketId serverAddress: serverSocketAddress serverAddressSize: serverSocketAddressSize [
 "int connect(int socket, const struct sockaddr *address,
@@ -271,14 +266,13 @@ OCNPosixLibrary >> connect: socketId serverAddress: serverSocketAddress serverAd
 
 See description in comment below
 "
-	| result alienMethod |
-	result := Alien new: 4.
+	| alienMethod |
 	alienMethod := self alienMethodNamed: self connectFunctionName.
 	alienMethod
-		primFFICallResult: result
+		primFFICallResult: self alienResult
 		withArguments: {socketId. serverSocketAddress pointer. serverSocketAddressSize}.
-	
-	^ result signedLongAt: 1
+
+	^ self latestPosixResult
 
 "SYNOPSIS
 
@@ -385,8 +379,7 @@ OCNPosixLibrary >> connect: socketId toServerWithIpv4Address: serverAddress [
 	result := self connect: socketId
 		serverAddress: primitiveAddress
 		serverAddressSize: primitiveAddress dataSize.
-	primitiveAddress free.
-	^result
+	result = -1  ifTrue: [OCNSocketOperationFailureError signal: 'Connection failure']
 ]
 
 { #category : #'function names' }
@@ -442,6 +435,11 @@ OCNPosixLibrary >> initialize [
 	self alienDataBuffer: (Alien newGC: self defaultDataBufferSize).
 	self alienResult: (Alien newGC: 4).
 
+]
+
+{ #category : #accessing }
+OCNPosixLibrary >> latestPosixResult [
+	^ self alienResult signedLongAt: 1
 ]
 
 { #category : #'socket functions' }
@@ -695,7 +693,7 @@ OCNPosixLibrary >> receiveFunctionName [
 { #category : #accessing }
 OCNPosixLibrary >> receivedString [
 	| numberOfBytesReceived |
-	numberOfBytesReceived := self communicationResult.
+	numberOfBytesReceived := self latestPosixResult.
 	numberOfBytesReceived == 0
 		ifTrue: [ ^ '' ].
 	^ self alienDataBuffer strcpyFrom: 1 ofSize: numberOfBytesReceived
@@ -718,7 +716,7 @@ OCNPosixLibrary >> sendData: data to: socketId [
 		ofSize: sentDataSize
 		flags: 0
 		result: self alienResult.
-	^ self communicationResult
+	^ self latestPosixResult
 ]
 
 { #category : #'function names' }
@@ -866,7 +864,7 @@ See description in comment below
 			{communicationDomain.
 			socketType.
 			socketProtocol}.
-	^ self communicationResult 
+	^ self latestPosixResult 
 		"#include <sys/socket.h>
 
 int socket(int domain, int type, int protocol);
