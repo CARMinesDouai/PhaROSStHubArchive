@@ -16,3 +16,8 @@ OCNSocketPluginLibrary class >> new [
 OCNSocketPluginLibrary class >> proxy [
 	^default ifNil: [ default := super new ]
 ]
+
+{ #category : #accessing }
+OCNSocketPluginLibrary >> defaultDataBufferSize [
+	^2000
+]

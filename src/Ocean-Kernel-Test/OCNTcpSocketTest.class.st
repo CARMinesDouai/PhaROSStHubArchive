@@ -79,8 +79,8 @@ OCNTcpSocketTest >> serverShellClass [
 { #category : #'setUp-tearDown' }
 OCNTcpSocketTest >> setUp [
 	super setUp.
-	socket := OCNTcpSocket new.
 	library := OCNNetworkLibraryProxyFactory proxyForLibrary: self networkLibraryClass.
+	socket := OCNTcpSocket newWithNetworkLibrary: library.
 	self setUpServerShell.
 
 ]
