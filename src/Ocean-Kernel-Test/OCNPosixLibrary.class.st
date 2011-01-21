@@ -390,12 +390,15 @@ OCNPosixLibrary >> connectFunctionName [
 { #category : #'TCP API' }
 OCNPosixLibrary >> createTcpSocketDescriptorId [
 
- ^ self 
+  	| result |
+	self 
 		socketDomain: PF_INET
 		type: SOCK_STREAM
-		protocol: IPPROTO_TCP
+		protocol: IPPROTO_TCP.
 	
+	self latestPosixResult = -1  ifTrue: [OCNSocketOperationFailureError signal: 'Socket creation failure'].
 	
+	^ self latestPosixResult 
 ]
 
 { #category : #accessing }
@@ -813,10 +816,10 @@ There were insufficient STREAMS resources available for the operation to complet
 
 { #category : #'socket functions' }
 OCNPosixLibrary >> shutdown: socketId usingMethod: aFlag [
-	| result |
-	result := Alien new: 4.
-	(self alienMethodNamed: self shutdownFunctionName) primFFICallResult: result with: socketId with: aFlag.
-	^ result unsignedLongAt: 1	"#include <sys/socket.h>
+
+	(self alienMethodNamed: self shutdownFunctionName) primFFICallResult: self alienResult with: socketId with: aFlag.
+	^ self latestPosixResult 
+	"#include <sys/socket.h>
 
 int shutdown(int socket, int how);
 

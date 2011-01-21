@@ -24,9 +24,14 @@ Class {
 
 { #category : #'instance creation' }
 OCNSocket class >> newWithNetworkLibrary: aNetworkLibraryProxy [
-	^super new
+	^self new
 		networkLibrary: aNetworkLibraryProxy;
 		yourself
+]
+
+{ #category : #'instance creation' }
+OCNSocket class >> newWithNetworkLibraryClass: aNetworkLibraryClass [
+	^self newWithNetworkLibrary: (OCNNetworkLibraryProxyFactory proxyForLibraryClass:  aNetworkLibraryClass)
 ]
 
 { #category : #connecting }
@@ -67,8 +72,6 @@ OCNSocket >> destroyedStateSymbol [
 { #category : #'initialize-release' }
 OCNSocket >> initialize [ 
 	super initialize.
-	self networkLibrary: OCNNetworkLibraryProxyFactory networkLibraryProxy.
-	self socketId: self newSocketId.
 	self state: self unconnectedStateSymbol 
 ]
 
@@ -84,7 +87,7 @@ OCNSocket >> isUnconnected [
 
 { #category : #accessing }
 OCNSocket >> networkLibrary [
-	^ networkLibrary
+	^ networkLibrary ifNil: [ networkLibrary := OCNNetworkLibraryProxyFactory networkLibraryProxy ]
 ]
 
 { #category : #accessing }
@@ -99,7 +102,7 @@ OCNSocket >> newSocketId [
 
 { #category : #accessing }
 OCNSocket >> socketId [
-	^ socketId
+	^ socketId ifNil: [ socketId := self newSocketId]
 ]
 
 { #category : #accessing }

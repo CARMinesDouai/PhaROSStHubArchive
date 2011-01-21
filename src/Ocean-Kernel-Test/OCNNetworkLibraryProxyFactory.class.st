@@ -41,6 +41,6 @@ OCNNetworkLibraryProxyFactory class >> networkLibraryProxy [
 ]
 
 { #category : #'building socket proxies' }
-OCNNetworkLibraryProxyFactory class >> proxyForLibrary: aLibraryClass [
+OCNNetworkLibraryProxyFactory class >> proxyForLibraryClass: aLibraryClass [
 	^aLibraryClass proxy
 ]

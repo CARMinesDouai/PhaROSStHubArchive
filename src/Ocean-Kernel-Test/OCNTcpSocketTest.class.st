@@ -79,7 +79,7 @@ OCNTcpSocketTest >> serverShellClass [
 { #category : #'setUp-tearDown' }
 OCNTcpSocketTest >> setUp [
 	super setUp.
-	library := OCNNetworkLibraryProxyFactory proxyForLibrary: self networkLibraryClass.
+	library := OCNNetworkLibraryProxyFactory proxyForLibraryClass: self networkLibraryClass.
 	socket := OCNTcpSocket newWithNetworkLibrary: library.
 	self setUpServerShell.
 
@@ -241,6 +241,11 @@ OCNTcpSocketTest >> testSendOnDestroyedSocket [
 	self should: [socket send: 'hello'] raise: OCNSocketOperationForbiddenError.
 	self assertSocketState: #isDestroyed.
 	
+]
+
+{ #category : #testing }
+OCNTcpSocketTest >> testSocketCreationFailure [
+	self signalFailure: 'test that an exception is raised when socket creation fails'
 ]
 
 { #category : #testing }

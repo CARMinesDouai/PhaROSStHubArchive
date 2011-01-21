@@ -27,7 +27,7 @@ OCNPosixLibraryTest >> posixLibraryClass [
 { #category : #'setUp-tearDown' }
 OCNPosixLibraryTest >> setUp [
 	super setUp.
-	networkLibrary := OCNNetworkLibraryProxyFactory proxyForLibrary: OCNPosixLibrary.
+	networkLibrary := OCNNetworkLibraryProxyFactory proxyForLibraryClass: OCNPosixLibrary.
 ]
 
 { #category : #testing }
