@@ -9,6 +9,16 @@ Class {
 	#category : #'Ocean-Kernel-Test'
 }
 
+{ #category : #accessing }
+OCNTcpSocketTest class >> allTestSelectors [ 
+	^self superclass testSelectors, self testSelectors
+]
+
+{ #category : #testing }
+OCNTcpSocketTest class >> isAbstract [
+	^true
+]
+
 { #category : #testing }
 OCNTcpSocketTest >> assertSocket: aSocket state: aSelectorToAssert [
 
@@ -43,6 +53,11 @@ OCNTcpSocketTest >> connect [
 
 ]
 
+{ #category : #accessing }
+OCNTcpSocketTest >> networkLibraryClass [
+	^self subclassResponsibility
+]
+
 { #category : #generating }
 OCNTcpSocketTest >> randomAsciiStringOfSize: dataSize [
 	| randomStringGenerator |
@@ -65,7 +80,7 @@ OCNTcpSocketTest >> serverShellClass [
 OCNTcpSocketTest >> setUp [
 	super setUp.
 	socket := OCNTcpSocket new.
-	library := OCNNetworkLibraryProxyFactory networkLibraryProxy.
+	library := OCNNetworkLibraryProxyFactory proxyForLibrary: self networkLibraryClass.
 	self setUpServerShell.
 
 ]

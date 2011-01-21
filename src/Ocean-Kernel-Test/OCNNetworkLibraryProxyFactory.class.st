@@ -9,7 +9,7 @@ Class {
 
 { #category : #accessing }
 OCNNetworkLibraryProxyFactory class >> allNetworkLibraryProxyClasses [
-	^#(#OCNMacOSXPosixDebugLibrary #OCNMacOSXPosixLibrary)
+	^{OCNSocketPluginLibrary. OCNMacOSXPosixLibrary}
 ]
 
 { #category : #'building socket proxies' }
@@ -38,4 +38,9 @@ OCNNetworkLibraryProxyFactory class >> initialize [
 { #category : #'building socket proxies' }
 OCNNetworkLibraryProxyFactory class >> networkLibraryProxy [
 	^ self defaultNetworkLibraryProxyClass proxy
+]
+
+{ #category : #'building socket proxies' }
+OCNNetworkLibraryProxyFactory class >> proxyForLibrary: aLibraryClass [
+	^aLibraryClass proxy
 ]
