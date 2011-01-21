@@ -23,6 +23,21 @@ RSTBrokerTest >> testBigRemoteObject [
 ]
 
 { #category : #testing }
+RSTBrokerTest >> testComplexRemoteMutualEvaluation [
+	
+	"Mutual Proxy evaluation test, with proxy as Remote Object"
+	
+	| proxyFromExtra2DefaultBroker proxyFromDefaultBroker |
+	extraBroker export: DummyClass new named: 'dClass'.
+	defaultBroker export: DummyClass new named: 'dClass'.
+	proxyFromExtra2DefaultBroker := (RSTRemoteObjectID fromString: ('dClass@', self extraIpAndPortString)) asProxy.
+	proxyFromDefaultBroker := (RSTRemoteObjectID fromString: ('dClass@', self defaultIpAndPortString)) asLocalObject.
+	self assert: (proxyFromExtra2DefaultBroker isRemote).
+	self deny: (proxyFromDefaultBroker isRemote).
+	self assert: ( (proxyFromExtra2DefaultBroker decrement: 100 withArray: {proxyFromDefaultBroker}) = 0).
+]
+
+{ #category : #testing }
 RSTBrokerTest >> testExport [
 	"Noury Bouraqadi 9/21/2006 15:47"
 	
@@ -45,6 +60,19 @@ RSTBrokerTest >> testExportedRemoteObjectByCopy [
 	self assert: copy = exportedObject.
 	self deny: copy isRemote.
 	self deny: copy == exportedObject.
+]
+
+{ #category : #testing }
+RSTBrokerTest >> testLocalBlockEvaluation [
+	"Noury Bouraqadi 9/21/2006 15:50"
+
+	"a dummy 5000 length string to test Socket>>getObject"
+	| remoteObjectIdString proxy |
+	extraBroker export: self bigString named: 'bigString'.
+	remoteObjectIdString := 'bigString@' , self extraIpAndPortString.
+	proxy := remoteObjectIdString asLocalObject.
+	self assert: proxy size = 5000.
+	
 ]
 
 { #category : #testing }
@@ -210,6 +238,21 @@ RSTBrokerTest >> testServerShouldNotFailOnSocketFailure [
 	socket := Socket newTCP.
 	self shouldnt: [extraBroker process: socket] raise: Exception
 	 
+]
+
+{ #category : #testing }
+RSTBrokerTest >> testSimpleRemoteMutualEvaluation [
+	
+	"Mutual Proxy evaluation test, with proxy as Remote Object"
+	
+	| proxyFromExtra2DefaultBroker proxyFromDefaultBroker |
+	extraBroker export: DummyClass new named: 'dClass'.
+	defaultBroker export: DummyClass new named: 'dClass'.
+	proxyFromExtra2DefaultBroker := (RSTRemoteObjectID fromString: ('dClass@', self extraIpAndPortString)) asProxy.
+	proxyFromDefaultBroker := (RSTRemoteObjectID fromString: ('dClass@', self defaultIpAndPortString)) asLocalObject.
+	self assert: (proxyFromExtra2DefaultBroker isRemote).
+	self deny: (proxyFromDefaultBroker isRemote).
+	self assert: ( (proxyFromExtra2DefaultBroker decrement: 100 with: proxyFromDefaultBroker) = 0).
 ]
 
 { #category : #testing }

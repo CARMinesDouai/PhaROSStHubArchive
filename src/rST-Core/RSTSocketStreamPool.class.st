@@ -94,7 +94,7 @@ RSTSocketStreamPool >> newSocketStream [
 						[:timeOutEx | 
 						RSTBroker instance logException: timeOutEx.
 						Processor yield].
-			socket isConnected ifTrue: [^ SocketStream on: socket]].
+			socket isConnected ifTrue: [^ (SocketStream on: socket) timeout: 3000000; yourself.]].
 	RSTRemoteObjectUnreachable 
 		signal: 'Cannot connect to: ' , self addressString , ':' 
 				, self port asString
@@ -112,10 +112,7 @@ RSTSocketStreamPool >> port: anObject [
 
 { #category : #connections }
 RSTSocketStreamPool >> releaseStream: stream [
-	streamAccessLock critical: 
-			[
-			stream isConnected ifTrue: [freeStreams add: stream].
-			busyStreams remove: stream]
+	stream close.
 ]
 
 { #category : #'initialize-release' }
@@ -131,9 +128,5 @@ RSTSocketStreamPool >> secondsToWaitForSocketConnection [
 
 { #category : #connections }
 RSTSocketStreamPool >> socketStream [
-	| stream |
-	streamAccessLock critical: 
-			[stream := self freeStream.
-			busyStreams add: stream].
-	^ stream
+	^ self newSocketStream.
 ]
