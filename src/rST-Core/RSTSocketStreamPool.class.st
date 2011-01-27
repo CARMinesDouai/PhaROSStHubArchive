@@ -94,7 +94,7 @@ RSTSocketStreamPool >> newSocketStream [
 						[:timeOutEx | 
 						RSTBroker instance logException: timeOutEx.
 						Processor yield].
-			socket isConnected ifTrue: [^ (SocketStream on: socket) timeout: 3000000; yourself.]].
+			socket isConnected ifTrue: [^ (SocketStream on: socket) timeout: 3; yourself.]].
 	RSTRemoteObjectUnreachable 
 		signal: 'Cannot connect to: ' , self addressString , ':' 
 				, self port asString
