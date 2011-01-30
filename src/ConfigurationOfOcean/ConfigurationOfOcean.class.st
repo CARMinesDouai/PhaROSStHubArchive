@@ -146,11 +146,49 @@ ConfigurationOfOcean >> baseline02: spec [
 	]
 ]
 
-{ #category : #versions }
+{ #category : #baselines }
+ConfigurationOfOcean >> baseline03: spec [
+	<version: '0.3-baseline'>
+	
+	spec for: #common do: [
+		spec blessing: #baseline.
+
+		spec package: 'OSProcess' with: [
+			spec repository: 'http://www.squeaksource.com/OSProcess'.
+		].
+
+		spec package: 'OSProcess-Tests' with: [
+			spec repository: 'http://www.squeaksource.com/OSProcess';
+				requires: 'OSProcess'
+		].
+
+		spec project: 'Alien' with: [
+			spec 
+				className: 'ConfigurationOfAlien' ; 
+				loads: {'All' . 'MacOSX'}; 
+				file: 'ConfigurationOfAlien';
+				repository: 'http://www.squeaksource.com/Alien'
+		].
+
+		spec package: 'Ocean' with: [
+			spec requires: #('Alien' 'OSProcess' ).
+			spec repository: 'http://www.squeaksource.com/Ocean'.
+		].
+	]
+]
+
+{ #category : #'pharo versions' }
 ConfigurationOfOcean >> pharo11: spec [
 	<version: 'Pharo 1.1' imports: #('0.1-baseline')>
 	
 	^ self version02: spec
+]
+
+{ #category : #'pharo versions' }
+ConfigurationOfOcean >> pharo12: spec [
+	<version: 'Pharo 1.2' imports: #('0.3-baseline')>
+	
+	^ self version04: spec
 ]
 
 { #category : #accessing }
@@ -201,6 +239,20 @@ ConfigurationOfOcean >> version03: spec [
 		spec 
 			blessing: #development; 
 			project: 'Alien' with:  'Pharo 1.1';
+			package: 'OSProcess' with: 'OSProcess-dtl.59';
+			package: 'OSProcess-Tests' with: 'OSProcess-Tests-dtl.4'
+			"; package: 'Ocean' with: 'Ocean-LucFabresse.37' " "do not fix a particular version to load the latest one"
+	] 
+]
+
+{ #category : #versions }
+ConfigurationOfOcean >> version04: spec [
+	<version: '0.4' imports: #('0.3-baseline')>
+	
+	spec for: #common do: [
+		spec 
+			blessing: #development; 
+			project: 'Alien' with:  'Pharo 1.2';
 			package: 'OSProcess' with: 'OSProcess-dtl.59';
 			package: 'OSProcess-Tests' with: 'OSProcess-Tests-dtl.4'
 			"; package: 'Ocean' with: 'Ocean-LucFabresse.37' " "do not fix a particular version to load the latest one"
