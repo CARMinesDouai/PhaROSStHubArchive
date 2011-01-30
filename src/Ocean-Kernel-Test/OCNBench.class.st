@@ -39,15 +39,45 @@ OCNBench >> connectOldSocket [
 
 { #category : #'initialize-release' }
 OCNBench >> createRandomString [
-	| allCharacters dataToSendStream |
+
+	| fileStream randomString shorterSize sizeToGenerate sizeAlreadyExisting existingString index |
+	
+	sizeToGenerate := self randomStringSize.
+	
+	randomStringsDict isEmpty ifTrue: [ | sizeToReadFromFile|
+		sizeToReadFromFile := sizeToGenerate min: 2000.
+		"retrieve random string from source file"
+		fileStream := (StandardFileStream readOnlyFileNamed: Smalltalk changesName).
+		[ randomString := (fileStream next: sizeToReadFromFile) ] ensure: [ fileStream close].	
+		
+		"replace non-ascii characters"
+		randomString withIndexDo: [ :v :i | ((randomString at: i) asciiValue > 127) ifTrue: [ randomString at: i put: $a ] ].
+		randomStringsDict at: sizeToReadFromFile put: randomString
+	].
+	
 	randomStringsDict 
-		at: self randomStringSize 
-		ifPresent: [:value| ^self dataToSend: value].
-	allCharacters := Character alphabet.
-	dataToSendStream := WriteStream on: (String new: self randomStringSize).
-	self randomStringSize timesRepeat: [ dataToSendStream nextPut: allCharacters atRandom ].
-	self dataToSend: dataToSendStream contents.
-	randomStringsDict at: self randomStringSize put: self dataToSend
+		at: sizeToGenerate 
+		ifPresent: [:value| self dataToSend: value. ^self].
+			
+	sizeAlreadyExisting := randomStringsDict keys max.
+	existingString := randomStringsDict at: sizeAlreadyExisting.
+		
+	randomString := ByteString new: sizeToGenerate.
+	index := 0.
+			
+	 [ index < sizeToGenerate ] whileTrue: [ |sizeToCopy|
+		sizeToCopy := sizeToGenerate - index.
+		sizeToCopy := sizeToCopy min: sizeAlreadyExisting.
+			
+		randomString replaceFrom: index + 1
+			to: index + sizeToCopy
+			with: existingString
+			startingAt: 1.
+		index := index + sizeToCopy.
+	].
+		
+	self dataToSend: randomString.
+	randomStringsDict at: sizeToGenerate put: randomString
 
 ]
 
@@ -81,7 +111,6 @@ OCNBench >> defaultIterationsCount [
 { #category : #'initialize-release' }
 OCNBench >> initialize [ 
 	super initialize.
-	self createRandomString.
 	self iterationsCount: self defaultIterationsCount
 ]
 
