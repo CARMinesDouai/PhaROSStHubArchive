@@ -1,3 +1,8 @@
+"
+(ConfigurationOfOcean project version: 'Pharo 1.1') load.
+
+(ConfigurationOfOcean project version: 'Pharo 1.2') load.
+"
 Class {
 	#name : #ConfigurationOfOcean,
 	#superclass : #Object,
@@ -179,7 +184,7 @@ ConfigurationOfOcean >> baseline03: spec [
 
 { #category : #'pharo versions' }
 ConfigurationOfOcean >> pharo11: spec [
-	<version: 'Pharo 1.1' imports: #('0.1-baseline')>
+	<version: 'Pharo 1.1' imports: #('0.2-baseline')>
 	
 	^ self version02: spec
 ]
