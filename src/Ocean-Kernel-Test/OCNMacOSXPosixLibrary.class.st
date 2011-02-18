@@ -1,7 +1,7 @@
 Class {
 	#name : #OCNMacOSXPosixLibrary,
 	#superclass : #OCNPosixLibrary,
-	#category : #'Ocean-Libraries'
+	#category : #'Ocean-Libraries-Posix'
 }
 
 { #category : #accessing }

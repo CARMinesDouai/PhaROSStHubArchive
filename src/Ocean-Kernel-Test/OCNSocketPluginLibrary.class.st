@@ -9,6 +9,7 @@ Class {
 		'Connected',
 		'InvalidSocket',
 		'OtherEndClosed',
+		'ResolverSemaphore',
 		'TCPSocketType',
 		'ThisEndClosed',
 		'UDPSocketType',
@@ -18,10 +19,10 @@ Class {
 	#classInstVars : [
 		'default'
 	],
-	#category : #'Ocean-Libraries'
+	#category : #'Ocean-Libraries-Plugin'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 OCNSocketPluginLibrary class >> initialize [
 	"self initialize"
 
@@ -41,6 +42,69 @@ OCNSocketPluginLibrary class >> initialize [
 { #category : #'instance creation' }
 OCNSocketPluginLibrary class >> proxy [
 	^self new
+]
+
+{ #category : #'name resolving' }
+OCNSocketPluginLibrary >> addressForName: nameToLookup addressFamily: addressFamily [
+
+	 | addressSize  byteInfoSize byteInfo stringAddress addressTypeConstants |
+	
+	self ensureNetworkInitialized.
+	
+	[self primGetAddressInfoHost: nameToLookup  service: '' flags: 0 family: addressFamily type: 1 protocol: 1] on: Error do: [
+		OCNNameLookupError signal: 'Can not resolve ', nameToLookup asString
+	].
+ 	
+	byteInfoSize := self primGetAddressInfoSize.
+	byteInfo := ByteArray new: byteInfoSize.
+	self primGetAddressInfoResult: byteInfo.
+
+	self primGetNameInfo: byteInfo flags: 1.
+	
+	addressSize := self primGetNameInfoHostSize.
+	stringAddress := String new: addressSize.
+	self primGetNameInfoHostResult:  stringAddress.
+
+	^ stringAddress	
+	
+
+]
+
+{ #category : #'name resolving' }
+OCNSocketPluginLibrary >> addressesForName: nameToLookup addressFamily: addressFamily [
+
+	 | allAddresses  byteInfoSize |
+
+	allAddresses := Set new.
+
+	self ensureNetworkInitialized.
+	[self primGetAddressInfoHost: nameToLookup  service: '' flags: 0 family: addressFamily type: 1 protocol: 1] on: Error do: [
+		OCNNameLookupError signal: 'Can not resolve ', nameToLookup asString
+	].
+	
+	[byteInfoSize := self primGetAddressInfoSize. 
+		byteInfoSize > 0] whileTrue: [
+		| addressSize  byteInfo stringAddress |
+		
+			byteInfo := ByteArray new: byteInfoSize.
+			self primGetAddressInfoResult: byteInfo.  
+			
+			self primGetNameInfo: byteInfo flags: 1.
+	
+			addressSize := self primGetNameInfoHostSize.
+			stringAddress := String new: addressSize.
+			self primGetNameInfoHostResult:  stringAddress.
+
+			allAddresses add: stringAddress.
+			self primGetAddressInfoNext
+	]. 
+	
+	^ allAddresses
+]
+
+{ #category : #'name resolving' }
+OCNSocketPluginLibrary >> allAddressFamily [
+	^0
 ]
 
 { #category : #'TCP API' }
@@ -65,6 +129,11 @@ OCNSocketPluginLibrary >> connect: socketId toServerWithIpv4Address: serverAddre
 	(self primSocketConnectionStatus: socketId) = Connected ifFalse: [
 		OCNSocketOperationFailureError signal: 'Connection failure'	
 	]
+]
+
+{ #category : #converting }
+OCNSocketPluginLibrary >> convertIpv4StringAddressToByteArray: stringAddress [
+	^((stringAddress subStrings: '.')  collect: [ :string | string asInteger]) asByteArray
 ]
 
 { #category : #'TCP API' }
@@ -97,6 +166,254 @@ OCNSocketPluginLibrary >> createTcpSocketDescriptorId [
 { #category : #accessing }
 OCNSocketPluginLibrary >> defaultDataBufferSize [
 	^2000
+]
+
+{ #category : #'initialize-release' }
+OCNSocketPluginLibrary >> ensureNetworkInitialized [
+	"Initialize the network drivers and record the semaphore to be used by the resolver. Do nothing if the network is already initialized. Evaluate the given block if network initialization fails."
+	"NetNameResolver initializeNetwork"
+
+	| semaphoreIndex |
+	self primNameResolverStatus = self resolverUninitializedCode
+		ifFalse: [^self].  "network is already initialized"
+
+	ResolverSemaphore := Semaphore new.
+	semaphoreIndex := Smalltalk registerExternalObject: ResolverSemaphore.
+
+	"result is nil if network initialization failed, self if it succeeds"
+	(self primInitializeNetwork: semaphoreIndex)
+		ifNil: [OCNNetworkInitializationFailedError signal: 'failed network initialization']
+]
+
+{ #category : #'name resolving' }
+OCNSocketPluginLibrary >> ipv4 [
+	^2
+]
+
+{ #category : #'NameResolving API' }
+OCNSocketPluginLibrary >> ipv4AddressForName: nameToLookup [
+	
+	^ self addressForName: nameToLookup addressFamily: self ipv4
+	
+]
+
+{ #category : #'NameResolving API' }
+OCNSocketPluginLibrary >> ipv4AddressesForName: nameToLookup [
+
+	^self addressesForName: nameToLookup  addressFamily:  self ipv4
+]
+
+{ #category : #'name resolving' }
+OCNSocketPluginLibrary >> ipv6 [ 
+	^3
+]
+
+{ #category : #'NameResolving API' }
+OCNSocketPluginLibrary >> ipv6AddressForName: nameToLookup [
+	
+	^ self addressForName: nameToLookup addressFamily: self ipv6
+	
+	
+
+]
+
+{ #category : #'NameResolving API' }
+OCNSocketPluginLibrary >> ipv6AddressesForName: nameToLookup [
+	
+	^self addressesForName: nameToLookup  addressFamily:  self ipv6
+]
+
+{ #category : #'name resolving' }
+OCNSocketPluginLibrary >> localAddressFamily [
+	^1
+]
+
+{ #category : #'NameResolving API' }
+OCNSocketPluginLibrary >> localhostName [
+	
+	|  hostname |
+
+	hostname := String new: self primHostNameSize.
+	self primHostNameResult: hostname.  
+	
+	^hostname
+]
+
+{ #category : #'primitives from old netnameresolver' }
+OCNSocketPluginLibrary >> primAbortLookup [
+	"Abort the current lookup operation, freeing the name resolver for the next query."
+
+	<primitive: 'primitiveResolverAbortLookup' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'primitives from old netnameresolver' }
+OCNSocketPluginLibrary >> primAddressLookupResult [
+	"Return the host name found by the last host address lookup. Returns nil if the last lookup was unsuccessful."
+
+	<primitive: 'primitiveResolverAddressLookupResult' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'primitives from old netnameresolver IPV6' }
+OCNSocketPluginLibrary >> primGetAddressInfoFamily [
+
+	<primitive: 'primitiveResolverGetAddressInfoFamily' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'primitives from old netnameresolver IPV6' }
+OCNSocketPluginLibrary >> primGetAddressInfoHost: hostName service: servName flags: flags family: family type: type protocol: protocol [
+
+	<primitive: 'primitiveResolverGetAddressInfo' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'primitives from old netnameresolver IPV6' }
+OCNSocketPluginLibrary >> primGetAddressInfoNext [
+
+	<primitive: 'primitiveResolverGetAddressInfoNext' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'primitives from old netnameresolver IPV6' }
+OCNSocketPluginLibrary >> primGetAddressInfoProtocol [
+
+	<primitive: 'primitiveResolverGetAddressInfoProtocol' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'primitives from old netnameresolver IPV6' }
+OCNSocketPluginLibrary >> primGetAddressInfoResult: socketAddress [
+
+	<primitive: 'primitiveResolverGetAddressInfoResult' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'primitives from old netnameresolver IPV6' }
+OCNSocketPluginLibrary >> primGetAddressInfoSize [
+
+	<primitive: 'primitiveResolverGetAddressInfoSize' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'primitives from old netnameresolver IPV6' }
+OCNSocketPluginLibrary >> primGetAddressInfoType [
+
+	<primitive: 'primitiveResolverGetAddressInfoType' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'primitives from old netnameresolver IPV6' }
+OCNSocketPluginLibrary >> primGetNameInfo: socketAddress flags: flags [
+	"flags is 1 to get ip Number and 0 to get ip DNS Name"
+	
+	<primitive: 'primitiveResolverGetNameInfo' module: 'SocketPlugin'>
+	flags == 0 ifTrue: [^self primGetNameInfo: socketAddress flags: 1 ].
+	self primitiveFailed
+]
+
+{ #category : #'primitives from old netnameresolver IPV6' }
+OCNSocketPluginLibrary >> primGetNameInfoHostResult: aString [
+
+	<primitive: 'primitiveResolverGetNameInfoHostResult' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'primitives from old netnameresolver IPV6' }
+OCNSocketPluginLibrary >> primGetNameInfoHostSize [
+
+	<primitive: 'primitiveResolverGetNameInfoHostSize' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'primitives from old netnameresolver IPV6' }
+OCNSocketPluginLibrary >> primGetNameInfoServiceResult: aString [
+
+	<primitive: 'primitiveResolverGetNameInfoServiceResult' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'primitives from old netnameresolver IPV6' }
+OCNSocketPluginLibrary >> primGetNameInfoServiceSize [
+
+	<primitive: 'primitiveResolverGetNameInfoServiceSize' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'primitives from old netnameresolver IPV6' }
+OCNSocketPluginLibrary >> primHostNameResult: aString [
+
+	<primitive: 'primitiveResolverHostNameResult' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'primitives from old netnameresolver IPV6' }
+OCNSocketPluginLibrary >> primHostNameSize [
+
+	<primitive: 'primitiveResolverHostNameSize' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'primitives from old netnameresolver' }
+OCNSocketPluginLibrary >> primInitializeNetwork: resolverSemaIndex [
+	"Initialize the network drivers on platforms that need it, such as the Macintosh, and return nil if network initialization failed or the reciever if it succeeds. Since mobile computers may not always be connected to a network, this method should NOT be called automatically at startup time; rather, it should be called when first starting a networking application. It is a noop if the network driver has already been initialized. If non-zero, resolverSemaIndex is the index of a VM semaphore to be associated with the network name resolver. This semaphore will be signalled when the resolver status changes, such as when a name lookup query is completed."
+	"Note: some platforms (e.g., Mac) only allow only one name lookup query at a time, so a manager process should be used to serialize resolver lookup requests."
+
+	<primitive: 'primitiveInitializeNetwork' module: 'SocketPlugin'>
+	^ nil  "return nil if primitive fails"
+
+]
+
+{ #category : #'primitives from old netnameresolver' }
+OCNSocketPluginLibrary >> primLocalAddress [
+	"Return the local address of this host."
+
+	<primitive: 'primitiveResolverLocalAddress' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'primitives from old netnameresolver' }
+OCNSocketPluginLibrary >> primNameLookupResult [
+	"Return the host address found by the last host name lookup. Returns nil if the last lookup was unsuccessful."
+
+	<primitive: 'primitiveResolverNameLookupResult' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'primitives from old netnameresolver' }
+OCNSocketPluginLibrary >> primNameResolverError [
+	"Return an integer reflecting the error status of the last network name resolver request. Zero means no error."
+
+	<primitive: 'primitiveResolverError' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'primitives from old netnameresolver' }
+OCNSocketPluginLibrary >> primNameResolverStatus [
+	"Return an integer reflecting the status of the network name resolver. For a list of possible values, see the comment in the 'initialize' method of this class."
+
+	<primitive: 'primitiveResolverStatus' module: 'SocketPlugin'>
+	self primitiveFailed
+
 ]
 
 { #category : #primitives }
@@ -139,6 +456,24 @@ OCNSocketPluginLibrary >> primSocketCreateNetwork: netType type: socketType rece
 	
 ]
 
+{ #category : #'primitives from old netnameresolver' }
+OCNSocketPluginLibrary >> primStartLookupOfAddress: hostAddr [
+	"Look up the given host address in the Domain Name Server to find its name. This call is asynchronous. To get the results, wait for it to complete or time out and then use primAddressLookupResult."
+
+	<primitive: 'primitiveResolverStartAddressLookup' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'primitives from old netnameresolver' }
+OCNSocketPluginLibrary >> primStartLookupOfName: hostName [
+	"Look up the given host name in the Domain Name Server to find its address. This call is asynchronous. To get the results, wait for it to complete or time out and then use primNameLookupResult."
+
+	<primitive: 'primitiveResolverStartNameLookup' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
 { #category : #'TCP API' }
 OCNSocketPluginLibrary >> readFrom: socketId [
 	self shouldBeImplemented 
@@ -147,6 +482,11 @@ OCNSocketPluginLibrary >> readFrom: socketId [
 { #category : #'TCP API' }
 OCNSocketPluginLibrary >> receiveFrom: socketId [
 	self shouldBeImplemented 
+]
+
+{ #category : #'name resolving' }
+OCNSocketPluginLibrary >> resolverUninitializedCode [
+	^ 0  "network is not initialized"
 ]
 
 { #category : #'TCP API' }

@@ -1,7 +1,7 @@
 Class {
 	#name : #OCNMacOSXPosixDebugLibrary,
 	#superclass : #OCNMacOSXPosixLibrary,
-	#category : #'Ocean-Libraries'
+	#category : #'Ocean-Libraries-Posix'
 }
 
 { #category : #compiling }

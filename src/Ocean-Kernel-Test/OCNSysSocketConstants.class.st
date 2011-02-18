@@ -11,7 +11,7 @@ Class {
 		'SOCK_SEQPACKET',
 		'SOCK_STREAM'
 	],
-	#category : #'Ocean-Libraries'
+	#category : #'Ocean-Libraries-Posix'
 }
 
 { #category : #'as yet unclassified' }

@@ -11,7 +11,7 @@ Class {
 	#classInstVars : [
 		'default'
 	],
-	#category : #'Ocean-Libraries'
+	#category : #'Ocean-Libraries-Posix'
 }
 
 { #category : #'instance creation' }

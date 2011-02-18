@@ -20,7 +20,7 @@ Class {
 	#name : #OCNPosixAlienBasedSockAddrIn,
 	#superclass : #Alien,
 	#type : #bytes,
-	#category : #'Ocean-Libraries'
+	#category : #'Ocean-Libraries-Posix'
 }
 
 { #category : #'instance creation' }
