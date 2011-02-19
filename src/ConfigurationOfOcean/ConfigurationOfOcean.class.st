@@ -170,7 +170,7 @@ ConfigurationOfOcean >> baseline03: spec [
 		spec project: 'Alien' with: [
 			spec 
 				className: 'ConfigurationOfAlien' ; 
-				loads: {'All' . 'MacOSX'}; 
+				loads: {'All'}; 
 				file: 'ConfigurationOfAlien';
 				repository: 'http://www.squeaksource.com/Alien'
 		].
