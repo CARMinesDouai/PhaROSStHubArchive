@@ -4,8 +4,26 @@ Class {
 	#category : #'Ocean-Kernel-Test'
 }
 
-{ #category : #tests }
-OCNNetNameResolverTest >> testExternalLookupIpv4Address [
+{ #category : #'tests localhost' }
+OCNNetNameResolverTest >> testLocalHostAddresses [
+	
+	| allLocalhostAddresses |
+	
+	self signalFailure: 'ipv6 not testable?'.
+	allLocalhostAddresses := OCNNetNameResolver localHostAddresses.
+	self deny: allLocalhostAddresses isEmpty.
+	"self assert: (allLocalhostAddresses anySatisfy: [ :ipAddress | ipAddress isIpv4 ]).  
+	self assert: (allLocalhostAddresses anySatisfy: [ :ipAddress | ipAddress isIpv6 ])."
+]
+
+{ #category : #'tests localhost' }
+OCNNetNameResolverTest >> testLocalHostName [
+	
+	self assert: OCNNetNameResolver localHostName notEmpty
+]
+
+{ #category : #'tests ipv4' }
+OCNNetNameResolverTest >> testLookupExternalNameIpv4Address [
 	
 	| nameToLookup address |
 	
@@ -15,29 +33,50 @@ OCNNetNameResolverTest >> testExternalLookupIpv4Address [
 
 ]
 
-{ #category : #tests }
-OCNNetNameResolverTest >> testExternalLookupIpv6Address [
+{ #category : #'tests ipv4' }
+OCNNetNameResolverTest >> testLookupExternalNameIpv4Addresses [
+	
+	| nameToLookup allAddresses |
+	
+	nameToLookup := 'www.pharo-project.org'.
+	allAddresses := (OCNNetNameResolver ipv4AddressesForName: nameToLookup) .
+	self assert: allAddresses isCollection.	
+	self deny: allAddresses isEmpty.
+	self assert: (allAddresses includes:  '212.103.66.211').
+
+]
+
+{ #category : #'tests ipv6' }
+OCNNetNameResolverTest >> testLookupExternalNameIpv6Address [
 	
 	| nameToLookup address |
 	
-	self signalFailure: 'to fix with an external ipv6 server'.
+	self signalFailure: 'ipv6 not testable?'.
 	nameToLookup := '???'.
 	address := (OCNNetNameResolver ipv6AddressForName: nameToLookup) .
 	self assert: address = '???'.
 
 ]
 
-{ #category : #tests }
-OCNNetNameResolverTest >> testLocalhostName [
+{ #category : #'tests ipv6' }
+OCNNetNameResolverTest >> testLookupExternalNameIpv6Addresses [
 	
-	self assert: OCNNetNameResolver localhostName notEmpty
+	| nameToLookup allAddresses |
+	
+	self signalFailure: 'ipv6 not testable?'.
+	nameToLookup := '???'.
+	allAddresses := (OCNNetNameResolver ipv6AddressesForName: nameToLookup) .
+	self assert: allAddresses isCollection.	
+	self deny: allAddresses isEmpty.
+	self assert: (allAddresses includes:  '???').
+
 ]
 
-{ #category : #tests }
+{ #category : #'tests localhost' }
 OCNNetNameResolverTest >> testLookupLocalhostIpv4Address [
 	
 	| localhostAddress |
-	localhostAddress := '127.0.0.1'. "TO BE CHANGED TO an instance of IpAddress"
+	localhostAddress := '127.0.0.1'. "TO BE CHANGED TO an instance of Ipv4Address"
 	
 	#( 'localhost'  '127.0.0.1' ) do: [ :nameToLookup | 
 		self assert: (OCNNetNameResolver ipv4AddressForName: nameToLookup)  = localhostAddress.
@@ -45,27 +84,23 @@ OCNNetNameResolverTest >> testLookupLocalhostIpv4Address [
 
 ]
 
-{ #category : #tests }
+{ #category : #'tests localhost' }
 OCNNetNameResolverTest >> testLookupLocalhostIpv4Addresses [
 	
-	| nameToLookup allAddresses 
-	|
-	nameToLookup := 'localhost'.
-	allAddresses := (OCNNetNameResolver ipv4AddressesForName: nameToLookup) .
+	|  allAddresses |
+	allAddresses := (OCNNetNameResolver ipv4AddressesForName: 'localhost') .
 	self assert: allAddresses isCollection.
-
-	self signalFailure: 'to finish'
-	"allAddresses do: [ :anAddress | 
-		self assert: (anAddress isKindOf: OCNIPV4Address).	
-	]"
+	self deny: allAddresses isEmpty.
+	
+	"self assert: (allAddresses allSatisfy:  [ :ipAddress |  ipAddress isIpv4 ])"
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests localhost' }
 OCNNetNameResolverTest >> testLookupLocalhostIpv6Address [
 	
 	| localhostAddress |
-	localhostAddress := '::1'. "TO BE CHANGED TO an instance of IpAddress"
+	localhostAddress := '::1'. "TO BE CHANGED TO an instance of Ipv6Address"
 	
 	#( 'localhost'  '::1' ) do: [ :nameToLookup | 
 		self assert: (OCNNetNameResolver ipv6AddressForName: nameToLookup)  = localhostAddress.
@@ -73,24 +108,21 @@ OCNNetNameResolverTest >> testLookupLocalhostIpv6Address [
 
 ]
 
-{ #category : #tests }
+{ #category : #'tests localhost' }
 OCNNetNameResolverTest >> testLookupLocalhostIpv6Addresses [
 	
-	| nameToLookup allAddresses 
-	|
-	nameToLookup := 'localhost'.
-	allAddresses := (OCNNetNameResolver ipv6AddressesForName: nameToLookup) .
-	self assert: allAddresses isCollection.
+	| nameToLookup allAddresses |
 
-	self signalFailure: 'to finish'
-	"allAddresses do: [ :anAddress | 
-		self assert: (anAddress isKindOf: OCNIPV6Address).	
-	]"
+	allAddresses := (OCNNetNameResolver ipv6AddressesForName: 'localhost') .
+	self assert: allAddresses isCollection.
+	self deny: allAddresses isEmpty.
+
+	"self assert: (allAddresses allSatisfy:  [ :ipAddress |  ipAddress isIpv6 ])"
 	
 ]
 
-{ #category : #tests }
-OCNNetNameResolverTest >> testLookupUnknownNameToIpv4Address [
+{ #category : #'tests ipv4' }
+OCNNetNameResolverTest >> testLookupUnknownNameIpv4Address [
 	
 	| nameToLookup address |
 	
@@ -99,8 +131,8 @@ OCNNetNameResolverTest >> testLookupUnknownNameToIpv4Address [
 	
 ]
 
-{ #category : #tests }
-OCNNetNameResolverTest >> testLookupUnknownNameToIpv4Addresses [
+{ #category : #'tests ipv4' }
+OCNNetNameResolverTest >> testLookupUnknownNameIpv4Addresses [
 	
 	| nameToLookup |
 	
@@ -109,8 +141,8 @@ OCNNetNameResolverTest >> testLookupUnknownNameToIpv4Addresses [
 	
 ]
 
-{ #category : #tests }
-OCNNetNameResolverTest >> testLookupUnknownNameToIpv6Address [
+{ #category : #'tests ipv6' }
+OCNNetNameResolverTest >> testLookupUnknownNameIpv6Address [
 	
 	| nameToLookup address |
 	
@@ -119,8 +151,8 @@ OCNNetNameResolverTest >> testLookupUnknownNameToIpv6Address [
 	
 ]
 
-{ #category : #tests }
-OCNNetNameResolverTest >> testLookupUnknownNameToIpv6Addresses [
+{ #category : #'tests ipv6' }
+OCNNetNameResolverTest >> testLookupUnknownNameIpv6Addresses [
 	
 	| nameToLookup |
 	
@@ -129,19 +161,19 @@ OCNNetNameResolverTest >> testLookupUnknownNameToIpv6Addresses [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests loopback' }
 OCNNetNameResolverTest >> testLoopBackIpv4Address [
 	
-	self assert: OCNNetNameResolver loopBackIpv4Address = '127.0.0.1'
+	self assert: OCNNetNameResolver ipv4LoopBackAddress = '127.0.0.1'
 ]
 
-{ #category : #tests }
+{ #category : #'tests loopback' }
 OCNNetNameResolverTest >> testLoopBackIpv6Address [
 	
-	self assert: OCNNetNameResolver loopBackIpv6Address = '::1'
+	self assert: OCNNetNameResolver ipv6LoopBackAddress = '::1'
 ]
 
-{ #category : #tests }
+{ #category : #'tests loopback' }
 OCNNetNameResolverTest >> testLoopBackName [
 	
 	self assert: OCNNetNameResolver loopBackName = 'localhost' 

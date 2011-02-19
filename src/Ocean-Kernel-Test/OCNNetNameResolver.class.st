@@ -8,6 +8,15 @@ Class {
 }
 
 { #category : #'name resolution' }
+OCNNetNameResolver class >> addressesForName: nameToLookup [
+
+	^Set new
+		addAll: (self networkLibrary ipv4AddressesForName: nameToLookup) ;
+		addAll: (self networkLibrary ipv6AddressesForName: nameToLookup) ;
+		yourself
+]
+
+{ #category : #'name resolution' }
 OCNNetNameResolver class >> ipv4AddressForName: nameToLookup [
 
 	^ self networkLibrary ipv4AddressForName: nameToLookup   
@@ -19,19 +28,19 @@ OCNNetNameResolver class >> ipv4AddressesForName: nameToLookup [
 	^ self networkLibrary ipv4AddressesForName: nameToLookup   
 ]
 
-{ #category : #'name resolution' }
-OCNNetNameResolver class >> ipv4LocalhostAddress [
-	^self ipv4AddressForName: self loopBackName    
-	
-]
-
-{ #category : #'name resolution' }
-OCNNetNameResolver class >> ipv4LocalhostAddresses [
+{ #category : #'localhost resolution' }
+OCNNetNameResolver class >> ipv4LocalHostAddresses [
 	|allAddresses|
 	allAddresses := Set new.
 	allAddresses addAll: (self ipv4AddressesForName: self loopBackName);
-		addAll: (self ipv4AddressesForName: self localhostName).
+		addAll: (self ipv4AddressesForName: self localHostName).
 	^allAddresses
+	
+]
+
+{ #category : #'loopback resolution' }
+OCNNetNameResolver class >> ipv4LoopBackAddress [
+	^self ipv4AddressForName: self loopBackName    
 	
 ]
 
@@ -47,37 +56,41 @@ OCNNetNameResolver class >> ipv6AddressesForName: nameToLookup [
 	^ self networkLibrary ipv6AddressesForName: nameToLookup   
 ]
 
-{ #category : #'name resolution' }
-OCNNetNameResolver class >> ipv6LocalhostAddress [
+{ #category : #'localhost resolution' }
+OCNNetNameResolver class >> ipv6LocalHostAddresses [
+	|allAddresses|
+	allAddresses := Set new.
+	allAddresses addAll: (self ipv6AddressesForName: self loopBackName);
+		addAll: (self ipv6AddressesForName: self localHostName).
+	^allAddresses
+]
+
+{ #category : #'loopback resolution' }
+OCNNetNameResolver class >> ipv6LoopBackAddress [
 	^self ipv6AddressForName: self loopBackName    
 	
 ]
 
-{ #category : #'name resolution' }
-OCNNetNameResolver class >> ipv6LocalhostAddresses [
+{ #category : #'localhost resolution' }
+OCNNetNameResolver class >> localHostAddresses [
 	|allAddresses|
-	allAddresses := Set new.
-	allAddresses addAll: (self ipv6AddressesForName: self loopBackName);
-		addAll: (self ipv6AddressesForName: self localhostName).
+	allAddresses := self ipv4LocalHostAddresses.
+	allAddresses addAll: self ipv6LocalHostAddresses.
 	^allAddresses
+	
 ]
 
-{ #category : #'name resolution' }
-OCNNetNameResolver class >> localhostName [
-	^self networkLibrary localhostName
+{ #category : #'localhost resolution' }
+OCNNetNameResolver class >> localHostName [
+	^self networkLibrary localHostName
 ]
 
-{ #category : #'name resolution' }
-OCNNetNameResolver class >> loopBackIpv4Address [
-	^self ipv4AddressForName: self loopBackName   
+{ #category : #'loopback resolution' }
+OCNNetNameResolver class >> loopBackAddresses [
+	^self addressesForName: self loopBackName
 ]
 
-{ #category : #'name resolution' }
-OCNNetNameResolver class >> loopBackIpv6Address [
-	^self ipv6AddressForName: self loopBackName   
-]
-
-{ #category : #'name resolution' }
+{ #category : #'loopback resolution' }
 OCNNetNameResolver class >> loopBackName [
 	^'localhost'
 ]

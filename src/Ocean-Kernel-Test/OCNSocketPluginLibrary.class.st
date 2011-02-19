@@ -229,7 +229,7 @@ OCNSocketPluginLibrary >> localAddressFamily [
 ]
 
 { #category : #'NameResolving API' }
-OCNSocketPluginLibrary >> localhostName [
+OCNSocketPluginLibrary >> localHostName [
 	
 	|  hostname |
 
