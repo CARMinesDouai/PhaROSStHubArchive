@@ -1,7 +1,7 @@
 "
-(ConfigurationOfOcean project version: 'Pharo 1.1') load.
+ConfigurationOfOcean project stableVersion load.
 
-(ConfigurationOfOcean project version: 'Pharo 1.2') load.
+ConfigurationOfOcean project bleedingEdge load.
 "
 Class {
 	#name : #ConfigurationOfOcean,
@@ -182,18 +182,36 @@ ConfigurationOfOcean >> baseline03: spec [
 	]
 ]
 
-{ #category : #'pharo versions' }
-ConfigurationOfOcean >> pharo11: spec [
-	<version: 'Pharo 1.1' imports: #('0.2-baseline')>
+{ #category : #baselines }
+ConfigurationOfOcean >> baseline04: spec [
+	<version: '0.4-baseline'>
 	
-	^ self version02: spec
-]
+	spec for: #common do: [
+		spec blessing: #baseline.
 
-{ #category : #'pharo versions' }
-ConfigurationOfOcean >> pharo12: spec [
-	<version: 'Pharo 1.2' imports: #('0.3-baseline')>
 	
-	^ self version04: spec
+		spec project: 'OSProcess' with: [
+			spec 
+				className: 'ConfigurationOfOSProcess' ; 
+				loads: {'default'. 'Tests'}; 
+				file: 'ConfigurationOfOSProcess';
+				repository: 'http://www.squeaksource.com/MetacelloRepository';
+				repository: 'http://www.squeaksource.com/OSProcess'
+		].
+
+		spec project: 'Alien' with: [
+			spec 
+				className: 'ConfigurationOfAlien' ; 
+				loads: {'All'}; 
+				file: 'ConfigurationOfAlien';
+				repository: 'http://www.squeaksource.com/Alien'
+		].
+
+		spec package: 'Ocean' with: [
+			spec requires: #('Alien' 'OSProcess' ).
+			spec repository: 'http://www.squeaksource.com/Ocean'.
+		].
+	]
 ]
 
 { #category : #accessing }
@@ -209,6 +227,15 @@ ConfigurationOfOcean >> project [
 		project ]
 ]
 
+{ #category : #'symbolic versions' }
+ConfigurationOfOcean >> stable: spec [
+	<symbolicVersion: #'stable'>
+
+	spec for: #'Pharo 1.1.x' version: '0.2'.
+	spec for: #'common' version: '0.5'.
+
+]
+
 { #category : #versions }
 ConfigurationOfOcean >> version01: spec [
 	<version: '0.1' imports: #('0.1-baseline')>
@@ -217,8 +244,8 @@ ConfigurationOfOcean >> version01: spec [
 		spec
 			blessing: #development; 
 			project: 'OSProcess' with: '4.3.12'; 
-			project: 'Alien' with:  'Pharo 1.1'
-			"; package: 'Ocean' with: 'Ocean-NouryBouraqadi.18' " "do not fix a particular version to load the latest one"
+			project: 'Alien' with:  'Pharo 1.1';
+			package: 'Ocean' with: 'Ocean-NouryBouraqadi.18'
 	].
 ]
 
@@ -231,8 +258,8 @@ ConfigurationOfOcean >> version02: spec [
 			blessing: #development; 
 			project: 'Alien' with:  'Pharo 1.1';
 			package: 'OSProcess' with: 'OSProcess-dtl.53'; "there is a bug introduced in 54"
-			package: 'OSProcess-Tests' with: 'OSProcess-Tests-dtl.2'
-			"; package: 'Ocean' with: 'Ocean-NouryBouraqadi.18' " "do not fix a particular version to load the latest one"
+			package: 'OSProcess-Tests' with: 'OSProcess-Tests-dtl.2';
+			package: 'Ocean' with: 'Ocean-NouryBouraqadi.18' 
 	] 
 ]
 
@@ -245,8 +272,8 @@ ConfigurationOfOcean >> version03: spec [
 			blessing: #development; 
 			project: 'Alien' with:  'Pharo 1.1';
 			package: 'OSProcess' with: 'OSProcess-dtl.59';
-			package: 'OSProcess-Tests' with: 'OSProcess-Tests-dtl.4'
-			"; package: 'Ocean' with: 'Ocean-LucFabresse.37' " "do not fix a particular version to load the latest one"
+			package: 'OSProcess-Tests' with: 'OSProcess-Tests-dtl.4';
+			package: 'Ocean' with: 'Ocean-LucFabresse.37'
 	] 
 ]
 
@@ -259,7 +286,20 @@ ConfigurationOfOcean >> version04: spec [
 			blessing: #development; 
 			project: 'Alien' with:  'Pharo 1.2';
 			package: 'OSProcess' with: 'OSProcess-dtl.59';
-			package: 'OSProcess-Tests' with: 'OSProcess-Tests-dtl.4'
-			"; package: 'Ocean' with: 'Ocean-LucFabresse.37' " "do not fix a particular version to load the latest one"
+			package: 'OSProcess-Tests' with: 'OSProcess-Tests-dtl.4';
+			package: 'Ocean' with: 'Ocean-LucFabresse.37'
+	] 
+]
+
+{ #category : #versions }
+ConfigurationOfOcean >> version05: spec [
+	<version: '0.5' imports: #('0.4-baseline')>
+	
+	spec for: #common do: [
+		spec 
+			blessing: #development; 
+			project: 'Alien' with:  'Pharo 1.2';
+			project: 'OSProcess' with: #'stable';
+			package: 'Ocean' with: 'Ocean-LucFabresse.44'
 	] 
 ]
