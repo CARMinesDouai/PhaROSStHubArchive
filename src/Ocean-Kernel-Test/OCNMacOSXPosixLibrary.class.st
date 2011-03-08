@@ -6,5 +6,5 @@ Class {
 
 { #category : #accessing }
 OCNMacOSXPosixLibrary >> libraryName [
-	^'/System/Library/Frameworks/System.framework/System'
+	^'libSystem.dylib'
 ]
