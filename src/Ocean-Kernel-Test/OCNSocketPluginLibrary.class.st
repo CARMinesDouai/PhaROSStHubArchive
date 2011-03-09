@@ -3,7 +3,11 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'semaphore',
-		'semaIndex'
+		'semaIndex',
+		'readSemaphore',
+		'writeSemaphore',
+		'readSemaIndex',
+		'writeSemaIndex'
 	],
 	#classVars : [
 		'Connected',
@@ -157,6 +161,36 @@ OCNSocketPluginLibrary >> createTcpSocketDescriptorId [
 	
 	
 	socketId ifNotNil: [ 
+		(self primSocketConnectionStatus: socketId) = Unconnected ifTrue: [ ^socketId ] 
+	].
+
+	OCNSocketOperationFailureError signal: 'Socket creation failure'
+]
+
+{ #category : #'UDP API' }
+OCNSocketPluginLibrary >> createUdpSocketDescriptorId [
+	
+	| socketId  |
+	
+	semaphore := Semaphore new.
+	readSemaphore := Semaphore new.
+	writeSemaphore := Semaphore new.
+	
+	semaIndex := Smalltalk registerExternalObject: semaphore.
+	readSemaIndex := Smalltalk registerExternalObject: readSemaphore.
+	writeSemaIndex := Smalltalk registerExternalObject: writeSemaphore.
+	
+	socketId := self primSocketCreateNetwork: 0
+			type: UDPSocketType
+			receiveBufferSize: 8000
+			sendBufSize: 8000
+			semaIndex: semaIndex
+			readSemaIndex: readSemaIndex
+			writeSemaIndex: writeSemaIndex.
+	
+	
+	socketId ifNotNil: [ 
+		self halt: 'I do not understand this line'.
 		(self primSocketConnectionStatus: socketId) = Unconnected ifTrue: [ ^socketId ] 
 	].
 
@@ -424,6 +458,27 @@ OCNSocketPluginLibrary >> primSocket: socketID connectTo: hostAddress port: port
 	
 ]
 
+{ #category : #'UDP primitives' }
+OCNSocketPluginLibrary >> primSocket: socketID receiveUDPDataInto: aStringOrByteArray startingAt: startIndex count: count [
+	"Receive data from the given socket into the given array starting at the given index. 
+	Return an Array containing the amount read, the host address byte array, the host port, and the more flag"
+
+	<primitive: 'primitiveSocketReceiveUDPDataBufCount' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'UDP primitives' }
+OCNSocketPluginLibrary >> primSocket: socketID sendUDPData: aStringOrByteArray toHost: hostAddress  port: portNumber startIndex: startIndex count: count [
+	"Send data to the remote host through the given socket starting with the given byte index of the given byte array. The data sent is 'pushed' immediately. Return the number of bytes of data actually sent; any remaining data should be re-submitted for sending after the current send operation has completed."
+	"Note: In general, it many take several sendData calls to transmit a large data array since the data is sent in send-buffer-sized chunks. The size of the send buffer is determined when the socket is created."
+
+	<primitive:  'primitiveSocketSendUDPDataBufCount' module: 'SocketPlugin'>
+	self primitiveFailed
+
+
+]
+
 { #category : #primitives }
 OCNSocketPluginLibrary >> primSocketConnectionStatus: socketID [
 	"Return an integer reflecting the connection status of this socket. For a list of possible values, see the comment in the 'initialize' method of this class. If the primitive fails, return a status indicating that the socket handle is no longer valid, perhaps because the Squeak image was saved and restored since the socket was created. (Sockets do not survive snapshots.)"
@@ -484,6 +539,32 @@ OCNSocketPluginLibrary >> receiveFrom: socketId [
 	self shouldBeImplemented 
 ]
 
+{ #category : #'UDP primitives' }
+OCNSocketPluginLibrary >> receiveUDPDataOn: socketId into: aByteArray [
+	"Receive UDP data into the given buffer and return the number of bytes received. Note the given buffer may be only partially filled by the received data. What is returned is an array, the first element is the bytes read, the second the sending bytearray address, the third the senders port, the fourth, true if more of the datagram awaits reading"
+
+	^ self primSocket: socketId
+		receiveUDPDataInto: aByteArray
+		startingAt: 1
+		count: aByteArray size
+
+]
+
+{ #category : #'UDP API' }
+OCNSocketPluginLibrary >> receiveUDPDatagramOn: socketId [
+	"Receive UDP data into the given buffer and return the number of bytes received. Note the given buffer may be only partially filled by the received data. What is returned is an array, the first element is the bytes read, the second the sending bytearray address, the third the senders port, the fourth, true if more of the datagram awaits reading"
+
+	|aByteArray aDatagramPacket |
+	aByteArray := ByteArray new: 4.
+	self receiveUDPDataOn: socketId into: aByteArray.
+
+	aDatagramPacket sourceAddress: (aByteArray at: 2);
+					data: (aByteArray at: 1);
+					sourcePort: (aByteArray at: 3);
+					offset: (aByteArray at: 4).
+	^aDatagramPacket
+]
+
 { #category : #'name resolving' }
 OCNSocketPluginLibrary >> resolverUninitializedCode [
 	^ 0  "network is not initialized"
@@ -492,4 +573,33 @@ OCNSocketPluginLibrary >> resolverUninitializedCode [
 { #category : #'TCP API' }
 OCNSocketPluginLibrary >> sendData: data to: socketId [
 	self shouldBeImplemented 
+]
+
+{ #category : #'UDP primitives' }
+OCNSocketPluginLibrary >> sendUDPDataOn: socketId contents: aByteArray toHost: hostAddress port: portNumber [
+	"Send a UDP packet containing the given data to the specified host/port."
+	| bytesToSend bytesSent count  |
+
+	bytesToSend := aByteArray size.
+	bytesSent := 0.
+	[bytesSent < bytesToSend] whileTrue: [
+		(self waitForSendDoneFor: 20)
+			ifFalse: [OCNTimeOutException signal: 'send data timeout; data not sent'].
+		count := self primSocket: socketId
+			sendUDPData: aByteArray
+			toHost: hostAddress
+			port: portNumber
+			startIndex: bytesSent + 1
+			count: bytesToSend - bytesSent.
+		bytesSent := bytesSent + count].
+
+	^ bytesSent
+
+]
+
+{ #category : #'UDP API' }
+OCNSocketPluginLibrary >> sendUDPOn: socketId datagram: aDatagramPacket [
+
+	^ self sendUDPDataOn: socketId contents: aDatagramPacket data toHost: aDatagramPacket targetAddress port: aDatagramPacket targetPort
+	
 ]
