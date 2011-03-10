@@ -511,6 +511,15 @@ OCNSocketPluginLibrary >> primSocketCreateNetwork: netType type: socketType rece
 	
 ]
 
+{ #category : #primitives }
+OCNSocketPluginLibrary >> primSocketSendDone: socketID [
+	"Return true if there is no send in progress on the current socket."
+
+	<primitive: 'primitiveSocketSendDone' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
 { #category : #'primitives from old netnameresolver' }
 OCNSocketPluginLibrary >> primStartLookupOfAddress: hostAddr [
 	"Look up the given host address in the Domain Name Server to find its name. This call is asynchronous. To get the results, wait for it to complete or time out and then use primAddressLookupResult."
@@ -583,7 +592,7 @@ OCNSocketPluginLibrary >> sendUDPDataOn: socketId contents: aByteArray toHost: h
 	bytesToSend := aByteArray size.
 	bytesSent := 0.
 	[bytesSent < bytesToSend] whileTrue: [
-		(self waitForSendDoneFor: 20)
+		(self waitForSendDoneOn: socketId for: 20)
 			ifFalse: [OCNTimeOutException signal: 'send data timeout; data not sent'].
 		count := self primSocket: socketId
 			sendUDPData: aByteArray
@@ -602,4 +611,22 @@ OCNSocketPluginLibrary >> sendUDPOn: socketId datagram: aDatagramPacket [
 
 	^ self sendUDPDataOn: socketId contents: aDatagramPacket data toHost: aDatagramPacket targetAddress port: aDatagramPacket targetPort
 	
+]
+
+{ #category : #'UDP primitives' }
+OCNSocketPluginLibrary >> waitForSendDoneOn: socketId for: timeout [
+	"Wait up until the given deadline for the current send operation to complete. Return true if it completes by the deadline, false if not."
+
+	| startTime msecsDelta msecsEllapsed sendDone |
+
+	self halt:'pay attention because it check if socket is connected... this method is used in UDP'.
+
+	startTime := Time millisecondClockValue.
+	msecsDelta := (timeout * 1000) truncated.
+	[(sendDone := self primSocketSendDone: socketId) not and: [ self isConnected
+			"Connection end and final data can happen fast, so test in this order"
+		and: [(msecsEllapsed := Time millisecondsSince: startTime) < msecsDelta]]] whileTrue: [
+			self writeSemaphore waitTimeoutMSecs: msecsDelta - msecsEllapsed].
+
+	^ sendDone
 ]
