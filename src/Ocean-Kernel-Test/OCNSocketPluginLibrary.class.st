@@ -188,13 +188,15 @@ OCNSocketPluginLibrary >> createUdpSocketDescriptorId [
 			readSemaIndex: readSemaIndex
 			writeSemaIndex: writeSemaIndex.
 	
-	
-	socketId ifNotNil: [ 
-		self halt: 'I do not understand this line'.
-		(self primSocketConnectionStatus: socketId) = Unconnected ifTrue: [ ^socketId ] 
-	].
-
-	OCNSocketOperationFailureError signal: 'Socket creation failure'
+	socketId isNil
+		ifTrue: [ 
+			"socket creation failed"
+			Smalltalk unregisterExternalObject: semaphore.
+			Smalltalk unregisterExternalObject: readSemaphore.
+			Smalltalk unregisterExternalObject: writeSemaphore.
+			readSemaphore := writeSemaphore := semaphore := nil.
+			OCNSocketOperationFailureError signal: 'Socket creation failure' ]
+		ifFalse: [ ^socketId ]
 ]
 
 { #category : #accessing }
@@ -481,7 +483,7 @@ OCNSocketPluginLibrary >> primSocket: socketID sendUDPData: aStringOrByteArray t
 
 { #category : #primitives }
 OCNSocketPluginLibrary >> primSocketConnectionStatus: socketID [
-	"Return an integer reflecting the connection status of this socket. For a list of possible values, see the comment in the 'initialize' method of this class. If the primitive fails, return a status indicating that the socket handle is no longer valid, perhaps because the Squeak image was saved and restored since the socket was created. (Sockets do not survive snapshots.)"
+	"Return an integer reflecting the connection status of this socket. For a list of possible values, see the comment in the 'initialize' method of this class. If the primitive fails, return a status indicating that the socket handle is no longer valid, perhaps because the Pharo image was saved and restored since the socket was created. (Sockets do not survive snapshots.)"
 
 	<primitive: 'primitiveSocketConnectionStatus' module: 'SocketPlugin'>
 	^InvalidSocket 
@@ -566,10 +568,9 @@ OCNSocketPluginLibrary >> receiveUDPDatagramOn: socketId [
 	|aByteArray aDatagramPacket |
 	aByteArray := ByteArray new: 4.
 	self receiveUDPDataOn: socketId into: aByteArray.
-
-	aDatagramPacket sourceAddress: (aByteArray at: 2);
-					data: (aByteArray at: 1);
-					sourcePort: (aByteArray at: 3);
+	aDatagramPacket := OCNDatagramPacket new.
+	aDatagramPacket data: (aByteArray at: 1);
+					sourceIP: (aByteArray at: 2) port: (aByteArray at: 3) type: OCNIPV4SocketAddress;
 					offset: (aByteArray at: 4).
 	^aDatagramPacket
 ]
@@ -609,7 +610,7 @@ OCNSocketPluginLibrary >> sendUDPDataOn: socketId contents: aByteArray toHost: h
 { #category : #'UDP API' }
 OCNSocketPluginLibrary >> sendUDPOn: socketId datagram: aDatagramPacket [
 
-	^ self sendUDPDataOn: socketId contents: aDatagramPacket data toHost: aDatagramPacket targetAddress port: aDatagramPacket targetPort
+	^ self sendUDPDataOn: socketId contents: aDatagramPacket data toHost: aDatagramPacket targetAddress ip port: aDatagramPacket targetAddress port
 	
 ]
 
@@ -619,7 +620,7 @@ OCNSocketPluginLibrary >> waitForSendDoneOn: socketId for: timeout [
 
 	| startTime msecsDelta msecsEllapsed sendDone |
 
-	self halt:'pay attention because it check if socket is connected... this method is used in UDP'.
+	self inform:'pay attention because it check if socket is connected... this method is used in UDP'.
 
 	startTime := Time millisecondClockValue.
 	msecsDelta := (timeout * 1000) truncated.

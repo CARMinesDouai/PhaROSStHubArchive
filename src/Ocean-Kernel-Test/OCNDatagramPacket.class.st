@@ -50,6 +50,13 @@ OCNDatagramPacket >> sourceAddress: anIPAddress [
 ]
 
 { #category : #'setting-getting' }
+OCNDatagramPacket >> sourceIP: anIPAddress port: aPort type: aClassType [
+	sourceAddress:= aClassType new 
+						ip: anIPAddress;
+						port: aPort
+]
+
+{ #category : #'setting-getting' }
 OCNDatagramPacket >> targetAddress [
 	^ targetAddress
 ]
@@ -59,8 +66,16 @@ OCNDatagramPacket >> targetAddress: anIPAddress [
 	^targetAddress:= anIPAddress
 ]
 
+{ #category : #'setting-getting' }
+OCNDatagramPacket >> targetIP: anIPAddress port: aPort type: aClassType [
+	targetAddress:= aClassType new 
+						ip: anIPAddress;
+						port: aPort
+]
+
 { #category : #testing }
 OCNDatagramPacket >> verify [
 	"verify the coherence of the datagramPacket. If it is ok, it rturn true, else it raises an error"
-	self shouldBeImplemented
+	"self shouldBeImplemented"
+	^ true.
 ]
