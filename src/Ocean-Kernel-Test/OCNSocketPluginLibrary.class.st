@@ -553,7 +553,6 @@ OCNSocketPluginLibrary >> receiveFrom: socketId [
 { #category : #'UDP primitives' }
 OCNSocketPluginLibrary >> receiveUDPDataOn: socketId into: aByteArray [
 	"Receive UDP data into the given buffer and return the number of bytes received. Note the given buffer may be only partially filled by the received data. What is returned is an array, the first element is the bytes read, the second the sending bytearray address, the third the senders port, the fourth, true if more of the datagram awaits reading"
-	self halt.
 	^ self primSocket: socketId
 		receiveUDPDataInto: aByteArray
 		startingAt: 1
@@ -568,12 +567,14 @@ OCNSocketPluginLibrary >> receiveUDPDatagramOn: socketId [
 	|aByteArray aDatagramPacket |
 	
 	aByteArray := self receiveUDPDataOn: socketId into: (ByteArray new: 4).
-	self halt.
 	aDatagramPacket := OCNDatagramPacket new.
+	self halt.
 	self inform: 'should be better'.
 	aDatagramPacket data: (aByteArray at: 1);
 					sourceIP: (aByteArray at: 2) port: (aByteArray at: 3) type: OCNIPV4SocketAddress;
 					offset: (aByteArray at: 4).
+					
+		
 	^aDatagramPacket
 ]
 
