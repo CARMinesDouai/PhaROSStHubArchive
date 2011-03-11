@@ -11,7 +11,7 @@ OCNUdpSocket >> newSocketId [
 
 { #category : #communicating }
 OCNUdpSocket >> receive [
-	self networkLibrary receiveUDPDatagramOn: self socketId
+	^self networkLibrary receiveUDPDatagramOn: self socketId
 ]
 
 { #category : #communicating }

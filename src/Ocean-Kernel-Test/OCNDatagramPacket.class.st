@@ -45,15 +45,15 @@ OCNDatagramPacket >> sourceAddress [
 ]
 
 { #category : #'setting-getting' }
-OCNDatagramPacket >> sourceAddress: anIPAddress [
-	sourceAddress:= anIPAddress
+OCNDatagramPacket >> sourceAddress: anOCNSocketAddress [
+	sourceAddress:= anOCNSocketAddress
 ]
 
 { #category : #'setting-getting' }
-OCNDatagramPacket >> sourceIP: anIPAddress port: aPort type: aClassType [
-	sourceAddress:= aClassType new 
-						ip: anIPAddress;
-						port: aPort
+OCNDatagramPacket >> sourceIP: anIPAddress port: aPort type: aSocketAddressClass [
+	sourceAddress := aSocketAddressClass new
+							ip: anIPAddress;
+							port: aPort
 ]
 
 { #category : #'setting-getting' }
@@ -62,15 +62,15 @@ OCNDatagramPacket >> targetAddress [
 ]
 
 { #category : #'setting-getting' }
-OCNDatagramPacket >> targetAddress: anIPAddress [
-	^targetAddress:= anIPAddress
+OCNDatagramPacket >> targetAddress: anOCNSocketAddress [
+	^targetAddress:= anOCNSocketAddress
 ]
 
 { #category : #'setting-getting' }
-OCNDatagramPacket >> targetIP: anIPAddress port: aPort type: aClassType [
-	targetAddress:= aClassType new 
-						ip: anIPAddress;
-						port: aPort
+OCNDatagramPacket >> targetIP: anIPAddress port: aPort type: aSocketAddressClass [
+	sourceAddress := aSocketAddressClass new
+							ip: anIPAddress;
+							port: aPort
 ]
 
 { #category : #testing }
