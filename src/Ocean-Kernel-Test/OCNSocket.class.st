@@ -39,7 +39,7 @@ OCNSocket >> bindToAddress: aSocketAddress [
 	self isUnconnected ifFalse: [ 
 		OCNSocketOperationForbiddenError signal: self state asString capitalized, ' socket can not be bound' ].
 	[
-		self networkLibrary bind: self socketId toIpv4Address: aSocketAddress
+		self networkLibrary bind: self toIpv4Address: aSocketAddress
 	] on: OCNSocketOperationFailureError do: [:ex|
 		self destroy.
 		ex pass.
@@ -60,7 +60,7 @@ OCNSocket >> destroy [
 	self isDestroyed 
 		ifTrue: [ ^ self ].
 	self state: self destroyedStateSymbol.
-	self networkLibrary close: self socketId.
+	self networkLibrary destroy: self.
 
 ]
 

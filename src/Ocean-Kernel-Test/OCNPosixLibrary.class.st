@@ -227,12 +227,12 @@ Insufficient resources were available to complete the call.
 ]
 
 { #category : #'TCP API' }
-OCNPosixLibrary >> bind: socketId toIpv4Address: anAddress [
+OCNPosixLibrary >> bind: aSocket toIpv4Address: anAddress [
 	"anAddress represents the local address of the network interface to use"
 	
 	| result primitiveAddress |
 	primitiveAddress := self posixIPV4AddressFrom: anAddress.
-	[result := self bind: socketId address: primitiveAddress size: primitiveAddress dataSize] 
+	[result := self bind: aSocket socketId address: primitiveAddress size: primitiveAddress dataSize] 
 	ensure: [primitiveAddress free].
 	result = -1 ifTrue: [OCNSocketOperationFailureError signal: 'Bind failure']
 ]
@@ -240,18 +240,6 @@ OCNPosixLibrary >> bind: socketId toIpv4Address: anAddress [
 { #category : #'function names' }
 OCNPosixLibrary >> bindFunctionName [
 	^'bind'
-]
-
-{ #category : #'TCP API' }
-OCNPosixLibrary >> close: socketId [
-	(self alienMethodNamed: self closeFunctionName) primFFICallResult: self alienResult with: socketId.
-	self latestPosixResult 	= -1  ifTrue: [OCNSocketOperationFailureError signal: 'Close failed']
-		
-"#include <unistd.h>
-int close(int fildes);
-RETURN VALUES
-If successful, close() returns a value of zero. On failure, it returns a value of -1 and sets errno to one of the following:
-"
 ]
 
 { #category : #'function names' }
@@ -373,10 +361,10 @@ The socket is listening and cannot be connected.
 ]
 
 { #category : #'TCP API' }
-OCNPosixLibrary >> connect: socketId toServerWithIpv4Address: serverAddress [
+OCNPosixLibrary >> connect: aSocket toServerWithIpv4Address: serverAddress [
 	| result primitiveAddress |
 	primitiveAddress := self posixIPV4AddressFrom: serverAddress.
-	result := self connect: socketId
+	result := self connect: aSocket socketId
 		serverAddress: primitiveAddress
 		serverAddressSize: primitiveAddress dataSize.
 	result = -1  ifTrue: [OCNSocketOperationFailureError signal: 'Connection failure']
@@ -404,6 +392,18 @@ OCNPosixLibrary >> createTcpSocketDescriptorId [
 { #category : #accessing }
 OCNPosixLibrary >> defaultDataBufferSize [
 	^2000
+]
+
+{ #category : #'TCP API' }
+OCNPosixLibrary >> destroy: aSocket [
+	(self alienMethodNamed: self closeFunctionName) primFFICallResult: self alienResult with: aSocket socketId.
+	self latestPosixResult 	= -1  ifTrue: [OCNSocketOperationFailureError signal: 'Close failed']
+		
+"#include <unistd.h>
+int close(int fildes);
+RETURN VALUES
+If successful, close() returns a value of zero. On failure, it returns a value of -1 and sets errno to one of the following:
+"
 ]
 
 { #category : #'byte conversions' }
@@ -546,9 +546,9 @@ OCNPosixLibrary >> posixIPV4AddressFrom: aSocketAddress [
 ]
 
 { #category : #'TCP API' }
-OCNPosixLibrary >> readFrom: socketId [
+OCNPosixLibrary >> readFrom: aSocket [
 	self
-		readFrom: socketId
+		readFrom: aSocket socketId
 		buffer: self alienDataBuffer
 		ofSize: self alienDataBufferSize
 		result: self alienResult.
@@ -603,9 +603,9 @@ OCNPosixLibrary >> readFunctionName [
 ]
 
 { #category : #'TCP API' }
-OCNPosixLibrary >> receiveFrom: socketId [
+OCNPosixLibrary >> receiveFrom: aSocket [
 	self
-		receiveFrom: self socketId
+		receiveFrom: aSocket socketId
 		buffer: self alienDataBuffer
 		ofSize: self alienDataBufferSize
 		flags: 0
@@ -703,7 +703,7 @@ OCNPosixLibrary >> receivedString [
 ]
 
 { #category : #'TCP API' }
-OCNPosixLibrary >> sendData: data to: socketId [
+OCNPosixLibrary >> sendData: data to: aSocket [
 	| sentDataSize |
 	sentDataSize := data byteSize.
 	sentDataSize > self alienDataBufferSize
@@ -714,7 +714,7 @@ OCNPosixLibrary >> sendData: data to: socketId [
 		with: data
 		startingAt: 1.
 	self
-		sendTo: socketId
+		sendTo: aSocket socketId
 		buffer: self alienDataBuffer
 		ofSize: sentDataSize
 		flags: 0

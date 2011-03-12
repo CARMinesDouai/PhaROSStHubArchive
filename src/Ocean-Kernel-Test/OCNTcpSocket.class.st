@@ -15,7 +15,7 @@ OCNTcpSocket >> connectToServer: serverAddress [
 	(self isUnconnected | self isBound ) ifFalse:  [ 
 		OCNSocketOperationForbiddenError signal: self state asString capitalized, ' socket can not be connected' ].
 	[
-		self networkLibrary connect: self socketId toServerWithIpv4Address: serverAddress.
+		self networkLibrary connect: self toServerWithIpv4Address: serverAddress.
 	] on: OCNSocketOperationFailureError do: [:ex|
 		self destroy.
 		ex pass.
@@ -48,7 +48,7 @@ OCNTcpSocket >> newSocketId [
 { #category : #communicating }
 OCNTcpSocket >> receive [
 	self isConnected ifFalse: [OCNSocketOperationForbiddenError signal: 'Socket should be connected before receiving'].
-	^self networkLibrary readFrom: self socketId	
+	^self networkLibrary readFrom: self	
 ]
 
 { #category : #communicating }
@@ -56,6 +56,6 @@ OCNTcpSocket >> send: data [
 	| sentDataSize |
 	self isConnected
 		ifFalse: [ OCNSocketOperationForbiddenError signal: 'Socket should be connected before sending'  ].
-	^self networkLibrary sendData: data to: self socketId
+	^self networkLibrary sendData: data to: self
 	
 ]

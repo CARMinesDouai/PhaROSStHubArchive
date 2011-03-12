@@ -123,25 +123,15 @@ OCNSocketPluginLibrary >> allAddressFamily [
 ]
 
 { #category : #'TCP API' }
-OCNSocketPluginLibrary >> bind: aSmallInteger toIpv4Address: anOCNIPV4SocketAddress [ 
+OCNSocketPluginLibrary >> bind: aSocket toIpv4Address: anOCNIPV4SocketAddress [ 
 	
 ]
 
 { #category : #'TCP API' }
-OCNSocketPluginLibrary >> close: socketId [
+OCNSocketPluginLibrary >> connect: aSocket toServerWithIpv4Address: serverAddress [
 
-	"Socket>>primSocketDestroy:"	
-	<primitive: 'primitiveSocketDestroy' module: 'SocketPlugin'>
-
-	OCNSocketOperationFailureError signal: 'Close failed'
-
-]
-
-{ #category : #'TCP API' }
-OCNSocketPluginLibrary >> connect: socketId toServerWithIpv4Address: serverAddress [
-
-	self primSocket: socketId connectTo: serverAddress ip port: serverAddress port.
-	(self primSocketConnectionStatus: socketId) = Connected ifFalse: [
+	self primSocket: aSocket socketId connectTo: serverAddress ip port: serverAddress port.
+	(self primSocketConnectionStatus: aSocket socketId) = Connected ifFalse: [
 		OCNSocketOperationFailureError signal: 'Connection failure'	
 	]
 ]
@@ -220,6 +210,12 @@ OCNSocketPluginLibrary >> createUdpSocketDescriptorId [
 { #category : #accessing }
 OCNSocketPluginLibrary >> defaultDataBufferSize [
 	^8000
+]
+
+{ #category : #'TCP API' }
+OCNSocketPluginLibrary >> destroy: aSocket [
+
+	self primDestroySocket: aSocket socketId
 ]
 
 { #category : #'initialize-release' }
@@ -318,6 +314,16 @@ OCNSocketPluginLibrary >> primAddressLookupResult [
 
 	<primitive: 'primitiveResolverAddressLookupResult' module: 'SocketPlugin'>
 	self primitiveFailed
+
+]
+
+{ #category : #'TCP primitives' }
+OCNSocketPluginLibrary >> primDestroySocket: socketId [
+
+	"Socket>>primSocketDestroy:"	
+	<primitive: 'primitiveSocketDestroy' module: 'SocketPlugin'>
+
+	OCNSocketOperationFailureError signal: 'Close failed'
 
 ]
 
@@ -806,12 +812,12 @@ OCNSocketPluginLibrary >> primStartLookupOfName: hostName [
 ]
 
 { #category : #'TCP API' }
-OCNSocketPluginLibrary >> readFrom: socketId [
+OCNSocketPluginLibrary >> readFrom: aSocket [
 	self shouldBeImplemented 
 ]
 
 { #category : #'TCP API' }
-OCNSocketPluginLibrary >> receiveFrom: socketId [
+OCNSocketPluginLibrary >> receiveFrom: aSocket [
 	self shouldBeImplemented 
 ]
 
@@ -861,7 +867,7 @@ OCNSocketPluginLibrary >> resolverUninitializedCode [
 ]
 
 { #category : #'TCP API' }
-OCNSocketPluginLibrary >> sendData: data to: socketId [
+OCNSocketPluginLibrary >> sendData: data to: aSocket [
 	self shouldBeImplemented 
 ]
 
