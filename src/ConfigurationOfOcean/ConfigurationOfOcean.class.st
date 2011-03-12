@@ -1,7 +1,8 @@
 "
+""On 1.2 and 1.3""
 ConfigurationOfOcean project stableVersion load.
 
-ConfigurationOfOcean project bleedingEdge load.
+
 "
 Class {
 	#name : #ConfigurationOfOcean,
@@ -299,7 +300,7 @@ ConfigurationOfOcean >> version05: spec [
 		spec 
 			blessing: #development; 
 			project: 'Alien' with:  'Pharo 1.2';
-			project: 'OSProcess' with: #'stable';
-			package: 'Ocean' with: 'Ocean-LucFabresse.44'
-	] 
+			project: 'OSProcess' with: #'stable'
+			"package: 'Ocean' with: 'Ocean-LucFabresse.44'" "let's load the bleeding edge version"
+	]
 ]
