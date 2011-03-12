@@ -8,8 +8,7 @@ Class {
 		'sourceAddress',
 		'targetAddress',
 		'data',
-		'dataSize',
-		'offset'
+		'more'
 	],
 	#category : #'Ocean-Kernel'
 }
@@ -30,13 +29,13 @@ OCNDatagramPacket >> dataSize [
 ]
 
 { #category : #'setting-getting' }
-OCNDatagramPacket >> offset [
-	^offset
+OCNDatagramPacket >> more [
+	^more
 ]
 
 { #category : #'setting-getting' }
-OCNDatagramPacket >> offset: anInteger [
-	offset:= anInteger
+OCNDatagramPacket >> more: aBoolean [
+	more:= aBoolean
 ]
 
 { #category : #'setting-getting' }

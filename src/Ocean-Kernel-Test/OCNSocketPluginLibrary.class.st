@@ -851,13 +851,14 @@ OCNSocketPluginLibrary >> receiveUDPDatagramOn: socketId [
 	resultInfos := ByteArray new: 4.
 	resultInfos := self receiveUDPDataOn: socketId into: data.
 	
+	data := data copyFrom: 1 to: (resultInfos at: 1).
 	aDatagramPacket := OCNDatagramPacket new.
 	aDatagramPacket 
 					data: data;
 					sourceIP: (resultInfos at: 2) port: (resultInfos at: 3) type: OCNIPV4SocketAddress;
-					offset: (resultInfos at: 4).
-					
-		
+					targetAddress: nil; "should be implemented when we will pass a real IP object in parameter"
+					more: (resultInfos at: 4).
+
 	^aDatagramPacket
 ]
 

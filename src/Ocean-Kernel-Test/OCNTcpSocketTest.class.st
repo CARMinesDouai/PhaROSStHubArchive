@@ -1,22 +1,12 @@
 Class {
 	#name : #OCNTcpSocketTest,
-	#superclass : #TestCase,
-	#instVars : [
-		'socket',
-		'library',
-		'serverShell'
-	],
+	#superclass : #OCNSocketTest,
 	#category : #'Ocean-Kernel-Test'
 }
 
 { #category : #accessing }
 OCNTcpSocketTest class >> allTestSelectors [ 
 	^self superclass testSelectors, self testSelectors
-]
-
-{ #category : #testing }
-OCNTcpSocketTest class >> isAbstract [
-	^true
 ]
 
 { #category : #testing }
@@ -66,42 +56,11 @@ OCNTcpSocketTest >> randomAsciiStringOfSize: dataSize [
 
 ]
 
-{ #category : #accessing }
-OCNTcpSocketTest >> serverPort [
-	^9123
-]
-
-{ #category : #accessing }
-OCNTcpSocketTest >> serverShellClass [ 
-	^OCNFileStdOutShell
-]
-
 { #category : #'setUp-tearDown' }
 OCNTcpSocketTest >> setUp [
 	super setUp.
-	library := OCNNetworkLibraryProxyFactory proxyForLibraryClass: self networkLibraryClass.
 	socket := OCNTcpSocket newWithNetworkLibrary: library.
-	self setUpServerShell.
-
-]
-
-{ #category : #'setUp-tearDown' }
-OCNTcpSocketTest >> setUpServerShell [
-	serverShell := self serverShellClass onStdOutFileNamed: 'test.log'
-]
-
-{ #category : #'server management' }
-OCNTcpSocketTest >> startServer [
-	serverShell exec: 'nc -4 -l ' , String space , self serverPort printString.
-	(Delay forMilliseconds: 50) wait
-]
-
-{ #category : #'setUp-tearDown' }
-OCNTcpSocketTest >> tearDown [
-	super tearDown.
-	serverShell deleteStdOutFile.
-	serverShell kill.
-	socket destroy.
+	
 ]
 
 { #category : #'testing lifecylce' }
