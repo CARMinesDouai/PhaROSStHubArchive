@@ -1,3 +1,15 @@
+"
+Here is the list of primitives available in Cog Socket Plugin:
+
+===
+#('sqNetworkInit(resolverSemaIndex);' 'sqNetworkShutdown(void);' 'sqResolverAbort(void);' 'sqResolverAddrLookupResult(char *nameForAddress, nameSize);' 'sqResolverAddrLookupResultSize(void);' 'sqResolverError(void);' 'sqResolverLocalAddress(void);' 'sqResolverNameLookupResult(void);' 'sqResolverStartAddrLookup(address);' 'sqResolverStartNameLookup(char *hostName, nameSize);' 'sqResolverStatus(void);' 'sqSocketAbortConnection(SocketPtr s);' 'sqSocketCloseConnection(SocketPtr s);' 'sqSocketConnectionStatus(SocketPtr s);' 'sqSocketConnectToPort(SocketPtr s, addr, port);' 'sqSocketCreateNetTypeSocketTypeRecvBytesSendBytesSemaID(SocketPtr s, netType, socketType, recvBufSize, sendBufSize, semaIndex);' 'sqSocketCreateNetTypeSocketTypeRecvBytesSendBytesSemaIDReadSemaIDWriteSemaID(SocketPtr s, netType, socketType, recvBufSize, sendBufSize, semaIndex, readSemaIndex, writeSemaIndex);' 'sqSocketDestroy(SocketPtr s);' 'sqSocketError(SocketPtr s);' 'sqSocketListenOnPort(SocketPtr s, port);' 'sqSocketLocalAddress(SocketPtr s);' 'sqSocketLocalPort(SocketPtr s);' 'sqSocketReceiveDataAvailable(SocketPtr s);' 'sqSocketReceiveDataBufCount(SocketPtr s, char *buf, bufSize);' 'sqSocketRemoteAddress(SocketPtr s);' 'sqSocketRemotePort(SocketPtr s);' 'sqSocketSendDataBufCount(SocketPtr s, char *buf, bufSize);' 'sqSocketSendDone(SocketPtr s);' 'sqSocketListenOnPortBacklogSize(SocketPtr s, port, backlogSize);' 'sqSocketListenOnPortBacklogSizeInterface(SocketPtr s, port, backlogSize, addr);' 'sqSocketAcceptFromRecvBytesSendBytesSemaID(SocketPtr s, SocketPtr serverSocket, recvBufSize, sendBufSize, semaIndex);' 'sqSocketAcceptFromRecvBytesSendBytesSemaIDReadSemaIDWriteSemaID(SocketPtr s, SocketPtr serverSocket, recvBufSize, sendBufSize, semaIndex, readSemaIndex, writeSemaIndex);' 'sqSocketReceiveUDPDataBufCountaddressportmoreFlag(SocketPtr s, char *buf, bufSize,  *address,  *port, *moreFlag);' 'sqSockettoHostportSendDataBufCount(SocketPtr s, address, port, char *buf, bufSize);' 'sqSocketSetOptionsoptionNameStartoptionNameSizeoptionValueStartoptionValueSizereturnedValue(SocketPtr s, char *optionName, optionNameSize, char *optionValue, optionValueSize, *result);' 'sqSocketGetOptionsoptionNameStartoptionNameSizereturnedValue(SocketPtr s, char *optionName, optionNameSize, *result);' 'sqSocketBindToPort(SocketPtr s, int addr, int port);' 'sqSocketSetReusable(SocketPtr s);')
+===
+
+Here is the list of non-present primitives in Cog but available in the Squeak VMs (even 5.8):
+===
+#('sqResolverGetAddressInfoHostSizeServiceSizeFlagsFamilyTypeProtocol(char *hostName, hostSize, char *servName, servSize, flags, family, type, protocol);' 'sqResolverGetAddressInfoSize(void);' 'sqResolverGetAddressInfoResultSize(char *addr, addrSize);' 'sqResolverGetAddressInfoFamily(void);' 'sqResolverGetAddressInfoType(void);' 'sqResolverGetAddressInfoProtocol(void);' 'sqResolverGetAddressInfoNext(void);' 'sqSocketAddressSizeGetPort(char *addr, addrSize);' 'sqSocketAddressSizeSetPort(char *addr, addrSize, port);' 'sqResolverGetNameInfoSizeFlags(char *addr, addrSize, flags);' 'sqResolverGetNameInfoHostSize(void);' 'sqResolverGetNameInfoHostResultSize(char *name, nameSize);' 'sqResolverGetNameInfoServiceSize(void);' 'sqResolverGetNameInfoServiceResultSize(char *name, nameSize);' 'sqResolverHostNameSize(void);' 'sqResolverHostNameResultSize(char *name, nameSize);' 'sqSocketBindToAddressSize(SocketPtr s, char *addr, addrSize);' 'sqSocketListenBacklog(SocketPtr s, backlogSize);' 'sqSocketConnectToAddressSize(SocketPtr s, char *addr, addrSize);' 'sqSocketLocalAddressSize(SocketPtr s);' 'sqSocketLocalAddressResultSize(SocketPtr s, char *addr, int addrSize);' 'sqSocketRemoteAddressSize(SocketPtr s);' 'sqSocketRemoteAddressResultSize(SocketPtr s, char *addr, int addrSize);')
+===
+"
 Class {
 	#name : #OCNSocketPluginLibrary,
 	#superclass : #Object,
@@ -54,7 +66,6 @@ OCNSocketPluginLibrary >> addressForName: nameToLookup addressFamily: addressFam
 	 | addressSize  byteInfoSize byteInfo stringAddress addressTypeConstants |
 	
 	self ensureNetworkInitialized.
-	
 	[self primGetAddressInfoHost: nameToLookup  service: '' flags: 0 family: addressFamily type: 1 protocol: 1] on: Error do: [
 		OCNNameLookupError signal: 'Can not resolve ', nameToLookup asString
 	].
@@ -135,7 +146,7 @@ OCNSocketPluginLibrary >> connect: socketId toServerWithIpv4Address: serverAddre
 	]
 ]
 
-{ #category : #converting }
+{ #category : #'converting socket addresses' }
 OCNSocketPluginLibrary >> convertIpv4StringAddressToByteArray: stringAddress [
 	^((stringAddress subStrings: '.')  collect: [ :string | string asInteger]) asByteArray
 ]
@@ -155,16 +166,23 @@ OCNSocketPluginLibrary >> createTcpSocketDescriptorId [
 "	
 	socketId := self primSocketCreateNetwork: 0
 			type: 0 "SocketType"
-			receiveBufferSize: 8000
-			sendBufSize: 8000
+			receiveBufferSize: self defaultDataBufferSize
+			sendBufSize: self defaultDataBufferSize
 			semaIndex: semaIndex.
 	
+	socketId isNil
+		ifTrue: [ 
+			"socket creation failed"
+			Smalltalk unregisterExternalObject: semaphore.
+			"Smalltalk unregisterExternalObject: readSemaphore.
+			Smalltalk unregisterExternalObject: writeSemaphore.
+			readSemaphore := writeSemaphore := "
+			semaphore := nil]
+		ifFalse: [
+			(self primSocketConnectionStatus: socketId) = Unconnected ifTrue: [ ^socketId ] ].
 	
-	socketId ifNotNil: [ 
-		(self primSocketConnectionStatus: socketId) = Unconnected ifTrue: [ ^socketId ] 
-	].
-
-	OCNSocketOperationFailureError signal: 'Socket creation failure'
+	 OCNSocketOperationFailureError signal: 'Socket creation failure' 
+	
 ]
 
 { #category : #'UDP API' }
@@ -182,8 +200,8 @@ OCNSocketPluginLibrary >> createUdpSocketDescriptorId [
 	
 	socketId := self primSocketCreateNetwork: 0
 			type: UDPSocketType
-			receiveBufferSize: 8000
-			sendBufSize: 8000
+			receiveBufferSize: self defaultDataBufferSize
+			sendBufSize: self defaultDataBufferSize
 			semaIndex: semaIndex
 			readSemaIndex: readSemaIndex
 			writeSemaIndex: writeSemaIndex.
@@ -201,7 +219,7 @@ OCNSocketPluginLibrary >> createUdpSocketDescriptorId [
 
 { #category : #accessing }
 OCNSocketPluginLibrary >> defaultDataBufferSize [
-	^2000
+	^8000
 ]
 
 { #category : #'initialize-release' }
@@ -282,6 +300,16 @@ OCNSocketPluginLibrary >> primAbortLookup [
 	<primitive: 'primitiveResolverAbortLookup' module: 'SocketPlugin'>
 	self primitiveFailed
 
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primAcceptFrom: aHandle receiveBufferSize: rcvBufSize sendBufSize: sndBufSize semaIndex: semaInd readSemaIndex: aReadSema writeSemaIndex: aWriteSema [
+	"Create and return a new socket handle based on accepting the connection from the given listening socket"
+	<primitive: 'primitiveSocketAccept3Semaphores' module: 'SocketPlugin'>
+	| primitiveOnlySupportsOneSemaphore |
+	"should be an instance variable, like in previous socket library"
+	primitiveOnlySupportsOneSemaphore := true.
+	^self primAcceptFrom: aHandle receiveBufferSize: rcvBufSize sendBufSize: sndBufSize semaIndex: semaIndex 
 ]
 
 { #category : #'primitives from old netnameresolver' }
@@ -452,12 +480,80 @@ OCNSocketPluginLibrary >> primNameResolverStatus [
 
 ]
 
-{ #category : #primitives }
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocket: socketID bindTo: socketAddress [
+
+	<primitive: 'primitiveSocketBindTo' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocket: socketID connectTo: socketAddress [
+
+	<primitive: 'primitiveSocketConnectTo' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'TCP primitives' }
 OCNSocketPluginLibrary >> primSocket: socketID connectTo: hostAddress port: port [
 	"Attempt to establish a connection to the given port of the given host. This is an asynchronous call; query the socket status to discover if and when the connection is actually completed."
 
 	<primitive: 'primitiveSocketConnectToPort' module: 'SocketPlugin'>
 	
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocket: socketID getOption: aString [ 
+	"Get some option information on this socket. Refer to the UNIX 
+	man pages for valid SO, TCP, IP, UDP options. In case of doubt
+	refer to the source code.
+	TCP:=NODELAY, SO:=KEEPALIVE are valid options for example
+	returns an array containing the error code and the option value"
+
+	<primitive: 'primitiveSocketGetOptions' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocket: aHandle listenOn: portNumber backlogSize: backlog [
+	"Primitive. Set up the socket to listen on the given port.
+	Will be used in conjunction with #accept only."
+	<primitive: 'primitiveSocketListenWithOrWithoutBacklog' module: 'SocketPlugin'>
+	self destroy. "Accept not supported so clean up"
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocket: aHandle listenOn: portNumber backlogSize: backlog interface: ifAddr [
+	"Primitive. Set up the socket to listen on the given port.
+	Will be used in conjunction with #accept only."
+	<primitive: 'primitiveSocketListenOnPortBacklogInterface' module: 'SocketPlugin'>
+	self destroy. "Accept not supported so clean up"
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocket: socketId listenOnPort: aPortNumber [
+	<primitive: 'primitiveSocketListenOnPort' module: 'SocketPlugin'>
+	self primitiveFailed
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocket: socketID localAddressResult: socketAddress [
+
+	<primitive: 'primitiveSocketLocalAddressResult' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocket: socketID receiveDataInto: aStringOrByteArray startingAt: startIndex count: count [
+	"Receive data from the given socket into the given array starting at the given index. Return the number of bytes read or zero if no data is available."
+
+	<primitive: 'primitiveSocketReceiveDataBufCount' module: 'SocketPlugin'>
+	SocketPrimitiveFailed signal
+
 ]
 
 { #category : #'UDP primitives' }
@@ -466,6 +562,24 @@ OCNSocketPluginLibrary >> primSocket: socketID receiveUDPDataInto: aStringOrByte
 	Return an Array containing the amount read, the host address byte array, the host port, and the more flag"
 
 	<primitive: 'primitiveSocketReceiveUDPDataBufCount' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocket: socketID remoteAddressResult: socketAddress [
+
+	<primitive: 'primitiveSocketRemoteAddressResult' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocket: socketID sendData: aStringOrByteArray startIndex: startIndex count: count [
+	"Send data to the remote host through the given socket starting with the given byte index of the given byte array. The data sent is 'pushed' immediately. Return the number of bytes of data actually sent; any remaining data should be re-submitted for sending after the current send operation has completed."
+	"Note: In general, it many take several sendData calls to transmit a large data array since the data is sent in send-buffer-sized chunks. The size of the send buffer is determined when the socket is created."
+
+	<primitive: 'primitiveSocketSendDataBufCount' module: 'SocketPlugin'>
 	self primitiveFailed
 
 ]
@@ -481,7 +595,57 @@ OCNSocketPluginLibrary >> primSocket: socketID sendUDPData: aStringOrByteArray t
 
 ]
 
-{ #category : #primitives }
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocket: socketID setOption: aString value: aStringValue [
+	"Set some option information on this socket. Refer to the UNIX 
+	man pages for valid SO, TCP, IP, UDP options. In case of doubt
+	refer to the source code.
+	TCP:=NODELAY, SO:=KEEPALIVE are valid options for example
+	returns an array containing the error code and the negotiated value"
+
+	<primitive: 'primitiveSocketSetOptions' module: 'SocketPlugin'>
+	^nil
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocketAbortConnection: socketID [
+	"Terminate the connection on the given port immediately without going through the normal close sequence. This is an asynchronous call; query the socket status to discover if and when the connection is actually terminated."
+
+	<primitive: 'primitiveSocketAbortConnection' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocketAddressGetPort [
+	<primitive: 'primitiveSocketAddressGetPort' module: 'SocketPlugin'>
+	"should fix arg"
+	self primitiveFailed
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocketAddressSetPort [
+	<primitive: 'primitiveSocketAddressSetPort' module: 'SocketPlugin'>
+	"should fix arg"
+	self primitiveFailed
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocketBind: socketID to: anIntFromIPAddress port: aPortNumber [
+	<primitive: 'primitiveSocketBindToPort' module: 'SocketPlugin'>
+	self primitiveFailed
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocketCloseConnection: socketID [
+	"Close the connection on the given port. The remote end is informed that this end has closed and will do no further sends. This is an asynchronous call; query the socket status to discover if and when the connection is actually closed."
+
+	<primitive: 'primitiveSocketCloseConnection' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'TCP primitives' }
 OCNSocketPluginLibrary >> primSocketConnectionStatus: socketID [
 	"Return an integer reflecting the connection status of this socket. For a list of possible values, see the comment in the 'initialize' method of this class. If the primitive fails, return a status indicating that the socket handle is no longer valid, perhaps because the Pharo image was saved and restored since the socket was created. (Sockets do not survive snapshots.)"
 
@@ -489,7 +653,7 @@ OCNSocketPluginLibrary >> primSocketConnectionStatus: socketID [
 	^InvalidSocket 
 ]
 
-{ #category : #primitives }
+{ #category : #'Socket primitives' }
 OCNSocketPluginLibrary >> primSocketCreateNetwork: netType type: socketType receiveBufferSize: rcvBufSize sendBufSize: sendBufSize semaIndex: semaphoreIndex [ 
 	"Return a new socket handle for a socket of the given type and buffer sizes. Return nil if socket creation fails.
 	The netType parameter is platform dependent and can be used to encode both the protocol type (IP, Xerox XNS, etc.) and/or the physical network interface to use if this host is connected to multiple networks. A zero netType means to use IP protocols and the primary (or only) network interface.
@@ -503,7 +667,7 @@ OCNSocketPluginLibrary >> primSocketCreateNetwork: netType type: socketType rece
 	
 ]
 
-{ #category : #primitives }
+{ #category : #'Socket primitives' }
 OCNSocketPluginLibrary >> primSocketCreateNetwork: netType type: socketType receiveBufferSize: rcvBufSize sendBufSize: sendBufSize semaIndex: semaphoreIndex readSemaIndex: aReadSemaphore writeSemaIndex: aWriteSema [
 	"See comment in primSocketCreateNetwork: with one semaIndex. However you should know that some implementations
 	ignore the buffer size and this interface supports three semaphores,  one for open/close/listen and the other two for
@@ -513,7 +677,108 @@ OCNSocketPluginLibrary >> primSocketCreateNetwork: netType type: socketType rece
 	
 ]
 
-{ #category : #primitives }
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocketDestroy: socketID [
+	"Release the resources associated with this socket. If a connection is open, it is aborted."
+
+	<primitive: 'primitiveSocketDestroy' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocketDisableSocketAccess [
+	"Primitive. Disable access to sockets.
+	Cannot be revoked from the image."
+	<primitive: 'primitiveDisableSocketAccess' module: 'SocketPlugin'>
+	^self primitiveFailed
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocketError: socketID [
+	"Return an integer encoding the most recent error on this socket. Zero means no error."
+
+	<primitive: 'primitiveSocketError' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocketHasSocketAccess [
+	"Return true if the right to access sockets hasn't been revoked"
+	<primitive: 'primitiveHasSocketAccess' module: 'SocketPlugin'>
+	^true "assume so unless otherwise proven"
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocketListenOnPortBacklog [
+	<primitive: 'primitiveSocketListenOnPortBacklog' module: 'SocketPlugin'>
+	"should fix arg"
+	self primitiveFailed
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocketLocalAddress: socketID [
+	"Return the local host address for this socket."
+
+	<primitive: 'primitiveSocketLocalAddress' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocketLocalAddressSize: handle [
+
+	<primitive: 'primitiveSocketLocalAddressSize' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocketLocalPort: socketID [
+	"Return the local port for this socket, or zero if no port has yet been assigned."
+
+	<primitive: 'primitiveSocketLocalPort' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'Socket primitives' }
+OCNSocketPluginLibrary >> primSocketReceiveDataAvailable: socketID [
+	"Return true if data may be available for reading from the current socket."
+
+	<primitive: 'primitiveSocketReceiveDataAvailable' module: 'SocketPlugin'>
+	SocketPrimitiveFailed signal
+
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocketRemoteAddress: socketID [
+	"Return the remote host address for this socket, or zero if no connection has been made."
+
+	<primitive: 'primitiveSocketRemoteAddress' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocketRemoteAddressSize: handle [
+
+	<primitive: 'primitiveSocketRemoteAddressSize' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'Unused primitives' }
+OCNSocketPluginLibrary >> primSocketRemotePort: socketID [
+	"Return the remote port for this socket, or zero if no connection has been made."
+
+	<primitive: 'primitiveSocketRemotePort' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
+{ #category : #'Socket primitives' }
 OCNSocketPluginLibrary >> primSocketSendDone: socketID [
 	"Return true if there is no send in progress on the current socket."
 
@@ -550,13 +815,22 @@ OCNSocketPluginLibrary >> receiveFrom: socketId [
 	self shouldBeImplemented 
 ]
 
-{ #category : #'UDP primitives' }
+{ #category : #'UDP private' }
 OCNSocketPluginLibrary >> receiveUDPDataOn: socketId into: aByteArray [
 	"Receive UDP data into the given buffer and return the number of bytes received. Note the given buffer may be only partially filled by the received data. What is returned is an array, the first element is the bytes read, the second the sending bytearray address, the third the senders port, the fourth, true if more of the datagram awaits reading"
-	^ self primSocket: socketId
-		receiveUDPDataInto: aByteArray
-		startingAt: 1
-		count: aByteArray size
+	
+	"add a while true because the prmitive is non-blocking"
+	
+	"perhaps should use the read semaphore attached to the sockets"
+	
+	[true]
+		whileTrue: [
+			(self primSocketReceiveDataAvailable: socketId)
+				ifTrue: [^ self primSocket: socketId
+							receiveUDPDataInto: aByteArray
+							startingAt: 1
+							count: aByteArray size]
+		]
 
 ]
 
@@ -564,15 +838,18 @@ OCNSocketPluginLibrary >> receiveUDPDataOn: socketId into: aByteArray [
 OCNSocketPluginLibrary >> receiveUDPDatagramOn: socketId [
 	"Receive UDP data into the given buffer and return the number of bytes received. Note the given buffer may be only partially filled by the received data. What is returned is an array, the first element is the bytes read, the second the sending bytearray address, the third the senders port, the fourth, true if more of the datagram awaits reading"
 
-	|aByteArray aDatagramPacket |
+	|data resultInfos aDatagramPacket |
 	
-	aByteArray := self receiveUDPDataOn: socketId into: (ByteArray new: 4).
+	data := ByteArray new: self defaultDataBufferSize.
+	
+	resultInfos := ByteArray new: 4.
+	resultInfos := self receiveUDPDataOn: socketId into: data.
+	
 	aDatagramPacket := OCNDatagramPacket new.
-	self halt.
-	self inform: 'should be better'.
-	aDatagramPacket data: (aByteArray at: 1);
-					sourceIP: (aByteArray at: 2) port: (aByteArray at: 3) type: OCNIPV4SocketAddress;
-					offset: (aByteArray at: 4).
+	aDatagramPacket 
+					data: data;
+					sourceIP: (resultInfos at: 2) port: (resultInfos at: 3) type: OCNIPV4SocketAddress;
+					offset: (resultInfos at: 4).
 					
 		
 	^aDatagramPacket
@@ -588,7 +865,7 @@ OCNSocketPluginLibrary >> sendData: data to: socketId [
 	self shouldBeImplemented 
 ]
 
-{ #category : #'UDP primitives' }
+{ #category : #'UDP private' }
 OCNSocketPluginLibrary >> sendUDPDataOn: socketId contents: aByteArray toHost: hostAddress port: portNumber [
 	"Send a UDP packet containing the given data to the specified host/port."
 	| bytesToSend bytesSent count  |
@@ -617,17 +894,15 @@ OCNSocketPluginLibrary >> sendUDPOn: socketId datagram: aDatagramPacket [
 	
 ]
 
-{ #category : #'UDP primitives' }
+{ #category : #'UDP private' }
 OCNSocketPluginLibrary >> waitForSendDoneOn: socketId for: timeout [
 	"Wait up until the given deadline for the current send operation to complete. Return true if it completes by the deadline, false if not."
 
 	| startTime msecsDelta msecsEllapsed sendDone |
 
-	self inform:'pay attention because it check if socket is connected... this method is used in UDP'.
-
 	startTime := Time millisecondClockValue.
 	msecsDelta := (timeout * 1000) truncated.
-	[(sendDone := self primSocketSendDone: socketId) not and: [ self isConnected
+	[(sendDone := self primSocketSendDone: socketId) not and: [ socketId notNil
 			"Connection end and final data can happen fast, so test in this order"
 		and: [(msecsEllapsed := Time millisecondsSince: startTime) < msecsDelta]]] whileTrue: [
 			self writeSemaphore waitTimeoutMSecs: msecsDelta - msecsEllapsed].
