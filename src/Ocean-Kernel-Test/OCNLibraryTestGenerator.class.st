@@ -4,7 +4,7 @@ Class {
 	#category : #'Ocean-Kernel-Test'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #generating }
 OCNLibraryTestGenerator class >> generateForAllLibrary [
 	"self  generateForAllLibrary"
 	
@@ -13,7 +13,7 @@ OCNLibraryTestGenerator class >> generateForAllLibrary [
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #generating }
 OCNLibraryTestGenerator class >> generateTestForLibrary: aLibraryClass [
 
 	| generatedClasses |
@@ -33,5 +33,5 @@ OCNLibraryTestGenerator class >> generateTestForLibrary: aLibraryClass [
 
 { #category : #accessing }
 OCNLibraryTestGenerator class >> ocnTestClasses [
-	^{OCNTcpSocketReceivingDataTest. OCNTcpSocketSendingDataTest. OCNTcpSocketTest}
+	^{OCNTcpSocketReceivingDataTest. OCNTcpSocketSendingDataTest. OCNTcpSocketTest. OCNUdpSocketTest. OCNUdpSocketSendingDataTest}
 ]

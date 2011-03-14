@@ -8,7 +8,7 @@ Class {
 OCNTcpSocketReceivingDataTest >> assertReceivingDataOfSize: dataSize [
 	| dataToSend stdIn receptionStream waitForData dataPacket receivedData |
 	dataToSend := self randomAsciiStringOfSize: dataSize.
-	serverShell deleteStdInFile.
+	self serverShell deleteStdInFile.
 	stdIn := FileStream fileNamed: serverShell stdInFileName.
 	[ stdIn nextPutAll: dataToSend ] ensure: [ stdIn close ].
 	self startServer.
@@ -17,7 +17,7 @@ OCNTcpSocketReceivingDataTest >> assertReceivingDataOfSize: dataSize [
 	waitForData := true.
 	[ waitForData ]
 		whileTrue: [ 
-			dataPacket := socket receive.
+			dataPacket := self socket receive.
 			receptionStream nextPutAll: dataPacket.
 			waitForData := dataPacket size > 0].
 	receivedData := receptionStream contents asString.
@@ -32,14 +32,14 @@ OCNTcpSocketReceivingDataTest >> serverShellClass [
 { #category : #'setUp-tearDown' }
 OCNTcpSocketReceivingDataTest >> setUpServerShell [
 	super setUpServerShell.
-	serverShell	stdInFileName: 'test.in'
+	self serverShell stdInFileName: 'test.in'
 
 ]
 
 { #category : #'setUp-tearDown' }
 OCNTcpSocketReceivingDataTest >> tearDown [
 	super tearDown.
-	serverShell deleteStdInFile
+	self serverShell deleteStdInFile
 ]
 
 { #category : #testing }
@@ -51,7 +51,7 @@ OCNTcpSocketReceivingDataTest >> testDisconnectionWhileReceiving [
 OCNTcpSocketReceivingDataTest >> testReceiveOnBoundSocket [
 	self testBindUnconnectedSocket.
 	self assertSocketState: #isBound.
-	self should: [ socket receive ] raise: OCNSocketOperationForbiddenError.
+	self should: [ self socket receive ] raise: OCNSocketOperationForbiddenError.
 	self assertSocketState: #isBound.
 	self signalFailure: 'should send testReceivingLessDataThanSocketsDataBufferSize, but a MYSTERIOUS error happens. It looks like the OS does not release the port used by bind'
 ]
@@ -59,21 +59,21 @@ OCNTcpSocketReceivingDataTest >> testReceiveOnBoundSocket [
 { #category : #'testing lifecylce' }
 OCNTcpSocketReceivingDataTest >> testReceiveOnUnconnectedSocket [
 	self assertSocketState: #isUnconnected.
-	self should: [ socket receive ] raise: OCNSocketOperationForbiddenError.
+	self should: [ self socket receive ] raise: OCNSocketOperationForbiddenError.
 	self assertSocketState: #isUnconnected.
 	self testReceivingLessDataThanSocketsDataBufferSize
 ]
 
 { #category : #testing }
 OCNTcpSocketReceivingDataTest >> testReceivingLargeAmountOfDataComparedToSizeOfSocketsDataBuffer [
-	self assertReceivingDataOfSize: 1000 * library defaultDataBufferSize.
+	self assertReceivingDataOfSize: 1000 * self library defaultDataBufferSize.
 
 ]
 
 { #category : #testing }
 OCNTcpSocketReceivingDataTest >> testReceivingLessDataThanSocketsDataBufferSize [
 	| dataSize dataToSend  receivedData | 
-	dataSize := library defaultDataBufferSize//2 .
+	dataSize := self library defaultDataBufferSize//2 .
 	self assertReceivingDataOfSize: dataSize
 
 ]
@@ -81,6 +81,6 @@ OCNTcpSocketReceivingDataTest >> testReceivingLessDataThanSocketsDataBufferSize 
 { #category : #testing }
 OCNTcpSocketReceivingDataTest >> testReceivingMoreDataThanSizeOfSocketsDataBuffer [
 	| dataSize |
-	dataSize := 2 * library defaultDataBufferSize.
+	dataSize := 2 * self library defaultDataBufferSize.
 	self assertReceivingDataOfSize: dataSize
 ]

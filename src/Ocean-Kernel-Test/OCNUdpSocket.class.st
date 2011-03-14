@@ -4,7 +4,7 @@ Class {
 	#category : #'Ocean-Kernel'
 }
 
-{ #category : #'initialize-release' }
+{ #category : #private }
 OCNUdpSocket >> newSocketId [
 	^ self networkLibrary createUdpSocketDescriptorId 
 ]
@@ -17,7 +17,7 @@ OCNUdpSocket >> receive [
 { #category : #communicating }
 OCNUdpSocket >> send: aDatagramPacket [
 	aDatagramPacket verify ifTrue:[
-		self networkLibrary sendUDPOn: self socketId datagram: aDatagramPacket
+		^self networkLibrary sendUDPOn: self socketId datagram: aDatagramPacket
 	] ifFalse:[
 		OCNBadDatagramException signal: 'The datagram is not well structured'
 	]

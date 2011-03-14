@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'socket',
 		'library',
-		'serverShell'
+		'serverShell',
+		'serverAddress'
 	],
 	#category : #'Ocean-Kernel-Test'
 }
@@ -15,8 +16,41 @@ OCNSocketTest class >> isAbstract [
 ]
 
 { #category : #accessing }
+OCNSocketTest >> library [
+	^library 
+]
+
+{ #category : #accessing }
+OCNSocketTest >> networkLibraryClass [
+	^self subclassResponsibility
+]
+
+{ #category : #'data for tests' }
+OCNSocketTest >> randomAsciiStringOfSize: dataSize [
+	| randomStringGenerator |
+	randomStringGenerator := OCNBench new.
+	^ randomStringGenerator createRandomStringOfSize: dataSize.
+
+]
+
+{ #category : #accessing }
+OCNSocketTest >> serverAddress [
+	^ serverAddress 
+]
+
+{ #category : #'server management' }
+OCNSocketTest >> serverCommandString [
+	^ self subclassResponsibility 
+]
+
+{ #category : #accessing }
 OCNSocketTest >> serverPort [
 	^9123
+]
+
+{ #category : #accessing }
+OCNSocketTest >> serverShell [ 
+	^serverShell 
 ]
 
 { #category : #accessing }
@@ -28,6 +62,8 @@ OCNSocketTest >> serverShellClass [
 OCNSocketTest >> setUp [
 	super setUp.
 	library := OCNNetworkLibraryProxyFactory proxyForLibraryClass: self networkLibraryClass.
+	socket := self socketClass newWithNetworkLibrary: self library.
+	serverAddress := OCNIPV4SocketAddress loopbackAddressWithPort:  self serverPort.
 	self setUpServerShell
 ]
 
@@ -36,9 +72,19 @@ OCNSocketTest >> setUpServerShell [
 	serverShell := self serverShellClass onStdOutFileNamed: 'test.log'
 ]
 
+{ #category : #accessing }
+OCNSocketTest >> socket [ 
+	^socket
+]
+
+{ #category : #accessing }
+OCNSocketTest >> socketClass [ 
+	^self subclassResponsibility 
+]
+
 { #category : #'server management' }
 OCNSocketTest >> startServer [
-	serverShell exec: 'nc -4 -l ' , String space , self serverPort printString.
+	serverShell exec: self serverCommandString , String space , self serverPort printString.
 	(Delay forMilliseconds: 50) wait
 ]
 

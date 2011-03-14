@@ -7,11 +7,18 @@ Class {
 		'dataToSend',
 		'timeToRunValues',
 		'iterationsCount',
-		'randomStringSize',
+		'randomStringSize'
+	],
+	#classVars : [
 		'randomStringsDict'
 	],
 	#category : #'Ocean-Benchmarks'
 }
+
+{ #category : #'as yet unclassified' }
+OCNBench class >> initialize [ 
+	randomStringsDict := Dictionary new
+]
 
 { #category : #benchmarking }
 OCNBench >> connectOceanSocket [
@@ -104,7 +111,6 @@ OCNBench >> defaultIterationsCount [
 { #category : #'initialize-release' }
 OCNBench >> initialize [ 
 	super initialize.
-	randomStringsDict := Dictionary new.
 	self iterationsCount: self defaultIterationsCount
 ]
 

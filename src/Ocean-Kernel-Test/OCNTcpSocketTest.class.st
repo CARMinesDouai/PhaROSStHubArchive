@@ -30,37 +30,25 @@ OCNTcpSocketTest >> assertSocketState: aSelectorToAssert [
 	self assertSocket: socket state: aSelectorToAssert
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 OCNTcpSocketTest >> clientPort [
 	^ 2222
 ]
 
 { #category : #testing }
 OCNTcpSocketTest >> connect [
-	| serverAddress |
-	serverAddress := OCNIPV4SocketAddress loopbackAddressWithPort:  self serverPort.	
-	socket connectToServer: serverAddress.
+	socket connectToServer: self serverAddress.
 
+]
+
+{ #category : #'server management' }
+OCNTcpSocketTest >> serverCommandString [ 
+	^'nc -4 -l'
 ]
 
 { #category : #accessing }
-OCNTcpSocketTest >> networkLibraryClass [
-	^self subclassResponsibility
-]
-
-{ #category : #generating }
-OCNTcpSocketTest >> randomAsciiStringOfSize: dataSize [
-	| randomStringGenerator |
-	randomStringGenerator := OCNBench new.
-	^ randomStringGenerator createRandomStringOfSize: dataSize.
-
-]
-
-{ #category : #'setUp-tearDown' }
-OCNTcpSocketTest >> setUp [
-	super setUp.
-	socket := OCNTcpSocket newWithNetworkLibrary: library.
-	
+OCNTcpSocketTest >> socketClass [ 
+	^OCNTcpSocket
 ]
 
 { #category : #'testing lifecylce' }
