@@ -128,6 +128,12 @@ OCNSocketPluginLibrary >> bind: aSocket toIpv4Address: anOCNIPV4SocketAddress [
 ]
 
 { #category : #'TCP API' }
+OCNSocketPluginLibrary >> close: aSocket [
+	
+	self primSocketCloseConnection: aSocket socketId.
+]
+
+{ #category : #'TCP API' }
 OCNSocketPluginLibrary >> connect: aSocket toServerWithIpv4Address: serverAddress [
 
 	self primSocket: aSocket socketId connectTo: serverAddress ip port: serverAddress port.
@@ -199,10 +205,7 @@ OCNSocketPluginLibrary >> createUdpSocketDescriptorId [
 	socketId isNil
 		ifTrue: [ 
 			"socket creation failed"
-			Smalltalk unregisterExternalObject: semaphore.
-			Smalltalk unregisterExternalObject: readSemaphore.
-			Smalltalk unregisterExternalObject: writeSemaphore.
-			readSemaphore := writeSemaphore := semaphore := nil.
+			self unregisterSemaphores.
 			OCNSocketOperationFailureError signal: 'Socket creation failure' ]
 		ifFalse: [ ^socketId ]
 ]
@@ -214,7 +217,7 @@ OCNSocketPluginLibrary >> defaultDataBufferSize [
 
 { #category : #'TCP API' }
 OCNSocketPluginLibrary >> destroy: aSocket [
-
+	
 	self primDestroySocket: aSocket socketId
 ]
 
@@ -899,6 +902,16 @@ OCNSocketPluginLibrary >> sendUDPOn: socketId datagram: aDatagramPacket [
 
 	^ self sendUDPDataOn: socketId contents: aDatagramPacket data toHost: aDatagramPacket targetAddress ip port: aDatagramPacket targetAddress port
 	
+]
+
+{ #category : #'UDP private' }
+OCNSocketPluginLibrary >> unregisterSemaphores [
+	
+	Smalltalk unregisterExternalObject: semaphore.
+	Smalltalk unregisterExternalObject: readSemaphore.
+	Smalltalk unregisterExternalObject: writeSemaphore.
+
+	readSemaphore := writeSemaphore := semaphore := nil.
 ]
 
 { #category : #'UDP private' }
