@@ -15,7 +15,7 @@ OCNNetworkLibraryProxyFactory class >> allNetworkLibraryProxyClasses [
 { #category : #'building socket proxies' }
 OCNNetworkLibraryProxyFactory class >> defaultNetworkLibraryProxyClass [
 	^self defaultNetworkLibraryProxyClassesDict 
-		at: SmalltalkImage current platformName 
+		at: Smalltalk os platformName 
 		ifAbsent: [self error: 'Platform not supported']
 ]
 

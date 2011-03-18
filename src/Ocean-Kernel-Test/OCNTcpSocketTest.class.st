@@ -43,7 +43,7 @@ OCNTcpSocketTest >> serverCommandString [
 
 { #category : #accessing }
 OCNTcpSocketTest >> socketClass [ 
-	^OCNTcpSocket
+	^OCNConversationTcpSocket
 ]
 
 { #category : #'testing lifecylce' }
@@ -90,6 +90,7 @@ OCNTcpSocketTest >> testBindUnconnectedSocket [
 	self shouldnt: [socket bindToAddress: socketAddress] raise: OCNSocketOperationFailureError.
 	self assertSocketState: #isBound.
 	"self signalFailure: 'Ensures that client socket is bount to clientPort '"
+
 ]
 
 { #category : #'testing lifecylce' }

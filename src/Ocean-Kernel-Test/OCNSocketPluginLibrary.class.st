@@ -19,7 +19,9 @@ Class {
 		'readSemaphore',
 		'writeSemaphore',
 		'readSemaIndex',
-		'writeSemaIndex'
+		'writeSemaIndex',
+		'dataBuffer',
+		'connectionTimeOutSeconds'
 	],
 	#classVars : [
 		'Connected',
@@ -130,10 +132,20 @@ OCNSocketPluginLibrary >> bind: aSocket toIpv4Address: anOCNIPV4SocketAddress [
 { #category : #'TCP API' }
 OCNSocketPluginLibrary >> connect: aSocket toServerWithIpv4Address: serverAddress [
 
+	self ensureNetworkInitialized.
 	self primSocket: aSocket socketId connectTo: serverAddress ip port: serverAddress port.
-	(self primSocketConnectionStatus: aSocket socketId) = Connected ifFalse: [
-		OCNSocketOperationFailureError signal: 'Connection failure'	
-	]
+	self waitForConnectionOf: aSocket socketId
+
+]
+
+{ #category : #'tcp api support' }
+OCNSocketPluginLibrary >> connectionTimeOutSeconds [
+	^connectionTimeOutSeconds
+]
+
+{ #category : #'tcp api support' }
+OCNSocketPluginLibrary >> connectionTimeOutSeconds: seconds [
+	connectionTimeOutSeconds := seconds
 ]
 
 { #category : #'converting socket addresses' }
@@ -205,8 +217,29 @@ OCNSocketPluginLibrary >> createUdpSocketDescriptorId [
 ]
 
 { #category : #accessing }
+OCNSocketPluginLibrary >> dataBuffer [
+	^dataBuffer
+]
+
+{ #category : #accessing }
+OCNSocketPluginLibrary >> dataBuffer: aByteArray [
+	dataBuffer := aByteArray
+]
+
+{ #category : #'initialize-release' }
+OCNSocketPluginLibrary >> dataBufferOfSize: bytesCount [
+	self dataBuffer: (ByteArray new: bytesCount)
+	
+]
+
+{ #category : #'initialize-release' }
+OCNSocketPluginLibrary >> defaultConnectionTimeOutSeconds [
+	^3
+]
+
+{ #category : #'initialize-release' }
 OCNSocketPluginLibrary >> defaultDataBufferSize [
-	^8000
+	^2048
 ]
 
 { #category : #'Socket API' }
@@ -231,6 +264,13 @@ OCNSocketPluginLibrary >> ensureNetworkInitialized [
 	"result is nil if network initialization failed, self if it succeeds"
 	(self primInitializeNetwork: semaphoreIndex)
 		ifNil: [OCNNetworkInitializationFailedError signal: 'failed network initialization']
+]
+
+{ #category : #'initialize-release' }
+OCNSocketPluginLibrary >> initialize [
+	super initialize.
+	self dataBufferOfSize: self defaultDataBufferSize.
+	self connectionTimeOutSeconds: self defaultConnectionTimeOutSeconds
 ]
 
 { #category : #'name resolving' }
@@ -551,12 +591,11 @@ OCNSocketPluginLibrary >> primSocket: socketID localAddressResult: socketAddress
 
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'TCP primitives' }
 OCNSocketPluginLibrary >> primSocket: socketID receiveDataInto: aStringOrByteArray startingAt: startIndex count: count [
 	"Receive data from the given socket into the given array starting at the given index. Return the number of bytes read or zero if no data is available."
 
 	<primitive: 'primitiveSocketReceiveDataBufCount' module: 'SocketPlugin'>
-	SocketPrimitiveFailed signal
 
 ]
 
@@ -811,12 +850,9 @@ OCNSocketPluginLibrary >> primStartLookupOfName: hostName [
 
 { #category : #'TCP API' }
 OCNSocketPluginLibrary >> readFrom: aSocket [
-	self shouldBeImplemented 
-]
-
-{ #category : #'TCP API' }
-OCNSocketPluginLibrary >> receiveFrom: aSocket [
-	self shouldBeImplemented 
+	| bytesRead |
+	bytesRead := self primSocket: aSocket socketId receiveDataInto: self dataBuffer startingAt: 1 count: self dataBuffer size.
+	^self dataBuffer copyFrom: 1 to: bytesRead
 ]
 
 { #category : #'UDP private' }
@@ -907,6 +943,17 @@ OCNSocketPluginLibrary >> unregisterSemaphores [
 	Smalltalk unregisterExternalObject: writeSemaphore.
 
 	readSemaphore := writeSemaphore := semaphore := nil.
+]
+
+{ #category : #'tcp api support' }
+OCNSocketPluginLibrary >> waitForConnectionOf: socketId [
+	| endTime |
+	endTime := Time now addSeconds: self connectionTimeOutSeconds.
+	[(self primSocketConnectionStatus: socketId) = Connected ifTrue: [^self].
+		Time now > endTime.
+	] whileFalse.
+	OCNSocketOperationFailureError signal: 'Connection failure'
+
 ]
 
 { #category : #'UDP private' }

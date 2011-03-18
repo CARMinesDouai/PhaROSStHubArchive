@@ -23,7 +23,7 @@ OCNBench class >> initialize [
 { #category : #benchmarking }
 OCNBench >> connectOceanSocket [
 	| library serverAddress |
-	socket := OCNTcpSocket new.
+	socket := OCNConversationTcpSocket new.
 	library := OCNNetworkLibraryProxyFactory networkLibraryProxy.
 	serverAddress := OCNIPV4SocketAddress loopbackAddressWithPort:  self serverPort.	"localhost should have a server"
 	socket connectToServer: serverAddress
