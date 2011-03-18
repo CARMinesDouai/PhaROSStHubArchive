@@ -1,6 +1,6 @@
 "
 ""On 1.2 and 1.3""
-ConfigurationOfOcean project stableVersion load.
+(ConfigurationOfOcean project version: #stable) load.
 
 
 "
