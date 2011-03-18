@@ -1,14 +1,14 @@
 Class {
 	#name : #OCNUdpSocketSendingDataTest,
 	#superclass : #OCNUdpSocketTest,
-	#traits : 'OCNSocketSendingDataTest - {#socket. #serverShell. #randomAsciiStringOfSize:}',
-	#classTraits : 'OCNSocketSendingDataTest classTrait',
+	#traits : 'OCNTSocketSendingDataTest - {#socket. #serverShell. #randomAsciiStringOfSize:}',
+	#classTraits : 'OCNTSocketSendingDataTest classTrait',
 	#category : #'Ocean-Kernel-Test'
 }
 
 { #category : #requirements }
 OCNUdpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
-	| dataToSend receivedData aDatagramPacket | 
+	| dataToSend receivedData aDatagramPacket receivedDataStream | 
 	self startServer.
 	dataToSend := self randomAsciiStringOfSize: dataSize.
 	aDatagramPacket := OCNDatagramPacket new.
@@ -18,7 +18,11 @@ OCNUdpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
 		more: false.
 	self assert: (self socket send: aDatagramPacket) = dataSize.
 	(Delay forMilliseconds: 50) wait.
-	receivedData := self serverShell stdOut contents.
+	
+	receivedDataStream := FileStream readOnlyFileNamed: 'test.log'.  
+	[ receivedData := receivedDataStream contents  ] ensure: [ receivedDataStream close ].
+	
+	self deny: receivedData isEmpty.
 	self assert: (dataToSend beginsWith: receivedData). "for debug"
 	self assert: receivedData size = dataSize.
 	self assert: receivedData = dataToSend.

@@ -4,11 +4,6 @@ Class {
 	#category : #'Ocean-Kernel-Test'
 }
 
-{ #category : #accessing }
-OCNTcpSocketTest class >> allTestSelectors [ 
-	^self superclass testSelectors, self testSelectors
-]
-
 { #category : #testing }
 OCNTcpSocketTest >> assertSocket: aSocket state: aSelectorToAssert [
 

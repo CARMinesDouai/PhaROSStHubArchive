@@ -10,6 +10,11 @@ Class {
 	#category : #'Ocean-Kernel-Test'
 }
 
+{ #category : #'as yet unclassified' }
+OCNSocketTest class >> allTestSelectors [ 
+	^self superclass testSelectors, self testSelectors
+]
+
 { #category : #testing }
 OCNSocketTest class >> isAbstract [
 	^true

@@ -1,8 +1,8 @@
 Class {
 	#name : #OCNTcpSocketSendingDataTest,
 	#superclass : #OCNTcpSocketTest,
-	#traits : 'OCNSocketSendingDataTest - {#socket. #serverShell. #randomAsciiStringOfSize:}',
-	#classTraits : 'OCNSocketSendingDataTest classTrait',
+	#traits : 'OCNTSocketSendingDataTest - {#socket. #serverShell. #randomAsciiStringOfSize:}',
+	#classTraits : 'OCNTSocketSendingDataTest classTrait',
 	#category : #'Ocean-Kernel-Test'
 }
 

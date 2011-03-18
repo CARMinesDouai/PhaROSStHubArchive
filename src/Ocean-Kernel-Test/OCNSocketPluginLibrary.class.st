@@ -914,7 +914,9 @@ OCNSocketPluginLibrary >> waitForSendDoneOn: socketId for: timeout [
 	"Wait up until the given deadline for the current send operation to complete. Return true if it completes by the deadline, false if not."
 
 	| startTime msecsDelta msecsEllapsed sendDone |
-
+	
+" Look at Socket>>waitForSendDoneUntil: and Socket>>waitForSendDoneFor:"
+	
 	startTime := Time millisecondClockValue.
 	msecsDelta := (timeout * 1000) truncated.
 	[(sendDone := self primSocketSendDone: socketId) not and: [ socketId notNil
