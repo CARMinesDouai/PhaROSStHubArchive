@@ -609,7 +609,7 @@ OCNPosixLibrary >> receiveFrom: aSocket [
 		buffer: self alienDataBuffer
 		ofSize: self alienDataBufferSize
 		flags: 0
-		result: self alienResult.	"<--------"
+		result: self alienResult.
 	^ self receivedString
 ]
 

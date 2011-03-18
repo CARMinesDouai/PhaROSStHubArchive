@@ -122,15 +122,9 @@ OCNSocketPluginLibrary >> allAddressFamily [
 	^0
 ]
 
-{ #category : #'TCP API' }
+{ #category : #'Socket API' }
 OCNSocketPluginLibrary >> bind: aSocket toIpv4Address: anOCNIPV4SocketAddress [ 
 	
-]
-
-{ #category : #'TCP API' }
-OCNSocketPluginLibrary >> close: aSocket [
-	
-	self primSocketCloseConnection: aSocket socketId.
 ]
 
 { #category : #'TCP API' }
@@ -215,9 +209,10 @@ OCNSocketPluginLibrary >> defaultDataBufferSize [
 	^8000
 ]
 
-{ #category : #'TCP API' }
+{ #category : #'Socket API' }
 OCNSocketPluginLibrary >> destroy: aSocket [
 	
+	self primSocketCloseConnection: aSocket socketId.
 	self primDestroySocket: aSocket socketId
 ]
 
