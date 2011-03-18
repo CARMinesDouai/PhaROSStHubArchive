@@ -1,14 +1,14 @@
 Class {
 	#name : #OCNUdpSocketSendingDataTest,
 	#superclass : #OCNUdpSocketTest,
-	#traits : 'OCNTSocketSendingDataTest - {#socket. #serverShell. #randomAsciiStringOfSize:}',
-	#classTraits : 'OCNTSocketSendingDataTest classTrait',
+	#traits : 'TOCNSocketSendingDataTest - {#socket. #serverShell. #randomAsciiStringOfSize:. #testDisconnectionWhileSending}',
+	#classTraits : 'TOCNSocketSendingDataTest classTrait',
 	#category : #'Ocean-Kernel-Test'
 }
 
 { #category : #requirements }
 OCNUdpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
-	| dataToSend receivedData aDatagramPacket receivedDataStream | 
+	| dataToSend receivedData aDatagramPacket receivedDataStream sentDataSize| 
 	self startServer.
 	dataToSend := self randomAsciiStringOfSize: dataSize.
 	aDatagramPacket := OCNDatagramPacket new.
@@ -16,15 +16,30 @@ OCNUdpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
 		data: dataToSend; 
 		targetAddress: self serverAddress ; 
 		more: false.
-	self assert: (self socket send: aDatagramPacket) = dataSize.
+		
+	[sentDataSize := self socket send: aDatagramPacket] on: OCNInvalidDatagramPacketError do: [ :e | e pass ].
+	
 	(Delay forMilliseconds: 50) wait.
 	
 	receivedDataStream := FileStream readOnlyFileNamed: 'test.log'.  
 	[ receivedData := receivedDataStream contents  ] ensure: [ receivedDataStream close ].
 	
+	self assert: sentDataSize = receivedData size.
 	self deny: receivedData isEmpty.
 	self assert: (dataToSend beginsWith: receivedData). "for debug"
 	self assert: receivedData size = dataSize.
 	self assert: receivedData = dataToSend.
+
+]
+
+{ #category : #'tests sending' }
+OCNUdpSocketSendingDataTest >> testSendingLargeAmountOfDataComparedToSizeOfSocketsDataBuffer [
+	self should: [ self assertSendingDataOfSize: 1000 * self library defaultDataBufferSize ] raise: OCNInvalidDatagramPacketError
+
+]
+
+{ #category : #'tests sending' }
+OCNUdpSocketSendingDataTest >> testSendingMoreDataThanSizeOfSocketsDataBuffer [
+	self assertSendingDataOfSize: 2 * self library defaultDataBufferSize
 
 ]

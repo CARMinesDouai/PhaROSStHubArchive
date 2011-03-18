@@ -1,5 +1,5 @@
 Class {
 	#name : #OCNTimeOutException,
 	#superclass : #Exception,
-	#category : #'Ocean-Kernel-TestSupport'
+	#category : #'Ocean-Kernel'
 }

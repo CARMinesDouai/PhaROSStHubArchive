@@ -126,7 +126,7 @@ OCNSocketPluginLibrary >> allAddressFamily [
 
 { #category : #'Socket API' }
 OCNSocketPluginLibrary >> bind: aSocket toIpv4Address: anOCNIPV4SocketAddress [ 
-	
+	^ self primSocketBind: aSocket socketId to: (anOCNIPV4SocketAddress ip ) port: anOCNIPV4SocketAddress port.
 ]
 
 { #category : #'TCP API' }
@@ -930,7 +930,7 @@ OCNSocketPluginLibrary >> sendUDPDataOn: socketId contents: aByteArray toHost: h
 
 { #category : #'UDP API' }
 OCNSocketPluginLibrary >> sendUDPOn: socketId datagram: aDatagramPacket [
-
+	"this method should deal with sourceAdress: from DatagramPacket."
 	^ self sendUDPDataOn: socketId contents: aDatagramPacket data toHost: aDatagramPacket targetAddress ip port: aDatagramPacket targetAddress port
 	
 ]

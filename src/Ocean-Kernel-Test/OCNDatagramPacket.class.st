@@ -76,5 +76,10 @@ OCNDatagramPacket >> targetIP: anIPAddress port: aPort type: aSocketAddressClass
 OCNDatagramPacket >> verify [
 	"verify the coherence of the datagramPacket. If it is ok, it rturn true, else it raises an error"
 	"self shouldBeImplemented"
+	
+	self dataSize > 65527 ifTrue:[
+		OCNInvalidDatagramPacketError signal: 'a datagramPacket cannot contain more than 65527'
+	].
+	
 	^ true.
 ]

@@ -1,8 +1,8 @@
 Class {
 	#name : #OCNTcpSocketSendingDataTest,
 	#superclass : #OCNTcpSocketTest,
-	#traits : 'OCNTSocketSendingDataTest - {#socket. #serverShell. #randomAsciiStringOfSize:}',
-	#classTraits : 'OCNTSocketSendingDataTest classTrait',
+	#traits : 'TOCNSocketSendingDataTest - {#socket. #serverShell. #randomAsciiStringOfSize:. #testDisconnectionWhileSending}',
+	#classTraits : 'TOCNSocketSendingDataTest classTrait',
 	#category : #'Ocean-Kernel-Test'
 }
 
@@ -18,6 +18,12 @@ OCNTcpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
 	self assert: receivedData size = dataSize.
 	self assert: receivedData = dataToSend.
 
+]
+
+{ #category : #'tests sending' }
+OCNTcpSocketSendingDataTest >> testDisconnectionWhileSending [
+
+	self signalFailure:'should be implemented'.
 ]
 
 { #category : #'testing lifecylce' }

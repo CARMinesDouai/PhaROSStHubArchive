@@ -42,6 +42,12 @@ OCNSocket >> bindToLocalHostPort: aPortNumber [
 	self bindToAddress: localhostAddress 	
 ]
 
+{ #category : #'state names' }
+OCNSocket >> boundStateSymbol [
+	^#bound
+
+]
+
 { #category : #connection }
 OCNSocket >> destroy [
 	self isDestroyed 

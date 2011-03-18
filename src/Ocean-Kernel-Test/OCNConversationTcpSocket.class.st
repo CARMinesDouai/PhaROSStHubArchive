@@ -16,12 +16,6 @@ Class {
 	#category : #'Ocean-Kernel'
 }
 
-{ #category : #'state names' }
-OCNConversationTcpSocket >> boundStateSymbol [
-	^#bound
-
-]
-
 { #category : #connection }
 OCNConversationTcpSocket >> connectToServer: serverAddress [
 	(self isUnconnected | self isBound ) ifFalse:  [ 
