@@ -4,11 +4,6 @@ Class {
 	#category : #'Ocean-Kernel-Test'
 }
 
-{ #category : #'server management' }
-OCNUdpSocketTest >> serverCommandString [ 
-	^'nc -4 -lu'
-]
-
 { #category : #accessing }
 OCNUdpSocketTest >> socketClass [ 
 	^OCNUdpSocket

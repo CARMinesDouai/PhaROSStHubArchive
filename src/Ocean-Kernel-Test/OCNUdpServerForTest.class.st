@@ -4,8 +4,10 @@ Class {
 	#instVars : [
 		'isRunning',
 		'stateLock',
-		'connectionSocket',
-		'portNumber'
+		'listenSocket',
+		'listenAddress',
+		'portNumber',
+		'process'
 	],
 	#category : #'Ocean-Kernel-TestSupport'
 }
@@ -17,24 +19,12 @@ OCNUdpServerForTest class >> onPortNumber: anInteger [
 		yourself  
 ]
 
-{ #category : #accessing }
-OCNUdpServerForTest >> connectionSocket [
-	^ connectionSocket
-]
-
-{ #category : #accessing }
-OCNUdpServerForTest >> connectionSocket: anObject [
-	connectionSocket := anObject
-]
-
 { #category : #running }
 OCNUdpServerForTest >> handleConnections [
-	| interactionSocket interactionStream |
-	interactionSocket := self connectionSocket 
-		waitForAcceptFor: 30  
-		ifTimedOut: [^self].
-	interactionStream := SocketStream on: interactionSocket.
-	[self interactThenClose: interactionStream] fork
+	|  aDatagram |
+	aDatagram := OCNDatagramPacket new.
+	
+	[self interactThenClose: aDatagram] fork
 
 ]
 
@@ -43,21 +33,17 @@ OCNUdpServerForTest >> initialize [
 	super initialize.
 	stateLock := Mutex new.
 	self isRunning: false.
-	self connectionSocket: Socket newUDP.
 ]
 
 { #category : #running }
-OCNUdpServerForTest >> interactThenClose: aSocketStream [
-	[
-		self interactThrough: aSocketStream
-	] ensure: [
-		aSocketStream close.
-	] 
+OCNUdpServerForTest >> interactThenClose: aDatagram [
+
+		self interactThrough: aDatagram
 
 ]
 
 { #category : #running }
-OCNUdpServerForTest >> interactThrough: aSocketStream [
+OCNUdpServerForTest >> interactThrough: aString [
 	self subclassResponsibility
 ]
 
@@ -71,24 +57,40 @@ OCNUdpServerForTest >> isRunning: aBoolean [
 	stateLock critical: [isRunning := aBoolean]
 ]
 
+{ #category : #running }
+OCNUdpServerForTest >> kill [
+	process terminate
+]
+
+{ #category : #accessing }
+OCNUdpServerForTest >> listenSocket [
+	^ listenSocket
+]
+
+{ #category : #accessing }
+OCNUdpServerForTest >> listenSocket: anObject [
+	listenSocket := anObject
+]
+
 { #category : #accessing }
 OCNUdpServerForTest >> portNumber [
 	^ portNumber
 ]
 
 { #category : #accessing }
-OCNUdpServerForTest >> portNumber: anInteger [
-	portNumber := anInteger
+OCNUdpServerForTest >> portNumber: anObject [
+	portNumber := anObject
 ]
 
 { #category : #running }
 OCNUdpServerForTest >> serve [
+	listenSocket:= Socket newUDP.
 	[
-		self connectionSocket listenOn: self portNumber backlogSize: 10.
-		[self isRunning] whileTrue: [self handleConnections].
+		self halt.
+		self listenSocket primSocketBind: self listenSocket socketHandle to: #[127 0 0 1] port: self portNumber.
+		"[self isRunning] whileTrue: ["self handleConnections"]".
 	] ensure: [
-		self connectionSocket closeAndDestroy].
-	
+		self listenSocket destroy].
 ]
 
 { #category : #running }
@@ -98,7 +100,8 @@ OCNUdpServerForTest >> start [
 			self isRunning
 				ifTrue: [ ^ self ].
 			self isRunning: true ].
-	[self serve] fork
+	process := [self serve] newProcess.
+	process resume
 ]
 
 { #category : #running }

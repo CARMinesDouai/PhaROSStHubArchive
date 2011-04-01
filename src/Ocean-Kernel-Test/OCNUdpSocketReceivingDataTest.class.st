@@ -1,5 +1,5 @@
 Class {
-	#name : #OCNUdpSocketSendingDataTest,
+	#name : #OCNUdpSocketReceivingDataTest,
 	#superclass : #OCNUdpSocketTest,
 	#traits : 'TOCNSocketSendingDataTest - {#socket. #randomAsciiStringOfSize:. #testDisconnectionWhileSending}',
 	#classTraits : 'TOCNSocketSendingDataTest classTrait',
@@ -7,7 +7,25 @@ Class {
 }
 
 { #category : #requirements }
-OCNUdpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
+OCNUdpSocketReceivingDataTest >> assertReceivingDataOfSize: dataSize [
+	| dataToSend receptionStream waitForData dataPacket receivedData |
+	dataToSend := self randomAsciiStringOfSize: dataSize.
+	self startServer.
+	server sendData: dataToSend.
+	self connect.
+	receptionStream := WriteStream on: (ByteArray new: dataSize).
+	waitForData := true.
+	[ waitForData ]
+		whileTrue: [ 
+			dataPacket := self socket receive.
+			receptionStream nextPutAll: dataPacket.
+			waitForData := dataPacket size > 0].
+	receivedData := receptionStream contents asString.
+	self assert: receivedData = dataToSend
+]
+
+{ #category : #requirements }
+OCNUdpSocketReceivingDataTest >> assertSendingDataOfSize: dataSize [
 	| dataToSend receivedData aDatagramPacket receivedDataStream sentDataSize| 
 	self startServer.
 	dataToSend := self randomAsciiStringOfSize: dataSize.
@@ -33,18 +51,6 @@ OCNUdpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
 ]
 
 { #category : #accessing }
-OCNUdpSocketSendingDataTest >> serverClass [
-	^OCNUdpSendingServerForTest
-]
-
-{ #category : #'tests sending' }
-OCNUdpSocketSendingDataTest >> testSendingLargeAmountOfDataComparedToSizeOfSocketsDataBuffer [
-	self should: [ self assertSendingDataOfSize: 1000 * self library defaultDataBufferSize ] raise: OCNInvalidDatagramPacketError
-
-]
-
-{ #category : #'tests sending' }
-OCNUdpSocketSendingDataTest >> testSendingMoreDataThanSizeOfSocketsDataBuffer [
-	self assertSendingDataOfSize: 2 * self library defaultDataBufferSize
-
+OCNUdpSocketReceivingDataTest >> serverClass [
+	^OCNUdpReceivingServerForTest 
 ]

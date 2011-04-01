@@ -33,5 +33,5 @@ OCNLibraryTestGenerator class >> generateTestForLibrary: aLibraryClass [
 
 { #category : #accessing }
 OCNLibraryTestGenerator class >> ocnTestClasses [
-	^{OCNTcpSocketReceivingDataTest. OCNTcpSocketSendingDataTest. OCNTcpSocketTest. OCNUdpSocketTest. OCNUdpSocketSendingDataTest}
+	^{OCNTcpSocketReceivingDataTest. OCNTcpSocketSendingDataTest. OCNTcpSocketTest. OCNUdpSocketTest. OCNUdpSocketSendingDataTest. OCNUdpSocketReceivingDataTest}
 ]
