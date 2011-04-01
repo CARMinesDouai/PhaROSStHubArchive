@@ -14,6 +14,11 @@ TOCNSocketSendingDataTest >> randomAsciiStringOfSize: size [
 	^self explicitRequirement 
 ]
 
+{ #category : #accessing }
+TOCNSocketSendingDataTest >> serverClass [
+	^OCNTcpReceivingServerForTest 
+]
+
 { #category : #requirements }
 TOCNSocketSendingDataTest >> socket [
 	"the socket to test"
