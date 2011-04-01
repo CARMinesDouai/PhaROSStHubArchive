@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'socket',
 		'library',
-		'serverShell',
+		'server',
 		'serverAddress'
 	],
 	#category : #'Ocean-Kernel-Test'
@@ -39,28 +39,23 @@ OCNSocketTest >> randomAsciiStringOfSize: dataSize [
 ]
 
 { #category : #accessing }
+OCNSocketTest >> server [
+	^ server 
+]
+
+{ #category : #accessing }
 OCNSocketTest >> serverAddress [
 	^ serverAddress 
 ]
 
-{ #category : #'server management' }
-OCNSocketTest >> serverCommandString [
-	^ self subclassResponsibility 
+{ #category : #'setUp-tearDown' }
+OCNSocketTest >> serverClass [
+	^self subclassResponsibility 
 ]
 
 { #category : #accessing }
 OCNSocketTest >> serverPort [
 	^9123
-]
-
-{ #category : #accessing }
-OCNSocketTest >> serverShell [ 
-	^serverShell 
-]
-
-{ #category : #accessing }
-OCNSocketTest >> serverShellClass [ 
-	^OCNFileStdOutShell
 ]
 
 { #category : #'setUp-tearDown' }
@@ -69,12 +64,12 @@ OCNSocketTest >> setUp [
 	library := OCNNetworkLibraryProxyFactory proxyForLibraryClass: self networkLibraryClass.
 	socket := self socketClass newWithNetworkLibrary: self library.
 	serverAddress := OCNIPV4SocketAddress loopbackAddressWithPort:  self serverPort.
-	self setUpServerShell
+
 ]
 
 { #category : #'setUp-tearDown' }
-OCNSocketTest >> setUpServerShell [
-	serverShell := self serverShellClass onStdOutFileNamed: 'test.log'
+OCNSocketTest >> setUpServer [
+	server:= self serverClass onPortNumber: self serverPort 
 ]
 
 { #category : #accessing }
@@ -89,14 +84,14 @@ OCNSocketTest >> socketClass [
 
 { #category : #'server management' }
 OCNSocketTest >> startServer [
-	serverShell exec: self serverCommandString , String space , self serverPort printString.
+	self setUpServer.
+	server start.
 	(Delay forMilliseconds: 50) wait
 ]
 
 { #category : #'setUp-tearDown' }
 OCNSocketTest >> tearDown [
 	super tearDown.
-	serverShell deleteStdOutFile.
-	serverShell kill.
+	server stop.
 	socket destroy.
 ]

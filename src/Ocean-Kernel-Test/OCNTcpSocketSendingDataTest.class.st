@@ -1,7 +1,7 @@
 Class {
 	#name : #OCNTcpSocketSendingDataTest,
 	#superclass : #OCNTcpSocketTest,
-	#traits : 'TOCNSocketSendingDataTest - {#socket. #serverShell. #randomAsciiStringOfSize:. #testDisconnectionWhileSending}',
+	#traits : 'TOCNSocketSendingDataTest - {#socket. #randomAsciiStringOfSize:. #testDisconnectionWhileSending}',
 	#classTraits : 'TOCNSocketSendingDataTest classTrait',
 	#category : #'Ocean-Kernel-Test'
 }
@@ -14,10 +14,15 @@ OCNTcpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
 	dataToSend := self randomAsciiStringOfSize: dataSize.
 	self assert: (self socket send: dataToSend) = dataSize.
 	(Delay forMilliseconds: 50) wait.
-	receivedData := self serverShell stdOut contents.
+	receivedData := self server receivedData.
 	self assert: receivedData size = dataSize.
 	self assert: receivedData = dataToSend.
 
+]
+
+{ #category : #accessing }
+OCNTcpSocketSendingDataTest >> serverClass [
+	^OCNTcpReceivingServerForTest 
 ]
 
 { #category : #'tests sending' }

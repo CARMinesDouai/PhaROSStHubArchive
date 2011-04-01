@@ -6,11 +6,9 @@ Class {
 
 { #category : #testing }
 OCNTcpSocketReceivingDataTest >> assertReceivingDataOfSize: dataSize [
-	| dataToSend stdIn receptionStream waitForData dataPacket receivedData |
+	| dataToSend receptionStream waitForData dataPacket receivedData |
 	dataToSend := self randomAsciiStringOfSize: dataSize.
-	self serverShell deleteStdInFile.
-	stdIn := FileStream fileNamed: serverShell stdInFileName.
-	[ stdIn nextPutAll: dataToSend ] ensure: [ stdIn close ].
+	server sendData: dataToSend.
 	self startServer.
 	self connect.
 	receptionStream := WriteStream on: (ByteArray new: dataSize).
@@ -25,21 +23,8 @@ OCNTcpSocketReceivingDataTest >> assertReceivingDataOfSize: dataSize [
 ]
 
 { #category : #accessing }
-OCNTcpSocketReceivingDataTest >> serverShellClass [ 
-	^OCNFileStdInOutShell
-]
-
-{ #category : #'setUp-tearDown' }
-OCNTcpSocketReceivingDataTest >> setUpServerShell [
-	super setUpServerShell.
-	self serverShell stdInFileName: 'test.in'
-
-]
-
-{ #category : #'setUp-tearDown' }
-OCNTcpSocketReceivingDataTest >> tearDown [
-	super tearDown.
-	self serverShell deleteStdInFile
+OCNTcpSocketReceivingDataTest >> serverClass [
+	^OCNTcpSendingServerForTest 
 ]
 
 { #category : #testing }

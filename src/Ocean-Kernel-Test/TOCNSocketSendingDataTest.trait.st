@@ -15,11 +15,6 @@ TOCNSocketSendingDataTest >> randomAsciiStringOfSize: size [
 ]
 
 { #category : #requirements }
-TOCNSocketSendingDataTest >> serverShell [
-	^self explicitRequirement 
-]
-
-{ #category : #requirements }
 TOCNSocketSendingDataTest >> socket [
 	"the socket to test"
 	^self explicitRequirement 
