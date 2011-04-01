@@ -36,11 +36,6 @@ OCNTcpSocketTest >> connect [
 
 ]
 
-{ #category : #'server management' }
-OCNTcpSocketTest >> serverCommandString [ 
-	^'nc -4 -l'
-]
-
 { #category : #accessing }
 OCNTcpSocketTest >> socketClass [ 
 	^OCNConversationTcpSocket

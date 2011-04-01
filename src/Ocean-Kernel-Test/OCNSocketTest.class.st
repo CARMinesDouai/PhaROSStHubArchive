@@ -86,7 +86,7 @@ OCNSocketTest >> socketClass [
 OCNSocketTest >> startServer [
 	self setUpServer.
 	server start.
-	(Delay forMilliseconds: 150) wait
+	(Delay forMilliseconds: 50) wait
 ]
 
 { #category : #'setUp-tearDown' }

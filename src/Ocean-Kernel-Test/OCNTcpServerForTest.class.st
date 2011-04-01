@@ -1,3 +1,22 @@
+"
+""Code for the talk on networking @ Deep Into Smalltalk Spring School 2011""
+""Slides and other materials online http://car.mines-douai.fr/noury/docs""
+""Noury Bouraqadi march 2011""
+
+Abstract class for simple TCP server.
+A simple server is multi-threaded. It waits for connection in a dedicated process and handles client interactions in different processes (one per client).
+Subclasses should implement method #interactThrough: aSocketStream. The argument is a socket stream connected to a client.
+
+To create a server, send the #onPortNumber: message to a concrete server class. The argument is the number of port where the server will wait for client connections. 
+
+Usefull messages:
+#start -- starts the server
+#stop -- stop the server
+#isRunning -- answers true if the server is started
+
+
+
+"
 Class {
 	#name : #OCNTcpServerForTest,
 	#superclass : #Object,
@@ -57,6 +76,11 @@ OCNTcpServerForTest >> interactThenClose: aSocketStream [
 
 ]
 
+{ #category : #running }
+OCNTcpServerForTest >> interactThrough: aSocketStream [
+	receivedDataStream nextPutAll: aSocketStream upToEnd
+]
+
 { #category : #accessing }
 OCNTcpServerForTest >> isRunning [
 	stateLock critical: [^isRunning]
@@ -82,6 +106,11 @@ OCNTcpServerForTest >> portNumber: anInteger [
 	portNumber := anInteger
 ]
 
+{ #category : #accessing }
+OCNTcpServerForTest >> receivedData [
+	^receivedDataStream contents 
+]
+
 { #category : #running }
 OCNTcpServerForTest >> serve [
 	self connectionSocket: Socket newTCP.
@@ -101,6 +130,7 @@ OCNTcpServerForTest >> start [
 				ifTrue: [ ^ self ].
 			self isRunning: true ].
 	process := [self serve] newProcess.
+	process priority: Processor lowIOPriority.
 	process resume
 ]
 

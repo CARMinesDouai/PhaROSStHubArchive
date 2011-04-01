@@ -948,9 +948,9 @@ OCNSocketPluginLibrary >> unregisterSemaphores [
 { #category : #'tcp api support' }
 OCNSocketPluginLibrary >> waitForConnectionOf: socketId [
 	| endTime |
-	endTime := Time now addSeconds: self connectionTimeOutSeconds.
+	endTime := Time now asSeconds + self connectionTimeOutSeconds.
 	[(self primSocketConnectionStatus: socketId) = Connected ifTrue: [^self].
-		Time now > endTime.
+		Time now asSeconds > endTime.
 	] whileFalse.
 	OCNSocketOperationFailureError signal: 'Connection failure'
 
