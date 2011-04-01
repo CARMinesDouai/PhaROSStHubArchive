@@ -20,6 +20,11 @@ OCNTcpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
 
 ]
 
+{ #category : #accessing }
+OCNTcpSocketSendingDataTest >> serverClass [
+	^OCNTcpReceivingServerForTest
+]
+
 { #category : #'tests sending' }
 OCNTcpSocketSendingDataTest >> testDisconnectionWhileSending [
 
