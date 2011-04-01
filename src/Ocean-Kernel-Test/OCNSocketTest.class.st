@@ -50,7 +50,7 @@ OCNSocketTest >> serverAddress [
 
 { #category : #'setUp-tearDown' }
 OCNSocketTest >> serverClass [
-	^self subclassResponsibility 
+	^OCNTcpReceivingServerForTest 
 ]
 
 { #category : #accessing }
@@ -86,12 +86,12 @@ OCNSocketTest >> socketClass [
 OCNSocketTest >> startServer [
 	self setUpServer.
 	server start.
-	(Delay forMilliseconds: 50) wait
+	(Delay forMilliseconds: 150) wait
 ]
 
 { #category : #'setUp-tearDown' }
 OCNSocketTest >> tearDown [
 	super tearDown.
-	server stop.
+	server ifNotNil: [ server kill ].
 	socket destroy.
 ]

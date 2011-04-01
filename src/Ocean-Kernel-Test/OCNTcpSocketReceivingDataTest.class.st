@@ -8,8 +8,8 @@ Class {
 OCNTcpSocketReceivingDataTest >> assertReceivingDataOfSize: dataSize [
 	| dataToSend receptionStream waitForData dataPacket receivedData |
 	dataToSend := self randomAsciiStringOfSize: dataSize.
-	server sendData: dataToSend.
 	self startServer.
+	server sendData: dataToSend.
 	self connect.
 	receptionStream := WriteStream on: (ByteArray new: dataSize).
 	waitForData := true.

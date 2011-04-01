@@ -5,7 +5,8 @@ Class {
 		'isRunning',
 		'stateLock',
 		'connectionSocket',
-		'portNumber'
+		'portNumber',
+		'process'
 	],
 	#category : #'Ocean-Kernel-TestSupport'
 }
@@ -66,6 +67,11 @@ OCNTcpServerForTest >> isRunning: aBoolean [
 	stateLock critical: [isRunning := aBoolean]
 ]
 
+{ #category : #running }
+OCNTcpServerForTest >> kill [
+	process terminate
+]
+
 { #category : #accessing }
 OCNTcpServerForTest >> portNumber [
 	^ portNumber
@@ -94,7 +100,8 @@ OCNTcpServerForTest >> start [
 			self isRunning
 				ifTrue: [ ^ self ].
 			self isRunning: true ].
-	[self serve] fork
+	process := [self serve] newProcess.
+	process resume
 ]
 
 { #category : #running }
