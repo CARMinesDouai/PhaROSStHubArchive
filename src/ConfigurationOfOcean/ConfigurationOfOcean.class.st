@@ -1,7 +1,9 @@
 "
-""On 1.2 and 1.3""
+""On 1.2""
 (ConfigurationOfOcean project version: #stable) load.
 
+""1.3 --> automatically loads bleeding edge version""
+(ConfigurationOfOcean project version: #stable) load.
 
 "
 Class {
@@ -215,6 +217,31 @@ ConfigurationOfOcean >> baseline04: spec [
 	]
 ]
 
+{ #category : #baselines }
+ConfigurationOfOcean >> baseline05: spec [
+	<version: '0.5-baseline'>
+	
+	spec for: #common do: [
+		spec blessing: #baseline.
+
+		spec project: 'Alien' with: [
+			spec 
+				className: 'ConfigurationOfAlien' ; 
+				loads: {'All'}; 
+				file: 'ConfigurationOfAlien';
+				repository: 'http://www.squeaksource.com/Alien'
+		].
+
+		spec package: 'Ocean' with: [
+			spec requires: #('Alien').
+			spec repository: 'http://www.squeaksource.com/Ocean'.
+		].
+	
+		spec group: 'default' with: #('Alien' 'Ocean').
+		spec group: 'noalien' with: #('Ocean').
+	]
+]
+
 { #category : #accessing }
 ConfigurationOfOcean >> project [
 
@@ -233,8 +260,8 @@ ConfigurationOfOcean >> stable: spec [
 	<symbolicVersion: #'stable'>
 
 	spec for: #'Pharo 1.1.x' version: '0.2'.
-	spec for: #'common' version: '0.5'.
-
+	spec for: #'pharo1.2.x' version: '0.6'. 		
+	spec for: #'pharo1.3.x' version:  '0.5-baseline'. "bleeding edge version for 1.3" 
 ]
 
 { #category : #versions }
@@ -300,7 +327,19 @@ ConfigurationOfOcean >> version05: spec [
 		spec 
 			blessing: #development; 
 			project: 'Alien' with:  'Pharo 1.2';
-			project: 'OSProcess' with: #'stable'
-			"package: 'Ocean' with: 'Ocean-LucFabresse.44'" "let's load the bleeding edge version"
+			project: 'OSProcess' with: #'stable';
+			package: 'Ocean' with: 'Ocean-LucFabresse.44' 
+	]
+]
+
+{ #category : #versions }
+ConfigurationOfOcean >> version06: spec [
+	<version: '0.6' imports: #('0.5-baseline')>
+	
+	spec for: #common do: [
+		spec 
+			blessing: #development; 
+			project: 'Alien' with:  #stable;
+			package: 'Ocean' with: 'Ocean-LucFabresse.74' 
 	]
 ]
