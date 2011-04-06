@@ -3,7 +3,7 @@
 (ConfigurationOfOcean project version: #development) load.
 
 ""1.3 --> automatically loads bleeding edge version""
-(ConfigurationOfOcean project version) load.
+(ConfigurationOfOcean project version: 'default') load.
 
 "
 Class {
@@ -244,9 +244,11 @@ ConfigurationOfOcean >> baseline05: spec [
 
 { #category : #'symbolic versions' }
 ConfigurationOfOcean >> default: spec [
-	<version: #'default'>
-
-	spec version:  '0.5-baseline'. "bleeding edge version for 1.3" 
+	<version: #'default' imports: #('0.5-baseline')>
+	
+	spec for: #common do: [
+		spec project: 'Alien' with:  'default'
+	]
 ]
 
 { #category : #'symbolic versions' }
