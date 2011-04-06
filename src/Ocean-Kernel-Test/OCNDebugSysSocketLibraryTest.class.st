@@ -1,8 +1,19 @@
+"
+""ignore these tests""
+
+isAbstract 
+"
 Class {
 	#name : #OCNDebugSysSocketLibraryTest,
 	#superclass : #TestCase,
 	#category : #'Ocean-Kernel-TestSupport'
 }
+
+{ #category : #'as yet unclassified' }
+OCNDebugSysSocketLibraryTest class >> isAbstract [ 
+"ignore these tests"	
+	^true
+]
 
 { #category : #'setUp-tearDown' }
 OCNDebugSysSocketLibraryTest >> setUp [

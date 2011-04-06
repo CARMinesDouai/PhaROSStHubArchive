@@ -78,7 +78,7 @@ OCNTcpServerForTest >> interactThenClose: aSocketStream [
 
 { #category : #running }
 OCNTcpServerForTest >> interactThrough: aSocketStream [
-	receivedDataStream nextPutAll: aSocketStream upToEnd
+	self subclassResponsibility 
 ]
 
 { #category : #accessing }
@@ -104,11 +104,6 @@ OCNTcpServerForTest >> portNumber [
 { #category : #accessing }
 OCNTcpServerForTest >> portNumber: anInteger [
 	portNumber := anInteger
-]
-
-{ #category : #accessing }
-OCNTcpServerForTest >> receivedData [
-	^receivedDataStream contents 
 ]
 
 { #category : #running }
