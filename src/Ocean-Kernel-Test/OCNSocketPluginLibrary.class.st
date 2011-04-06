@@ -545,7 +545,8 @@ OCNSocketPluginLibrary >> primSocket: socketID connectTo: hostAddress port: port
 	"Attempt to establish a connection to the given port of the given host. This is an asynchronous call; query the socket status to discover if and when the connection is actually completed."
 
 	<primitive: 'primitiveSocketConnectToPort' module: 'SocketPlugin'>
-	
+	OCNSocketOperationFailureError signal: 'Connect failed'
+
 ]
 
 { #category : #'Unused primitives' }
@@ -596,6 +597,7 @@ OCNSocketPluginLibrary >> primSocket: socketID receiveDataInto: aStringOrByteArr
 	"Receive data from the given socket into the given array starting at the given index. Return the number of bytes read or zero if no data is available."
 
 	<primitive: 'primitiveSocketReceiveDataBufCount' module: 'SocketPlugin'>
+	OCNSocketOperationFailureError signal: 'Reception failed'
 
 ]
 
@@ -617,13 +619,13 @@ OCNSocketPluginLibrary >> primSocket: socketID remoteAddressResult: socketAddres
 
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'TCP primitives' }
 OCNSocketPluginLibrary >> primSocket: socketID sendData: aStringOrByteArray startIndex: startIndex count: count [
 	"Send data to the remote host through the given socket starting with the given byte index of the given byte array. The data sent is 'pushed' immediately. Return the number of bytes of data actually sent; any remaining data should be re-submitted for sending after the current send operation has completed."
 	"Note: In general, it many take several sendData calls to transmit a large data array since the data is sent in send-buffer-sized chunks. The size of the send buffer is determined when the socket is created."
 
 	<primitive: 'primitiveSocketSendDataBufCount' module: 'SocketPlugin'>
-	self primitiveFailed
+	OCNSocketOperationFailureError signal: 'Sending failed'
 
 ]
 
@@ -902,8 +904,23 @@ OCNSocketPluginLibrary >> resolverUninitializedCode [
 ]
 
 { #category : #'TCP API' }
-OCNSocketPluginLibrary >> sendData: data to: aSocket [
-	self shouldBeImplemented 
+OCNSocketPluginLibrary >> sendData: aStringOrByteArray to: aSocket [
+	self primSocket: aSocket socketId sendData: aStringOrByteArray startIndex: 1 count: aStringOrByteArray size.
+	  
+"Socket>>sendData:
+	| bytesSent bytesToSend count |
+	bytesToSend := aStringOrByteArray size.
+	bytesSent := 0.
+	[bytesSent < bytesToSend] whileTrue: [
+		(self waitForSendDoneFor: 60)
+			ifFalse: [ConnectionTimedOut signal: 'send data timeout; data not sent'].
+		count := self primSocket: socketHandle
+			sendData: aStringOrByteArray
+			startIndex: bytesSent + 1
+			count: (bytesToSend - bytesSent min: 5000). 
+		bytesSent := bytesSent + count].
+	^ bytesSent
+"
 ]
 
 { #category : #'UDP private' }
