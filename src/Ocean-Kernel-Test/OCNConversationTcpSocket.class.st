@@ -9,6 +9,19 @@ state 4 : destroyed
 2 -> 3, 4
 3 -> 4
 
+
+
+""simple example to finish""
+
+
+ip := OCNIPV4SocketAddress family: OCNIPV4SocketAddress afInetFamily;
+		ip: (OCNNetNameResolver ipv4AddressForName: 'www.google.fr'); 
+		port: aPortNumber ;
+		yourself
+OCNConversationTcpSocket new connectToServer: 
+
+
+(OCNNetNameResolver ipv4AddressForName: 'www.google.fr') '209.85.143.104'  
 "
 Class {
 	#name : #OCNConversationTcpSocket,

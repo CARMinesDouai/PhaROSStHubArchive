@@ -15,11 +15,6 @@ OCNUdpSocket >> receive [
 ]
 
 { #category : #communicating }
-OCNUdpSocket >> receive: port [
-	^self networkLibrary receiveUDPDatagramOn: self socketId
-]
-
-{ #category : #communicating }
 OCNUdpSocket >> send: aDatagramPacket [
 	aDatagramPacket verify ifTrue:[
 		^self networkLibrary sendUDPOn: self socketId datagram: aDatagramPacket
