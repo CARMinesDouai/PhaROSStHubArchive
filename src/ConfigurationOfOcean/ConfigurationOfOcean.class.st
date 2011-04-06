@@ -246,7 +246,7 @@ ConfigurationOfOcean >> baseline05: spec [
 ConfigurationOfOcean >> default: spec [
 	<version: #'default'>
 
-	self version:  '0.5-baseline'. "bleeding edge version for 1.3" 
+	spec version:  '0.5-baseline'. "bleeding edge version for 1.3" 
 ]
 
 { #category : #'symbolic versions' }
