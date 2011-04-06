@@ -21,7 +21,8 @@ OCNSendBench class >> timeToSend [
 
 { #category : #server }
 OCNSendBench >> createServerShell [
-	^ OCNFileStdOutShell onStdOutFileNamed: 'test.log'
+	"^ OCNFileStdOutShell onStdOutFileNamed: 'test.log'"
+	self halt: 'fix that without Shell'.
 ]
 
 { #category : #benchmarking }

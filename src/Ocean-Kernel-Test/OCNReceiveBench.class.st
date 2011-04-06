@@ -38,13 +38,14 @@ OCNReceiveBench class >> timeToReceive: iterationsCount [
 { #category : #server }
 OCNReceiveBench >> createServerShell [ 
 	| shell stdIn |
-	shell := OCNFileStdInOutShell new	
+	self halt: 'fix that without Shell'.
+	"shell := OCNFileStdInOutShell new	
 		stdOutFileName: 'test.log';
 		stdInFileName: 'test.in';
 		yourself.
 	shell deleteStdInFile.
 	stdIn := FileStream fileNamed: shell stdInFileName.
-	[ stdIn nextPutAll: self dataToSend ] ensure: [ stdIn close ].	
+	[ stdIn nextPutAll: self dataToSend ] ensure: [ stdIn close ].	"
 	^shell
 
 ]

@@ -8,10 +8,13 @@ Class {
 OCNMacOSXPosixDebugLibrary class >> buildDebugSysSocketLibraryDylibFile [
 	"self buildDebugSysSocketLibraryDylibFile"
 	
-	OSProcess waitForCommand: 
+	self halt: 'fix that without OSProcess'.
+	
+	"OSProcess waitForCommand: 
 		'cd ', SmalltalkImage current imagePath, ' ; ', 
 		'gcc ', self debugSysSocketLibraryCFileName, ' -c;', 
-		'libtool -dynamic ', self debugSysSocketLibraryOFileName, ' -o ', self debugSysSocketLibraryDylibFileName, ' -lSystem'
+		'libtool -dynamic ', self debugSysSocketLibraryOFileName, ' -o ', self debugSysSocketLibraryDylibFileName, ' -lSystem'"
+		
 	"
 Compilation :
 	gcc debugSysSocketLibrary.c -c 
