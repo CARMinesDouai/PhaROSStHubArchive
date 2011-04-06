@@ -1,8 +1,6 @@
 Class {
 	#name : #OCNTcpSocketSendingDataTest,
 	#superclass : #OCNTcpSocketTest,
-	#traits : 'TOCNSocketSendingDataTest - {#socket. #randomAsciiStringOfSize:}',
-	#classTraits : 'TOCNSocketSendingDataTest classTrait',
 	#category : #'Ocean-Kernel-Test'
 }
 
@@ -27,8 +25,7 @@ OCNTcpSocketSendingDataTest >> serverClass [
 
 { #category : #'tests sending' }
 OCNTcpSocketSendingDataTest >> testDisconnectionWhileSending [
-
-	self signalFailure:'should be implemented'.
+	self signalFailure: 'Needs non-blocking (multi-threaded FFI call or non-blocking primitives)'
 ]
 
 { #category : #'testing lifecylce' }
@@ -46,4 +43,22 @@ OCNTcpSocketSendingDataTest >> testSendOnUnconnectedSocket [
 	self should: [self socket send: 'hello' ] raise: OCNSocketOperationForbiddenError.
 	self assertSocketState: #isUnconnected.
 	self testSendingLessDataThanSocketsDataBufferSize
+]
+
+{ #category : #'tests sending' }
+OCNTcpSocketSendingDataTest >> testSendingLargeAmountOfDataComparedToSizeOfSocketsDataBuffer [
+	self assertSendingDataOfSize: 1000 * self library defaultDataBufferSize.
+
+]
+
+{ #category : #'tests sending' }
+OCNTcpSocketSendingDataTest >> testSendingLessDataThanSocketsDataBufferSize [
+	self assertSendingDataOfSize: self library defaultDataBufferSize//2 .
+
+]
+
+{ #category : #'tests sending' }
+OCNTcpSocketSendingDataTest >> testSendingMoreDataThanSizeOfSocketsDataBuffer [
+	self assertSendingDataOfSize: 2 * self library defaultDataBufferSize.
+
 ]

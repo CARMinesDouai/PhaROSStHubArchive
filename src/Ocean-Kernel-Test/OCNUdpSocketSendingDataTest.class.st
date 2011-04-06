@@ -1,8 +1,6 @@
 Class {
 	#name : #OCNUdpSocketSendingDataTest,
 	#superclass : #OCNUdpSocketTest,
-	#traits : 'TOCNSocketSendingDataTest - {#socket. #randomAsciiStringOfSize:}',
-	#classTraits : 'TOCNSocketSendingDataTest classTrait',
 	#category : #'Ocean-Kernel-Test'
 }
 
@@ -39,7 +37,13 @@ OCNUdpSocketSendingDataTest >> serverClass [
 
 { #category : #'tests sending' }
 OCNUdpSocketSendingDataTest >> testSendingLargeAmountOfDataComparedToSizeOfSocketsDataBuffer [
-	self should: [ self assertSendingDataOfSize: 1000 * self library defaultDataBufferSize ] raise: OCNInvalidDatagramPacketError
+	self should: [ self assertSendingDataOfSize: 65529 ] raise: OCNInvalidDatagramPacketError
+
+]
+
+{ #category : #'tests sending' }
+OCNUdpSocketSendingDataTest >> testSendingLessDataThanSocketsDataBufferSize [
+	self assertSendingDataOfSize: self library defaultDataBufferSize//2 .
 
 ]
 
