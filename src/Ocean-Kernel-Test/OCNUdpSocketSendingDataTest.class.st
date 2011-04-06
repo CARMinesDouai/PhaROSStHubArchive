@@ -1,7 +1,7 @@
 Class {
 	#name : #OCNUdpSocketSendingDataTest,
 	#superclass : #OCNUdpSocketTest,
-	#traits : 'TOCNSocketSendingDataTest - {#socket. #randomAsciiStringOfSize:. #testDisconnectionWhileSending}',
+	#traits : 'TOCNSocketSendingDataTest - {#socket. #randomAsciiStringOfSize:}',
 	#classTraits : 'TOCNSocketSendingDataTest classTrait',
 	#category : #'Ocean-Kernel-Test'
 }
