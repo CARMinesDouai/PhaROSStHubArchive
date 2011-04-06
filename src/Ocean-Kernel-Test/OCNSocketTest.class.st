@@ -20,6 +20,27 @@ OCNSocketTest class >> isAbstract [
 	^true
 ]
 
+{ #category : #'asserting lifecycle' }
+OCNSocketTest >> assertSocket: aSocket state: aSelectorToAssert [
+
+	| selectorsToDeny |
+	
+	self assert: (aSocket perform: aSelectorToAssert).
+	
+	selectorsToDeny := self stateTestingSelectors copyWithout: aSelectorToAssert.
+	
+	selectorsToDeny do: [ :aSelectorToDeny | 
+		self deny: (aSocket perform: aSelectorToDeny)
+	]
+
+	
+]
+
+{ #category : #'asserting lifecycle' }
+OCNSocketTest >> assertSocketState: aSelectorToAssert [
+	self assertSocket: socket state: aSelectorToAssert
+]
+
 { #category : #accessing }
 OCNSocketTest >> library [
 	^library 
@@ -89,9 +110,29 @@ OCNSocketTest >> startServer [
 	(Delay forMilliseconds: 50) wait
 ]
 
+{ #category : #accessing }
+OCNSocketTest >> stateTestingSelectors [ 
+	^self subclassResponsibility 
+]
+
 { #category : #'setUp-tearDown' }
 OCNSocketTest >> tearDown [
 	super tearDown.
 	server ifNotNil: [ server kill ].
 	socket destroy.
+]
+
+{ #category : #testing }
+OCNSocketTest >> testSocketCreationFailure [
+	self signalFailure: 'test that an exception is raised when socket creation fails'
+]
+
+{ #category : #testing }
+OCNSocketTest >> testSocketFinalization [
+	self signalFailure: 'socket finalized before GC collection'
+]
+
+{ #category : #testing }
+OCNSocketTest >> testSocketRestoredAtImageStartup [
+	self signalFailure: 'socket restored in the same state when image startup'
 ]

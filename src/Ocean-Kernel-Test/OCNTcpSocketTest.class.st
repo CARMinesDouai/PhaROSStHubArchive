@@ -4,27 +4,6 @@ Class {
 	#category : #'Ocean-Kernel-Test'
 }
 
-{ #category : #testing }
-OCNTcpSocketTest >> assertSocket: aSocket state: aSelectorToAssert [
-
-	| selectorsToDeny |
-	
-	self assert: (aSocket perform: aSelectorToAssert).
-	
-	selectorsToDeny := #(#isClean #isBound #isConnected isDestroyed) copyWithout: aSelectorToAssert.
-	
-	selectorsToDeny do: [ :aSelectorToDeny | 
-		self deny: (aSocket perform: aSelectorToDeny)
-	]
-
-	
-]
-
-{ #category : #testing }
-OCNTcpSocketTest >> assertSocketState: aSelectorToAssert [
-	self assertSocket: socket state: aSelectorToAssert
-]
-
 { #category : #accessing }
 OCNTcpSocketTest >> clientPort [
 	^ 2222
@@ -39,6 +18,11 @@ OCNTcpSocketTest >> connect [
 { #category : #accessing }
 OCNTcpSocketTest >> socketClass [ 
 	^OCNConversationTcpSocket
+]
+
+{ #category : #accessing }
+OCNTcpSocketTest >> stateTestingSelectors [ 
+	^#(isClean isBound isConnected isDestroyed)
 ]
 
 { #category : #'testing lifecylce' }
@@ -179,21 +163,6 @@ OCNTcpSocketTest >> testSendOnDestroyedSocket [
 	self should: [socket send: 'hello'] raise: OCNSocketOperationForbiddenError.
 	self assertSocketState: #isDestroyed.
 	
-]
-
-{ #category : #testing }
-OCNTcpSocketTest >> testSocketCreationFailure [
-	self signalFailure: 'test that an exception is raised when socket creation fails'
-]
-
-{ #category : #testing }
-OCNTcpSocketTest >> testSocketFinalization [
-	self signalFailure: 'socket finalized before GC collection'
-]
-
-{ #category : #testing }
-OCNTcpSocketTest >> testSocketRestoredAtImageStartup [
-	self signalFailure: 'socket restored in the same state when image startup'
 ]
 
 { #category : #'testing lifecylce' }
