@@ -23,7 +23,7 @@ OCNSocket class >> newWithNetworkLibraryClass: aNetworkLibraryClass [
 
 { #category : #connecting }
 OCNSocket >> bindToAddress: aSocketAddress [ 
-	self isUnconnected ifFalse: [ 
+	self isClean ifFalse: [ 
 		OCNSocketOperationForbiddenError signal: self state asString capitalized, ' socket can not be bound' ].
 	[
 		self networkLibrary bind: self toIpv4Address: aSocketAddress
@@ -48,6 +48,11 @@ OCNSocket >> boundStateSymbol [
 
 ]
 
+{ #category : #'state names' }
+OCNSocket >> cleanStateSymbol [
+	^ #clean
+]
+
 { #category : #connection }
 OCNSocket >> destroy [
 	self isDestroyed 
@@ -65,17 +70,17 @@ OCNSocket >> destroyedStateSymbol [
 { #category : #'initialize-release' }
 OCNSocket >> initialize [ 
 	super initialize.
-	self state: self unconnectedStateSymbol 
+	self state: self cleanStateSymbol 
+]
+
+{ #category : #'state testing' }
+OCNSocket >> isClean [
+	^self state = self cleanStateSymbol
 ]
 
 { #category : #'state testing' }
 OCNSocket >> isDestroyed [
 	^self state = self destroyedStateSymbol
-]
-
-{ #category : #'state testing' }
-OCNSocket >> isUnconnected [ 
-	^self state = self unconnectedStateSymbol
 ]
 
 { #category : #accessing }
@@ -112,9 +117,4 @@ OCNSocket >> state [
 OCNSocket >> state: anObject [
 	
 	state := anObject
-]
-
-{ #category : #'state names' }
-OCNSocket >> unconnectedStateSymbol [
-	^ #unconnected
 ]

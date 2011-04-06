@@ -11,7 +11,7 @@ OCNTcpSocketTest >> assertSocket: aSocket state: aSelectorToAssert [
 	
 	self assert: (aSocket perform: aSelectorToAssert).
 	
-	selectorsToDeny := #(#isUnconnected #isBound #isConnected isDestroyed) copyWithout: aSelectorToAssert.
+	selectorsToDeny := #(#isClean #isBound #isConnected isDestroyed) copyWithout: aSelectorToAssert.
 	
 	selectorsToDeny do: [ :aSelectorToDeny | 
 		self deny: (aSocket perform: aSelectorToDeny)
@@ -47,7 +47,7 @@ OCNTcpSocketTest >> testBindBoundSocket [
 	| initialPort otherPort |
 	initialPort := self clientPort.
 	otherPort := 9125.
-	self assertSocketState: #isUnconnected.
+	self assertSocketState: #isClean.
 	socket bindToLocalHostPort: initialPort.	
 	self assertSocketState: #isBound.
 	self should: [socket bindToLocalHostPort: initialPort] raise: OCNSocketOperationForbiddenError.	
@@ -80,7 +80,7 @@ OCNTcpSocketTest >> testBindDestroyedSocket [
 OCNTcpSocketTest >> testBindUnconnectedSocket [
 	| socketAddress |
 	self testSocketUnconnectedOnCreation.
-	self assertSocketState: #isUnconnected.
+	self assertSocketState: #isClean.
 	socketAddress := OCNIPV4SocketAddress loopbackAddressWithPort:  self clientPort.	
 	self shouldnt: [socket bindToAddress: socketAddress] raise: OCNSocketOperationFailureError.
 	self assertSocketState: #isBound.
@@ -114,7 +114,7 @@ OCNTcpSocketTest >> testConnectFailureOfBoundSocket [
 
 { #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testConnectFailureOfUnconnectedSocket [
-	self assertSocketState: #isUnconnected.
+	self assertSocketState: #isClean.
 	self should: [self connect] raise: OCNSocketOperationFailureError.
 	self assertSocketState: #isDestroyed
 ]
@@ -122,7 +122,7 @@ OCNTcpSocketTest >> testConnectFailureOfUnconnectedSocket [
 { #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testConnectUnconnectedSocket [
 	self startServer.
-	self assertSocketState: #isUnconnected.
+	self assertSocketState: #isClean.
 	self connect.
 	self assertSocketState: #isConnected.
 
@@ -157,7 +157,7 @@ OCNTcpSocketTest >> testDestroyDestroyedSocket [
 
 { #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testDestroyUnconnectedSocket [
-	self assertSocketState: #isUnconnected.
+	self assertSocketState: #isClean.
 	socket destroy.
 	self assertSocketState: #isDestroyed.
 
@@ -199,6 +199,6 @@ OCNTcpSocketTest >> testSocketRestoredAtImageStartup [
 { #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testSocketUnconnectedOnCreation [
 	self assert: socket socketId notNil.
-	self assertSocketState:  #isUnconnected.
+	self assertSocketState:  #isClean.
 
 ]

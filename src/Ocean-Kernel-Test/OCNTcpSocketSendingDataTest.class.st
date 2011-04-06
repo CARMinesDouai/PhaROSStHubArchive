@@ -39,9 +39,9 @@ OCNTcpSocketSendingDataTest >> testSendOnBoundSocket [
 
 { #category : #'testing lifecylce' }
 OCNTcpSocketSendingDataTest >> testSendOnUnconnectedSocket [
-	self assertSocketState: #isUnconnected.
+	self assertSocketState: #isClean.
 	self should: [self socket send: 'hello' ] raise: OCNSocketOperationForbiddenError.
-	self assertSocketState: #isUnconnected.
+	self assertSocketState: #isClean.
 	self testSendingLessDataThanSocketsDataBufferSize
 ]
 

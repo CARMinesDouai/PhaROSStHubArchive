@@ -1,13 +1,13 @@
 "
 an OCNTcpSocket has the following lifecycle :
  
-state 1 : closed
-state 2 : connected
-state 3 : listening
+state 1 : clean
+state 2 : bound
+state 3 : connected
 state 4 : destroyed
 1 -> 2, 3, 4
-2 -> 1
-3 -> 1
+2 -> 3, 4
+3 -> 4
 
 "
 Class {
@@ -18,7 +18,7 @@ Class {
 
 { #category : #connection }
 OCNConversationTcpSocket >> connectToServer: serverAddress [
-	(self isUnconnected | self isBound ) ifFalse:  [ 
+	(self isClean | self isBound ) ifFalse:  [ 
 		OCNSocketOperationForbiddenError signal: self state asString capitalized, ' socket can not be connected' ].
 	[
 		self networkLibrary connect: self toServerWithIpv4Address: serverAddress.

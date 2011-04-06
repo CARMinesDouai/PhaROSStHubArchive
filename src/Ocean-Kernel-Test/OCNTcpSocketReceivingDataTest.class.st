@@ -43,9 +43,9 @@ OCNTcpSocketReceivingDataTest >> testReceiveOnBoundSocket [
 
 { #category : #'testing lifecylce' }
 OCNTcpSocketReceivingDataTest >> testReceiveOnUnconnectedSocket [
-	self assertSocketState: #isUnconnected.
+	self assertSocketState: #isClean.
 	self should: [ self socket receive ] raise: OCNSocketOperationForbiddenError.
-	self assertSocketState: #isUnconnected.
+	self assertSocketState: #isClean.
 	self testReceivingLessDataThanSocketsDataBufferSize
 ]
 
