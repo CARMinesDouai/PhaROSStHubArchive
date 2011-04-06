@@ -1,9 +1,9 @@
 "
 ""On 1.2""
-(ConfigurationOfOcean project version: #stable) load.
+(ConfigurationOfOcean project version: #development) load.
 
 ""1.3 --> automatically loads bleeding edge version""
-(ConfigurationOfOcean project version: #stable) load.
+(ConfigurationOfOcean project version) load.
 
 "
 Class {
@@ -242,6 +242,21 @@ ConfigurationOfOcean >> baseline05: spec [
 	]
 ]
 
+{ #category : #'symbolic versions' }
+ConfigurationOfOcean >> default: spec [
+	<version: #'default'>
+
+	self version:  '0.5-baseline'. "bleeding edge version for 1.3" 
+]
+
+{ #category : #'symbolic versions' }
+ConfigurationOfOcean >> development:   spec [
+	<symbolicVersion: #'development'>
+
+	spec for: #'Pharo1.1.x' version: '0.2'.
+	spec for: #'pharo1.2.x' version: '0.6'. 		
+]
+
 { #category : #accessing }
 ConfigurationOfOcean >> project [
 
@@ -253,15 +268,6 @@ ConfigurationOfOcean >> project [
 		project := constructor project.
 		project loadType: #linear. "change to #atomic if desired"
 		project ]
-]
-
-{ #category : #'symbolic versions' }
-ConfigurationOfOcean >> stable: spec [
-	<symbolicVersion: #'stable'>
-
-	spec for: #'Pharo 1.1.x' version: '0.2'.
-	spec for: #'pharo1.2.x' version: '0.6'. 		
-	spec for: #'pharo1.3.x' version:  '0.5-baseline'. "bleeding edge version for 1.3" 
 ]
 
 { #category : #versions }
@@ -339,7 +345,7 @@ ConfigurationOfOcean >> version06: spec [
 	spec for: #common do: [
 		spec 
 			blessing: #development; 
-			project: 'Alien' with:  #stable;
+			project: 'Alien' with:  #development;
 			package: 'Ocean' with: 'Ocean-LucFabresse.74' 
 	]
 ]
