@@ -18,7 +18,7 @@ OCNUdpSendingServerForTest >> dataToSend: aString [
 ]
 
 { #category : #'as yet unclassified' }
-OCNUdpSendingServerForTest >> interactThrough: aDatagram [
+OCNUdpSendingServerForTest >> interactThrough [
 	
 	self listenSocket sendUDPData: self dataToSend toHost: self listenSocket port: self portNumber
 	

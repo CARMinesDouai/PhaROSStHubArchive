@@ -158,10 +158,16 @@ OCNSocketPluginLibrary >> createTcpSocketDescriptorId [
 	
 	| socketId |
 	
-	self initSemaphores.
-
+	semaphore := Semaphore new.
+"	readSemaphore := Semaphore new.
+	writeSemaphore := Semaphore new.
+"	
+	semaIndex := Smalltalk registerExternalObject: semaphore.
+"	readSemaIndex := Smalltalk registerExternalObject: readSemaphore.
+	writeSemaIndex := Smalltalk registerExternalObject: writeSemaphore.
+"	
 	socketId := self primSocketCreateNetwork: 0
-			type: TCPSocketType
+			type: 0 "SocketType"
 			receiveBufferSize: self defaultDataBufferSize
 			sendBufSize: self defaultDataBufferSize
 			semaIndex: semaIndex.
@@ -169,7 +175,10 @@ OCNSocketPluginLibrary >> createTcpSocketDescriptorId [
 	socketId isNil
 		ifTrue: [ 
 			"socket creation failed"
-			self releaseSemaphores.
+			Smalltalk unregisterExternalObject: semaphore.
+			"Smalltalk unregisterExternalObject: readSemaphore.
+			Smalltalk unregisterExternalObject: writeSemaphore.
+			readSemaphore := writeSemaphore := "
 			semaphore := nil]
 		ifFalse: [
 			(self primSocketConnectionStatus: socketId) = Unconnected ifTrue: [ ^socketId ] ].
@@ -183,7 +192,13 @@ OCNSocketPluginLibrary >> createUdpSocketDescriptorId [
 	
 	| socketId  |
 	
-	self initSemaphores.
+	semaphore := Semaphore new.
+	readSemaphore := Semaphore new.
+	writeSemaphore := Semaphore new.
+	
+	semaIndex := Smalltalk registerExternalObject: semaphore.
+	readSemaIndex := Smalltalk registerExternalObject: readSemaphore.
+	writeSemaIndex := Smalltalk registerExternalObject: writeSemaphore.
 	
 	socketId := self primSocketCreateNetwork: 0
 			type: UDPSocketType
@@ -196,7 +211,7 @@ OCNSocketPluginLibrary >> createUdpSocketDescriptorId [
 	socketId isNil
 		ifTrue: [ 
 			"socket creation failed"
-			self releaseSemaphores.
+			self unregisterSemaphores.
 			OCNSocketOperationFailureError signal: 'Socket creation failure' ]
 		ifFalse: [ ^socketId ]
 ]
@@ -249,18 +264,6 @@ OCNSocketPluginLibrary >> ensureNetworkInitialized [
 	"result is nil if network initialization failed, self if it succeeds"
 	(self primInitializeNetwork: semaphoreIndex)
 		ifNil: [OCNNetworkInitializationFailedError signal: 'failed network initialization']
-]
-
-{ #category : #'initialize-release' }
-OCNSocketPluginLibrary >> initSemaphores [
-	semaphore := Semaphore new.
-	readSemaphore := Semaphore new.
-	writeSemaphore := Semaphore new.
-	
-	semaIndex := Smalltalk registerExternalObject: semaphore.
-	readSemaIndex := Smalltalk registerExternalObject: readSemaphore.
-	writeSemaIndex := Smalltalk registerExternalObject: writeSemaphore.
-
 ]
 
 { #category : #'initialize-release' }
@@ -895,16 +898,6 @@ OCNSocketPluginLibrary >> receiveUDPDatagramOn: socketId [
 	^aDatagramPacket
 ]
 
-{ #category : #'initialize-release' }
-OCNSocketPluginLibrary >> releaseSemaphores [
-	
-	Smalltalk unregisterExternalObject: semaphore.
-	Smalltalk unregisterExternalObject: readSemaphore.
-	Smalltalk unregisterExternalObject: writeSemaphore.
-
-	readSemaphore := writeSemaphore := semaphore := nil.
-]
-
 { #category : #'name resolving' }
 OCNSocketPluginLibrary >> resolverUninitializedCode [
 	^ 0  "network is not initialized"
@@ -912,8 +905,8 @@ OCNSocketPluginLibrary >> resolverUninitializedCode [
 
 { #category : #'TCP API' }
 OCNSocketPluginLibrary >> sendData: aStringOrByteArray to: aSocket [
-	^self primSocket: aSocket socketId sendData: aStringOrByteArray startIndex: 1 count: aStringOrByteArray size.
-	
+	self primSocket: aSocket socketId sendData: aStringOrByteArray startIndex: 1 count: aStringOrByteArray size.
+	  
 "Socket>>sendData:
 	| bytesSent bytesToSend count |
 	bytesToSend := aStringOrByteArray size.
@@ -957,6 +950,16 @@ OCNSocketPluginLibrary >> sendUDPOn: socketId datagram: aDatagramPacket [
 	"this method should deal with sourceAdress: from DatagramPacket."
 	^ self sendUDPDataOn: socketId contents: aDatagramPacket data toHost: aDatagramPacket targetAddress ip port: aDatagramPacket targetAddress port
 	
+]
+
+{ #category : #'UDP private' }
+OCNSocketPluginLibrary >> unregisterSemaphores [
+	
+	Smalltalk unregisterExternalObject: semaphore.
+	Smalltalk unregisterExternalObject: readSemaphore.
+	Smalltalk unregisterExternalObject: writeSemaphore.
+
+	readSemaphore := writeSemaphore := semaphore := nil.
 ]
 
 { #category : #'tcp api support' }

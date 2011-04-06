@@ -21,10 +21,10 @@ OCNUdpServerForTest class >> onPortNumber: anInteger [
 
 { #category : #running }
 OCNUdpServerForTest >> handleConnections [
-	|  aDatagram |
-	aDatagram := OCNDatagramPacket new.
 	
-	[self interactThenClose: aDatagram] fork
+	"[self interactThenClose] fork"
+	
+	self interactThenClose
 
 ]
 
@@ -36,14 +36,13 @@ OCNUdpServerForTest >> initialize [
 ]
 
 { #category : #running }
-OCNUdpServerForTest >> interactThenClose: aDatagram [
+OCNUdpServerForTest >> interactThenClose [
 
-		self interactThrough: aDatagram
-
+		self interactThrough
 ]
 
 { #category : #running }
-OCNUdpServerForTest >> interactThrough: aString [
+OCNUdpServerForTest >> interactThrough [
 	self subclassResponsibility
 ]
 
@@ -86,11 +85,10 @@ OCNUdpServerForTest >> portNumber: anObject [
 OCNUdpServerForTest >> serve [
 	listenSocket:= Socket newUDP.
 	[
-		self halt.
 		self listenSocket primSocketBind: self listenSocket socketHandle to: #[127 0 0 1] port: self portNumber.
-		"[self isRunning] whileTrue: ["self handleConnections"]".
+		[[self isRunning] whileTrue: [self handleConnections]] fork.
 	] ensure: [
-		self listenSocket destroy].
+		self listenSocket closeAndDestroy].
 ]
 
 { #category : #running }

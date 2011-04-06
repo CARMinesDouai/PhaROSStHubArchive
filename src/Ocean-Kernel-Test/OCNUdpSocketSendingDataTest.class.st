@@ -4,7 +4,7 @@ Class {
 	#category : #'Ocean-Kernel-Test'
 }
 
-{ #category : #requirements }
+{ #category : #asserting }
 OCNUdpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
 	| dataToSend receivedData aDatagramPacket receivedDataStream sentDataSize| 
 	self startServer.
@@ -17,10 +17,9 @@ OCNUdpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
 		
 	[sentDataSize := self socket send: aDatagramPacket] on: OCNInvalidDatagramPacketError do: [ :e | e pass ].
 	
-	(Delay forMilliseconds: 50) wait.
+	"(Delay forMilliseconds: 50) wait."
 	
-	receivedDataStream := FileStream readOnlyFileNamed: 'test.log'.  
-	[ receivedData := receivedDataStream contents  ] ensure: [ receivedDataStream close ].
+	receivedData := self server receivedData.
 	
 	self assert: sentDataSize = receivedData size.
 	self deny: receivedData isEmpty.
@@ -32,7 +31,7 @@ OCNUdpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
 
 { #category : #accessing }
 OCNUdpSocketSendingDataTest >> serverClass [
-	^OCNUdpSendingServerForTest
+	^OCNUdpReceivingServerForTest
 ]
 
 { #category : #'tests sending' }

@@ -2,7 +2,7 @@ Class {
 	#name : #OCNUdpReceivingServerForTest,
 	#superclass : #OCNUdpServerForTest,
 	#instVars : [
-		'receivedDataStream'
+		'receivedData'
 	],
 	#category : #'Ocean-Kernel-TestSupport'
 }
@@ -10,16 +10,17 @@ Class {
 { #category : #'initialize-release' }
 OCNUdpReceivingServerForTest >> initialize [ 
 	super initialize.
-	receivedDataStream := (String new: 2000) writeStream 
+	receivedData := (ByteArray new: 2000)  
 ]
 
 { #category : #accessing }
-OCNUdpReceivingServerForTest >> interactThrough: aDatagram [
+OCNUdpReceivingServerForTest >> interactThrough [
 	
-	self listenSocket receiveUDPDataInto: receivedDataStream
+	OCNSocketPluginLibrary new receiveUDPDataOn: self listenSocket socketHandle into: receivedData
+	
 ]
 
 { #category : #accessing }
 OCNUdpReceivingServerForTest >> receivedData [
-	^receivedDataStream contents 
+	^receivedData
 ]
