@@ -156,7 +156,7 @@ OCNSocketPluginLibrary >> createSocketDescriptorIdFor: anOCNSocket withType:  so
 			semaIndex: semaIndex.
 	
 	(socketId notNil and: [(self primSocketConnectionStatus: socketId) = Clean]) ifTrue: [
-				self dataBufferOfSize: anOCNSocket receiveDataBufferSize.
+				self receiveDataBuffer: (ByteArray new: anOCNSocket receiveDataBufferSize).
 				 ^socketId ].
 	self releaseSemaphores.
 	 OCNSocketOperationFailureError signal: 'Socket creation failure' 
@@ -173,12 +173,6 @@ OCNSocketPluginLibrary >> createTcpSocketDescriptorIdFor: anOCNSocket [
 OCNSocketPluginLibrary >> createUdpSocketDescriptorIdFor: anOCNSocket [
 	^self createSocketDescriptorIdFor: anOCNSocket  withType: UDPSocketType
 
-]
-
-{ #category : #'initialize-release' }
-OCNSocketPluginLibrary >> dataBufferOfSize: bytesCount [
-	self receiveDataBuffer: (ByteArray new: bytesCount)
-	
 ]
 
 { #category : #'Socket API' }
@@ -824,20 +818,17 @@ OCNSocketPluginLibrary >> receiveUDPDataOn: socketId into: aByteArray [
 ]
 
 { #category : #'UDP API' }
-OCNSocketPluginLibrary >> receiveUDPDatagramOn: socketId [
+OCNSocketPluginLibrary >> receiveUDPDatagramOn: aSocket [
 	"Receive UDP data into the given buffer and return the number of bytes received. Note the given buffer may be only partially filled by the received data. What is returned is an array, the first element is the bytes read, the second the sending bytearray address, the third the senders port, the fourth, true if more of the datagram awaits reading"
 
-	|data resultInfos aDatagramPacket |
-	
-	data := ByteArray new: self defaultDataBufferSize.
+	| resultInfos aDatagramPacket |
 	
 	resultInfos := ByteArray new: 4.
-	resultInfos := self receiveUDPDataOn: socketId into: data.
+	resultInfos := self receiveUDPDataOn: aSocket socketId into: self receiveDataBuffer.
 	
-	data := data copyFrom: 1 to: (resultInfos at: 1).
 	aDatagramPacket := OCNDatagramPacket new.
 	aDatagramPacket 
-					data: data;
+					data: (self receiveDataBuffer copyFrom: 1 to: (resultInfos at: 1)) ;
 					sourceIP: (resultInfos at: 2) port: (resultInfos at: 3) type: OCNIPV4SocketAddress;
 					targetAddress: nil; "should be implemented when we will pass a real IP object in parameter"
 					more: (resultInfos at: 4).
@@ -882,9 +873,9 @@ OCNSocketPluginLibrary >> sendUDPDataOn: socketId contents: aByteArray toHost: h
 ]
 
 { #category : #'UDP API' }
-OCNSocketPluginLibrary >> sendUDPOn: socketId datagram: aDatagramPacket [
+OCNSocketPluginLibrary >> sendUDPOn: aSocket datagram: aDatagramPacket [
 	"this method should deal with sourceAdress: from DatagramPacket."
-	^ self sendUDPDataOn: socketId contents: aDatagramPacket data toHost: aDatagramPacket targetAddress ip port: aDatagramPacket targetAddress port
+	^ self sendUDPDataOn: aSocket socketId contents: aDatagramPacket data toHost: aDatagramPacket targetAddress ip port: aDatagramPacket targetAddress port
 	
 ]
 

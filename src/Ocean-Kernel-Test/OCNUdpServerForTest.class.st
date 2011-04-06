@@ -83,10 +83,11 @@ OCNUdpServerForTest >> portNumber: anObject [
 
 { #category : #running }
 OCNUdpServerForTest >> serve [
-	listenSocket:= Socket newUDP.
+	
 	[
+		listenSocket:= Socket newUDP.
 		self listenSocket primSocketBind: self listenSocket socketHandle to: #[127 0 0 1] port: self portNumber.
-		[[self isRunning] whileTrue: [self handleConnections]] fork.
+		[self isRunning] whileTrue: [self handleConnections].
 	] ensure: [
 		self listenSocket closeAndDestroy].
 ]
@@ -99,6 +100,7 @@ OCNUdpServerForTest >> start [
 				ifTrue: [ ^ self ].
 			self isRunning: true ].
 	process := [self serve] newProcess.
+	"process priority: Processor lowIOPriority."
 	process resume
 ]
 
