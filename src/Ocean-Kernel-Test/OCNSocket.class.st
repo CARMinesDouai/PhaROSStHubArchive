@@ -99,6 +99,21 @@ OCNSocket >> newSocketId [
 ]
 
 { #category : #accessing }
+OCNSocket >> receiveDataBufferSize [
+	^2048
+]
+
+{ #category : #accessing }
+OCNSocket >> sendDataBufferSize [
+	^self receiveDataBufferSize
+]
+
+{ #category : #accessing }
+OCNSocket >> sendTimeOutSeconds [
+	^self connectionTimeOutSeconds
+]
+
+{ #category : #accessing }
 OCNSocket >> socketId [
 	^ socketId ifNil: [ socketId := self newSocketId]
 ]

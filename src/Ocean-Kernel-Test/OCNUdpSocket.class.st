@@ -6,7 +6,7 @@ Class {
 
 { #category : #private }
 OCNUdpSocket >> newSocketId [
-	^ self networkLibrary createUdpSocketDescriptorId 
+	^ self networkLibrary createUdpSocketDescriptorIdFor: self 
 ]
 
 { #category : #communicating }

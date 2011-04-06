@@ -49,6 +49,11 @@ OCNConversationTcpSocket >> connectedStateSymbol [
 
 ]
 
+{ #category : #accessing }
+OCNConversationTcpSocket >> connectionTimeOutSeconds [
+	^3
+]
+
 { #category : #'state testing' }
 OCNConversationTcpSocket >> isBound [
 	^self state = self boundStateSymbol
@@ -59,9 +64,9 @@ OCNConversationTcpSocket >> isConnected [
 	^self state = self connectedStateSymbol
 ]
 
-{ #category : #private }
+{ #category : #'initialize-release' }
 OCNConversationTcpSocket >> newSocketId [
-	^ self networkLibrary createTcpSocketDescriptorId 
+	^ self networkLibrary createTcpSocketDescriptorIdFor: self
 ]
 
 { #category : #communicating }
@@ -75,6 +80,6 @@ OCNConversationTcpSocket >> send: data [
 	| sentDataSize |
 	self isConnected
 		ifFalse: [ OCNSocketOperationForbiddenError signal: 'Socket should be connected before sending'  ].
-	^self networkLibrary sendData: data to: self
+	^self networkLibrary tcpSendData: data to: self
 	
 ]

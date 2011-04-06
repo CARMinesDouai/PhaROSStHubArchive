@@ -42,7 +42,7 @@ OCNUdpSocketSendingDataTest >> testSendingLargeAmountOfDataComparedToSizeOfSocke
 
 { #category : #'tests sending' }
 OCNUdpSocketSendingDataTest >> testSendingLessDataThanSocketsDataBufferSize [
-	self assertSendingDataOfSize: self library defaultDataBufferSize//2 .
+	self assertSendingDataOfSize: socket sendDataBufferSize//2 .
 
 ]
 

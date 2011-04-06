@@ -20,10 +20,10 @@ Class {
 		'writeSemaphore',
 		'readSemaIndex',
 		'writeSemaIndex',
-		'dataBuffer',
-		'connectionTimeOutSeconds'
+		'receiveDataBuffer'
 	],
 	#classVars : [
+		'Clean',
 		'Connected',
 		'InvalidSocket',
 		'OtherEndClosed',
@@ -31,7 +31,6 @@ Class {
 		'TCPSocketType',
 		'ThisEndClosed',
 		'UDPSocketType',
-		'Unconnected',
 		'WaitingForConnection'
 	],
 	#classInstVars : [
@@ -50,7 +49,7 @@ OCNSocketPluginLibrary class >> initialize [
 
 	"Socket Status Values"
 	InvalidSocket := -1.
-	Unconnected := 0.
+	Clean := 0.
 	WaitingForConnection := 1.
 	Connected := 2.
 	OtherEndClosed := 3.
@@ -134,18 +133,8 @@ OCNSocketPluginLibrary >> connect: aSocket toServerWithIpv4Address: serverAddres
 
 	self ensureNetworkInitialized.
 	self primSocket: aSocket socketId connectTo: serverAddress ip port: serverAddress port.
-	self waitForConnectionOf: aSocket socketId
+	self waitForConnectionOf: aSocket
 
-]
-
-{ #category : #'tcp api support' }
-OCNSocketPluginLibrary >> connectionTimeOutSeconds [
-	^connectionTimeOutSeconds
-]
-
-{ #category : #'tcp api support' }
-OCNSocketPluginLibrary >> connectionTimeOutSeconds: seconds [
-	connectionTimeOutSeconds := seconds
 ]
 
 { #category : #'converting socket addresses' }
@@ -153,78 +142,43 @@ OCNSocketPluginLibrary >> convertIpv4StringAddressToByteArray: stringAddress [
 	^((stringAddress subStrings: '.')  collect: [ :string | string asInteger]) asByteArray
 ]
 
-{ #category : #'TCP API' }
-OCNSocketPluginLibrary >> createTcpSocketDescriptorId [
+{ #category : #'initialize-release' }
+OCNSocketPluginLibrary >> createSocketDescriptorIdFor: anOCNSocket withType:  socketType [
 	
 	| socketId |
 	
 	self initSemaphores.
 
 	socketId := self primSocketCreateNetwork: 0
-			type: TCPSocketType
-			receiveBufferSize: self defaultDataBufferSize
-			sendBufSize: self defaultDataBufferSize
+			type: socketType
+			receiveBufferSize: anOCNSocket receiveDataBufferSize
+			sendBufSize: anOCNSocket sendDataBufferSize
 			semaIndex: semaIndex.
 	
-	socketId isNil
-		ifTrue: [ 
-			"socket creation failed"
-			self releaseSemaphores.
-			semaphore := nil]
-		ifFalse: [
-			(self primSocketConnectionStatus: socketId) = Unconnected ifTrue: [ ^socketId ] ].
-	
+	(socketId notNil and: [(self primSocketConnectionStatus: socketId) = Clean]) ifTrue: [
+				self dataBufferOfSize: anOCNSocket receiveDataBufferSize.
+				 ^socketId ].
+	self releaseSemaphores.
 	 OCNSocketOperationFailureError signal: 'Socket creation failure' 
 	
 ]
 
+{ #category : #'TCP API' }
+OCNSocketPluginLibrary >> createTcpSocketDescriptorIdFor: anOCNSocket [
+	
+	^self createSocketDescriptorIdFor: anOCNSocket withType: TCPSocketType	
+]
+
 { #category : #'UDP API' }
-OCNSocketPluginLibrary >> createUdpSocketDescriptorId [
-	
-	| socketId  |
-	
-	self initSemaphores.
-	
-	socketId := self primSocketCreateNetwork: 0
-			type: UDPSocketType
-			receiveBufferSize: self defaultDataBufferSize
-			sendBufSize: self defaultDataBufferSize
-			semaIndex: semaIndex
-			readSemaIndex: readSemaIndex
-			writeSemaIndex: writeSemaIndex.
-	
-	socketId isNil
-		ifTrue: [ 
-			"socket creation failed"
-			self releaseSemaphores.
-			OCNSocketOperationFailureError signal: 'Socket creation failure' ]
-		ifFalse: [ ^socketId ]
-]
+OCNSocketPluginLibrary >> createUdpSocketDescriptorIdFor: anOCNSocket [
+	^self createSocketDescriptorIdFor: anOCNSocket  withType: UDPSocketType
 
-{ #category : #accessing }
-OCNSocketPluginLibrary >> dataBuffer [
-	^dataBuffer
-]
-
-{ #category : #accessing }
-OCNSocketPluginLibrary >> dataBuffer: aByteArray [
-	dataBuffer := aByteArray
 ]
 
 { #category : #'initialize-release' }
 OCNSocketPluginLibrary >> dataBufferOfSize: bytesCount [
-	self dataBuffer: (ByteArray new: bytesCount)
+	self receiveDataBuffer: (ByteArray new: bytesCount)
 	
-]
-
-{ #category : #'initialize-release' }
-OCNSocketPluginLibrary >> defaultConnectionTimeOutSeconds [
-	^3
-]
-
-{ #category : #'initialize-release' }
-OCNSocketPluginLibrary >> defaultDataBufferSize [
-	^2048
 ]
 
 { #category : #'Socket API' }
@@ -261,13 +215,6 @@ OCNSocketPluginLibrary >> initSemaphores [
 	readSemaIndex := Smalltalk registerExternalObject: readSemaphore.
 	writeSemaIndex := Smalltalk registerExternalObject: writeSemaphore.
 
-]
-
-{ #category : #'initialize-release' }
-OCNSocketPluginLibrary >> initialize [
-	super initialize.
-	self dataBufferOfSize: self defaultDataBufferSize.
-	self connectionTimeOutSeconds: self defaultConnectionTimeOutSeconds
 ]
 
 { #category : #'name resolving' }
@@ -850,8 +797,18 @@ OCNSocketPluginLibrary >> primStartLookupOfName: hostName [
 { #category : #'TCP API' }
 OCNSocketPluginLibrary >> readFrom: aSocket [
 	| bytesRead |
-	bytesRead := self primSocket: aSocket socketId receiveDataInto: self dataBuffer startingAt: 1 count: self dataBuffer size.
-	^self dataBuffer copyFrom: 1 to: bytesRead
+	bytesRead := self primSocket: aSocket socketId receiveDataInto: self receiveDataBuffer startingAt: 1 count: self receiveDataBuffer size.
+	^self receiveDataBuffer copyFrom: 1 to: bytesRead
+]
+
+{ #category : #accessing }
+OCNSocketPluginLibrary >> receiveDataBuffer [
+	^receiveDataBuffer
+]
+
+{ #category : #accessing }
+OCNSocketPluginLibrary >> receiveDataBuffer: aByteArray [
+	receiveDataBuffer := aByteArray
 ]
 
 { #category : #'UDP private' }
@@ -910,26 +867,6 @@ OCNSocketPluginLibrary >> resolverUninitializedCode [
 	^ 0  "network is not initialized"
 ]
 
-{ #category : #'TCP API' }
-OCNSocketPluginLibrary >> sendData: aStringOrByteArray to: aSocket [
-	^self primSocket: aSocket socketId sendData: aStringOrByteArray startIndex: 1 count: aStringOrByteArray size.
-	
-"Socket>>sendData:
-	| bytesSent bytesToSend count |
-	bytesToSend := aStringOrByteArray size.
-	bytesSent := 0.
-	[bytesSent < bytesToSend] whileTrue: [
-		(self waitForSendDoneFor: 60)
-			ifFalse: [ConnectionTimedOut signal: 'send data timeout; data not sent'].
-		count := self primSocket: socketHandle
-			sendData: aStringOrByteArray
-			startIndex: bytesSent + 1
-			count: (bytesToSend - bytesSent min: 5000). 
-		bytesSent := bytesSent + count].
-	^ bytesSent
-"
-]
-
 { #category : #'UDP private' }
 OCNSocketPluginLibrary >> sendUDPDataOn: socketId contents: aByteArray toHost: hostAddress port: portNumber [
 	"Send a UDP packet containing the given data to the specified host/port."
@@ -938,8 +875,7 @@ OCNSocketPluginLibrary >> sendUDPDataOn: socketId contents: aByteArray toHost: h
 	bytesToSend := aByteArray size.
 	bytesSent := 0.
 	[bytesSent < bytesToSend] whileTrue: [
-		(self waitForSendDoneOn: socketId for: 20)
-			ifFalse: [OCNTimeOutException signal: 'send data timeout; data not sent'].
+		self waitForSendDoneOn: socketId for: 20.
 		count := self primSocket: socketId
 			sendUDPData: aByteArray
 			toHost: hostAddress
@@ -959,19 +895,51 @@ OCNSocketPluginLibrary >> sendUDPOn: socketId datagram: aDatagramPacket [
 	
 ]
 
+{ #category : #'TCP API' }
+OCNSocketPluginLibrary >> tcpSendData: aStringOrByteArray to: aSocket [
+	|socketId|
+	socketId := aSocket socketId.
+	self primSocket: socketId sendData: aStringOrByteArray startIndex: 1 count: aStringOrByteArray size.
+	self waitForSendDoneOn: socketId for: aSocket sendTimeOutSeconds.
+	^aStringOrByteArray size   
+	
+"Socket>>sendData:
+	| bytesSent bytesToSend count |
+	bytesToSend := aStringOrByteArray size.
+	bytesSent := 0.
+	[bytesSent < bytesToSend] whileTrue: [
+		(self waitForSendDoneFor: 60)
+			ifFalse: [ConnectionTimedOut signal: 'send data timeout; data not sent'].
+		count := self primSocket: socketHandle
+			sendData: aStringOrByteArray
+			startIndex: bytesSent + 1
+			count: (bytesToSend - bytesSent min: 5000). 
+		bytesSent := bytesSent + count].
+	^ bytesSent
+"
+]
+
 { #category : #'tcp api support' }
-OCNSocketPluginLibrary >> waitForConnectionOf: socketId [
+OCNSocketPluginLibrary >> waitForConnectionOf: anOCNSocket [
 	| endTime |
-	endTime := Time now asSeconds + self connectionTimeOutSeconds.
-	[(self primSocketConnectionStatus: socketId) = Connected ifTrue: [^self].
+	endTime := Time now asSeconds + anOCNSocket connectionTimeOutSeconds.
+	[(self primSocketConnectionStatus: anOCNSocket socketId) = Connected ifTrue: [^self].
 		Time now asSeconds > endTime.
 	] whileFalse.
 	OCNSocketOperationFailureError signal: 'Connection failure'
 
 ]
 
-{ #category : #'UDP private' }
-OCNSocketPluginLibrary >> waitForSendDoneOn: socketId for: timeout [
+{ #category : #'sending support' }
+OCNSocketPluginLibrary >> waitForSendDoneOn: socketId for: timeoutSeconds [
+	self 
+		waitForSendDoneOn: socketId 
+		for: timeoutSeconds 
+		onTimeOut:  [OCNTimeOutError signal: 'send data timeout; data not sent'].
+]
+
+{ #category : #'sending support' }
+OCNSocketPluginLibrary >> waitForSendDoneOn: socketId for: timeoutSeconds onTimeOut: aBlock [
 	"Wait up until the given deadline for the current send operation to complete. Return true if it completes by the deadline, false if not."
 
 	| startTime msecsDelta msecsEllapsed sendDone |
@@ -979,11 +947,11 @@ OCNSocketPluginLibrary >> waitForSendDoneOn: socketId for: timeout [
 " Look at Socket>>waitForSendDoneUntil: and Socket>>waitForSendDoneFor:"
 	
 	startTime := Time millisecondClockValue.
-	msecsDelta := (timeout * 1000) truncated.
+	msecsDelta := (timeoutSeconds * 1000) truncated.
 	[(sendDone := self primSocketSendDone: socketId) not and: [ socketId notNil
 			"Connection end and final data can happen fast, so test in this order"
 		and: [(msecsEllapsed := Time millisecondsSince: startTime) < msecsDelta]]] whileTrue: [
-			self writeSemaphore waitTimeoutMSecs: msecsDelta - msecsEllapsed].
+			writeSemaphore waitTimeoutMSecs: msecsDelta - msecsEllapsed].
 
-	^ sendDone
+	sendDone ifFalse: aBlock
 ]

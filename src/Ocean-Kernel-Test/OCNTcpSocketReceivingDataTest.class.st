@@ -51,14 +51,14 @@ OCNTcpSocketReceivingDataTest >> testReceiveOnUnconnectedSocket [
 
 { #category : #testing }
 OCNTcpSocketReceivingDataTest >> testReceivingLargeAmountOfDataComparedToSizeOfSocketsDataBuffer [
-	self assertReceivingDataOfSize: 1000 * self library defaultDataBufferSize.
+	self assertReceivingDataOfSize: 1000 * socket receiveDataBufferSize.
 
 ]
 
 { #category : #testing }
 OCNTcpSocketReceivingDataTest >> testReceivingLessDataThanSocketsDataBufferSize [
 	| dataSize dataToSend  receivedData | 
-	dataSize := self library defaultDataBufferSize//2 .
+	dataSize := socket receiveDataBufferSize//2 .
 	self assertReceivingDataOfSize: dataSize
 
 ]
@@ -66,6 +66,6 @@ OCNTcpSocketReceivingDataTest >> testReceivingLessDataThanSocketsDataBufferSize 
 { #category : #testing }
 OCNTcpSocketReceivingDataTest >> testReceivingMoreDataThanSizeOfSocketsDataBuffer [
 	| dataSize |
-	dataSize := 2 * self library defaultDataBufferSize.
+	dataSize := 2 * socket receiveDataBufferSize.
 	self assertReceivingDataOfSize: dataSize
 ]

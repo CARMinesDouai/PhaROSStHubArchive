@@ -47,18 +47,18 @@ OCNTcpSocketSendingDataTest >> testSendOnUnconnectedSocket [
 
 { #category : #'tests sending' }
 OCNTcpSocketSendingDataTest >> testSendingLargeAmountOfDataComparedToSizeOfSocketsDataBuffer [
-	self assertSendingDataOfSize: 1000 * self library defaultDataBufferSize.
+	self assertSendingDataOfSize: 1000 * socket sendDataBufferSize.
 
 ]
 
 { #category : #'tests sending' }
 OCNTcpSocketSendingDataTest >> testSendingLessDataThanSocketsDataBufferSize [
-	self assertSendingDataOfSize: self library defaultDataBufferSize//2 .
+	self assertSendingDataOfSize: socket sendDataBufferSize//2 .
 
 ]
 
 { #category : #'tests sending' }
 OCNTcpSocketSendingDataTest >> testSendingMoreDataThanSizeOfSocketsDataBuffer [
-	self assertSendingDataOfSize: 2 * self library defaultDataBufferSize.
+	self assertSendingDataOfSize: 2 * socket sendDataBufferSize.
 
 ]
