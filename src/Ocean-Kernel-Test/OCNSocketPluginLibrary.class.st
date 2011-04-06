@@ -794,13 +794,6 @@ OCNSocketPluginLibrary >> primStartLookupOfName: hostName [
 
 ]
 
-{ #category : #'TCP API' }
-OCNSocketPluginLibrary >> readFrom: aSocket [
-	| bytesRead |
-	bytesRead := self primSocket: aSocket socketId receiveDataInto: self receiveDataBuffer startingAt: 1 count: self receiveDataBuffer size.
-	^self receiveDataBuffer copyFrom: 1 to: bytesRead
-]
-
 { #category : #accessing }
 OCNSocketPluginLibrary >> receiveDataBuffer [
 	^receiveDataBuffer
@@ -896,27 +889,31 @@ OCNSocketPluginLibrary >> sendUDPOn: socketId datagram: aDatagramPacket [
 ]
 
 { #category : #'TCP API' }
+OCNSocketPluginLibrary >> tcpReceiveFrom: aSocket [
+	| bytesRead |
+	bytesRead := self primSocket: aSocket socketId receiveDataInto: self receiveDataBuffer startingAt: 1 count: self receiveDataBuffer size.
+	^self receiveDataBuffer copyFrom: 1 to: bytesRead
+]
+
+{ #category : #'TCP API' }
 OCNSocketPluginLibrary >> tcpSendData: aStringOrByteArray to: aSocket [
-	|socketId|
+	|socketId sentCount totalSentCount toSendCount totalToSendCount indexOfFirstByteToSend pendingBytesCount| 
 	socketId := aSocket socketId.
-	self primSocket: socketId sendData: aStringOrByteArray startIndex: 1 count: aStringOrByteArray size.
-	self waitForSendDoneOn: socketId for: aSocket sendTimeOutSeconds.
-	^aStringOrByteArray size   
-	
-"Socket>>sendData:
-	| bytesSent bytesToSend count |
-	bytesToSend := aStringOrByteArray size.
-	bytesSent := 0.
-	[bytesSent < bytesToSend] whileTrue: [
-		(self waitForSendDoneFor: 60)
-			ifFalse: [ConnectionTimedOut signal: 'send data timeout; data not sent'].
-		count := self primSocket: socketHandle
-			sendData: aStringOrByteArray
-			startIndex: bytesSent + 1
-			count: (bytesToSend - bytesSent min: 5000). 
-		bytesSent := bytesSent + count].
-	^ bytesSent
-"
+	totalToSendCount := aStringOrByteArray size.
+	totalSentCount := 0.
+	[totalSentCount < totalToSendCount] whileTrue: [
+		indexOfFirstByteToSend := totalSentCount + 1.
+		pendingBytesCount := totalToSendCount - totalSentCount.
+		toSendCount := aSocket sendDataBufferSize min: pendingBytesCount.
+		sentCount := self 
+						primSocket: socketId 
+						sendData: aStringOrByteArray 
+						startIndex: indexOfFirstByteToSend 
+						count: toSendCount.
+		self waitForSendDoneOn: socketId for: aSocket sendTimeOutSeconds.
+		totalSentCount := sentCount + totalSentCount].
+	^totalSentCount  
+
 ]
 
 { #category : #'tcp api support' }

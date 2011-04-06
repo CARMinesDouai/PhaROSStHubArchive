@@ -6,7 +6,7 @@ Class {
 
 { #category : #'tests sending' }
 OCNTcpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
-	| dataToSend receivedData | 
+	| dataToSend receivedData |
 	self startServer.
 	self connect.
 	dataToSend := self randomAsciiStringOfSize: dataSize.

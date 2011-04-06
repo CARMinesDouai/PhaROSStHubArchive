@@ -72,7 +72,7 @@ OCNConversationTcpSocket >> newSocketId [
 { #category : #communicating }
 OCNConversationTcpSocket >> receive [
 	self isConnected ifFalse: [OCNSocketOperationForbiddenError signal: 'Socket should be connected before receiving'].
-	^self networkLibrary readFrom: self	
+	^self networkLibrary tcpReceiveFrom: self	
 ]
 
 { #category : #communicating }

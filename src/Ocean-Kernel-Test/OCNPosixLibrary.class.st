@@ -545,16 +545,6 @@ OCNPosixLibrary >> posixIPV4AddressFrom: aSocketAddress [
 	^posixAddress
 ]
 
-{ #category : #'TCP API' }
-OCNPosixLibrary >> readFrom: aSocket [
-	self
-		readFrom: aSocket socketId
-		buffer: self alienDataBuffer
-		ofSize: self alienDataBufferSize
-		result: self alienResult.
-	^ self receivedString
-]
-
 { #category : #'socket functions' }
 OCNPosixLibrary >> readFrom: socketId buffer: buffer ofSize: bufferSize result: result [
 
@@ -700,26 +690,6 @@ OCNPosixLibrary >> receivedString [
 	numberOfBytesReceived == 0
 		ifTrue: [ ^ '' ].
 	^ self alienDataBuffer strcpyFrom: 1 ofSize: numberOfBytesReceived
-]
-
-{ #category : #'TCP API' }
-OCNPosixLibrary >> sendData: data to: aSocket [
-	| sentDataSize |
-	sentDataSize := data byteSize.
-	sentDataSize > self alienDataBufferSize
-		ifTrue: [ self alienDataBufferOfSize: sentDataSize ].
-	self alienDataBuffer
-		replaceFrom: 1
-		to: sentDataSize
-		with: data
-		startingAt: 1.
-	self
-		sendTo: aSocket socketId
-		buffer: self alienDataBuffer
-		ofSize: sentDataSize
-		flags: 0
-		result: self alienResult.
-	^ self latestPosixResult
 ]
 
 { #category : #'function names' }
@@ -927,4 +897,34 @@ Insufficient resources were available in the system to perform the operation.
 [ENOMEM]
 Insufficient memory was available to fulfill the request.
 "
+]
+
+{ #category : #'TCP API' }
+OCNPosixLibrary >> tcpReceiveFrom: aSocket [
+	self
+		readFrom: aSocket socketId
+		buffer: self alienDataBuffer
+		ofSize: self alienDataBufferSize
+		result: self alienResult.
+	^ self receivedString
+]
+
+{ #category : #'TCP API' }
+OCNPosixLibrary >> tcpSendData: data to: aSocket [
+	| sentDataSize |
+	sentDataSize := data byteSize.
+	sentDataSize > self alienDataBufferSize
+		ifTrue: [ self alienDataBufferOfSize: sentDataSize ].
+	self alienDataBuffer
+		replaceFrom: 1
+		to: sentDataSize
+		with: data
+		startingAt: 1.
+	self
+		sendTo: aSocket socketId
+		buffer: self alienDataBuffer
+		ofSize: sentDataSize
+		flags: 0
+		result: self alienResult.
+	^ self latestPosixResult
 ]
