@@ -17,7 +17,7 @@ OCNUdpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
 		
 	[sentDataSize := self socket send: aDatagramPacket] on: OCNInvalidDatagramPacketError do: [ :e | e pass ].
 	
-	(Delay forMilliseconds: 150) wait.
+	(Delay forMilliseconds: 50) wait.
 	
 	receivedData := self server receivedData.
 	

@@ -155,6 +155,7 @@ OCNSocketPluginLibrary >> createSocketDescriptorIdFor: anOCNSocket withType:  so
 			sendBufSize: anOCNSocket sendDataBufferSize
 			semaIndex: semaIndex.
 	
+	self error: 'clean the following test'.
 	(socketId notNil and: [((status := (self primSocketConnectionStatus: socketId)) = Clean) or: [ status = Connected ]]) ifTrue: [
 				self receiveDataBuffer: (ByteArray new: anOCNSocket receiveDataBufferSize).
 				 ^socketId ].
