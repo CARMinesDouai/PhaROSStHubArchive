@@ -19,26 +19,11 @@ OCNUdpServerForTest class >> onPortNumber: anInteger [
 		yourself  
 ]
 
-{ #category : #running }
-OCNUdpServerForTest >> handleConnections [
-	
-	"[self interactThenClose] fork"
-	
-	self interactThenClose
-
-]
-
 { #category : #accessing }
 OCNUdpServerForTest >> initialize [ 
 	super initialize.
 	stateLock := Mutex new.
 	self isRunning: false.
-]
-
-{ #category : #running }
-OCNUdpServerForTest >> interactThenClose [
-
-		self interactThrough
 ]
 
 { #category : #running }
@@ -87,7 +72,7 @@ OCNUdpServerForTest >> serve [
 	[
 		listenSocket:= Socket newUDP.
 		self listenSocket primSocketBind: self listenSocket socketHandle to: #[127 0 0 1] port: self portNumber.
-		[self isRunning] whileTrue: [self handleConnections].
+		[self isRunning] whileTrue: [self interactThrough].
 	] ensure: [
 		self listenSocket closeAndDestroy].
 ]

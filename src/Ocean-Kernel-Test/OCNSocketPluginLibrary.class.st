@@ -145,7 +145,7 @@ OCNSocketPluginLibrary >> convertIpv4StringAddressToByteArray: stringAddress [
 { #category : #'initialize-release' }
 OCNSocketPluginLibrary >> createSocketDescriptorIdFor: anOCNSocket withType:  socketType [
 	
-	| socketId |
+	| socketId status |
 	
 	self initSemaphores.
 
@@ -155,7 +155,7 @@ OCNSocketPluginLibrary >> createSocketDescriptorIdFor: anOCNSocket withType:  so
 			sendBufSize: anOCNSocket sendDataBufferSize
 			semaIndex: semaIndex.
 	
-	(socketId notNil and: [(self primSocketConnectionStatus: socketId) = Clean]) ifTrue: [
+	(socketId notNil and: [((status := (self primSocketConnectionStatus: socketId)) = Clean) or: [ status = Connected ]]) ifTrue: [
 				self receiveDataBuffer: (ByteArray new: anOCNSocket receiveDataBufferSize).
 				 ^socketId ].
 	self releaseSemaphores.
@@ -823,7 +823,7 @@ OCNSocketPluginLibrary >> receiveUDPDatagramOn: aSocket [
 
 	| resultInfos aDatagramPacket |
 	
-	resultInfos := ByteArray new: 4.
+	"resultInfos := ByteArray new: 4."
 	resultInfos := self receiveUDPDataOn: aSocket socketId into: self receiveDataBuffer.
 	
 	aDatagramPacket := OCNDatagramPacket new.

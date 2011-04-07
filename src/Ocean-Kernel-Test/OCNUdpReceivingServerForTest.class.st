@@ -14,7 +14,8 @@ Class {
 	#name : #OCNUdpReceivingServerForTest,
 	#superclass : #OCNUdpServerForTest,
 	#instVars : [
-		'receivedData'
+		'receivedData',
+		'buffer'
 	],
 	#category : #'Ocean-Kernel-TestSupport'
 }
@@ -22,7 +23,7 @@ Class {
 { #category : #'initialize-release' }
 OCNUdpReceivingServerForTest >> initialize [ 
 	super initialize.
-	receivedData := (ByteArray new: 2000)  
+	buffer := (ByteArray new: 100000)  
 ]
 
 { #category : #accessing }
@@ -34,16 +35,18 @@ OCNUdpReceivingServerForTest >> interactThrough [
 	
 	"perhaps should use the read semaphore attached to the sockets"
 	
-	|socketId endTime|
+	|socketId endTime resultArray receivedDataSize|
 	
 	socketId := self listenSocket socketHandle.
 	endTime := Time now asSeconds + 3.
 	[
 			(self listenSocket primSocketReceiveDataAvailable: socketId)
-				ifTrue: [^ self listenSocket primSocket: socketId
-							receiveUDPDataInto: receivedData
+				ifTrue: [resultArray := self listenSocket primSocket: socketId
+							receiveUDPDataInto: buffer
 							startingAt: 1
-							count: receivedData size].
+							count: buffer size.
+						receivedData := (buffer copyFrom: 1 to: (resultArray at: 1)) asString	
+						].
 			Time now asSeconds > endTime.
 		] whileFalse.
 ]

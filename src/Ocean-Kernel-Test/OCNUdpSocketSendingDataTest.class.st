@@ -6,7 +6,7 @@ Class {
 
 { #category : #asserting }
 OCNUdpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
-	| dataToSend receivedData aDatagramPacket receivedDataStream sentDataSize| 
+	| dataToSend receivedData aDatagramPacket sentDataSize| 
 	self startServer.
 	dataToSend := self randomAsciiStringOfSize: dataSize.
 	aDatagramPacket := OCNDatagramPacket new.
@@ -17,7 +17,7 @@ OCNUdpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
 		
 	[sentDataSize := self socket send: aDatagramPacket] on: OCNInvalidDatagramPacketError do: [ :e | e pass ].
 	
-	"(Delay forMilliseconds: 50) wait."
+	(Delay forMilliseconds: 150) wait.
 	
 	receivedData := self server receivedData.
 	
@@ -42,12 +42,12 @@ OCNUdpSocketSendingDataTest >> testSendingLargeAmountOfDataComparedToSizeOfSocke
 
 { #category : #'tests sending' }
 OCNUdpSocketSendingDataTest >> testSendingLessDataThanSocketsDataBufferSize [
-	self assertSendingDataOfSize: socket sendDataBufferSize//2 .
+	self assertSendingDataOfSize: self socket sendDataBufferSize//2 .
 
 ]
 
 { #category : #'tests sending' }
 OCNUdpSocketSendingDataTest >> testSendingMoreDataThanSizeOfSocketsDataBuffer [
-	self assertSendingDataOfSize: 2 * self library defaultDataBufferSize
+	self assertSendingDataOfSize: 2 * self socket sendDataBufferSize 
 
 ]

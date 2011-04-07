@@ -7,24 +7,24 @@ Class {
 	#category : #'Ocean-Kernel-TestSupport'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 OCNUdpSendingServerForTest >> dataToSend [
 	^dataToSend 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 OCNUdpSendingServerForTest >> dataToSend: aString [
 	dataToSend  :=  aString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 OCNUdpSendingServerForTest >> interactThrough [
 	
 	self listenSocket sendUDPData: self dataToSend toHost: self listenSocket port: self portNumber
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 OCNUdpSendingServerForTest >> sendData: aString [
 	self dataToSend: aString
 ]
