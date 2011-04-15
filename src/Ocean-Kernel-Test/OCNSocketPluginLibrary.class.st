@@ -20,7 +20,8 @@ Class {
 		'writeSemaphore',
 		'readSemaIndex',
 		'writeSemaIndex',
-		'receiveDataBuffer'
+		'receiveDataBuffer',
+		'primitiveOnlySupportsOneSemaphore'
 	],
 	#classVars : [
 		'Clean',
@@ -146,6 +147,7 @@ OCNSocketPluginLibrary >> convertIpv4StringAddressToByteArray: stringAddress [
 OCNSocketPluginLibrary >> createSocketDescriptorIdFor: anOCNSocket withType:  socketType [
 	
 	| socketId status |
+	primitiveOnlySupportsOneSemaphore := false.
 	
 	self initSemaphores.
 
@@ -658,7 +660,12 @@ OCNSocketPluginLibrary >> primSocketCreateNetwork: netType type: socketType rece
 	reading and writing"
 
 	<primitive: 'primitiveSocketCreate3Semaphores' module: 'SocketPlugin'>
-	
+	primitiveOnlySupportsOneSemaphore := true.
+	^ self primSocketCreateNetwork: netType
+			type: socketType
+			receiveBufferSize: rcvBufSize
+			sendBufSize: sendBufSize
+			semaIndex: semaIndex	
 ]
 
 { #category : #'Unused primitives' }
@@ -887,23 +894,19 @@ OCNSocketPluginLibrary >> tcpReceiveFrom: aSocket [
 ]
 
 { #category : #'TCP API' }
-OCNSocketPluginLibrary >> tcpSendData: aStringOrByteArray to: aSocket [
-	|socketId sentCount totalSentCount toSendCount totalToSendCount indexOfFirstByteToSend pendingBytesCount| 
+OCNSocketPluginLibrary >> tcpSendData: aByteStringOrByteArray to: aSocket [
+	|socketId sentCount| 
 	socketId := aSocket socketId.
-	totalToSendCount := aStringOrByteArray size.
-	totalSentCount := 0.
-	[totalSentCount < totalToSendCount] whileTrue: [
-		indexOfFirstByteToSend := totalSentCount + 1.
-		pendingBytesCount := totalToSendCount - totalSentCount.
-		toSendCount := aSocket sendDataBufferSize min: pendingBytesCount.
-		sentCount := self 
-						primSocket: socketId 
-						sendData: aStringOrByteArray 
-						startIndex: indexOfFirstByteToSend 
-						count: toSendCount.
-		self waitForSendDoneOn: socketId for: aSocket sendTimeOutSeconds.
-		totalSentCount := sentCount + totalSentCount].
-	^totalSentCount  
+	sentCount := self 
+					primSocket: socketId 
+					sendData: aByteStringOrByteArray 
+					startIndex: 1 
+					count: aByteStringOrByteArray size.
+	self 
+		waitForSendDoneOn: socketId 
+		for: aSocket sendTimeOutSeconds.
+	^sentCount
+
 
 ]
 
@@ -959,7 +962,13 @@ OCNSocketPluginLibrary >> waitForSendDoneOn: socketId for: timeoutSeconds onTime
 	[(sendDone := self primSocketSendDone: socketId) not and: [ socketId notNil
 			"Connection end and final data can happen fast, so test in this order"
 		and: [(msecsEllapsed := Time millisecondsSince: startTime) < msecsDelta]]] whileTrue: [
-			writeSemaphore waitTimeoutMSecs: msecsDelta - msecsEllapsed].
+			self writeSemaphore waitTimeoutMSecs: msecsDelta - msecsEllapsed].
 
 	sendDone ifFalse: aBlock
+]
+
+{ #category : #'sending support' }
+OCNSocketPluginLibrary >> writeSemaphore [
+	primitiveOnlySupportsOneSemaphore ifTrue: [^semaphore].
+	^writeSemaphore
 ]

@@ -76,10 +76,21 @@ OCNConversationTcpSocket >> receive [
 ]
 
 { #category : #communicating }
-OCNConversationTcpSocket >> send: data [
-	| sentDataSize |
+OCNConversationTcpSocket >> send: aByteStringOrByteArray [
+	| totalToSendCount totalSentCount  indexOfFirstByteToSend pendingBytesCount toSendCount sentCount indexOfLastByteToSend dataToSend|
 	self isConnected
-		ifFalse: [ OCNSocketOperationForbiddenError signal: 'Socket should be connected before sending'  ].
-	^self networkLibrary tcpSendData: data to: self
-	
+		ifFalse: [ OCNSocketOperationForbiddenError signal: 'Socket should be connected before sending' ].
+	totalToSendCount := aByteStringOrByteArray size.
+	totalSentCount := 0.
+	[totalSentCount < totalToSendCount] whileTrue: [
+		indexOfFirstByteToSend := totalSentCount + 1.
+		pendingBytesCount := totalToSendCount - totalSentCount.
+		toSendCount := self sendDataBufferSize min: pendingBytesCount.
+		indexOfLastByteToSend := indexOfFirstByteToSend + toSendCount - 1. 
+		dataToSend := aByteStringOrByteArray copyFrom: indexOfFirstByteToSend  to:  indexOfLastByteToSend.
+		sentCount := self networkLibrary tcpSendData: dataToSend to: self.
+		totalSentCount := sentCount + totalSentCount.
+		"Transcript cr; show: totalSentCount.  "
+	].
+	^totalSentCount  
 ]

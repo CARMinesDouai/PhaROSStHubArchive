@@ -8,10 +8,10 @@ Class {
 OCNTcpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
 	| dataToSend receivedData |
 	self startServer.
-	self connect.
+	self connect. 
 	dataToSend := self randomAsciiStringOfSize: dataSize.
 	self assert: (self socket send: dataToSend) = dataSize.
-	(Delay forMilliseconds: 50) wait.
+	(Delay forMilliseconds: 500) wait. 
 	receivedData := self server receivedData.
 	self assert: receivedData size = dataSize.
 	self assert: receivedData = dataToSend.

@@ -2,7 +2,7 @@ Class {
 	#name : #OCNTcpReceivingServerForTest,
 	#superclass : #OCNTcpServerForTest,
 	#instVars : [
-		'receivedDataStream'
+		'receivedData'
 	],
 	#category : #'Ocean-Kernel-TestSupport'
 }
@@ -10,15 +10,27 @@ Class {
 { #category : #'initialize-release' }
 OCNTcpReceivingServerForTest >> initialize [ 
 	super initialize.
-	receivedDataStream := (String new: 2000) writeStream 
+	receivedData := String new
 ]
 
 { #category : #accessing }
 OCNTcpReceivingServerForTest >> interactThrough: aSocketStream [
-	receivedDataStream nextPutAll: aSocketStream upToEnd
+	|delay timeOutCounter |
+	timeOutCounter := 10.
+	delay := (Delay forMilliseconds: 150) wait.
+	[aSocketStream isDataAvailable] whileFalse: [
+		timeOutCounter = 0 ifTrue: [self error: self className, 'TimeOut waiting for data'].
+		timeOutCounter := timeOutCounter - 1.
+		delay wait].
+	[aSocketStream  isDataAvailable] whileTrue: 
+			[aSocketStream socket dataAvailable ifTrue: [aSocketStream receiveData].
+			receivedData := receivedData,  aSocketStream nextAllInBuffer.
+			delay wait.
+			].
+
 ]
 
 { #category : #accessing }
 OCNTcpReceivingServerForTest >> receivedData [
-	^receivedDataStream contents 
+	^receivedData
 ]
