@@ -1,10 +1,12 @@
 "
-server := OCNUdpReceivingServerForTest onPortNumber: 9091.
+server := OCNUdpReceivingServerForTest onPortNumber: 8888.
 server start.  
+
+""java ClientUDPEcho localhost 8888 totototo""
 
 server receivedData asString 
 
-server stop.
+server kill.
 Socket allInstancesDo: [ :s | s closeAndDestroy ]   .
 Socket allInstances.  
 
@@ -23,7 +25,7 @@ Class {
 { #category : #'initialize-release' }
 OCNUdpReceivingServerForTest >> initialize [ 
 	super initialize.
-	buffer := (ByteArray new: 100000)  
+	buffer := (ByteArray new: 70000)  
 ]
 
 { #category : #accessing }

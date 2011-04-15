@@ -155,7 +155,7 @@ OCNSocketPluginLibrary >> createSocketDescriptorIdFor: anOCNSocket withType:  so
 			sendBufSize: anOCNSocket sendDataBufferSize
 			semaIndex: semaIndex.
 	
-	self flag: 'clean the following test'.
+	self flag: 'clean the following test. a newly created Udp socket is in the Connected state'.
 	(socketId notNil and: [((status := (self primSocketConnectionStatus: socketId)) = Clean) or: [ status = Connected ]]) ifTrue: [
 				self receiveDataBuffer: (ByteArray new: anOCNSocket receiveDataBufferSize).
 				 ^socketId ].
@@ -807,15 +807,14 @@ OCNSocketPluginLibrary >> receiveUDPDataOn: socketId into: aByteArray [
 	
 	"perhaps should use the read semaphore attached to the sockets"
 	
-	[true]
-		whileTrue: [
-			(self primSocketReceiveDataAvailable: socketId)
-				ifTrue: [^ self primSocket: socketId
-							receiveUDPDataInto: aByteArray
-							startingAt: 1
-							count: aByteArray size]
-		]
-
+	
+	
+	self waitForDataOn: socketId for: 3 onTimedOut: [ OCNTimeOutError signal: 'no data available' ].
+	^ self primSocket: socketId
+			receiveUDPDataInto: aByteArray
+			startingAt: 1
+			count: aByteArray size.
+	
 ]
 
 { #category : #'UDP API' }
@@ -916,6 +915,26 @@ OCNSocketPluginLibrary >> waitForConnectionOf: anOCNSocket [
 		Time now asSeconds > endTime.
 	] whileFalse.
 	OCNSocketOperationFailureError signal: 'Connection failure'
+
+]
+
+{ #category : #'receiving support' }
+OCNSocketPluginLibrary >> waitForDataOn: socketId for: timeoutSeconds onTimedOut: timedOutBlock [
+	"Wait for the given nr of seconds for data to arrive."
+	
+	| startTime msecsDelta |
+	startTime := Time millisecondClockValue.
+	msecsDelta := (timeoutSeconds * 1000) truncated.
+	[(Time millisecondsSince: startTime) < msecsDelta] whileTrue: [
+		(self primSocketReceiveDataAvailable: socketId) ifTrue: [^self].
+		"(socketId isNil or: [ (self primSocketConnectionStatus: socketId) ~= Connected]) ifTrue: [ 
+				
+		]."
+		readSemaphore waitTimeoutMSecs: 
+			(msecsDelta - (Time millisecondsSince: startTime) max: 0).
+	].
+	
+	(self primSocketReceiveDataAvailable: socketId) ifFalse: timedOutBlock
 
 ]
 

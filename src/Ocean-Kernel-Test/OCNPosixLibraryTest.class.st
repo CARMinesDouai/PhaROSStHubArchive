@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'networkLibrary'
 	],
-	#category : #'Ocean-Kernel-Test'
+	#category : #'Ocean-Libraries-Posix'
 }
 
 { #category : #accessing }

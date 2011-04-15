@@ -1,3 +1,15 @@
+"
+|server|
+server := OCNUdpSendingServerForTest onPortNumber: 9091.
+server dataToSend: 'Hello Word'.
+server start.  
+
+
+
+server kill.
+Socket allInstancesDo: [ :s | s closeAndDestroy ]   .
+Socket allInstances.  
+"
 Class {
 	#name : #OCNUdpSendingServerForTest,
 	#superclass : #OCNUdpServerForTest,
@@ -19,9 +31,16 @@ OCNUdpSendingServerForTest >> dataToSend: aString [
 
 { #category : #running }
 OCNUdpSendingServerForTest >> interactThrough [
-	
-	self listenSocket sendUDPData: self dataToSend toHost: self listenSocket port: self portNumber
-	
+	self dataToSend notNil ifTrue: [
+		"self listenSocket sendUDPData: self dataToSend toHost: #[127 0 0 1] port: self portNumber"
+		self listenSocket primSocket: self listenSocket socketHandle
+			sendUDPData: self dataToSend
+			toHost: #[127 0 0 1]
+			port:  self portNumber
+			startIndex: 1
+			count: self dataToSend size
+	]
+		
 ]
 
 { #category : #accessing }
