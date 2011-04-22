@@ -59,6 +59,8 @@ OCNSocketPluginLibrary class >> initialize [
 
 { #category : #'instance creation' }
 OCNSocketPluginLibrary class >> proxy [
+	self flag: 'Reimplement the initializeNetwork stuff'.
+	NetNameResolver initializeNetwork.
 	^self new
 ]
 
@@ -148,7 +150,6 @@ OCNSocketPluginLibrary >> createSocketDescriptorIdFor: anOCNSocket withType:  so
 	
 	| socketId status |
 	primitiveOnlySupportsOneSemaphore := false.
-	
 	self initSemaphores.
 
 	socketId := self primSocketCreateNetwork: 0
@@ -923,7 +924,7 @@ OCNSocketPluginLibrary >> waitForConnectionOf: anOCNSocket [
 
 { #category : #'receiving support' }
 OCNSocketPluginLibrary >> waitForDataOn: socketId for: timeoutSeconds onTimedOut: timedOutBlock [
-	"Wait for the given nr of seconds for data to arrive."
+	"Wait for the given nr of seconds for data to arrive or signal a TimeOutException."
 	
 	| startTime msecsDelta |
 	startTime := Time millisecondClockValue.
@@ -933,8 +934,8 @@ OCNSocketPluginLibrary >> waitForDataOn: socketId for: timeoutSeconds onTimedOut
 		"(socketId isNil or: [ (self primSocketConnectionStatus: socketId) ~= Connected]) ifTrue: [ 
 				
 		]."
-		readSemaphore waitTimeoutMSecs: 
-			(msecsDelta - (Time millisecondsSince: startTime) max: 0).
+		"readSemaphore waitTimeoutMSecs: (msecsDelta / 10)".
+		(Delay forMilliseconds: msecsDelta / 10) wait
 	].
 	
 	(self primSocketReceiveDataAvailable: socketId) ifFalse: timedOutBlock

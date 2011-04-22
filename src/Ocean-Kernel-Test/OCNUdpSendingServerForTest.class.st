@@ -31,14 +31,17 @@ OCNUdpSendingServerForTest >> dataToSend: aString [
 
 { #category : #running }
 OCNUdpSendingServerForTest >> interactThrough [
-	self dataToSend notNil ifTrue: [
+	|sentBytes|
+
+	self dataToSend isEmptyOrNil ifFalse: [
 		"self listenSocket sendUDPData: self dataToSend toHost: #[127 0 0 1] port: self portNumber"
-		self listenSocket primSocket: self listenSocket socketHandle
+		sentBytes := self listenSocket primSocket: self listenSocket socketHandle
 			sendUDPData: self dataToSend
 			toHost: #[127 0 0 1]
 			port:  self portNumber
 			startIndex: 1
-			count: self dataToSend size
+			count: self dataToSend size.
+			dataToSend := dataToSend allButFirst: sentBytes
 	]
 		
 ]

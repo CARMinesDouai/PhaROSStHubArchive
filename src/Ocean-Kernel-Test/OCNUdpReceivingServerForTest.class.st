@@ -25,7 +25,8 @@ Class {
 { #category : #'initialize-release' }
 OCNUdpReceivingServerForTest >> initialize [ 
 	super initialize.
-	buffer := (ByteArray new: 70000)  
+	buffer := (ByteArray new: 70000).
+	
 ]
 
 { #category : #accessing }
@@ -56,4 +57,10 @@ OCNUdpReceivingServerForTest >> interactThrough [
 { #category : #accessing }
 OCNUdpReceivingServerForTest >> receivedData [
 	^receivedData
+]
+
+{ #category : #'initialize-release' }
+OCNUdpReceivingServerForTest >> setUpListenSocket [ 
+	super setUpListenSocket.
+	self listenSocket primSocketBind: self listenSocket socketHandle to: #[127 0 0 1] port: self portNumber.
 ]

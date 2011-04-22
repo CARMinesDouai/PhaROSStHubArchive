@@ -24,6 +24,7 @@ OCNUdpServerForTest >> initialize [
 	super initialize.
 	stateLock := Mutex new.
 	self isRunning: false.
+	
 ]
 
 { #category : #running }
@@ -70,11 +71,16 @@ OCNUdpServerForTest >> portNumber: anObject [
 OCNUdpServerForTest >> serve [
 	
 	[
-		listenSocket:= Socket newUDP.
-		self listenSocket primSocketBind: self listenSocket socketHandle to: #[127 0 0 1] port: self portNumber.
+		self setUpListenSocket.
 		[self isRunning] whileTrue: [self interactThrough].
 	] ensure: [
 		self listenSocket closeAndDestroy].
+]
+
+{ #category : #accessing }
+OCNUdpServerForTest >> setUpListenSocket [
+	listenSocket:= Socket newUDP
+	
 ]
 
 { #category : #running }
