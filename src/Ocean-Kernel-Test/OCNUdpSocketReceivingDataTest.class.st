@@ -26,40 +26,39 @@ Class {
 OCNUdpSocketReceivingDataTest >> assertReceivingDataOfSize: dataSize [
 	| receivedSize sentBytes listenSocket receiveProcess dataToSend receptionStream readMore dataPacket receivedData |
 	dataToSend := self randomAsciiStringOfSize: dataSize.
+
 	
 	self socket bindToLocalHostPort: self serverPort.
 
 	receptionStream := WriteStream on: (ByteArray new: dataSize).
 	readMore := true.
-	receiveProcess := [[ readMore ]
-		whileTrue: [ 
+	receiveProcess := [1 to: ((dataSize // self socket receiveDataBufferSize) + ((dataSize rem: (self socket receiveDataBufferSize)) / dataSize))
+		do: [:e |
 			dataPacket := self socket receive.
 			receptionStream nextPutAll: dataPacket data.
 			readMore := dataPacket more]] newProcess. "On pense que le flag more n'est pas géré par la primitive sendUDP de oldSocket"
 	
-	"receiveProcess priority: Processor lowIOPriority."
+	receiveProcess priority: Processor lowIOPriority.
 	receiveProcess resume.
 	
-	
-
-	"self startServer."
-	"old socket for sending"
 	listenSocket := Socket newUDPWithBufferOfSize: self socket receiveDataBufferSize. "we should send packets containing at most readDataBufferSize characters of the receiving socket"
 	
+
 	sentBytes := 0.
-	[sentBytes < dataToSend size ] whileTrue: [ |count|
+
+	[sentBytes < dataToSend size ] whileTrue: [
+		|count maxSending|
+		maxSending:= (sentBytes + self socket receiveDataBufferSize) min: dataToSend size.
 		count :=  listenSocket primSocket:  listenSocket socketHandle
 			sendUDPData: dataToSend
 			toHost: self serverAddress ip
 			port:  self serverPort 
-			startIndex: sentBytes + 1
-			count:  dataToSend size. 
-			sentBytes := sentBytes + count.
+			startIndex: (sentBytes + 1)
+			count:  (maxSending - sentBytes) "dataToSend size". 
+		sentBytes := sentBytes + count.
 	].
-	
-	"server dataToSend: dataToSend."
 
-	(Delay forMilliseconds: 5000) wait.
+	(Delay forMilliseconds: 300) wait.
 
 	receivedData := receptionStream contents asString.
 	receiveProcess terminate.

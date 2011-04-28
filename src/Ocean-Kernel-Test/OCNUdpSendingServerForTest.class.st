@@ -36,7 +36,7 @@ OCNUdpSendingServerForTest >> interactThrough [
 	self dataToSend isEmptyOrNil ifFalse: [
 		"self listenSocket sendUDPData: self dataToSend toHost: #[127 0 0 1] port: self portNumber"
 		sentBytes := self listenSocket primSocket: self listenSocket socketHandle
-			sendUDPData: self dataToSend
+			sendUDPData: self dataToSend asByteArray
 			toHost: #[127 0 0 1]
 			port:  self portNumber
 			startIndex: 1
