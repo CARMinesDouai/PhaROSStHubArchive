@@ -24,19 +24,19 @@ Class {
 
 { #category : #asserting }
 OCNUdpSocketReceivingDataTest >> assertReceivingDataOfSize: dataSize [
-	| receivedSize sentBytes listenSocket receiveProcess dataToSend receptionStream readMore dataPacket receivedData |
+	| receivedSize sentBytes listenSocket receiveProcess dataToSend receptionStream dataPacket receivedData |
 	dataToSend := self randomAsciiStringOfSize: dataSize.
 
 	
 	self socket bindToLocalHostPort: self serverPort.
 
 	receptionStream := WriteStream on: (ByteArray new: dataSize).
-	readMore := true.
+	
 	receiveProcess := [1 to: ((dataSize // self socket receiveDataBufferSize) + ((dataSize rem: (self socket receiveDataBufferSize)) / dataSize))
 		do: [:e |
 			dataPacket := self socket receive.
 			receptionStream nextPutAll: dataPacket data.
-			readMore := dataPacket more]] newProcess. "On pense que le flag more n'est pas géré par la primitive sendUDP de oldSocket"
+		]] newProcess. "On pense que le flag more n'est pas géré par la primitive sendUDP de oldSocket"
 	
 	receiveProcess priority: Processor lowIOPriority.
 	receiveProcess resume.
@@ -49,6 +49,7 @@ OCNUdpSocketReceivingDataTest >> assertReceivingDataOfSize: dataSize [
 	[sentBytes < dataToSend size ] whileTrue: [
 		|count maxSending|
 		maxSending:= (sentBytes + self socket receiveDataBufferSize) min: dataToSend size.
+		(Delay forMilliseconds: 15) wait.
 		count :=  listenSocket primSocket:  listenSocket socketHandle
 			sendUDPData: dataToSend
 			toHost: self serverAddress ip
