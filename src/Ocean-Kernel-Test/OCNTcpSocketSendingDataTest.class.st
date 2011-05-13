@@ -6,12 +6,17 @@ Class {
 
 { #category : #'tests sending' }
 OCNTcpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
-	| dataToSend receivedData |
+	| dataToSend receivedData sentDataSize sentSemaphore millisecondsForTimeout |
+	
+	millisecondsForTimeout := (((dataSize // 4) min: 5000)) max: 500.
 	self startServer.
 	self connect. 
 	dataToSend := self randomAsciiStringOfSize: dataSize.
-	self assert: (self socket send: dataToSend) = dataSize.
-	(Delay forMilliseconds: 500) wait. 
+	sentSemaphore := Semaphore new.
+	[self shouldnt: [sentDataSize := self socket send: dataToSend] raise: Error. sentSemaphore signal] forkAt: Processor lowIOPriority.
+	self deny: (sentSemaphore waitTimeoutMSecs: millisecondsForTimeout). "ensures there was no timeout"
+	self assert: sentDataSize = dataSize.
+	(Delay forMilliseconds: millisecondsForTimeout) wait. 
 	receivedData := self server receivedData.
 	self assert: receivedData size = dataSize.
 	self assert: receivedData = dataToSend.
@@ -34,7 +39,7 @@ OCNTcpSocketSendingDataTest >> testSendOnBoundSocket [
 	self assertSocketState: #isBound.
 	self should: [ self socket send: 'hello' ] raise: OCNSocketOperationForbiddenError.
 	self assertSocketState: #isBound.
-	self signalFailure: 'should send testSendingLessDataThanSocketsDataBufferSize, but a MYSTERIOUS error happens. It looks like the OS does not release the port used by bind'
+	self testSendingLessDataThanSocketsDataBufferSize
 ]
 
 { #category : #'testing lifecylce' }

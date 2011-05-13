@@ -89,8 +89,7 @@ OCNConversationTcpSocket >> send: aByteStringOrByteArray [
 		indexOfLastByteToSend := indexOfFirstByteToSend + toSendCount - 1. 
 		dataToSend := aByteStringOrByteArray copyFrom: indexOfFirstByteToSend  to:  indexOfLastByteToSend.
 		sentCount := self networkLibrary tcpSendData: dataToSend to: self.
-		totalSentCount := sentCount + totalSentCount.
-		"Transcript cr; show: totalSentCount.  "
+		totalSentCount := sentCount + totalSentCount
 	].
 	^totalSentCount  
 ]

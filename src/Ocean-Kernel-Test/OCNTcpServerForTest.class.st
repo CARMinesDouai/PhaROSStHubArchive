@@ -25,7 +25,8 @@ Class {
 		'stateLock',
 		'connectionSocket',
 		'portNumber',
-		'process'
+		'process',
+		'interactionProcesses'
 	],
 	#category : #'Ocean-Kernel-TestSupport'
 }
@@ -54,7 +55,7 @@ OCNTcpServerForTest >> handleConnections [
 		waitForAcceptFor: 30  
 		ifTimedOut: [^self].
 	interactionStream := SocketStream on: interactionSocket.
-	[self interactThenClose: interactionStream] fork
+	self interactionProcesses add: ([self interactThenClose: interactionStream] forkAt: Processor lowIOPriority)
 
 ]
 
@@ -63,7 +64,7 @@ OCNTcpServerForTest >> initialize [
 	super initialize.
 	stateLock := Mutex new.
 	self isRunning: false.
-	
+	interactionProcesses := Set new
 ]
 
 { #category : #running }
@@ -81,6 +82,11 @@ OCNTcpServerForTest >> interactThrough: aSocketStream [
 	self subclassResponsibility 
 ]
 
+{ #category : #running }
+OCNTcpServerForTest >> interactionProcesses [ 
+	^interactionProcesses
+]
+
 { #category : #accessing }
 OCNTcpServerForTest >> isRunning [
 	stateLock critical: [^isRunning]
@@ -93,7 +99,8 @@ OCNTcpServerForTest >> isRunning: aBoolean [
 
 { #category : #running }
 OCNTcpServerForTest >> kill [
-	process terminate
+	process terminate.
+	self interactionProcesses do: [ :each | each terminate ]  
 ]
 
 { #category : #accessing }
