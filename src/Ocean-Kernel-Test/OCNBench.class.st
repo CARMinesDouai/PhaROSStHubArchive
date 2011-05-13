@@ -25,7 +25,7 @@ OCNBench >> connectOceanSocket [
 	| library serverAddress |
 	socket := OCNConversationTcpSocket new.
 	library := OCNNetworkLibraryProxyFactory networkLibraryProxy.
-	serverAddress := OCNIPV4SocketAddress loopbackAddressWithPort:  self serverPort.	"localhost should have a server"
+	serverAddress := OCNIpv4Address loopbackAddressWithPort:  self serverPort.	"localhost should have a server"
 	socket connectToServer: serverAddress
 ]
 

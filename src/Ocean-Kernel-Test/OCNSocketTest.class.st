@@ -84,7 +84,7 @@ OCNSocketTest >> setUp [
 	super setUp.
 	library := OCNNetworkLibraryProxyFactory proxyForLibraryClass: self networkLibraryClass.
 	socket := self socketClass newWithNetworkLibrary: self library.
-	serverAddress := OCNIPV4SocketAddress loopbackAddressWithPort:  self serverPort.
+	serverAddress := OCNIpv4Address loopbackAddressWithPort:  self serverPort.
 
 ]
 

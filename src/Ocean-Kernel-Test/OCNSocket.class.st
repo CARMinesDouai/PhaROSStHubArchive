@@ -38,7 +38,7 @@ OCNSocket >> bindToAddress: aSocketAddress [
 { #category : #connecting }
 OCNSocket >> bindToLocalHostPort: aPortNumber [ 
 	| localhostAddress |
-	localhostAddress := OCNIPV4SocketAddress loopbackAddressWithPort: aPortNumber.
+	localhostAddress := OCNIpv4Address loopbackAddressWithPort: aPortNumber.
 	self bindToAddress: localhostAddress 	
 ]
 

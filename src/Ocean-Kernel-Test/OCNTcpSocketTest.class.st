@@ -65,7 +65,7 @@ OCNTcpSocketTest >> testBindUnconnectedSocket [
 	| socketAddress |
 	self testSocketUnconnectedOnCreation.
 	self assertSocketState: #isClean.
-	socketAddress := OCNIPV4SocketAddress loopbackAddressWithPort:  self clientPort.	
+	socketAddress := OCNIpv4Address loopbackAddressWithPort:  self clientPort.	
 	self shouldnt: [socket bindToAddress: socketAddress] raise: OCNSocketOperationFailureError.
 	self assertSocketState: #isBound.
 	"self signalFailure: 'Ensures that client socket is bount to clientPort '"

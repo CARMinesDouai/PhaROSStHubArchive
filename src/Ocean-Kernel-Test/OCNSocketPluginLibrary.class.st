@@ -223,8 +223,11 @@ OCNSocketPluginLibrary >> ipv4 [
 { #category : #'NameResolving API' }
 OCNSocketPluginLibrary >> ipv4AddressForName: nameToLookup [
 	
-	^ self addressForName: nameToLookup addressFamily: self ipv4
-	
+	^self addressForName: nameToLookup addressFamily: self ipv4.
+	"OCNIpv4Address new
+		family: OCNIpAddress ;
+		ip: addressByteArray; 
+		yourself"
 ]
 
 { #category : #'NameResolving API' }
@@ -837,7 +840,7 @@ OCNSocketPluginLibrary >> receiveUDPDatagramOn: aSocket [
 	aDatagramPacket := OCNDatagramPacket new.
 	aDatagramPacket 
 					data: (self receiveDataBuffer copyFrom: 1 to: (resultInfos at: 1)) ;
-					sourceIP: (resultInfos at: 2) port: (resultInfos at: 3) type: OCNIPV4SocketAddress;
+					sourceIP: (resultInfos at: 2) port: (resultInfos at: 3) type: OCNIpv4Address;
 					targetAddress: nil; "should be implemented when we will pass a real IP object in parameter"
 					more: (resultInfos at: 4).
 
