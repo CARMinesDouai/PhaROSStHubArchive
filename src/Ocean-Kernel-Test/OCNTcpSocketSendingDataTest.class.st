@@ -1,22 +1,26 @@
 Class {
 	#name : #OCNTcpSocketSendingDataTest,
 	#superclass : #OCNTcpSocketTest,
+	#instVars : [
+		'sendingProcess'
+	],
 	#category : #'Ocean-Kernel-Test'
 }
 
 { #category : #'tests sending' }
 OCNTcpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
-	| dataToSend receivedData sentDataSize sentSemaphore millisecondsForTimeout |
+	| millisecondsForTimeout dataToSend receivedData sentDataSize sentSemaphore |
 	
-	millisecondsForTimeout := (((dataSize // 4) min: 5000)) max: 500.
+	millisecondsForTimeout := (((dataSize // 4) min: 60000)) max: 500.
 	self startServer.
 	self connect. 
 	dataToSend := self randomAsciiStringOfSize: dataSize.
 	sentSemaphore := Semaphore new.
-	[self shouldnt: [sentDataSize := self socket send: dataToSend] raise: Error. sentSemaphore signal] forkAt: Processor lowIOPriority.
-	self deny: (sentSemaphore waitTimeoutMSecs: millisecondsForTimeout). "ensures there was no timeout"
+	sendingProcess := [[sentDataSize := self socket send: dataToSend] ensure: [ sentSemaphore signal] ] forkAt: Processor userSchedulingPriority.
+	self deny: (sentSemaphore waitTimeoutMSecs:  millisecondsForTimeout).
+	server interact: false. 
+	server receivedSemaphore wait.
 	self assert: sentDataSize = dataSize.
-	(Delay forMilliseconds: millisecondsForTimeout) wait. 
 	receivedData := self server receivedData.
 	self assert: receivedData size = dataSize.
 	self assert: receivedData = dataToSend.
@@ -26,6 +30,12 @@ OCNTcpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
 { #category : #accessing }
 OCNTcpSocketSendingDataTest >> serverClass [
 	^OCNTcpReceivingServerForTest
+]
+
+{ #category : #'setup-teardown' }
+OCNTcpSocketSendingDataTest >> tearDown [ 
+	super tearDown.
+	sendingProcess ifNotNil: [ sendingProcess terminate ] 
 ]
 
 { #category : #'tests sending' }
