@@ -31,12 +31,11 @@ OCNIpv6NetNameResolverTest >> testLookupExternalNameIpv6Addresses [
 	
 	| nameToLookup allAddresses |
 	
-	self signalFailure: 'ipv6 not testable?'.
-	nameToLookup := '???'.
+	nameToLookup := 'www.ipv6.apple.com'.
 	allAddresses := (OCNNetNameResolver ipv6AddressesForName: nameToLookup) .
 	self assert: allAddresses isCollection.	
 	self deny: allAddresses isEmpty.
-	self assert: (allAddresses includes:  '???').
+	self assert: (allAddresses includes:  '2001:41a8:204::4f8c:5daa').
 
 ]
 
