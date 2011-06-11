@@ -20,10 +20,9 @@ OCNIpv6NetNameResolverTest >> testLookupExternalNameIpv6Address [
 	
 	| nameToLookup address |
 	
-	self signalFailure: 'ipv6 not testable?'.
-	nameToLookup := '???'.
+	nameToLookup := 'www.ipv6.apple.com'.
 	address := (OCNNetNameResolver ipv6AddressForName: nameToLookup) .
-	self assert: address = '???'.
+	self assert: address = '2001:41a8:204::4f8c:5daa'.
 
 ]
 
