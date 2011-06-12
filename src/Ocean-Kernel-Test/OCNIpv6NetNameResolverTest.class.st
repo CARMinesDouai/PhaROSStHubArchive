@@ -36,6 +36,7 @@ OCNIpv6NetNameResolverTest >> testLookupExternalNameIpv6Addresses [
 	self assert: allAddresses isCollection.	
 	self deny: allAddresses isEmpty.
 	self assert: (allAddresses includes:  '2001:41a8:204::4f8c:5daa').
+	self signalFailure: 'OCNNetNameResolver should return OCNIpAddress and *not* strings. And OCNIpAddress should NOT integrate port number'
 
 ]
 
@@ -87,5 +88,6 @@ OCNIpv6NetNameResolverTest >> testLookupUnknownNameIpv6Addresses [
 { #category : #'tests loopback' }
 OCNIpv6NetNameResolverTest >> testLoopBackIpv6Address [
 	
-	self assert: OCNNetNameResolver ipv6LoopBackAddress = '::1'
+	self assert: OCNNetNameResolver ipv6LoopBackAddress = '::1'.
+	self signalFailure: 'OCNNetNameResolver should return OCNIpAddress and *not* strings. And OCNIpAddress should NOT integrate port number'
 ]
