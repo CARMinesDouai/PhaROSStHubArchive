@@ -11,8 +11,8 @@ OCNIpv6NetNameResolverTest >> testLocalHostAddresses [
 	
 	allLocalhostAddresses := OCNNetNameResolver localHostAddresses.
 	self deny: allLocalhostAddresses isEmpty.
-	self signalFailure: 'TODO test there at least one IP V6 address'.  
-	"self assert: (allLocalhostAddresses anySatisfy: [ :ipAddress | ipAddress isIpv6 ])."
+	self assert: (allLocalhostAddresses anySatisfy: [ :ipAddress | ipAddress isIpv4 ]).
+	self assert: (allLocalhostAddresses anySatisfy: [ :ipAddress | ipAddress isIpv6 ]).
 ]
 
 { #category : #'tests ipv6' }
@@ -22,7 +22,8 @@ OCNIpv6NetNameResolverTest >> testLookupExternalNameIpv6Address [
 	
 	nameToLookup := 'www.ipv6.apple.com'.
 	address := (OCNNetNameResolver ipv6AddressForName: nameToLookup) .
-	self assert: address = '2001:41a8:204::4f8c:5daa'.
+	self assert: (address isKindOf: OCNIpv6Address).
+	self assert: address ip = '2001:41a8:204::4f8c:5daa'.
 
 ]
 
@@ -35,8 +36,7 @@ OCNIpv6NetNameResolverTest >> testLookupExternalNameIpv6Addresses [
 	allAddresses := (OCNNetNameResolver ipv6AddressesForName: nameToLookup) .
 	self assert: allAddresses isCollection.	
 	self deny: allAddresses isEmpty.
-	self assert: (allAddresses includes:  '2001:41a8:204::4f8c:5daa').
-	self signalFailure: 'OCNNetNameResolver should return OCNIpAddress and *not* strings. And OCNIpAddress should NOT integrate port number'
+	self assert: (allAddresses anySatisfy:[:anAddress | anAddress ip =  '2001:41a8:204::4f8c:5daa']).
 
 ]
 
@@ -47,7 +47,7 @@ OCNIpv6NetNameResolverTest >> testLookupLocalhostIpv6Address [
 	localhostAddress := '::1'. "TO BE CHANGED TO an instance of Ipv6Address"
 	
 	#( 'localhost'  '::1' ) do: [ :nameToLookup | 
-		self assert: (OCNNetNameResolver ipv6AddressForName: nameToLookup)  = localhostAddress.
+		self assert: (OCNNetNameResolver ipv6AddressForName: nameToLookup) ip  = localhostAddress.
 	]
 
 ]
@@ -88,6 +88,7 @@ OCNIpv6NetNameResolverTest >> testLookupUnknownNameIpv6Addresses [
 { #category : #'tests loopback' }
 OCNIpv6NetNameResolverTest >> testLoopBackIpv6Address [
 	
-	self assert: OCNNetNameResolver ipv6LoopBackAddress = '::1'.
-	self signalFailure: 'OCNNetNameResolver should return OCNIpAddress and *not* strings. And OCNIpAddress should NOT integrate port number'
+	self assert: (OCNNetNameResolver ipv6LoopBackAddress isKindOf: OCNIpv6Address).
+	self assert: OCNNetNameResolver ipv6LoopBackAddress ip = '::1'.
+	
 ]

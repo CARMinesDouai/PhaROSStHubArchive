@@ -223,7 +223,7 @@ OCNSocketPluginLibrary >> ipv4 [
 { #category : #'NameResolving API' }
 OCNSocketPluginLibrary >> ipv4AddressForName: nameToLookup [
 	
-	^self addressForName: nameToLookup addressFamily: self ipv4.
+	^ OCNIpv4Address new ip:(self addressForName: nameToLookup addressFamily: self ipv4); yourself.
 	"OCNIpv4Address new
 		family: OCNIpAddress ;
 		ip: addressByteArray; 
@@ -233,7 +233,7 @@ OCNSocketPluginLibrary >> ipv4AddressForName: nameToLookup [
 { #category : #'NameResolving API' }
 OCNSocketPluginLibrary >> ipv4AddressesForName: nameToLookup [
 
-	^self addressesForName: nameToLookup  addressFamily:  self ipv4
+	^(self addressesForName: nameToLookup  addressFamily:  self ipv4) collect: [:adress | OCNIpv4Address new ip: adress; yourself]
 ]
 
 { #category : #'name resolving' }
@@ -244,7 +244,7 @@ OCNSocketPluginLibrary >> ipv6 [
 { #category : #'NameResolving API' }
 OCNSocketPluginLibrary >> ipv6AddressForName: nameToLookup [
 	
-	^ self addressForName: nameToLookup addressFamily: self ipv6
+	^ OCNIpv6Address new ip:(self addressForName: nameToLookup addressFamily: self ipv6); yourself
 	
 	
 
@@ -253,7 +253,7 @@ OCNSocketPluginLibrary >> ipv6AddressForName: nameToLookup [
 { #category : #'NameResolving API' }
 OCNSocketPluginLibrary >> ipv6AddressesForName: nameToLookup [
 	
-	^self addressesForName: nameToLookup  addressFamily:  self ipv6
+	^(self addressesForName: nameToLookup  addressFamily:  self ipv6) collect:[:adress | OCNIpv6Address new ip: adress; yourself]
 ]
 
 { #category : #'name resolving' }

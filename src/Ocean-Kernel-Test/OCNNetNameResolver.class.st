@@ -58,12 +58,12 @@ OCNNetNameResolver class >> ipv6AddressesForName: nameToLookup [
 
 { #category : #'localhost resolution' }
 OCNNetNameResolver class >> ipv6LocalHostAddresses [
-	^ #()
-	"|allAddresses|
+
+	|allAddresses|
 	allAddresses := Set new.
 	allAddresses addAll: (self ipv6AddressesForName: self loopBackName);
 		addAll: (self ipv6AddressesForName: self localHostName).
-	^allAddresses"
+	^allAddresses
 ]
 
 { #category : #'loopback resolution' }
