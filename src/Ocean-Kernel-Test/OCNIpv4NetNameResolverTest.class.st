@@ -11,7 +11,7 @@ OCNIpv4NetNameResolverTest >> testLocalHostAddresses [
 	
 	allLocalhostAddresses := OCNNetNameResolver localHostAddresses.
 	self deny: allLocalhostAddresses isEmpty.
-	self assert: (allLocalhostAddresses anySatisfy: [ :ipAddress | ipAddress isKindOf: OCNIpv4Address]).  
+	self assert: (allLocalhostAddresses anySatisfy: [ :ipAddress | ipAddress isIpv4]).  
 
 ]
 

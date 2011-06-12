@@ -31,11 +31,6 @@ struct in6_addr {
 Class {
 	#name : #OCNIpv4Address,
 	#superclass : #OCNIpAddress,
-	#instVars : [
-		'family',
-		'ip',
-		'port'
-	],
 	#category : #'Ocean-Kernel'
 }
 
@@ -48,32 +43,8 @@ OCNIpv4Address class >> loopbackAddressWithPort: aPortNumber [
 		yourself
 ]
 
-{ #category : #accessing }
-OCNIpv4Address >> family [
-	^ family
-]
+{ #category : #testing }
+OCNIpv4Address >> isIpv4 [
 
-{ #category : #accessing }
-OCNIpv4Address >> family: anObject [
-	family := anObject
-]
-
-{ #category : #accessing }
-OCNIpv4Address >> ip [
-	^ ip
-]
-
-{ #category : #accessing }
-OCNIpv4Address >> ip: anObject [
-	ip := anObject
-]
-
-{ #category : #accessing }
-OCNIpv4Address >> port [
-	^ port
-]
-
-{ #category : #accessing }
-OCNIpv4Address >> port: anObject [
-	port := anObject
+	^true
 ]

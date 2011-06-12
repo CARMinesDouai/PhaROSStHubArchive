@@ -31,6 +31,11 @@ struct in6_addr {
 Class {
 	#name : #OCNIpAddress,
 	#superclass : #Object,
+	#instVars : [
+		'family',
+		'ip',
+		'port'
+	],
 	#category : #'Ocean-Kernel'
 }
 
@@ -44,7 +49,49 @@ OCNIpAddress >> afInetFamily [
 	^self class afInetFamily
 ]
 
+{ #category : #'as yet unclassified' }
+OCNIpAddress >> family [
+	^ family
+]
+
+{ #category : #'as yet unclassified' }
+OCNIpAddress >> family: anObject [
+	family := anObject
+]
+
+{ #category : #'as yet unclassified' }
+OCNIpAddress >> ip [
+	^ ip
+]
+
+{ #category : #'as yet unclassified' }
+OCNIpAddress >> ip: anObject [
+	ip := anObject
+]
+
+{ #category : #testing }
+OCNIpAddress >> isIpv4 [
+
+	^false
+]
+
+{ #category : #testing }
+OCNIpAddress >> isIpv6 [
+
+	^false
+]
+
 { #category : #testing }
 OCNIpAddress >> isOfAfInetFamily [
 	^ self family = self afInetFamily
+]
+
+{ #category : #'as yet unclassified' }
+OCNIpAddress >> port [
+	^ port
+]
+
+{ #category : #'as yet unclassified' }
+OCNIpAddress >> port: anObject [
+	port := anObject
 ]
