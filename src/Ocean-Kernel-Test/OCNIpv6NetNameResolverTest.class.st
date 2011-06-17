@@ -23,7 +23,7 @@ OCNIpv6NetNameResolverTest >> testLookupExternalNameIpv6Address [
 	nameToLookup := 'www.ipv6.apple.com'.
 	address := (OCNNetNameResolver ipv6AddressForName: nameToLookup) .
 	self assert: (address isKindOf: OCNIpv6Address).
-	self assert: address ip = '2001:41a8:204::4f8c:5daa'.
+	self assert: (address ip includes: $:)
 
 ]
 
@@ -36,7 +36,7 @@ OCNIpv6NetNameResolverTest >> testLookupExternalNameIpv6Addresses [
 	allAddresses := (OCNNetNameResolver ipv6AddressesForName: nameToLookup) .
 	self assert: allAddresses isCollection.	
 	self deny: allAddresses isEmpty.
-	self assert: (allAddresses anySatisfy:[:anAddress | anAddress ip =  '2001:41a8:204::4f8c:5daa']).
+	self assert: (allAddresses anySatisfy:[:anAddress | anAddress isIpv6 ]).
 
 ]
 

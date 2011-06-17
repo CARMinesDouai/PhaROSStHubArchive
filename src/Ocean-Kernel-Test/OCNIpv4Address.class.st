@@ -43,6 +43,23 @@ OCNIpv4Address class >> loopbackAddressWithPort: aPortNumber [
 		yourself
 ]
 
+{ #category : #'instance creation' }
+OCNIpv4Address class >> newFromString: aStringIpAddress [
+	self  notYetImplemented
+]
+
+{ #category : #printing }
+OCNIpv4Address >> ipString [
+	| stream |
+	
+	stream := (String new: 15) writeStream.
+	
+	"self>>ip returns a byteArray"
+	self ip do: [ :n | stream nextPutAll:  n asString ] separatedBy: [ stream nextPut: $. ].
+	
+	^stream contents
+]
+
 { #category : #testing }
 OCNIpv4Address >> isIpv4 [
 

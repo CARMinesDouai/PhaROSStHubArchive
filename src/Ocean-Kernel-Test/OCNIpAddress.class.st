@@ -44,6 +44,11 @@ OCNIpAddress class >> afInetFamily [
 	^#AfInet
 ]
 
+{ #category : #'instance creation' }
+OCNIpAddress class >> newFromString: aStringIpAddress [
+	self subclassResponsibility 
+]
+
 { #category : #constants }
 OCNIpAddress >> afInetFamily [
 	^self class afInetFamily
@@ -67,6 +72,11 @@ OCNIpAddress >> ip [
 { #category : #'as yet unclassified' }
 OCNIpAddress >> ip: anObject [
 	ip := anObject
+]
+
+{ #category : #printing }
+OCNIpAddress >> ipString [
+	self subclassResponsibility 
 ]
 
 { #category : #testing }
@@ -94,4 +104,9 @@ OCNIpAddress >> port [
 { #category : #'as yet unclassified' }
 OCNIpAddress >> port: anObject [
 	port := anObject
+]
+
+{ #category : #printing }
+OCNIpAddress >> printOn: aStream [
+	aStream nextPutAll:  self ipString
 ]

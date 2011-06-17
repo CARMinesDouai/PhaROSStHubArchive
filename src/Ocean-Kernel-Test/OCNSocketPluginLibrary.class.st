@@ -64,7 +64,7 @@ OCNSocketPluginLibrary class >> proxy [
 	^self new
 ]
 
-{ #category : #'name resolving' }
+{ #category : #'name resolving support' }
 OCNSocketPluginLibrary >> addressForName: nameToLookup addressFamily: addressFamily [
 
 	 | addressSize  byteInfoSize byteInfo stringAddress addressTypeConstants |
@@ -89,7 +89,7 @@ OCNSocketPluginLibrary >> addressForName: nameToLookup addressFamily: addressFam
 
 ]
 
-{ #category : #'name resolving' }
+{ #category : #'name resolving support' }
 OCNSocketPluginLibrary >> addressesForName: nameToLookup addressFamily: addressFamily [
 
 	 | allAddresses  byteInfoSize |
@@ -121,7 +121,7 @@ OCNSocketPluginLibrary >> addressesForName: nameToLookup addressFamily: addressF
 	^ allAddresses
 ]
 
-{ #category : #'name resolving' }
+{ #category : #'name resolving support' }
 OCNSocketPluginLibrary >> allAddressFamily [
 	^0
 ]
@@ -215,7 +215,7 @@ OCNSocketPluginLibrary >> initSemaphores [
 
 ]
 
-{ #category : #'name resolving' }
+{ #category : #'name resolving support' }
 OCNSocketPluginLibrary >> ipv4 [
 	^2
 ]
@@ -236,7 +236,7 @@ OCNSocketPluginLibrary >> ipv4AddressesForName: nameToLookup [
 	^(self addressesForName: nameToLookup  addressFamily:  self ipv4) collect: [:adress | OCNIpv4Address new ip: adress; yourself]
 ]
 
-{ #category : #'name resolving' }
+{ #category : #'name resolving support' }
 OCNSocketPluginLibrary >> ipv6 [ 
 	^3
 ]
@@ -244,19 +244,25 @@ OCNSocketPluginLibrary >> ipv6 [
 { #category : #'NameResolving API' }
 OCNSocketPluginLibrary >> ipv6AddressForName: nameToLookup [
 	
-	^ OCNIpv6Address new ip:(self addressForName: nameToLookup addressFamily: self ipv6); yourself
+	^self ipv6AddressFromString: (self addressForName: nameToLookup addressFamily: self ipv6)
 	
 	
+
+]
+
+{ #category : #'name resolving support' }
+OCNSocketPluginLibrary >> ipv6AddressFromString: aString [
+	^OCNIpv6Address newFromString:  (aString splitOn: $%) first
 
 ]
 
 { #category : #'NameResolving API' }
 OCNSocketPluginLibrary >> ipv6AddressesForName: nameToLookup [
 	
-	^(self addressesForName: nameToLookup  addressFamily:  self ipv6) collect:[:adress | OCNIpv6Address new ip: adress; yourself]
+	^(self addressesForName: nameToLookup  addressFamily:  self ipv6) collect:[:address | self ipv6AddressFromString:  address ]
 ]
 
-{ #category : #'name resolving' }
+{ #category : #'name resolving support' }
 OCNSocketPluginLibrary >> localAddressFamily [
 	^1
 ]
@@ -268,6 +274,7 @@ OCNSocketPluginLibrary >> localHostName [
 
 	hostname := String new: self primHostNameSize.
 	self primHostNameResult: hostname.  
+	"sadly, this primitive returns the name stored in the localhost machine (e.g. machine.local on OSX) and not the name used by the DNS server "
 	
 	^hostname
 ]
@@ -857,7 +864,7 @@ OCNSocketPluginLibrary >> releaseSemaphores [
 	readSemaphore := writeSemaphore := semaphore := nil.
 ]
 
-{ #category : #'name resolving' }
+{ #category : #'name resolving support' }
 OCNSocketPluginLibrary >> resolverUninitializedCode [
 	^ 0  "network is not initialized"
 ]
