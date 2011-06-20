@@ -6,7 +6,7 @@ isAbstract
 Class {
 	#name : #OCNDebugSysSocketLibraryTest,
 	#superclass : #TestCase,
-	#category : #'Ocean-Kernel-TestSupport'
+	#category : #'Ocean-Kernel-Test-Support'
 }
 
 { #category : #'as yet unclassified' }

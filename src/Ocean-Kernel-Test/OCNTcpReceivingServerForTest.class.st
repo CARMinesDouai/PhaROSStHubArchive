@@ -6,7 +6,7 @@ Class {
 		'receivedSemaphore',
 		'interact'
 	],
-	#category : #'Ocean-Kernel-TestSupport'
+	#category : #'Ocean-Kernel-Test-Support'
 }
 
 { #category : #'initialize-release' }

@@ -16,7 +16,7 @@ Class {
 	#instVars : [
 		'dataToSend'
 	],
-	#category : #'Ocean-Kernel-TestSupport'
+	#category : #'Ocean-Kernel-Test-Support'
 }
 
 { #category : #accessing }

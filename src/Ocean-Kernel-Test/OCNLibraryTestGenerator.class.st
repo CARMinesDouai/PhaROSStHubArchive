@@ -20,7 +20,7 @@ OCNLibraryTestGenerator class >> generateTestForLibrary: aLibraryClass [
 	generatedClasses := self ocnTestClasses collect: [ :testClass | 
 		testClass subclass: (aLibraryClass name, testClass name) asSymbol
 			instanceVariableNames: '' classVariableNames: '' poolDictionaries: '' 
-			category: 'Ocean-Tests-Generated-',aLibraryClass name
+			category: aLibraryClass category asString,'-Tests-Generated'
 	].
 	
 	generatedClasses do: [ :testClass | 

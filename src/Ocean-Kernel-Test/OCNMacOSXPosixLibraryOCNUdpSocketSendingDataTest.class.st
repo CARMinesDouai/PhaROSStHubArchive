@@ -1,7 +1,7 @@
 Class {
 	#name : #OCNMacOSXPosixLibraryOCNUdpSocketSendingDataTest,
 	#superclass : #OCNUdpSocketSendingDataTest,
-	#category : #'Ocean-Tests-Generated-OCNMacOSXPosixLibrary'
+	#category : #'Ocean-Libraries-Posix-Tests-Generated'
 }
 
 { #category : #'as yet unclassified' }

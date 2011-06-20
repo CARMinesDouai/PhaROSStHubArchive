@@ -38,7 +38,8 @@ OCNTcpSocketReceivingDataTest >> testReceiveOnBoundSocket [
 	self assertSocketState: #isBound.
 	self should: [ self socket receive ] raise: OCNSocketOperationForbiddenError.
 	self assertSocketState: #isBound.
-	self signalFailure: 'should send testReceivingLessDataThanSocketsDataBufferSize, but a MYSTERIOUS error happens. It looks like the OS does not release the port used by bind'
+	self testReceivingLessDataThanSocketsDataBufferSize.
+	"self signalFailure: 'should send testReceivingLessDataThanSocketsDataBufferSize, but a MYSTERIOUS error happens. It looks like the OS does not release the port used by bind'"
 ]
 
 { #category : #'testing lifecylce' }

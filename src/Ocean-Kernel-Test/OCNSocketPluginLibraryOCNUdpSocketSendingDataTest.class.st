@@ -1,7 +1,7 @@
 Class {
 	#name : #OCNSocketPluginLibraryOCNUdpSocketSendingDataTest,
 	#superclass : #OCNUdpSocketSendingDataTest,
-	#category : #'Ocean-Tests-Generated-OCNSocketPluginLibrary'
+	#category : #'Ocean-Libraries-Plugin-Tests-Generated'
 }
 
 { #category : #'as yet unclassified' }

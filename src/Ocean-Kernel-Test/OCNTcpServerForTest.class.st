@@ -28,7 +28,7 @@ Class {
 		'process',
 		'interactionProcesses'
 	],
-	#category : #'Ocean-Kernel-TestSupport'
+	#category : #'Ocean-Kernel-Test-Support'
 }
 
 { #category : #'instance creation' }

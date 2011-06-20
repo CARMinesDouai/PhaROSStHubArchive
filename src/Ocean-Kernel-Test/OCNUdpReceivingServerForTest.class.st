@@ -19,7 +19,7 @@ Class {
 		'receivedData',
 		'buffer'
 	],
-	#category : #'Ocean-Kernel-TestSupport'
+	#category : #'Ocean-Kernel-Test-Support'
 }
 
 { #category : #'initialize-release' }
