@@ -3,7 +3,7 @@
 (ConfigurationOfOcean project version: #development) load.
 
 ""1.3 --> automatically loads bleeding edge version""
-(ConfigurationOfOcean project version: 'default') load.
+(ConfigurationOfOcean project version: 'default') load: 'default tests'.
 
 "
 Class {
@@ -242,13 +242,46 @@ ConfigurationOfOcean >> baseline05: spec [
 	]
 ]
 
-{ #category : #'symbolic versions' }
-ConfigurationOfOcean >> default: spec [
-	<version: #'default' imports: #('0.5-baseline')>
+{ #category : #baselines }
+ConfigurationOfOcean >> baseline06: spec [
+	<version: '0.6-baseline'>
 	
 	spec for: #common do: [
-		spec project: 'Alien' with:  'default'
+		spec blessing: #baseline.
+	
+		spec repository: 'http://www.squeaksource.com/Ocean'.
+		
+		spec project: 'Alien' with: [
+			spec 
+				className: 'ConfigurationOfAlien' ; 
+				loads: {'All'}; 
+				file: 'ConfigurationOfAlien';
+				repository: 'http://www.squeaksource.com/Alien'
+		].
+
+		spec package: 'Ocean-Kernel'.
+		spec package: 'Ocean-KernelTests' with: [ spec requires: 'Ocean-Kernel' ].
+		spec package: 'Ocean-LibraryPlugin' with: [ spec requires: 'Ocean-Kernel' ].
+		spec package: 'Ocean-LibraryPluginTests' with: [ spec requires: 'Ocean-LibraryPlugin'; requires: 'Ocean-KernelTests' ].
+		spec package: 'Ocean-LibraryPosix' with: [ spec requires: 'Alien' ].
+		spec package: 'Ocean-LibraryPosixTests' with: [ spec requires: 'Ocean-LibraryPosix'; requires: 'Ocean-KernelTests'].
+		spec package: 'Ocean-Benchmarks' with: [ spec requires: 'Ocean-Kernel' ].
+			
+		spec group: 'default' with: #('Ocean-LibraryPlugin' 'Ocean-Benchmarks').
+		spec group: 'default tests' with: #('default' 'Ocean-LibraryPluginTests').
+		spec group: 'posix' with: #('Ocean-LibraryPosix').
+		spec group: 'posix tests' with: #('posix' 'Ocean-LibraryPosixTests').
+		spec group: 'full' with: #('default' 'posix').
+		spec group: 'full tests' with: #('default tests' 'posix tests').
+		
 	]
+]
+
+{ #category : #'symbolic versions' }
+ConfigurationOfOcean >> default: spec [
+	<version: #'default tests' imports: #('0.6-baseline')>
+	
+	
 ]
 
 { #category : #'symbolic versions' }
@@ -256,7 +289,8 @@ ConfigurationOfOcean >> development:   spec [
 	<symbolicVersion: #'development'>
 
 	spec for: #'Pharo1.1.x' version: '0.2'.
-	spec for: #'pharo1.2.x' version: '0.6'. 		
+	spec for: #'pharo1.2.x' version: '0.6'.
+	spec for: #'pharo1.3.x' version: '0.7'. 	
 ]
 
 { #category : #accessing }
@@ -349,5 +383,23 @@ ConfigurationOfOcean >> version06: spec [
 			blessing: #development; 
 			project: 'Alien' with:  #development;
 			package: 'Ocean' with: 'Ocean-LucFabresse.74' 
+	]
+]
+
+{ #category : #versions }
+ConfigurationOfOcean >> version07: spec [
+	<version: '0.7' imports: #('0.6-baseline')>
+	
+	spec for: #common do: [
+		spec 
+			blessing: #development; 
+			project: 'Alien' with:  #development;
+			package: 'Ocean-Kernel' with: 'Ocean-Kernel-LucFabresse.1';
+			package: 'Ocean-KernelTests' with: 'Ocean-KernelTests-LucFabresse.1';
+			package: 'Ocean-LibraryPlugin' with: 'Ocean-LibraryPlugin-LucFabresse.1';
+			package: 'Ocean-LibraryPluginTests' with: 'Ocean-LibraryPluginTests-LucFabresse.1' ;
+			package: 'Ocean-LibraryPosix' with: 'Ocean-LibraryPosix-LucFabresse.1';
+			package: 'Ocean-LibraryPosixTests' with: 'Ocean-LibraryPosixTests-LucFabresse.1';
+			package: 'Ocean-Benchmarks' with: 'Ocean-Benchmarks-LucFabresse.1'.
 	]
 ]
