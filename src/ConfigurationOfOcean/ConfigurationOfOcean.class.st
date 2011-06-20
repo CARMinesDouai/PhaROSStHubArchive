@@ -279,7 +279,7 @@ ConfigurationOfOcean >> baseline06: spec [
 
 { #category : #'symbolic versions' }
 ConfigurationOfOcean >> default: spec [
-	<version: #'default tests' imports: #('0.6-baseline')>
+	<version: #'default' imports: #('0.6-baseline')>
 	
 	
 ]
