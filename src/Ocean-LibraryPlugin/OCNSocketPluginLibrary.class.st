@@ -262,6 +262,19 @@ OCNSocketPluginLibrary >> ipv6AddressesForName: nameToLookup [
 	^(self addressesForName: nameToLookup  addressFamily:  self ipv6) collect:[:address | self ipv6AddressFromString:  address ]
 ]
 
+{ #category : #'TCP API' }
+OCNSocketPluginLibrary >> isDataAvailableFrom: socket [
+	^ self primSocketReceiveDataAvailable: socket socketId
+
+]
+
+{ #category : #'TCP API' }
+OCNSocketPluginLibrary >> isSocketConnected: socket [ 
+	socket socketId ifNil: [^ false].
+	^ (self primSocketConnectionStatus: socket socketId) == self tcpSocketConnectedStatus
+
+]
+
 { #category : #'name resolving support' }
 OCNSocketPluginLibrary >> localAddressFamily [
 	^1
@@ -642,7 +655,7 @@ OCNSocketPluginLibrary >> primSocketCloseConnection: socketID [
 
 ]
 
-{ #category : #'TCP primitives' }
+{ #category : #'tcp api support' }
 OCNSocketPluginLibrary >> primSocketConnectionStatus: socketID [
 	"Return an integer reflecting the connection status of this socket. For a list of possible values, see the comment in the 'initialize' method of this class. If the primitive fails, return a status indicating that the socket handle is no longer valid, perhaps because the Pharo image was saved and restored since the socket was created. (Sockets do not survive snapshots.)"
 
@@ -919,6 +932,11 @@ OCNSocketPluginLibrary >> tcpSendData: aByteStringOrByteArray to: aSocket [
 	^sentCount
 
 
+]
+
+{ #category : #'tcp api support' }
+OCNSocketPluginLibrary >> tcpSocketConnectedStatus [
+	^2
 ]
 
 { #category : #'tcp api support' }
