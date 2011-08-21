@@ -64,6 +64,11 @@ OCNConversationTcpSocket >> isConnected [
 	^self state = self connectedStateSymbol
 ]
 
+{ #category : #communicating }
+OCNConversationTcpSocket >> isDataAvailable [
+	^self isConnected and: [self networkLibrary isDataAvailableFrom: self]
+]
+
 { #category : #'initialize-release' }
 OCNConversationTcpSocket >> newSocketId [
 	^ self networkLibrary createTcpSocketDescriptorIdFor: self

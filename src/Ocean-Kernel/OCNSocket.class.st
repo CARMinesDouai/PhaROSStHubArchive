@@ -21,6 +21,12 @@ OCNSocket class >> newWithNetworkLibraryClass: aNetworkLibraryClass [
 	^self newWithNetworkLibrary: (OCNNetworkLibraryProxyFactory proxyForLibraryClass:  aNetworkLibraryClass)
 ]
 
+{ #category : #connection }
+OCNSocket >> basicDestroy [
+	self state: self destroyedStateSymbol.
+	self networkLibrary destroy: self
+]
+
 { #category : #connecting }
 OCNSocket >> bindToAddress: aSocketAddress [ 
 	self isClean ifFalse: [ 
@@ -55,11 +61,9 @@ OCNSocket >> cleanStateSymbol [
 
 { #category : #connection }
 OCNSocket >> destroy [
-	self isDestroyed 
+	self isDestroyed
 		ifTrue: [ ^ self ].
-	self state: self destroyedStateSymbol.
-	self networkLibrary destroy: self.
-
+	self basicDestroy
 ]
 
 { #category : #'state names' }
