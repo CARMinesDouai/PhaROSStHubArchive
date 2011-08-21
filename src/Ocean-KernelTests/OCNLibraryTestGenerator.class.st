@@ -17,6 +17,7 @@ OCNLibraryTestGenerator class >> generateForAllLibrary [
 OCNLibraryTestGenerator class >> generateTestForLibrary: aLibraryClass [
 
 	| generatedClasses |
+	aLibraryClass ifNil: [^self].
 	generatedClasses := self ocnTestClasses collect: [ :testClass | 
 		testClass subclass: (aLibraryClass name, testClass name) asSymbol
 			instanceVariableNames: '' classVariableNames: '' poolDictionaries: '' 
@@ -33,5 +34,5 @@ OCNLibraryTestGenerator class >> generateTestForLibrary: aLibraryClass [
 
 { #category : #accessing }
 OCNLibraryTestGenerator class >> ocnTestClasses [
-	^{OCNTcpSocketReceivingDataTest. OCNTcpSocketSendingDataTest. OCNTcpSocketTest. OCNUdpSocketTest. OCNUdpSocketSendingDataTest. OCNUdpSocketReceivingDataTest}
+	^{OCNTcpSocketReceivingDataTest. OCNTcpSocketSendingDataTest. OCNTcpSocketTest. OCNUdpSocketTest. OCNUdpSocketSendingDataTest. OCNUdpSocketReceivingDataTest. OCNTcpSocketFailureTest. OCNTcpSocketFinalizationTest}
 ]

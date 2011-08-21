@@ -121,18 +121,3 @@ OCNSocketTest >> tearDown [
 	server ifNotNil: [ server kill ].
 	socket destroy.
 ]
-
-{ #category : #testing }
-OCNSocketTest >> testSocketCreationFailure [
-	self signalFailure: 'test that an exception is raised when socket creation fails'
-]
-
-{ #category : #testing }
-OCNSocketTest >> testSocketFinalization [
-	self signalFailure: 'socket finalized before GC collection'
-]
-
-{ #category : #testing }
-OCNSocketTest >> testSocketRestoredAtImageStartup [
-	self signalFailure: 'socket restored in the same state when image startup'
-]

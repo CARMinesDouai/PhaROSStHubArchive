@@ -36,7 +36,7 @@ OCNUdpSocketReceivingDataTest >> assertReceivingDataOfSize: dataSize [
 		do: [:e |
 			dataPacket := self socket receive.
 			receptionStream nextPutAll: dataPacket data.
-		]] newProcess. "On pense que le flag more n'est pas géré par la primitive sendUDP de oldSocket"
+		]] newProcess. "On pense que le flag more n'est pas g√©r√© par la primitive sendUDP de oldSocket"
 	
 	receiveProcess priority: Processor lowIOPriority.
 	receiveProcess resume.

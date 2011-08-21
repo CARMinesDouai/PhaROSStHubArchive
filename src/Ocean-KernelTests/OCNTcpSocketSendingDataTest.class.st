@@ -38,11 +38,6 @@ OCNTcpSocketSendingDataTest >> tearDown [
 	sendingProcess ifNotNil: [ sendingProcess terminate ] 
 ]
 
-{ #category : #'tests sending' }
-OCNTcpSocketSendingDataTest >> testDisconnectionWhileSending [
-	self signalFailure: 'Needs non-blocking (multi-threaded FFI call or non-blocking primitives)'
-]
-
 { #category : #'testing lifecylce' }
 OCNTcpSocketSendingDataTest >> testSendOnBoundSocket [
 	self testBindUnconnectedSocket.

@@ -29,11 +29,6 @@ OCNTcpSocketReceivingDataTest >> serverClass [
 	^OCNTcpSendingServerForTest 
 ]
 
-{ #category : #testing }
-OCNTcpSocketReceivingDataTest >> testDisconnectionWhileReceiving [
-	self signalFailure: 'Needs non-blocking (multi-threading)'
-]
-
 { #category : #'testing lifecylce' }
 OCNTcpSocketReceivingDataTest >> testReceiveOnBoundSocket [
 	self testBindUnconnectedSocket.
