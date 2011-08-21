@@ -4,6 +4,15 @@ Class {
 	#category : #'Ocean-KernelTests'
 }
 
+{ #category : #'tests ipv4' }
+OCNIpv4NetNameResolverTest >> assertAddressIsValid: address [
+	| ipParts |
+	self assert: (address isKindOf: OCNIpv4Address).
+	ipParts := address ip subStrings: '.'.
+	self assert: ipParts size = 4.
+	ipParts do: [ :part | self assert: part asNumber printString = part ]
+]
+
 { #category : #'tests localhost' }
 OCNIpv4NetNameResolverTest >> testLocalHostAddresses [
 	
@@ -17,26 +26,20 @@ OCNIpv4NetNameResolverTest >> testLocalHostAddresses [
 
 { #category : #'tests ipv4' }
 OCNIpv4NetNameResolverTest >> testLookupExternalNameIpv4Address [
-	
 	| nameToLookup address |
-	
 	nameToLookup := 'www.pharo-project.org'.
-	address := (OCNNetNameResolver ipv4AddressForName: nameToLookup).
-	self assert: (address isKindOf: OCNIpv4Address).
-	self assert: address ip = '212.103.66.211'.
-
+	address := OCNNetNameResolver ipv4AddressForName: nameToLookup.
+	self assertAddressIsValid: address
 ]
 
 { #category : #'tests ipv4' }
 OCNIpv4NetNameResolverTest >> testLookupExternalNameIpv4Addresses [
-	
 	| nameToLookup allAddresses |
-	
 	nameToLookup := 'www.pharo-project.org'.
 	allAddresses := (OCNNetNameResolver ipv4AddressesForName: nameToLookup) .
 	self assert: allAddresses isCollection.	
 	self deny: allAddresses isEmpty.
-	self assert: (allAddresses anySatisfy:[:anAddress| anAddress ip = '212.103.66.211']).
+	allAddresses do: [:anAddress| self assertAddressIsValid: anAddress].
 
 ]
 
@@ -87,8 +90,9 @@ OCNIpv4NetNameResolverTest >> testLookupUnknownNameIpv4Addresses [
 
 { #category : #'tests loopback' }
 OCNIpv4NetNameResolverTest >> testLoopBackIpv4Address [
+	|loopBackAddress|	
+	loopBackAddress := OCNNetNameResolver ipv4LoopBackAddress.
+	self assertAddressIsValid: loopBackAddress.
+	self assert: loopBackAddress ip = '127.0.0.1'.
 	
-	self assert: (OCNNetNameResolver ipv4LoopBackAddress isKindOf: OCNIpv4Address).
-	self assert: OCNNetNameResolver ipv4LoopBackAddress ip = '127.0.0.1'.
-	self signalFailure: 'OCNIpAddress should NOT integrate port number'
 ]

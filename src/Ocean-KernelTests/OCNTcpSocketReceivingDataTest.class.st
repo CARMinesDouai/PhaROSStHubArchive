@@ -6,18 +6,20 @@ Class {
 
 { #category : #testing }
 OCNTcpSocketReceivingDataTest >> assertReceivingDataOfSize: dataSize [
-	| dataToSend receptionStream waitForData dataPacket receivedData |
+	| dataToSend receptionStream waitForDataDelay dataPacket receivedData |
 	dataToSend := self randomAsciiStringOfSize: dataSize.
 	self startServer.
 	server sendData: dataToSend.
 	self connect.
 	receptionStream := WriteStream on: (ByteArray new: dataSize).
-	waitForData := true.
-	[ waitForData ]
+	waitForDataDelay := Delay forMilliseconds: 10.
+	[self socket isConnected]
 		whileTrue: [ 
-			dataPacket := self socket receive.
-			receptionStream nextPutAll: dataPacket.
-			waitForData := dataPacket size > 0].
+			self socket isDataAvailable 
+				ifTrue: [
+					receptionStream nextPutAll: self socket receive]
+				ifFalse: [
+					waitForDataDelay wait]].
 	receivedData := receptionStream contents asString.
 	self assert: receivedData = dataToSend
 ]
