@@ -16,7 +16,7 @@ OCNNetworkLibraryProxyFactory class >> allNetworkLibraryProxyClasses [
 OCNNetworkLibraryProxyFactory class >> defaultNetworkLibraryProxyClass [
 	^self defaultNetworkLibraryProxyClassesDict 
 		at: Smalltalk os platformName 
-		ifAbsent: [self error: 'Platform not supported']
+		ifAbsent: [^OCNSocketPluginLibrary]
 ]
 
 { #category : #accessing }
@@ -32,7 +32,7 @@ OCNNetworkLibraryProxyFactory class >> defaultNetworkLibraryProxyClassesDict: an
 { #category : #'class initialization' }
 OCNNetworkLibraryProxyFactory class >> initialize [ 
 	self defaultNetworkLibraryProxyClassesDict: Dictionary new.
-	self defaultNetworkLibraryProxyClassesDict at: 'Mac OS' put: OCNMacOSXPosixLibrary 
+	"self defaultNetworkLibraryProxyClassesDict at: 'Mac OS' put: OCNMacOSXPosixLibrary "
 ]
 
 { #category : #'building socket proxies' }

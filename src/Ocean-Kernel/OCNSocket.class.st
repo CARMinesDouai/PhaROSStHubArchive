@@ -10,8 +10,13 @@ Class {
 }
 
 { #category : #'instance creation' }
+OCNSocket class >> new [
+	^self newWithNetworkLibraryClass: OCNNetworkLibraryProxyFactory defaultNetworkLibraryProxyClass
+]
+
+{ #category : #'instance creation' }
 OCNSocket class >> newWithNetworkLibrary: aNetworkLibraryProxy [
-	^self new
+	^super new
 		networkLibrary: aNetworkLibraryProxy;
 		yourself
 ]
@@ -69,6 +74,12 @@ OCNSocket >> destroy [
 { #category : #'state names' }
 OCNSocket >> destroyedStateSymbol [
 	^ #destroyed
+]
+
+{ #category : #finalization }
+OCNSocket >> finalize [ 
+	super finalize.
+	self destroy
 ]
 
 { #category : #'initialize-release' }
