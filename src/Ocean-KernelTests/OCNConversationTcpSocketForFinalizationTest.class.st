@@ -9,7 +9,7 @@ Class {
 
 { #category : #finalization }
 OCNConversationTcpSocketForFinalizationTest >> finalize [
-self halt.
+
 	super finalize.
 	self testUnit lastSocketState: self state.
 
