@@ -88,6 +88,11 @@ OCNSocket >> initialize [
 	self state: self cleanStateSymbol 
 ]
 
+{ #category : #'as yet unclassified' }
+OCNSocket >> isBound [
+	^self state = self boundStateSymbol
+]
+
 { #category : #'state testing' }
 OCNSocket >> isClean [
 	^self state = self cleanStateSymbol
