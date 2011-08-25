@@ -236,6 +236,13 @@ OCNSocketPluginLibrary >> ipv4AddressesForName: nameToLookup [
 	^(self addressesForName: nameToLookup  addressFamily:  self ipv4) collect: [:adress | OCNIpv4Address new ip: adress; yourself]
 ]
 
+{ #category : #'NameResolving API' }
+OCNSocketPluginLibrary >> ipv4LocalHostAddress [
+	^OCNIpv4Address new 
+		ip: self primLocalAddress; 
+		yourself
+]
+
 { #category : #'name resolving support' }
 OCNSocketPluginLibrary >> ipv6 [ 
 	^3
