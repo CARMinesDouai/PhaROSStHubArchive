@@ -7,6 +7,11 @@ Class {
 	#category : #'Ocean-KernelTests'
 }
 
+{ #category : #accessing }
+OCNTcpSocketSendingDataTest class >> shouldBeSubclassedForBackendTesting [
+	^true
+]
+
 { #category : #'tests sending' }
 OCNTcpSocketSendingDataTest >> assertSendingDataOfSize: dataSize [
 	| millisecondsForTimeout dataToSend receivedData sentDataSize sentSemaphore |

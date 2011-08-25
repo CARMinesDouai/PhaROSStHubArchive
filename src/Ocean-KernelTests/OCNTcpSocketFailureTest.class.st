@@ -9,6 +9,11 @@ OCNTcpSocketFailureTest >> serverClass [
 	^OCNPublicSocketTcpServerForTest 
 ]
 
+{ #category : #accessing }
+OCNTcpSocketFailureTest >> shouldBeSubclassedForBackendTesting [
+	^true
+]
+
 { #category : #testing }
 OCNTcpSocketFailureTest >> testDisconnectionWhileReceiving [
 	| dataSize dataToSend receptionStream waitForDataDelay serverSocket |

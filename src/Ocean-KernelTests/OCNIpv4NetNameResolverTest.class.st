@@ -14,6 +14,12 @@ OCNIpv4NetNameResolverTest >> assertAddressIsValid: address [
 ]
 
 { #category : #'tests localhost' }
+OCNIpv4NetNameResolverTest >> testLocalHostAddress [
+	
+	self assertAddressIsValid:  OCNNetNameResolver ipv4LocalHostAddress
+]
+
+{ #category : #'tests localhost' }
 OCNIpv4NetNameResolverTest >> testLocalHostAddresses [
 	
 	| allLocalhostAddresses |

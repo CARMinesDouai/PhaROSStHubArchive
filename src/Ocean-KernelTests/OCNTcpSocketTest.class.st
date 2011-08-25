@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #accessing }
+OCNTcpSocketTest class >> shouldBeSubclassedForBackendTesting [
+	^true
+]
+
+{ #category : #accessing }
 OCNTcpSocketTest >> clientPort [
 	^ 2222
 ]

@@ -34,5 +34,7 @@ OCNLibraryTestGenerator class >> generateTestForLibrary: aLibraryClass [
 
 { #category : #accessing }
 OCNLibraryTestGenerator class >> ocnTestClasses [
-	^{OCNTcpSocketReceivingDataTest. OCNTcpSocketSendingDataTest. OCNTcpSocketTest. OCNUdpSocketTest. OCNUdpSocketSendingDataTest. OCNUdpSocketReceivingDataTest. OCNTcpSocketFailureTest. OCNTcpSocketFinalizationTest}
+	^OCNSocketTest allSubclasses select: [ :testClass | testClass shouldBeSubclassedForBackendTesting].
+	
+	"{OCNTcpSocketReceivingDataTest. OCNTcpSocketSendingDataTest. OCNTcpSocketTest. OCNUdpSocketTest. OCNUdpSocketSendingDataTest. OCNUdpSocketReceivingDataTest. OCNTcpSocketFailureTest. OCNConversationTcpSocketFinalizationTest}"
 ]

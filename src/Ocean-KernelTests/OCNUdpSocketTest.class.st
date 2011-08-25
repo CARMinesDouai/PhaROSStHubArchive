@@ -71,6 +71,11 @@ Class {
 }
 
 { #category : #accessing }
+OCNUdpSocketTest class >> shouldBeSubclassedForBackendTesting [
+	^true
+]
+
+{ #category : #accessing }
 OCNUdpSocketTest >> socketClass [ 
 	^OCNUdpSocket
 ]

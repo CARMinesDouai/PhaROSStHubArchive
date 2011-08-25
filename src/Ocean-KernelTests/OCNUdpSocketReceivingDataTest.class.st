@@ -75,6 +75,11 @@ OCNUdpSocketReceivingDataTest >> serverClass [
 	^OCNUdpSendingServerForTest 
 ]
 
+{ #category : #accessing }
+OCNUdpSocketReceivingDataTest >> shouldBeSubclassedForBackendTesting [
+	^true
+]
+
 { #category : #testing }
 OCNUdpSocketReceivingDataTest >> testReceivingLargeAmountOfDataComparedToSizeOfSocketsDataBuffer [
 	self assertReceivingDataOfSize: 1000 * socket receiveDataBufferSize.

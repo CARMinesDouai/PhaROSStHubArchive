@@ -34,6 +34,11 @@ OCNUdpSocketSendingDataTest >> serverClass [
 	^OCNUdpReceivingServerForTest
 ]
 
+{ #category : #accessing }
+OCNUdpSocketSendingDataTest >> shouldBeSubclassedForBackendTesting [
+	^true
+]
+
 { #category : #'tests sending' }
 OCNUdpSocketSendingDataTest >> testSendingLargeAmountOfDataComparedToSizeOfSocketsDataBuffer [
 	self should: [ self assertSendingDataOfSize: 65529 ] raise: OCNInvalidDatagramPacketError

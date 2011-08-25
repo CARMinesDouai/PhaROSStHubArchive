@@ -4,6 +4,11 @@ Class {
 	#category : #'Ocean-KernelTests'
 }
 
+{ #category : #accessing }
+OCNTcpSocketReceivingDataTest class >> shouldBeSubclassedForBackendTesting [
+ 	^true
+]
+
 { #category : #testing }
 OCNTcpSocketReceivingDataTest >> assertReceivingDataOfSize: dataSize [
 	| dataToSend receptionStream waitForDataDelay dataPacket receivedData |

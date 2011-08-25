@@ -10,14 +10,19 @@ Class {
 	#category : #'Ocean-KernelTests'
 }
 
-{ #category : #'as yet unclassified' }
-OCNSocketTest class >> allTestSelectors [ 
-	^self superclass testSelectors, self testSelectors
-]
-
 { #category : #testing }
 OCNSocketTest class >> isAbstract [
 	^true
+]
+
+{ #category : #accessing }
+OCNSocketTest class >> lookupHierarchyRoot [
+	^self superclass
+]
+
+{ #category : #accessing }
+OCNSocketTest class >> shouldBeSubclassedForBackendTesting [
+	^false
 ]
 
 { #category : #'asserting lifecycle' }
@@ -119,5 +124,5 @@ OCNSocketTest >> stateTestingSelectors [
 OCNSocketTest >> tearDown [
 	super tearDown.
 	server ifNotNil: [ server kill ].
-	socket destroy.
+	socket ifNotNil: [socket destroy].
 ]
