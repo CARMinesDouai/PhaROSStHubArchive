@@ -45,7 +45,18 @@ OCNIpv4Address class >> loopbackAddressWithPort: aPortNumber [
 
 { #category : #'instance creation' }
 OCNIpv4Address class >> newFromString: aStringIpAddress [
-	self  notYetImplemented
+	"creates an Ipv4Address from a string"
+	| ipParts signalBlock byteArrayIp|
+	signalBlock :=  [  OCNInvalidIpStringAddressError signal ] .
+	ipParts := aStringIpAddress subStrings: '.'.
+	ipParts size = 4 ifFalse: [ OCNInvalidIpStringAddressError signal ].
+	
+	[ipParts do: [ :part | (part asNumber printString = part and: [ (0 to: 255) includes:  part asNumber ]) ifFalse: signalBlock ]] on: Error do: signalBlock.
+	byteArrayIp := (ipParts collect: [:part| part asNumber]) asByteArray.
+	^self new
+		family: self afInetFamily;
+		ip: byteArrayIp;
+		yourself
 ]
 
 { #category : #printing }

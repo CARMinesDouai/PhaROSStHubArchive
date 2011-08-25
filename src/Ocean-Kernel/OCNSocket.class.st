@@ -79,18 +79,13 @@ OCNSocket >> destroyedStateSymbol [
 { #category : #finalization }
 OCNSocket >> finalize [ 
 	super finalize.
-	self destroy
+	self destroy.
 ]
 
 { #category : #'initialize-release' }
 OCNSocket >> initialize [ 
 	super initialize.
 	self state: self cleanStateSymbol 
-]
-
-{ #category : #'as yet unclassified' }
-OCNSocket >> isBound [
-	^self state = self boundStateSymbol
 ]
 
 { #category : #'state testing' }

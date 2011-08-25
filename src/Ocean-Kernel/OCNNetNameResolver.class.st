@@ -26,6 +26,11 @@ OCNNetNameResolver class >> ipv4AddressesForName: nameToLookup [
 ]
 
 { #category : #'localhost resolution' }
+OCNNetNameResolver class >> ipv4LocalHostAddress [
+	^self networkLibrary ipv4LocalHostAddress
+]
+
+{ #category : #'localhost resolution' }
 OCNNetNameResolver class >> ipv4LocalHostAddresses [
 	|allAddresses|
 	allAddresses := Set new.

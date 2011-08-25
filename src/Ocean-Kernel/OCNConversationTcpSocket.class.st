@@ -55,6 +55,11 @@ OCNConversationTcpSocket >> connectionTimeOutSeconds [
 ]
 
 { #category : #'state testing' }
+OCNConversationTcpSocket >> isBound [
+	^self state = self boundStateSymbol
+]
+
+{ #category : #'state testing' }
 OCNConversationTcpSocket >> isConnected [ 
 	^self state = self connectedStateSymbol
 ]

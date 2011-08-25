@@ -49,27 +49,39 @@ OCNIpAddress class >> newFromString: aStringIpAddress [
 	self subclassResponsibility 
 ]
 
+{ #category : #testing }
+OCNIpAddress >> = anIpAddress [
+	^ self ip = anIpAddress ip 
+		and: [ self family = anIpAddress family  
+			and: [ self port = anIpAddress port ]]
+]
+
 { #category : #constants }
 OCNIpAddress >> afInetFamily [
 	^self class afInetFamily
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 OCNIpAddress >> family [
 	^ family
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 OCNIpAddress >> family: anObject [
 	family := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
+OCNIpAddress >> hash [
+	^ (self ip hash xor: self family hash) xor: self port hash
+]
+
+{ #category : #accessing }
 OCNIpAddress >> ip [
 	^ ip
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 OCNIpAddress >> ip: anObject [
 	ip := anObject
 ]
@@ -96,12 +108,12 @@ OCNIpAddress >> isOfAfInetFamily [
 	^ self family = self afInetFamily
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 OCNIpAddress >> port [
 	^ port
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 OCNIpAddress >> port: anObject [
 	port := anObject
 ]
