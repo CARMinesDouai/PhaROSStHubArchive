@@ -1,6 +1,6 @@
 Class {
 	#name : #OCNConversationTcpSocketFinalizationTest,
-	#superclass : #OCNTcpSocketFinalizationTest,
+	#superclass : #OCNSocketFinalizationTest,
 	#category : #'Ocean-KernelTests'
 }
 
@@ -12,4 +12,14 @@ OCNConversationTcpSocketFinalizationTest class >> shouldBeSubclassedForBackendTe
 { #category : #accessing }
 OCNConversationTcpSocketFinalizationTest >> socketClass [
 	^OCNConversationTcpSocketForFinalizationTest
+]
+
+{ #category : #accessing }
+OCNConversationTcpSocketFinalizationTest >> stateTestingSelectors [ 
+	^#(isClean isBound isConnected isDestroyed)
+]
+
+{ #category : #accessing }
+OCNConversationTcpSocketFinalizationTest >> testCreateSocketWithAnId [
+	self signalFailure: 'We need to create socket with an already known Id'
 ]

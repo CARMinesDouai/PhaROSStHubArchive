@@ -30,6 +30,11 @@ OCNTcpSocketTest >> stateTestingSelectors [
 	^#(isClean isBound isConnected isDestroyed)
 ]
 
+{ #category : #testing }
+OCNTcpSocketTest >> testAdaptSocketBufferSizes [
+	self signalFailure: 'We need to create socket and specify its buffer sizes'
+]
+
 { #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testBindBoundSocket [
 	
@@ -67,11 +72,11 @@ OCNTcpSocketTest >> testBindDestroyedSocket [
 
 { #category : #'testing lifecylce' }
 OCNTcpSocketTest >> testBindUnconnectedSocket [
-	| socketAddress |
+	| ipAddress |
 	self testSocketUnconnectedOnCreation.
 	self assertSocketState: #isClean.
-	socketAddress := OCNIpv4Address loopbackAddressWithPort:  self clientPort.	
-	self shouldnt: [socket bindToAddress: socketAddress] raise: OCNSocketOperationFailureError.
+	ipAddress := OCNIpv4Address loopbackAddressWithPort:  self clientPort.	
+	self shouldnt: [socket bindToAddress: ipAddress] raise: OCNSocketOperationFailureError.
 	self assertSocketState: #isBound.
 	"self signalFailure: 'Ensures that client socket is bount to clientPort '"
 
@@ -133,23 +138,6 @@ OCNTcpSocketTest >> testDestroyConnectedSocket [
 	self assertSocketState: #isConnected.
 	socket destroy.
 	self assertSocketState: #isDestroyed
-]
-
-{ #category : #'testing lifecylce' }
-OCNTcpSocketTest >> testDestroyDestroyedSocket [
-	self testDestroyUnconnectedSocket.
-	self assertSocketState: #isDestroyed.
-	self shouldnt: [socket destroy] raise: Error.
-	self assertSocketState: #isDestroyed.
-	
-]
-
-{ #category : #'testing lifecylce' }
-OCNTcpSocketTest >> testDestroyUnconnectedSocket [
-	self assertSocketState: #isClean.
-	socket destroy.
-	self assertSocketState: #isDestroyed.
-
 ]
 
 { #category : #'testing lifecylce' }

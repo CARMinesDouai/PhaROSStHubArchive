@@ -88,7 +88,7 @@ OCNSocketTest >> serverPort [
 OCNSocketTest >> setUp [
 	super setUp.
 	library := OCNNetworkLibraryProxyFactory proxyForLibraryClass: self networkLibraryClass.
-	socket := self socketClass newWithNetworkLibrary: self library.
+	self setUpSocketWithLibrary: self library.	
 	serverAddress := OCNIpv4Address loopbackAddressWithPort:  self serverPort.
 
 ]
@@ -96,6 +96,11 @@ OCNSocketTest >> setUp [
 { #category : #'setUp-tearDown' }
 OCNSocketTest >> setUpServer [
 	server:= self serverClass onPortNumber: self serverPort 
+]
+
+{ #category : #'setUp-tearDown' }
+OCNSocketTest >> setUpSocketWithLibrary: aLibrary [
+	socket := self socketClass newWithNetworkLibrary: aLibrary
 ]
 
 { #category : #accessing }
@@ -125,4 +130,21 @@ OCNSocketTest >> tearDown [
 	super tearDown.
 	server ifNotNil: [ server kill ].
 	socket ifNotNil: [socket destroy].
+]
+
+{ #category : #testing }
+OCNSocketTest >> testDestroyDestroyedSocket [
+	self testDestroyUnconnectedSocket.
+	self assertSocketState: #isDestroyed.
+	self shouldnt: [socket destroy] raise: Error.
+	self assertSocketState: #isDestroyed.
+	
+]
+
+{ #category : #testing }
+OCNSocketTest >> testDestroyUnconnectedSocket [
+	self assertSocketState: #isClean.
+	socket destroy.
+	self assertSocketState: #isDestroyed.
+
 ]

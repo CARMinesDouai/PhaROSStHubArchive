@@ -11,7 +11,7 @@ IpAddressTest >> testEquality [
 
 { #category : #'as yet unclassified' }
 IpAddressTest >> testNewFromString [
-	{ '192.168.0.1.9' . 'are.122.34.2' . '' . '255.256.0.0' } do: [ :each | 
+	{ '192.168.0.1.9' . 'are.122.34.2' . '' . '255.256.0.0'. '1.2.3' } do: [ :each | 
 		self should: [ OCNIpv4Address newFromString: each ] raise: OCNInvalidIpStringAddressError ].
 	
 	{ '192.168.0.1' . '0.0.0.0' . '255.255.255.255' } do: [ :each | 

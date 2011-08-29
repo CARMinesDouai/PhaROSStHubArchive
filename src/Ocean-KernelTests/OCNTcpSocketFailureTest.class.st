@@ -48,7 +48,16 @@ OCNTcpSocketFailureTest >> testDisconnectionWhileSending [
 
 { #category : #testing }
 OCNTcpSocketFailureTest >> testSocketCreationFailure [
-	self signalFailure: 'test that an exception is raised when socket creation fails'
+	|tooMuchSockets|
+	"self signalFailure: 'make the whole image unsuable because of the Semaphore max limit'. "
+	tooMuchSockets := Set new.
+	self should: [
+		500 timesRepeat: [tooMuchSockets add: self socketClass new]
+	] raise: OCNSocketOperationFailureError.
+	tooMuchSockets removeAll.
+	Smalltalk garbageCollect.
+	self shouldnt: [ self socketClass new ] 
+		raise: OCNSocketOperationFailureError.
 ]
 
 { #category : #testing }

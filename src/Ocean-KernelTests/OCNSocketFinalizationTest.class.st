@@ -31,19 +31,27 @@ OCNSocketFinalizationTest >> lastSocketState: anObject [
 	lastSocketState := anObject
 ]
 
-{ #category : #testing }
-OCNSocketFinalizationTest >> setUp [
-	super setUp.
+{ #category : #'setUp-tearDown' }
+OCNSocketFinalizationTest >> setUpSocketWithLibrary: aLibrary [
+	socket := self socketClass basicNew.
 	finalizationDoneSemaphore := Semaphore new.
 	socket 
+		networkLibrary: aLibrary;
 		testUnit: self;
 		semaphore: finalizationDoneSemaphore.
-	WeakRegistry default add: socket.
-
+	socket initialize
 ]
 
 { #category : #testing }
 OCNSocketFinalizationTest >> testCleanSocketFinalization [
 	self assertSocket: socket state:  #isClean.
+	self assertSocketFinalized
+]
+
+{ #category : #testing }
+OCNSocketFinalizationTest >> testDestroyedSocketFinalization [
+	self assertSocket: socket state:  #isClean.
+	socket destroy.
+	self assertSocket: socket state:  #isDestroyed.
 	self assertSocketFinalized
 ]

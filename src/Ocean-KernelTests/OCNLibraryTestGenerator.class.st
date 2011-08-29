@@ -5,10 +5,16 @@ Class {
 }
 
 { #category : #generating }
+OCNLibraryTestGenerator class >> categoryNameForLibrary: aLibraryClass [
+	^aLibraryClass category asString, 'Tests-Generated'
+]
+
+{ #category : #generating }
 OCNLibraryTestGenerator class >> generateForAllLibrary [
 	"self  generateForAllLibrary"
-	
+			
 	OCNNetworkLibraryProxyFactory allNetworkLibraryProxyClasses do: [ :aLibraryClass |
+		self removeTestsForLibrary: aLibraryClass.
 		self generateTestForLibrary: aLibraryClass
 	]
 ]
@@ -21,7 +27,7 @@ OCNLibraryTestGenerator class >> generateTestForLibrary: aLibraryClass [
 	generatedClasses := self ocnTestClasses collect: [ :testClass | 
 		testClass subclass: (aLibraryClass name, testClass name) asSymbol
 			instanceVariableNames: '' classVariableNames: '' poolDictionaries: '' 
-			category: aLibraryClass category asString, 'Tests-Generated'
+			category: (self categoryNameForLibrary: aLibraryClass)
 	].
 	
 	generatedClasses do: [ :testClass | 
@@ -37,4 +43,10 @@ OCNLibraryTestGenerator class >> ocnTestClasses [
 	^OCNSocketTest allSubclasses select: [ :testClass | testClass shouldBeSubclassedForBackendTesting].
 	
 	"{OCNTcpSocketReceivingDataTest. OCNTcpSocketSendingDataTest. OCNTcpSocketTest. OCNUdpSocketTest. OCNUdpSocketSendingDataTest. OCNUdpSocketReceivingDataTest. OCNTcpSocketFailureTest. OCNConversationTcpSocketFinalizationTest}"
+]
+
+{ #category : #generating }
+OCNLibraryTestGenerator class >> removeTestsForLibrary: aLibraryClass [
+
+	SystemOrganization removeSystemCategory:  (self categoryNameForLibrary: aLibraryClass)
 ]
