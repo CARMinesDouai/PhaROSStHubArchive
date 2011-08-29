@@ -14,6 +14,7 @@ Class {
 	#name : #OCNSocketPluginLibrary,
 	#superclass : #Object,
 	#instVars : [
+		'isDestroyed',
 		'semaphore',
 		'semaIndex',
 		'readSemaphore',
@@ -62,6 +63,25 @@ OCNSocketPluginLibrary class >> proxy [
 	self flag: 'Reimplement the initializeNetwork stuff'.
 	NetNameResolver initializeNetwork.
 	^self new
+]
+
+{ #category : #'TCP API' }
+OCNSocketPluginLibrary >> acceptFrom: aServerSocket [
+	|conversationSocket conversationSocketId networkLibrary |
+	
+	conversationSocket := OCNConversationTcpSocket newWithoutId.
+	networkLibrary := conversationSocket networkLibrary.
+	conversationSocketId := self
+		primAcceptFrom: aServerSocket socketId
+		receiveBufferSize:  conversationSocket receiveDataBufferSize
+		sendBufSize: conversationSocket sendDataBufferSize 
+		semaIndex:  networkLibrary semaIndex
+		readSemaIndex:  networkLibrary readSemaIndex
+		writeSemaIndex:  networkLibrary writeSemaIndex.
+	
+	conversationSocket initializeWithId: conversationSocketId.
+	
+	^conversationSocket
 ]
 
 { #category : #'name resolving support' }
@@ -148,9 +168,10 @@ OCNSocketPluginLibrary >> convertIpv4StringAddressToByteArray: stringAddress [
 { #category : #'initialize-release' }
 OCNSocketPluginLibrary >> createSocketDescriptorIdFor: anOCNSocket withType:  socketType [
 	
-	| socketId status |
+	| socketId status|
 	primitiveOnlySupportsOneSemaphore := false.
-	self initSemaphores.
+
+	[self initSemaphores] on: Error do: [ :er | OCNSocketOperationFailureError signal: 'Socket creation failure'].
 
 	socketId := self primSocketCreateNetwork: 0
 			type: socketType
@@ -163,13 +184,12 @@ OCNSocketPluginLibrary >> createSocketDescriptorIdFor: anOCNSocket withType:  so
 				self receiveDataBuffer: (ByteArray new: anOCNSocket receiveDataBufferSize).
 				 ^socketId ].
 	self releaseSemaphores.
-	 OCNSocketOperationFailureError signal: 'Socket creation failure' 
+	OCNSocketOperationFailureError signal: 'Socket creation failure'
 	
 ]
 
 { #category : #'TCP API' }
 OCNSocketPluginLibrary >> createTcpSocketDescriptorIdFor: anOCNSocket [
-	
 	^self createSocketDescriptorIdFor: anOCNSocket withType: TCPSocketType	
 ]
 
@@ -177,13 +197,6 @@ OCNSocketPluginLibrary >> createTcpSocketDescriptorIdFor: anOCNSocket [
 OCNSocketPluginLibrary >> createUdpSocketDescriptorIdFor: anOCNSocket [
 	^self createSocketDescriptorIdFor: anOCNSocket  withType: UDPSocketType
 
-]
-
-{ #category : #'Socket API' }
-OCNSocketPluginLibrary >> destroy: aSocket [
-	
-	self primSocketCloseConnection: aSocket socketId.
-	self primDestroySocket: aSocket socketId
 ]
 
 { #category : #'initialize-release' }
@@ -213,6 +226,12 @@ OCNSocketPluginLibrary >> initSemaphores [
 	readSemaIndex := Smalltalk registerExternalObject: readSemaphore.
 	writeSemaIndex := Smalltalk registerExternalObject: writeSemaphore.
 
+]
+
+{ #category : #'initialize-release' }
+OCNSocketPluginLibrary >> initialize [
+	super initialize.
+	isDestroyed := false
 ]
 
 { #category : #'name resolving support' }
@@ -282,6 +301,14 @@ OCNSocketPluginLibrary >> isSocketConnected: socket [
 
 ]
 
+{ #category : #'TCP API' }
+OCNSocketPluginLibrary >> listen: aServerSocket on: anIpvAddress [ 
+
+	self primSocket: aServerSocket socketId  listenOn: anIpvAddress port backlogSize: aServerSocket backlogSize interface: anIpvAddress ip
+
+	
+]
+
 { #category : #'name resolving support' }
 OCNSocketPluginLibrary >> localAddressFamily [
 	^1
@@ -308,12 +335,19 @@ OCNSocketPluginLibrary >> primAbortLookup [
 
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'TCP primitives' }
+OCNSocketPluginLibrary >> primAcceptFrom: aHandle receiveBufferSize: rcvBufSize sendBufSize: sndBufSize semaIndex: semaphoreIndex [
+	"Create and return a new socket handle based on accepting the connection from the given listening socket"
+
+	<primitive: 'primitiveSocketAccept' module: 'SocketPlugin'>
+
+	^ self primitiveFailed
+]
+
+{ #category : #'TCP primitives' }
 OCNSocketPluginLibrary >> primAcceptFrom: aHandle receiveBufferSize: rcvBufSize sendBufSize: sndBufSize semaIndex: semaInd readSemaIndex: aReadSema writeSemaIndex: aWriteSema [
 	"Create and return a new socket handle based on accepting the connection from the given listening socket"
 	<primitive: 'primitiveSocketAccept3Semaphores' module: 'SocketPlugin'>
-	| primitiveOnlySupportsOneSemaphore |
-	"should be an instance variable, like in previous socket library"
 	primitiveOnlySupportsOneSemaphore := true.
 	^self primAcceptFrom: aHandle receiveBufferSize: rcvBufSize sendBufSize: sndBufSize semaIndex: semaIndex 
 ]
@@ -333,8 +367,7 @@ OCNSocketPluginLibrary >> primDestroySocket: socketId [
 	"Socket>>primSocketDestroy:"	
 	<primitive: 'primitiveSocketDestroy' module: 'SocketPlugin'>
 
-	OCNSocketOperationFailureError signal: 'Close failed'
-
+	OCNSocketOperationFailureError signal: 'Destroy failed'
 ]
 
 { #category : #'primitives from old netnameresolver IPV6' }
@@ -542,12 +575,12 @@ OCNSocketPluginLibrary >> primSocket: aHandle listenOn: portNumber backlogSize: 
 	self destroy. "Accept not supported so clean up"
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'TCP primitives' }
 OCNSocketPluginLibrary >> primSocket: aHandle listenOn: portNumber backlogSize: backlog interface: ifAddr [
 	"Primitive. Set up the socket to listen on the given port.
 	Will be used in conjunction with #accept only."
 	<primitive: 'primitiveSocketListenOnPortBacklogInterface' module: 'SocketPlugin'>
-	self destroy. "Accept not supported so clean up"
+	OCNSocketOperationFailureError signal:  'Listen failed'
 ]
 
 { #category : #'Unused primitives' }
@@ -828,6 +861,11 @@ OCNSocketPluginLibrary >> primStartLookupOfName: hostName [
 ]
 
 { #category : #accessing }
+OCNSocketPluginLibrary >> readSemaIndex [
+	^readSemaIndex
+]
+
+{ #category : #accessing }
 OCNSocketPluginLibrary >> receiveDataBuffer [
 	^receiveDataBuffer
 ]
@@ -889,6 +927,11 @@ OCNSocketPluginLibrary >> resolverUninitializedCode [
 	^ 0  "network is not initialized"
 ]
 
+{ #category : #accessing }
+OCNSocketPluginLibrary >> semaIndex [
+	^semaIndex
+]
+
 { #category : #'UDP private' }
 OCNSocketPluginLibrary >> sendUDPDataOn: socketId contents: aByteArray toHost: hostAddress port: portNumber [
 	"Send a UDP packet containing the given data to the specified host/port."
@@ -918,6 +961,17 @@ OCNSocketPluginLibrary >> sendUDPOn: aSocket datagram: aDatagramPacket [
 ]
 
 { #category : #'TCP API' }
+OCNSocketPluginLibrary >> tcpDestroy: aSocket [
+	
+	aSocket socketId ifNil: [ ^self ].
+	isDestroyed ifTrue: [^self].
+	self primSocketCloseConnection: aSocket socketId.
+	self primDestroySocket: aSocket socketId.
+	self releaseSemaphores.
+	isDestroyed := true
+]
+
+{ #category : #'TCP API' }
 OCNSocketPluginLibrary >> tcpReceiveFrom: aSocket [
 	| bytesRead |
 	bytesRead := self primSocket: aSocket socketId receiveDataInto: self receiveDataBuffer startingAt: 1 count: self receiveDataBuffer size.
@@ -944,6 +998,17 @@ OCNSocketPluginLibrary >> tcpSendData: aByteStringOrByteArray to: aSocket [
 { #category : #'tcp api support' }
 OCNSocketPluginLibrary >> tcpSocketConnectedStatus [
 	^2
+]
+
+{ #category : #'UDP API' }
+OCNSocketPluginLibrary >> udpDestroy: aSocket [
+	
+	aSocket socketId ifNil: [ ^self ].
+	isDestroyed ifTrue: [^self].
+	self primDestroySocket: aSocket socketId.
+	self releaseSemaphores.
+	isDestroyed := true
+
 ]
 
 { #category : #'tcp api support' }
@@ -1001,6 +1066,11 @@ OCNSocketPluginLibrary >> waitForSendDoneOn: socketId for: timeoutSeconds onTime
 			self writeSemaphore waitTimeoutMSecs: msecsDelta - msecsEllapsed].
 
 	sendDone ifFalse: aBlock
+]
+
+{ #category : #accessing }
+OCNSocketPluginLibrary >> writeSemaIndex [
+	^writeSemaIndex
 ]
 
 { #category : #'sending support' }
