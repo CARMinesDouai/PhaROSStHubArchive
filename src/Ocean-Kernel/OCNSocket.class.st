@@ -16,8 +16,9 @@ OCNSocket class >> new [
 
 { #category : #'instance creation' }
 OCNSocket class >> newWithNetworkLibrary: aNetworkLibraryProxy [
-	^super new
+	^self basicNew 
 		networkLibrary: aNetworkLibraryProxy;
+		initialize;
 		yourself
 ]
 
@@ -29,15 +30,20 @@ OCNSocket class >> newWithNetworkLibraryClass: aNetworkLibraryClass [
 { #category : #connection }
 OCNSocket >> basicDestroy [
 	self state: self destroyedStateSymbol.
-	self networkLibrary destroy: self
+
+]
+
+{ #category : #'initialize-release' }
+OCNSocket >> basicInitialize [
+	self state: self cleanStateSymbol
 ]
 
 { #category : #connecting }
-OCNSocket >> bindToAddress: aSocketAddress [ 
+OCNSocket >> bindToAddress: anIpAddress [ 
 	self isClean ifFalse: [ 
 		OCNSocketOperationForbiddenError signal: self state asString capitalized, ' socket can not be bound' ].
 	[
-		self networkLibrary bind: self toIpv4Address: aSocketAddress
+		self networkLibrary bind: self toIpv4Address: anIpAddress
 	] on: OCNSocketOperationFailureError do: [:ex|
 		self destroy.
 		ex pass.
@@ -85,7 +91,25 @@ OCNSocket >> finalize [
 { #category : #'initialize-release' }
 OCNSocket >> initialize [ 
 	super initialize.
-	self state: self cleanStateSymbol 
+	self basicInitialize.
+	self initializeWithId: self newSocketId
+]
+
+{ #category : #'initialize-release' }
+OCNSocket >> initializeWithId: aSocketId [
+	[self socketId: aSocketId] 
+		on: OCNSocketOperationFailureError 
+		do: [:ex|
+			self destroy.
+			ex pass].
+	WeakRegistry default add: self. "to ensure future finalization"
+
+
+]
+
+{ #category : #'state testing' }
+OCNSocket >> isBound [
+	^self state = self boundStateSymbol
 ]
 
 { #category : #'state testing' }
@@ -130,12 +154,12 @@ OCNSocket >> sendTimeOutSeconds [
 
 { #category : #accessing }
 OCNSocket >> socketId [
-	^ socketId ifNil: [ socketId := self newSocketId]
+	^ socketId
 ]
 
 { #category : #accessing }
 OCNSocket >> socketId: anObject [
-	socketId := anObject
+	socketId := anObject.
 ]
 
 { #category : #accessing }

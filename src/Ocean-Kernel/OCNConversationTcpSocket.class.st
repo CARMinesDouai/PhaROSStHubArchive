@@ -29,8 +29,25 @@ Class {
 	#category : #'Ocean-Kernel'
 }
 
+{ #category : #'instance creation' }
+OCNConversationTcpSocket class >> newConnectedTo: anIpAddress [
+	 
+	^self new 
+		connectToServer: anIpAddress;
+		yourself
+]
+
+{ #category : #'instance creation' }
+OCNConversationTcpSocket class >> newWithoutId [
+	 
+	^self basicNew 
+		basicInitialize;
+		yourself
+]
+
 { #category : #connection }
 OCNConversationTcpSocket >> connectToServer: serverAddress [
+
 	(self isClean | self isBound ) ifFalse:  [ 
 		OCNSocketOperationForbiddenError signal: self state asString capitalized, ' socket can not be connected' ].
 	[
@@ -55,11 +72,6 @@ OCNConversationTcpSocket >> connectionTimeOutSeconds [
 ]
 
 { #category : #'state testing' }
-OCNConversationTcpSocket >> isBound [
-	^self state = self boundStateSymbol
-]
-
-{ #category : #'state testing' }
 OCNConversationTcpSocket >> isConnected [ 
 	^self state = self connectedStateSymbol
 ]
@@ -69,15 +81,17 @@ OCNConversationTcpSocket >> isDataAvailable [
 	^self isConnected and: [self networkLibrary isDataAvailableFrom: self]
 ]
 
-{ #category : #'initialize-release' }
-OCNConversationTcpSocket >> newSocketId [
-	^ self networkLibrary createTcpSocketDescriptorIdFor: self
-]
-
 { #category : #communicating }
 OCNConversationTcpSocket >> receive [
 	self isConnected ifFalse: [OCNSocketOperationForbiddenError signal: 'Socket should be connected before receiving'].
 	^self networkLibrary tcpReceiveFrom: self	
+]
+
+{ #category : #accessing }
+OCNConversationTcpSocket >> refreshState [
+	state = self connectedStateSymbol ifFalse: [^self].
+	(self networkLibrary isSocketConnected: self) ifFalse: [self basicDestroy]
+
 ]
 
 { #category : #communicating }
@@ -97,4 +111,10 @@ OCNConversationTcpSocket >> send: aByteStringOrByteArray [
 		totalSentCount := sentCount + totalSentCount.
 	].
 	^totalSentCount  
+]
+
+{ #category : #'as yet unclassified' }
+OCNConversationTcpSocket >> state [
+	self refreshState.
+	^super state
 ]

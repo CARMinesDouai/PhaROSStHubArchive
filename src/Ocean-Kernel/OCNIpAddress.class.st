@@ -120,5 +120,6 @@ OCNIpAddress >> port: anObject [
 
 { #category : #printing }
 OCNIpAddress >> printOn: aStream [
-	aStream nextPutAll:  self ipString
+	super printOn: aStream.
+	aStream nextPutAll: '(', self ipString, ')'
 ]

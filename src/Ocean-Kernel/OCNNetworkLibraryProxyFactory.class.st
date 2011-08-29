@@ -9,7 +9,7 @@ Class {
 
 { #category : #accessing }
 OCNNetworkLibraryProxyFactory class >> allNetworkLibraryProxyClasses [
-	^{OCNSocketPluginLibrary. OCNMacOSXPosixLibrary}
+	^{OCNSocketPluginLibrary} "OCNMacOSXPosixLibrary"
 ]
 
 { #category : #'building socket proxies' }

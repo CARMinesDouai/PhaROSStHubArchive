@@ -5,6 +5,12 @@ Class {
 }
 
 { #category : #private }
+OCNUdpSocket >> basicDestroy [
+	super basicDestroy.
+	self networkLibrary udpDestroy: self
+]
+
+{ #category : #private }
 OCNUdpSocket >> newSocketId [
 	^ self networkLibrary createUdpSocketDescriptorIdFor: self 
 ]

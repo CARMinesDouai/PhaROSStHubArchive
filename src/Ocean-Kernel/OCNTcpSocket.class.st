@@ -4,15 +4,14 @@ Class {
 	#category : #'Ocean-Kernel'
 }
 
-{ #category : #accessing }
-OCNTcpSocket >> refreshState [
-	state = self connectedStateSymbol ifFalse: [^self].
-	(self networkLibrary isSocketConnected: self) ifFalse: [self basicDestroy]
-
+{ #category : #private }
+OCNTcpSocket >> basicDestroy [
+	super basicDestroy.
+	self networkLibrary tcpDestroy: self.
+	self socketId: nil.
 ]
 
-{ #category : #accessing }
-OCNTcpSocket >> state [
-	self refreshState.
-	^super state
+{ #category : #'initialize-release' }
+OCNTcpSocket >> newSocketId [
+	^ self networkLibrary createTcpSocketDescriptorIdFor: self
 ]
