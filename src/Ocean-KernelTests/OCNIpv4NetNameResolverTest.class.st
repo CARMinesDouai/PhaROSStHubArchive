@@ -8,7 +8,7 @@ Class {
 OCNIpv4NetNameResolverTest >> assertAddressIsValid: address [
 	| ipParts |
 	self assert: (address isKindOf: OCNIpv4Address).
-	ipParts := address ip subStrings: '.'.
+	ipParts := address ipString subStrings: '.'.
 	self assert: ipParts size = 4.
 	ipParts do: [ :part | self assert: part asNumber printString = part ]
 ]

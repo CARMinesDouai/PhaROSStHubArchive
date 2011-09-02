@@ -1,6 +1,6 @@
 Class {
 	#name : #OCNTcpSocketSendingDataTest,
-	#superclass : #OCNTcpSocketTest,
+	#superclass : #OCNTcpConversationSocketTest,
 	#instVars : [
 		'sendingProcess'
 	],

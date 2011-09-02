@@ -1,42 +1,42 @@
 Class {
-	#name : #OCNTcpSocketTest,
+	#name : #OCNTcpConversationSocketTest,
 	#superclass : #OCNSocketTest,
 	#category : #'Ocean-KernelTests'
 }
 
 { #category : #accessing }
-OCNTcpSocketTest class >> shouldBeSubclassedForBackendTesting [
+OCNTcpConversationSocketTest class >> shouldBeSubclassedForBackendTesting [
 	^true
 ]
 
 { #category : #accessing }
-OCNTcpSocketTest >> clientPort [
+OCNTcpConversationSocketTest >> clientPort [
 	^ 2222
 ]
 
 { #category : #testing }
-OCNTcpSocketTest >> connect [
+OCNTcpConversationSocketTest >> connect [
 	socket connectToServer: self serverAddress.
 
 ]
 
 { #category : #accessing }
-OCNTcpSocketTest >> socketClass [ 
+OCNTcpConversationSocketTest >> socketClass [ 
 	^OCNConversationTcpSocket
 ]
 
 { #category : #accessing }
-OCNTcpSocketTest >> stateTestingSelectors [ 
+OCNTcpConversationSocketTest >> stateTestingSelectors [ 
 	^#(isClean isBound isConnected isDestroyed)
 ]
 
 { #category : #testing }
-OCNTcpSocketTest >> testAdaptSocketBufferSizes [
+OCNTcpConversationSocketTest >> testAdaptSocketBufferSizes [
 	self signalFailure: 'We need to create socket and specify its buffer sizes'
 ]
 
 { #category : #'testing lifecylce' }
-OCNTcpSocketTest >> testBindBoundSocket [
+OCNTcpConversationSocketTest >> testBindBoundSocket [
 	
 	| initialPort otherPort |
 	initialPort := self clientPort.
@@ -52,7 +52,7 @@ OCNTcpSocketTest >> testBindBoundSocket [
 ]
 
 { #category : #'testing lifecylce' }
-OCNTcpSocketTest >> testBindConnectedSocket [
+OCNTcpConversationSocketTest >> testBindConnectedSocket [
 	self startServer.
 	self connect.
 	self assertSocketState: #isConnected.
@@ -62,7 +62,7 @@ OCNTcpSocketTest >> testBindConnectedSocket [
 ]
 
 { #category : #'testing lifecylce' }
-OCNTcpSocketTest >> testBindDestroyedSocket [
+OCNTcpConversationSocketTest >> testBindDestroyedSocket [
 	socket destroy.
 	self assertSocketState: #isDestroyed.
 	self should: [socket bindToLocalHostPort: self serverPort] raise: OCNSocketOperationForbiddenError.
@@ -71,7 +71,7 @@ OCNTcpSocketTest >> testBindDestroyedSocket [
 ]
 
 { #category : #'testing lifecylce' }
-OCNTcpSocketTest >> testBindUnconnectedSocket [
+OCNTcpConversationSocketTest >> testBindUnconnectedSocket [
 	| ipAddress |
 	self testSocketUnconnectedOnCreation.
 	self assertSocketState: #isClean.
@@ -83,7 +83,7 @@ OCNTcpSocketTest >> testBindUnconnectedSocket [
 ]
 
 { #category : #'testing lifecylce' }
-OCNTcpSocketTest >> testConnectConnectedSocket [
+OCNTcpConversationSocketTest >> testConnectConnectedSocket [
 	self testConnectUnconnectedSocket.
 	self should: [ self connect ] raise: OCNSocketOperationForbiddenError .
 	self assertSocketState: #isConnected
@@ -91,7 +91,7 @@ OCNTcpSocketTest >> testConnectConnectedSocket [
 ]
 
 { #category : #'testing lifecylce' }
-OCNTcpSocketTest >> testConnectDestroyedSocket [
+OCNTcpConversationSocketTest >> testConnectDestroyedSocket [
 	self startServer.
 	socket destroy.
 	self assertSocketState: #isDestroyed.
@@ -100,21 +100,21 @@ OCNTcpSocketTest >> testConnectDestroyedSocket [
 ]
 
 { #category : #'testing lifecylce' }
-OCNTcpSocketTest >> testConnectFailureOfBoundSocket [
+OCNTcpConversationSocketTest >> testConnectFailureOfBoundSocket [
 	self testBindUnconnectedSocket.
 	self should: [self connect] raise: OCNSocketOperationFailureError.
 	self assertSocketState: #isDestroyed
 ]
 
 { #category : #'testing lifecylce' }
-OCNTcpSocketTest >> testConnectFailureOfUnconnectedSocket [
+OCNTcpConversationSocketTest >> testConnectFailureOfUnconnectedSocket [
 	self assertSocketState: #isClean.
 	self should: [self connect] raise: OCNSocketOperationFailureError.
 	self assertSocketState: #isDestroyed
 ]
 
 { #category : #'testing lifecylce' }
-OCNTcpSocketTest >> testConnectUnconnectedSocket [
+OCNTcpConversationSocketTest >> testConnectUnconnectedSocket [
 	self startServer.
 	self assertSocketState: #isClean.
 	self connect.
@@ -123,7 +123,7 @@ OCNTcpSocketTest >> testConnectUnconnectedSocket [
 ]
 
 { #category : #'testing lifecylce' }
-OCNTcpSocketTest >> testDestroyBoundSocket [
+OCNTcpConversationSocketTest >> testDestroyBoundSocket [
 	self testBindUnconnectedSocket.
 	self assertSocketState: #isBound.
 	socket destroy.
@@ -132,7 +132,7 @@ OCNTcpSocketTest >> testDestroyBoundSocket [
 ]
 
 { #category : #'testing lifecylce' }
-OCNTcpSocketTest >> testDestroyConnectedSocket [
+OCNTcpConversationSocketTest >> testDestroyConnectedSocket [
 	self startServer.
 	self connect.
 	self assertSocketState: #isConnected.
@@ -141,7 +141,7 @@ OCNTcpSocketTest >> testDestroyConnectedSocket [
 ]
 
 { #category : #'testing lifecylce' }
-OCNTcpSocketTest >> testReceiveOnDestroyedSocket [
+OCNTcpConversationSocketTest >> testReceiveOnDestroyedSocket [
 	self testDestroyUnconnectedSocket.
 	self assertSocketState: #isDestroyed.
 	self should: [ socket receive ] raise: OCNSocketOperationForbiddenError.
@@ -150,7 +150,7 @@ OCNTcpSocketTest >> testReceiveOnDestroyedSocket [
 ]
 
 { #category : #'testing lifecylce' }
-OCNTcpSocketTest >> testSendOnDestroyedSocket [
+OCNTcpConversationSocketTest >> testSendOnDestroyedSocket [
 	self testDestroyUnconnectedSocket.
 	self assertSocketState: #isDestroyed.
 	self should: [socket send: 'hello'] raise: OCNSocketOperationForbiddenError.
@@ -159,7 +159,7 @@ OCNTcpSocketTest >> testSendOnDestroyedSocket [
 ]
 
 { #category : #'testing lifecylce' }
-OCNTcpSocketTest >> testSocketUnconnectedOnCreation [
+OCNTcpConversationSocketTest >> testSocketUnconnectedOnCreation [
 	self assert: socket socketId notNil.
 	self assertSocketState:  #isClean.
 

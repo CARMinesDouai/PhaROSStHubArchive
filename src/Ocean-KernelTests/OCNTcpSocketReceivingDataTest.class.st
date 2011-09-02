@@ -1,6 +1,6 @@
 Class {
 	#name : #OCNTcpSocketReceivingDataTest,
-	#superclass : #OCNTcpSocketTest,
+	#superclass : #OCNTcpConversationSocketTest,
 	#category : #'Ocean-KernelTests'
 }
 

@@ -38,13 +38,11 @@ OCNTcpServerSocketTest >> testAcceptOneConnection [
 	
 	|dataToSend receivedData |
 
-	serverProcess := [self halt. [socket listenOn: serverAddress
-		onAcceptDo: [ :aSocket | serverConversationSocket := aSocket ]] ensure: 
-		[socket destroy] ] newProcess.
-	serverProcess resume.
-	self halt.
+	serverProcess := [
+		[socket listenOn: serverAddress.
+		serverConversationSocket := socket accept] 
+		ensure: [socket destroy] ] fork.
 	
-		
 	clientSocket := OCNConversationTcpSocket newConnectedTo: serverAddress.
 	self assert: clientSocket isConnected.
 	self assert: serverConversationSocket isConnected.
