@@ -73,7 +73,7 @@ OCNIpAddress >> family: anObject [
 
 { #category : #testing }
 OCNIpAddress >> hash [
-	^ (self ip hash xor: self family hash) xor: self port hash
+	^ (self ip hash bitXor: self family hash) bitXor: self port hash
 ]
 
 { #category : #accessing }

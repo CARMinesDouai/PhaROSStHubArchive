@@ -113,7 +113,7 @@ OCNConversationTcpSocket >> send: aByteStringOrByteArray [
 	^totalSentCount  
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 OCNConversationTcpSocket >> state [
 	self refreshState.
 	^super state
