@@ -252,7 +252,7 @@ OCNSocketPluginLibrary >> ipv4AddressForName: nameToLookup [
 { #category : #'NameResolving API' }
 OCNSocketPluginLibrary >> ipv4AddressesForName: nameToLookup [
 
-	^(self addressesForName: nameToLookup  addressFamily:  self ipv4) collect: [:adress | OCNIpv4Address new ip: adress; yourself]
+	^(self addressesForName: nameToLookup  addressFamily:  self ipv4) collect: [:adressString | OCNIpv4Address newFromString: adressString ]
 ]
 
 { #category : #'NameResolving API' }
