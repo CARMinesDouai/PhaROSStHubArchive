@@ -8,6 +8,12 @@ Class {
 	#category : #'Ocean-Kernel'
 }
 
+{ #category : #'as yet unclassified' }
+OCNServerTcpSocket >> accept [
+	
+	^self networkLibrary acceptFrom: self.
+]
+
 { #category : #accessing }
 OCNServerTcpSocket >> backlogSize [
 	^backlogSize
@@ -43,8 +49,7 @@ OCNServerTcpSocket >> listenOn: anIpAddress [
 	].
 
 	self state: self listeningStateSymbol.
-	
-	^self networkLibrary acceptFrom: self.
+
 	
 	
 ]
