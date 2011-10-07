@@ -23,7 +23,7 @@ OCNTcpServerSocketTest >> socketClass [
 OCNTcpServerSocketTest >> tearDown [
 	super tearDown.
 	serverProcess ifNotNil: [serverProcess terminate].
-	clientSocket destroy.
+	clientSocket ifNotNil: [clientSocket destroy].
 	serverConversationSocket destroy
 	
 ]
@@ -37,7 +37,7 @@ OCNTcpServerSocketTest >> testAcceptOneConnection [
 		[socket listenOn: serverAddress.
 		serverConversationSocket := socket accept] 
 		ensure: [socket destroy] ] fork.
-	
+
 	clientSocket := OCNConversationTcpSocket newConnectedTo: serverAddress.
 	self assert: clientSocket isConnected.
 	self assert: serverConversationSocket isConnected.

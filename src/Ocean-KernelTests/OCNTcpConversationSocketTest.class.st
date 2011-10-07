@@ -71,6 +71,17 @@ OCNTcpConversationSocketTest >> testBindDestroyedSocket [
 ]
 
 { #category : #'testing lifecylce' }
+OCNTcpConversationSocketTest >> testBindFailureOfCleanSocket [
+	
+	| ipAddress |
+	self testSocketUnconnectedOnCreation.
+	self assertSocketState: #isClean.
+	ipAddress := OCNIpv4Address loopbackAddressWithPort: 66666.	
+	self should: [socket bindToAddress: ipAddress] raise: OCNSocketOperationFailureError.
+	self assertSocketState: #isDestroyed.
+]
+
+{ #category : #'testing lifecylce' }
 OCNTcpConversationSocketTest >> testBindUnconnectedSocket [
 	| ipAddress |
 	self testSocketUnconnectedOnCreation.
