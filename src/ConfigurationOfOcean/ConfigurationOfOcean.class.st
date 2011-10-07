@@ -277,9 +277,44 @@ ConfigurationOfOcean >> baseline06: spec [
 	]
 ]
 
+{ #category : #baselines }
+ConfigurationOfOcean >> baseline07: spec [
+	<version: '0.7-baseline'>
+	
+	spec for: #common do: [
+		spec blessing: #baseline.
+	
+		spec repository: 'http://www.squeaksource.com/Ocean'.
+		
+		spec project: 'Alien' with: [
+			spec 
+				className: 'ConfigurationOfAlien' ; 
+				loads: {'All'}; 
+				file: 'ConfigurationOfAlien';
+				repository: 'http://www.squeaksource.com/Alien'
+		].
+
+		spec package: 'Ocean-Kernel'.
+		spec package: 'Ocean-KernelTests' with: [ spec requires: 'Ocean-Kernel' ].
+		spec package: 'Ocean-LibraryPlugin' with: [ spec requires: 'Ocean-Kernel' ].
+		spec package: 'Ocean-LibraryPluginTests' with: [ spec requires: 'Ocean-LibraryPlugin'; requires: 'Ocean-KernelTests' ].
+		spec package: 'Ocean-LibraryPosix' with: [ spec requires: 'Alien' ].
+		spec package: 'Ocean-LibraryPosixTests' with: [ spec requires: 'Ocean-LibraryPosix'; requires: 'Ocean-KernelTests'].
+		spec package: 'Ocean-Benchmarks' with: [ spec requires: 'Ocean-Kernel' ].
+			
+		spec group: 'default' with: #('Ocean-LibraryPlugin').
+		spec group: 'default tests' with: #('default' 'Ocean-LibraryPluginTests').
+		spec group: 'posix' with: #('Ocean-LibraryPosix').
+		spec group: 'posix tests' with: #('posix' 'Ocean-LibraryPosixTests').
+		spec group: 'full' with: #('default' 'posix').
+		spec group: 'full tests' with: #('default tests' 'posix tests').
+		
+	]
+]
+
 { #category : #'symbolic versions' }
 ConfigurationOfOcean >> default: spec [
-	<version: #'default' imports: #('0.6-baseline')>
+	<version: #'default' imports: #('0.7-baseline')>
 	
 	
 ]
@@ -401,5 +436,23 @@ ConfigurationOfOcean >> version07: spec [
 			package: 'Ocean-LibraryPosix' with: 'Ocean-LibraryPosix-LucFabresse.1';
 			package: 'Ocean-LibraryPosixTests' with: 'Ocean-LibraryPosixTests-LucFabresse.1';
 			package: 'Ocean-Benchmarks' with: 'Ocean-Benchmarks-LucFabresse.1'.
+	]
+]
+
+{ #category : #versions }
+ConfigurationOfOcean >> version08: spec [
+	<version: '0.8' imports: #('0.7-baseline')>
+	
+	spec for: #common do: [
+		spec 
+			blessing: #development; 
+			project: 'Alien' with:  #development;
+			package: 'Ocean-Kernel' with: 'Ocean-Kernel-LucFabresse.7';
+			package: 'Ocean-KernelTests' with: 'Ocean-KernelTests-LucFabresse.8';
+			package: 'Ocean-LibraryPlugin' with: 'Ocean-LibraryPlugin-LucFabresse.7';
+			package: 'Ocean-LibraryPluginTests' with: 'Ocean-LibraryPluginTests-LucFabresse.6' ;
+			package: 'Ocean-LibraryPosix' with: 'Ocean-LibraryPosix-LucFabresse.1';
+			package: 'Ocean-LibraryPosixTests' with: 'Ocean-LibraryPosixTests-LucFabresse.2';
+			package: 'Ocean-Benchmarks' with: 'Ocean-Benchmarks-LucFabresse.2'.
 	]
 ]
