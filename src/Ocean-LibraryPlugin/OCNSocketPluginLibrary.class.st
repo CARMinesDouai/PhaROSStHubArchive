@@ -267,27 +267,6 @@ OCNSocketPluginLibrary >> ipv6 [
 	^3
 ]
 
-{ #category : #'NameResolving API' }
-OCNSocketPluginLibrary >> ipv6AddressForName: nameToLookup [
-	
-	^self ipv6AddressFromString: (self addressForName: nameToLookup addressFamily: self ipv6)
-	
-	
-
-]
-
-{ #category : #'name resolving support' }
-OCNSocketPluginLibrary >> ipv6AddressFromString: aString [
-	^OCNIpv6Address newFromString:  (aString splitOn: $%) first
-
-]
-
-{ #category : #'NameResolving API' }
-OCNSocketPluginLibrary >> ipv6AddressesForName: nameToLookup [
-	
-	^(self addressesForName: nameToLookup  addressFamily:  self ipv6) collect:[:address | self ipv6AddressFromString:  address ]
-]
-
 { #category : #'TCP API' }
 OCNSocketPluginLibrary >> isDataAvailableFrom: socket [
 	^ self primSocketReceiveDataAvailable: socket socketId
