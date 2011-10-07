@@ -31,6 +31,25 @@ OCNServerTcpSocket >> isListening [
 ]
 
 { #category : #accessing }
+OCNServerTcpSocket >> listenOn: anIpAddress [ 
+
+	self isClean ifFalse: [ 
+		OCNSocketOperationForbiddenError signal: self state asString capitalized, ' socket can not listen' ].
+	[
+		self networkLibrary listen: self on: anIpAddress
+	] on: OCNSocketOperationFailureError do: [:ex|
+		self destroy.
+		ex pass.
+	].
+
+	self state: self listeningStateSymbol.
+	
+	^self networkLibrary acceptFrom: self.
+	
+	
+]
+
+{ #category : #accessing }
 OCNServerTcpSocket >> listenOn: anIpAddress onAcceptDo: acceptBlock [
 	self isClean ifFalse: [ 
 		OCNSocketOperationForbiddenError signal: self state asString capitalized, ' socket can not listen' ].
