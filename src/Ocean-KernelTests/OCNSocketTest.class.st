@@ -58,9 +58,7 @@ OCNSocketTest >> networkLibraryClass [
 
 { #category : #'data for tests' }
 OCNSocketTest >> randomAsciiStringOfSize: dataSize [
-	| randomStringGenerator |
-	randomStringGenerator := OCNBench new.
-	^ randomStringGenerator createRandomStringOfSize: dataSize.
+ 	^OCNStringGenerator randomStringOfSize: dataSize
 
 ]
 

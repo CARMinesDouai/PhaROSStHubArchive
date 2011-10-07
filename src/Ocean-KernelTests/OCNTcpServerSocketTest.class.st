@@ -10,11 +10,6 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-OCNTcpServerSocketTest class >> isAbstract [
-	^false
-]
-
-{ #category : #'as yet unclassified' }
 OCNTcpServerSocketTest class >> shouldBeSubclassedForBackendTesting [
 	^true
 ]
