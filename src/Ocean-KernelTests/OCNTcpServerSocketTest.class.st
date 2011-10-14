@@ -44,19 +44,22 @@ OCNTcpServerSocketTest >> testAcceptOneConnection [
 	self deny: (semaphore waitTimeoutMSecs: 100).
 	(Delay forMilliseconds: 100) wait.
 	clientSocket := OCNConversationTcpSocket newConnectedTo: serverAddress.
+	(Delay forMilliseconds: 100) wait.
 	self assert: clientSocket isConnected.
 	self assert: serverConversationSocket isConnected.
 	
 	"server sends data to client"
 	dataToSend := self randomAsciiStringOfSize: 100.
 	serverConversationSocket send: dataToSend.
-	receivedData := clientSocket receive.
+	(Delay forMilliseconds: 100) wait.
+	receivedData := clientSocket receive asString.
 	self assert: dataToSend = receivedData.
 	
 	"client sends data to server"
 	 dataToSend := self randomAsciiStringOfSize: 90.
 	clientSocket send: dataToSend.
-	receivedData := serverConversationSocket receive.
+	(Delay forMilliseconds: 100) wait.
+	receivedData := serverConversationSocket receive asString.
 	self assert: dataToSend = receivedData.
 	
 ]
