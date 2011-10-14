@@ -3,7 +3,7 @@ Class {
 	#superclass : #OCNTcpSocket,
 	#instVars : [
 		'backlogSize',
-		'timeOutSeconds'
+		'acceptTimeOutSeconds'
 	],
 	#category : #'Ocean-Kernel'
 }
@@ -12,6 +12,16 @@ Class {
 OCNServerTcpSocket >> accept [
 	
 	^self networkLibrary acceptFrom: self.
+]
+
+{ #category : #accessing }
+OCNServerTcpSocket >> acceptTimeoutSeconds [
+	^ acceptTimeOutSeconds
+]
+
+{ #category : #accessing }
+OCNServerTcpSocket >> acceptTimeoutSeconds: anObject [
+	acceptTimeOutSeconds := anObject
 ]
 
 { #category : #accessing }
@@ -28,7 +38,7 @@ OCNServerTcpSocket >> backlogSize: anInteger [
 OCNServerTcpSocket >> initialize [	
 	super initialize.
 	self backlogSize: 10.
-	self timeOutSeconds: 3.
+	self acceptTimeoutSeconds: 3. 
 ]
 
 { #category : #'state testing' }
@@ -80,14 +90,4 @@ OCNServerTcpSocket >> listenOn: anIpAddress onAcceptDo: acceptBlock [
 { #category : #'state names' }
 OCNServerTcpSocket >> listeningStateSymbol [
 	^#listening
-]
-
-{ #category : #accessing }
-OCNServerTcpSocket >> timeOutSeconds [
-	^timeOutSeconds
-]
-
-{ #category : #accessing }
-OCNServerTcpSocket >> timeOutSeconds: seconds [
-	timeOutSeconds := seconds
 ]

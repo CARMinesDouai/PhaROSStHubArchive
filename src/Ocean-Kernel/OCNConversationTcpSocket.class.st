@@ -26,6 +26,9 @@ OCNConversationTcpSocket new connectToServer:
 Class {
 	#name : #OCNConversationTcpSocket,
 	#superclass : #OCNTcpSocket,
+	#instVars : [
+		'connectionTimeoutSeconds'
+	],
 	#category : #'Ocean-Kernel'
 }
 
@@ -67,8 +70,19 @@ OCNConversationTcpSocket >> connectedStateSymbol [
 ]
 
 { #category : #accessing }
-OCNConversationTcpSocket >> connectionTimeOutSeconds [
-	^3
+OCNConversationTcpSocket >> connectionTimeoutSeconds [
+	^connectionTimeoutSeconds
+]
+
+{ #category : #accessing }
+OCNConversationTcpSocket >> connectionTimeoutSeconds: anObject [
+	connectionTimeoutSeconds := anObject
+]
+
+{ #category : #'initialize-release' }
+OCNConversationTcpSocket >> initialize [ 
+	super initialize.
+	self connectionTimeoutSeconds: 3
 ]
 
 { #category : #'state testing' }

@@ -149,7 +149,7 @@ OCNSocket >> sendDataBufferSize [
 
 { #category : #accessing }
 OCNSocket >> sendTimeOutSeconds [
-	^self connectionTimeOutSeconds
+	^self connectionTimeoutSeconds
 ]
 
 { #category : #accessing }
