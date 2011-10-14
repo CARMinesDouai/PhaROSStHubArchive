@@ -31,13 +31,18 @@ OCNTcpServerSocketTest >> tearDown [
 { #category : #testing }
 OCNTcpServerSocketTest >> testAcceptOneConnection [
 	
-	|dataToSend receivedData |
+	|dataToSend receivedData semaphore |
+
+	semaphore := Semaphore new.
 
 	serverProcess := [
 		[socket listenOn: serverAddress.
+		semaphore signal.
 		serverConversationSocket := socket accept] 
 		ensure: [socket destroy] ] fork.
-
+	
+	self deny: (semaphore waitTimeoutMSecs: 100).
+	(Delay forMilliseconds: 100) wait.
 	clientSocket := OCNConversationTcpSocket newConnectedTo: serverAddress.
 	self assert: clientSocket isConnected.
 	self assert: serverConversationSocket isConnected.
