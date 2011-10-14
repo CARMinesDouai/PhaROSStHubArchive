@@ -74,21 +74,17 @@ OCNSocketPluginLibrary >> acceptFrom: aServerSocket [
 	self waitForConnectionOf: aServerSocket timeoutSeconds: aServerSocket acceptTimeoutSeconds 
 		onTimeoutDo: [OCNSocketOperationFailureError signal: 'Accept timeout'].
 
-	conversationSocket := OCNConversationTcpSocket newWithoutId.
-	networkLibrary := conversationSocket networkLibrary.
+	networkLibrary :=  self species new. 
 	conversationSocketId := self
 		primAcceptFrom: aServerSocket socketId
-		receiveBufferSize:  conversationSocket receiveDataBufferSize
-		sendBufSize: conversationSocket sendDataBufferSize 
+		receiveBufferSize:  OCNSocket receiveDataBufferSize
+		sendBufSize: OCNSocket sendDataBufferSize 
 		semaIndex:  networkLibrary semaIndex
 		readSemaIndex:  networkLibrary readSemaIndex
 		writeSemaIndex:  networkLibrary writeSemaIndex.
 	
-	conversationSocket initializeWithId: conversationSocketId.
-	conversationSocket networkLibrary initSemaphores.
-	conversationSocket state: conversationSocket connectedStateSymbol.
-	
-	^conversationSocket
+	^OCNConversationTcpSocket newConnectedWithId: conversationSocketId library: networkLibrary
+
 ]
 
 { #category : #'name resolving support' }
@@ -176,9 +172,6 @@ OCNSocketPluginLibrary >> convertIpv4StringAddressToByteArray: stringAddress [
 OCNSocketPluginLibrary >> createSocketDescriptorIdFor: anOCNSocket withType:  socketType [
 	
 	| socketId status|
-	primitiveOnlySupportsOneSemaphore := false.
-
-	[self initSemaphores] on: Error do: [ :er | OCNSocketOperationFailureError signal: 'Socket creation failure'].
 
 	socketId := self primSocketCreateNetwork: 0
 			type: socketType
@@ -187,9 +180,7 @@ OCNSocketPluginLibrary >> createSocketDescriptorIdFor: anOCNSocket withType:  so
 			semaIndex: semaIndex.
 	
 	self flag: 'clean the following test. a newly created Udp socket is in the Connected state'.
-	(socketId notNil and: [((status := (self primSocketConnectionStatus: socketId)) = Clean) or: [ status = Connected ]]) ifTrue: [
-				self receiveDataBuffer: (ByteArray new: anOCNSocket receiveDataBufferSize).
-				 ^socketId ].
+	(socketId notNil and: [((status := (self primSocketConnectionStatus: socketId)) = Clean) or: [ status = Connected ]]) ifTrue: [ ^socketId ].
 	self releaseSemaphores.
 	OCNSocketOperationFailureError signal: 'Socket creation failure'
 	
@@ -238,7 +229,10 @@ OCNSocketPluginLibrary >> initSemaphores [
 { #category : #'initialize-release' }
 OCNSocketPluginLibrary >> initialize [
 	super initialize.
-	isDestroyed := false
+	isDestroyed := false.
+	primitiveOnlySupportsOneSemaphore := false.
+	[self initSemaphores] on: Error do: [ :er | OCNSocketOperationFailureError signal: 'Socket creation failure']
+
 ]
 
 { #category : #'name resolving support' }
@@ -853,7 +847,7 @@ OCNSocketPluginLibrary >> readSemaIndex [
 
 { #category : #accessing }
 OCNSocketPluginLibrary >> receiveDataBuffer [
-	^receiveDataBuffer
+	^receiveDataBuffer ifNil: [ receiveDataBuffer := (ByteArray new: OCNSocket receiveDataBufferSize) ]
 ]
 
 { #category : #accessing }
