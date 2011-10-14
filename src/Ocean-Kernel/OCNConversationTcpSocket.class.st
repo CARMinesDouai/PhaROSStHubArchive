@@ -41,10 +41,20 @@ OCNConversationTcpSocket class >> newConnectedTo: anIpAddress [
 ]
 
 { #category : #'instance creation' }
-OCNConversationTcpSocket class >> newWithoutId [
-	 
-	^self basicNew 
-		basicInitialize;
+OCNConversationTcpSocket class >> newConnectedWithId: socketId [
+	 |newSocket|
+	newSocket := self basicNew.
+	newSocket
+		socketId: socketId;
+		initialize;
+		state: newSocket connectedStateSymbol.
+	^newSocket
+]
+
+{ #category : #'instance creation' }
+OCNConversationTcpSocket class >> newConnectedWithId: socketId  library: networkLibrary [
+	^(self newConnectedWithId: socketId) 
+		networkLibrary:  networkLibrary;
 		yourself
 ]
 

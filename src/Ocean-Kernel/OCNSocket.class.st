@@ -27,15 +27,20 @@ OCNSocket class >> newWithNetworkLibraryClass: aNetworkLibraryClass [
 	^self newWithNetworkLibrary: (OCNNetworkLibraryProxyFactory proxyForLibraryClass:  aNetworkLibraryClass)
 ]
 
+{ #category : #constants }
+OCNSocket class >> receiveDataBufferSize [
+	^2048
+]
+
+{ #category : #constants }
+OCNSocket class >> sendDataBufferSize [
+	^2048
+]
+
 { #category : #connection }
 OCNSocket >> basicDestroy [
 	self state: self destroyedStateSymbol.
 
-]
-
-{ #category : #'initialize-release' }
-OCNSocket >> basicInitialize [
-	self state: self cleanStateSymbol
 ]
 
 { #category : #connecting }
@@ -89,9 +94,10 @@ OCNSocket >> finalize [
 ]
 
 { #category : #'initialize-release' }
-OCNSocket >> initialize [ 
+OCNSocket >> initialize [
 	super initialize.
-	self basicInitialize.
+	self state: self cleanStateSymbol.
+	self socketId ifNotNil: [ ^self ].
 	self initializeWithId: self newSocketId
 ]
 
@@ -137,14 +143,14 @@ OCNSocket >> newSocketId [
 	self subclassResponsibility 
 ]
 
-{ #category : #accessing }
+{ #category : #constants }
 OCNSocket >> receiveDataBufferSize [
-	^2048
+	^self class receiveDataBufferSize 
 ]
 
-{ #category : #accessing }
+{ #category : #constants }
 OCNSocket >> sendDataBufferSize [
-	^self receiveDataBufferSize
+	^self class sendDataBufferSize 
 ]
 
 { #category : #accessing }
