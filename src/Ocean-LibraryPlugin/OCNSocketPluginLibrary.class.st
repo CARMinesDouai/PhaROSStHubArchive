@@ -69,6 +69,11 @@ OCNSocketPluginLibrary class >> proxy [
 OCNSocketPluginLibrary >> acceptFrom: aServerSocket [
 	|conversationSocket conversationSocketId networkLibrary |
 	
+	self ensureNetworkInitialized.
+	
+	self waitForConnectionOf: aServerSocket timeoutSeconds: aServerSocket acceptTimeoutSeconds 
+		onTimeoutDo: [OCNSocketOperationFailureError signal: 'Accept timeout'].
+
 	conversationSocket := OCNConversationTcpSocket newWithoutId.
 	networkLibrary := conversationSocket networkLibrary.
 	conversationSocketId := self
@@ -80,6 +85,8 @@ OCNSocketPluginLibrary >> acceptFrom: aServerSocket [
 		writeSemaIndex:  networkLibrary writeSemaIndex.
 	
 	conversationSocket initializeWithId: conversationSocketId.
+	conversationSocket networkLibrary initSemaphores.
+	conversationSocket state: conversationSocket connectedStateSymbol.
 	
 	^conversationSocket
 ]
@@ -156,7 +163,7 @@ OCNSocketPluginLibrary >> connect: aSocket toServerWithIpv4Address: serverAddres
 
 	self ensureNetworkInitialized.
 	self primSocket: aSocket socketId connectTo: serverAddress ip port: serverAddress port.
-	self waitForConnectionOf: aSocket
+	self waitForConnectionOf: aSocket timeoutSeconds: aSocket connectionTimeoutSeconds
 
 ]
 
@@ -991,13 +998,21 @@ OCNSocketPluginLibrary >> udpDestroy: aSocket [
 ]
 
 { #category : #'tcp api support' }
-OCNSocketPluginLibrary >> waitForConnectionOf: anOCNSocket [
+OCNSocketPluginLibrary >> waitForConnectionOf: anOCNSocket timeoutSeconds: timeout [
+	
+	self waitForConnectionOf: anOCNSocket timeoutSeconds: timeout 
+		onTimeoutDo: [OCNSocketOperationFailureError signal: 'Connection timeout']
+
+]
+
+{ #category : #'tcp api support' }
+OCNSocketPluginLibrary >> waitForConnectionOf: anOCNSocket timeoutSeconds: timeout onTimeoutDo: aTimeoutBlock [
 	| endTime |
-	endTime := Time now asSeconds + anOCNSocket connectionTimeOutSeconds.
+	endTime := Time now asSeconds + timeout.
 	[(self primSocketConnectionStatus: anOCNSocket socketId) = Connected ifTrue: [^self].
 		Time now asSeconds > endTime.
 	] whileFalse.
-	OCNSocketOperationFailureError signal: 'Connection failure'
+	aTimeoutBlock value
 
 ]
 
