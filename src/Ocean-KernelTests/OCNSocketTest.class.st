@@ -20,6 +20,11 @@ OCNSocketTest class >> lookupHierarchyRoot [
 	^self superclass
 ]
 
+{ #category : #coverage }
+OCNSocketTest class >> packageNamesUnderTest [
+	^ #('Ocean-Kernel' 'Ocean-LibraryPlugin')
+]
+
 { #category : #accessing }
 OCNSocketTest class >> shouldBeSubclassedForBackendTesting [
 	^false
