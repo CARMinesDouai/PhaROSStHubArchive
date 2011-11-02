@@ -88,6 +88,12 @@ ConfigurationOfOcean class >> project [
 	^self new project
 ]
 
+{ #category : #jenkins }
+ConfigurationOfOcean class >> testsPackagesForContinutionIntegration [
+	"Actually this method should be renamed to testsCategoriesForContinutionIntegration because Jenkins expects a list of pacakges, not categories."
+	^ #('Ocean-KernelTests' 'Ocean-LibraryPluginTests')
+]
+
 { #category : #'unloading Metacello' }
 ConfigurationOfOcean class >> unloadMetacello [
 
