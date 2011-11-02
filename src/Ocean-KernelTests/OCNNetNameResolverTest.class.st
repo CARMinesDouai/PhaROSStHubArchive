@@ -4,6 +4,11 @@ Class {
 	#category : #'Ocean-KernelTests'
 }
 
+{ #category : #coverage }
+OCNNetNameResolverTest class >> packageNamesUnderTest [
+	^ #('Ocean-Kernel' 'Ocean-LibraryPlugin')
+]
+
 { #category : #'tests localhost' }
 OCNNetNameResolverTest >> testLocalHostName [
 	

@@ -4,6 +4,11 @@ Class {
 	#category : #'Ocean-KernelTests'
 }
 
+{ #category : #coverage }
+IpAddressTest class >> packageNamesUnderTest [
+	^ #('Ocean-Kernel')
+]
+
 { #category : #'as yet unclassified' }
 IpAddressTest >> testEquality [
 	self assert: (OCNIpv4Address newFromString: '127.0.0.1') = (OCNIpv4Address newFromString: '127.0.0.1')

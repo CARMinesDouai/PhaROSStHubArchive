@@ -4,6 +4,11 @@ Class {
 	#category : #'Ocean-KernelTests'
 }
 
+{ #category : #coverage }
+OCNIpv4NetNameResolverTest class >> packageNamesUnderTest [
+	^ #('Ocean-Kernel' 'Ocean-LibraryPlugin')
+]
+
 { #category : #'tests ipv4' }
 OCNIpv4NetNameResolverTest >> assertAddressIsValid: address [
 	| ipParts |
