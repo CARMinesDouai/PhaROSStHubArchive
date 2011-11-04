@@ -151,7 +151,13 @@ OCNSocketPluginLibrary >> allAddressFamily [
 
 { #category : #'Socket API' }
 OCNSocketPluginLibrary >> bind: aSocket toIpv4Address: anOCNIPV4SocketAddress [ 
-	^ self primSocketBind: aSocket socketId to: (anOCNIPV4SocketAddress ip ) port: anOCNIPV4SocketAddress port.
+
+	((1 to: (2 raisedTo: 16)) includes: anOCNIPV4SocketAddress port) ifFalse: [
+		OCNSocketOperationFailureError signal: anOCNIPV4SocketAddress port printString , ' is not a valid port number'].
+
+	[ self primSocketBind: aSocket socketId to: (anOCNIPV4SocketAddress ip ) port: anOCNIPV4SocketAddress port ] 
+		on: PrimitiveFailed 
+		do: [ OCNSocketOperationFailureError signal: 'binding socket to port ', anOCNIPV4SocketAddress port printString , ' failed' ]
 ]
 
 { #category : #'TCP API' }
@@ -282,9 +288,10 @@ OCNSocketPluginLibrary >> isSocketConnected: socket [
 ]
 
 { #category : #'TCP API' }
-OCNSocketPluginLibrary >> listen: aServerSocket on: anIpvAddress [ 
-
-	self primSocket: aServerSocket socketId  listenOn: anIpvAddress port backlogSize: aServerSocket backlogSize interface: anIpvAddress ip
+OCNSocketPluginLibrary >> listen: aServerSocket [ 
+	[self primSocket: aServerSocket socketId listenWithBacklog:  aServerSocket backlogSize]
+		on: PrimitiveFailed 
+		do: [ OCNSocketOperationFailureError signal: 'socket cannot listen' ]
 
 	
 ]
@@ -555,7 +562,7 @@ OCNSocketPluginLibrary >> primSocket: aHandle listenOn: portNumber backlogSize: 
 	self destroy. "Accept not supported so clean up"
 ]
 
-{ #category : #'TCP primitives' }
+{ #category : #'Unused primitives' }
 OCNSocketPluginLibrary >> primSocket: aHandle listenOn: portNumber backlogSize: backlog interface: ifAddr [
 	"Primitive. Set up the socket to listen on the given port.
 	Will be used in conjunction with #accept only."
@@ -567,6 +574,14 @@ OCNSocketPluginLibrary >> primSocket: aHandle listenOn: portNumber backlogSize: 
 OCNSocketPluginLibrary >> primSocket: socketId listenOnPort: aPortNumber [
 	<primitive: 'primitiveSocketListenOnPort' module: 'SocketPlugin'>
 	self primitiveFailed
+]
+
+{ #category : #'TCP primitives' }
+OCNSocketPluginLibrary >> primSocket: socketID listenWithBacklog: backlogSize [
+
+	<primitive: 'primitiveSocketListenWithBacklog' module: 'SocketPlugin'>
+	self primitiveFailed
+
 ]
 
 { #category : #'Unused primitives' }
