@@ -76,9 +76,24 @@ OCNTcpConversationSocketTest >> testBindFailureOfCleanSocket [
 	| ipAddress |
 	self testSocketUnconnectedOnCreation.
 	self assertSocketState: #isClean.
-	ipAddress := OCNIpv4Address loopbackAddressWithPort: 66666.	
+	ipAddress := OCNIpv4Address loopbackAddressWithPort: (2 raisedTo: 16) + 1.	
 	self should: [socket bindToAddress: ipAddress] raise: OCNSocketOperationFailureError.
 	self assertSocketState: #isDestroyed.
+]
+
+{ #category : #'testing lifecylce' }
+OCNTcpConversationSocketTest >> testBindTwoSocketsOnSamePort [
+	| otherSocket |
+	
+	self assertSocketState: #isClean.
+	socket bindToLocalHostPort: self clientPort.	
+	self assertSocketState: #isBound.
+	
+	otherSocket := OCNConversationTcpSocket newWithNetworkLibraryClass: self networkLibraryClass.
+	self should: [ otherSocket bindToLocalHostPort: self clientPort ] raise: OCNSocketOperationFailureError.	
+	self assert:  otherSocket isDestroyed.
+	
+	self assertSocketState: #isBound.
 ]
 
 { #category : #'testing lifecylce' }
