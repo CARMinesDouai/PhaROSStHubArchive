@@ -8,7 +8,7 @@ Class {
 	#category : #'Ocean-Kernel'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #serving }
 OCNServerTcpSocket >> accept [
 	
 	^self networkLibrary acceptFrom: self.
@@ -46,45 +46,15 @@ OCNServerTcpSocket >> isListening [
 	^self state = self listeningStateSymbol 
 ]
 
-{ #category : #accessing }
-OCNServerTcpSocket >> listenOn: anIpAddress [ 
-
-	self isClean ifFalse: [ 
-		OCNSocketOperationForbiddenError signal: self state asString capitalized, ' socket can not listen' ].
-	[
-		self networkLibrary listen: self on: anIpAddress
-	] on: OCNSocketOperationFailureError do: [:ex|
-		self destroy.
-		ex pass.
-	].
-
-	self state: self listeningStateSymbol.
-
-	
-	
-]
-
-{ #category : #accessing }
-OCNServerTcpSocket >> listenOn: anIpAddress onAcceptDo: acceptBlock [
-	self isClean ifFalse: [ 
-		OCNSocketOperationForbiddenError signal: self state asString capitalized, ' socket can not listen' ].
-	[
-		self networkLibrary listen: self on: anIpAddress
-	] on: OCNSocketOperationFailureError do: [:ex|
-		self destroy.
-		ex pass.
-	].
-
-	self state: self listeningStateSymbol.
-	
-	[self isListening] whileTrue: [ |conversationSocket|
-		conversationSocket := self networkLibrary acceptFrom: self.
-		acceptBlock value: conversationSocket
-	].
-	
-	
-	
-	
+{ #category : #serving }
+OCNServerTcpSocket >> listenOn: anIpAddress [
+	self bindToAddress: anIpAddress.
+	[ self networkLibrary listen: self ]
+		on: OCNSocketOperationFailureError
+		do: [ :ex | 
+			self destroy.
+			ex pass ].
+	self state: self listeningStateSymbol
 ]
 
 { #category : #'state names' }
