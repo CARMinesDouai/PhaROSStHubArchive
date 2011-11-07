@@ -462,3 +462,21 @@ ConfigurationOfOcean >> version08: spec [
 			package: 'Ocean-Benchmarks' with: 'Ocean-Benchmarks-LucFabresse.2'.
 	]
 ]
+
+{ #category : #versions }
+ConfigurationOfOcean >> version09: spec [
+	<version: '0.9' imports: #('0.7-baseline')>
+	
+	spec for: #common do: [
+		spec 
+			blessing: #development; 
+			project: 'Alien' with:  #development;
+			package: 'Ocean-Kernel' with: 'Ocean-Kernel-LucFabresse.10';
+			package: 'Ocean-KernelTests' with: 'Ocean-KernelTests-LucFabresse.13';
+			package: 'Ocean-LibraryPlugin' with: 'Ocean-LibraryPlugin-LucFabresse.10';
+			package: 'Ocean-LibraryPluginTests' with: 'Ocean-LibraryPluginTests-LucFabresse.6' ;
+			package: 'Ocean-LibraryPosix' with: 'Ocean-LibraryPosix-LucFabresse.1';
+			package: 'Ocean-LibraryPosixTests' with: 'Ocean-LibraryPosixTests-LucFabresse.2';
+			package: 'Ocean-Benchmarks' with: 'Ocean-Benchmarks-LucFabresse.2'.
+	]
+]
