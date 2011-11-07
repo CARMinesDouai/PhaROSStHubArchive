@@ -472,7 +472,7 @@ ConfigurationOfOcean >> version09: spec [
 			blessing: #development; 
 			project: 'Alien' with:  #development;
 			package: 'Ocean-Kernel' with: 'Ocean-Kernel-LucFabresse.10';
-			package: 'Ocean-KernelTests' with: 'Ocean-KernelTests-LucFabresse.13';
+			package: 'Ocean-KernelTests' with: 'Ocean-KernelTests-luc.13';
 			package: 'Ocean-LibraryPlugin' with: 'Ocean-LibraryPlugin-LucFabresse.10';
 			package: 'Ocean-LibraryPluginTests' with: 'Ocean-LibraryPluginTests-LucFabresse.6' ;
 			package: 'Ocean-LibraryPosix' with: 'Ocean-LibraryPosix-LucFabresse.1';
