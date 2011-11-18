@@ -71,6 +71,21 @@ OCNTcpConversationSocketTest >> testBindDestroyedSocket [
 ]
 
 { #category : #'testing lifecylce' }
+OCNTcpConversationSocketTest >> testBindTwoSocketsOnSamePort [
+	| otherSocket |
+	
+	self assertSocketState: #isClean.
+	socket bindToLocalHostPort: self clientPort.	
+	self assertSocketState: #isBound.
+	
+	otherSocket := OCNConversationTcpSocket newWithNetworkLibraryClass: self networkLibraryClass.
+	self should: [ otherSocket bindToLocalHostPort: self clientPort ] raise: OCNSocketOperationFailureError.	
+	self assert:  otherSocket isDestroyed.
+	
+	self assertSocketState: #isBound.
+]
+
+{ #category : #'testing lifecylce' }
 OCNTcpConversationSocketTest >> testBindUnconnectedSocket [
 	| ipAddress |
 	self testSocketUnconnectedOnCreation.
