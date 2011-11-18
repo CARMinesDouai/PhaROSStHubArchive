@@ -19,17 +19,12 @@ OCNTcpServerSocketTest >> socketClass [
 	^OCNServerTcpSocket 
 ]
 
-{ #category : #accessing }
-OCNTcpServerSocketTest >> stateTestingSelectors [
-	^#(isClean isBound isListening isDestroyed)
-]
-
 { #category : #'setUp-tearDown' }
 OCNTcpServerSocketTest >> tearDown [
 	super tearDown.
 	serverProcess ifNotNil: [serverProcess terminate].
 	clientSocket ifNotNil: [clientSocket destroy].
-	serverConversationSocket ifNotNil: [ serverConversationSocket destroy]
+	serverConversationSocket destroy
 	
 ]
 
@@ -47,8 +42,6 @@ OCNTcpServerSocketTest >> testAcceptOneConnection [
 		ensure: [socket destroy] ] fork.
 	
 	self deny: (semaphore waitTimeoutMSecs: 100).
-	self assertSocketState: #isListening.
-	
 	(Delay forMilliseconds: 100) wait.
 	clientSocket := OCNConversationTcpSocket newConnectedTo: serverAddress.
 	(Delay forMilliseconds: 100) wait.
@@ -68,23 +61,5 @@ OCNTcpServerSocketTest >> testAcceptOneConnection [
 	(Delay forMilliseconds: 100) wait.
 	receivedData := serverConversationSocket receive asString.
 	self assert: dataToSend = receivedData.
-	
-	
-]
-
-{ #category : #testing }
-OCNTcpServerSocketTest >> testTwoSocketsListeningOnSamePort [
-	
-	| otherSocket |
-	
-	self assertSocketState: #isClean.
-	socket listenOn: serverAddress.
-	self assertSocketState: #isListening.
-	
-	otherSocket := OCNServerTcpSocket newWithNetworkLibraryClass: self networkLibraryClass.
-	self should: [ otherSocket listenOn: serverAddress] raise: OCNSocketOperationFailureError.	
-	self assert:  otherSocket isDestroyed.
-	
-	self assertSocketState: #isListening.
 	
 ]
