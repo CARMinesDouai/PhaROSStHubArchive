@@ -114,8 +114,11 @@ OCNIpAddress >> port [
 ]
 
 { #category : #accessing }
-OCNIpAddress >> port: anObject [
-	port := anObject
+OCNIpAddress >> port: integer [
+	|validPortRange|
+	validPortRange := (1 to: ((2 raisedTo:  16) - 1)).
+	(validPortRange includes: integer) ifFalse: [OCNInvalidIpAddress signal].
+	port := integer
 ]
 
 { #category : #printing }
