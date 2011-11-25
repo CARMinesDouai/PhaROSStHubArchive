@@ -27,9 +27,15 @@ Class {
 	#classVars : [
 		'Clean',
 		'Connected',
+		'DefaultHostName',
 		'InvalidSocket',
 		'OtherEndClosed',
+		'ResolverBusy',
+		'ResolverError',
+		'ResolverMutex',
+		'ResolverReady',
 		'ResolverSemaphore',
+		'ResolverUninitialized',
 		'TCPSocketType',
 		'ThisEndClosed',
 		'UDPSocketType',
@@ -56,6 +62,17 @@ OCNSocketPluginLibrary class >> initialize [
 	Connected := 2.
 	OtherEndClosed := 3.
 	ThisEndClosed := 4.
+	
+	"NetNameResolver initialize"
+	"Note: On the Mac, the name resolver is asynchronous (i.e., Pharo can do other things while it is working), but can only handle one request at a time. On other platforms, such as Unix, the resolver is synchronous; a call to, say, the name lookup primitive will block all Pharo processes until it returns."
+
+	"Resolver Status Values"
+	ResolverUninitialized := 0.	"network is not initialized"
+	ResolverReady := 1.			"resolver idle, last request succeeded"
+	ResolverBusy := 2.			"lookup in progress"
+	ResolverError := 3.			"resolver idle, last request failed"
+
+	DefaultHostName := ''.
 ]
 
 { #category : #'instance creation' }
@@ -87,7 +104,7 @@ OCNSocketPluginLibrary >> acceptFrom: aServerSocket [
 
 ]
 
-{ #category : #'name resolving support' }
+{ #category : #'NameResolving support' }
 OCNSocketPluginLibrary >> addressForName: nameToLookup addressFamily: addressFamily [
 
 	 | addressSize  byteInfoSize byteInfo stringAddress addressTypeConstants |
@@ -112,7 +129,56 @@ OCNSocketPluginLibrary >> addressForName: nameToLookup addressFamily: addressFam
 
 ]
 
-{ #category : #'name resolving support' }
+{ #category : #'NameResolving support' }
+OCNSocketPluginLibrary >> addressForName: hostName timeout: secs [
+	"Look up the given host name and return its address. Return nil if the address is not found in the given number of seconds."
+
+	| deadline result |
+	"check if this is a valid numeric host address (e.g. 1.2.3.4)"
+	result := self addressFromString: hostName.
+	result isNil ifFalse: [^result].
+
+	"Look up a host name, including ones that start with a digit (e.g. 100000jobs.de or www.pharo-project.org)"
+	deadline := Time millisecondClockValue + (secs * 1000).
+	"Protect the execution of this block, as the ResolverSemaphore is used for both parts of the transaction."
+	self resolverMutex
+		critical: [
+			(self waitForResolverReadyUntil: deadline)
+				ifTrue: [
+					self primStartLookupOfName: hostName.
+					(self waitForCompletionUntil: deadline)
+						ifTrue: [result := self primNameLookupResult]
+						ifFalse: [OCNNameLookupError signal: 'Could not resolve the server named: ', hostName]]
+				ifFalse: [OCNNameLookupError signal: 'Could not resolve the server named: ', hostName]].
+	^result 
+]
+
+{ #category : #'NameResolving support' }
+OCNSocketPluginLibrary >> addressFromString: addressString [ 
+	"Return the internet address represented by the given string. The string should contain four positive decimal integers delimited by periods, commas, or spaces, where each integer represents one address byte. Return nil if the string is not a host address in an acceptable format."
+	"NetNameResolver addressFromString: '1.2.3.4'"
+	"NetNameResolver addressFromString: '1,2,3,4'"
+	"NetNameResolver addressFromString: '1 2 3 4'"
+	| newAddr s byte delimiter |
+	newAddr := ByteArray new: 4.
+	s := addressString readStream.
+	s skipSeparators.
+	1 
+		to: 4
+		do: 
+			[ :i | 
+			byte := self readDecimalByteFrom: s.
+			byte isNil ifTrue: [ ^ nil ].
+			newAddr 
+				at: i
+				put: byte.
+			i < 4 ifTrue: 
+				[ delimiter := s next.
+				(delimiter = $. or: [ delimiter = $, or: [ delimiter = $  ] ]) ifFalse: [ ^ nil ] ] ].
+	^ newAddr
+]
+
+{ #category : #'NameResolving support' }
 OCNSocketPluginLibrary >> addressesForName: nameToLookup addressFamily: addressFamily [
 
 	 | allAddresses  byteInfoSize |
@@ -144,7 +210,7 @@ OCNSocketPluginLibrary >> addressesForName: nameToLookup addressFamily: addressF
 	^ allAddresses
 ]
 
-{ #category : #'name resolving support' }
+{ #category : #'NameResolving support' }
 OCNSocketPluginLibrary >> allAddressFamily [
 	^0
 ]
@@ -203,6 +269,12 @@ OCNSocketPluginLibrary >> createUdpSocketDescriptorIdFor: anOCNSocket [
 
 ]
 
+{ #category : #'NameResolving support' }
+OCNSocketPluginLibrary >> defaultAddressLookupTimeout [
+	^3 "seconds"
+	
+]
+
 { #category : #'initialize-release' }
 OCNSocketPluginLibrary >> ensureNetworkInitialized [
 	"Initialize the network drivers and record the semaphore to be used by the resolver. Do nothing if the network is already initialized. Evaluate the given block if network initialization fails."
@@ -241,19 +313,18 @@ OCNSocketPluginLibrary >> initialize [
 
 ]
 
-{ #category : #'name resolving support' }
+{ #category : #'NameResolving support' }
 OCNSocketPluginLibrary >> ipv4 [
 	^2
 ]
 
 { #category : #'NameResolving API' }
 OCNSocketPluginLibrary >> ipv4AddressForName: nameToLookup [
+	|resultAddress |
+	resultAddress := OCNIpv4Address new.
+	resultAddress ip: (self addressForName: nameToLookup timeout: self defaultAddressLookupTimeout).
+	^resultAddress
 	
-	^ OCNIpv4Address new ip:(self addressForName: nameToLookup addressFamily: self ipv4); yourself.
-	"OCNIpv4Address new
-		family: OCNIpAddress ;
-		ip: addressByteArray; 
-		yourself"
 ]
 
 { #category : #'NameResolving API' }
@@ -269,7 +340,7 @@ OCNSocketPluginLibrary >> ipv4LocalHostAddress [
 		yourself
 ]
 
-{ #category : #'name resolving support' }
+{ #category : #'NameResolving support' }
 OCNSocketPluginLibrary >> ipv6 [ 
 	^3
 ]
@@ -296,21 +367,58 @@ OCNSocketPluginLibrary >> listen: aServerSocket [
 	
 ]
 
-{ #category : #'name resolving support' }
+{ #category : #'NameResolving support' }
 OCNSocketPluginLibrary >> localAddressFamily [
 	^1
+]
+
+{ #category : #'NameResolving support' }
+OCNSocketPluginLibrary >> localAddressString [
+	"Return a string representing the local host address as four decimal bytes delimited with decimal points."
+
+	^ self stringFromAddress: self localHostAddress
+
+]
+
+{ #category : #'NameResolving support' }
+OCNSocketPluginLibrary >> localHostAddress [
+	"Return the local address of this host."
+
+	^ self primLocalAddress
+
 ]
 
 { #category : #'NameResolving API' }
 OCNSocketPluginLibrary >> localHostName [
 	
-	|  hostname |
-
-	hostname := String new: self primHostNameSize.
-	self primHostNameResult: hostname.  
-	"sadly, this primitive returns the name stored in the localhost machine (e.g. machine.local on OSX) and not the name used by the DNS server "
+	| hostName |
+	hostName := self
+		nameForAddress: self localHostAddress
+		timeout: 5.
+	^hostName
+		ifNil: [self localAddressString]
+		ifNotNil: [hostName]
 	
-	^hostname
+]
+
+{ #category : #'NameResolving support' }
+OCNSocketPluginLibrary >> nameForAddress: hostAddress timeout: secs [
+	"Look up the given host address and return its name. Return nil if the lookup fails or is not completed in the given number of seconds. Depends on the given host address being known to the gateway, which may not be the case for dynamically allocated addresses."
+	
+	| deadline result |
+	deadline := Time millisecondClockValue + (secs * 1000).
+	"Protect the execution of this block, as the ResolverSemaphore is used for both parts of the transaction."
+	self resolverMutex
+		critical: [
+			result := (self waitForResolverReadyUntil: deadline)
+				ifTrue: [
+					self primStartLookupOfAddress: hostAddress.
+					(self waitForCompletionUntil: deadline)
+						ifTrue: [self primAddressLookupResult]
+						ifFalse: [nil]]
+				ifFalse: [nil]].
+	^result
+
 ]
 
 { #category : #'primitives from old netnameresolver' }
@@ -855,6 +963,27 @@ OCNSocketPluginLibrary >> primStartLookupOfName: hostName [
 
 ]
 
+{ #category : #'NameResolving support' }
+OCNSocketPluginLibrary >> readDecimalByteFrom: aStream [
+	"Read a positive, decimal integer from the given stream. Stop when a non-digit or end-of-stream is encountered. Return nil if stream is not positioned at a decimal digit or if the integer value read exceeds 255.
+JMM - 000503 fixed didn't work correctly"
+
+	| digitSeen value digit |
+	digitSeen := false.
+	value := 0.
+	[aStream atEnd] whileFalse: 
+		[digit := aStream next digitValue.
+		(digit < 0 or: [digit > 9]) ifTrue: [
+			aStream skip: -1.
+			(digitSeen not or: [value > 255]) ifTrue: [^ nil].
+			^ value].
+		digitSeen := true.
+		value := (value * 10) + digit].
+	(digitSeen not or: [value > 255]) ifTrue: [^ nil].
+	^ value
+
+]
+
 { #category : #accessing }
 OCNSocketPluginLibrary >> readSemaIndex [
 	^readSemaIndex
@@ -917,7 +1046,19 @@ OCNSocketPluginLibrary >> releaseSemaphores [
 	readSemaphore := writeSemaphore := semaphore := nil.
 ]
 
-{ #category : #'name resolving support' }
+{ #category : #'NameResolving support' }
+OCNSocketPluginLibrary >> resolverMutex [
+	ResolverMutex ifNil: [ResolverMutex := Semaphore forMutualExclusion].
+	^ResolverMutex
+]
+
+{ #category : #'NameResolving support' }
+OCNSocketPluginLibrary >> resolverStatus [
+	^self primNameResolverStatus
+
+]
+
+{ #category : #'NameResolving support' }
 OCNSocketPluginLibrary >> resolverUninitializedCode [
 	^ 0  "network is not initialized"
 ]
@@ -953,6 +1094,18 @@ OCNSocketPluginLibrary >> sendUDPOn: aSocket datagram: aDatagramPacket [
 	"this method should deal with sourceAdress: from DatagramPacket."
 	^ self sendUDPDataOn: aSocket socketId contents: aDatagramPacket data toHost: aDatagramPacket targetAddress ip port: aDatagramPacket targetAddress port
 	
+]
+
+{ #category : #'NameResolving support' }
+OCNSocketPluginLibrary >> stringFromAddress: addr [
+	"Return a string representing the given host address as four decimal bytes delimited with decimal points."
+
+	| s |
+	s := String new writeStream.
+	1 to: 3 do: [ :i | (addr at: i) printOn: s. s nextPut: $.].
+	(addr at: 4) printOn: s.
+	^ s contents
+
 ]
 
 { #category : #'TCP API' }
@@ -1006,6 +1159,27 @@ OCNSocketPluginLibrary >> udpDestroy: aSocket [
 
 ]
 
+{ #category : #'NameResolving support' }
+OCNSocketPluginLibrary >> waitForCompletionUntil: deadline [
+	"Wait up to the given number of seconds for the resolver to be ready to accept a new request. Return true if the resolver is ready, false if the network is not initialized or the resolver does not become free within the given time period."
+
+	| status |
+	status := self resolverStatus.
+	[(status = ResolverBusy) and:
+	 [Time millisecondClockValue < deadline]]
+		whileTrue: [
+			"wait for resolver to be available"
+			ResolverSemaphore waitTimeoutMSecs: (deadline - Time millisecondClockValue).
+			status := self resolverStatus].
+
+	status = ResolverReady
+		ifTrue: [^ true]
+		ifFalse: [
+			status = ResolverBusy ifTrue: [self primAbortLookup].
+			^ false].
+
+]
+
 { #category : #'tcp api support' }
 OCNSocketPluginLibrary >> waitForConnectionOf: anOCNSocket timeoutSeconds: timeout [
 	
@@ -1042,6 +1216,25 @@ OCNSocketPluginLibrary >> waitForDataOn: socketId for: timeoutSeconds onTimedOut
 	].
 	
 	(self primSocketReceiveDataAvailable: socketId) ifFalse: timedOutBlock
+
+]
+
+{ #category : #'NameResolving support' }
+OCNSocketPluginLibrary >> waitForResolverReadyUntil: deadline [
+	"Wait up to the given number of seconds for the resolver to be ready to accept a new request. Return true if the resolver is not busy, false if the network is not initialized or the resolver does not become free within the given time period."
+
+	| status |
+	status := self resolverStatus.
+	status = ResolverUninitialized ifTrue: [^ false].
+
+	[(status = ResolverBusy) and:
+	 [Time millisecondClockValue < deadline]]
+		whileTrue: [
+			"wait for resolver to be available"
+			ResolverSemaphore waitTimeoutMSecs: (deadline - Time millisecondClockValue).
+			status := self resolverStatus].
+
+	^ status ~= ResolverBusy
 
 ]
 
