@@ -104,6 +104,6 @@ OCNIpv4NetNameResolverTest >> testLoopBackIpv4Address [
 	|loopBackAddress|	
 	loopBackAddress := OCNNetNameResolver ipv4LoopBackAddress.
 	self assertAddressIsValid: loopBackAddress.
-	self assert: loopBackAddress ip = '127.0.0.1'.
+	self assert: loopBackAddress ip = #[127 0 0 1].
 	
 ]
