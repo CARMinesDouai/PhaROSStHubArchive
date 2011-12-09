@@ -47,9 +47,22 @@ OCNServerTcpSocket >> isListening [
 ]
 
 { #category : #serving }
+OCNServerTcpSocket >> listenAllInterfacesOnPort: portNumber [
+	"Listens on the given port for all interfaces of the machine"
+
+	|ipAddress|
+	ipAddress := OCNIpv4Address new.
+	ipAddress
+	 	ip: #[0 0 0 0];
+		port: portNumber.
+	self listenOn: ipAddress.
+]
+
+{ #category : #serving }
 OCNServerTcpSocket >> listenOn: anIpAddress [
-	self bindToAddress: anIpAddress.
-	[ self networkLibrary listen: self ]
+	"Listens on the interface whose IP corresponds to the provided address"
+	
+	[ self networkLibrary listen: self on: anIpAddress  ]
 		on: OCNSocketOperationFailureError
 		do: [ :ex | 
 			self destroy.
