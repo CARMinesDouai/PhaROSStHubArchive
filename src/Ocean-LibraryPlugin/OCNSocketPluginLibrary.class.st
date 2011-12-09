@@ -359,8 +359,8 @@ OCNSocketPluginLibrary >> isSocketConnected: socket [
 ]
 
 { #category : #'TCP API' }
-OCNSocketPluginLibrary >> listen: aServerSocket [ 
-	[self primSocket: aServerSocket socketId listenWithBacklog:  aServerSocket backlogSize]
+OCNSocketPluginLibrary >> listen: aServerSocket on: anIpAddress [
+	[self primSocket: aServerSocket socketId listenOn: anIpAddress port backlogSize:  aServerSocket backlogSize interface: anIpAddress ip]
 		on: PrimitiveFailed 
 		do: [ OCNSocketOperationFailureError signal: 'socket cannot listen' ]
 
@@ -670,7 +670,7 @@ OCNSocketPluginLibrary >> primSocket: aHandle listenOn: portNumber backlogSize: 
 	self destroy. "Accept not supported so clean up"
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'TCP primitives' }
 OCNSocketPluginLibrary >> primSocket: aHandle listenOn: portNumber backlogSize: backlog interface: ifAddr [
 	"Primitive. Set up the socket to listen on the given port.
 	Will be used in conjunction with #accept only."
@@ -684,7 +684,7 @@ OCNSocketPluginLibrary >> primSocket: socketId listenOnPort: aPortNumber [
 	self primitiveFailed
 ]
 
-{ #category : #'TCP primitives' }
+{ #category : #'Unused primitives' }
 OCNSocketPluginLibrary >> primSocket: socketID listenWithBacklog: backlogSize [
 
 	<primitive: 'primitiveSocketListenWithBacklog' module: 'SocketPlugin'>
