@@ -11,9 +11,13 @@ GHSimpleForwarderProxyHandler >> handleFlushCache: anInterception [
 ]
 
 { #category : #'as yet unclassified' }
-GHSimpleForwarderProxyHandler >> handleInterception: anInterception [
-	self log:  'message ', anInterception message selector, ' intercepted'.
-	^ self manageMessage: anInterception.
+GHSimpleForwarderProxyHandler >> handleInterceptionToInstanceFor: anInterception [
+	| message targetClass receiver |
+	message := anInterception message arguments first.
+	targetClass := anInterception proxy proxyTarget.
+	receiver := anInterception message arguments second.
+	self log: 'message ', message selector, ' to instance intercepted and will be forwarded'.
+	^ CompiledMethod receiver: receiver withArgs: message arguments  executeMethod:  (targetClass lookupSelector: message selector) 
 	
 ]
 
@@ -23,6 +27,14 @@ GHSimpleForwarderProxyHandler >> handleMethodExecution: anInterception [
 	^ anInterception proxy proxyTarget valueWithReceiver: anInterception message arguments third arguments: anInterception message arguments second
 	
 
+]
+
+{ #category : #'as yet unclassified' }
+GHSimpleForwarderProxyHandler >> handleUninstall: anInterception [
+
+	self log: 'message ', anInterception message selector, ' received and the proxy will be uninstalled'.
+	^ anInterception proxy proxyTarget become: anInterception proxy.
+	
 ]
 
 { #category : #'as yet unclassified' }
