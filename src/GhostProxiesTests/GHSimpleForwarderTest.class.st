@@ -4,14 +4,14 @@ Class {
 	#category : #GhostProxiesTests
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 GHSimpleForwarderTest >> setUp [
 	GHProxyTrap initialize.   
 	FileDirectory default deleteFileNamed:  'GhostLog.txt'.
 	GHGhostLogger changeToFileLogger 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 GHSimpleForwarderTest >> testSimpleForwardingForClassesToClass [
     | aProxy aUser |
        aUser := GHUser named: 'Kurt'.
@@ -20,7 +20,7 @@ GHSimpleForwarderTest >> testSimpleForwardingForClassesToClass [
 	] ensure: [ aProxy uninstall ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 GHSimpleForwarderTest >> testSimpleForwardingForClassesToInstance [
     | aProxy aUser |
        aUser := GHUser named: 'Kurt'.
@@ -30,7 +30,7 @@ GHSimpleForwarderTest >> testSimpleForwardingForClassesToInstance [
 	] ensure: [ aProxy uninstall ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 GHSimpleForwarderTest >> testSimpleForwardingForClassesToSubclass [
     | aProxy aUser |
        aUser := GHUser named: 'Kurt'.
@@ -39,7 +39,7 @@ GHSimpleForwarderTest >> testSimpleForwardingForClassesToSubclass [
 	] ensure: [ aProxy uninstall ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 GHSimpleForwarderTest >> testSimpleForwardingForClassesToSubclassInstance [
     | aProxy aUser |
        aUser := GHUserSubclass named: 'Kurt'.
@@ -48,7 +48,7 @@ GHSimpleForwarderTest >> testSimpleForwardingForClassesToSubclassInstance [
 	] ensure: [ aProxy uninstall ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 GHSimpleForwarderTest >> testSimpleForwardingForMethodUsingBecome [
        | aProxy aUser method |
        aUser := GHUser named: 'Kurt'.
@@ -59,7 +59,7 @@ GHSimpleForwarderTest >> testSimpleForwardingForMethodUsingBecome [
 	 ] ensure: [ aProxy uninstall ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 GHSimpleForwarderTest >> testSimpleForwardingForRegularObject [
 	| proxy |
 	proxy := GHProxy createProxyFor: (Point x: 3 y: 4) handler: GHSimpleForwarderProxyHandler new. 
@@ -67,14 +67,14 @@ GHSimpleForwarderTest >> testSimpleForwardingForRegularObject [
 	self assert: proxy y equals: 4.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 GHSimpleForwarderTest >> testSimpleForwardingForRegularObject2 [
 	| proxy |
 	proxy := GHProxy createProxyFor: (GHUser named: 'mariano') handler: GHSimpleForwarderProxyHandler new. 
 	self assert: proxy username = 'mariano'.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 GHSimpleForwarderTest >> testSimpleForwardingForRegularObjectWithBecome [
 	| proxy |
 	proxy := GHProxy createProxyAndReplace: (Point x: 3 y: 4) handler: GHSimpleForwarderProxyHandler new. 
