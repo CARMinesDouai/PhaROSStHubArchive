@@ -7,7 +7,7 @@ Behavior >> ghostFindClassWithNilMethodDictInHierarchy [
 		ifFalse: [ 
 			superclass == nil 
 				ifTrue: [ ^ nil]
-				ifFalse: [ ^ CompiledMethod receiver: superclass withArgs: #() executeMethod: (Behavior >> #ghostFindClassWithNilMethodDictInHierarchy) ]]
+				ifFalse: [ ^ CompiledMethod receiver: superclass withArguments: #() executeMethod: (Behavior >> #ghostFindClassWithNilMethodDictInHierarchy) ]]
 ]
 
 { #category : #'*GhostProxies' }
