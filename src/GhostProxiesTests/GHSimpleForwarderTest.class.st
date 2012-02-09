@@ -8,8 +8,7 @@ Class {
 GHSimpleForwarderTest >> setUp [
 	GHProxyTrap initialize.   
 	FileDirectory default deleteFileNamed:  'GhostLog.txt'.
-	GHGhostLogger changeToFileLogger.
-	
+	GHGhostLogger changeToFileLogger 
 ]
 
 { #category : #'as yet unclassified' }
@@ -26,6 +25,24 @@ GHSimpleForwarderTest >> testSimpleForwardingForClassesToInstance [
     | aProxy aUser |
        aUser := GHUser named: 'Kurt'.
        
+	[ aProxy := GHClassProxy createProxyAndReplace: GHUser handler: GHSimpleForwarderProxyHandler new. 
+     self assert: aUser username equals: 'Kurt'.
+	] ensure: [ aProxy uninstall ]
+]
+
+{ #category : #'as yet unclassified' }
+GHSimpleForwarderTest >> testSimpleForwardingForClassesToSubclass [
+    | aProxy aUser |
+       aUser := GHUser named: 'Kurt'.
+	[aProxy := GHClassProxy createProxyAndReplace: GHUser handler: GHSimpleForwarderProxyHandler new. 
+	self assert:  GHUserSubclass name equals: #GHUserSubclass. 
+	] ensure: [ aProxy uninstall ]
+]
+
+{ #category : #'as yet unclassified' }
+GHSimpleForwarderTest >> testSimpleForwardingForClassesToSubclassInstance [
+    | aProxy aUser |
+       aUser := GHUserSubclass named: 'Kurt'.
 	[ aProxy := GHClassProxy createProxyAndReplace: GHUser handler: GHSimpleForwarderProxyHandler new. 
      self assert: aUser username equals: 'Kurt'.
 	] ensure: [ aProxy uninstall ]
