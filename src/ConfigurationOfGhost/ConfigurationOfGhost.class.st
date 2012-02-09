@@ -156,7 +156,7 @@ ConfigurationOfGhost >> version10: spec [
 	spec for: #pharo do: [		
 				
 		spec package: 'SimpleLogger' with: 'SimpleLogger-MarianoMartinezPeck.11'.
-		spec package: 'GhostProxies' with: 'GhostProxies-MarianoMartinezPeck.24'.
+		spec package: 'GhostProxies' with: 'GhostProxies-MarianoMartinezPeck.25'.
 		spec package: 'GhostProxiesTests' with: 'GhostProxiesTests-MarianoMartinezPeck.12'.
 
 		
