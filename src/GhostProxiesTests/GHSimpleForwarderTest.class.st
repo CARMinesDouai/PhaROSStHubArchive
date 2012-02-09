@@ -13,6 +13,25 @@ GHSimpleForwarderTest >> setUp [
 ]
 
 { #category : #'as yet unclassified' }
+GHSimpleForwarderTest >> testSimpleForwardingForClassesToClass [
+    | aProxy aUser |
+       aUser := GHUser named: 'Kurt'.
+	[aProxy := GHClassProxy createProxyAndReplace: GHUser handler: GHSimpleForwarderProxyHandler new. 
+       self assert:  GHUser name equals: #GHUser. 
+	] ensure: [ aProxy uninstall ]
+]
+
+{ #category : #'as yet unclassified' }
+GHSimpleForwarderTest >> testSimpleForwardingForClassesToInstance [
+    | aProxy aUser |
+       aUser := GHUser named: 'Kurt'.
+       
+	[ aProxy := GHClassProxy createProxyAndReplace: GHUser handler: GHSimpleForwarderProxyHandler new. 
+     self assert: aUser username equals: 'Kurt'.
+	] ensure: [ aProxy uninstall ]
+]
+
+{ #category : #'as yet unclassified' }
 GHSimpleForwarderTest >> testSimpleForwardingForMethodUsingBecome [
        | aProxy aUser method |
        aUser := GHUser named: 'Kurt'.
@@ -20,7 +39,7 @@ GHSimpleForwarderTest >> testSimpleForwardingForMethodUsingBecome [
        [aProxy := GHProxy createProxyAndReplace: method handler: GHSimpleForwarderProxyHandler new. 
        self assert: aProxy getSource equals: 'username ^ username'. 
        self assert: aUser username equals: 'Kurt'.
-	 ] ensure: [ aProxy name ]
+	 ] ensure: [ aProxy uninstall ]
 ]
 
 { #category : #'as yet unclassified' }

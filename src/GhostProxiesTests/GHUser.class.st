@@ -13,8 +13,7 @@ GHUser class >> named: aName [
 ]
 
 { #category : #accessing }
-GHUser >> username [
-	^ username
+GHUser >> username [ ^ username
 ]
 
 { #category : #accessing }
