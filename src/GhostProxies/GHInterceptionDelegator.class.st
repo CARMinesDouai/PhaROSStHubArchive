@@ -7,6 +7,7 @@ Class {
 { #category : #'as yet unclassified' }
 GHInterceptionDelegator >> cannotInterpret: aMessage [ 
 	| interception context  counter|
+	
 	self log:  'cannotInterpret:  ', aMessage selector.
 	self log:  'Stack:  '.
 	self log:  '----------------'.
