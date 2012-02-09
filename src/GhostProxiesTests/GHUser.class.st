@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'username'
 	],
-	#category : #GhostProxiesTests
+	#category : #'GhostProxiesTests-Mocks'
 }
 
 { #category : #'as yet unclassified' }
