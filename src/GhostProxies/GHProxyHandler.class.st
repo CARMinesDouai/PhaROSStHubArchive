@@ -16,6 +16,20 @@ GHProxyHandler >> classProxyMessagesToHandle [
 
 ]
 
+{ #category : #'handle - debugging' }
+GHProxyHandler >> debuggingMessagesToHandle [
+	| dict |
+	dict := Dictionary new.
+	dict at: #basicInspect put:#handleBasicInspect:.
+	dict at: #inspect put:#handleInspect:.
+	dict at: #inspectorClass put:#handleInspectorClass:.
+	dict at: #defaultLabelForInspector put:#handleDefaultLabelForInspector:.
+	dict at: #printStringLimitedTo: put: #handlePrintStringLimitedTo:.
+	dict at: #printString put: #handlePrintString:.
+	dict at: #longPrintOn:limitedTo:indent: put: #handleLongPrintOnLimitedToIndent:.
+	^ dict	
+]
+
 { #category : #private }
 GHProxyHandler >> defaultMethodsNotToIntercept [
 	| dict |
@@ -29,9 +43,35 @@ GHProxyHandler >> defaultMethodsNotToIntercept [
 	
 ]
 
+{ #category : #'handle - debugging' }
+GHProxyHandler >> handleBasicInspect: anInterception [
+	"Create and schedule an Inspector in which the user can examine the 
+	receiver's variables. This method should not be overriden."
+	^Smalltalk tools basicInspect: anInterception proxy
+]
+
+{ #category : #'handle - debugging' }
+GHProxyHandler >> handleDefaultLabelForInspector: anInterception [
+	^ 'Proxy'
+]
+
 { #category : #'handle - methods' }
 GHProxyHandler >> handleFlushCache: anInterception [
 	^ self subclassResponsibility 
+]
+
+{ #category : #'handle - debugging' }
+GHProxyHandler >> handleInspect: anInterception [
+	"Create and schedule an Inspector in which the user can examine the receiver's variables."
+	Smalltalk tools inspect: anInterception proxy
+]
+
+{ #category : #'handle - debugging' }
+GHProxyHandler >> handleInspectorClass: anInterception [
+	"Answer the class of the inspector to be used on the receiver.  Called by inspect; 
+	use basicInspect to get a normal (less useful) type of inspector."
+
+	^ Inspector
 ]
 
 { #category : #'handle - API' }
@@ -49,9 +89,34 @@ GHProxyHandler >> handleInterceptionToInstanceFor: anInterception [
 	^ self subclassResponsibility 
 ]
 
+{ #category : #'handle - debugging' }
+GHProxyHandler >> handleLongPrintOnLimitedToIndent: anInterception [
+	
+]
+
+{ #category : #'handle - debugging' }
+GHProxyHandler >> handleLongPrintStringLimitedTo: anInterception [
+	^ 'This is a proxy'
+]
+
 { #category : #'handle - methods' }
 GHProxyHandler >> handleMethodExecution: anInterception [
 	^ self subclassResponsibility 
+]
+
+{ #category : #'handle - debugging' }
+GHProxyHandler >> handlePrintOn: anInterception [
+	anInterception message arguments first nextPutAll: 'aProxy'  
+]
+
+{ #category : #'handle - debugging' }
+GHProxyHandler >> handlePrintString: anInterception [
+	^ anInterception proxy printStringLimitedTo: 50000
+]
+
+{ #category : #'handle - debugging' }
+GHProxyHandler >> handlePrintStringLimitedTo: anInterception [
+	^ 'This is the print of a proxy'
 ]
 
 { #category : #'handle - support' }

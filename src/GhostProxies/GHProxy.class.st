@@ -47,6 +47,11 @@ GHProxy >> initializeWith: aTarget handler: aHandler [
 ]
 
 { #category : #accessing }
+GHProxy >> isProxy [
+	^ true
+]
+
+{ #category : #accessing }
 GHProxy >> proxyHandler [
 	^ handler
 ]
