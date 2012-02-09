@@ -17,7 +17,7 @@ GHSimpleForwarderProxyHandler >> handleInterceptionToInstanceFor: anInterception
 	targetClass := anInterception proxy proxyTarget.
 	receiver := anInterception message arguments second.
 	self log: 'message ', message selector, ' to instance intercepted and will be forwarded'.
-	^ CompiledMethod receiver: receiver withArgs: message arguments  executeMethod:  (targetClass lookupSelector: message selector) 
+	^ CompiledMethod receiver: receiver withArguments: message arguments  executeMethod:  (targetClass lookupSelector: message selector) 
 	
 ]
 
