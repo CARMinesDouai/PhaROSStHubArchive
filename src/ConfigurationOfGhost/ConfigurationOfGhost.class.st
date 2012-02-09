@@ -80,7 +80,7 @@ ConfigurationOfGhost class >> lastMetacelloVersionLoad [
 
 { #category : #accessing }
 ConfigurationOfGhost class >> load [
-	self project lastVersion load
+	(self project version: #stable) load
 ]
 
 { #category : #'metacello tool support' }
@@ -137,6 +137,12 @@ ConfigurationOfGhost >> project [
 ]
 
 { #category : #versions }
+ConfigurationOfGhost >> stable: spec [
+	spec for: #'pharo1.3.x' version: '1.0'.
+	spec for: #'pharo1.4.x' version: '1.0'.
+]
+
+{ #category : #versions }
 ConfigurationOfGhost >> version10: spec [
 	<version: '1.0' imports: #('1.0-baseline')>
 
@@ -148,11 +154,10 @@ ConfigurationOfGhost >> version10: spec [
 	
 	spec for: #pharo do: [		
 				
-		
-"		spec package: 'SimpleLogger' with: 'SimpleLogger-MarianoMartinezPeck.9'.
-		spec package: 'MareaLogger' with: 'MareaLogger-MarianoMartinezPeck.6'.
-		spec package: 'MareaMocks' with: 'MareaMocks-MarianoMartinezPeck.12'.
-"
+		spec package: 'SimpleLogger' with: 'SimpleLogger-MarianoMartinezPeck.11'.
+		spec package: 'GhostProxies' with: 'GhostProxies-MarianoMartinezPeck.24'.
+		spec package: 'GhostProxiesTests' with: 'GhostProxiesTests-MarianoMartinezPeck.12'.
+
 		
 	]
 			
