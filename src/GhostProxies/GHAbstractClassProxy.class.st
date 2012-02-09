@@ -9,7 +9,7 @@ Class {
 	#category : #GhostProxies
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 GHAbstractClassProxy >> initializeClassProxy [
 	superclass := GHInstanceOfProxifiedClassInterceptionDelegator.
 	methodDict := nil.

@@ -45,18 +45,6 @@ GHGhostLogger class >> disableLogging [
 	ProxiesLoggerHolder := logger.
 ]
 
-{ #category : #examples }
-GHGhostLogger class >> example [
-	MyAppLogger logger mareaLog: 'zaraza'
-	"Actually the idae is that you can create a method *MyAppLogger in Object that does:
-	log: anObject
-		MyAppLogger logger log: anObject
-	
-	So after, everywhere in your app you can just do self log: 'something'.
-	"
-	
-]
-
 { #category : #'initialize-release' }
 GHGhostLogger class >> initialize [ 
 	ProxiesLoggerHolder := self createLogger.

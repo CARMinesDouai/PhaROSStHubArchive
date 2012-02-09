@@ -8,7 +8,7 @@ Class {
 	#category : #GhostProxies
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 GHClassProxy class >> createProxyAndReplace: anObjectThenProxy handler: aHandler [
    | aProxyThenObject |
 	"It is important to use basicNew because otherwise we are forced to implement #initialize"
@@ -28,7 +28,7 @@ GHClassProxy class >> createProxyAndReplace: anObjectThenProxy handler: aHandler
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 GHClassProxy class >> createProxyFor: anObject handler: aHandler [
 	| aProxy |
 	"It is important to use basicNew because otherwise we are forced to implement #initialize"
@@ -40,7 +40,7 @@ GHClassProxy class >> createProxyFor: anObject handler: aHandler [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 GHClassProxy >> initializeWith: aTarget handler: aHandler [
 	self initializeClassProxy.
 	target := aTarget.
@@ -48,7 +48,7 @@ GHClassProxy >> initializeWith: aTarget handler: aHandler [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GHClassProxy >> proxyHandler [
 	^ handler
 ]

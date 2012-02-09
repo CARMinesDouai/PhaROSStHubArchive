@@ -4,7 +4,7 @@ Class {
 	#category : #GhostProxies
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'class membership' }
 GHAbstractProxy >> class [
 	"We just need it for debugging purposes"
 	
@@ -12,11 +12,12 @@ GHAbstractProxy >> class [
 	self primitiveFailed
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #logging }
 GHAbstractProxy >> log: aString [
 	GHGhostLogger logger log: aString.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #API }
 GHAbstractProxy >> proxyHandler [
+	"This must be implemented in subclasses"
 ]

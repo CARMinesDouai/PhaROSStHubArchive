@@ -4,13 +4,13 @@ Class {
 	#category : #GhostProxies
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'handle - methods' }
 GHSimpleForwarderProxyHandler >> handleFlushCache: anInterception [
 	^ anInterception proxy proxyTarget selector flushCache	 
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'handle - class proxy' }
 GHSimpleForwarderProxyHandler >> handleInterceptionToInstanceFor: anInterception [
 	| message targetClass receiver |
 	message := anInterception message arguments first.
@@ -21,7 +21,7 @@ GHSimpleForwarderProxyHandler >> handleInterceptionToInstanceFor: anInterception
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'handle - methods' }
 GHSimpleForwarderProxyHandler >> handleMethodExecution: anInterception [
 	self log: 'message ', anInterception message selector, ' execution intercepted and will be forwarded'.
 	^ anInterception proxy proxyTarget valueWithReceiver: anInterception message arguments third arguments: anInterception message arguments second
@@ -29,7 +29,7 @@ GHSimpleForwarderProxyHandler >> handleMethodExecution: anInterception [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'handle - support' }
 GHSimpleForwarderProxyHandler >> handleUninstall: anInterception [
 
 	self log: 'message ', anInterception message selector, ' received and the proxy will be uninstalled'.
@@ -37,12 +37,7 @@ GHSimpleForwarderProxyHandler >> handleUninstall: anInterception [
 	
 ]
 
-{ #category : #'as yet unclassified' }
-GHSimpleForwarderProxyHandler >> log: aString [
-	GHGhostLogger logger log: aString.
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #handle }
 GHSimpleForwarderProxyHandler >> manageMessage: interception [
 	self log: 'The method ', interception message selector, ' will beforwarded'.
 	^ interception message sendTo: interception proxy proxyTarget

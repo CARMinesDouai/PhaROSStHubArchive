@@ -4,7 +4,7 @@ Class {
 	#category : #GhostProxies
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #intercepting }
 GHInterceptionDelegator >> cannotInterpret: aMessage [ 
 	| interception context  counter|
 	

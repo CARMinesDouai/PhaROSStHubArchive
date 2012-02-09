@@ -9,12 +9,12 @@ Class {
 	#category : #GhostProxies
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 GHInterception class >> for: aMessage proxy: aProxy [
 	^ self new initializeWith: aMessage proxy: aProxy receiver: nil. 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 GHInterception >> initializeWith: aMessage proxy: aProxy receiver: aReceiver [
 	message := aMessage.
 	proxy := aProxy.

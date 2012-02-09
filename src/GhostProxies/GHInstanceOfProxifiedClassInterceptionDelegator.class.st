@@ -4,7 +4,7 @@ Class {
 	#category : #GhostProxies
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #intercepting }
 GHInstanceOfProxifiedClassInterceptionDelegator >> cannotInterpret: aMessage [ 
 	| interception context  counter proxy |
 	

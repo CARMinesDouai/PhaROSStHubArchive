@@ -4,12 +4,12 @@ Class {
 	#category : #GhostProxies
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'class initialization' }
 GHProxyTrap class >> initialize [
 	self nilMethodDict 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'class initialization' }
 GHProxyTrap class >> nilMethodDict [
 	methodDict := nil. 
 ]
