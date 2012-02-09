@@ -117,6 +117,7 @@ ConfigurationOfGhost >> baseline10: spec [
 		spec
  			group: 'default' with: #( 'Core' 'Tests' );
 			group: 'Core' with: #('GhostProxies' );
+			group: 'Tests' with: #('GhostProxiesTests');
 			group: 'DevelopmentGroup' with: #( 'Core' 'Tests' )
 			
 		] 
