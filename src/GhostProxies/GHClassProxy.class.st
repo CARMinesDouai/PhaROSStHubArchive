@@ -40,6 +40,11 @@ GHClassProxy class >> createProxyFor: anObject handler: aHandler [
 
 ]
 
+{ #category : #accessing }
+GHClassProxy >> ghostFindClassWithNilMethodDictInHierarchy [
+	^ self
+]
+
 { #category : #initialization }
 GHClassProxy >> initializeWith: aTarget handler: aHandler [
 	self initializeClassProxy.
