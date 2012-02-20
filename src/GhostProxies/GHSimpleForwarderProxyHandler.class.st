@@ -11,13 +11,12 @@ GHSimpleForwarderProxyHandler >> handleFlushCache: anInterception [
 ]
 
 { #category : #'handle - class proxy' }
-GHSimpleForwarderProxyHandler >> handleInterceptionToInstanceFor: anInterception [
-	| message targetClass receiver |
-	message := anInterception message arguments first.
+GHSimpleForwarderProxyHandler >> handleInterceptionToInstance: anInterception [
+	| targetClass message |
 	targetClass := anInterception proxy proxyTarget.
-	receiver := anInterception message arguments second.
-	self log: 'message ', message selector, ' to instance intercepted and will be forwarded'.
-	^ CompiledMethod receiver: receiver withArguments: message arguments  executeMethod:  (targetClass lookupSelector: message selector) 
+	message := anInterception message.
+	self log: 'message ',  message selector, ' to instance intercepted and will be forwarded'.
+	^ CompiledMethod receiver: anInterception receiver withArguments: message arguments executeMethod:  (targetClass lookupSelector: message selector) 
 	
 ]
 

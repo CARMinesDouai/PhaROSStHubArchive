@@ -7,15 +7,6 @@ Class {
 	#category : #GhostProxies
 }
 
-{ #category : #'handle - class proxy' }
-GHProxyHandler >> classProxyMessagesToHandle [
-	| dict |
-	dict := Dictionary new.
-	dict at: #handleInterceptionToInstance:andReceiver:  put: #handleInterceptionToInstanceFor:.
-	^ dict
-
-]
-
 { #category : #'handle - debugging' }
 GHProxyHandler >> debuggingMessagesToHandle [
 	| dict |
@@ -37,7 +28,6 @@ GHProxyHandler >> defaultMethodsNotToIntercept [
 	dict addAll: self methodsMessagesToHandle.
 	dict addAll: self debuggingMessagesToHandle.
 	dict addAll: self testSupportMessagesToHandle.
-	dict addAll: self classProxyMessagesToHandle.
 	^ dict
 	
 	
@@ -85,7 +75,7 @@ GHProxyHandler >> handleInterception: anInterception [
 ]
 
 { #category : #'handle - class proxy' }
-GHProxyHandler >> handleInterceptionToInstanceFor: anInterception [
+GHProxyHandler >> handleInterceptionToInstance: anInterception [
 	^ self subclassResponsibility 
 ]
 

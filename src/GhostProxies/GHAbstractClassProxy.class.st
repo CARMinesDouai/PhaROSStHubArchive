@@ -11,7 +11,7 @@ Class {
 
 { #category : #initialization }
 GHAbstractClassProxy >> initializeClassProxy [
-	superclass := GHInstanceOfProxifiedClassInterceptionDelegator.
+	superclass := GHMethodLookupInterceptionDelegator.
 	methodDict := nil.
 	format := GHAbstractClassProxy format.
 ]
