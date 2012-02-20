@@ -1,6 +1,6 @@
 Class {
-	#name : #GHProxy,
-	#superclass : #GHAbstractProxy,
+	#name : #GHTargetBasedClassProxy,
+	#superclass : #GHAbstractClassProxy,
 	#instVars : [
 		'handler',
 		'target'
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-GHProxy class >> createProxyAndReplace: anObjectThenProxy handler: aHandler [
+GHTargetBasedClassProxy class >> createProxyAndReplace: anObjectThenProxy handler: aHandler [
    | aProxyThenObject |
 	"It is important to use basicNew because otherwise we are forced to implement #initialize"
        aProxyThenObject := self basicNew
@@ -29,7 +29,7 @@ GHProxy class >> createProxyAndReplace: anObjectThenProxy handler: aHandler [
 ]
 
 { #category : #'instance creation' }
-GHProxy class >> createProxyFor: anObject handler: aHandler [
+GHTargetBasedClassProxy class >> createProxyFor: anObject handler: aHandler [
 	| aProxy |
 	"It is important to use basicNew because otherwise we are forced to implement #initialize"
     	aProxy:= self basicNew
@@ -40,28 +40,30 @@ GHProxy class >> createProxyFor: anObject handler: aHandler [
 
 ]
 
+{ #category : #accessing }
+GHTargetBasedClassProxy >> ghostFindClassWithNilMethodDictInHierarchy [
+	^ self
+]
+
 { #category : #initialization }
-GHProxy >> initializeWith: aTarget handler: aHandler [
+GHTargetBasedClassProxy >> initializeWith: aTarget handler: aHandler [
+	self initializeClassProxy.
 	target := aTarget.
-	handler := aHandler
+	handler := aHandler.
+	
 ]
 
 { #category : #accessing }
-GHProxy >> isProxy [
-	^ true
-]
-
-{ #category : #accessing }
-GHProxy >> proxyHandler [
+GHTargetBasedClassProxy >> proxyHandler [
 	^ handler
 ]
 
 { #category : #accessing }
-GHProxy >> proxyTarget [
+GHTargetBasedClassProxy >> proxyTarget [
 	^ target
 ]
 
 { #category : #accessing }
-GHProxy >> proxyTarget: aTarget [
-	target := aTarget
+GHTargetBasedClassProxy >> proxyTarget: anObject [
+	target := anObject
 ]
