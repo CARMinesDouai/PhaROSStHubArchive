@@ -25,8 +25,8 @@ BGSSimulationScriptGenerator class >> generateExperiment: experimentClass at: fo
 			print: botsCount;
 			space;
 			nextPutAll: 'in: ';
-			"nextPutAll: ' (BGSCheckerboardLikeTerrain extent: 100@100)  ';"
-			nextPutAll: ' (BGSExplorableTerrain extent: 100@100)  ';
+			nextPutAll: ' (BGSCheckerboardLikeTerrain extent: 100@100)  ';
+			"nextPutAll: ' (BGSExplorableTerrain extent: 100@100)  ';"
 			nextPutAll: 'logFileName:';
 			space;
 			nextPut: $' ;
