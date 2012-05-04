@@ -4,6 +4,8 @@ To create an instance and have it immediatly displayed, you can either use one o
 
 -BGSSimulationWindow onClass:  simulationClass
 -BGSSimulationWindow on: simulation
+-BGSSimulationWindow onClass:  simulationClass terrainCellExtent: 5@5
+-BGSSimulationWindow on: simulation terrainCellExtent: 5@5
 
 
 "
@@ -12,14 +14,26 @@ Class {
 	#superclass : #BGSGridWindow,
 	#instVars : [
 		'simulation',
-		'stepCounterMorph'
+		'stepCounterMorph',
+		'gridCellExtent'
 	],
 	#category : #'BOSS-Kernel'
 }
 
 { #category : #'instance creation' }
+BGSSimulationWindow class >> defaultGridCellExtent [ 
+	^10@10
+]
+
+{ #category : #'instance creation' }
 BGSSimulationWindow class >> on: aSimulation [
+	^self on: aSimulation terrainCellExtent: self defaultGridCellExtent 
+]
+
+{ #category : #'instance creation' }
+BGSSimulationWindow class >> on: aSimulation  terrainCellExtent: aPoint [
 	^self new
+		 gridCellExtent: aPoint;
 		simulation: aSimulation;
 		openInWorld;
 		yourself
@@ -28,6 +42,11 @@ BGSSimulationWindow class >> on: aSimulation [
 { #category : #'instance creation' }
 BGSSimulationWindow class >> onClass: aSimulationClass [
 	^self on: aSimulationClass new
+]
+
+{ #category : #'instance creation' }
+BGSSimulationWindow class >> onClass: aSimulationClass terrainCellExtent: aPoint [
+	^self on: aSimulationClass new terrainCellExtent: aPoint
 ]
 
 { #category : #'initialize-release' }
@@ -77,6 +96,16 @@ BGSSimulationWindow >> displayGridView [
 	newExtent := board fullBounds extent + (deltaWidth @ deltaHeight).
 	self extent: newExtent.
 	self addMorph: board frame: (0 @ 0 extent: 1 @ 1)
+]
+
+{ #category : #accessing }
+BGSSimulationWindow >> gridCellExtent [
+	^ gridCellExtent
+]
+
+{ #category : #accessing }
+BGSSimulationWindow >> gridCellExtent: anObject [
+	gridCellExtent := anObject
 ]
 
 { #category : #'initialize-release' }
@@ -145,7 +174,7 @@ BGSSimulationWindow >> simulation [
 BGSSimulationWindow >> simulation: newSimulation [
 	simulation := newSimulation.
 	simulation addDependent: self.
-	self displayGrid: simulation terrain cellExtent: (10@10).
+	self displayGrid: simulation terrain cellExtent: self gridCellExtent.
 	self update: newSimulation
 ]
 

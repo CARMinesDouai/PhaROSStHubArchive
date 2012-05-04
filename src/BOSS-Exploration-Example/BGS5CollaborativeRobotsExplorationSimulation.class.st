@@ -13,6 +13,11 @@ BGS5CollaborativeRobotsExplorationSimulation >> deployRobots [
 		(self robot: botId) jumpTo: aPoint in: self terrain]
 ]
 
+{ #category : #accessing }
+BGS5CollaborativeRobotsExplorationSimulation >> name [
+	^'Yamauchi''s Collaborative Exploration with 5 Robots'
+]
+
 { #category : #'initialize-release' }
 BGS5CollaborativeRobotsExplorationSimulation >> robotClass [
 	^BGSCollaborativeNearestFrontierExplorerRobot
