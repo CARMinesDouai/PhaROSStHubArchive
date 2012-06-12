@@ -82,7 +82,7 @@ OCNSocketPluginLibrary class >> proxy [
 	^self new
 ]
 
-{ #category : #'TCP API' }
+{ #category : #'API-TCP' }
 OCNSocketPluginLibrary >> acceptFrom: aServerSocket [
 	|conversationSocket conversationSocketId networkLibrary |
 	
@@ -104,7 +104,7 @@ OCNSocketPluginLibrary >> acceptFrom: aServerSocket [
 
 ]
 
-{ #category : #'NameResolving support' }
+{ #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> addressForName: nameToLookup addressFamily: addressFamily [
 
 	 | addressSize  byteInfoSize byteInfo stringAddress addressTypeConstants |
@@ -129,9 +129,13 @@ OCNSocketPluginLibrary >> addressForName: nameToLookup addressFamily: addressFam
 
 ]
 
-{ #category : #'NameResolving support' }
+{ #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> addressForName: hostName timeout: secs [
 	"Look up the given host name and return its address. Return nil if the address is not found in the given number of seconds."
+	"OCNSocketPluginLibrary proxy addressForName: 'create.ucsb.edu' timeout: 30"
+	"OCNSocketPluginLibrary proxy addressForName: '100000jobs.de' timeout: 30"
+	"OCNSocketPluginLibrary proxy addressForName: '1.7.6.4' timeout: 30"
+	"OCNSocketPluginLibrary proxy addressForName: '' timeout: 30 (This seems to return nil?)"
 
 	| deadline result |
 	"check if this is a valid numeric host address (e.g. 1.2.3.4)"
@@ -153,7 +157,7 @@ OCNSocketPluginLibrary >> addressForName: hostName timeout: secs [
 	^result 
 ]
 
-{ #category : #'NameResolving support' }
+{ #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> addressFromString: addressString [ 
 	"Return the internet address represented by the given string. The string should contain four positive decimal integers delimited by periods, commas, or spaces, where each integer represents one address byte. Return nil if the string is not a host address in an acceptable format."
 	"NetNameResolver addressFromString: '1.2.3.4'"
@@ -178,7 +182,7 @@ OCNSocketPluginLibrary >> addressFromString: addressString [
 	^ newAddr
 ]
 
-{ #category : #'NameResolving support' }
+{ #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> addressesForName: nameToLookup addressFamily: addressFamily [
 
 	 | allAddresses  byteInfoSize |
@@ -210,12 +214,12 @@ OCNSocketPluginLibrary >> addressesForName: nameToLookup addressFamily: addressF
 	^ allAddresses
 ]
 
-{ #category : #'NameResolving support' }
+{ #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> allAddressFamily [
 	^0
 ]
 
-{ #category : #'Socket API' }
+{ #category : #'API-Socket' }
 OCNSocketPluginLibrary >> bind: aSocket toIpv4Address: anOCNIPV4SocketAddress [ 
 
 	((1 to: (2 raisedTo: 16)) includes: anOCNIPV4SocketAddress port) ifFalse: [
@@ -226,7 +230,7 @@ OCNSocketPluginLibrary >> bind: aSocket toIpv4Address: anOCNIPV4SocketAddress [
 		do: [ OCNSocketOperationFailureError signal: 'binding socket to port ', anOCNIPV4SocketAddress port printString , ' failed' ]
 ]
 
-{ #category : #'TCP API' }
+{ #category : #'API-TCP' }
 OCNSocketPluginLibrary >> connect: aSocket toServerWithIpv4Address: serverAddress [
 
 	self ensureNetworkInitialized.
@@ -235,12 +239,12 @@ OCNSocketPluginLibrary >> connect: aSocket toServerWithIpv4Address: serverAddres
 
 ]
 
-{ #category : #'converting socket addresses' }
+{ #category : #'Support For Sockets' }
 OCNSocketPluginLibrary >> convertIpv4StringAddressToByteArray: stringAddress [
 	^((stringAddress subStrings: '.')  collect: [ :string | string asInteger]) asByteArray
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #'Support For Sockets' }
 OCNSocketPluginLibrary >> createSocketDescriptorIdFor: anOCNSocket withType:  socketType [
 	
 	| socketId status|
@@ -258,18 +262,18 @@ OCNSocketPluginLibrary >> createSocketDescriptorIdFor: anOCNSocket withType:  so
 	
 ]
 
-{ #category : #'TCP API' }
+{ #category : #'API-TCP' }
 OCNSocketPluginLibrary >> createTcpSocketDescriptorIdFor: anOCNSocket [
 	^self createSocketDescriptorIdFor: anOCNSocket withType: TCPSocketType	
 ]
 
-{ #category : #'UDP API' }
+{ #category : #'API-UDP' }
 OCNSocketPluginLibrary >> createUdpSocketDescriptorIdFor: anOCNSocket [
 	^self createSocketDescriptorIdFor: anOCNSocket  withType: UDPSocketType
 
 ]
 
-{ #category : #'NameResolving support' }
+{ #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> defaultAddressLookupTimeout [
 	^3 "seconds"
 	
@@ -313,12 +317,12 @@ OCNSocketPluginLibrary >> initialize [
 
 ]
 
-{ #category : #'NameResolving support' }
+{ #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> ipv4 [
 	^2
 ]
 
-{ #category : #'NameResolving API' }
+{ #category : #'API-NameResolving IpV4' }
 OCNSocketPluginLibrary >> ipv4AddressForName: nameToLookup [
 	|resultAddress |
 	resultAddress := OCNIpv4Address new.
@@ -327,38 +331,58 @@ OCNSocketPluginLibrary >> ipv4AddressForName: nameToLookup [
 	
 ]
 
-{ #category : #'NameResolving API' }
+{ #category : #'API-NameResolving IpV4' }
 OCNSocketPluginLibrary >> ipv4AddressesForName: nameToLookup [
 
 	^(self addressesForName: nameToLookup  addressFamily:  self ipv4) collect: [:adressString | OCNIpv4Address newFromString: adressString ]
 ]
 
-{ #category : #'NameResolving API' }
+{ #category : #'API-NameResolving IpV4' }
 OCNSocketPluginLibrary >> ipv4LocalHostAddress [
 	^OCNIpv4Address new 
 		ip: self primLocalAddress; 
 		yourself
 ]
 
-{ #category : #'NameResolving support' }
+{ #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> ipv6 [ 
 	^3
 ]
 
-{ #category : #'TCP API' }
+{ #category : #'API-NameResolving IpV6' }
+OCNSocketPluginLibrary >> ipv6AddressForName: nameToLookup [
+	
+	^self ipv6AddressFromString: (self addressForName: nameToLookup addressFamily: self ipv6)
+	
+	
+]
+
+{ #category : #'Support For NameResolving' }
+OCNSocketPluginLibrary >> ipv6AddressFromString: aString [
+	^OCNIpv6Address newFromString:  (aString splitOn: $%) first
+
+]
+
+{ #category : #'API-NameResolving IpV6' }
+OCNSocketPluginLibrary >> ipv6AddressesForName: nameToLookup [
+	
+	^(self addressesForName: nameToLookup  addressFamily:  self ipv6) collect:[:address | self ipv6AddressFromString:  address ]
+]
+
+{ #category : #'API-TCP' }
 OCNSocketPluginLibrary >> isDataAvailableFrom: socket [
 	^ self primSocketReceiveDataAvailable: socket socketId
 
 ]
 
-{ #category : #'TCP API' }
+{ #category : #'API-TCP' }
 OCNSocketPluginLibrary >> isSocketConnected: socket [ 
 	socket socketId ifNil: [^ false].
 	^ (self primSocketConnectionStatus: socket socketId) == self tcpSocketConnectedStatus
 
 ]
 
-{ #category : #'TCP API' }
+{ #category : #'API-TCP' }
 OCNSocketPluginLibrary >> listen: aServerSocket on: anIpAddress [
 	[self primSocket: aServerSocket socketId listenOn: anIpAddress port backlogSize:  aServerSocket backlogSize interface: anIpAddress ip]
 		on: PrimitiveFailed 
@@ -367,12 +391,12 @@ OCNSocketPluginLibrary >> listen: aServerSocket on: anIpAddress [
 	
 ]
 
-{ #category : #'NameResolving support' }
+{ #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> localAddressFamily [
 	^1
 ]
 
-{ #category : #'NameResolving support' }
+{ #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> localAddressString [
 	"Return a string representing the local host address as four decimal bytes delimited with decimal points."
 
@@ -380,7 +404,7 @@ OCNSocketPluginLibrary >> localAddressString [
 
 ]
 
-{ #category : #'NameResolving support' }
+{ #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> localHostAddress [
 	"Return the local address of this host."
 
@@ -388,20 +412,19 @@ OCNSocketPluginLibrary >> localHostAddress [
 
 ]
 
-{ #category : #'NameResolving API' }
+{ #category : #'API-NameResolving IpV4' }
 OCNSocketPluginLibrary >> localHostName [
 	
-	| hostName |
-	hostName := self
-		nameForAddress: self localHostAddress
-		timeout: 5.
-	^hostName
-		ifNil: [self localAddressString]
-		ifNotNil: [hostName]
+	|  hostname |
+
+	hostname := String new: self primHostNameSize.
+	self primHostNameResult: hostname.  
+	"sadly, this primitive returns the name stored in the localhost machine (e.g. machine.local on OSX) and not the name used by the DNS server "
 	
+	^hostname
 ]
 
-{ #category : #'NameResolving support' }
+{ #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> nameForAddress: hostAddress timeout: secs [
 	"Look up the given host address and return its name. Return nil if the lookup fails or is not completed in the given number of seconds. Depends on the given host address being known to the gateway, which may not be the case for dynamically allocated addresses."
 	
@@ -421,7 +444,7 @@ OCNSocketPluginLibrary >> nameForAddress: hostAddress timeout: secs [
 
 ]
 
-{ #category : #'primitives from old netnameresolver' }
+{ #category : #'Primitives-NameResolving' }
 OCNSocketPluginLibrary >> primAbortLookup [
 	"Abort the current lookup operation, freeing the name resolver for the next query."
 
@@ -430,7 +453,7 @@ OCNSocketPluginLibrary >> primAbortLookup [
 
 ]
 
-{ #category : #'TCP primitives' }
+{ #category : #'Primitives-TCP' }
 OCNSocketPluginLibrary >> primAcceptFrom: aHandle receiveBufferSize: rcvBufSize sendBufSize: sndBufSize semaIndex: semaphoreIndex [
 	"Create and return a new socket handle based on accepting the connection from the given listening socket"
 
@@ -439,7 +462,7 @@ OCNSocketPluginLibrary >> primAcceptFrom: aHandle receiveBufferSize: rcvBufSize 
 	^ self primitiveFailed
 ]
 
-{ #category : #'TCP primitives' }
+{ #category : #'Primitives-TCP' }
 OCNSocketPluginLibrary >> primAcceptFrom: aHandle receiveBufferSize: rcvBufSize sendBufSize: sndBufSize semaIndex: semaInd readSemaIndex: aReadSema writeSemaIndex: aWriteSema [
 	"Create and return a new socket handle based on accepting the connection from the given listening socket"
 	<primitive: 'primitiveSocketAccept3Semaphores' module: 'SocketPlugin'>
@@ -447,7 +470,7 @@ OCNSocketPluginLibrary >> primAcceptFrom: aHandle receiveBufferSize: rcvBufSize 
 	^self primAcceptFrom: aHandle receiveBufferSize: rcvBufSize sendBufSize: sndBufSize semaIndex: semaIndex 
 ]
 
-{ #category : #'primitives from old netnameresolver' }
+{ #category : #'Primitives-NameResolving' }
 OCNSocketPluginLibrary >> primAddressLookupResult [
 	"Return the host name found by the last host address lookup. Returns nil if the last lookup was unsuccessful."
 
@@ -456,7 +479,7 @@ OCNSocketPluginLibrary >> primAddressLookupResult [
 
 ]
 
-{ #category : #'TCP primitives' }
+{ #category : #'Primitives-TCP' }
 OCNSocketPluginLibrary >> primDestroySocket: socketId [
 
 	"Socket>>primSocketDestroy:"	
@@ -465,7 +488,7 @@ OCNSocketPluginLibrary >> primDestroySocket: socketId [
 	OCNSocketOperationFailureError signal: 'Destroy failed'
 ]
 
-{ #category : #'primitives from old netnameresolver IPV6' }
+{ #category : #'Primitives-Unused from old netnameresolver IPV6' }
 OCNSocketPluginLibrary >> primGetAddressInfoFamily [
 
 	<primitive: 'primitiveResolverGetAddressInfoFamily' module: 'SocketPlugin'>
@@ -473,7 +496,7 @@ OCNSocketPluginLibrary >> primGetAddressInfoFamily [
 
 ]
 
-{ #category : #'primitives from old netnameresolver IPV6' }
+{ #category : #'Primitives-NameResolvingIPV6' }
 OCNSocketPluginLibrary >> primGetAddressInfoHost: hostName service: servName flags: flags family: family type: type protocol: protocol [
 
 	<primitive: 'primitiveResolverGetAddressInfo' module: 'SocketPlugin'>
@@ -481,7 +504,7 @@ OCNSocketPluginLibrary >> primGetAddressInfoHost: hostName service: servName fla
 
 ]
 
-{ #category : #'primitives from old netnameresolver IPV6' }
+{ #category : #'Primitives-NameResolvingIPV6' }
 OCNSocketPluginLibrary >> primGetAddressInfoNext [
 
 	<primitive: 'primitiveResolverGetAddressInfoNext' module: 'SocketPlugin'>
@@ -489,7 +512,7 @@ OCNSocketPluginLibrary >> primGetAddressInfoNext [
 
 ]
 
-{ #category : #'primitives from old netnameresolver IPV6' }
+{ #category : #'Primitives-Unused from old netnameresolver IPV6' }
 OCNSocketPluginLibrary >> primGetAddressInfoProtocol [
 
 	<primitive: 'primitiveResolverGetAddressInfoProtocol' module: 'SocketPlugin'>
@@ -497,7 +520,7 @@ OCNSocketPluginLibrary >> primGetAddressInfoProtocol [
 
 ]
 
-{ #category : #'primitives from old netnameresolver IPV6' }
+{ #category : #'Primitives-NameResolvingIPV6' }
 OCNSocketPluginLibrary >> primGetAddressInfoResult: socketAddress [
 
 	<primitive: 'primitiveResolverGetAddressInfoResult' module: 'SocketPlugin'>
@@ -505,7 +528,7 @@ OCNSocketPluginLibrary >> primGetAddressInfoResult: socketAddress [
 
 ]
 
-{ #category : #'primitives from old netnameresolver IPV6' }
+{ #category : #'Primitives-NameResolvingIPV6' }
 OCNSocketPluginLibrary >> primGetAddressInfoSize [
 
 	<primitive: 'primitiveResolverGetAddressInfoSize' module: 'SocketPlugin'>
@@ -513,7 +536,7 @@ OCNSocketPluginLibrary >> primGetAddressInfoSize [
 
 ]
 
-{ #category : #'primitives from old netnameresolver IPV6' }
+{ #category : #'Primitives-Unused from old netnameresolver IPV6' }
 OCNSocketPluginLibrary >> primGetAddressInfoType [
 
 	<primitive: 'primitiveResolverGetAddressInfoType' module: 'SocketPlugin'>
@@ -521,7 +544,7 @@ OCNSocketPluginLibrary >> primGetAddressInfoType [
 
 ]
 
-{ #category : #'primitives from old netnameresolver IPV6' }
+{ #category : #'Primitives-NameResolvingIPV6' }
 OCNSocketPluginLibrary >> primGetNameInfo: socketAddress flags: flags [
 	"flags is 1 to get ip Number and 0 to get ip DNS Name"
 	
@@ -530,7 +553,7 @@ OCNSocketPluginLibrary >> primGetNameInfo: socketAddress flags: flags [
 	self primitiveFailed
 ]
 
-{ #category : #'primitives from old netnameresolver IPV6' }
+{ #category : #'Primitives-NameResolvingIPV6' }
 OCNSocketPluginLibrary >> primGetNameInfoHostResult: aString [
 
 	<primitive: 'primitiveResolverGetNameInfoHostResult' module: 'SocketPlugin'>
@@ -538,7 +561,7 @@ OCNSocketPluginLibrary >> primGetNameInfoHostResult: aString [
 
 ]
 
-{ #category : #'primitives from old netnameresolver IPV6' }
+{ #category : #'Primitives-NameResolvingIPV6' }
 OCNSocketPluginLibrary >> primGetNameInfoHostSize [
 
 	<primitive: 'primitiveResolverGetNameInfoHostSize' module: 'SocketPlugin'>
@@ -546,7 +569,7 @@ OCNSocketPluginLibrary >> primGetNameInfoHostSize [
 
 ]
 
-{ #category : #'primitives from old netnameresolver IPV6' }
+{ #category : #'Primitives-Unused from old netnameresolver IPV6' }
 OCNSocketPluginLibrary >> primGetNameInfoServiceResult: aString [
 
 	<primitive: 'primitiveResolverGetNameInfoServiceResult' module: 'SocketPlugin'>
@@ -554,7 +577,7 @@ OCNSocketPluginLibrary >> primGetNameInfoServiceResult: aString [
 
 ]
 
-{ #category : #'primitives from old netnameresolver IPV6' }
+{ #category : #'Primitives-Unused from old netnameresolver IPV6' }
 OCNSocketPluginLibrary >> primGetNameInfoServiceSize [
 
 	<primitive: 'primitiveResolverGetNameInfoServiceSize' module: 'SocketPlugin'>
@@ -562,7 +585,7 @@ OCNSocketPluginLibrary >> primGetNameInfoServiceSize [
 
 ]
 
-{ #category : #'primitives from old netnameresolver IPV6' }
+{ #category : #'Primitives-Unused from old netnameresolver IPV6' }
 OCNSocketPluginLibrary >> primHostNameResult: aString [
 
 	<primitive: 'primitiveResolverHostNameResult' module: 'SocketPlugin'>
@@ -570,7 +593,7 @@ OCNSocketPluginLibrary >> primHostNameResult: aString [
 
 ]
 
-{ #category : #'primitives from old netnameresolver IPV6' }
+{ #category : #'Primitives-Unused from old netnameresolver IPV6' }
 OCNSocketPluginLibrary >> primHostNameSize [
 
 	<primitive: 'primitiveResolverHostNameSize' module: 'SocketPlugin'>
@@ -578,7 +601,7 @@ OCNSocketPluginLibrary >> primHostNameSize [
 
 ]
 
-{ #category : #'primitives from old netnameresolver' }
+{ #category : #'Primitives-NameResolving' }
 OCNSocketPluginLibrary >> primInitializeNetwork: resolverSemaIndex [
 	"Initialize the network drivers on platforms that need it, such as the Macintosh, and return nil if network initialization failed or the reciever if it succeeds. Since mobile computers may not always be connected to a network, this method should NOT be called automatically at startup time; rather, it should be called when first starting a networking application. It is a noop if the network driver has already been initialized. If non-zero, resolverSemaIndex is the index of a VM semaphore to be associated with the network name resolver. This semaphore will be signalled when the resolver status changes, such as when a name lookup query is completed."
 	"Note: some platforms (e.g., Mac) only allow only one name lookup query at a time, so a manager process should be used to serialize resolver lookup requests."
@@ -588,7 +611,7 @@ OCNSocketPluginLibrary >> primInitializeNetwork: resolverSemaIndex [
 
 ]
 
-{ #category : #'primitives from old netnameresolver' }
+{ #category : #'Primitives-NameResolving' }
 OCNSocketPluginLibrary >> primLocalAddress [
 	"Return the local address of this host."
 
@@ -597,7 +620,7 @@ OCNSocketPluginLibrary >> primLocalAddress [
 
 ]
 
-{ #category : #'primitives from old netnameresolver' }
+{ #category : #'Primitives-NameResolving' }
 OCNSocketPluginLibrary >> primNameLookupResult [
 	"Return the host address found by the last host name lookup. Returns nil if the last lookup was unsuccessful."
 
@@ -606,7 +629,7 @@ OCNSocketPluginLibrary >> primNameLookupResult [
 
 ]
 
-{ #category : #'primitives from old netnameresolver' }
+{ #category : #'Primitives-Unused-from old netnameresolver' }
 OCNSocketPluginLibrary >> primNameResolverError [
 	"Return an integer reflecting the error status of the last network name resolver request. Zero means no error."
 
@@ -615,7 +638,7 @@ OCNSocketPluginLibrary >> primNameResolverError [
 
 ]
 
-{ #category : #'primitives from old netnameresolver' }
+{ #category : #'Primitives-NameResolving' }
 OCNSocketPluginLibrary >> primNameResolverStatus [
 	"Return an integer reflecting the status of the network name resolver. For a list of possible values, see the comment in the 'initialize' method of this class."
 
@@ -624,7 +647,7 @@ OCNSocketPluginLibrary >> primNameResolverStatus [
 
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocket: socketID bindTo: socketAddress [
 
 	<primitive: 'primitiveSocketBindTo' module: 'SocketPlugin'>
@@ -632,7 +655,7 @@ OCNSocketPluginLibrary >> primSocket: socketID bindTo: socketAddress [
 
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocket: socketID connectTo: socketAddress [
 
 	<primitive: 'primitiveSocketConnectTo' module: 'SocketPlugin'>
@@ -640,7 +663,7 @@ OCNSocketPluginLibrary >> primSocket: socketID connectTo: socketAddress [
 
 ]
 
-{ #category : #'TCP primitives' }
+{ #category : #'Primitives-TCP' }
 OCNSocketPluginLibrary >> primSocket: socketID connectTo: hostAddress port: port [
 	"Attempt to establish a connection to the given port of the given host. This is an asynchronous call; query the socket status to discover if and when the connection is actually completed."
 
@@ -649,7 +672,7 @@ OCNSocketPluginLibrary >> primSocket: socketID connectTo: hostAddress port: port
 
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocket: socketID getOption: aString [ 
 	"Get some option information on this socket. Refer to the UNIX 
 	man pages for valid SO, TCP, IP, UDP options. In case of doubt
@@ -662,7 +685,7 @@ OCNSocketPluginLibrary >> primSocket: socketID getOption: aString [
 
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocket: aHandle listenOn: portNumber backlogSize: backlog [
 	"Primitive. Set up the socket to listen on the given port.
 	Will be used in conjunction with #accept only."
@@ -670,7 +693,7 @@ OCNSocketPluginLibrary >> primSocket: aHandle listenOn: portNumber backlogSize: 
 	self destroy. "Accept not supported so clean up"
 ]
 
-{ #category : #'TCP primitives' }
+{ #category : #'Primitives-TCP' }
 OCNSocketPluginLibrary >> primSocket: aHandle listenOn: portNumber backlogSize: backlog interface: ifAddr [
 	"Primitive. Set up the socket to listen on the given port.
 	Will be used in conjunction with #accept only."
@@ -678,13 +701,13 @@ OCNSocketPluginLibrary >> primSocket: aHandle listenOn: portNumber backlogSize: 
 	OCNSocketOperationFailureError signal:  'Listen failed'
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocket: socketId listenOnPort: aPortNumber [
 	<primitive: 'primitiveSocketListenOnPort' module: 'SocketPlugin'>
 	self primitiveFailed
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocket: socketID listenWithBacklog: backlogSize [
 
 	<primitive: 'primitiveSocketListenWithBacklog' module: 'SocketPlugin'>
@@ -692,7 +715,7 @@ OCNSocketPluginLibrary >> primSocket: socketID listenWithBacklog: backlogSize [
 
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocket: socketID localAddressResult: socketAddress [
 
 	<primitive: 'primitiveSocketLocalAddressResult' module: 'SocketPlugin'>
@@ -700,7 +723,7 @@ OCNSocketPluginLibrary >> primSocket: socketID localAddressResult: socketAddress
 
 ]
 
-{ #category : #'TCP primitives' }
+{ #category : #'Primitives-TCP' }
 OCNSocketPluginLibrary >> primSocket: socketID receiveDataInto: aStringOrByteArray startingAt: startIndex count: count [
 	"Receive data from the given socket into the given array starting at the given index. Return the number of bytes read or zero if no data is available."
 
@@ -709,7 +732,7 @@ OCNSocketPluginLibrary >> primSocket: socketID receiveDataInto: aStringOrByteArr
 
 ]
 
-{ #category : #'UDP primitives' }
+{ #category : #'Primitives-UDP' }
 OCNSocketPluginLibrary >> primSocket: socketID receiveUDPDataInto: aStringOrByteArray startingAt: startIndex count: count [
 	"Receive data from the given socket into the given array starting at the given index. 
 	Return an Array containing the amount read, the host address byte array, the host port, and the more flag"
@@ -719,7 +742,7 @@ OCNSocketPluginLibrary >> primSocket: socketID receiveUDPDataInto: aStringOrByte
 
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocket: socketID remoteAddressResult: socketAddress [
 
 	<primitive: 'primitiveSocketRemoteAddressResult' module: 'SocketPlugin'>
@@ -727,7 +750,7 @@ OCNSocketPluginLibrary >> primSocket: socketID remoteAddressResult: socketAddres
 
 ]
 
-{ #category : #'TCP primitives' }
+{ #category : #'Primitives-TCP' }
 OCNSocketPluginLibrary >> primSocket: socketID sendData: aStringOrByteArray startIndex: startIndex count: count [
 	"Send data to the remote host through the given socket starting with the given byte index of the given byte array. The data sent is 'pushed' immediately. Return the number of bytes of data actually sent; any remaining data should be re-submitted for sending after the current send operation has completed."
 	"Note: In general, it many take several sendData calls to transmit a large data array since the data is sent in send-buffer-sized chunks. The size of the send buffer is determined when the socket is created."
@@ -737,7 +760,7 @@ OCNSocketPluginLibrary >> primSocket: socketID sendData: aStringOrByteArray star
 
 ]
 
-{ #category : #'UDP primitives' }
+{ #category : #'Primitives-UDP' }
 OCNSocketPluginLibrary >> primSocket: socketID sendUDPData: aStringOrByteArray toHost: hostAddress  port: portNumber startIndex: startIndex count: count [
 	"Send data to the remote host through the given socket starting with the given byte index of the given byte array. The data sent is 'pushed' immediately. Return the number of bytes of data actually sent; any remaining data should be re-submitted for sending after the current send operation has completed."
 	"Note: In general, it many take several sendData calls to transmit a large data array since the data is sent in send-buffer-sized chunks. The size of the send buffer is determined when the socket is created."
@@ -748,7 +771,7 @@ OCNSocketPluginLibrary >> primSocket: socketID sendUDPData: aStringOrByteArray t
 
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocket: socketID setOption: aString value: aStringValue [
 	"Set some option information on this socket. Refer to the UNIX 
 	man pages for valid SO, TCP, IP, UDP options. In case of doubt
@@ -760,7 +783,7 @@ OCNSocketPluginLibrary >> primSocket: socketID setOption: aString value: aString
 	^nil
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocketAbortConnection: socketID [
 	"Terminate the connection on the given port immediately without going through the normal close sequence. This is an asynchronous call; query the socket status to discover if and when the connection is actually terminated."
 
@@ -769,27 +792,27 @@ OCNSocketPluginLibrary >> primSocketAbortConnection: socketID [
 
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocketAddressGetPort [
 	<primitive: 'primitiveSocketAddressGetPort' module: 'SocketPlugin'>
 	"should fix arg"
 	self primitiveFailed
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocketAddressSetPort [
 	<primitive: 'primitiveSocketAddressSetPort' module: 'SocketPlugin'>
 	"should fix arg"
 	self primitiveFailed
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocketBind: socketID to: anIntFromIPAddress port: aPortNumber [
 	<primitive: 'primitiveSocketBindToPort' module: 'SocketPlugin'>
 	self primitiveFailed
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocketCloseConnection: socketID [
 	"Close the connection on the given port. The remote end is informed that this end has closed and will do no further sends. This is an asynchronous call; query the socket status to discover if and when the connection is actually closed."
 
@@ -798,7 +821,7 @@ OCNSocketPluginLibrary >> primSocketCloseConnection: socketID [
 
 ]
 
-{ #category : #'tcp api support' }
+{ #category : #'Support For TCP' }
 OCNSocketPluginLibrary >> primSocketConnectionStatus: socketID [
 	"Return an integer reflecting the connection status of this socket. For a list of possible values, see the comment in the 'initialize' method of this class. If the primitive fails, return a status indicating that the socket handle is no longer valid, perhaps because the Pharo image was saved and restored since the socket was created. (Sockets do not survive snapshots.)"
 
@@ -806,7 +829,7 @@ OCNSocketPluginLibrary >> primSocketConnectionStatus: socketID [
 	^InvalidSocket 
 ]
 
-{ #category : #'Socket primitives' }
+{ #category : #'Primitives-Socket' }
 OCNSocketPluginLibrary >> primSocketCreateNetwork: netType type: socketType receiveBufferSize: rcvBufSize sendBufSize: sendBufSize semaIndex: semaphoreIndex [ 
 	"Return a new socket handle for a socket of the given type and buffer sizes. Return nil if socket creation fails.
 	The netType parameter is platform dependent and can be used to encode both the protocol type (IP, Xerox XNS, etc.) and/or the physical network interface to use if this host is connected to multiple networks. A zero netType means to use IP protocols and the primary (or only) network interface.
@@ -820,7 +843,7 @@ OCNSocketPluginLibrary >> primSocketCreateNetwork: netType type: socketType rece
 	
 ]
 
-{ #category : #'Socket primitives' }
+{ #category : #'Primitives-Socket' }
 OCNSocketPluginLibrary >> primSocketCreateNetwork: netType type: socketType receiveBufferSize: rcvBufSize sendBufSize: sendBufSize semaIndex: semaphoreIndex readSemaIndex: aReadSemaphore writeSemaIndex: aWriteSema [
 	"See comment in primSocketCreateNetwork: with one semaIndex. However you should know that some implementations
 	ignore the buffer size and this interface supports three semaphores,  one for open/close/listen and the other two for
@@ -835,7 +858,7 @@ OCNSocketPluginLibrary >> primSocketCreateNetwork: netType type: socketType rece
 			semaIndex: semaIndex	
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocketDestroy: socketID [
 	"Release the resources associated with this socket. If a connection is open, it is aborted."
 
@@ -844,7 +867,7 @@ OCNSocketPluginLibrary >> primSocketDestroy: socketID [
 
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocketDisableSocketAccess [
 	"Primitive. Disable access to sockets.
 	Cannot be revoked from the image."
@@ -852,7 +875,7 @@ OCNSocketPluginLibrary >> primSocketDisableSocketAccess [
 	^self primitiveFailed
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocketError: socketID [
 	"Return an integer encoding the most recent error on this socket. Zero means no error."
 
@@ -861,21 +884,21 @@ OCNSocketPluginLibrary >> primSocketError: socketID [
 
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocketHasSocketAccess [
 	"Return true if the right to access sockets hasn't been revoked"
 	<primitive: 'primitiveHasSocketAccess' module: 'SocketPlugin'>
 	^true "assume so unless otherwise proven"
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocketListenOnPortBacklog [
 	<primitive: 'primitiveSocketListenOnPortBacklog' module: 'SocketPlugin'>
 	"should fix arg"
 	self primitiveFailed
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocketLocalAddress: socketID [
 	"Return the local host address for this socket."
 
@@ -884,7 +907,7 @@ OCNSocketPluginLibrary >> primSocketLocalAddress: socketID [
 
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocketLocalAddressSize: handle [
 
 	<primitive: 'primitiveSocketLocalAddressSize' module: 'SocketPlugin'>
@@ -892,7 +915,7 @@ OCNSocketPluginLibrary >> primSocketLocalAddressSize: handle [
 
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocketLocalPort: socketID [
 	"Return the local port for this socket, or zero if no port has yet been assigned."
 
@@ -901,7 +924,7 @@ OCNSocketPluginLibrary >> primSocketLocalPort: socketID [
 
 ]
 
-{ #category : #'Socket primitives' }
+{ #category : #'Primitives-Socket' }
 OCNSocketPluginLibrary >> primSocketReceiveDataAvailable: socketID [
 	"Return true if data may be available for reading from the current socket."
 
@@ -910,7 +933,7 @@ OCNSocketPluginLibrary >> primSocketReceiveDataAvailable: socketID [
 
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocketRemoteAddress: socketID [
 	"Return the remote host address for this socket, or zero if no connection has been made."
 
@@ -919,7 +942,7 @@ OCNSocketPluginLibrary >> primSocketRemoteAddress: socketID [
 
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocketRemoteAddressSize: handle [
 
 	<primitive: 'primitiveSocketRemoteAddressSize' module: 'SocketPlugin'>
@@ -927,7 +950,7 @@ OCNSocketPluginLibrary >> primSocketRemoteAddressSize: handle [
 
 ]
 
-{ #category : #'Unused primitives' }
+{ #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocketRemotePort: socketID [
 	"Return the remote port for this socket, or zero if no connection has been made."
 
@@ -936,7 +959,7 @@ OCNSocketPluginLibrary >> primSocketRemotePort: socketID [
 
 ]
 
-{ #category : #'Socket primitives' }
+{ #category : #'Primitives-Socket' }
 OCNSocketPluginLibrary >> primSocketSendDone: socketID [
 	"Return true if there is no send in progress on the current socket."
 
@@ -945,7 +968,7 @@ OCNSocketPluginLibrary >> primSocketSendDone: socketID [
 
 ]
 
-{ #category : #'primitives from old netnameresolver' }
+{ #category : #'Primitives-NameResolving' }
 OCNSocketPluginLibrary >> primStartLookupOfAddress: hostAddr [
 	"Look up the given host address in the Domain Name Server to find its name. This call is asynchronous. To get the results, wait for it to complete or time out and then use primAddressLookupResult."
 
@@ -954,7 +977,7 @@ OCNSocketPluginLibrary >> primStartLookupOfAddress: hostAddr [
 
 ]
 
-{ #category : #'primitives from old netnameresolver' }
+{ #category : #'Primitives-NameResolving' }
 OCNSocketPluginLibrary >> primStartLookupOfName: hostName [
 	"Look up the given host name in the Domain Name Server to find its address. This call is asynchronous. To get the results, wait for it to complete or time out and then use primNameLookupResult."
 
@@ -963,7 +986,7 @@ OCNSocketPluginLibrary >> primStartLookupOfName: hostName [
 
 ]
 
-{ #category : #'NameResolving support' }
+{ #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> readDecimalByteFrom: aStream [
 	"Read a positive, decimal integer from the given stream. Stop when a non-digit or end-of-stream is encountered. Return nil if stream is not positioned at a decimal digit or if the integer value read exceeds 255.
 JMM - 000503 fixed didn't work correctly"
@@ -999,7 +1022,7 @@ OCNSocketPluginLibrary >> receiveDataBuffer: aByteArray [
 	receiveDataBuffer := aByteArray
 ]
 
-{ #category : #'UDP private' }
+{ #category : #'Support For UDP' }
 OCNSocketPluginLibrary >> receiveUDPDataOn: socketId into: aByteArray [
 	"Receive UDP data into the given buffer and return the number of bytes received. Note the given buffer may be only partially filled by the received data. What is returned is an array, the first element is the bytes read, the second the sending bytearray address, the third the senders port, the fourth, true if more of the datagram awaits reading"
 	
@@ -1017,7 +1040,7 @@ OCNSocketPluginLibrary >> receiveUDPDataOn: socketId into: aByteArray [
 	
 ]
 
-{ #category : #'UDP API' }
+{ #category : #'API-UDP' }
 OCNSocketPluginLibrary >> receiveUDPDatagramOn: aSocket [
 	"Receive UDP data into the given buffer and return the number of bytes received. Note the given buffer may be only partially filled by the received data. What is returned is an array, the first element is the bytes read, the second the sending bytearray address, the third the senders port, the fourth, true if more of the datagram awaits reading"
 
@@ -1046,19 +1069,19 @@ OCNSocketPluginLibrary >> releaseSemaphores [
 	readSemaphore := writeSemaphore := semaphore := nil.
 ]
 
-{ #category : #'NameResolving support' }
+{ #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> resolverMutex [
 	ResolverMutex ifNil: [ResolverMutex := Semaphore forMutualExclusion].
 	^ResolverMutex
 ]
 
-{ #category : #'NameResolving support' }
+{ #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> resolverStatus [
 	^self primNameResolverStatus
 
 ]
 
-{ #category : #'NameResolving support' }
+{ #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> resolverUninitializedCode [
 	^ 0  "network is not initialized"
 ]
@@ -1068,7 +1091,7 @@ OCNSocketPluginLibrary >> semaIndex [
 	^semaIndex
 ]
 
-{ #category : #'UDP private' }
+{ #category : #'Support For UDP' }
 OCNSocketPluginLibrary >> sendUDPDataOn: socketId contents: aByteArray toHost: hostAddress port: portNumber [
 	"Send a UDP packet containing the given data to the specified host/port."
 	| bytesToSend bytesSent count  |
@@ -1089,14 +1112,14 @@ OCNSocketPluginLibrary >> sendUDPDataOn: socketId contents: aByteArray toHost: h
 
 ]
 
-{ #category : #'UDP API' }
+{ #category : #'API-UDP' }
 OCNSocketPluginLibrary >> sendUDPOn: aSocket datagram: aDatagramPacket [
 	"this method should deal with sourceAdress: from DatagramPacket."
 	^ self sendUDPDataOn: aSocket socketId contents: aDatagramPacket data toHost: aDatagramPacket targetAddress ip port: aDatagramPacket targetAddress port
 	
 ]
 
-{ #category : #'NameResolving support' }
+{ #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> stringFromAddress: addr [
 	"Return a string representing the given host address as four decimal bytes delimited with decimal points."
 
@@ -1108,7 +1131,7 @@ OCNSocketPluginLibrary >> stringFromAddress: addr [
 
 ]
 
-{ #category : #'TCP API' }
+{ #category : #'API-TCP' }
 OCNSocketPluginLibrary >> tcpDestroy: aSocket [
 	
 	aSocket socketId ifNil: [ ^self ].
@@ -1119,14 +1142,14 @@ OCNSocketPluginLibrary >> tcpDestroy: aSocket [
 	isDestroyed := true
 ]
 
-{ #category : #'TCP API' }
+{ #category : #'API-TCP' }
 OCNSocketPluginLibrary >> tcpReceiveFrom: aSocket [
 	| bytesRead |
 	bytesRead := self primSocket: aSocket socketId receiveDataInto: self receiveDataBuffer startingAt: 1 count: self receiveDataBuffer size.
 	^self receiveDataBuffer copyFrom: 1 to: bytesRead
 ]
 
-{ #category : #'TCP API' }
+{ #category : #'API-TCP' }
 OCNSocketPluginLibrary >> tcpSendData: aByteStringOrByteArray to: aSocket [
 	|socketId sentCount| 
 	socketId := aSocket socketId.
@@ -1143,12 +1166,12 @@ OCNSocketPluginLibrary >> tcpSendData: aByteStringOrByteArray to: aSocket [
 
 ]
 
-{ #category : #'tcp api support' }
+{ #category : #'Support For TCP' }
 OCNSocketPluginLibrary >> tcpSocketConnectedStatus [
 	^2
 ]
 
-{ #category : #'UDP API' }
+{ #category : #'API-UDP' }
 OCNSocketPluginLibrary >> udpDestroy: aSocket [
 	
 	aSocket socketId ifNil: [ ^self ].
@@ -1159,7 +1182,7 @@ OCNSocketPluginLibrary >> udpDestroy: aSocket [
 
 ]
 
-{ #category : #'NameResolving support' }
+{ #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> waitForCompletionUntil: deadline [
 	"Wait up to the given number of seconds for the resolver to be ready to accept a new request. Return true if the resolver is ready, false if the network is not initialized or the resolver does not become free within the given time period."
 
@@ -1180,7 +1203,7 @@ OCNSocketPluginLibrary >> waitForCompletionUntil: deadline [
 
 ]
 
-{ #category : #'tcp api support' }
+{ #category : #'Support For TCP' }
 OCNSocketPluginLibrary >> waitForConnectionOf: anOCNSocket timeoutSeconds: timeout [
 	
 	self waitForConnectionOf: anOCNSocket timeoutSeconds: timeout 
@@ -1188,7 +1211,7 @@ OCNSocketPluginLibrary >> waitForConnectionOf: anOCNSocket timeoutSeconds: timeo
 
 ]
 
-{ #category : #'tcp api support' }
+{ #category : #'Support For TCP' }
 OCNSocketPluginLibrary >> waitForConnectionOf: anOCNSocket timeoutSeconds: timeout onTimeoutDo: aTimeoutBlock [
 	| endTime |
 	endTime := Time now asSeconds + timeout.
@@ -1199,7 +1222,7 @@ OCNSocketPluginLibrary >> waitForConnectionOf: anOCNSocket timeoutSeconds: timeo
 
 ]
 
-{ #category : #'receiving support' }
+{ #category : #'Support For Receiving' }
 OCNSocketPluginLibrary >> waitForDataOn: socketId for: timeoutSeconds onTimedOut: timedOutBlock [
 	"Wait for the given nr of seconds for data to arrive or signal a TimeOutException."
 	
@@ -1219,7 +1242,7 @@ OCNSocketPluginLibrary >> waitForDataOn: socketId for: timeoutSeconds onTimedOut
 
 ]
 
-{ #category : #'NameResolving support' }
+{ #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> waitForResolverReadyUntil: deadline [
 	"Wait up to the given number of seconds for the resolver to be ready to accept a new request. Return true if the resolver is not busy, false if the network is not initialized or the resolver does not become free within the given time period."
 
@@ -1238,7 +1261,7 @@ OCNSocketPluginLibrary >> waitForResolverReadyUntil: deadline [
 
 ]
 
-{ #category : #'sending support' }
+{ #category : #'Support For Sending' }
 OCNSocketPluginLibrary >> waitForSendDoneOn: socketId for: timeoutSeconds [
 	self 
 		waitForSendDoneOn: socketId 
@@ -1246,7 +1269,7 @@ OCNSocketPluginLibrary >> waitForSendDoneOn: socketId for: timeoutSeconds [
 		onTimeOut:  [OCNTimeOutError signal: 'send data timeout; data not sent'].
 ]
 
-{ #category : #'sending support' }
+{ #category : #'Support For Sending' }
 OCNSocketPluginLibrary >> waitForSendDoneOn: socketId for: timeoutSeconds onTimeOut: aBlock [
 	"Wait up until the given deadline for the current send operation to complete. Return true if it completes by the deadline, false if not."
 
@@ -1269,7 +1292,7 @@ OCNSocketPluginLibrary >> writeSemaIndex [
 	^writeSemaIndex
 ]
 
-{ #category : #'sending support' }
+{ #category : #'Support For Sending' }
 OCNSocketPluginLibrary >> writeSemaphore [
 	primitiveOnlySupportsOneSemaphore ifTrue: [^semaphore].
 	^writeSemaphore
