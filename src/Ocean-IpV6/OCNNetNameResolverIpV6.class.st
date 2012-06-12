@@ -1,9 +1,6 @@
 Class {
 	#name : #OCNNetNameResolverIpV6,
-	#superclass : #Object,
-	#classVars : [
-		'networkLibrary'
-	],
+	#superclass : #OCNNetNameResolver,
 	#category : #'Ocean-IpV6'
 }
 
@@ -11,7 +8,7 @@ Class {
 OCNNetNameResolverIpV6 class >> addressesForName: nameToLookup [
 
 	^Set new
-		addAll: (self networkLibrary ipv4AddressesForName: nameToLookup) ;
+		addAll: (super addressesForName: nameToLookup) ;
 		addAll: (self networkLibrary ipv6AddressesForName: nameToLookup) ;
 		yourself
 ]
@@ -46,7 +43,7 @@ OCNNetNameResolverIpV6 class >> ipv6LoopBackAddress [
 { #category : #'localhost resolution' }
 OCNNetNameResolverIpV6 class >> localHostAddresses [
 	|allAddresses|
-	allAddresses := self ipv4LocalHostAddresses.
+	allAddresses := super localHostAddresses.
 	allAddresses addAll: self ipv6LocalHostAddresses.
 	^allAddresses
 	
