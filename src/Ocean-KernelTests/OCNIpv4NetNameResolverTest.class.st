@@ -59,10 +59,11 @@ OCNIpv4NetNameResolverTest >> testLookupLocalhostIpv4Address [
 	
 	| localhostAddress |
 	localhostAddress := '127.0.0.1'. "TO BE CHANGED TO an instance of Ipv4Address"
+	self flag: #todo. 
 	
 	#( 'localhost'  '127.0.0.1' ) do: [ :nameToLookup | 
 		self assert: ((OCNNetNameResolver ipv4AddressForName: nameToLookup) isKindOf: OCNIpv4Address).
-		self assert: (OCNNetNameResolver ipv4AddressForName: nameToLookup) ip  = localhostAddress.
+		self assert: (OCNNetNameResolver ipv4AddressForName: nameToLookup) ipString = localhostAddress.
 	]
 
 ]
@@ -73,9 +74,8 @@ OCNIpv4NetNameResolverTest >> testLookupLocalhostIpv4Addresses [
 	|  allAddresses |
 	allAddresses := (OCNNetNameResolver ipv4AddressesForName: 'localhost') .
 	self assert: allAddresses isCollection.
-	self deny: allAddresses isEmpty.
-	
-	"self assert: (allAddresses allSatisfy:  [ :ipAddress |  ipAddress isIpv4 ])"
+	self deny: allAddresses isEmpty.	
+	self assert: (allAddresses allSatisfy:  [ :ipAddress |  ipAddress isIpv4 ])
 	
 ]
 
