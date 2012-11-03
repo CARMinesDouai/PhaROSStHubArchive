@@ -1,7 +1,7 @@
 Class {
 	#name : #OCNTcpSocketReceivingDataTest,
-	#superclass : #OCNTcpConversationSocketTest,
-	#category : #'Ocean-KernelTests'
+	#superclass : #OCNTcpConversationSocketTestOldDone,
+	#category : #'Ocean-KernelTests-Old'
 }
 
 { #category : #accessing }

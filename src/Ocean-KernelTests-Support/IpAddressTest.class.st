@@ -10,6 +10,11 @@ IpAddressTest class >> packageNamesUnderTest [
 ]
 
 { #category : #testing }
+IpAddressTest >> testDifferentAddressesAreNotEqual [
+	self deny: (OCNIpv4Address newFromString: '1.2.3.4') = (OCNIpv4Address newFromString: '1.2.3.5')
+]
+
+{ #category : #testing }
 IpAddressTest >> testEquality [
 	self assert: (OCNIpv4Address newFromString: '127.0.0.1') = (OCNIpv4Address newFromString: '127.0.0.1')
 ]
@@ -31,4 +36,12 @@ IpAddressTest >> testNewFromString [
 		self assert: (OCNIpv4Address newFromString: each) isIpv4].	
 		
 	
+]
+
+{ #category : #testing }
+IpAddressTest >> testValidPort [
+	self shouldnt: [OCNIpv4Address loopbackAddressWithPort: 65535] raise: OCNInvalidIpAddress.
+	self shouldnt: [OCNIpv4Address loopbackAddressWithPort: 1] raise: OCNInvalidIpAddress.
+	self shouldnt: [OCNIpv4Address loopbackAddressWithPort: 32245] raise: OCNInvalidIpAddress.
+
 ]

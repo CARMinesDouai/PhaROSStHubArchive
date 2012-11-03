@@ -66,8 +66,8 @@ Smalltalk garbageCollectMost.
 "
 Class {
 	#name : #OCNUdpSocketTest,
-	#superclass : #OCNSocketTest,
-	#category : #'Ocean-KernelTests'
+	#superclass : #OCNSocketTestOldDone,
+	#category : #'Ocean-KernelTests-Old'
 }
 
 { #category : #accessing }

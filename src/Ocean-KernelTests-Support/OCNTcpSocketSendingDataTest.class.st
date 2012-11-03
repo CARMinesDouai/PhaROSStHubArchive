@@ -1,10 +1,10 @@
 Class {
 	#name : #OCNTcpSocketSendingDataTest,
-	#superclass : #OCNTcpConversationSocketTest,
+	#superclass : #OCNTcpConversationSocketTestOldDone,
 	#instVars : [
 		'sendingProcess'
 	],
-	#category : #'Ocean-KernelTests'
+	#category : #'Ocean-KernelTests-Old'
 }
 
 { #category : #accessing }

@@ -10,7 +10,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 OCNSocketFinalizationTest class >> lookupHierarchyRoot [
-	^OCNSocketFinalizationTest 
+	^OCNSocketFinalizationTest
 ]
 
 { #category : #testing }
@@ -50,7 +50,7 @@ OCNSocketFinalizationTest >> testCleanSocketFinalization [
 
 { #category : #testing }
 OCNSocketFinalizationTest >> testDestroyedSocketFinalization [
-	self assertSocket: socket state:  #isClean.
+	self assertSocket: socket state:  #isClean. "Ensure socket NOT already destroyed"
 	socket destroy.
 	self assertSocket: socket state:  #isDestroyed.
 	self assertSocketFinalized

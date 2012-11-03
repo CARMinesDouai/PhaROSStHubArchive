@@ -39,6 +39,21 @@ OCNTcpServerForTest class >> onPortNumber: anInteger [
 ]
 
 { #category : #accessing }
+OCNTcpServerForTest >> address [
+	^OCNIpv4Address loopbackAddressWithPort:  self portNumber
+]
+
+{ #category : #'initialize-release' }
+OCNTcpServerForTest >> afterStartBlock [
+	^afterStartBlock
+]
+
+{ #category : #'initialize-release' }
+OCNTcpServerForTest >> afterStartDo: aBlock [
+	afterStartBlock := aBlock 
+]
+
+{ #category : #accessing }
 OCNTcpServerForTest >> connectionSocket [
 	^ connectionSocket
 ]
@@ -118,6 +133,7 @@ OCNTcpServerForTest >> serve [
 	self connectionSocket: Socket newTCP.
 	[
 		self connectionSocket listenOn: self portNumber backlogSize: 10.
+		self afterStartBlock cull: self.
 		[self isRunning] whileTrue: [self handleConnections].
 	] ensure: [
 		self connectionSocket closeAndDestroy].

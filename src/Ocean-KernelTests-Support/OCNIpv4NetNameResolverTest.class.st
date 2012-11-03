@@ -24,15 +24,10 @@ OCNIpv4NetNameResolverTest >> testLocalHostAddress [
 	self assertAddressIsValid:  OCNNetNameResolver ipv4LocalHostAddress
 ]
 
-{ #category : #'tests localhost' }
-OCNIpv4NetNameResolverTest >> testLocalHostAddresses [
+{ #category : #'tests loopback' }
+OCNIpv4NetNameResolverTest >> testLocalhostIsMappedToLoopBackIpv4Address [
+	self assert: OCNNetNameResolver ipv4LoopBackAddress = (OCNNetNameResolver ipv4AddressForName: 'localhost')
 	
-	| allLocalhostAddresses |
-	
-	allLocalhostAddresses := OCNNetNameResolver localHostAddresses.
-	self deny: allLocalhostAddresses isEmpty.
-	self assert: (allLocalhostAddresses anySatisfy: [ :ipAddress | ipAddress isIpv4]).  
-
 ]
 
 { #category : #'tests ipv4' }
@@ -55,20 +50,6 @@ OCNIpv4NetNameResolverTest >> testLookupExternalNameIpv4Addresses [
 ]
 
 { #category : #'tests localhost' }
-OCNIpv4NetNameResolverTest >> testLookupLocalhostIpv4Address [
-	
-	| localhostAddress |
-	localhostAddress := '127.0.0.1'. "TO BE CHANGED TO an instance of Ipv4Address"
-	self flag: #todo. 
-	
-	#( 'localhost'  '127.0.0.1' ) do: [ :nameToLookup | 
-		self assert: ((OCNNetNameResolver ipv4AddressForName: nameToLookup) isKindOf: OCNIpv4Address).
-		self assert: (OCNNetNameResolver ipv4AddressForName: nameToLookup) ipString = localhostAddress.
-	]
-
-]
-
-{ #category : #'tests localhost' }
 OCNIpv4NetNameResolverTest >> testLookupLocalhostIpv4Addresses [
 	
 	|  allAddresses |
@@ -84,7 +65,7 @@ OCNIpv4NetNameResolverTest >> testLookupUnknownNameIpv4Address [
 	
 	| nameToLookup address |
 	
-	nameToLookup := 'www.thatneverwillexistwebsite.org'.
+	nameToLookup := 'zork.arbitraryNameForOceanTest.thatneverwillexistwebsite'.
 	self should: [OCNNetNameResolver ipv4AddressForName: nameToLookup] raise: OCNNameLookupError.
 	
 ]
@@ -94,7 +75,7 @@ OCNIpv4NetNameResolverTest >> testLookupUnknownNameIpv4Addresses [
 	
 	| nameToLookup |
 	
-	nameToLookup := 'www.thatneverwillexistwebsite.org'.
+	nameToLookup := 'zork.arbitraryNameForOceanTest.thatneverwillexistwebsite'.
 	self should: [OCNNetNameResolver ipv4AddressesForName: nameToLookup] raise: OCNNameLookupError.
 	
 ]

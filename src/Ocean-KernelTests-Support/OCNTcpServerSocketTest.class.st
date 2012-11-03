@@ -1,12 +1,12 @@
 Class {
 	#name : #OCNTcpServerSocketTest,
-	#superclass : #OCNSocketTest,
+	#superclass : #OCNSocketTestOldDone,
 	#instVars : [
 		'serverProcess',
 		'serverConversationSocket',
 		'clientSocket'
 	],
-	#category : #'Ocean-KernelTests'
+	#category : #'Ocean-KernelTests-Old'
 }
 
 { #category : #'as yet unclassified' }

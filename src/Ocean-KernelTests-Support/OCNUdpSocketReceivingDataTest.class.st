@@ -19,7 +19,7 @@ socket destroy.
 Class {
 	#name : #OCNUdpSocketReceivingDataTest,
 	#superclass : #OCNUdpSocketTest,
-	#category : #'Ocean-KernelTests'
+	#category : #'Ocean-KernelTests-Old'
 }
 
 { #category : #asserting }

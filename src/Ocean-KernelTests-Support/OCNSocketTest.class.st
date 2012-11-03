@@ -3,9 +3,7 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'socket',
-		'library',
-		'server',
-		'serverAddress'
+		'library'
 	],
 	#category : #'Ocean-KernelTests'
 }
@@ -67,38 +65,16 @@ OCNSocketTest >> randomAsciiStringOfSize: dataSize [
 
 ]
 
-{ #category : #accessing }
-OCNSocketTest >> server [
-	^ server 
-]
-
-{ #category : #accessing }
-OCNSocketTest >> serverAddress [
-	^ serverAddress 
-]
-
-{ #category : #'setUp-tearDown' }
-OCNSocketTest >> serverClass [
-	^OCNTcpReceivingServerForTest 
-]
-
-{ #category : #accessing }
-OCNSocketTest >> serverPort [
-	^9123
+{ #category : #'server management' }
+OCNSocketTest >> serverClass [ 
+	self subclassResponsibility 
 ]
 
 { #category : #'setUp-tearDown' }
 OCNSocketTest >> setUp [
 	super setUp.
 	library := OCNNetworkLibraryProxyFactory proxyForLibraryClass: self networkLibraryClass.
-	self setUpSocketWithLibrary: self library.	
-	serverAddress := OCNIpv4Address loopbackAddressWithPort:  self serverPort.
-
-]
-
-{ #category : #'setUp-tearDown' }
-OCNSocketTest >> setUpServer [
-	server:= self serverClass onPortNumber: self serverPort 
+	self setUpSocketWithLibrary: self library.
 ]
 
 { #category : #'setUp-tearDown' }
@@ -117,10 +93,23 @@ OCNSocketTest >> socketClass [
 ]
 
 { #category : #'server management' }
-OCNSocketTest >> startServer [
-	self setUpServer.
-	server start.
-	(Delay forMilliseconds: 50) wait
+OCNSocketTest >> startServerAndValue: block [
+	self startServerOnPort: 9876 andValue: block
+]
+
+{ #category : #'server management' }
+OCNSocketTest >> startServerOnPort: port andValue: block [
+	|server serverReadySemaphore|
+	serverReadySemaphore := Semaphore new. 
+	server:= (self serverClass onPortNumber: port)
+		afterStartDo: [serverReadySemaphore signal];
+		yourself.
+	[
+		server start.
+		(serverReadySemaphore waitTimeoutSeconds: 3) ifTrue: [
+			self signalFailure: 'Server did not start'].
+		block cull: server
+	] ensure: [server kill]
 ]
 
 { #category : #accessing }
@@ -131,7 +120,6 @@ OCNSocketTest >> stateTestingSelectors [
 { #category : #'setUp-tearDown' }
 OCNSocketTest >> tearDown [
 	super tearDown.
-	server ifNotNil: [ server kill ].
 	socket ifNotNil: [socket destroy].
 ]
 

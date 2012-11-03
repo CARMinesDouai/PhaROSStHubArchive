@@ -6,44 +6,38 @@ Class {
 
 { #category : #accessing }
 OCNTcpSocketFailureTest >> serverClass [
-	^OCNPublicSocketTcpServerForTest 
-]
-
-{ #category : #accessing }
-OCNTcpSocketFailureTest >> shouldBeSubclassedForBackendTesting [
-	^true
+	^OCNActAfterConnectionTcpServerForTest 
 ]
 
 { #category : #testing }
 OCNTcpSocketFailureTest >> testDisconnectionWhileReceiving [
-	| dataSize dataToSend receptionStream waitForDataDelay serverSocket |
-	dataSize := 10 * socket receiveDataBufferSize. 
+	| dataSize dataToSend sendSocket |
+	dataSize := 100 * socket receiveDataBufferSize. 
 	dataToSend := self randomAsciiStringOfSize: dataSize.
-	self startServer.
-	self connect.
-	serverSocket := server conversationSocket.
-	serverSocket sendData: dataToSend.
-	[self socket isDataAvailable] whileFalse: [waitForDataDelay wait].
-	serverSocket closeAndDestroy.
-	[self socket isDataAvailable] whileTrue: [self socket receive].
-	self should: [self socket receive] raise: OCNSocketOperationForbiddenError.
-	self assert: self socket isDestroyed 
+	self startServerAndValue: [:server|
+		server afterConnectionDo: [:serverSocket|
+			sendSocket := serverSocket.
+			serverSocket sendData: dataToSend].
+		socket connectToServer: server address.
+		sendSocket closeAndDestroy.
+		self should: [[self socket receive] repeat] raise: Error.
+		self assert: self socket isDestroyed.
+	]
 ]
 
 { #category : #'tests sending' }
 OCNTcpSocketFailureTest >> testDisconnectionWhileSending [
-	| dataSize dataToSend receptionStream waitForDataDelay serverSocket |
-	dataSize := 5 * socket receiveDataBufferSize. 
+	| dataSize dataToSend receptionStream |
+	dataSize := 100 * socket receiveDataBufferSize. 
 	dataToSend := self randomAsciiStringOfSize: dataSize.
-	self startServer.
-	self connect.
-	serverSocket := server conversationSocket.
-	self socket send: dataToSend.
-	waitForDataDelay := Delay forMilliseconds: 10.
-	[serverSocket dataAvailable] whileFalse: [waitForDataDelay wait].
-	serverSocket closeAndDestroy.
-	self should: [self socket send: dataToSend] raise: OCNTimeOutError.
-	self assert: self socket isDestroyed 
+	self startServerAndValue: [:server|
+		server afterConnectionDo: [:serverSocket|
+			serverSocket receiveSomeData. 
+			serverSocket closeAndDestroy].
+		socket connectToServer: server address.
+		self should: [self socket send: dataToSend] raise: OCNTimeOutError.
+		self assert: self socket isDestroyed
+	] 
 ]
 
 { #category : #testing }
@@ -62,5 +56,6 @@ OCNTcpSocketFailureTest >> testSocketCreationFailure [
 
 { #category : #testing }
 OCNTcpSocketFailureTest >> testSocketRestoredAtImageStartup [
+	<expectedFailure>
 	self signalFailure: 'socket restored in the same state when image startup'
 ]

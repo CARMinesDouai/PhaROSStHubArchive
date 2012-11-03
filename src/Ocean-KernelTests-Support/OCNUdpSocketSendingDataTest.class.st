@@ -1,7 +1,7 @@
 Class {
 	#name : #OCNUdpSocketSendingDataTest,
 	#superclass : #OCNUdpSocketTest,
-	#category : #'Ocean-KernelTests'
+	#category : #'Ocean-KernelTests-Old'
 }
 
 { #category : #asserting }
