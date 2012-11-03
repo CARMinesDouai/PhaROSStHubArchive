@@ -10,17 +10,6 @@ OCNIpv6NetNameResolverTest >> nameResolver [
 ]
 
 { #category : #'tests ipv6' }
-OCNIpv6NetNameResolverTest >> testLocalHostAddresses [
-	
-	| allLocalhostAddresses |
-	
-	allLocalhostAddresses := self nameResolver localHostAddresses.
-	self deny: allLocalhostAddresses isEmpty.
-	self assert: (allLocalhostAddresses anySatisfy: [ :ipAddress | ipAddress isIpv4 ]).
-	self assert: (allLocalhostAddresses anySatisfy: [ :ipAddress | ipAddress isIpv6 ]).
-]
-
-{ #category : #'tests ipv6' }
 OCNIpv6NetNameResolverTest >> testLookupExternalNameIpv6Address [
 	
 	| nameToLookup address |
