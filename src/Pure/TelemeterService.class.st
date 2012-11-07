@@ -10,26 +10,26 @@ Class {
 
 { #category : #request }
 TelemeterService >> getData [
-	| data compteur compteurTelemeter |
+	| decoder compteurTelemeter |
+
 	Transcript show:'- - - - - - - - - -';cr.
 	Transcript show: ' Acquisition des données duTelemeter Service ',self getInstanceNumber, ':';cr.
-	data:= self get.
-	compteur:=6.
+	decoder := PureDecoder for: self get.
 	
-	self telemeterNumber: (PDRConverter asInt32FromDataArray: data fromIndex: compteur). 
-	compteur:=compteur+4.
+	self telemeterNumber: (decoder nextEncodedInt32). 
+
 	compteurTelemeter := 1.
 	self telemeterNumber timesRepeat:  [
 		self telemeters at: compteurTelemeter put:(
-			Telemeter  createTelemeterWithX:  ((PDRConverter asFloat32FromDataArray: data fromIndex: compteur))
-						Y:   ((PDRConverter asFloat32FromDataArray: data fromIndex: compteur+4))
-						Orientation: ((PDRConverter asFloat32FromDataArray: data fromIndex: compteur+8))
-						Field:  ((PDRConverter asFloat32FromDataArray: data fromIndex: compteur+12))
-						mini:  ((PDRConverter asFloat32FromDataArray: data fromIndex: compteur+16))
-						maxi: ((PDRConverter asFloat32FromDataArray: data fromIndex: compteur+20))
-						current: ((PDRConverter asFloat32FromDataArray: data fromIndex: compteur+24))).
+			Telemeter  createTelemeterWithX:  (decoder nextEncodedFloat32)
+						Y:   (decoder nextEncodedFloat32)
+						Orientation: (decoder nextEncodedFloat32)
+						Field:  (decoder nextEncodedFloat32)
+						mini:  (decoder nextEncodedFloat32)
+						maxi: (decoder nextEncodedFloat32)
+						current: (decoder nextEncodedFloat32)).
 		compteurTelemeter:= compteurTelemeter+1.
-		compteur:= compteur+28.
+
 		].
 ]
 

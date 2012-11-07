@@ -34,28 +34,28 @@ LaserService >> echos: anObject [
 
 { #category : #request }
 LaserService >> getData [ 
-	| data compteur compteurEcho |
+	| compteurEcho decoder |
 	Transcript show:'- - - - - - - - - -';cr.
 	Transcript show: ' Acquisition des données du Laser Service:';cr.
-	data:= self get.
-	compteur:=6.
+	decoder := PureDecoder for: self get.
+
 	
-	self xposition: (PDRConverter asFloat32FromDataArray: data fromIndex: compteur). 
-	compteur:=compteur+4.
-	self yposition: (PDRConverter asFloat32FromDataArray: data fromIndex: compteur). 
-	compteur:=compteur+4.
-	self orientation: (PDRConverter asFloat32FromDataArray: data fromIndex: compteur). 
-	compteur:=compteur+4.
-	self echoNumber: (PDRConverter asInt32FromDataArray: data fromIndex: compteur). 
-	compteur:=compteur+4.
+	self xposition: decoder nextEncodedFloat32. 
+	self yposition: decoder nextEncodedFloat32. 
+
+	self orientation: decoder nextEncodedFloat32. 
+	self echoNumber: decoder nextEncodedInt32. 
+
 	
 	compteurEcho:=1.
 	self echoNumber timesRepeat:  [
-		self echos at: compteurEcho put:(
-			LaserEcho createEchoWithAngle: ((PDRConverter asFloat32FromDataArray: data fromIndex: compteur)) andFloatDistance:((PDRConverter asFloat32FromDataArray: data fromIndex: compteur+4)) ).
-		compteurEcho:= compteurEcho+1.
-		compteur:= compteur+8.
-		].
+		self echos  at: compteurEcho 
+					put: (
+							LaserEcho createEchoWithAngle: (decoder nextEncodedFloat32) 
+									     andFloatDistance: (decoder nextEncodedFloat32) 
+					).
+			compteurEcho:= compteurEcho+1.
+	].
 	
 ]
 

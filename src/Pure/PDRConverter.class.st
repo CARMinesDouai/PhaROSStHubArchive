@@ -73,11 +73,6 @@ PDRConverter class >> asFloat32FromDataArray: aDataArray fromIndex: start [
 	^floatResult. 
 ]
 
-{ #category : #convertingFromHexString }
-PDRConverter class >> asFloat32FromHexString: unString [
-	^ (ByteArray readHexFrom: unString) floatAt: 1 bigEndian: false.
-]
-
 { #category : #convertingFromArray }
 PDRConverter class >> asFloat64FromDataArray: aDataArray fromIndex: start [
 	|  floatResult |

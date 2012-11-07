@@ -41,64 +41,48 @@ DifferentialDriveService >> currentLinearSpeed: anObject [
 
 { #category : #request }
 DifferentialDriveService >> getData [
-	| data tempData compteur| 
+	|decoder | 
 	
 	"Acquisition des données du Differential Drive Service"
 	Transcript show:'- - - - - - - - - -';cr.
 	Transcript show: ' Acquisition des données du Differential Drive Service:';cr.
-	data:= self get.
-	compteur:=6.
+
+	decoder := PureDecoder for: self get.
+	
 	
 	Transcript show: 'Récupération des vitesses cibles:';cr.
 	"Valeurs cibles:"
-	self targetLinearSpeed:  (PDRConverter asFloat32FromDataArray: data fromIndex: compteur). 
-	compteur:=compteur+4.
-	
-	self targetAngularSpeed: (PDRConverter asFloat32FromDataArray: data fromIndex: compteur). 
-	compteur:=compteur+4.
+	self targetLinearSpeed:  decoder nextEncodedFloat32. 	
+	self targetAngularSpeed: decoder nextEncodedFloat32. 
+
 	
 	Transcript show: 'Récupération des vitesses courantes:';cr.
 	"Valeurs courantes"
-	self currentLinearSpeed: (PDRConverter asFloat32FromDataArray: data fromIndex: compteur). 
-	compteur:=compteur+4.
-	
-	self currentAngularSpeed: (PDRConverter asFloat32FromDataArray: data fromIndex: compteur). .
-	compteur:=compteur+4.
+	self currentLinearSpeed: decoder nextEncodedFloat32. 	
+	self currentAngularSpeed: decoder nextEncodedFloat32. 
+
 	
 	Transcript show: 'Récupération des constantes du Differential Drive Service:';cr.
 	"Extremum vitesses linéaire"
-	tempData := (ByteArray readHexFrom: ((data at: compteur), (data at: compteur+1), (data at: compteur+2), (data at: compteur+3)))floatAt: 1 bigEndian: false.
-	self maximumLinearSpeed:  tempData. 
-	compteur:=compteur+4.
-	
-	tempData := (ByteArray readHexFrom: ((data at: compteur), (data at: compteur+1), (data at: compteur+2), (data at: compteur+3)))floatAt: 1 bigEndian: false.
-	self minimumLinearSpeed:  tempData. 
-	compteur:=compteur+4.
+	self maximumLinearSpeed:  decoder nextEncodedFloat32. 	
+	self minimumLinearSpeed:  decoder nextEncodedFloat32.  
+
 	
 	"Extremums vitesses angulaires"
-	tempData := (ByteArray readHexFrom: ((data at: compteur), (data at: compteur+1), (data at: compteur+2), (data at: compteur+3)))floatAt: 1 bigEndian: false.
-	self maximumAngularSpeed:  tempData. 
-	compteur:=compteur+4.
-	
-	tempData := (ByteArray readHexFrom: ((data at: compteur), (data at: compteur+1), (data at: compteur+2), (data at: compteur+3)))floatAt: 1 bigEndian: false.
-	self minimumAngularSpeed:  tempData. 
-	compteur:=compteur+4.
+
+	self maximumAngularSpeed:  decoder nextEncodedFloat32. 
+	self minimumAngularSpeed:  decoder nextEncodedFloat32. 
+
 	
 	"Extremums d'accélération"
-	self maximumLinearAcceleration: (PDRConverter asFloat32FromDataArray: data fromIndex: compteur). 
-	compteur:=compteur+4.
+	self maximumLinearAcceleration: decoder nextEncodedFloat32. 	
+	self minimumLinearAcceleration: decoder nextEncodedFloat32. 
 	
-	self minimumLinearAcceleration: (PDRConverter asFloat32FromDataArray: data fromIndex: compteur). . 
-	compteur:=compteur+4.
-	
-	self maximumAngularAcceleration: (PDRConverter asFloat32FromDataArray: data fromIndex: compteur). 
-	compteur:=compteur+4.
-	
-	self minimumAngularAcceleration: (PDRConverter asFloat32FromDataArray: data fromIndex: compteur). . 
-	compteur:=compteur+4.
+	self maximumAngularAcceleration: decoder nextEncodedFloat32. 	
+	self minimumAngularAcceleration: decoder nextEncodedFloat32. 
 	
 	"Distance entre les roues"
-	self width: (PDRConverter asFloat32FromDataArray: data fromIndex: compteur).
+	self width: decoder nextEncodedFloat32. 
 	
 	
 	Transcript cr.
