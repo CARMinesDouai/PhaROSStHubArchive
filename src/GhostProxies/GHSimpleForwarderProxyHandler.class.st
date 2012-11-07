@@ -38,6 +38,10 @@ GHSimpleForwarderProxyHandler >> handleUninstall: anInterception [
 
 { #category : #handle }
 GHSimpleForwarderProxyHandler >> manageMessage: interception [
+	| result |
 	self log: 'The method ', interception message selector, ' will beforwarded'.
-	^ interception message sendTo: interception proxy proxyTarget
+	result := interception message sendTo: interception proxy proxyTarget.
+	^ (result == interception proxy proxyTarget)
+		ifTrue: [ interception proxy ]
+		ifFalse: [ result ] 
 ]
