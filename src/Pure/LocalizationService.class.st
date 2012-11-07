@@ -111,7 +111,7 @@ LocalizationService >> resetLocalization [
 	| reponse |
 	reponse :=self replace: '000000000000000000000000000000000000000000000000'.
 	
-	(reponse erreur ='00')ifTrue:[Transcript show: 'Coordonnées réinitialisées.';cr] 
+	(reponse success )ifTrue:[Transcript show: 'Coordonnées réinitialisées.';cr] 
 	
 ]
 

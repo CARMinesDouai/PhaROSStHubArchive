@@ -1,6 +1,6 @@
 Class {
-	#name : #RobulabNotification,
-	#superclass : #RobulabMessage,
+	#name : #PureNotification,
+	#superclass : #PureMessage,
 	#classInstVars : [
 		'notificationTimeStamp'
 	],
@@ -8,10 +8,10 @@ Class {
 }
 
 { #category : #'initialize-release' }
-RobulabNotification class >> initializeFromArray:  tableau [
+PureNotification class >> initializeFromArray:  tableau [
 	| response |
-	response := RobulabNotification new.
-	response responseArray: (response correctResponse: tableau ).
+	response := PureNotification new.
+	response responseArray: (self correctResponse: tableau ).
 	response idRequete: (response responseArray at: 1).
 	response target: (((response responseArray at: 2), (response responseArray at: 3)asString) ).
 	"response notificationTimeStamp: (PDRConverter asFloat32FromDataArray: (response responseArray) fromIndex: 3)".
@@ -20,26 +20,26 @@ RobulabNotification class >> initializeFromArray:  tableau [
 ]
 
 { #category : #accessing }
-RobulabNotification class >> notificationTimeStamp [
+PureNotification class >> notificationTimeStamp [
 	^ notificationTimeStamp
 ]
 
 { #category : #accessing }
-RobulabNotification class >> notificationTimeStamp: anObject [
+PureNotification class >> notificationTimeStamp: anObject [
 	notificationTimeStamp := anObject
 ]
 
 { #category : #'as yet unclassified' }
-RobulabNotification >> isNotification [
+PureNotification >> isNotification [
 	^true
 ]
 
 { #category : #'initialize-release' }
-RobulabNotification >> received [ 
+PureNotification >> received [ 
 	self announcer announce: self asAnnouncement.
 ]
 
 { #category : #'initialize-release' }
-RobulabNotification >> success [
+PureNotification >> success [
 	^true
 ]

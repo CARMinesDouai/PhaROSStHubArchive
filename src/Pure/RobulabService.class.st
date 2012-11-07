@@ -30,21 +30,21 @@ RobulabService class >> createFromRobulab: rob Type: type [
 
 { #category : #request }
 RobulabService >> delete: data [
-	| reponse serviceCible |
-	serviceCible:=  (self robulab directoryService services at: ( (data at:3)asString ,(data at:4)asString ,(data at:1)asString ,(data at:2) asString ) ).
-
-	reponse := self robulab sendMessageAndWaitResponse: (self robulab createMessageWithAction: 'DELETE' onInstance: (self getInstanceNumber ) data: data).
-	serviceCible listening: false.
-	self halt.
-	^ reponse responseArray .
+	| relatedService |
+	
+	relatedService=  (self robulab directoryService services at: ( (data at:3)asString ,(data at:4)asString ,(data at:1)asString ,(data at:2) asString ) ) .
+	self flag: #whatTheFuckIsThisListeningShit.
+	relatedService listening: false. "this"
+	
+	^self robulab sendMessageAndWaitResponse: (PureRequest delete: data from: self).
+	
+	
+	
 ]
 
 { #category : #request }
 RobulabService >> get [
-	| reponse |
-	reponse := self robulab sendMessageAndWaitResponse: (self robulab createMessageWithAction:'GET' onInstance: self getInstanceNumber  data: '').
-	
-	^reponse responseArray .
+	^self robulab sendMessageAndWaitResponse: (PureRequest getFrom: self).
 ]
 
 { #category : #request }
@@ -72,9 +72,7 @@ RobulabService >> initialize [
 
 { #category : #request }
 RobulabService >> insert: data [
-	| reponse |
-	reponse := self robulab sendMessageAndWaitResponse: (self robulab createMessageWithAction: 'INSERT' onInstance: self getInstanceNumber   data: data).
-	^ reponse.
+	^self robulab sendMessageAndWaitResponse: (PureRequest insert: data into: self).
 ]
 
 { #category : #accessing }
@@ -89,9 +87,7 @@ RobulabService >> listening: anObject [
 
 { #category : #request }
 RobulabService >> query: data [
-	| reponse |
-	reponse := self robulab sendMessageAndWaitResponse: (self robulab createMessageWithAction: 'QUERY' onInstance: self getInstanceNumber   data: data).
-	^ reponse.
+	^self robulab sendMessageAndWaitResponse: (PureRequest query: data to: self).
 ]
 
 { #category : #request }
@@ -101,9 +97,9 @@ RobulabService >> receiveNotificationFromRobulab: aMessage [
 
 { #category : #request }
 RobulabService >> replace: data [
-	| reponse |
-	reponse := self robulab sendMessageAndWaitResponse: (self robulab createMessageWithAction: 'REPLACE' onInstance: self getInstanceNumber   data: data).
-	^ reponse.
+
+	^self robulab sendMessageAndWaitResponse: (PureRequest replace: data into: self).
+
 ]
 
 { #category : #accessing }
@@ -141,7 +137,7 @@ RobulabService >> startListening [
 			[
 				self socket waitForDataFor: 5.
 				self socket receiveUDPDataInto: receptionBuffer.
-				messageRecu := RobulabMessage initializeFromArray:  receptionBuffer.
+				messageRecu := PureMessage initializeFromArray:  receptionBuffer.
 				messageRecu robulab: self robulab.
 				(messageRecu isNotification)ifTrue: [
 					self receiveNotificationFromRobulab: messageRecu]
@@ -152,9 +148,7 @@ RobulabService >> startListening [
 
 { #category : #request }
 RobulabService >> submit: data [
-	| reponse |
-	reponse := self robulab sendMessageAndWaitResponse: (self robulab createMessageWithAction: 'SUBMIT' onInstance: self getInstanceNumber   data: data).
-	^ reponse.
+	^self robulab sendMessageAndWaitResponse: (PureRequest submit: data to: self).
 ]
 
 { #category : #accessing }
@@ -169,7 +163,5 @@ RobulabService >> type: anObject [
 
 { #category : #request }
 RobulabService >> upDate: data [
-	| reponse |
-	reponse := self robulab sendMessageAndWaitResponse: (self robulab createMessageWithAction: 'UPDATE' onInstance: self getInstanceNumber   data: data).
-	^ reponse.
+	^self robulab sendMessageAndWaitResponse: (PureRequest update: data into: self).
 ]

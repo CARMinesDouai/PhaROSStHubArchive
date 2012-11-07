@@ -23,24 +23,23 @@ TestRobulab >> testEnTeteDeRequete: unMessageString [
 	self assert: ( ((unMessageString at:3 )asString , (unMessageString at:4) asString )= (reponse action )).
 	self assert: ( ((unMessageString at: 5 )asString , (unMessageString at:6) asString, (unMessageString at: 7 )asString , (unMessageString at:8) asString  ) = (reponse target)).
 	"Test que le code d'erreur est bien à 0"
-	self assert: ( reponse erreur = '00').
+	self assert: ( reponse success ).
 ]
 
 { #category : #TestSurRequetes }
 TestRobulab >> testIncrementationDesRequetes [
-	| message index indexHexa |
-	message := Array new.
+	| index indexHexa |
+
 	index := 1.
 	indexHexa := '01'.
 	257 timesRepeat: [
 		((index printStringBase: 16) size = 1)
 		ifTrue: [indexHexa:= ('0',(index printStringBase: 16))asString ]
 		ifFalse: [indexHexa:= (index printStringBase: 16)].
-		self assert: (robulab idRequete = indexHexa).
-		message:= robulab incrementIdRequete.
+		self assert: (robulab connector consumeRequestId = indexHexa).
 		index := index + 1.
 		(index = 255)ifTrue: [index:= 1 ]
-		].
+	].
       
 	
 ]
