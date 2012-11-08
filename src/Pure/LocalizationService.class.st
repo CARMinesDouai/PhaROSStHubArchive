@@ -12,19 +12,18 @@ Class {
 
 { #category : #request }
 LocalizationService >> getData [ 
-	| data compteur |
+	|  decoder |
 	Transcript show:'- - - - - - - - - -';cr.
 	Transcript show: ' Acquisition des données du Localization Service:';cr.
-	data:= self get.
-	compteur:=6.
+	decoder := PureDecoder for: self get.
 	
-	self xPos: (PDRConverter asFloat64FromDataArray: data fromIndex: compteur). 
-	compteur:=compteur+8.
-	self yPos: (PDRConverter asFloat64FromDataArray: data fromIndex: compteur). 
-	compteur:=compteur+8.
-	self orientation: (PDRConverter asFloat64FromDataArray: data fromIndex: compteur).  . 
-	compteur:=compteur+8.
-	self status: (PDRConverter asInt16FromDataArray: data fromIndex:compteur).
+	
+	self xPos: decoder nextEncodedFloat64. 
+	self yPos: decoder nextEncodedFloat64. 
+	self orientation: decoder nextEncodedFloat64. 
+	self status: decoder nextEncodedFloat64. 
+	
+
 ]
 
 { #category : #accessing }

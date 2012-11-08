@@ -29,26 +29,19 @@ NotificationManagerService >> deleteNotificationRecordFromService: anInstanceNum
 
 { #category : #request }
 NotificationManagerService >> getData [
-	| data compteur |
+	| decoder |
 	
 "Acquisition des données du Notification Manager Service"
 	Transcript show:'- - - - - - - - - -';cr.
 	Transcript cr; show: ' Acquisition des données: du Notification Manager Service';cr.
-	data:= self get.
-	compteur:=6.
-	"self maximumEntries: (PDRConverter asUnsignedInt16FromDataArray: data fromIndex: compteur).
-	self notificationEntries: (Array new: self maximumEntries).
-	compteur := compteur+2."
-	[ (((data at: (compteur) )= '00') &
-        ((data  at:(compteur+1)) = '00') &
-	  ((data at:(compteur+2)) = '00') )not] whileTrue: [
+	decoder := PureDecoder for: self get.
+	
+	[ decoder hasData ] whileTrue: [
+		Transcript show: decoder nextEncodedUInt16 asString, '-', decoder nextEncodedByte.
 		Transcript cr.
-		Transcript show: ((PDRConverter asUnsignedInt16FromDataArray: data fromIndex: compteur)asString ,' - '). 
-		Transcript show:  (data at: (compteur+2) ). 
-		compteur:=compteur+3.
-		].
+	].
+	
 	Transcript cr.
-	"A continuer: récupération des entrées."
 	
 	
 	

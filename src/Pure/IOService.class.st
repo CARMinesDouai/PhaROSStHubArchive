@@ -96,51 +96,37 @@ IOService >> digitalOutputs: anObject [
 
 { #category : #request }
 IOService >> getData [ 
-| data compteur compteurValue |
+| decoder |
 	Transcript show:'- - - - - - - - - -';cr.
 	Transcript show: ' Acquisition des données du IO Service:';cr.	
-	(self analogInputs isNil)ifTrue:[
+	( self analogInputs isNil )ifTrue: [
 		self analogOutputs: Dictionary new.
 		self analogInputs: Dictionary new.
 		self digitalOutputs: Dictionary new.
 		self digitalInputs: Dictionary new.
-		].
-	data:= self get.
-	compteur:=6.
-	self analogInputNumber: (PDRConverter asInt32FromDataArray: data fromIndex: compteur).
-	compteur := compteur+4.
-	compteurValue:=1.
-	self analogInputNumber timesRepeat: [
-		self analogInputs at:compteurValue put: (PDRConverter asInt16FromDataArray: data fromIndex: compteur).
-		compteurValue:=compteurValue+1.
-		compteur:=compteur+2.
-		].
+	].
+	decoder := PureDecoder for: self get.
+
+	self analogInputNumber: decoder nextEncodedInt32.
+	1 to: self analogInputNumber do: [
+		:idx | 
+		self analogInputs at: idx put: decoder nextEncodedInt32.
+	].
 	
-	self analogOutputNumber: (PDRConverter asInt32FromDataArray: data fromIndex: compteur).
-	compteur := compteur+4.
-	compteurValue:=1.
-	self analogOutputNumber timesRepeat: [
-		self analogOutputs at:compteurValue put: (PDRConverter asInt16FromDataArray: data fromIndex: compteur).
-		compteurValue:=compteurValue+1.
-		compteur:=compteur+2.
-		].
-	
-	self digitalInputNumber: (PDRConverter asInt32FromDataArray: data fromIndex: compteur).
-	compteur := compteur+4.
-	compteurValue:=1.
-	(self digitalInputNumber/8) timesRepeat: [
-		compteurValue:=compteurValue+8.
-		compteur:=compteur+1.
-		].
-	
-	self digitalOutputNumber: (PDRConverter asInt32FromDataArray: data fromIndex: compteur).
-	compteur := compteur+4.
-	compteurValue:=1.
-	self digitalOutputNumber timesRepeat: [
+	self analogOutputNumber: decoder nextEncodedInt32.
+	1 to: self analogOutputNumber do: [
+		:idx |
+		self analogOutputs at: idx put: decoder nextEncodedInt16.
+	].
 		
-		compteurValue:=compteurValue+1.
-		compteur:=compteur+2.
-		].
+	self digitalInputNumber: decoder nextEncodedInt32.
+
+	self flag:#reallyWhatTheFuck.
+	" this bytes are swallowed 'cause... FUCK YOU! thats why. '"
+	decoder nextEncodedBytes: (self digitalInputNumber/8) asInteger.
+	
+	self digitalOutputNumber: decoder nextEncodedInt32.
+	
 	
 	
 	
