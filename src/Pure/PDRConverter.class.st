@@ -65,22 +65,6 @@ PDRConverter class >> as8BitsHexStringFromInteger: anInteger [
 	
 ]
 
-{ #category : #convertingFromArray }
-PDRConverter class >> asFloat32FromDataArray: aDataArray fromIndex: start [
-	|  floatResult |
-	
-	floatResult := (ByteArray readHexFrom: ((aDataArray at: start), (aDataArray at: start+1), (aDataArray at: start+2), (aDataArray at: start+3)))floatAt: 1 bigEndian: false.
-	^floatResult. 
-]
-
-{ #category : #convertingFromArray }
-PDRConverter class >> asFloat64FromDataArray: aDataArray fromIndex: start [
-	|  floatResult |
-	
-	floatResult := (ByteArray readHexFrom: ((aDataArray at: start), (aDataArray at: start+1), (aDataArray at: start+2), (aDataArray at: start+3),(aDataArray at: start+4), (aDataArray at: start+5), (aDataArray at: start+6), (aDataArray at: start+7)))doubleAt: 1 bigEndian: false.
-	^floatResult. 
-]
-
 { #category : #convertingFromHexString }
 PDRConverter class >> asHexArrayFromString: aString [
 	| correction index tableau |
@@ -97,28 +81,4 @@ PDRConverter class >> asHexArrayFromString: aString [
 				index:= index+1.
 			].
 		^correction
-]
-
-{ #category : #convertingFromArray }
-PDRConverter class >> asInt16FromDataArray: aDataArray fromIndex: start [
-	|  floatResult |
-	
-	floatResult := (ByteArray readHexFrom: ((aDataArray at: start), (aDataArray at: start+1)))shortAt: 1 bigEndian: false.
-	^floatResult. 
-]
-
-{ #category : #convertingFromArray }
-PDRConverter class >> asInt32FromDataArray: aDataArray fromIndex: start [
-	|  floatResult |
-	
-	floatResult := (ByteArray readHexFrom: ((aDataArray at: start), (aDataArray at: start+1), (aDataArray at: start+2), (aDataArray at: start+3)))longAt: 1 bigEndian: false.
-	^floatResult. 
-]
-
-{ #category : #convertingFromArray }
-PDRConverter class >> asUnsignedInt16FromDataArray: aDataArray fromIndex: start [
-	|  intResult |
-	
-	intResult := (ByteArray readHexFrom: (aDataArray at: start),(aDataArray at: start+1))unsignedShortAt: 1 bigEndian: false.
-	^intResult. 
 ]

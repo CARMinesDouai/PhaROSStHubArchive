@@ -18,15 +18,36 @@ TestPDRConverter >> testAs8BitsHexStringFromInteger [
 
 { #category : #'as yet unclassified' }
 TestPDRConverter >> testAsFloat64FromDataArray [
-	| aDataArray |
-	aDataArray := PDRConverter asHexArrayFromString: '0000000000000000'.
-	self assert: ((PDRConverter  asFloat64FromDataArray: aDataArray fromIndex: 1) = 0.0 ).
-	aDataArray := PDRConverter asHexArrayFromString: '182D4454FB210940'.
-	self assert: ((PDRConverter  asFloat64FromDataArray: aDataArray fromIndex: 1) > (3.14 -0.01) ).
-	self assert: ((PDRConverter  asFloat64FromDataArray: aDataArray fromIndex: 1) < (3.14 +0.01) ).
-	aDataArray := PDRConverter asHexArrayFromString: '77BE9F1A2FDD5E40'.
-	self assert: ((PDRConverter  asFloat64FromDataArray: aDataArray fromIndex: 1) > (123.456 -0.01) ).
-	self assert: ((PDRConverter  asFloat64FromDataArray: aDataArray fromIndex: 1) < (123.456 +0.01) ).
+	| decoder val |
+
+	decoder := PureDecoder for: (ReadStream on: (PDRConverter asHexArrayFromString: '0000000000000000')).
+		
+	self assert: (decoder nextEncodedFloat64 = 0.0 ).
+	
+	
+	decoder := PureDecoder for: (ReadStream on: (PDRConverter asHexArrayFromString: '182D4454FB210940')).
+	val := decoder nextEncodedFloat64.
+	self assert:  val > (3.14 -0.01) .
+	self assert:  val < (3.14 +0.01) .
+	decoder := PureDecoder for: (ReadStream on: (PDRConverter asHexArrayFromString: '77BE9F1A2FDD5E40')).
+	val := decoder nextEncodedFloat64.
+	self assert: val > (123.456 -0.01) .
+	self assert: val < (123.456 +0.01).
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ]
 
 { #category : #'Test PDRConverter' }
@@ -39,35 +60,44 @@ TestPDRConverter >> testAsHexStringFromFloat32 [
 
 { #category : #'as yet unclassified' }
 TestPDRConverter >> testAsInt16FromDataArray [
-	| aDataArray |
-	aDataArray := PDRConverter asHexArrayFromString: '0000'.
-	self assert: ((PDRConverter  asInt16FromDataArray: aDataArray fromIndex: 1) = 0.0 ).
-	aDataArray := PDRConverter asHexArrayFromString: '7B00'.
-	self assert: ((PDRConverter  asInt16FromDataArray: aDataArray fromIndex: 1) = 123) .
-	aDataArray := PDRConverter asHexArrayFromString: '85FF'.
-	self assert: ((PDRConverter  asInt16FromDataArray: aDataArray fromIndex: 1) = -123) .
+	| decoder |
+	
+	decoder := PureDecoder for: ( ReadStream on:  (PDRConverter asHexArrayFromString:'0000')).
+
+	self assert: decoder nextEncodedInt16 = 0.0.
+	decoder := PureDecoder for: ( ReadStream on: (PDRConverter asHexArrayFromString: '7B00')).
+	self assert: decoder nextEncodedInt16 = 123.
+	decoder := PureDecoder for: ( ReadStream on: (PDRConverter asHexArrayFromString: '85FF')).
+	self assert: decoder nextEncodedInt16 = -123.
 ]
 
 { #category : #'as yet unclassified' }
 TestPDRConverter >> testAsInt32FromDataArray [
-	| aDataArray |
-	aDataArray := PDRConverter asHexArrayFromString: '00000000'.
-	self assert: ((PDRConverter  asInt32FromDataArray: aDataArray fromIndex: 1) = 0.0 ).
-	aDataArray := PDRConverter asHexArrayFromString: '1E000000'.
-	self assert: ((PDRConverter  asInt32FromDataArray: aDataArray fromIndex: 1) =30 ).
-	aDataArray := PDRConverter asHexArrayFromString: 'D2040000'.
-	self assert: ((PDRConverter  asInt32FromDataArray: aDataArray fromIndex: 1) =1234 ).
-	aDataArray := PDRConverter asHexArrayFromString: '3041AB00'.
-	self assert: ((PDRConverter  asInt32FromDataArray: aDataArray fromIndex: 1) =11223344 ).
+	| decoder |
+
+	decoder := PureDecoder for: ( ReadStream on:(PDRConverter asHexArrayFromString: '00000000')).
+	self assert: decoder nextEncodedInt32 = 0.0 .
+	
+	decoder := PureDecoder for: ( ReadStream on:(PDRConverter asHexArrayFromString: '1E000000')).
+	self assert: decoder nextEncodedInt32  =30.
+	
+	decoder := PureDecoder for: ( ReadStream on:(PDRConverter asHexArrayFromString: 'D2040000')).
+	self assert: decoder nextEncodedInt32 =1234.
+	
+	decoder := PureDecoder for: ( ReadStream on:(PDRConverter asHexArrayFromString: '3041AB00')).
+	self assert: decoder nextEncodedInt32  =11223344 .
 ]
 
 { #category : #'as yet unclassified' }
 TestPDRConverter >> testAsUnsignedInt16FromDataArray [
-	| aDataArray |
-	aDataArray := PDRConverter asHexArrayFromString: '0000'.
-	self assert: ((PDRConverter  asUnsignedInt16FromDataArray: aDataArray fromIndex: 1) = 0.0 ).
-	aDataArray := PDRConverter asHexArrayFromString: '7B00'.
-	self assert: ((PDRConverter  asUnsignedInt16FromDataArray: aDataArray fromIndex: 1) = 123) .
-	aDataArray := PDRConverter asHexArrayFromString: 'E110'.
-	self assert: ((PDRConverter  asUnsignedInt16FromDataArray: aDataArray fromIndex: 1) = 4321) .
+	| decoder |
+
+	decoder := PureDecoder for: ( ReadStream on:(PDRConverter asHexArrayFromString: '0000')).
+	self assert: decoder nextEncodedUInt16 = 0.0.
+
+	decoder := PureDecoder for: ( ReadStream on:(PDRConverter asHexArrayFromString: '7B00')).
+	self assert: decoder nextEncodedUInt16  = 123.
+	
+	decoder := PureDecoder for: ( ReadStream on:(PDRConverter asHexArrayFromString: 'E110')).
+	self assert: decoder nextEncodedUInt16  = 4321.
 ]

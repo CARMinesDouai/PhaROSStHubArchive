@@ -58,15 +58,17 @@ TelemeterService >> printTelemetersData [
 
 { #category : #request }
 TelemeterService >> receiveNotificationFromRobulab: aMessage [
-	| data compteur compteurTelemeter |
-	data := aMessage responseArray .
-	compteur:=12.
-	compteurTelemeter:=1.
-	self telemeterNumber timesRepeat: [
-		(self telemeters at: compteurTelemeter) currentMeasurementRange: ((PDRConverter asFloat32FromDataArray: data fromIndex: compteur)) .
-		compteurTelemeter:= compteurTelemeter+1.
-		compteur:= compteur+4.
-		].
+	| decoder  |
+	decoder := aMessage decoder .
+	
+	"maybe is 11 here. Must avoid the header of the message"
+	self flag:#NoticeComment.
+	decoder nextEncodedBytes: 12.
+	
+	1 to: self telemeterNumber do: [
+		:idx |
+		(self telemeters at: idx) currentMeasurementRange: decoder nextEncodedFloat32  .
+	].
 	
 ]
 

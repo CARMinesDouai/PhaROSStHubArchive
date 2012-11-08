@@ -88,18 +88,19 @@ LocalizationService >> printPosition [
 
 { #category : #request }
 LocalizationService >> receiveNotificationFromRobulab: aMessage [
-	| data compteur |
-	data := aMessage responseArray .
-	compteur:=12.
+	| decoder |
+	decoder := aMessage decoder .
+	
+	"maybe is 11 here. Must avoid the header of the message"
+	self flag:#NoticeComment.
+	decoder nextEncodedBytes: 12.
+
 	
 	(aMessage target = '0500')ifTrue:[
-		self xPos: (PDRConverter asFloat64FromDataArray: data fromIndex: compteur). 
-		compteur:=compteur+8.
-		self yPos: (PDRConverter asFloat64FromDataArray: data fromIndex: compteur). 
-		compteur:=compteur+8.
-		self orientation: (PDRConverter asFloat64FromDataArray: data fromIndex: compteur). 
-		compteur:=compteur+8.
-		self status: (PDRConverter asInt16FromDataArray: data fromIndex:compteur).
+		self xPos: decoder nextEncodedFloat64. 
+		self yPos: decoder nextEncodedFloat64.
+		self orientation: decoder nextEncodedFloat64. 
+		self status: decoder nextEncodedFloat64. 
 
 		Transcript cr;show: 'MAJ du LocalizationService '.
 	]

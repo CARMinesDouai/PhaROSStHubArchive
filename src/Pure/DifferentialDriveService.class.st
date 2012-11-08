@@ -201,16 +201,17 @@ DifferentialDriveService >> printCurrentAndTargetValues [
 
 { #category : #request }
 DifferentialDriveService >> receiveNotificationFromRobulab: aMessage [
-	| data compteur |
-	data := aMessage responseArray .
-	compteur:=12.
-	self targetLinearSpeed:  (PDRConverter asFloat32FromDataArray: data fromIndex: compteur). 
-	compteur:=compteur+4.
-	self currentLinearSpeed: (PDRConverter asFloat32FromDataArray: data fromIndex: compteur). 
-	compteur:=compteur+4.
-	self targetAngularSpeed: (PDRConverter asFloat32FromDataArray: data fromIndex: compteur). 
-	compteur:=compteur+4.
-	self currentAngularSpeed: (PDRConverter asFloat32FromDataArray: data fromIndex: compteur).
+	| decoder |
+	decoder := aMessage decoder .
+	
+	"maybe is 11 here. Must avoid the header of the message"
+	self flag:#NoticeComment.
+	decoder nextEncodedBytes: 12.
+	
+	self targetLinearSpeed:  decoder nextEncodedFloat32. 
+	self currentLinearSpeed: decoder nextEncodedFloat32. 
+	self targetAngularSpeed: decoder nextEncodedFloat32. 
+	self currentAngularSpeed: decoder nextEncodedFloat32.
 	Transcript cr;show: 'MAJ du DifferentialDriveService '
 	
 	

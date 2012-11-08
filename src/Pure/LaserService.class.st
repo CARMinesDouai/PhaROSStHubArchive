@@ -125,20 +125,21 @@ LaserService >> printEchos [
 
 { #category : #request }
 LaserService >> receiveNotificationFromRobulab: aMessage [
-	| data compteur compteurEcho |
-	data := aMessage responseArray .
-	compteur:=12.
-	compteurEcho:=1.
-	(aMessage target = '0400')ifTrue:[
-		self echoNumber timesRepeat: [
-			self echos at: compteurEcho put:(
-				LaserEcho createEchoWithAngle: ((PDRConverter asFloat32FromDataArray: data fromIndex: 		compteur)) andFloatDistance:((PDRConverter asFloat32FromDataArray: data fromIndex: compteur+4)) ).
-			compteurEcho:= compteurEcho+1.
-			compteur:= compteur+8.
+	| decoder |
+	decoder := aMessage decoder .
+	
+	"maybe is 11 here. Must avoid the header of the message"
+	self flag:#NoticeComment.
+	decoder nextEncodedBytes: 12.
+
+	(aMessage target = '0400') ifTrue:[
+		1 to: self echoNumber do: [ 
+			:idx |
+			self echos at: idx put:(
+				LaserEcho createEchoWithAngle: ( decoder nextEncodedFloat32 ) andFloatDistance: (decoder nextEncodedFloat32) ).
 		].
-		
-	self semaphore signal.
-	Transcript cr;show: 'MAJ du LaserService '.
+		self semaphore signal.
+		Transcript cr;show: 'MAJ du LaserService '.
 	].
 ]
 
