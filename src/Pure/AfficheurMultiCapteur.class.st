@@ -6,7 +6,7 @@ Class {
 		'service',
 		'morph'
 	],
-	#category : #'Pure-Afficheur'
+	#category : #Pure
 }
 
 { #category : #accessing }

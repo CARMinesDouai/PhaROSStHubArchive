@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'afficheurMulti'
 	],
-	#category : #'Pure-Afficheur'
+	#category : #'Pure-Deprecated'
 }
 
 { #category : #accessing }

@@ -1,7 +1,7 @@
 Class {
 	#name : #AfficheurMultiCapteurLaser,
 	#superclass : #AfficheurMultiCapteur,
-	#category : #'Pure-Afficheur'
+	#category : #'Pure-Deprecated'
 }
 
 { #category : #'as yet unclassified' }

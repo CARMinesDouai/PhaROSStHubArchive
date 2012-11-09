@@ -5,7 +5,7 @@ Class {
 		'numero',
 		'valeur'
 	],
-	#category : #'Pure-Afficheur'
+	#category : #'Pure-Deprecated'
 }
 
 { #category : #accessing }

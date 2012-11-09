@@ -5,7 +5,7 @@ Class {
 		'direction',
 		'robulabDrive'
 	],
-	#category : #'Pure-AfficheurClavier'
+	#category : #'Pure-Deprecated'
 }
 
 { #category : #accessing }

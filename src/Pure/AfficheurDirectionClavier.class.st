@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'RobulabDrive'
 	],
-	#category : #'Pure-AfficheurClavier'
+	#category : #'Pure-Deprecated'
 }
 
 { #category : #'events-processing' }

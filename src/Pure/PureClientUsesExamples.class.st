@@ -1,11 +1,11 @@
 Class {
-	#name : #Exemple,
+	#name : #PureClientUsesExamples,
 	#superclass : #Object,
 	#category : #'Pure-Examples'
 }
 
 { #category : #'as yet unclassified' }
-Exemple class >> affichagePadClavier: unRobulab [
+PureClientUsesExamples class >> affichagePadClavier: unRobulab [
 	| pad pdr conducteurDeRobulab trajectoireSimple|
 	pad := AfficheurDirectionClavier new.
 	pad robulab: unRobulab.
@@ -18,7 +18,7 @@ Exemple class >> affichagePadClavier: unRobulab [
 ]
 
 { #category : #'as yet unclassified' }
-Exemple >> workspaceBrowsingServices [
+PureClientUsesExamples >> workspaceBrowsingServices [
 | pdr |
 
 
@@ -70,19 +70,19 @@ pdr with: LaserService do: [
 ]
 
 { #category : #'as yet unclassified' }
-Exemple >> workspaceKillingProcess [
+PureClientUsesExamples >> workspaceKillingProcess [
 
 	Process allInstances "allSubInstances" select: [:aProcess | aProcess priority = 30] thenDo: [:p| p terminate ]
 ]
 
 { #category : #'as yet unclassified' }
-Exemple >> workspaceMovingRobot [
+PureClientUsesExamples >> workspaceMovingRobot [
 | pdr pdrDrive |
 
 "Cree un Robulab, lui associe un RobulabDrive et un Pad"
 
 pdr := Robulab new.
-Exemple affichagePadClavier: pdr.
+PureClientUsesExamples affichagePadClavier: pdr.
 pdrDrive:= RobulabDrive new.
 pdrDrive robulab:pdr.
 
