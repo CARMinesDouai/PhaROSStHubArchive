@@ -13,7 +13,7 @@ TelemeterService >> getData [
 	| decoder compteurTelemeter |
 
 	Transcript show:'- - - - - - - - - -';cr.
-	Transcript show: ' Acquisition des données duTelemeter Service ',self getInstanceNumber, ':';cr.
+	Transcript show: ' Acquisition des données duTelemeter Service ',self getInstanceNumber asString , ':';cr.
 	decoder := self get decoder.
 
 

@@ -105,13 +105,14 @@ IOService >> getData [
 		self digitalOutputs: Dictionary new.
 		self digitalInputs: Dictionary new.
 	].
+
 	decoder :=  self get decoder.
 
 	
 	self analogInputNumber: decoder nextEncodedInt32.
 	1 to: self analogInputNumber do: [
 		:idx | 
-		self analogInputs at: idx put: decoder nextEncodedInt32.
+		self analogInputs at: idx put: decoder nextEncodedInt16.
 	].
 	
 	self analogOutputNumber: decoder nextEncodedInt32.

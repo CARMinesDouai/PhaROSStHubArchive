@@ -24,7 +24,7 @@ DirectoryService >> getData [
 		"instance"
 		instanceCode := decoder nextEncodedUInt16.
 		
-		(ConstantesRobulab serviceClassPerType at: serviceType = DirectoryService) ifFalse:  [
+		((ConstantesRobulab serviceClassPerType at: serviceType) = DirectoryService) ifFalse:  [
 			self services at: (instanceCode) put:(RobulabService createFromRobulab: (self robulab) Type: (serviceType)) .
 		].
 		Transcript show: ((ConstantesRobulab codesServices at: serviceType),' ',instanceCode asString ,': ',serviceType asString );cr.

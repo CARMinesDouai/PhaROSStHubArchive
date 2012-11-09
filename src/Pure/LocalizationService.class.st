@@ -21,7 +21,7 @@ LocalizationService >> getData [
 	self xPos: decoder nextEncodedFloat64. 
 	self yPos: decoder nextEncodedFloat64. 
 	self orientation: decoder nextEncodedFloat64. 
-	self status: decoder nextEncodedFloat64. 
+	self status: decoder nextEncodedInt16 . 
 	
 
 ]
