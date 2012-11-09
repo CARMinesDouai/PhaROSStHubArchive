@@ -21,27 +21,52 @@ Exemple class >> affichagePadClavier: unRobulab [
 Exemple >> workspaceBrowsingServices [
 | pdr |
 
+
 pdr := Robulab newWith: #[192 168 1 2] and: 60000.
 
 "NotificationManager".
-(pdr directoryService services at:'0001')getData .
-(pdr directoryService services at:'0001')addNotificationRecordToInstance: '0400' withPeriod: 20.
-(pdr directoryService services at:'0001')deleteNotificationRecordFromService: '0500'.
+pdr with: NotificationManagerService do: [
+	: service |
+	service getData.
+	pdr with: LaserService do: [
+		:laser |
+		service addNotificationRecordToInstance: laser withPeriod: 20.
+	].
+	pdr with: LocalizationService do: [
+		: localization |
+		service deleteNotificationRecordFromService: localization.
+	].
+	
+].
+
 
 "IO Service"
+pdr with: IOService do: [
+	: service |
+	service getData .
+].
 
-(pdr directoryService services at:'0002')getData .
+
 
 "Differential Drive"
-(pdr directoryService services at:'0003')getData .
-(pdr directoryService services at:'0003') printCurrentAndTargetValues. 
-(pdr directoryService services at:'0003') setTargetLinearSpeed: 0.0 andTargetAngularSpeed: 0.4.
+pdr with: DifferentialDriveService do: [
+	: service |
+	service getData .
+	service printCurrentAndTargetValues. 
+	service setTargetLinearSpeed: 0.0 andTargetAngularSpeed: 0.4.	
+].
+
+
 
 "Service Laser"
-(pdr directoryService services at:'0004')getData .
-(pdr directoryService services at:'0004')printEchos .
-(pdr directoryService services at:'0004')startPrettyPrint .
-(pdr directoryService services at:'0004')stopPrettyPrint .
+pdr with: LaserService do: [
+	: service |
+	service getData .
+	service printEchos .
+	service startPrettyPrint .
+	service stopPrettyPrint .	
+].
+
 
 ]
 

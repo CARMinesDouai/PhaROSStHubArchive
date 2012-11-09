@@ -8,23 +8,25 @@ Class {
 }
 
 { #category : #request }
-NotificationManagerService >> addNotificationRecordToInstance: anInstanceNumber withPeriod: anInteger [
+NotificationManagerService >> addNotificationRecordToInstance: aService withPeriod: aPeriod [
 	| reponse |
-	(anInteger isInteger & anInteger>=0 & anInteger<=255)
-		ifTrue:[
-			(anInteger=0)
-				ifTrue:[Transcript show: 'Demande de notifications au service ',anInstanceNumber,' à chaque changement d''état.';cr.]
-				ifFalse:[Transcript show: 'Demande de notifications au service ',anInstanceNumber,' avec un pas de temps de ',anInteger asString ,'.';cr].
-		reponse:=self insert: (anInstanceNumber), (PDRConverter as8BitsHexStringFromInteger: anInteger) .
-		Transcript show: reponse.
-			]
-		ifFalse:[Transcript show:'La periode d''envoi doit être un entier compris entre 1 et 255. Pour une notification à chaque changement d''état du service cible, entrer une période de 0';cr].
+	(aPeriod between:  1 and: 255) ifFalse:[
+		Error signal: ' The given period must be between 1 and 255 '.
+	].
+
+	Transcript show: 'Asking for notifications to  ', aService class name,
+					  ' instance:', aService getInstanceNumber, 
+					  ' every ',aPeriod asString ,' seconds.'
+					  ; cr.
+	
+	reponse := self insert: (aService getInstanceNumber), (PDRConverter as8BitsHexStringFromInteger: aPeriod) .
+	Transcript show: reponse data asString.
 ]
 
 { #category : #request }
-NotificationManagerService >> deleteNotificationRecordFromService: anInstanceNumber [
-	Transcript show:'Demande de suppression de l''envoi périodique de notifications du service ',anInstanceNumber,'.'.
-	self delete: anInstanceNumber.
+NotificationManagerService >> deleteNotificationRecordFromService: aService [
+	Transcript show: ' shutting down notifications from  ', aService class name , ' instance:', aService getInstanceNumber ,'.'.
+	self delete: aService getInstanceNumber.
 ]
 
 { #category : #request }

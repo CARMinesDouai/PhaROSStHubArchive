@@ -65,3 +65,8 @@ Robulab >> start [
 	self loadServices.
 	
 ]
+
+{ #category : #service }
+Robulab >> with: aServiceClass do: aBlockClosure [ 
+	^ (self directoryService instancesRelatedWith: aServiceClass) do: aBlockClosure.
+]

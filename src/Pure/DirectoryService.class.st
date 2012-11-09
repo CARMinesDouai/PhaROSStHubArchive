@@ -35,6 +35,14 @@ DirectoryService >> getData [
 ]
 
 { #category : #accessing }
+DirectoryService >> instancesRelatedWith: aServiceClass [ 
+	| selected |
+	selected := services values select: [ : s | s isKindOf: aServiceClass ].
+	self assert: selected size > 0.
+	^ selected. 
+]
+
+{ #category : #accessing }
 DirectoryService >> services [
 	^ services
 ]
