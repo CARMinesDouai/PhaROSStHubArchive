@@ -39,7 +39,7 @@ PureMessage class >> initializeFromArray:  tableau [
 
 { #category : #accessing }
 PureMessage >> decoder [
-	^ PureDecoder for: responseArray.
+	^ PureDecoder for: (ReadStream on: responseArray).
 	
 ]
 

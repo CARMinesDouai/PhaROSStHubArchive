@@ -50,6 +50,11 @@ PureConnector >> initialize [
 ]
 
 { #category : #'as yet unclassified' }
+PureConnector >> ip [
+	^ ip.
+]
+
+{ #category : #'as yet unclassified' }
 PureConnector >> ip: anIp [
 	ip := anIp.
 ]
@@ -57,6 +62,11 @@ PureConnector >> ip: anIp [
 { #category : #'as yet unclassified' }
 PureConnector >> notificationCode [
 	^ 'FF'.
+]
+
+{ #category : #'as yet unclassified' }
+PureConnector >> port [
+	^port.
 ]
 
 { #category : #'as yet unclassified' }
@@ -69,9 +79,9 @@ PureConnector >> receiveAnswer [
   | buffer responseSize response |
 	
 	[
-		buffer := String new: 3000.
+		buffer := ByteArray new: 3000.
 		self socket waitForData.
-		responseSize := self socket receiveUDPDataInto:  buffer.
+		responseSize := (self socket receiveUDPDataInto:  buffer) at:1.
 		response := PureMessage initializeFromArray: (buffer copyFrom: 1 to: 	responseSize).
 	] doWhileTrue: [
 		response received.
@@ -94,7 +104,7 @@ PureConnector >> send: aStringMessage [
 PureConnector >> sendMessage: aMessage [ 
 	| id |
 	id := self consumeRequestId.
-	
+
 	self send: id, aMessage asHex.
 	^ self receiveAnswer. 
 	

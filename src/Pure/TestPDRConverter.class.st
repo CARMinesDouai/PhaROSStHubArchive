@@ -20,7 +20,7 @@ TestPDRConverter >> testAs8BitsHexStringFromInteger [
 TestPDRConverter >> testAsFloat64FromDataArray [
 	| decoder val |
 
-	decoder := PureDecoder for: (ReadStream on: (PDRConverter asHexArrayFromString: '0000000000000000')).
+	decoder := PureDecoder for: (ReadStream on: (ByteArray readHexFrom: (PDRConverter asHexArrayFromString: '0000000000000000'))).
 		
 	self assert: (decoder nextEncodedFloat64 = 0.0 ).
 	

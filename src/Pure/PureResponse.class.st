@@ -8,14 +8,18 @@ Class {
 }
 
 { #category : #'initialize-release' }
-PureResponse class >> initializeFromArray:  tableau [
-	| response |
+PureResponse class >> initializeFromArray:  aByteArray [
+	| response decoder id |
 	response := PureResponse new.
-	response responseArray: (self correctResponse: tableau ).
-	response idRequete: (response responseArray at: 1).
-	response action: (response responseArray at: 2).
-	response target: (((response responseArray at: 3), (response responseArray at: 4)asString) ).
-	response errorCode: (response responseArray at: 5).
+	response responseArray: (aByteArray ).
+	
+	decoder := response decoder.
+	id := decoder nextEncodedByte.
+"	response idRequete: (response responseArray at: 1)."
+	
+	response action: decoder nextEncodedByte.
+	response target: decoder nextEncodedUInt16.
+	response errorCode: decoder nextEncodedByte.
 	
 	^response
 	
@@ -53,11 +57,12 @@ PureResponse >> errorCode: aNumber [
 
 { #category : #'as yet unclassified' }
 PureResponse >> errorMessage [
-	^ ConstantesRobulab codesErreurs at: self errorCode.
+	^ ConstantesRobulab errorMessages at: self errorCode.
 ]
 
 { #category : #accessing }
 PureResponse >> received [
+
 	self success ifFalse: [
 		Error signal: self errorMessage.
 	].
@@ -65,5 +70,5 @@ PureResponse >> received [
 
 { #category : #accessing }
 PureResponse >> success [
-	^(self errorCode = '00')
+	^(self errorCode = 0).
 ]

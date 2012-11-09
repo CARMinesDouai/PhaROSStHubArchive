@@ -49,7 +49,7 @@ PureRequest class >> update: aDataObject into: aTarget [
 
 { #category : #'as yet unclassified' }
 PureRequest >> asHex [
-	^  (ConstantesRobulab codesActions at: self action) asString, target getInstanceNumber, data asHex.
+	^  (ConstantesRobulab actionCodes at: self action) asString, '0', target getInstanceNumber asString , '00',data asHex.
 ]
 
 { #category : #'as yet unclassified' }

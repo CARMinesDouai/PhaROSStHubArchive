@@ -105,8 +105,8 @@ IOService >> getData [
 		self digitalOutputs: Dictionary new.
 		self digitalInputs: Dictionary new.
 	].
-	decoder := PureDecoder for: self get.
-
+	decoder :=  self get decoder.
+	
 	self analogInputNumber: decoder nextEncodedInt32.
 	1 to: self analogInputNumber do: [
 		:idx | 

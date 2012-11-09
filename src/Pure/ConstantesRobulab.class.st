@@ -27,36 +27,54 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-ConstantesRobulab class >> codesActions [
+ConstantesRobulab class >> actionCodes [ 
 	"Dictionnaire donnant la correspondance entre un code d'action et une action"
-	^ {   '00' -> 'GET'.
-		  '01'-> 'QUERY'.
-		  '02'->'REPLACE'.
-		  '03'->'UPDATE'.
-		  '04'->'INSERT'.
-		  '05'->'DELETE'.
-		  '06'->'SUBMIT'	 } asDictionary.
-]
-
-{ #category : #accessing }
-ConstantesRobulab class >> codesErreurs [
-	"Dictionnaire établissant la correspondance entre un code d'erreur et le libéllé d'une erreur"
-	^ {   '00' -> 'Success'.
-		  '01'->'Target does not exist'.
-		  '02'->'Action is not supported'.
-		  '03'->'Unknown action'.
-		  '04'->'Invalid length'.
-		  '05'->'Invalid data' } asDictionary.
+	^ { 
+		'GET'		-> '00'.
+		'QUERY'		-> '01'.
+		'REPLACE'	-> '02'.
+		'UPDATE'	-> '03'.
+		'INSERT'		-> '04'.
+		'DELETE'	-> '05'.
+		'SUBMIT' 	-> '06'.
+	} asDictionary.
 ]
 
 { #category : #'as yet unclassified' }
 ConstantesRobulab class >> codesServices [
 	"Dictionnaire faisant la correspondance entre le nom n'un service et son numéro de type"
-	^ {   '0000' -> 'DIRECTORY'.
-		  '0001'-> 'NOTIFICATION MANAGER'.
-		  '4001'->'I/O'.
-		  '4005'->'DIFFERENTIAL DRIVE'.
-		  '4004'->'LASER'.
-		  '8002'->'LOCALIZATION'.
-		  '4008'->'TELEMETER'	 } asDictionary.
+	^ {   
+		16r0000 -> 'DIRECTORY'.
+		16r0001-> 'NOTIFICATION MANAGER'.
+		16r4001->'I/O'.
+		16r4005->'DIFFERENTIAL DRIVE'.
+		16r4004->'LASER'.
+		16r8002->'LOCALIZATION'.
+		16r4008->'TELEMETER'	 
+	} asDictionary.
+]
+
+{ #category : #accessing }
+ConstantesRobulab class >> errorMessages [
+	"Dictionnaire établissant la correspondance entre un code d'erreur et le libéllé d'une erreur"
+	^ {   0 -> 'Success'.
+		  1->'Target does not exist'.
+		  2 ->'Action is not supported'.
+		  3 ->'Unknown action'.
+		  4 ->'Invalid length'.
+		  5 ->'Invalid data' } asDictionary.
+]
+
+{ #category : #accessing }
+ConstantesRobulab class >> serviceClassPerType [
+	^	{
+		16r0000 -> DirectoryService .
+	      16r0001 -> NotificationManagerService  .
+		16r4001 -> IOService . 
+		16r4005 -> DifferentialDriveService .
+		16r4004 -> LaserService .
+		16r8002 -> LocalizationService .
+		16r4008 -> TelemeterService .
+		16r8001 -> TrajectoryService .
+	} asDictionary.
 ]

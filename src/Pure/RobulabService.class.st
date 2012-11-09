@@ -13,16 +13,9 @@ Class {
 { #category : #'as yet unclassified' }
 RobulabService class >> createFromRobulab: rob Type: type [
 	| service |
-	(type='0000')ifTrue: [service:=DirectoryService new].
-	(type='0001')ifTrue: [service:=NotificationManagerService new].
-	(type='4001')ifTrue: [service:=IOService new]. 
-	(type='4005')ifTrue: [service:=DifferentialDriveService new].
-	(type='4004')ifTrue: [service:=LaserService new].
-	(type='8002')ifTrue: [service:=LocalizationService new].
-	(type='4008')ifTrue: [service:=TelemeterService new].
-	(type='8001')ifTrue: [service:=TrajectoryService new].
 	
-
+	service := (ConstantesRobulab serviceClassPerType at: type ) new.
+	
 	service robulab: rob.
 	service type: type.
 	^service.
@@ -43,7 +36,7 @@ RobulabService >> delete: data [
 ]
 
 { #category : #request }
-RobulabService >> get [
+RobulabService >> get [ 
 	^self robulab sendMessageAndWaitResponse: (PureRequest getFrom: self).
 ]
 
@@ -54,13 +47,14 @@ RobulabService >> getData [
 
 { #category : #accessing }
 RobulabService >> getInstanceNumber [
-	| tempResult result compteur |
-	self robulab directoryService services keysAndValuesDo: [:instance :service| (self =service )ifTrue:[tempResult:=instance].].
-	result := ByteString new:4.
-	result at:1 put: (tempResult at:3).
-	result at:2 put: (tempResult at:4).
-	result at:3 put: (tempResult at:1).
-	result at:4 put: (tempResult at:2).
+	| result  |
+	self robulab directoryService services keysAndValuesDo: [
+		:instance :service | 
+		(self =service) ifTrue: [
+				result :=instance
+			].
+		].
+	
 	^result.
 ]
 

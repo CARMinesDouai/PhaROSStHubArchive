@@ -3,14 +3,25 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'services',
-		'directoryService'
+		'directoryService',
+		'connector'
 	],
 	#category : #'Pure-Kernel'
 }
 
 { #category : #'as yet unclassified' }
 Robulab class >> newWith: anIp and: aPort [
-	^ self new ip: anIp ; port: aPort; start; yourself.
+	^ self new connector: (PureConnector ip: anIp port: aPort); start; yourself.
+]
+
+{ #category : #sending }
+Robulab >> connector [
+	^ connector.
+]
+
+{ #category : #sending }
+Robulab >> connector: aConnector [
+	connector := aConnector 
 ]
 
 { #category : #accessing }
@@ -23,9 +34,16 @@ Robulab >> directoryService: anObject [
 	directoryService := anObject
 ]
 
+{ #category : #service }
+Robulab >> discoverServices [
+	self connector send: '01000000'.
+	^ self connector receiveAnswer.
+	
+]
+
 { #category : #'initialize-release' }
 Robulab >> loadServices [ 
-	self directoryService: (RobulabService createFromRobulab: self Type: '0000') .  
+	self directoryService: (RobulabService createFromRobulab: self Type: 0) .  
 	self directoryService getData .
 	self directoryService services do: [ :service | service getData ].
 	
@@ -44,7 +62,6 @@ Robulab >> sendNotification: notifString [
 
 { #category : #'initialize-release' }
 Robulab >> start [ 
-	self resetRequestCounter.
 	self loadServices.
 	
 ]
