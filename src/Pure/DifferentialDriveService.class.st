@@ -47,9 +47,7 @@ DifferentialDriveService >> getData [
 	Transcript show:'- - - - - - - - - -';cr.
 	Transcript show: ' Acquisition des données du Differential Drive Service:';cr.
 
-	decoder := PureDecoder for: self get.
-	"Swallow it!"
-	decoder nextEncodedBytes: 5.
+	decoder := self get decoder.
 	
 	Transcript show: 'Récupération des vitesses cibles:';cr.
 	"Valeurs cibles:"

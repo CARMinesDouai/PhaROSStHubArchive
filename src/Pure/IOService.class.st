@@ -106,9 +106,7 @@ IOService >> getData [
 		self digitalInputs: Dictionary new.
 	].
 	decoder :=  self get decoder.
-	
-	"Swallow it!"
-	decoder nextEncodedBytes: 5.
+
 	
 	self analogInputNumber: decoder nextEncodedInt32.
 	1 to: self analogInputNumber do: [
