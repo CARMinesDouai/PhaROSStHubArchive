@@ -67,7 +67,6 @@ pdr with: LaserService do: [
 	service stopPrettyPrint .	
 ].
 
-
 ]
 
 { #category : #'as yet unclassified' }

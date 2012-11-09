@@ -105,6 +105,7 @@ PureConnector >> receiveAnswer [
 
 { #category : #'as yet unclassified' }
 PureConnector >> send: aStringMessage [
+
 	self socket 
 		sendData: (ByteArray readHexFrom: aStringMessage)
 		toHost: self ip
@@ -116,7 +117,7 @@ PureConnector >> send: aStringMessage [
 PureConnector >> sendMessage: aMessage [ 
 	| id |
 	id := self consumeRequestId.
-
+	
 	self send: id, aMessage asHex.
 	^ self receiveAnswer. 
 	

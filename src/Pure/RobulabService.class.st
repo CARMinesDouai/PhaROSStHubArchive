@@ -108,7 +108,7 @@ RobulabService >> robulab: anObject [
 
 { #category : #request }
 RobulabService >> sendNotification: notifDataString [
-	self robulab sendNotification: ('FF',self getInstanceNumber ,notifDataString).
+	self robulab sendNotification: ('0',self getInstanceNumber asString, '00' ,notifDataString).
 
 ]
 

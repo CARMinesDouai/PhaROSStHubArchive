@@ -12,7 +12,7 @@ Class {
 		'threadMouvement',
 		'threadControle'
 	],
-	#category : #'Pure-Kernel'
+	#category : #'Pure-Deprecated'
 }
 
 { #category : #mouvement }
