@@ -8,14 +8,14 @@ Class {
 }
 
 { #category : #'initialize-release' }
-PureNotification class >> initializeFromArray:  tableau [
-	| response |
-	response := PureNotification new.
-	response responseArray: (self correctResponse: tableau ).
-	response idRequete: (response responseArray at: 1).
-	response target: (((response responseArray at: 2), (response responseArray at: 3)asString) ).
-	"response notificationTimeStamp: (PDRConverter asFloat32FromDataArray: (response responseArray) fromIndex: 3)".
+PureNotification class >> initializeFromArray:  aByteArray [
+	| response decoder |
+	response := self new.
 	
+	decoder := PureDecoder forArray: aByteArray.
+	response target: decoder nextEncodedUInt16.
+	"response notificationTimeStamp: (PDRConverter asFloat32FromDataArray: (response responseArray) fromIndex: 3)".
+	response data: decoder upToEnd.
 	^response
 ]
 

@@ -1,9 +1,6 @@
 Class {
 	#name : #PureRequest,
 	#superclass : #PureActionMessage,
-	#instVars : [
-		'data'
-	],
 	#category : #'Pure-Messages'
 }
 
@@ -50,9 +47,4 @@ PureRequest class >> update: aDataObject into: aTarget [
 { #category : #'as yet unclassified' }
 PureRequest >> asHex [
 	^  (ConstantesRobulab actionCodes at: self action) asString, '0', target getInstanceNumber asString , '00',data asHex.
-]
-
-{ #category : #'as yet unclassified' }
-PureRequest >> data: aDataObject [
-	data := aDataObject.
 ]

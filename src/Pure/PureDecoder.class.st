@@ -13,6 +13,11 @@ PureDecoder class >> for: aStream [
 ]
 
 { #category : #'as yet unclassified' }
+PureDecoder class >> forArray: anArray [
+	^ self new stream: (ReadStream on: anArray) ; yourself .
+]
+
+{ #category : #'as yet unclassified' }
 PureDecoder >> hasData [
 	^ stream atEnd not.
 ]
@@ -57,4 +62,10 @@ PureDecoder >> nextEncodedUInt16 [
 { #category : #'as yet unclassified' }
 PureDecoder >> stream: aStream [
 	stream := aStream.
+]
+
+{ #category : #'as yet unclassified' }
+PureDecoder >> upToEnd [ 
+
+	^ stream upToEnd.
 ]

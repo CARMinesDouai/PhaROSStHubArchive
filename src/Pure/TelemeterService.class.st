@@ -16,6 +16,11 @@ TelemeterService >> getData [
 	Transcript show: ' Acquisition des données duTelemeter Service ',self getInstanceNumber, ':';cr.
 	decoder := PureDecoder for: self get.
 	
+	
+	"Swallow it!"
+	decoder nextEncodedBytes: 5.
+
+	
 	self telemeterNumber: (decoder nextEncodedInt32). 
 
 	compteurTelemeter := 1.

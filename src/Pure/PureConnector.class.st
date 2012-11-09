@@ -44,6 +44,18 @@ PureConnector >> incrementRequestId [
 ]
 
 { #category : #'as yet unclassified' }
+PureConnector >> inflateResponse: aByteArray [
+	| class |
+	
+	class := PureResponse.
+	((aByteArray at: 1) = self notificationCode) ifTrue: [
+		class := PureNotification
+	].
+	^ class initializeFromArray: (aByteArray copyFrom: 2 to: aByteArray size).	
+	
+]
+
+{ #category : #'as yet unclassified' }
 PureConnector >> initialize [ 
 	socket := Socket newUDP.
 	currentRequestId := 1.
@@ -82,7 +94,7 @@ PureConnector >> receiveAnswer [
 		buffer := ByteArray new: 3000.
 		self socket waitForData.
 		responseSize := (self socket receiveUDPDataInto:  buffer) at:1.
-		response := PureMessage initializeFromArray: (buffer copyFrom: 1 to: 	responseSize).
+		response := self inflateResponse: (buffer copyFrom: 1 to: 	responseSize).
 	] doWhileTrue: [
 		response received.
 		response isNotification.

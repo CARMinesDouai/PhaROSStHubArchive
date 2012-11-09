@@ -36,6 +36,11 @@ NotificationManagerService >> getData [
 	Transcript cr; show: ' Acquisition des données: du Notification Manager Service';cr.
 	decoder := self get decoder.
 	
+	
+	"Swallow it!"
+	decoder nextEncodedBytes: 5.
+
+	
 	[ decoder hasData ] whileTrue: [
 		Transcript show: decoder nextEncodedUInt16 asString, '-', decoder nextEncodedByte asString.
 		Transcript cr.

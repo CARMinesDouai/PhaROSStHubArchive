@@ -39,6 +39,8 @@ LaserService >> getData [
 	Transcript show: ' Acquisition des données du Laser Service:';cr.
 	decoder := PureDecoder for: self get.
 
+	"Swallow it!"
+	decoder nextEncodedBytes: 5.
 	
 	self xposition: decoder nextEncodedFloat32. 
 	self yposition: decoder nextEncodedFloat32. 

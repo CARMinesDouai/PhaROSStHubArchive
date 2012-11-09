@@ -17,6 +17,9 @@ LocalizationService >> getData [
 	Transcript show: ' Acquisition des données du Localization Service:';cr.
 	decoder := PureDecoder for: self get.
 	
+	"Swallow it!"
+	decoder nextEncodedBytes: 5.
+
 	
 	self xPos: decoder nextEncodedFloat64. 
 	self yPos: decoder nextEncodedFloat64. 

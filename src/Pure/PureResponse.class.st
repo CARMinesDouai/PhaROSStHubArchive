@@ -9,22 +9,18 @@ Class {
 
 { #category : #'initialize-release' }
 PureResponse class >> initializeFromArray:  aByteArray [
-	| response decoder id |
-	response := PureResponse new.
-	response responseArray: (aByteArray ).
-	
-	decoder := response decoder.
-	id := decoder nextEncodedByte.
-"	response idRequete: (response responseArray at: 1)."
+	| response decoder  |
+	response := self new.
+
+	decoder := PureDecoder forArray: aByteArray.
 	
 	response action: decoder nextEncodedByte.
 	response target: decoder nextEncodedUInt16.
 	response errorCode: decoder nextEncodedByte.
-	
+
+	response data: decoder upToEnd.
 	^response
 	
-	
-
 	
 ]
 
@@ -43,6 +39,12 @@ PureResponse >> correctResponse: tableau [
 				index:= index+1.
 			].
 	^correction 
+]
+
+{ #category : #accessing }
+PureResponse >> decoder [
+	^ PureDecoder for: (ReadStream on: self data).
+	
 ]
 
 { #category : #accessing }

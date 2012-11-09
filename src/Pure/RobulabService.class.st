@@ -131,6 +131,7 @@ RobulabService >> startListening [
 			[
 				self socket waitForDataFor: 5.
 				self socket receiveUDPDataInto: receptionBuffer.
+				self halt.
 				messageRecu := PureMessage initializeFromArray:  receptionBuffer.
 				messageRecu robulab: self robulab.
 				(messageRecu isNotification)ifTrue: [

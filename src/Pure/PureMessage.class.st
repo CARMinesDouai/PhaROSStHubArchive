@@ -2,7 +2,7 @@ Class {
 	#name : #PureMessage,
 	#superclass : #Object,
 	#instVars : [
-		'responseArray',
+		'data',
 		'target'
 	],
 	#category : #'Pure-Messages'
@@ -25,32 +25,14 @@ PureMessage class >> correctResponse: tableau [
 	^correction 
 ]
 
-{ #category : #'initialize-release' }
-PureMessage class >> initializeFromArray:  tableau [
-	| response |
-	response := PureResponse new.
-	response responseArray: (self correctResponse: tableau ).
-	((response responseArray at: 1)= 'FF')ifTrue:[
-		^PureNotification initializeFromArray: tableau.
-		]ifFalse:[
-		^PureResponse initializeFromArray: tableau.
-		].
+{ #category : #'as yet unclassified' }
+PureMessage >> data [
+	^ data.
 ]
 
-{ #category : #accessing }
-PureMessage >> decoder [
-	^ PureDecoder for: (ReadStream on: responseArray).
-	
-]
-
-{ #category : #accessing }
-PureMessage >> responseArray [
-	^ responseArray
-]
-
-{ #category : #accessing }
-PureMessage >> responseArray: anObject [
-	responseArray := anObject
+{ #category : #'as yet unclassified' }
+PureMessage >> data: aDataObject [
+	data := aDataObject.
 ]
 
 { #category : #accessing }

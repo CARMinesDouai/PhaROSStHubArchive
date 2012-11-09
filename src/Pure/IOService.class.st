@@ -107,6 +107,9 @@ IOService >> getData [
 	].
 	decoder :=  self get decoder.
 	
+	"Swallow it!"
+	decoder nextEncodedBytes: 5.
+	
 	self analogInputNumber: decoder nextEncodedInt32.
 	1 to: self analogInputNumber do: [
 		:idx | 
@@ -135,6 +138,6 @@ IOService >> getData [
 { #category : #request }
 IOService >> receiveNotificationFromRobulab: aMessage [
 	| data compteur |
-	data := aMessage responseArray .
+	data := aMessage data.
 	compteur:=12.
 ]
