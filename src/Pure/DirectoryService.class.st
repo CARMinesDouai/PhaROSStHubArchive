@@ -12,7 +12,10 @@ DirectoryService >> getData [
 | decoder  instanceCode serviceType |
 	Transcript show:'- - - - - - - - - -';cr.
 	Transcript show: 'Récupération des services de Robulab via le Directory Service';cr.
-	(self services isNil)ifTrue: [self services: Dictionary new].
+	(self services isNil)ifTrue: [
+		self services: Dictionary new.
+		self services at:0 put: self.
+	].
 
 	decoder := (self robulab discoverServices) decoder.
 	"L'enregistrement du premier service commence au 10ème nombre."

@@ -37,7 +37,8 @@ PureMessage >> data: aDataObject [
 
 { #category : #accessing }
 PureMessage >> target [
-	^ target
+	^  target
+	
 ]
 
 { #category : #accessing }
