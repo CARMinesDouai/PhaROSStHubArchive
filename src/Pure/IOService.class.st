@@ -140,3 +140,8 @@ IOService >> receiveNotificationFromRobulab: aMessage [
 	data := aMessage data.
 	compteur:=12.
 ]
+
+{ #category : #accessing }
+IOService >> relatedNotificationClass [
+	^ IONotification 
+]

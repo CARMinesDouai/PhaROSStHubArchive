@@ -7,15 +7,15 @@ Class {
 	#category : #'Pure-Messages'
 }
 
-{ #category : #'initialize-release' }
-PureResponse class >> initializeFromArray:  aByteArray [
+{ #category : #'as yet unclassified' }
+PureResponse class >> initializeFromArray:  aByteArray forRobot: robot [
 	| response decoder  |
 	response := self new.
 
 	decoder := PureDecoder forArray: aByteArray.
 	
 	response action: decoder nextEncodedByte.
-	response target: decoder nextEncodedUInt16.
+	response target: (robot instanceRelatedTo: decoder nextEncodedUInt16).
 	response errorCode: decoder nextEncodedByte.
 
 	response data: decoder upToEnd.

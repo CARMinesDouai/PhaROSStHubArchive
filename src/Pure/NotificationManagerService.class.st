@@ -18,8 +18,11 @@ NotificationManagerService >> addNotificationRecordToInstance: aService withPeri
 					  ' instance:', aService getInstanceNumber, 
 					  ' every ',aPeriod asString ,' seconds.'
 					  ; cr.
-	
+
+		
 	reponse := self insert: (aService getInstanceNumber), (PDRConverter as8BitsHexStringFromInteger: aPeriod) .
+	
+	
 	Transcript show: reponse data asString.
 ]
 
@@ -60,4 +63,9 @@ NotificationManagerService >> notificationEntries [
 { #category : #accessing }
 NotificationManagerService >> notificationEntries: anObject [
 	notificationEntries := anObject
+]
+
+{ #category : #request }
+NotificationManagerService >> relatedNotificationClass [
+	^ self error: 'This service has not notifications'
 ]

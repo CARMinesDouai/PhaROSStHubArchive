@@ -218,6 +218,11 @@ DifferentialDriveService >> receiveNotificationFromRobulab: aMessage [
 	
 ]
 
+{ #category : #accessing }
+DifferentialDriveService >> relatedNotificationClass [
+	^ DifferentialDriveNotification 
+]
+
 { #category : #request }
 DifferentialDriveService >> setTargetLinearSpeed: linspeed andTargetAngularSpeed: angspeed [
 | linSpeedHex angSpeedHex |

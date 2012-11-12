@@ -5,7 +5,8 @@ Class {
 		'ip',
 		'port',
 		'socket',
-		'currentRequestId'
+		'currentRequestId',
+		'robot'
 	],
 	#category : #'Pure-Kernel'
 }
@@ -51,7 +52,7 @@ PureConnector >> inflateResponse: aByteArray [
 	((aByteArray at: 1) = self notificationCode) ifTrue: [
 		class := PureNotification
 	].
-	^ class initializeFromArray: (aByteArray copyFrom: 2 to: aByteArray size).	
+	^ class initializeFromArray: (aByteArray copyFrom: 2 to: aByteArray size) forRobot: robot.	
 	
 ]
 
@@ -101,6 +102,16 @@ PureConnector >> receiveAnswer [
 	].
 
 	^ response. 
+]
+
+{ #category : #'as yet unclassified' }
+PureConnector >> robot [
+	^robot
+]
+
+{ #category : #'as yet unclassified' }
+PureConnector >> robot: aRobotManager [
+	robot := aRobotManager.
 ]
 
 { #category : #'as yet unclassified' }

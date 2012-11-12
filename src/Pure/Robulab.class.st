@@ -21,7 +21,8 @@ Robulab >> connector [
 
 { #category : #sending }
 Robulab >> connector: aConnector [
-	connector := aConnector 
+	connector := aConnector.
+	connector robot: self.
 ]
 
 { #category : #accessing }
@@ -41,12 +42,19 @@ Robulab >> discoverServices [
 	
 ]
 
+{ #category : #sending }
+Robulab >> instanceRelatedTo: anInstanceID [
+	^ self directoryService instanceRelatedTo: anInstanceID.
+]
+
 { #category : #'initialize-release' }
 Robulab >> loadServices [ 
 	self directoryService: (RobulabService createFromRobulab: self Type: 0) .  
 	self directoryService getData .
 	self directoryService services do: [ :service | service getData ].
 	
+
+
 ]
 
 { #category : #sending }

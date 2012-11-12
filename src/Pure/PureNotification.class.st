@@ -7,13 +7,13 @@ Class {
 	#category : #'Pure-Messages'
 }
 
-{ #category : #'initialize-release' }
-PureNotification class >> initializeFromArray:  aByteArray [
+{ #category : #'as yet unclassified' }
+PureNotification class >> initializeFromArray:  aByteArray forRobot: robot [
 	| response decoder |
 	response := self new.
 	
 	decoder := PureDecoder forArray: aByteArray.
-	response target: decoder nextEncodedUInt16.
+	response target: (robot instanceRelatedTo: decoder nextEncodedUInt16).
 	"response notificationTimeStamp: (PDRConverter asFloat32FromDataArray: (response responseArray) fromIndex: 3)".
 	response data: decoder upToEnd.
 	^response
@@ -27,6 +27,18 @@ PureNotification class >> notificationTimeStamp [
 { #category : #accessing }
 PureNotification class >> notificationTimeStamp: anObject [
 	notificationTimeStamp := anObject
+]
+
+{ #category : #'initialize-release' }
+PureNotification >> asAnnouncement [
+	^ ServiceNotification for: self target with: self.
+
+]
+
+{ #category : #'initialize-release' }
+PureNotification >> decoder [
+	^ PureDecoder for: (ReadStream on: self data).
+	
 ]
 
 { #category : #'as yet unclassified' }

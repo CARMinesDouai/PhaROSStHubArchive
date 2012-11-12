@@ -143,6 +143,11 @@ LaserService >> receiveNotificationFromRobulab: aMessage [
 	].
 ]
 
+{ #category : #printing }
+LaserService >> relatedNotificationClass [
+	^ LaserNotification
+]
+
 { #category : #accessing }
 LaserService >> semaphore [
 	^ semaphore

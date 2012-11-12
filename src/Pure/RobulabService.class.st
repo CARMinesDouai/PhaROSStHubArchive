@@ -89,6 +89,11 @@ RobulabService >> receiveNotificationFromRobulab: aMessage [
 	self subclassResponsibility 
 ]
 
+{ #category : #accessing }
+RobulabService >> relatedNotificationClass [
+	self subclassResponsibility.
+]
+
 { #category : #request }
 RobulabService >> replace: data [
 
@@ -132,7 +137,7 @@ RobulabService >> startListening [
 				self socket waitForDataFor: 5.
 				self socket receiveUDPDataInto: receptionBuffer.
 				self halt.
-				messageRecu := PureMessage initializeFromArray:  receptionBuffer.
+				messageRecu := PureMessage initializeFromArray:  receptionBuffer forRobot: robulab.
 				messageRecu robulab: self robulab.
 				(messageRecu isNotification)ifTrue: [
 					self receiveNotificationFromRobulab: messageRecu]

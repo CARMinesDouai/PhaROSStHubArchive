@@ -75,6 +75,11 @@ TelemeterService >> receiveNotificationFromRobulab: aMessage [
 ]
 
 { #category : #accessing }
+TelemeterService >> relatedNotificationClass [
+	^ TelemeterNotification 
+]
+
+{ #category : #accessing }
 TelemeterService >> telemeterNumber [
 	^ telemeterNumber
 ]

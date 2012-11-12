@@ -32,6 +32,11 @@ TrajectoryService >> pause [
 ]
 
 { #category : #'as yet unclassified' }
+TrajectoryService >> relatedNotificationClass [
+	^ TrajectoryNotification
+]
+
+{ #category : #'as yet unclassified' }
 TrajectoryService >> reset [
 	self upDate: '3'.
 	

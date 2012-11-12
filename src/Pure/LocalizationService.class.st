@@ -106,6 +106,11 @@ LocalizationService >> receiveNotificationFromRobulab: aMessage [
 	]
 ]
 
+{ #category : #printing }
+LocalizationService >> relatedNotificationClass [
+	^ LocalizationNotification
+]
+
 { #category : #request }
 LocalizationService >> resetLocalization [
 	| reponse |

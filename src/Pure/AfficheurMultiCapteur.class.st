@@ -6,7 +6,7 @@ Class {
 		'service',
 		'morph'
 	],
-	#category : #Pure
+	#category : #'Pure-Deprecated'
 }
 
 { #category : #accessing }

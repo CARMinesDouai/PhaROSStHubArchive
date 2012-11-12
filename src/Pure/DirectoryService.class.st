@@ -35,11 +35,21 @@ DirectoryService >> getData [
 ]
 
 { #category : #accessing }
+DirectoryService >> instanceRelatedTo: anInstanceID [
+	^services at: anInstanceID.
+]
+
+{ #category : #accessing }
 DirectoryService >> instancesRelatedWith: aServiceClass [ 
 	| selected |
 	selected := services values select: [ : s | s isKindOf: aServiceClass ].
 	self assert: selected size > 0.
 	^ selected. 
+]
+
+{ #category : #accessing }
+DirectoryService >> relatedNotificationClass [
+	^ self error: 'This service has not notifications'
 ]
 
 { #category : #accessing }
