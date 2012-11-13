@@ -124,7 +124,7 @@ NotificationManagerService >> relatedNotificationClass [
 { #category : #request }
 NotificationManagerService >> spawnNotificationConsumerFor: aService and: aConnector [
 	
-	^ notificationServices at: aService put: [
+	^ notificationServices at: aService put: (
 		NotificationConsumerProcess service: aService connector: aConnector
-	].
+	).
 ]
