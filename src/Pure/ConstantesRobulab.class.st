@@ -57,12 +57,16 @@ ConstantesRobulab class >> codesServices [
 { #category : #accessing }
 ConstantesRobulab class >> errorMessages [
 	"Dictionnaire établissant la correspondance entre un code d'erreur et le libéllé d'une erreur"
-	^ {   0 -> 'Success'.
-		  1->'Target does not exist'.
-		  2 ->'Action is not supported'.
-		  3 ->'Unknown action'.
-		  4 ->'Invalid length'.
-		  5 ->'Invalid data' } asDictionary.
+	^ {   16r0 -> 'Success'.
+		  16r1->'Target does not exist'.
+		  16r2 ->'Action is not supported'.
+		  16r3 ->'Unknown action'.
+		  16r4 ->'Invalid length'.
+		  16r5 ->'Invalid data' .
+		16r10 -> 'Notification limit reached'.  
+		16r11 -> 'Already bound to this notification'
+		
+		} asDictionary.
 ]
 
 { #category : #accessing }

@@ -33,7 +33,7 @@ NotificationConsumerProcess >> initialize [
 
 { #category : #'as yet unclassified' }
 NotificationConsumerProcess >> keepRunning [ 
-	^ keepRunning & connector socket isUnconnectedOrInvalid.
+	^ keepRunning & connector socket isUnconnectedOrInvalid not.
 	
 ]
 
@@ -71,4 +71,5 @@ NotificationConsumerProcess >> startUp [
 { #category : #'as yet unclassified' }
 NotificationConsumerProcess >> stop [
 	keepRunning := false.
+	connector socket close.
 ]

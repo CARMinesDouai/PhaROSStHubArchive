@@ -24,19 +24,18 @@ PureClientUsesExamples >> workspaceBrowsingServices [
 
 pdr := Robulab newWith: #[192 168 1 2] and: 60000.
 
+
 "NotificationManager".
 pdr with: NotificationManagerService do: [
 	: service |
 	service getData.
+	
 	pdr with: LaserService do: [
 		:laser |
-		service addNotificationRecordToInstance: laser withPeriod: 20.
+"		service deleteNotificationRecordFromService: laser."
+		service addNotificationRecordToInstance: laser withPeriod:  20.
+		
 	].
-	pdr with: LocalizationService do: [
-		: localization |
-		service deleteNotificationRecordFromService: localization.
-	].
-	
 ].
 
 
@@ -66,6 +65,12 @@ pdr with: LaserService do: [
 	service startPrettyPrint .
 	service stopPrettyPrint .	
 ].
+
+Smalltalk garbageCollect .
+
+LaserService allInstances.
+Robulab allInstances
+
 
 ]
 

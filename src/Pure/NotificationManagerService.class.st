@@ -86,7 +86,7 @@ NotificationManagerService >> initialize [
 
 { #category : #request }
 NotificationManagerService >> insert: data into: aConnector [
-	aConnector sendMessage: (PureMessage insert: data into: self).
+	aConnector sendMessage: (PureRequest insert: data into: self).
 
 	
 ]

@@ -133,7 +133,10 @@ RobulabService >> subscribeToAnnouncements [
 
 	self interestedAnnouncements do: [
 		:ann | 	
-		robulab subscribe: ann  do: #receiveNotificationFromRobulab:.	
+		robulab subscribe: ann  do: [
+			:notification | 
+			self receiveNotificationFromRobulab: notification notification.	
+		]
 	]
 	
 
