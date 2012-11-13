@@ -142,7 +142,7 @@ PureConnector >> sendMessage: aMessage [
 
 { #category : #'as yet unclassified' }
 PureConnector >> sendNotification: aMessage [ 
-	self send: self notificationCode, aMessage asHex.
+	self send: (self notificationCode printStringBase: 16), aMessage asHex.
 	
 
 	
