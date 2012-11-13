@@ -138,7 +138,7 @@ IOService >> getData [
 IOService >> receiveNotificationFromRobulab: aMessage [
 	| data compteur |
 	data := aMessage data.
-	compteur:=12.
+	compteur:=6.
 ]
 
 { #category : #accessing }

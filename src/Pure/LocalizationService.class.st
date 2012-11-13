@@ -21,7 +21,7 @@ LocalizationService >> getData [
 	self xPos: decoder nextEncodedFloat64. 
 	self yPos: decoder nextEncodedFloat64. 
 	self orientation: decoder nextEncodedFloat64. 
-	self status: decoder nextEncodedInt16 . 
+	self status: decoder nextEncodedUInt32 . 
 	
 
 ]
@@ -93,17 +93,14 @@ LocalizationService >> receiveNotificationFromRobulab: aMessage [
 	
 	"maybe is 11 here. Must avoid the header of the message"
 	self flag:#NoticeComment.
-	decoder nextEncodedBytes: 12.
+	decoder nextEncodedBytes: 6.
+	self halt.
+	self xPos: decoder nextEncodedFloat64. 
+	self yPos: decoder nextEncodedFloat64.
+	self orientation: decoder nextEncodedFloat64. 
+	self status: decoder nextEncodedUInt32. 
 
-	
-	(aMessage target = '0500')ifTrue:[
-		self xPos: decoder nextEncodedFloat64. 
-		self yPos: decoder nextEncodedFloat64.
-		self orientation: decoder nextEncodedFloat64. 
-		self status: decoder nextEncodedFloat64. 
-
-		Transcript cr;show: 'MAJ du LocalizationService '.
-	]
+	Transcript cr;show: 'MAJ du LocalizationService '.
 ]
 
 { #category : #printing }

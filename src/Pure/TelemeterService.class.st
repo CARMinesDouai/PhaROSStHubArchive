@@ -64,7 +64,7 @@ TelemeterService >> receiveNotificationFromRobulab: aMessage [
 	
 	"maybe is 11 here. Must avoid the header of the message"
 	self flag:#NoticeComment.
-	decoder nextEncodedBytes: 12.
+	decoder nextEncodedBytes: 6.
 	
 	1 to: self telemeterNumber do: [
 		:idx |

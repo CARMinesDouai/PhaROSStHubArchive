@@ -59,6 +59,12 @@ PureDecoder >> nextEncodedUInt16 [
 	^ ( stream next:2 ) unsignedShortAt: 1 bigEndian: false.
 ]
 
+{ #category : #decoder }
+PureDecoder >> nextEncodedUInt32 [
+
+	^  (stream next: 4) unsignedLongAt: 1 bigEndian: false.
+]
+
 { #category : #'as yet unclassified' }
 PureDecoder >> stream: aStream [
 	stream := aStream.

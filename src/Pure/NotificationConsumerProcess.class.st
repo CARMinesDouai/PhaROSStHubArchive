@@ -65,7 +65,7 @@ NotificationConsumerProcess >> startUp [
 		].
 		process := nil.
 		
-	] forkNamed: 'NotificationConsumer'.
+	] forkAt: Processor userBackgroundPriority  named: 'NotificationConsumer'.
 ]
 
 { #category : #'as yet unclassified' }

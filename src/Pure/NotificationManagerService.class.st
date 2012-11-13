@@ -26,13 +26,7 @@ NotificationManagerService >> addNotificationRecordToInstance: aService withPeri
 					  ; cr.
 
 	
-	
-	connector := self newConnector. 
-	response := self insert: '0', (aService getInstanceNumber asString), '00', (PDRConverter as8BitsHexStringFromInteger: aPeriod) into: connector.
-	
-	response success ifTrue: [  
-		self spawnNotificationConsumerFor: aService and: connector.
-	].
+	response := self insert: '0', (aService getInstanceNumber asString), '00', (PDRConverter as8BitsHexStringFromInteger: aPeriod).
 	
 	Transcript show: response data asString.
 	

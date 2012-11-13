@@ -205,7 +205,7 @@ DifferentialDriveService >> receiveNotificationFromRobulab: aMessage [
 	
 	"maybe is 11 here. Must avoid the header of the message"
 	self flag:#NoticeComment.
-	decoder nextEncodedBytes: 12.
+	decoder nextEncodedBytes: 6.
 	
 	self targetLinearSpeed:  decoder nextEncodedFloat32. 
 	self currentLinearSpeed: decoder nextEncodedFloat32. 
