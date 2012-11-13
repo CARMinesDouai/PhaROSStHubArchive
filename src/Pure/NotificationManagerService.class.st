@@ -63,7 +63,7 @@ NotificationManagerService >> getData [
 	Transcript show:'- - - - - - - - - -';cr.
 	Transcript cr; show: ' Acquisition des données: du Notification Manager Service';cr.
 	decoder := self get decoder.
-	self halt.
+
 	
 	[ decoder hasData ] whileTrue: [
 		Transcript show: decoder nextEncodedUInt16 asString, '-', decoder nextEncodedByte asString.
@@ -86,7 +86,7 @@ NotificationManagerService >> initialize [
 
 { #category : #request }
 NotificationManagerService >> insert: data into: aConnector [
-	^aConnector sendMessage: (PureRequest insert: data into: self).
+	^ aConnector sendMessage: (PureRequest insert: data into: self).
 
 	
 ]
