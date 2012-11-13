@@ -51,6 +51,11 @@ DirectoryService >> instancesRelatedWith: aServiceClass [
 ]
 
 { #category : #accessing }
+DirectoryService >> interestedAnnouncements [
+	^ {   } 
+]
+
+{ #category : #accessing }
 DirectoryService >> relatedNotificationClass [
 	^ self error: 'This service has not notifications'
 ]

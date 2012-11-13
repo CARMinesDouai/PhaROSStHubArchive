@@ -69,6 +69,11 @@ RobulabService >> insert: data [
 	^self robulab sendMessageAndWaitResponse: (PureRequest insert: data into: self).
 ]
 
+{ #category : #request }
+RobulabService >> interestedAnnouncements [
+	^ {  self relatedNotificationClass } 
+]
+
 { #category : #accessing }
 RobulabService >> listening [
 	^ listening
@@ -108,7 +113,8 @@ RobulabService >> robulab [
 
 { #category : #accessing }
 RobulabService >> robulab: anObject [
-	robulab := anObject
+	robulab := anObject.
+	self subscribeToAnnouncements
 ]
 
 { #category : #request }
@@ -117,33 +123,21 @@ RobulabService >> sendNotification: notifDataString [
 
 ]
 
-{ #category : #communication }
-RobulabService >> startListening [
-	| receptionBuffer messageRecu |
-	[
-		[self listening]whileTrue:[
-			receptionBuffer := String  new: 3000.
-			[
-				self socket waitForDataFor: 5.
-				self socket receiveUDPDataInto: receptionBuffer.
-				self halt.
-				messageRecu := PureMessage initializeFromArray:  receptionBuffer forRobot: robulab.
-				messageRecu robulab: self robulab.
-				(messageRecu isNotification)ifTrue: [
-					self receiveNotificationFromRobulab: messageRecu]
-			] on: ConnectionTimedOut do: [:ex|]
-		]
-	]forkAt: Processor userBackgroundPriority    .
-]
-
-{ #category : #service }
-RobulabService >> stop [
-	self flag: #remindToStopTheNotificationListener.
-]
-
 { #category : #request }
 RobulabService >> submit: data [
 	^self robulab sendMessageAndWaitResponse: (PureRequest submit: data to: self).
+]
+
+{ #category : #accessing }
+RobulabService >> subscribeToAnnouncements [
+
+	self interestedAnnouncements do: [
+		:ann | 	
+		robulab subscribe: ann  do: #receiveNotificationFromRobulab:.	
+	]
+	
+
+
 ]
 
 { #category : #accessing }

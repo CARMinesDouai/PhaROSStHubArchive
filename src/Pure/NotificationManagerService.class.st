@@ -92,6 +92,11 @@ NotificationManagerService >> insert: data into: aConnector [
 ]
 
 { #category : #request }
+NotificationManagerService >> interestedAnnouncements [
+	^ {   } 
+]
+
+{ #category : #request }
 NotificationManagerService >> newConnector [
 	^ robulab newConnector.
 ]
