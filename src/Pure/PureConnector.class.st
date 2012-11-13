@@ -47,7 +47,6 @@ PureConnector >> incrementRequestId [
 { #category : #'as yet unclassified' }
 PureConnector >> inflateResponse: aByteArray [
 	| class |
-	
 	class := PureResponse.
 	((aByteArray at: 1) = self notificationCode) ifTrue: [
 		class := PureNotification
@@ -73,8 +72,13 @@ PureConnector >> ip: anIp [
 ]
 
 { #category : #'as yet unclassified' }
+PureConnector >> newConnector [
+	^( PureConnector ip: ip port: port ) robot: robot ; yourself.
+]
+
+{ #category : #'as yet unclassified' }
 PureConnector >> notificationCode [
-	^ 'FF'.
+	^ 16rFF.
 ]
 
 { #category : #'as yet unclassified' }

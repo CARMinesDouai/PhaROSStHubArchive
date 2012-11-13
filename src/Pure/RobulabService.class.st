@@ -4,7 +4,6 @@ Class {
 	#instVars : [
 		'robulab',
 		'type',
-		'socket',
 		'listening'
 	],
 	#category : #'Pure-Services'
@@ -21,14 +20,16 @@ RobulabService class >> createFromRobulab: rob Type: type [
 	^service.
 ]
 
+{ #category : #accessing }
+RobulabService >> announcer [
+	^ robulab announcerFor: self.
+]
+
 { #category : #request }
 RobulabService >> delete: data [
-	| relatedService |
+
 	
-	relatedService=  (self robulab directoryService services at: ( (data at:3)asString ,(data at:4)asString ,(data at:1)asString ,(data at:2) asString ) ) .
-	self flag: #whatTheFuckIsThisListeningShit.
-	relatedService listening: false. "this"
-	
+		
 	^self robulab sendMessageAndWaitResponse: (PureRequest delete: data from: self).
 	
 	
@@ -60,7 +61,6 @@ RobulabService >> getInstanceNumber [
 
 { #category : #'initialize-release' }
 RobulabService >> initialize [ 
-	self socket: Socket newUDP .
 	self listening: false.
 ]
 
@@ -117,16 +117,6 @@ RobulabService >> sendNotification: notifDataString [
 
 ]
 
-{ #category : #accessing }
-RobulabService >> socket [
-	^ socket
-]
-
-{ #category : #accessing }
-RobulabService >> socket: anObject [
-	socket := anObject
-]
-
 { #category : #communication }
 RobulabService >> startListening [
 	| receptionBuffer messageRecu |
@@ -144,6 +134,11 @@ RobulabService >> startListening [
 			] on: ConnectionTimedOut do: [:ex|]
 		]
 	]forkAt: Processor userBackgroundPriority    .
+]
+
+{ #category : #service }
+RobulabService >> stop [
+	self flag: #remindToStopTheNotificationListener.
 ]
 
 { #category : #request }

@@ -38,7 +38,6 @@ TelemeterService >> getData [
 { #category : #'initialize-release' }
 TelemeterService >> initialize [ 
 	self telemeters: Dictionary new.
-	self socket: Socket newUDP .
 ]
 
 { #category : #printing }

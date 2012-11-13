@@ -29,6 +29,11 @@ PureNotification class >> notificationTimeStamp: anObject [
 	notificationTimeStamp := anObject
 ]
 
+{ #category : #accessing }
+PureNotification >> announcer [
+	^ target announcer
+]
+
 { #category : #'initialize-release' }
 PureNotification >> asAnnouncement [
 	^ ServiceNotification for: self target with: self.

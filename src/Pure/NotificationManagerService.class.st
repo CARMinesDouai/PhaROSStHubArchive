@@ -2,34 +2,57 @@ Class {
 	#name : #NotificationManagerService,
 	#superclass : #RobulabService,
 	#instVars : [
-		'notificationEntries'
+		'notificationEntries',
+		'notificationServices'
 	],
 	#category : #'Pure-Services'
 }
 
 { #category : #request }
 NotificationManagerService >> addNotificationRecordToInstance: aService withPeriod: aPeriod [
-	| reponse |
+	| response  connector  aMessage |
+	
+	(self alreadyReceivinNotificationsFrom: aService ) ifTrue: [
+		^ self.	
+	].
+	
 	(aPeriod between:  1 and: 255) ifFalse:[
 		Error signal: ' The given period must be between 1 and 255 '.
 	].
 
 	Transcript show: 'Asking for notifications to  ', aService class name,
-					  ' instance:', aService getInstanceNumber, 
+					  ' instance:', aService getInstanceNumber asString ,   
 					  ' every ',aPeriod asString ,' seconds.'
 					  ; cr.
 
-		
-	reponse := self insert: (aService getInstanceNumber), (PDRConverter as8BitsHexStringFromInteger: aPeriod) .
 	
 	
-	Transcript show: reponse data asString.
+	connector := self newConnector. 
+	response := self insert: '0', (aService getInstanceNumber asString), '00', (PDRConverter as8BitsHexStringFromInteger: aPeriod) into: connector.
+	
+	response success ifTrue: [  
+		self spawnNotificationConsumerFor: aService and: connector.
+	].
+	
+	Transcript show: response data asString.
+	
+]
+
+{ #category : #request }
+NotificationManagerService >> alreadyReceivinNotificationsFrom: aService [ 
+	^ notificationServices at: aService ifPresent: [  true ] ifAbsent:[ false ] .
+	
 ]
 
 { #category : #request }
 NotificationManagerService >> deleteNotificationRecordFromService: aService [
-	Transcript show: ' shutting down notifications from  ', aService class name , ' instance:', aService getInstanceNumber ,'.'.
-	self delete: aService getInstanceNumber.
+	Transcript show: ' shutting down notifications from  ', aService class name , ' instance:', aService getInstanceNumber asString ,'.'.
+
+	(self notificationServicesFor: aService ) stop.	
+
+	self delete: '0', aService getInstanceNumber asString, '00' .
+	
+
 ]
 
 { #category : #request }
@@ -55,6 +78,24 @@ NotificationManagerService >> getData [
 	
 ]
 
+{ #category : #request }
+NotificationManagerService >> initialize [ 
+	super  initialize.
+	notificationServices  := Dictionary new.
+]
+
+{ #category : #request }
+NotificationManagerService >> insert: data into: aConnector [
+	aConnector sendMessage: (PureMessage insert: data into: self).
+
+	
+]
+
+{ #category : #request }
+NotificationManagerService >> newConnector [
+	^ robulab newConnector.
+]
+
 { #category : #accessing }
 NotificationManagerService >> notificationEntries [
 	^ notificationEntries
@@ -66,6 +107,19 @@ NotificationManagerService >> notificationEntries: anObject [
 ]
 
 { #category : #request }
+NotificationManagerService >> notificationServicesFor: aService [ 
+	^ notificationServices at: aService
+]
+
+{ #category : #request }
 NotificationManagerService >> relatedNotificationClass [
 	^ self error: 'This service has not notifications'
+]
+
+{ #category : #request }
+NotificationManagerService >> spawnNotificationConsumerFor: aService and: aConnector [
+	
+	^ notificationServices at: aService put: [
+		NotificationConsumerProcess service: aService connector: aConnector
+	].
 ]

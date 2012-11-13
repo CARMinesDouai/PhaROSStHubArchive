@@ -62,8 +62,6 @@ LaserService >> getData [
 { #category : #'initialize-release' }
 LaserService >> initialize [ 
 	self echos: Dictionary new.
-	self socket: Socket newUDP .
-	self listening: false.
 	self semaphore: Semaphore new.
 ]
 

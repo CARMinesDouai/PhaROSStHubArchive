@@ -1,10 +1,13 @@
 Class {
 	#name : #Robulab,
 	#superclass : #Object,
+	#traits : 'TAnnouncer',
+	#classTraits : 'TAnnouncer classTrait',
 	#instVars : [
 		'services',
 		'directoryService',
-		'connector'
+		'connector',
+		'announcer'
 	],
 	#category : #'Pure-Kernel'
 }
@@ -12,6 +15,21 @@ Class {
 { #category : #'as yet unclassified' }
 Robulab class >> newWith: anIp and: aPort [
 	^ self new connector: (PureConnector ip: anIp port: aPort); start; yourself.
+]
+
+{ #category : #announcement }
+Robulab >> announcer [
+	^ announcer.
+]
+
+{ #category : #announcement }
+Robulab >> announcer: anAnnouncer [
+	announcer := anAnnouncer.
+]
+
+{ #category : #accessing }
+Robulab >> announcerFor: aLaserService [ 
+	^ self resolveAnnouncer.
 ]
 
 { #category : #sending }
@@ -55,6 +73,11 @@ Robulab >> loadServices [
 	
 
 
+]
+
+{ #category : #announcement }
+Robulab >> newConnector [
+	^ connector newConnector.
 ]
 
 { #category : #sending }
