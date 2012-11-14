@@ -8,9 +8,14 @@ Class {
 	#category : #'Pure-Services'
 }
 
+{ #category : #'as yet unclassified' }
+NotificationManagerService class >> consumeStrategy [ 
+	^ NotificationConsumerProcess
+]
+
 { #category : #request }
 NotificationManagerService >> addNotificationRecordToInstance: aService withPeriod: aPeriod [
-	| response  connector  aMessage |
+	|  connector  aMessage |
 	
 	(self alreadyReceivinNotificationsFrom: aService ) ifTrue: [
 		^ self.	
@@ -25,10 +30,11 @@ NotificationManagerService >> addNotificationRecordToInstance: aService withPeri
 					  ' every ',aPeriod asString ,' seconds.'
 					  ; cr.
 
+	self halt.
+
+	self spawnNotificationConsumerFor: aService and: self robulab connector for: aPeriod .
+
 	
-	response := self insert: '0', (aService getInstanceNumber asString), '00', (PDRConverter as8BitsHexStringFromInteger: aPeriod).
-	
-	Transcript show: response data asString.
 	
 ]
 
@@ -41,12 +47,12 @@ NotificationManagerService >> alreadyReceivinNotificationsFrom: aService [
 { #category : #request }
 NotificationManagerService >> deleteNotificationRecordFromService: aService [
 	Transcript show: ' shutting down notifications from  ', aService class name , ' instance:', aService getInstanceNumber asString ,'.'.
-
+self halt.
 	(self notificationServicesFor: aService ) stop.	
 
 	self delete: '0', aService getInstanceNumber asString, '00' .
 	
-
+	
 ]
 
 { #category : #request }
@@ -116,9 +122,8 @@ NotificationManagerService >> relatedNotificationClass [
 ]
 
 { #category : #request }
-NotificationManagerService >> spawnNotificationConsumerFor: aService and: aConnector [
-	
+NotificationManagerService >> spawnNotificationConsumerFor: aService and: aConnector for: aTime [ 
 	^ notificationServices at: aService put: (
-		NotificationConsumerProcess service: aService connector: aConnector
+		NotificationConsumerProcess service: aService connector: aConnector for: aTime talkingWith: self
 	).
 ]

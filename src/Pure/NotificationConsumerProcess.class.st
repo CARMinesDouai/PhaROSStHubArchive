@@ -5,7 +5,8 @@ Class {
 		'process',
 		'keepRunning',
 		'service',
-		'connector'
+		'connector',
+		'time'
 	],
 	#category : #'Pure-Services'
 }
@@ -13,6 +14,12 @@ Class {
 { #category : #'as yet unclassified' }
 NotificationConsumerProcess class >> service: aService connector: aConnector [
 	^ self new service: aService ; connector: aConnector; startUp ; yourself.
+]
+
+{ #category : #'as yet unclassified' }
+NotificationConsumerProcess class >> service: aService connector: aConnector for: aTime talkingWith: aNotificationService [
+	^ NotificationActiveConsumerProcess new service: aService ; connector: aConnector; time: aTime; setUp: aNotificationService ; yourself.
+	"	^ NotificationPasiveConsumerProcess new service: aService ; connector: aConnector; time: aTime; setUp: aNotificationService ; yourself."
 ]
 
 { #category : #'as yet unclassified' }
@@ -56,12 +63,8 @@ NotificationConsumerProcess >> service: aService [
 NotificationConsumerProcess >> startUp [
 	
 	process := [
-		| response |
 		[ self keepRunning ] whileTrue: [
-			response := connector receiveAnswer.
-			response isNotification ifFalse: [
-				self error: 'there is a response which is not a notification. Something creepy is happening :-o'.
-			].
+			self consume.
 		].
 		process := nil.
 		
@@ -71,5 +74,15 @@ NotificationConsumerProcess >> startUp [
 { #category : #'as yet unclassified' }
 NotificationConsumerProcess >> stop [
 	keepRunning := false.
-	connector socket close.
+	
+]
+
+{ #category : #'as yet unclassified' }
+NotificationConsumerProcess >> time [
+	^ time.
+]
+
+{ #category : #'as yet unclassified' }
+NotificationConsumerProcess >> time: aTime [
+	time := aTime.
 ]
