@@ -74,7 +74,9 @@ NotificationConsumerProcess >> startUp [
 { #category : #'as yet unclassified' }
 NotificationConsumerProcess >> stop [
 	keepRunning := false.
-	
+	(Delay forSeconds: 1) wait.
+	process terminate. 
+	process := nil.
 ]
 
 { #category : #'as yet unclassified' }
