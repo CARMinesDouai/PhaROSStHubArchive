@@ -21,6 +21,11 @@ PureClientUsesExamples class >> affichagePadClavier: unRobulab [
 PureClientUsesExamples >> workspaceBrowsingServices [
 | pdr |
 
+pdr := nil .
+Smalltalk garbageCollect .
+self assert: LaserService allInstances size = 0.
+self assert: Robulab  allInstances size = 0.
+
 
 pdr := Robulab newWith: #[192 168 1 2] and: 60000.
 
@@ -30,10 +35,9 @@ pdr with: NotificationManagerService do: [
 	: service |
 	service getData.
 	
-	pdr with: LaserService do: [
+	pdr with: LocalizationService  do: [
 		:laser |
-"		service deleteNotificationRecordFromService: laser."
-		service addNotificationRecordToInstance: laser withPeriod:  20.
+		service addNotificationRecordToInstance: laser withPeriod:  2.
 		
 	].
 ].
@@ -44,7 +48,6 @@ pdr with: IOService do: [
 	: service |
 	service getData .
 ].
-
 
 
 "Differential Drive"
@@ -66,10 +69,6 @@ pdr with: LaserService do: [
 	service stopPrettyPrint .	
 ].
 
-Smalltalk garbageCollect .
-
-LaserService allInstances.
-Robulab allInstances
 
 
 ]
