@@ -1355,7 +1355,7 @@ OCNSocketPluginLibrary >> waitForCompletionUntil: deadline [
 
 ]
 
-{ #category : #'Support For TCP' }
+{ #category : #'socket_api' }
 OCNSocketPluginLibrary >> waitForConnectionOf: anOCNSocket timeoutSeconds: timeout [
 	
 	self waitForConnectionOf: anOCNSocket timeoutSeconds: timeout 
@@ -1363,15 +1363,26 @@ OCNSocketPluginLibrary >> waitForConnectionOf: anOCNSocket timeoutSeconds: timeo
 
 ]
 
-{ #category : #'Support For TCP' }
+{ #category : #'socket_api' }
 OCNSocketPluginLibrary >> waitForConnectionOf: anOCNSocket timeoutSeconds: timeout onTimeoutDo: aTimeoutBlock [
-	| endTime |
+	"| endTime |
 	endTime := Time now asSeconds + timeout.
 	[(self primSocketConnectionStatus: anOCNSocket socketId) = Connected ifTrue: [^self].
 		Time now asSeconds > endTime.
 	] whileFalse.
-	aTimeoutBlock value
+	aTimeoutBlock value"
 
+	| startTime msecsDelta msecsEllapsed status |
+	startTime := Time millisecondClockValue.
+	msecsDelta := (timeout * 1000) truncated.
+	status := self primSocketConnectionStatus: anOCNSocket socketId.
+	[(status = WaitingForConnection) and: [(msecsEllapsed := Time millisecondsSince: startTime) < msecsDelta]]
+		whileTrue: [
+			semaphore waitTimeoutMSecs: msecsDelta - msecsEllapsed.
+			status := self primSocketConnectionStatus: anOCNSocket socketId].
+
+	status = Connected ifFalse: [^aTimeoutBlock value].
+	^ true
 ]
 
 { #category : #'Support For Receiving' }
