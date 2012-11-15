@@ -37,6 +37,12 @@ OCNSocket class >> sendDataBufferSize [
 	^2048
 ]
 
+{ #category : #'socket_api' }
+OCNSocket >> address [
+	
+	^self localAddress
+]
+
 { #category : #connection }
 OCNSocket >> basicDestroy [
 	self state: self destroyedStateSymbol.
@@ -73,6 +79,30 @@ OCNSocket >> boundStateSymbol [
 { #category : #'state names' }
 OCNSocket >> cleanStateSymbol [
 	^ #clean
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> close [
+	^self networkLibrary close: self.
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> closeAndDestroy [
+	self close.
+	^self destroy
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> closeAndDestroy:timeoutSeconds [
+	self flag: 'todo'.
+	self close.
+	^self destroy
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> dataAvailable [
+	
+	^self networkLibrary isDataAvailableFrom: self
 ]
 
 { #category : #connection }
@@ -128,6 +158,48 @@ OCNSocket >> isDestroyed [
 	^self state = self destroyedStateSymbol
 ]
 
+{ #category : #'socket_api' }
+OCNSocket >> isOtherEndClosed [
+	
+	^self networkLibrary isOtherEndClosed: self
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> isThisEndClosed [
+	
+	^self networkLibrary isThisEndClosed: self
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> isUnconnected [
+	
+	^self networkLibrary isUnconnected: self
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> isValid [
+	
+	^self networkLibrary isValid: self
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> isWaitingForConnection [
+	
+	^self networkLibrary isWaitingForConnection: self
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> localAddress [
+	
+	^self networkLibrary localAddress: self
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> localPort [
+	
+	^self networkLibrary localPort: self
+]
+
 { #category : #accessing }
 OCNSocket >> networkLibrary [
 	^ networkLibrary ifNil: [ networkLibrary := OCNNetworkLibraryProxyFactory networkLibraryProxy ]
@@ -143,9 +215,27 @@ OCNSocket >> newSocketId [
 	self subclassResponsibility 
 ]
 
+{ #category : #'socket_api' }
+OCNSocket >> port [
+	
+	^self localPort
+]
+
 { #category : #constants }
 OCNSocket >> receiveDataBufferSize [
 	^self class receiveDataBufferSize 
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> remoteAddress [
+	
+	^self networkLibrary remoteAddress: self
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> remotePort [
+	
+	^self networkLibrary remotePort: self
 ]
 
 { #category : #constants }
@@ -156,6 +246,12 @@ OCNSocket >> sendDataBufferSize [
 { #category : #accessing }
 OCNSocket >> sendTimeOutSeconds [
 	^self connectionTimeoutSeconds
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> setOption: aName value: aValue [ 
+	
+	^self networkLibrary set: self option: aName value: aValue 
 ]
 
 { #category : #accessing }
@@ -177,4 +273,47 @@ OCNSocket >> state [
 OCNSocket >> state: anObject [
 	
 	state := anObject
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> timeOut [
+	^ 3
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> waitForAcceptFor: timeout [
+	"Wait and accept an incoming connection. Return nil if it falis"
+	self waitForConnectionFor: timeout ifTimedOut: [^ nil].
+	^ self isConnected
+		ifTrue:[self accept]
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> waitForConnectionFor: timeout [
+	
+	self networkLibrary waitForConnectionOf: self timeoutSeconds: timeout onTimeoutDo: []
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> waitForConnectionFor: timeout ifTimedOut: timeoutBlock [
+	
+	self networkLibrary waitForConnectionOf: self timeoutSeconds: timeout onTimeoutDo: timeoutBlock
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> waitForDataFor: timeout ifClosed: closedBlock ifTimedOut: timedOutBlock [
+	self flag:'TODO: include a close condition'.
+	self networkLibrary waitForDataOn: self socketId for: timeout onTimedOut: timedOutBlock
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> waitForDataIfClosed: closedBlock [
+	self flag:'TODO: include a close condition'.
+	self networkLibrary waitForDataOn: self socketId for: self timeOut onTimedOut: closedBlock
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> waitForSendDoneFor: timeout [
+
+	self networkLibrary waitForSendDoneOn: self socketId for: timeout
 ]

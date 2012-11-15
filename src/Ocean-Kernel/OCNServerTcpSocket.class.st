@@ -14,6 +14,12 @@ OCNServerTcpSocket >> accept [
 	^self networkLibrary acceptFrom: self.
 ]
 
+{ #category : #'socket_api' }
+OCNServerTcpSocket >> acceptFrom: aSocket [
+	
+	^self networkLibrary acceptFrom: aSocket.
+]
+
 { #category : #accessing }
 OCNServerTcpSocket >> acceptTimeoutSeconds [
 	^ acceptTimeOutSeconds
@@ -63,6 +69,18 @@ OCNServerTcpSocket >> listenOn: anIpAddress [
 	"Listens on the interface whose IP corresponds to the provided address"
 	
 	[ self networkLibrary listen: self on: anIpAddress  ]
+		on: OCNSocketOperationFailureError
+		do: [ :ex | 
+			self destroy.
+			ex pass ].
+	self state: self listeningStateSymbol
+]
+
+{ #category : #'socket_api' }
+OCNServerTcpSocket >> listenOn: anIpAddress backlogSize: backlog [
+	"Listens on the interface whose IP corresponds to the provided address"
+	
+	[ self networkLibrary listen: self on: anIpAddress backlogSize: backlog  ]
 		on: OCNSocketOperationFailureError
 		do: [ :ex | 
 			self destroy.
