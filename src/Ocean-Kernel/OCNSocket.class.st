@@ -291,7 +291,7 @@ OCNSocket >> waitForAcceptFor: timeout [
 { #category : #'socket_api' }
 OCNSocket >> waitForConnectionFor: timeout [
 	
-	self networkLibrary waitForConnectionOf: self timeoutSeconds: timeout onTimeoutDo: []
+	self waitForConnectionFor: timeout ifTimedOut: []
 ]
 
 { #category : #'socket_api' }
