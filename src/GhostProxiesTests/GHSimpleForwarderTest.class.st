@@ -14,14 +14,14 @@ GHSimpleForwarderTest >> setUp [
 { #category : #'tests - handler answers' }
 GHSimpleForwarderTest >> testHandlerAnswerDebugging [
 	| proxy |
-	proxy := GHProxy createProxyFor: (Point x: 3 y: 4) handler: GHSimpleForwarderProxyHandler new. 
+	proxy := GHTargetBasedProxy createProxyFor: (Point x: 3 y: 4) handler: GHSimpleForwarderProxyHandler new. 
 	self assert: proxy printString = 'This is the print of a proxy'
 ]
 
 { #category : #'tests - proxy answers' }
 GHSimpleForwarderTest >> testProxyAnswerDebugging [
 	| proxy |
-	proxy := GHProxy createProxyFor: (Point x: 3 y: 4) handler: GHSimpleForwarderProxyHandler new. 
+	proxy := GHTargetBasedProxy createProxyFor: (Point x: 3 y: 4) handler: GHSimpleForwarderProxyHandler new. 
 	self assert: proxy isProxy
 ]
 
@@ -29,7 +29,7 @@ GHSimpleForwarderTest >> testProxyAnswerDebugging [
 GHSimpleForwarderTest >> testSimpleForwardingForClassesToClass [
     | aProxy aUser |
        aUser := GHUser named: 'Kurt'.
-	[aProxy := GHClassProxy createProxyAndReplace: GHUser handler: GHSimpleForwarderProxyHandler new. 
+	[aProxy := GHTargetBasedClassProxy createProxyAndReplace: GHUser handler: GHSimpleForwarderProxyHandler new. 
        self assert:  GHUser name equals: #GHUser. 
 	] ensure: [ aProxy uninstall ]
 ]
@@ -39,7 +39,7 @@ GHSimpleForwarderTest >> testSimpleForwardingForClassesToInstance [
     | aProxy aUser |
        aUser := GHUser named: 'Kurt'.
        
-	[ aProxy := GHClassProxy createProxyAndReplace: GHUser handler: GHSimpleForwarderProxyHandler new. 
+	[ aProxy := GHTargetBasedClassProxy createProxyAndReplace: GHUser handler: GHSimpleForwarderProxyHandler new. 
      self assert: aUser username equals: 'Kurt'.
 	] ensure: [ aProxy uninstall ]
 ]
@@ -48,7 +48,7 @@ GHSimpleForwarderTest >> testSimpleForwardingForClassesToInstance [
 GHSimpleForwarderTest >> testSimpleForwardingForClassesToSubclass [
     | aProxy aUser |
        aUser := GHUser named: 'Kurt'.
-	[aProxy := GHClassProxy createProxyAndReplace: GHUser handler: GHSimpleForwarderProxyHandler new. 
+	[aProxy := GHTargetBasedClassProxy createProxyAndReplace: GHUser handler: GHSimpleForwarderProxyHandler new. 
 	self assert:  GHUserSubclass name equals: #GHUserSubclass. 
 	] ensure: [ aProxy uninstall ]
 ]
@@ -57,7 +57,7 @@ GHSimpleForwarderTest >> testSimpleForwardingForClassesToSubclass [
 GHSimpleForwarderTest >> testSimpleForwardingForClassesToSubclassInstance [
     | aProxy aUser |
        aUser := GHUserSubclass named: 'Kurt'.
-	[ aProxy := GHClassProxy createProxyAndReplace: GHUser handler: GHSimpleForwarderProxyHandler new. 
+	[ aProxy := GHTargetBasedClassProxy createProxyAndReplace: GHUser handler: GHSimpleForwarderProxyHandler new. 
      self assert: aUser username equals: 'Kurt'.
 	] ensure: [ aProxy uninstall ]
 ]
@@ -67,7 +67,7 @@ GHSimpleForwarderTest >> testSimpleForwardingForMethodUsingBecome [
        | aProxy aUser method |
        aUser := GHUser named: 'Kurt'.
        method := GHUser methodDict at: #username.
-       [aProxy := GHProxy createProxyAndReplace: method handler: GHSimpleForwarderProxyHandler new. 
+       [aProxy := GHTargetBasedProxy createProxyAndReplace: method handler: GHSimpleForwarderProxyHandler new. 
        self assert: aProxy getSource equals: 'username ^ username'. 
        self assert: aUser username equals: 'Kurt'.
 	 ] ensure: [ aProxy uninstall ]
@@ -76,7 +76,7 @@ GHSimpleForwarderTest >> testSimpleForwardingForMethodUsingBecome [
 { #category : #'tests - regular objects' }
 GHSimpleForwarderTest >> testSimpleForwardingForRegularObject [
 	| proxy |
-	proxy := GHProxy createProxyFor: (Point x: 3 y: 4) handler: GHSimpleForwarderProxyHandler new. 
+	proxy := GHTargetBasedProxy createProxyFor: (Point x: 3 y: 4) handler: GHSimpleForwarderProxyHandler new. 
 	self assert: proxy x equals: 3. 
 	self assert: proxy y equals: 4.
 ]
@@ -84,14 +84,22 @@ GHSimpleForwarderTest >> testSimpleForwardingForRegularObject [
 { #category : #'tests - regular objects' }
 GHSimpleForwarderTest >> testSimpleForwardingForRegularObject2 [
 	| proxy |
-	proxy := GHProxy createProxyFor: (GHUser named: 'mariano') handler: GHSimpleForwarderProxyHandler new. 
+	proxy := GHTargetBasedProxy createProxyFor: (GHUser named: 'mariano') handler: GHSimpleForwarderProxyHandler new. 
 	self assert: proxy username = 'mariano'.
 ]
 
 { #category : #'tests - regular objects' }
 GHSimpleForwarderTest >> testSimpleForwardingForRegularObjectWithBecome [
 	| proxy |
-	proxy := GHProxy createProxyAndReplace: (Point x: 3 y: 4) handler: GHSimpleForwarderProxyHandler new. 
+	proxy := GHTargetBasedProxy createProxyAndReplace: (Point x: 3 y: 4) handler: GHSimpleForwarderProxyHandler new. 
+	self assert: proxy x equals: 3. 
+	self assert: proxy y equals: 4.
+]
+
+{ #category : #'tests - regular objects' }
+GHSimpleForwarderTest >> testSimpleForwardingNoTargetLeak [
+	| proxy |
+	proxy := GHTargetBasedProxy createProxyFor: (Point x: 3 y: 4) handler: GHSimpleForwarderProxyHandler new. 
 	self assert: proxy x equals: 3. 
 	self assert: proxy y equals: 4.
 ]
