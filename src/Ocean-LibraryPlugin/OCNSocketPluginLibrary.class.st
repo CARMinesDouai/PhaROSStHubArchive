@@ -231,11 +231,34 @@ OCNSocketPluginLibrary >> bind: aSocket toIpv4Address: anOCNIPV4SocketAddress [
 ]
 
 { #category : #'API-TCP' }
+OCNSocketPluginLibrary >> close: aSocket [
+	
+	aSocket socketId ifNil: [ ^self ].
+	isDestroyed ifTrue: [^self].
+	^self primSocketCloseConnection: aSocket socketId.
+]
+
+{ #category : #'API-TCP' }
 OCNSocketPluginLibrary >> connect: aSocket toServerWithIpv4Address: serverAddress [
+
+	^ self connect: aSocket toServerWithIpv4Address: serverAddress timeout: aSocket connectionTimeoutSeconds.
+
+]
+
+{ #category : #'API-TCP' }
+OCNSocketPluginLibrary >> connect: aSocket toServerWithIpv4Address: serverAddress timeout: timeoutSeconds [
 
 	self ensureNetworkInitialized.
 	self primSocket: aSocket socketId connectTo: serverAddress ip port: serverAddress port.
-	self waitForConnectionOf: aSocket timeoutSeconds: aSocket connectionTimeoutSeconds
+	self waitForConnectionOf: aSocket timeoutSeconds: timeoutSeconds
+
+]
+
+{ #category : #'socket_api' }
+OCNSocketPluginLibrary >> connectNonBlocking: aSocket toServerWithIpv4Address: serverAddress [
+
+	self ensureNetworkInitialized.
+	self primSocket: aSocket socketId connectTo: serverAddress ip port: serverAddress port.
 
 ]
 
@@ -277,6 +300,12 @@ OCNSocketPluginLibrary >> createUdpSocketDescriptorIdFor: anOCNSocket [
 OCNSocketPluginLibrary >> defaultAddressLookupTimeout [
 	^3 "seconds"
 	
+]
+
+{ #category : #'socket_api' }
+OCNSocketPluginLibrary >> disconnect: aSocket [
+
+	^ self primSocketAbortConnection: aSocket socketId
 ]
 
 { #category : #'initialize-release' }
@@ -375,10 +404,55 @@ OCNSocketPluginLibrary >> isDataAvailableFrom: socket [
 
 ]
 
+{ #category : #'socket_api' }
+OCNSocketPluginLibrary >> isOtherEndClosed: aSocket [
+	"Return true if this socket had the other end closed."
+
+	aSocket socketId == nil ifTrue: [^ false].
+	^ (self primSocketConnectionStatus: aSocket socketId) == OtherEndClosed
+
+]
+
 { #category : #'API-TCP' }
 OCNSocketPluginLibrary >> isSocketConnected: socket [ 
 	socket socketId ifNil: [^ false].
 	^ (self primSocketConnectionStatus: socket socketId) == self tcpSocketConnectedStatus
+
+]
+
+{ #category : #'socket_api' }
+OCNSocketPluginLibrary >> isThisEndClosed: aSocket [
+	"Return true if this socket had the this end closed."
+
+	aSocket socketId == nil ifTrue: [^ false].
+	^ (self primSocketConnectionStatus: aSocket socketId) == ThisEndClosed
+]
+
+{ #category : #'socket_api' }
+OCNSocketPluginLibrary >> isUnconnected: aSocket [
+	"Return true if this socket had the this end closed."
+
+	aSocket socketId == nil ifTrue: [^ false].
+	^ (self primSocketConnectionStatus: aSocket socketId) == 0
+]
+
+{ #category : #'socket_api' }
+OCNSocketPluginLibrary >> isValid: aSocket [
+	"Return true if this socket contains a valid, non-nil socket handle."
+
+	| status |
+	aSocket socketId == nil ifTrue: [^ false].
+	status := self primSocketConnectionStatus: aSocket socketId.
+	^ status ~= InvalidSocket
+
+]
+
+{ #category : #'socket_api' }
+OCNSocketPluginLibrary >> isWaitingForConnection: aSocket [
+	"Return true if this socket is waiting for a connection."
+
+	aSocket socketId == nil ifTrue: [^ false].
+	^ (self primSocketConnectionStatus: aSocket socketId) == WaitingForConnection
 
 ]
 
@@ -389,6 +463,21 @@ OCNSocketPluginLibrary >> listen: aServerSocket on: anIpAddress [
 		do: [ OCNSocketOperationFailureError signal: 'socket cannot listen' ]
 
 	
+]
+
+{ #category : #'socket_api' }
+OCNSocketPluginLibrary >> listen: aServerSocket on: anIpAddress backlogSize: backlog [
+	[self primSocket: aServerSocket socketId listenOn: anIpAddress port backlogSize: backlog interface: anIpAddress ip]
+		on: PrimitiveFailed 
+		do: [ OCNSocketOperationFailureError signal: 'socket cannot listen' ]
+
+	
+]
+
+{ #category : #'socket_api' }
+OCNSocketPluginLibrary >> localAddress: aSocket [
+	
+	^ self primSocketLocalAddress: aSocket socketId
 ]
 
 { #category : #'Support For NameResolving' }
@@ -422,6 +511,11 @@ OCNSocketPluginLibrary >> localHostName [
 	"sadly, this primitive returns the name stored in the localhost machine (e.g. machine.local on OSX) and not the name used by the DNS server "
 	
 	^hostname
+]
+
+{ #category : #'socket_api' }
+OCNSocketPluginLibrary >> localPort: aSocket [
+	^ self primSocketLocalPort: aSocket socketId
 ]
 
 { #category : #'Support For NameResolving' }
@@ -1069,6 +1163,18 @@ OCNSocketPluginLibrary >> releaseSemaphores [
 	readSemaphore := writeSemaphore := semaphore := nil.
 ]
 
+{ #category : #'socket_api' }
+OCNSocketPluginLibrary >> remoteAddress: aSocket [
+
+	^ self primSocketRemoteAddress: aSocket socketId
+]
+
+{ #category : #'socket_api' }
+OCNSocketPluginLibrary >> remotePort: aSocket [
+
+	^ self primSocketRemotePort: aSocket socketId
+]
+
 { #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> resolverMutex [
 	ResolverMutex ifNil: [ResolverMutex := Semaphore forMutualExclusion].
@@ -1119,6 +1225,23 @@ OCNSocketPluginLibrary >> sendUDPOn: aSocket datagram: aDatagramPacket [
 	
 ]
 
+{ #category : #'as yet unclassified' }
+OCNSocketPluginLibrary >> set: aSocket option: aName value: aValue [ 
+	| value |
+	"setup options on this socket, see Unix man pages for values for 
+	sockets, IP, TCP, UDP. IE SO_KEEPALIVE
+	returns an array, element one is the error number
+	element two is the resulting of the negotiated value.
+	See getOption for list of keys"
+
+	(aSocket socketId == nil or: [(self isValid: aSocket) not])
+		ifTrue: [OCNSocketOperationFailureError signal: 'Socket status must valid before setting an option'].
+	value := aValue asString.
+	aValue == true ifTrue: [value := '1'].
+	aValue == false ifTrue: [value := '0'].
+	^ self primSocket: aSocket socketId setOption: aName value: value
+]
+
 { #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> stringFromAddress: addr [
 	"Return a string representing the given host address as four decimal bytes delimited with decimal points."
@@ -1149,6 +1272,18 @@ OCNSocketPluginLibrary >> tcpReceiveFrom: aSocket [
 	^self receiveDataBuffer copyFrom: 1 to: bytesRead
 ]
 
+{ #category : #'socket_api' }
+OCNSocketPluginLibrary >> tcpReceiveFrom: aSocket into: aStringOrByteArray startingAt: aNumber [
+	| bytesRead |
+	bytesRead := self primSocket: aSocket socketId receiveDataInto: aStringOrByteArray startingAt: aNumber count: self receiveDataBuffer size.
+	^aStringOrByteArray copyFrom: 1 to: bytesRead
+]
+
+{ #category : #'socket_api' }
+OCNSocketPluginLibrary >> tcpReceiveFrom: aSocket startingAt: aNumber [
+	^ self tcpReceiveFrom: aSocket into: self receiveDataBuffer startingAt: aNumber
+]
+
 { #category : #'API-TCP' }
 OCNSocketPluginLibrary >> tcpSendData: aByteStringOrByteArray to: aSocket [
 	|socketId sentCount| 
@@ -1161,6 +1296,23 @@ OCNSocketPluginLibrary >> tcpSendData: aByteStringOrByteArray to: aSocket [
 	self 
 		waitForSendDoneOn: socketId 
 		for: aSocket sendTimeOutSeconds.
+	^sentCount
+
+
+]
+
+{ #category : #'API-TCP' }
+OCNSocketPluginLibrary >> tcpSendData: aByteStringOrByteArray to: aSocket for: aTimeoutInSeconds [
+	|socketId sentCount| 
+	socketId := aSocket socketId.
+	sentCount := self 
+					primSocket: socketId 
+					sendData: aByteStringOrByteArray 
+					startIndex: 1 
+					count: aByteStringOrByteArray size.
+	self 
+		waitForSendDoneOn: socketId 
+		for: aTimeoutInSeconds.
 	^sentCount
 
 
