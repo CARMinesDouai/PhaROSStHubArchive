@@ -1276,7 +1276,8 @@ OCNSocketPluginLibrary >> tcpReceiveFrom: aSocket [
 OCNSocketPluginLibrary >> tcpReceiveFrom: aSocket into: aStringOrByteArray startingAt: aNumber [
 	| bytesRead |
 	bytesRead := self primSocket: aSocket socketId receiveDataInto: aStringOrByteArray startingAt: aNumber count: self receiveDataBuffer size.
-	^aStringOrByteArray copyFrom: 1 to: bytesRead
+	aStringOrByteArray copyFrom: 1 to: bytesRead.
+	^bytesRead
 ]
 
 { #category : #'socket_api' }
