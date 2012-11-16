@@ -50,7 +50,11 @@ ConstantesRobulab class >> codesServices [
 		16r4005->'DIFFERENTIAL DRIVE'.
 		16r4004->'LASER'.
 		16r8002->'LOCALIZATION'.
-		16r4008->'TELEMETER'	 
+		16r4008->'TELEMETER'.
+		16r4009 -> 'DRIVE SERVICE'.
+		16r0002 -> 'DIAGNOSTIC SERVICE'.
+		16r400D -> 'BATTERY SERVICE'.
+		16r8001 -> 'TRAJECTORY SERVICE'
 	} asDictionary.
 ]
 
@@ -79,6 +83,6 @@ ConstantesRobulab class >> serviceClassPerType [
 		16r4004 -> LaserService .
 		16r8002 -> LocalizationService .
 		16r4008 -> TelemeterService .
-		16r8001 -> TrajectoryService .
+		16r8001 -> TrajectoryService .	
 	} asDictionary.
 ]

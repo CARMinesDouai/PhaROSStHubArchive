@@ -27,11 +27,14 @@ DirectoryService >> getData [
 		"instance"
 		instanceCode := decoder nextEncodedUInt16.
 		
-		((ConstantesRobulab serviceClassPerType at: serviceType) = DirectoryService) ifFalse:  [
-			self services at: (instanceCode) put:(RobulabService createFromRobulab: (self robulab) Type: (serviceType)) .
-		].
-		Transcript show: ((ConstantesRobulab codesServices at: serviceType),' ',instanceCode asString ,': ',serviceType asString );cr.
-		
+		ConstantesRobulab serviceClassPerType at: serviceType ifPresent: [ :v |
+			((ConstantesRobulab serviceClassPerType at: serviceType) = DirectoryService) ifFalse:  [
+				self services at: (instanceCode) put:(RobulabService createFromRobulab: (self robulab) Type: (serviceType)) .
+			].
+ 			Transcript show: ((ConstantesRobulab codesServices at: serviceType),' ',instanceCode asString ,': ',serviceType asString );cr.
+		] ifAbsent: [
+			Transcript show:  serviceType hex asString, ' -> not yet implemented'; cr
+		]
 	].
 	"Fin du traitement"
 	Transcript show: 'Récupération des services de Robulab terminée';cr.
