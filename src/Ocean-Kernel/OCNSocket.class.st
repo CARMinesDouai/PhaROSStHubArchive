@@ -315,7 +315,7 @@ OCNSocket >> waitForDataFor: timeout [
 { #category : #'socket_api' }
 OCNSocket >> waitForDataFor: timeout ifClosed: closedBlock ifTimedOut: timedOutBlock [
 	self flag:'TODO: include a close condition'.
-	self networkLibrary waitForDataOn: self socketId for: timeout onTimedOut: timedOutBlock
+	self networkLibrary waitForDataOn: self socketId for: timeout ifClosed: closedBlock ifTimedOut: timedOutBlock
 ]
 
 { #category : #'socket_api' }
