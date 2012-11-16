@@ -247,22 +247,38 @@ OCNConversationTcpSocket >> receiveDataInto: aStringOrByteArray startingAt: aNum
 
 { #category : #'socket_api' }
 OCNConversationTcpSocket >> receiveDataSignallingClosedInto: aStringOrByteArray startingAt: aNumber [
+	
+	| bytesRead closed |
 	self flag:'TODO: inform if closed'.
-	self isConnected ifFalse: [OCNSocketOperationForbiddenError signal: 'Socket should be connected before receiving'].
-	^self networkLibrary tcpReceiveFrom: self	into: aStringOrByteArray startingAt: aNumber
+	bytesRead := 0.
+	closed := false.
+	self isConnected ifFalse: [OCNSocketOperationForbiddenError signal: 'Socket should be connected before receiving'].	
+	bytesRead := 0.
+	[bytesRead = 0]
+		whileTrue: [
+			self waitForData.
+			bytesRead := self networkLibrary tcpReceiveFrom: self	into: aStringOrByteArray startingAt: aNumber].
+	^bytesRead
 ]
 
 { #category : #'socket_api' }
 OCNConversationTcpSocket >> receiveDataSignallingTimeout: timeout into: aStringOrByteArray startingAt: aNumber [
+	| bytesRead closed |
 	self flag:'TODO: inform if timeout'.
-	self isConnected ifFalse: [OCNSocketOperationForbiddenError signal: 'Socket should be connected before receiving'].
-	^self networkLibrary tcpReceiveFrom: self	into: aStringOrByteArray startingAt: aNumber
+	bytesRead := 0.
+	closed := false.
+	self isConnected ifFalse: [OCNSocketOperationForbiddenError signal: 'Socket should be connected before receiving'].	
+	
+	self waitForDataFor: timeout.
+	bytesRead := self networkLibrary tcpReceiveFrom: self	into: aStringOrByteArray startingAt: aNumber.
+	^bytesRead
 ]
 
 { #category : #'socket_api' }
 OCNConversationTcpSocket >> receiveDataTimeout: timeout into: aStringOrByteArray startingAt: aNumber [
 	self flag:'TODO: inform if timeout'.
 	self isConnected ifFalse: [OCNSocketOperationForbiddenError signal: 'Socket should be connected before receiving'].
+	self waitForDataFor: timeout ifClosed: [] ifTimedOut: [].
 	^self networkLibrary tcpReceiveFrom: self	into: aStringOrByteArray startingAt: aNumber
 ]
 
@@ -270,14 +286,15 @@ OCNConversationTcpSocket >> receiveDataTimeout: timeout into: aStringOrByteArray
 OCNConversationTcpSocket >> receiveDataWithTimeoutInto: aStringOrByteArray [
 	self flag:'TODO: inform if timeout'.
 	self isConnected ifFalse: [OCNSocketOperationForbiddenError signal: 'Socket should be connected before receiving'].
-	^self networkLibrary tcpReceiveFrom: self	into: aStringOrByteArray startingAt: 1
+	^self receiveDataWithTimeoutInto: aStringOrByteArray startingAt: 1
 ]
 
 { #category : #'socket_api' }
 OCNConversationTcpSocket >> receiveDataWithTimeoutInto: aStringOrByteArray startingAt: aNumber [
 	self flag:'TODO: inform if timeout'.
 	self isConnected ifFalse: [OCNSocketOperationForbiddenError signal: 'Socket should be connected before receiving'].
-	^self networkLibrary tcpReceiveFrom: self	into: aStringOrByteArray startingAt: aNumber
+	^self receiveDataTimeout: Socket standardTimeout into: aStringOrByteArray startingAt: aNumber 
+
 ]
 
 { #category : #'socket_api' }
