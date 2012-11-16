@@ -1386,7 +1386,31 @@ OCNSocketPluginLibrary >> waitForConnectionOf: anOCNSocket timeoutSeconds: timeo
 	^ true
 ]
 
-{ #category : #'Support For Receiving' }
+{ #category : #'socket_api' }
+OCNSocketPluginLibrary >> waitForDataOn: socketId for: timeoutSeconds ifClosed: closedBlock ifTimedOut: timedOutBlock [
+	"Wait for the given nr of seconds for data to arrive or signal a TimeOutException."
+	
+	| startTime msecsDelta |
+	startTime := Time millisecondClockValue.
+	msecsDelta := (timeoutSeconds * 1000) truncated.
+	[(Time millisecondsSince: startTime) < msecsDelta] whileTrue: [
+		(self primSocketReceiveDataAvailable: socketId) ifTrue: [^self].
+		"(socketId isNil or: [ (self primSocketConnectionStatus: socketId) ~= Connected]) ifTrue: [ 
+				
+		]."
+		"readSemaphore waitTimeoutMSecs: (msecsDelta / 10)".
+		(self primSocketConnectionStatus: socketId) == self tcpSocketConnectedStatus
+			ifFalse: [^timedOutBlock value].
+		(Delay forMilliseconds: msecsDelta / 10) wait
+	].
+	
+	(self primSocketReceiveDataAvailable: socketId) ifFalse: [
+			(self primSocketConnectionStatus: socketId) == self tcpSocketConnectedStatus
+				ifTrue: [^timedOutBlock value]
+				ifFalse: [^closedBlock value]].
+]
+
+{ #category : #'socket_api' }
 OCNSocketPluginLibrary >> waitForDataOn: socketId for: timeoutSeconds onTimedOut: timedOutBlock [
 	"Wait for the given nr of seconds for data to arrive or signal a TimeOutException."
 	
