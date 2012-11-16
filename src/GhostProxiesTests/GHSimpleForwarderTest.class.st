@@ -1,7 +1,7 @@
 Class {
 	#name : #GHSimpleForwarderTest,
 	#superclass : #TestCase,
-	#category : #GhostProxiesTests
+	#category : #'GhostProxiesTests-SimpleForwarderExample'
 }
 
 { #category : #running }
