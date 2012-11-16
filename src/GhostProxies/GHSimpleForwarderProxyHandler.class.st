@@ -1,7 +1,7 @@
 Class {
 	#name : #GHSimpleForwarderProxyHandler,
 	#superclass : #GHProxyHandler,
-	#category : #GhostProxies
+	#category : #'GhostProxies-SimpleForwarderExample'
 }
 
 { #category : #'handle - methods' }

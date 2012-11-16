@@ -5,7 +5,7 @@ Class {
 		'handler',
 		'target'
 	],
-	#category : #GhostProxies
+	#category : #'GhostProxies-SimpleForwarderExample'
 }
 
 { #category : #'instance creation' }
