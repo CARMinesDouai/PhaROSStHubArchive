@@ -215,7 +215,10 @@ OCNConversationTcpSocket >> receive [
 
 { #category : #'socket_api' }
 OCNConversationTcpSocket >> receiveData [
-	^ self receive.
+	| buffer bytesRead |
+	buffer := String new: 2000.
+	bytesRead := self receiveDataInto: buffer.
+	^buffer copyFrom: 1 to: bytesRead
 ]
 
 { #category : #'socket_api' }
@@ -230,8 +233,16 @@ OCNConversationTcpSocket >> receiveDataInto: aStringOrByteArray [
 
 { #category : #'socket_api' }
 OCNConversationTcpSocket >> receiveDataInto: aStringOrByteArray startingAt: aNumber [
-	self isConnected ifFalse: [OCNSocketOperationForbiddenError signal: 'Socket should be connected before receiving'].
-	^self networkLibrary tcpReceiveFrom: self	into: aStringOrByteArray startingAt: aNumber
+	
+	| bytesRead closed |
+	bytesRead := 0.
+	closed := false.
+	self isConnected ifFalse: [OCNSocketOperationForbiddenError signal: 'Socket should be connected before receiving'].	
+	[closed not and: [bytesRead = 0]]
+		whileTrue: [
+			self waitForDataIfClosed: [closed := true].
+			bytesRead := self networkLibrary tcpReceiveFrom: self	into: aStringOrByteArray startingAt: aNumber].
+	^bytesRead
 ]
 
 { #category : #'socket_api' }
