@@ -116,7 +116,9 @@ ConfigurationOfPure >> baseline10: spec [
 	spec for: #common do: [
 			spec blessing: #baseline.
 			spec repository: 'http://car.mines-douai.fr/squeaksource/Pure'.
-			spec package: 'Pure'.
+			spec package: 'Announcements'.
+			spec package: 'Pure'with: [ 
+				spec requires: 'Announcements']
 	].
 
 
