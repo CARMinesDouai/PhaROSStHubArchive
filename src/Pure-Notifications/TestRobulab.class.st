@@ -8,8 +8,9 @@ Class {
 }
 
 { #category : #'initialize-release' }
-TestRobulab >> initialize [  
-	robulab := Robulab new.
+TestRobulab >> setUp [
+	super setUp.  
+	robulab := Robulab newWith: #[192 168 1 2] and: 60000.
 ]
 
 { #category : #TestSurRequetes }
