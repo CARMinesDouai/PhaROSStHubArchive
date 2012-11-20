@@ -123,6 +123,30 @@ ConfigurationOfGhost >> baseline10: spec [
 		] 
 ]
 
+{ #category : #baselines }
+ConfigurationOfGhost >> baseline11: spec [ 
+	<version: '1.1-baseline'>
+	
+	spec for: #common do: [
+		spec blessing: #baseline.
+	].
+		
+	spec for: #pharo do: [
+		
+		spec repository: 'http://ss3.gemstone.com/ss/Ghost'.
+
+		spec package: 'GhostProxies'.
+		spec package: 'GhostProxiesTests' with: [ spec requires: #('GhostProxies') ].
+		
+		spec
+ 			group: 'default' with: #( 'Core' 'Tests' );
+			group: 'Core' with: #('GhostProxies' );
+			group: 'Tests' with: #('GhostProxiesTests');
+			group: 'DevelopmentGroup' with: #( 'Core' 'Tests' )
+			
+		] 
+]
+
 { #category : #accessing }
 ConfigurationOfGhost >> project [
 
@@ -141,6 +165,8 @@ ConfigurationOfGhost >> stable: spec [
 	<symbolicVersion: #'stable'>
 	spec for: #'pharo1.3.x' version: '1.0'.
 	spec for: #'pharo1.4.x' version: '1.0'.
+	spec for: #'pharo2.x' version: '1.1'.
+	
 ]
 
 { #category : #versions }
@@ -158,6 +184,28 @@ ConfigurationOfGhost >> version10: spec [
 		spec package: 'SimpleLogger' with: 'SimpleLogger-MarianoMartinezPeck.11'.
 		spec package: 'GhostProxies' with: 'GhostProxies-MarianoMartinezPeck.26'.
 		spec package: 'GhostProxiesTests' with: 'GhostProxiesTests-MarianoMartinezPeck.12'.
+
+		
+	]
+			
+]
+
+{ #category : #versions }
+ConfigurationOfGhost >> version11: spec [
+	<version: '1.1' imports: #('1.1-baseline')>
+
+	spec for: #common do: [
+		spec blessing: #release.
+		spec author: 'Mariano Martinez Peck'.
+		spec description: '
+		- Do not use Marea Simple logger. Lets print to Transcript and in the future use a logger integrated in Pharo.
+		- This version is for Pharo 2.0'
+	].
+	
+	spec for: #pharo do: [		
+				
+		spec package: 'GhostProxies' with: 'GhostProxies-MarianoMartinezPeck.31'.
+		spec package: 'GhostProxiesTests' with: 'GhostProxiesTests-MarianoMartinezPeck.14'.
 
 		
 	]
