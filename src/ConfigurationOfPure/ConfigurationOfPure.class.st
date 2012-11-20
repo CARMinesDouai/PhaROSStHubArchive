@@ -116,9 +116,16 @@ ConfigurationOfPure >> baseline10: spec [
 	spec for: #common do: [
 			spec blessing: #baseline.
 			spec repository: 'http://car.mines-douai.fr/squeaksource/Pure'.
-			spec package: 'Announcements'.
+			spec project: 'CommonTraits' with: [
+				spec 
+					className: 'ConfigurationOfCommonTraits';
+					file: 'ConfigurationOfCommonTraits' ;
+					versionString: #bleedingEdge;
+					repository: 'http://ss3.gemstone.com/ss/CommonTraits'.
+			].
 			spec package: 'Pure'with: [ 
-				spec requires: 'Announcements']
+				spec requires: 'CommonTraits'
+			]
 	].
 
 
