@@ -205,7 +205,7 @@ ConfigurationOfGhost >> version11: spec [
 	spec for: #pharo do: [		
 				
 		spec package: 'GhostProxies' with: 'GhostProxies-MarianoMartinezPeck.32'.
-		spec package: 'GhostProxiesTests' with: 'GhostProxiesTests-MarianoMartinezPeck.14'.
+		spec package: 'GhostProxiesTests' with: 'GhostProxiesTests-MarianoMartinezPeck.15'.
 
 		
 	]
