@@ -121,7 +121,7 @@ GHProxyHandler >> isMessageNotToIntercept: aMessage [
 
 { #category : #private }
 GHProxyHandler >> log: aString [
-	GHGhostLogger logger log: aString.
+	GHGhostLogger log: aString.
 ]
 
 { #category : #'handle - API' }

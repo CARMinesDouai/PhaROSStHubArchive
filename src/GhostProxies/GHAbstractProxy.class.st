@@ -14,7 +14,7 @@ GHAbstractProxy >> class [
 
 { #category : #logging }
 GHAbstractProxy >> log: aString [
-	GHGhostLogger logger log: aString.
+	GHGhostLogger log: aString.
 ]
 
 { #category : #API }
