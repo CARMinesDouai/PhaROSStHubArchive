@@ -7,8 +7,6 @@ Class {
 { #category : #running }
 GHSimpleForwarderTest >> setUp [
 	GHProxyTrap initialize.   
-	FileDirectory default deleteFileNamed:  'GhostLog.txt'.
-	GHGhostLogger changeToFileLogger 
 ]
 
 { #category : #'tests - handler answers' }
