@@ -6,7 +6,8 @@ Class {
 		'port',
 		'socket',
 		'currentRequestId',
-		'robot'
+		'robot',
+		'mutex'
 	],
 	#category : #'Pure-Kernel'
 }
@@ -35,6 +36,23 @@ PureConnector >> consumeRequestId [
 
 ]
 
+{ #category : #service }
+PureConnector >> destroy [
+	socket destroy.
+	robot := nil.
+]
+
+{ #category : #'as yet unclassified' }
+PureConnector >> discoverServices [ 
+	| response |
+	mutex critical: [
+		self  send: '01000000'.
+		response :=  self  receiveAnswer.
+	].
+	^ response.
+	
+]
+
 { #category : #'as yet unclassified' }
 PureConnector >> incrementRequestId [
 	currentRequestId := currentRequestId +1 .
@@ -57,8 +75,10 @@ PureConnector >> inflateResponse: aByteArray [
 
 { #category : #'as yet unclassified' }
 PureConnector >> initialize [ 
+	
 	socket := Socket newUDP.
 	currentRequestId := 1.
+	mutex := Mutex new.
 ]
 
 { #category : #'as yet unclassified' }
@@ -69,11 +89,6 @@ PureConnector >> ip [
 { #category : #'as yet unclassified' }
 PureConnector >> ip: anIp [
 	ip := anIp.
-]
-
-{ #category : #'as yet unclassified' }
-PureConnector >> newConnector [
-	^( PureConnector ip: ip port: port ) robot: robot ; yourself.
 ]
 
 { #category : #'as yet unclassified' }
@@ -94,7 +109,6 @@ PureConnector >> port: aPort [
 { #category : #'as yet unclassified' }
 PureConnector >> receiveAnswer [
   | buffer responseSize response |
-	
 	[
 		buffer := ByteArray new: 3000.
 		self socket waitForData.
@@ -120,32 +134,32 @@ PureConnector >> robot: aRobotManager [
 
 { #category : #'as yet unclassified' }
 PureConnector >> send: aStringMessage [
-
-	self socket 
-		sendData: (ByteArray readHexFrom: aStringMessage)
+	self socket sendData: (ByteArray readHexFrom: aStringMessage)
 		toHost: self ip
-		port: self port.
+		port: self port.	
+
+	
 		
 ]
 
 { #category : #'as yet unclassified' }
 PureConnector >> sendMessage: aMessage [ 
-	| id |
-	id := self consumeRequestId.
+	| id response |
 	
-	self send: id, aMessage asHex.
-	^ self receiveAnswer. 
-	
-
+	mutex critical: [
+		id := self consumeRequestId.
+		self send: id, aMessage asHex.
+		response :=  self receiveAnswer. 
+	].
+	^ response. 
 	
 ]
 
 { #category : #'as yet unclassified' }
 PureConnector >> sendNotification: aMessage [ 
-	self send: (self notificationCode printStringBase: 16), aMessage asHex.
-	
-
-	
+	mutex critical: [
+		self send: (self notificationCode printStringBase: 16), aMessage asHex.
+	]
 ]
 
 { #category : #'as yet unclassified' }

@@ -4,7 +4,6 @@ Class {
 	#traits : 'TAnnouncer',
 	#classTraits : 'TAnnouncer classTrait',
 	#instVars : [
-		'services',
 		'directoryService',
 		'connector',
 		'announcer'
@@ -43,6 +42,12 @@ Robulab >> connector: aConnector [
 	connector robot: self.
 ]
 
+{ #category : #service }
+Robulab >> destroy [
+	directoryService destroy.
+	connector destroy.
+]
+
 { #category : #accessing }
 Robulab >> directoryService [
 	^ directoryService
@@ -55,8 +60,8 @@ Robulab >> directoryService: anObject [
 
 { #category : #service }
 Robulab >> discoverServices [
-	self connector send: '01000000'.
-	^ self connector receiveAnswer.
+	^ self connector discoverServices.
+
 	
 ]
 
@@ -73,11 +78,6 @@ Robulab >> loadServices [
 	
 
 
-]
-
-{ #category : #announcement }
-Robulab >> newConnector [
-	^ connector newConnector.
 ]
 
 { #category : #sending }

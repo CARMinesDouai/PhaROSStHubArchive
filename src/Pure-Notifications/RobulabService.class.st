@@ -36,6 +36,11 @@ RobulabService >> delete: data [
 	
 ]
 
+{ #category : #service }
+RobulabService >> destroy [
+	robulab := nil. 
+]
+
 { #category : #request }
 RobulabService >> get [ 
 	^self robulab sendMessageAndWaitResponse: (PureRequest getFrom: self).
@@ -43,7 +48,8 @@ RobulabService >> get [
 
 { #category : #request }
 RobulabService >> getData [ 
-	self subclassResponsibility 
+	"imlpementar"
+		self flag: #implemeeent
 ]
 
 { #category : #accessing }

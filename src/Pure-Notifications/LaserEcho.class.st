@@ -28,6 +28,11 @@ LaserEcho >> angle: anObject [
 ]
 
 { #category : #accessing }
+LaserEcho >> asString [ 
+	^ '----- angle: ', angle asString, ' distance: ', distance asString.
+]
+
+{ #category : #accessing }
 LaserEcho >> distance [
 	^ distance
 ]

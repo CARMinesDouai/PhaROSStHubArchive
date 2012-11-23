@@ -12,14 +12,9 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-NotificationConsumerProcess class >> service: aService connector: aConnector [
-	^ self new service: aService ; connector: aConnector; startUp ; yourself.
-]
-
-{ #category : #'as yet unclassified' }
 NotificationConsumerProcess class >> service: aService connector: aConnector for: aTime talkingWith: aNotificationService [
 	^ NotificationActiveConsumerProcess new service: aService ; connector: aConnector; time: aTime; setUp: aNotificationService ; yourself.
-	"	^ NotificationPasiveConsumerProcess new service: aService ; connector: aConnector; time: aTime; setUp: aNotificationService ; yourself."
+"	^ NotificationPasiveConsumerProcess new service: aService ; connector: aConnector; time: aTime; setUp: aNotificationService ; yourself."
 ]
 
 { #category : #'as yet unclassified' }
@@ -62,13 +57,16 @@ NotificationConsumerProcess >> service: aService [
 { #category : #'as yet unclassified' }
 NotificationConsumerProcess >> startUp [
 	
-	process := [
-		[ self keepRunning ] whileTrue: [
-			self consume.
-		].
-		process := nil.
-		
-	] forkAt: Processor userBackgroundPriority  named: 'NotificationConsumer'.
+	process ifNil: [
+		self keepRunning: true. 
+		process := [
+			[ self keepRunning ] whileTrue: [
+				self consume.
+			].
+			process := nil.
+			
+		] forkAt: Processor userBackgroundPriority  named: 'NotificationConsumer'.
+	].
 ]
 
 { #category : #'as yet unclassified' }

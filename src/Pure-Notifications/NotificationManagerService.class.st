@@ -2,7 +2,6 @@ Class {
 	#name : #NotificationManagerService,
 	#superclass : #RobulabService,
 	#instVars : [
-		'notificationEntries',
 		'notificationServices'
 	],
 	#category : #'Pure-Services'
@@ -30,7 +29,6 @@ NotificationManagerService >> addNotificationRecordToInstance: aService withPeri
 					  ' every ',aPeriod asString ,' seconds.'
 					  ; cr.
 
-	self halt.
 
 	self spawnNotificationConsumerFor: aService and: self robulab connector for: aPeriod .
 
@@ -40,19 +38,30 @@ NotificationManagerService >> addNotificationRecordToInstance: aService withPeri
 
 { #category : #request }
 NotificationManagerService >> alreadyReceivinNotificationsFrom: aService [ 
-	^ notificationServices at: aService ifPresent: [  true ] ifAbsent:[ false ] .
+	^ notificationServices at: aService ifPresent: [ : s| true ] ifAbsent:[ false ] .
 	
 ]
 
 { #category : #request }
 NotificationManagerService >> deleteNotificationRecordFromService: aService [
 	Transcript show: ' shutting down notifications from  ', aService class name , ' instance:', aService getInstanceNumber asString ,'.'.
-self halt.
-	(self notificationServicesFor: aService ) stop.	
-
+	notificationServices at: aService ifPresent: [ :s | 
+		s stop.
+		notificationServices removeKey: aService.
+	].
 	self delete: '0', aService getInstanceNumber asString, '00' .
 	
 	
+]
+
+{ #category : #request }
+NotificationManagerService >> destroy [
+	super destroy.
+	notificationServices do: [
+		:p |
+		p stop. 	
+	].
+	notificationServices := nil.
 ]
 
 { #category : #request }
@@ -94,21 +103,6 @@ NotificationManagerService >> insert: data into: aConnector [
 { #category : #request }
 NotificationManagerService >> interestedAnnouncements [
 	^ {   } 
-]
-
-{ #category : #request }
-NotificationManagerService >> newConnector [
-	^ robulab newConnector.
-]
-
-{ #category : #accessing }
-NotificationManagerService >> notificationEntries [
-	^ notificationEntries
-]
-
-{ #category : #accessing }
-NotificationManagerService >> notificationEntries: anObject [
-	notificationEntries := anObject
 ]
 
 { #category : #request }

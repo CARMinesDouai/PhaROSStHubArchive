@@ -10,34 +10,32 @@ Class {
 
 { #category : #request }
 TelemeterService >> getData [
-	| decoder compteurTelemeter |
+	| decoder  telemeterId  xValue |
 
 	Transcript show:'- - - - - - - - - -';cr.
 	Transcript show: ' Acquisition des données duTelemeter Service ',self getInstanceNumber asString , ':';cr.
 	decoder := self get decoder.
 
-
+	telemeters := OrderedCollection new. 
 	
-	self telemeterNumber: (decoder nextEncodedInt32). 
-
-	compteurTelemeter := 1.
-	self telemeterNumber timesRepeat:  [
-		self telemeters at: compteurTelemeter put:(
+	[ decoder hasData ] whileTrue: [
+		self telemeters add: (
 			Telemeter  createTelemeterWithX:  (decoder nextEncodedFloat32)
 						Y:   (decoder nextEncodedFloat32)
 						Orientation: (decoder nextEncodedFloat32)
 						Field:  (decoder nextEncodedFloat32)
-						mini:  (decoder nextEncodedFloat32)
-						maxi: (decoder nextEncodedFloat32)
-						current: (decoder nextEncodedFloat32)).
-		compteurTelemeter:= compteurTelemeter+1.
+						minimum:  (decoder nextEncodedFloat32)
+						maximum: (decoder nextEncodedFloat32)			
+			).
+	].
 
-		].
+
+
 ]
 
 { #category : #'initialize-release' }
 TelemeterService >> initialize [ 
-	self telemeters: Dictionary new.
+	self telemeters: OrderedCollection new.
 ]
 
 { #category : #printing }
@@ -80,7 +78,7 @@ TelemeterService >> relatedNotificationClass [
 
 { #category : #accessing }
 TelemeterService >> telemeterNumber [
-	^ telemeterNumber
+	^ telemeters size.
 ]
 
 { #category : #accessing }

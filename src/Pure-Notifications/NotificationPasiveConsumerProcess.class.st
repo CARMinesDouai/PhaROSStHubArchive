@@ -18,8 +18,7 @@ NotificationPasiveConsumerProcess >> consume [
 { #category : #'as yet unclassified' }
 NotificationPasiveConsumerProcess >> setUp: aNotificationService [
 	| response  |
-		connector := connector newConnector.
-		response := aNotificationService insert: '0', (aNotificationService getInstanceNumber asString), '00', (PDRConverter as8BitsHexStringFromInteger: self time) into: connector.
+		response := aNotificationService insert: '0', (service getInstanceNumber asString), '00', (PDRConverter as8BitsHexStringFromInteger: self time) .
 		Transcript show: response asString.
 		response success ifTrue: [
 			self startUp.

@@ -43,48 +43,25 @@ DifferentialDriveService >> currentLinearSpeed: anObject [
 DifferentialDriveService >> getData [
 	|decoder | 
 	
-	"Acquisition des données du Differential Drive Service"
-	Transcript show:'- - - - - - - - - -';cr.
-	Transcript show: ' Acquisition des données du Differential Drive Service:';cr.
 
 	decoder := self get decoder.
 	
-	Transcript show: 'Récupération des vitesses cibles:';cr.
-	"Valeurs cibles:"
-	self targetLinearSpeed:  decoder nextEncodedFloat32. 	
-	self targetAngularSpeed: decoder nextEncodedFloat32. 
-
-	
-	Transcript show: 'Récupération des vitesses courantes:';cr.
-	"Valeurs courantes"
-	self currentLinearSpeed: decoder nextEncodedFloat32. 	
-	self currentAngularSpeed: decoder nextEncodedFloat32. 
-
-	
-	Transcript show: 'Récupération des constantes du Differential Drive Service:';cr.
-	"Extremum vitesses linéaire"
 	self maximumLinearSpeed:  decoder nextEncodedFloat32. 	
 	self minimumLinearSpeed:  decoder nextEncodedFloat32.  
 
-	
-	"Extremums vitesses angulaires"
 
 	self maximumAngularSpeed:  decoder nextEncodedFloat32. 
 	self minimumAngularSpeed:  decoder nextEncodedFloat32. 
 
-	
-	"Extremums d'accélération"
+
 	self maximumLinearAcceleration: decoder nextEncodedFloat32. 	
 	self minimumLinearAcceleration: decoder nextEncodedFloat32. 
 	
 	self maximumAngularAcceleration: decoder nextEncodedFloat32. 	
 	self minimumAngularAcceleration: decoder nextEncodedFloat32. 
 	
-	"Distance entre les roues"
 	self width: decoder nextEncodedFloat32. 
 	
-	
-	Transcript cr.
 	
 ]
 
@@ -231,7 +208,7 @@ linSpeedHex:=PDRConverter as32BitsHexStringFromFloat: linspeed.
 angSpeedHex:=PDRConverter as32BitsHexStringFromFloat: angspeed.
 
 
-self sendNotification: linSpeedHex,angSpeedHex.
+self sendNotification:'01', linSpeedHex,angSpeedHex.
 ]
 
 { #category : #accessing }

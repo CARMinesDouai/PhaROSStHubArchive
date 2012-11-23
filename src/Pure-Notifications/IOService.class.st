@@ -110,22 +110,10 @@ IOService >> getData [
 
 	
 	self analogInputNumber: decoder nextEncodedInt32.
-	1 to: self analogInputNumber do: [
-		:idx | 
-		self analogInputs at: idx put: decoder nextEncodedInt16.
-	].
 	
 	self analogOutputNumber: decoder nextEncodedInt32.
-	1 to: self analogOutputNumber do: [
-		:idx |
-		self analogOutputs at: idx put: decoder nextEncodedInt16.
-	].
 		
 	self digitalInputNumber: decoder nextEncodedInt32.
-
-	self flag:#reallyWhatTheFuck.
-	" this bytes are swallowed 'cause... FUCK YOU! thats why. '"
-	decoder nextEncodedBytes: (self digitalInputNumber/8) asInteger.
 	
 	self digitalOutputNumber: decoder nextEncodedInt32.
 	

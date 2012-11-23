@@ -14,10 +14,10 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-Telemeter class >> createTelemeterWithX: xPos Y: yPos Orientation: orientation Field: field mini: min maxi: max current: current [
+Telemeter class >> createTelemeterWithX: xPos Y: yPos Orientation: orientation Field: field minimum: min maximum: max [ 
 	| tempTelemeter |
 	tempTelemeter := Telemeter new.
-	tempTelemeter xPosition: xPos; yPosition: yPos; orientation: orientation; fieldOfView: field; minimumMeasurementRange: min; maximumMeasurementRange: max; currentMeasurementRange: current.
+	tempTelemeter xPosition: xPos; yPosition: yPos; orientation: orientation; fieldOfView: field; minimumMeasurementRange: min; maximumMeasurementRange: max.
 	^tempTelemeter
 ]
 

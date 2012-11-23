@@ -1,9 +1,6 @@
 Class {
 	#name : #NotificationActiveConsumerProcess,
 	#superclass : #NotificationConsumerProcess,
-	#instVars : [
-		'notificationService'
-	],
 	#category : #'Pure-Services'
 }
 
@@ -17,7 +14,7 @@ NotificationActiveConsumerProcess >> consume [
 { #category : #'as yet unclassified' }
 NotificationActiveConsumerProcess >> setUp: aNotificationService [
 	| response  |
-		response := aNotificationService insert: '0', (aNotificationService getInstanceNumber asString), '00', (PDRConverter as8BitsHexStringFromInteger: self time).
+		response := aNotificationService insert: '0', (service getInstanceNumber asString), '00', (PDRConverter as8BitsHexStringFromInteger: self time).
 		Transcript show: response asString.
 		response success ifTrue: [
 			self startUp.

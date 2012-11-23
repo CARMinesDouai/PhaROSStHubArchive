@@ -35,8 +35,7 @@ LaserService >> echos: anObject [
 { #category : #request }
 LaserService >> getData [ 
 	| compteurEcho decoder |
-	Transcript show:'- - - - - - - - - -';cr.
-	Transcript show: ' Acquisition des données du Laser Service:';cr.
+
 	decoder := self get decoder.
 
 	
@@ -46,16 +45,6 @@ LaserService >> getData [
 	self orientation: decoder nextEncodedFloat32. 
 	self echoNumber: decoder nextEncodedInt32. 
 
-	
-	compteurEcho:=1.
-	self echoNumber timesRepeat:  [
-		self echos  at: compteurEcho 
-					put: (
-							LaserEcho createEchoWithAngle: (decoder nextEncodedFloat32) 
-									     andFloatDistance: (decoder nextEncodedFloat32) 
-					).
-			compteurEcho:= compteurEcho+1.
-	].
 	
 ]
 
@@ -131,13 +120,16 @@ LaserService >> receiveNotificationFromRobulab: aMessage [
 	decoder nextEncodedBytes: 8.
 	idx := 0.
 	[decoder hasData ] whileTrue: [ 
+		| echo |
+			echo := LaserEcho createEchoWithAngle: ( decoder nextEncodedFloat32 ) andFloatDistance: (decoder nextEncodedFloat32).
 			idx := idx + 1.
-			self echos at: idx put:(
-				LaserEcho createEchoWithAngle: ( decoder nextEncodedFloat32 ) andFloatDistance: (decoder nextEncodedFloat32) ).
+			self echos at: idx put: echo.
+			Transcript cr; show: idx asString, ' ', echo asString.
+			
 	].
 	self echoNumber: idx.
 	self semaphore signal.
-	Transcript cr;show: 'MAJ du LaserService '.
+
 ]
 
 { #category : #printing }

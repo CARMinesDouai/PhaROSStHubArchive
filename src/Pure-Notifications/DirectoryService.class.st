@@ -7,6 +7,12 @@ Class {
 	#category : #'Pure-Services'
 }
 
+{ #category : #service }
+DirectoryService >> destroy [
+	super destroy.
+	services do: [ :s | (s isKindOf: DirectoryService ) ifFalse: [ s destroy ]].
+]
+
 { #category : #request }
 DirectoryService >> getData [ 
 | decoder  instanceCode serviceType |

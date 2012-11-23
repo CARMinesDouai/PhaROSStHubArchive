@@ -94,7 +94,7 @@ LocalizationService >> receiveNotificationFromRobulab: aMessage [
 	"maybe is 11 here. Must avoid the header of the message"
 	self flag:#NoticeComment.
 	decoder nextEncodedBytes: 6.
-	self halt.
+
 	self xPos: decoder nextEncodedFloat64. 
 	self yPos: decoder nextEncodedFloat64.
 	self orientation: decoder nextEncodedFloat64. 
