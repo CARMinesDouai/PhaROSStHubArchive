@@ -18,7 +18,9 @@ NotificationPasiveConsumerProcess >> consume [
 { #category : #'as yet unclassified' }
 NotificationPasiveConsumerProcess >> setUp: aNotificationService [
 	| response  |
-		response := aNotificationService insert: '0', (service getInstanceNumber asString), '00', (PDRConverter as8BitsHexStringFromInteger: self time) .
+	
+		connector := (PureConnector ip: connector ip port: connector port) robot: connector robot ; yourself .
+		response := aNotificationService insert: '0', (service getInstanceNumber asString), '00', (PDRConverter as8BitsHexStringFromInteger: self time) into: connector.
 		Transcript show: response asString.
 		response success ifTrue: [
 			self startUp.
@@ -26,7 +28,8 @@ NotificationPasiveConsumerProcess >> setUp: aNotificationService [
 ]
 
 { #category : #'as yet unclassified' }
-NotificationPasiveConsumerProcess >> stop [
-	super stop. 
-	connector socket close.
+NotificationPasiveConsumerProcess >> stop: aNotificationManager [
+	connector stopReception. 
+	super stop: aNotificationManager. 
+	connector destroy.
 ]

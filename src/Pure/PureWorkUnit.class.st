@@ -6,7 +6,8 @@ Class {
 		'work',
 		'result',
 		'semaphore',
-		'processFinished'
+		'processFinished',
+		'error'
 	],
 	#category : #'Pure-Kernel'
 }
@@ -68,18 +69,35 @@ PureWorkUnit >> >= otherWork [
 
 { #category : #'as yet unclassified' }
 PureWorkUnit >> execute [
-
-	self result: work value.
+	[
+		self result: work value.
+	] on:Error do: [
+		:e |
+		error := e.
+		self result: nil.
+	]
 ]
 
 { #category : #'as yet unclassified' }
 PureWorkUnit >> execute: aParameter [
-	self result:  (work cull: aParameter).
+	[
+		self result:  (work cull: aParameter).
+	] on:Error do: [
+		:e |
+		error := e.
+		self result: nil.
+	]
 ]
 
 { #category : #'as yet unclassified' }
 PureWorkUnit >> execute: aParameter and: otherParameter [
-	self result:  (work cull: aParameter cull: otherParameter).
+	[
+		self result:  (work cull: aParameter cull: otherParameter).
+	] on:Error do: [
+		:e |
+		error := e.
+		self result: nil.
+	]
 ]
 
 { #category : #'as yet unclassified' }
@@ -105,6 +123,10 @@ PureWorkUnit >> result [
 	[ processFinished ] whileFalse: [
 		semaphore wait.
 	].
+	error ifNotNil:[
+		error signal.	
+	].
+
 	^ result.
 
 ]

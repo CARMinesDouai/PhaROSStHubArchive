@@ -43,13 +43,19 @@ NotificationManagerService >> alreadyReceivinNotificationsFrom: aService [
 ]
 
 { #category : #request }
+NotificationManagerService >> delete: data using: aConnector [
+	^ (aConnector sendMessage: (PureRequest delete: data from: self)) result .
+]
+
+{ #category : #request }
 NotificationManagerService >> deleteNotificationRecordFromService: aService [
+
 	Transcript show: ' shutting down notifications from  ', aService class name , ' instance:', aService getInstanceNumber asString ,'.'.
 	notificationServices at: aService ifPresent: [ :s | 
-		s stop.
+		s stop: self.
 		notificationServices removeKey: aService.
 	].
-	self delete: '0', aService getInstanceNumber asString, '00' .
+	
 	
 	
 ]
@@ -59,7 +65,7 @@ NotificationManagerService >> destroy [
 	super destroy.
 	notificationServices do: [
 		:p |
-		p stop. 	
+		p stop: self . 	
 	].
 	notificationServices := nil.
 ]
@@ -91,6 +97,11 @@ NotificationManagerService >> getData [
 NotificationManagerService >> initialize [ 
 	super  initialize.
 	notificationServices  := Dictionary new.
+]
+
+{ #category : #request }
+NotificationManagerService >> insert: data into: aConnector [
+	^ (aConnector sendMessage: (PureRequest insert: data into: self)) result .
 ]
 
 { #category : #request }

@@ -9,8 +9,8 @@ Class {
 
 { #category : #service }
 DirectoryService >> destroy [
-	super destroy.
 	services do: [ :s | (s isKindOf: DirectoryService ) ifFalse: [ s destroy ]].
+	super destroy.
 ]
 
 { #category : #request }

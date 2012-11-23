@@ -7,6 +7,7 @@ Class {
 { #category : #'as yet unclassified' }
 NotificationActiveConsumerProcess >> consume [
 	" This strategy push the service in order to get data"
+	Transcript cr;cr;cr;cr;cr;cr;cr;cr;cr;show:'---------------------------------'; cr;cr;cr;cr;cr;cr.
 	service getData.
 	(Delay forSeconds: self time) wait.
 ]

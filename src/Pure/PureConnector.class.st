@@ -8,7 +8,8 @@ Class {
 		'robot',
 		'queue',
 		'forWork',
-		'queueMutex'
+		'queueMutex',
+		'keepReceiving'
 	],
 	#category : #'Pure-Kernel'
 }
@@ -62,7 +63,7 @@ PureConnector >> initialize [
 	queueMutex := Mutex new.
 	queue := SortedCollection sortBlock: [ :w1 :w2 | w1 < w2 ].
 	forWork  := Semaphore new.
-	
+	keepReceiving := true.
 ]
 
 { #category : #accessing }
@@ -73,6 +74,15 @@ PureConnector >> ip [
 { #category : #accessing }
 PureConnector >> ip: anIp [
 	ip := anIp.
+]
+
+{ #category : #accessing }
+PureConnector >> keepReceiving [ 
+	| val |
+	processMutex  critical: [
+		val := keepReceiving.
+	].
+	^val. 
 ]
 
 { #category : #constants }
@@ -111,7 +121,7 @@ PureConnector >> receiveAnswer [
 		response := self inflateResponse: (buffer copyFrom: 1 to: 	responseSize).
 	] doWhileTrue: [
 		response received.
-		response isNotification.
+		response isNotification & self keepReceiving.
 	].
 
 	^ response. 
@@ -162,10 +172,17 @@ PureConnector >> sendNotification: aMessage [
 	self addWork: 
 		(PureWorkUnit do: [
 			self send: (self notificationCode printStringBase: 16), aMessage asHex.	
-		]).
+		] at: PureWorkUnit highPriority).
 ]
 
 { #category : #accessing }
 PureConnector >> socket [ 
 	^ socket.
+]
+
+{ #category : #accessing }
+PureConnector >> stopReception [ 
+	processMutex  critical: [
+		keepReceiving := false.
+	].
 ]
