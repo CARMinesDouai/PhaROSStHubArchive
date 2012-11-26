@@ -20,8 +20,8 @@ NotificationManagerService >> addNotificationRecordToInstance: aService withPeri
 		^ self.	
 	].
 	
-	(aPeriod between:  1 and: 255) ifFalse:[
-		Error signal: ' The given period must be between 1 and 255 '.
+	(aPeriod between:  0 and: 255) ifFalse:[
+		Error signal: ' The given period must be between 0 and 255 '.
 	].
 
 	Transcript show: 'Asking for notifications to  ', aService class name,
