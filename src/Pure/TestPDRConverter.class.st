@@ -63,7 +63,6 @@ TestPDRConverter >> testAsInt16FromDataArray [
 	| decoder |
 	
 	decoder := PureDecoder for: ( ReadStream on:  (PDRConverter asHexArrayFromString:'0000')).
-
 	self assert: decoder nextEncodedInt16 = 0.0.
 	decoder := PureDecoder for: ( ReadStream on: (PDRConverter asHexArrayFromString: '7B00')).
 	self assert: decoder nextEncodedInt16 = 123.

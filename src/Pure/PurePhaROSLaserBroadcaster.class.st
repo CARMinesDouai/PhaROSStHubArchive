@@ -8,7 +8,7 @@ Class {
 PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceInstance [ 
 
 	self sendTo: '/scan' a: [ :msg |
-		msg header frame_id: 'Robulab'.
+		msg header frame_id: 'laser'.
 		
 		msg angle_min: aLaserNotification minAngle.
 		msg angle_max: aLaserNotification maxAngle.

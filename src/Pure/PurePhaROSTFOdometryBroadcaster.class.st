@@ -46,7 +46,7 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> period [
-	^ 1.
+	^ 0.
 ]
 
 { #category : #'as yet unclassified' }
