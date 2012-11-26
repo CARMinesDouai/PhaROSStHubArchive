@@ -5,7 +5,7 @@ www.binaryconvert.com
 Class {
 	#name : #TestPDRConverter,
 	#superclass : #TestCase,
-	#category : #'Pure-Tests'
+	#category : #'Pure-Tests-RobotIndependent'
 }
 
 { #category : #'Test PDRConverter' }

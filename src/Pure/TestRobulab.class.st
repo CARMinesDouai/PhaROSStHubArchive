@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'robulab'
 	],
-	#category : #'Pure-Tests'
+	#category : #'Pure-Test-RobotDependent'
 }
 
 { #category : #'initialize-release' }
