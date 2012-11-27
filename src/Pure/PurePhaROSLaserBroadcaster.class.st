@@ -10,7 +10,7 @@ PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceI
 
 	[
 	self sendTo: '/scan' a: [ :msg |
-		msg header frame_id: 'laser'.
+		msg header frame_id: '/laser'.
 		
 		msg angle_min: aLaserNotification minAngle.
 		msg angle_max: aLaserNotification maxAngle.
@@ -23,8 +23,9 @@ PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceI
 		msg range_max: aLaserNotification maxRange.
 		msg ranges addAll: aLaserNotification distances.		
 	].	
-
-]on: Error do: [
+	Transcript show: 'laser notification'; cr.
+	
+	]on: Error do: [
 	self stop. 
 ]
 

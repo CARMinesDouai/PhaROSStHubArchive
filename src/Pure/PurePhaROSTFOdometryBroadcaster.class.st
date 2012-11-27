@@ -13,7 +13,8 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 		
 		" Odometry "
 		transformStamped := Geometry_msgsTransformStamped new.
-		transformStamped child_frame_id: 'odom'.
+		transformStamped header frame_id: ''.
+		transformStamped child_frame_id: '/odom'.
 		transformStamped transform translation x: aLocalizationService xPos.		
 		transformStamped transform translation y: aLocalizationService yPos.
 		transformStamped transform translation z: 0.0.
@@ -24,32 +25,37 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 		
 		" BaseLink "
 		transformStamped := Geometry_msgsTransformStamped new.
-		transformStamped header frame_id: 'odom'.
-		transformStamped child_frame_id: 'base_link'.
+		transformStamped header frame_id: '/odom'.
+		transformStamped child_frame_id: '/base_link'.
 		transformStamped transform translation z: 0.1.
 		
 		msg addTransform: transformStamped.
 		
-		"Laser"
+		
+				
+		" Laser "
 		transformStamped := Geometry_msgsTransformStamped new.
-		transformStamped header frame_id: 'odom'.
-		transformStamped child_frame_id: 'laser'.
-		transformStamped transform translation z: 25.
+		transformStamped header frame_id: '/base_link'.
+		transformStamped child_frame_id: '/laser'.
+		transformStamped transform translation z: 10.
 		
 		msg addTransform: transformStamped.
 		
-		
 	].
+	Transcript show: 'odom notification'; cr.
 
 ]on: Error do: [
+	
 	self stop. 
+	Transcript show: 'ERROOOOOOOOOOOOOOR'; cr.
+	self halt.
 ]
 
 ]
 
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> period [
-	^ 0.
+	^ 1.
 ]
 
 { #category : #'as yet unclassified' }
@@ -79,7 +85,7 @@ PurePhaROSTFOdometryBroadcaster >> setUp [
 		: notification |
 		robot with: LocalizationService  do: [
 			: localization  |
-			localization announcer subscribe: LaserNotification do: [ :notif |
+			localization announcer subscribe: LocalizationNotification do: [ :notif |
 				 self broadcast: notif from: localization. 
 			].
 			notification addNotificationRecordToInstance: localization withPeriod:  self period.

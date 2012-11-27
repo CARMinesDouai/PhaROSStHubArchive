@@ -49,7 +49,7 @@ NotificationManagerService >> delete: data using: aConnector [
 
 { #category : #request }
 NotificationManagerService >> deleteNotificationRecordFromService: aService [
-
+	aService class = LocalizationService ifTrue: [ self halt .].
 	Transcript show: ' shutting down notifications from  ', aService class name , ' instance:', aService getInstanceNumber asString ,'.'.
 	notificationServices at: aService ifPresent: [ :s | 
 		s stop: self.

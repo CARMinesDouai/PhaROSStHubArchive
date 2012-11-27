@@ -99,8 +99,7 @@ LocalizationService >> receiveNotificationFromRobulab: aMessage [
 	self yPos: decoder nextEncodedFloat64.
 	self orientation: decoder nextEncodedFloat64. 
 	self status: decoder nextEncodedUInt32. 
-
-	Transcript cr;show: 'MAJ du LocalizationService '.
+	Transcript show: 'bla'.
 ]
 
 { #category : #printing }

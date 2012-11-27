@@ -124,7 +124,7 @@ LaserService >> receiveNotificationFromRobulab: aMessage [
 			echo := LaserEcho createEchoWithAngle: ( decoder nextEncodedFloat32 ) andFloatDistance: (decoder nextEncodedFloat32).
 			idx := idx + 1.
 			self echos at: idx put: echo.
-			Transcript cr; show: idx asString, ' ', echo asString.
+"			Transcript cr; show: idx asString, ' ', echo asString."
 			
 	].
 	self echoNumber: idx.
