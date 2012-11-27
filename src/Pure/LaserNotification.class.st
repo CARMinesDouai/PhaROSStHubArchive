@@ -11,7 +11,7 @@ Class {
 LaserNotification >> angleDifferential [ 
 	self flag:#enhanceThisThing.
 	
-	((echoes at:2) angle - (echoes at:1) angle) abs.
+	^((echoes at:2) angle - (echoes at:1) angle) abs.
 ]
 
 { #category : #'as yet unclassified' }

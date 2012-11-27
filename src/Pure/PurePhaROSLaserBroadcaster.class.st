@@ -7,6 +7,8 @@ Class {
 { #category : #'as yet unclassified' }
 PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceInstance [ 
 
+
+	[
 	self sendTo: '/scan' a: [ :msg |
 		msg header frame_id: 'laser'.
 		
@@ -22,7 +24,9 @@ PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceI
 		msg ranges addAll: aLaserNotification distances.		
 	].	
 
-
+]on: Error do: [
+	self stop. 
+]
 
 ]
 
@@ -44,5 +48,21 @@ PurePhaROSLaserBroadcaster >> setUp [
 			notification addNotificationRecordToInstance: laser withPeriod:  self period.
 		].
 	].
+	
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSLaserBroadcaster >> stop [ 
+	super stop. 
+	
+	robot with: NotificationManagerService do: [
+		: notification |
+		robot with: LaserService  do: [
+			:laser  |
+			laser announcer unsubscribe:  LaserNotification.
+			notification deleteNotificationRecordFromService:  laser.
+		].
+	].
+	
 	
 ]

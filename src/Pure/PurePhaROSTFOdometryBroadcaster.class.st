@@ -8,7 +8,7 @@ Class {
 PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationService [
 	| transformStamped  |
 	
-	
+	[
 	self sendTo: '/tf' a: [: msg |
 		
 		" Odometry "
@@ -41,6 +41,9 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 		
 	].
 
+]on: Error do: [
+	self stop. 
+]
 
 ]
 
@@ -80,6 +83,22 @@ PurePhaROSTFOdometryBroadcaster >> setUp [
 				 self broadcast: notif from: localization. 
 			].
 			notification addNotificationRecordToInstance: localization withPeriod:  self period.
+		].
+	].
+	
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSTFOdometryBroadcaster >> stop [
+
+	super stop. 
+	
+	robot with: NotificationManagerService do: [
+		: notification |
+		robot with: LocalizationService  do: [
+			: localization  |
+			localization announcer unsubscribe:  LaserNotification.
+			notification deleteNotificationRecordFromService:  localization.
 		].
 	].
 	

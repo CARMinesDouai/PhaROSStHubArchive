@@ -63,34 +63,56 @@ PureClientUsesExamples >> workspaceGMappingBridge [
 	| robot tf scan master|
 
 
+
+ " 
+ Stopping 
+"
+	
+	PhaROSTypeBrowser reset.
+	PhaROSTypeBrowser instance definition: 'sensor_msgs/LaserScan'.
+
+	
+	PhaROSMaster stopAndUnregisterUrl: 'http://127.0.0.1:11311/'.
+	PhaROSSystemLauncher instance  shutdownGMapping.
+	PhaROSSystemLauncher instance  shutdownMaster.
+
+	robot := nil .
+	master := nil. 
+	tf := nil.
+	scan := nil.
+	
+	Smalltalk garbageCollect .
+	self assert: LaserService allInstances size = 0.
+	self assert: Robulab  allInstances size = 0.
+	self assert: PhaROSMaster allInstances size = 0.
+
+
+" 
+starting 
+"
+
 	PhaROSSystemLauncher instance startUpMaster.	
 	PhaROSSystemLauncher instance startUpGMapping.	
 	master := PhaROSMaster url: 'http://127.0.0.1:11311/' .
 
-	"
-	PhaROSMaster stopAndUnregisterUrl: 'http://127.0.0.1:11311/'.
-	PhaROSSystemLauncher instance  shutdownGMapping.
-	PhaROSSystemLauncher instance  shutdownMaster.
-	
-	"
-
-	robot := nil .
-	Smalltalk garbageCollect .
-	self assert: LaserService allInstances size = 0.
-	self assert: Robulab  allInstances size = 0.
 
 
 	robot := Robulab newWith: #[192 168 1 2] and: 60000.
 	
 
-	tf := master create: PurePhaROSTFOdometryBroadcaster named: '/OdometryBroadcaster' domain: '127.0.0.1' xmlRpcPort:  6123.
+	tf := master create: PurePhaROSTFOdometryBroadcaster named: '/OdometryBroadcaster' domain: '127.0.0.1' tcpPort: 9998 xmlRpcPort:  6125.
 		
-	scan :=  master create: PurePhaROSLaserBroadcaster named: '/LaserBroadcaster' domain: '127.0.0.1' xmlRpcPort:  6123.
+	scan :=  master create: PurePhaROSLaserBroadcaster named: '/LaserBroadcaster' domain: '127.0.0.1' tcpPort: 9999  xmlRpcPort:  6123.
 	
 	tf robot: robot ; setUp.
 	scan robot: robot; setUp.
 	
 	
+	
+	
+
+
+
 ]
 
 { #category : #'as yet unclassified' }

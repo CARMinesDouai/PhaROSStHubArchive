@@ -20,7 +20,15 @@ NotificationPasiveConsumerProcess >> setUp: aNotificationService [
 	| response  |
 	
 		connector := (PureConnector ip: connector ip port: connector port) robot: connector robot ; yourself .
-		response := aNotificationService insert: '0', (service getInstanceNumber asString), '00', (PDRConverter as8BitsHexStringFromInteger: self time) into: connector.
+		[
+			response := aNotificationService insert: '0', (service getInstanceNumber asString), '00', (PDRConverter as8BitsHexStringFromInteger: self time) into: connector.
+		] on: Error do:[
+			:e | 
+			e messageText = 'Already bound to this notification' ifTrue: [
+				aNotificationService  delete: '0', service getInstanceNumber asString, '00' using: connector.
+				response := aNotificationService insert: '0', (service getInstanceNumber asString), '00', (PDRConverter as8BitsHexStringFromInteger: self time) into: connector.
+			].
+		].
 		Transcript show: response asString.
 		response success ifTrue: [
 			self startUp.
