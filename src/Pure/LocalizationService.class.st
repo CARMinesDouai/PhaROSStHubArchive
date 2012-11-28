@@ -90,12 +90,12 @@ LocalizationService >> printPosition [
 LocalizationService >> receiveNotificationFromRobulab: aLocalizationNotification [
 
 
-	self xPos: aLocalizationNotification xPos.
+"	self xPos: aLocalizationNotification xPos.
 	self yPos: aLocalizationNotification yPos.
 	self orientation: aLocalizationNotification orientation.
 	self status: aLocalizationNotification status.
 	
-	Transcript show: 'x: ', self xPos asString, ' y: ', self yPos asString, ' o: ', self orientation asString;cr.
+"
 ]
 
 { #category : #printing }

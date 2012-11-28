@@ -35,12 +35,10 @@ LaserNotification >> load: notificationSource [
 	| decoder |
 	
 	decoder := notificationSource decoder.
-	service echoNumber ifNotNil: [
-		1 to: service echoNumber do: [
-			:idx |
-			echoes add: ( LaserEcho createEchoWithAngle: (decoder nextEncodedFloat32)  andFloatDistance: (decoder nextEncodedFloat32) )
-		] .
-	]
+	[ decoder hasData ] whileTrue: [
+		echoes add: ( LaserEcho createEchoWithAngle: (decoder nextEncodedFloat32)  andFloatDistance: (decoder nextEncodedFloat32) )
+	].
+
 ]
 
 { #category : #'as yet unclassified' }

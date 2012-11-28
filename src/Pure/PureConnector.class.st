@@ -21,7 +21,7 @@ PureConnector class >> ip: anIp port: aPort [
 
 { #category : #'as yet unclassified' }
 PureConnector class >> ip: anIp port: aPort robot: aRobot [
-	^ self new ip: anIp ; port: aPort ; robot: aRobot ; yourself.
+	^ self new ip: anIp ; port: aPort ; robot: aRobot ; startUp ; yourself.
 ]
 
 { #category : #processing }
