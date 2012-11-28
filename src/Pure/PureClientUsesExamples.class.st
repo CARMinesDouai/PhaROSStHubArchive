@@ -63,11 +63,11 @@ PureClientUsesExamples >> workspaceGMappingBridge [
 	| robot tf scan master|
 
 
-
  " 
  Stopping 
 "
-	
+
+ 
 	PhaROSTypeBrowser reset.
 	PhaROSTypeBrowser instance definition: 'sensor_msgs/LaserScan'.
 
@@ -80,6 +80,7 @@ PureClientUsesExamples >> workspaceGMappingBridge [
 	master := nil. 
 	tf := nil.
 	scan := nil.
+
 	
 	Smalltalk garbageCollect .
 	self assert: LaserService allInstances size = 0.
@@ -91,32 +92,59 @@ PureClientUsesExamples >> workspaceGMappingBridge [
 starting 
 "
 
+
 	PhaROSSystemLauncher instance startUpMaster.	
 	PhaROSSystemLauncher instance startUpGMapping.	
 	master := PhaROSMaster url: 'http://127.0.0.1:11311/' .
 
 
-
 	robot := Robulab newWith: #[192 168 1 2] and: 60000.
-	
+	robot subscribe: LaserNotification  do: [ :not | Transcript show: 'Laser!'; cr. ].
+	robot subscribe: LocalizationNotification   do: [ :not | Transcript show: 'Local!'; cr. ].
 
 	tf := master create: PurePhaROSTFOdometryBroadcaster named: '/OdometryBroadcaster' domain: '127.0.0.1' tcpPort: 9998 xmlRpcPort:  6125.
 		
 	scan :=  master create: PurePhaROSLaserBroadcaster named: '/LaserBroadcaster' domain: '127.0.0.1' tcpPort: 9999  xmlRpcPort:  6123.
 	
+
 	tf robot: robot ; setUp.
 	scan robot: robot; setUp.
 	
 	
-	
-	
-
-
-
 ]
 
 { #category : #'as yet unclassified' }
 PureClientUsesExamples >> workspaceKillingProcess [
 
 	Process allInstances "allSubInstances" select: [:aProcess | aProcess priority = 30] thenDo: [:p| p terminate ]
+]
+
+{ #category : #'as yet unclassified' }
+PureClientUsesExamples >> workspaceUsingNotifications [
+	| robot |
+	
+	robot := nil.
+	Smalltalk garbageCollect .
+	
+	
+	robot := Robulab newWith: #[192 168 1 2] and: 60000.
+	
+	robot subscribe: LaserNotification  do: [ :not | Transcript show: 'Laser!'; cr. ].
+	robot subscribe: LocalizationNotification   do: [ :not | Transcript show: 'Local!'; cr. ].
+	
+	
+	
+	robot with: NotificationManagerService  do: [
+		: notifications | 
+		
+		robot with: LaserService do: [
+			: laser | 
+			notifications addNotificationRecordToInstance: laser withPeriod: 1.
+		].
+		robot with: LocalizationService do: [
+			: local | 
+			notifications addNotificationRecordToInstance: local withPeriod: 0.
+		].
+	].
+	
 ]

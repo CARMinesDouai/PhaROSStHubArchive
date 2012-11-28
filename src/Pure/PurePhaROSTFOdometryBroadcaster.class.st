@@ -1,6 +1,9 @@
 Class {
 	#name : #PurePhaROSTFOdometryBroadcaster,
 	#superclass : #PurePhaROSNode,
+	#instVars : [
+		'lastNotification'
+	],
 	#category : #'Pure-PhaROS'
 }
 
@@ -8,42 +11,57 @@ Class {
 PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationService [
 	| transformStamped  |
 	
-	[
-	self sendTo: '/tf' a: [: msg |
-		
-		" Odometry "
-		transformStamped := Geometry_msgsTransformStamped new.
-		transformStamped header frame_id: '/map'.
-		transformStamped child_frame_id: '/odom'.
-		transformStamped transform translation x: aNotification xPos.		
-		transformStamped transform translation y: aNotification yPos.
-		transformStamped transform translation z: 0.0.
-		self rotationAsQuaternation: aNotification orientation into:(transformStamped transform rotation).
-		
-		msg addTransform: transformStamped.
-		
-		
-		" BaseLink "
-		transformStamped := Geometry_msgsTransformStamped new.
-		transformStamped header frame_id: '/odom'.
-		transformStamped child_frame_id: '/base_link'.
-		transformStamped transform translation z: 0.1.
-		transformStamped transform rotation w: 1.0.
-		
-		msg addTransform: transformStamped.
-		
-		
-				
-		" Laser "
-		transformStamped := Geometry_msgsTransformStamped new.
-		transformStamped header frame_id: '/base_link'.
-		transformStamped child_frame_id: '/laser'.
-		transformStamped transform translation z: 10.0.
-		transformStamped transform rotation w: 1.0.
-		msg addTransform: transformStamped.
-		
+	
+	(	
+		lastNotification isNil not and:[
+			(lastNotification xPos closeTo: aNotification xPos) and: [
+				(lastNotification yPos closeTo: aNotification yPos) and: [
+					(lastNotification orientation closeTo: aNotification orientation ).
+				]
+			]
+		]
+	) ifTrue: [
+		Transcript show: 'no se manda nada'.
+		^ self. 
 	].
-	Transcript show: 'odom notification'; cr.
+	
+	lastNotification := aNotification.
+	
+	[
+		self sendTo: '/tf' a: [: msg |
+		
+			" Odometry "
+			transformStamped := Geometry_msgsTransformStamped new.
+			transformStamped header frame_id: '/map'.
+			transformStamped child_frame_id: '/odom'.
+			transformStamped transform translation x: aNotification xPos.		
+			transformStamped transform translation y: aNotification yPos.
+			transformStamped transform translation z: 0.0.
+			self rotationAsQuaternation: aNotification orientation into:(transformStamped transform rotation).
+			
+			msg addTransform: transformStamped.
+			
+			
+			" BaseLink "
+			transformStamped := Geometry_msgsTransformStamped new.
+			transformStamped header frame_id: '/odom'.
+			transformStamped child_frame_id: '/base_link'.
+			transformStamped transform translation z: 0.1.
+			transformStamped transform rotation w: 1.0.
+			
+			msg addTransform: transformStamped.
+			
+			
+					
+			" Laser "
+			transformStamped := Geometry_msgsTransformStamped new.
+			transformStamped header frame_id: '/base_link'.
+			transformStamped child_frame_id: '/laser'.
+			transformStamped transform translation z: 10.0.
+			transformStamped transform rotation w: 1.0.
+			msg addTransform: transformStamped.
+			
+	].
 
 ]on: Error do: [
 	:e |
@@ -89,6 +107,7 @@ PurePhaROSTFOdometryBroadcaster >> setUp [
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> stop [
 
+	lastNotification := nil. 
 	super stop. 
 	
 	robot with: NotificationManagerService do: [

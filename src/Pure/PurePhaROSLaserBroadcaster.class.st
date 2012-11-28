@@ -6,7 +6,6 @@ Class {
 
 { #category : #'as yet unclassified' }
 PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceInstance [ 
-Transcript show: 'lala'.
 
 	[
 	self sendTo: '/scan' a: [ :msg |
@@ -23,20 +22,19 @@ Transcript show: 'lala'.
 		msg range_max: aLaserNotification maxRange.
 		msg ranges addAll: aLaserNotification distances.		
 	].	
-	Transcript show: 'laser notification'; cr.
 	
 	]on: Error do: [
-	:e| 
+		:e| 
 	
-	self stop. 
-	self halt.
+		self stop. 
+		self halt.
 ]
 
 ]
 
 { #category : #'as yet unclassified' }
 PurePhaROSLaserBroadcaster >> period [
-	^ 10.
+	^ 1.
 ]
 
 { #category : #'as yet unclassified' }
