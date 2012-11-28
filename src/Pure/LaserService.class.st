@@ -112,11 +112,11 @@ LaserService >> printEchos [
 
 { #category : #request }
 LaserService >> receiveNotificationFromRobulab: aMessage [
-	| decoder idx |
-	decoder := aMessage decoder .
+"	| decoder idx |
+	decoder := aMessage decoder ."
 	
 	"maybe is 11 here. Must avoid the header of the message"
-	self flag:#NoticeComment.
+"	self flag:#NoticeComment.
 	decoder nextEncodedBytes: 8.
 	idx := 0.
 	[decoder hasData ] whileTrue: [ 
@@ -124,12 +124,12 @@ LaserService >> receiveNotificationFromRobulab: aMessage [
 			echo := LaserEcho createEchoWithAngle: ( decoder nextEncodedFloat32 ) andFloatDistance: (decoder nextEncodedFloat32).
 			idx := idx + 1.
 			self echos at: idx put: echo.
-"			Transcript cr; show: idx asString, ' ', echo asString."
+""			Transcript cr; show: idx asString, ' ', echo asString.""
 			
 	].
 	self echoNumber: idx.
 	self semaphore signal.
-
+"
 ]
 
 { #category : #printing }

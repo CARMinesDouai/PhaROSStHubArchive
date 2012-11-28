@@ -87,19 +87,15 @@ LocalizationService >> printPosition [
 ]
 
 { #category : #request }
-LocalizationService >> receiveNotificationFromRobulab: aMessage [
-	| decoder |
-	decoder := aMessage decoder .
-	
-	"maybe is 11 here. Must avoid the header of the message"
-	self flag:#NoticeComment.
-	decoder nextEncodedBytes: 6.
+LocalizationService >> receiveNotificationFromRobulab: aLocalizationNotification [
 
-	self xPos: decoder nextEncodedFloat64. 
-	self yPos: decoder nextEncodedFloat64.
-	self orientation: decoder nextEncodedFloat64. 
-	self status: decoder nextEncodedUInt32. 
-	Transcript show: 'bla'.
+
+	self xPos: aLocalizationNotification xPos.
+	self yPos: aLocalizationNotification yPos.
+	self orientation: aLocalizationNotification orientation.
+	self status: aLocalizationNotification status.
+	
+	Transcript show: 'x: ', self xPos asString, ' y: ', self yPos asString, ' o: ', self orientation asString;cr.
 ]
 
 { #category : #printing }
@@ -109,11 +105,16 @@ LocalizationService >> relatedNotificationClass [
 
 { #category : #request }
 LocalizationService >> resetLocalization [
-	| reponse |
-	reponse :=self replace: '000000000000000000000000000000000000000000000000'.
-	
-	(reponse success )ifTrue:[Transcript show: 'Coordonnées réinitialisées.';cr] 
-	
+	| response |
+	response :=self replace: '0000000000000000000000000000000000000000000000000000000000000000'.
+	response := self upDate: '0000000000000000000000000000000000000000000000000000000000000000'.
+	response :=self replace: '0000000000000000000000000000000000000000000000000000000000000000'.
+	response :=self replace: '0000000000000000000000000000000000000000000000000000000000000000'.
+	response :=self replace: '0000000000000000000000000000000000000000000000000000000000000000'.
+	response :=self replace: '0000000000000000000000000000000000000000000000000000000000000000'.
+	response := self upDate: '0000000000000000000000000000000000000000000000000000000000000000'.
+	response := self upDate: '0000000000000000000000000000000000000000000000000000000000000000'.
+	response := self getData.
 ]
 
 { #category : #accessing }

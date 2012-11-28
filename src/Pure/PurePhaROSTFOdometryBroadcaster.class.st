@@ -13,12 +13,12 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 		
 		" Odometry "
 		transformStamped := Geometry_msgsTransformStamped new.
-		transformStamped header frame_id: ''.
+		transformStamped header frame_id: '/map'.
 		transformStamped child_frame_id: '/odom'.
-		transformStamped transform translation x: aLocalizationService xPos.		
-		transformStamped transform translation y: aLocalizationService yPos.
+		transformStamped transform translation x: aNotification xPos.		
+		transformStamped transform translation y: aNotification yPos.
 		transformStamped transform translation z: 0.0.
-		self rotationAsQuaternation: aLocalizationService orientation into:(transformStamped transform rotation).
+		self rotationAsQuaternation: aNotification orientation into:(transformStamped transform rotation).
 		
 		msg addTransform: transformStamped.
 		
@@ -28,6 +28,7 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 		transformStamped header frame_id: '/odom'.
 		transformStamped child_frame_id: '/base_link'.
 		transformStamped transform translation z: 0.1.
+		transformStamped transform rotation w: 1.0.
 		
 		msg addTransform: transformStamped.
 		
@@ -37,17 +38,16 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 		transformStamped := Geometry_msgsTransformStamped new.
 		transformStamped header frame_id: '/base_link'.
 		transformStamped child_frame_id: '/laser'.
-		transformStamped transform translation z: 10.
-		
+		transformStamped transform translation z: 10.0.
+		transformStamped transform rotation w: 1.0.
 		msg addTransform: transformStamped.
 		
 	].
 	Transcript show: 'odom notification'; cr.
 
 ]on: Error do: [
-	
+	:e |
 	self stop. 
-	Transcript show: 'ERROOOOOOOOOOOOOOR'; cr.
 	self halt.
 ]
 
@@ -55,15 +55,7 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> period [
-	^ 1.
-]
-
-{ #category : #'as yet unclassified' }
-PurePhaROSTFOdometryBroadcaster >> rotationAsQuaternation: anOrientation [
-
-	" anOrientation is the value of the only one kind of rotation that robulab have, in terms of z axis. "
-	
-	^ PhaROSGeometryTransformations new quaternationFromEulerFor: 0.0 and: 0.0 and: anOrientation.
+	^ 0.
 ]
 
 { #category : #'as yet unclassified' }
@@ -107,5 +99,6 @@ PurePhaROSTFOdometryBroadcaster >> stop [
 			notification deleteNotificationRecordFromService:  localization.
 		].
 	].
+	self halt.
 	
 ]

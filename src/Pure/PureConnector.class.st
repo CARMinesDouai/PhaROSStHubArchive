@@ -19,6 +19,11 @@ PureConnector class >> ip: anIp port: aPort [
 	^ self new ip: anIp ; port: aPort ; startUp; yourself.
 ]
 
+{ #category : #'as yet unclassified' }
+PureConnector class >> ip: anIp port: aPort robot: aRobot [
+	^ self new ip: anIp ; port: aPort ; robot: aRobot ; yourself.
+]
+
 { #category : #processing }
 PureConnector >> addWork: aWork [
 	queueMutex critical: [

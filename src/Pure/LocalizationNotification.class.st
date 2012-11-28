@@ -18,7 +18,12 @@ LocalizationNotification >> load: aPureNotification [
 	self xPos: decoder nextEncodedFloat64. 
 	self yPos: decoder nextEncodedFloat64. 
 	self orientation: decoder nextEncodedFloat64. 
-	self status: decoder nextEncodedUInt16 . 
+	self status: decoder nextEncodedUInt32. 
+]
+
+{ #category : #accessing }
+LocalizationNotification >> orientation [ 
+	^ orientation .
 ]
 
 { #category : #accessing }
@@ -27,13 +32,28 @@ LocalizationNotification >> orientation: aFloat [
 ]
 
 { #category : #accessing }
+LocalizationNotification >> status [
+	^ status.
+]
+
+{ #category : #accessing }
 LocalizationNotification >> status: aSmallInteger [ 
 	status := aSmallInteger
 ]
 
 { #category : #accessing }
+LocalizationNotification >> xPos [
+	^ xPos.
+]
+
+{ #category : #accessing }
 LocalizationNotification >> xPos: aFloat [ 
 	xPos := aFloat.
+]
+
+{ #category : #accessing }
+LocalizationNotification >> yPos [
+	^ yPos.
 ]
 
 { #category : #accessing }

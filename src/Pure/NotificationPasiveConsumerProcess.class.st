@@ -19,7 +19,7 @@ NotificationPasiveConsumerProcess >> consume [
 NotificationPasiveConsumerProcess >> setUp: aNotificationService [
 	| response  |
 	
-		connector := (PureConnector ip: connector ip port: connector port) robot: connector robot ; yourself .
+		connector := PureConnector ip: connector ip port: connector port robot: connector robot .
 		[
 			response := aNotificationService insert: '0', (service getInstanceNumber asString), '00', (PDRConverter as8BitsHexStringFromInteger: self time) into: connector.
 		] on: Error do:[

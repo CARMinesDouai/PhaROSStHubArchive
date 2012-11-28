@@ -6,7 +6,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceInstance [ 
-
+Transcript show: 'lala'.
 
 	[
 	self sendTo: '/scan' a: [ :msg |
@@ -26,7 +26,10 @@ PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceI
 	Transcript show: 'laser notification'; cr.
 	
 	]on: Error do: [
+	:e| 
+	
 	self stop. 
+	self halt.
 ]
 
 ]
@@ -65,5 +68,5 @@ PurePhaROSLaserBroadcaster >> stop [
 		].
 	].
 	
-	
+	self halt.
 ]
