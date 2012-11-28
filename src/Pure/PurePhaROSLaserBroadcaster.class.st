@@ -1,13 +1,15 @@
 Class {
 	#name : #PurePhaROSLaserBroadcaster,
 	#superclass : #PurePhaROSNode,
-	#category : #'Pure-PhaROS'
+	#category : #Pure
 }
 
 { #category : #'as yet unclassified' }
 PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceInstance [ 
 
-	[
+
+[
+	
 	self sendTo: '/scan' a: [ :msg |
 		msg header frame_id: '/laser'.
 		

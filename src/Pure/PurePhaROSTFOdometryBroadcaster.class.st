@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'lastNotification'
 	],
-	#category : #'Pure-PhaROS'
+	#category : #Pure
 }
 
 { #category : #'as yet unclassified' }
@@ -24,7 +24,7 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 		Transcript show: 'no se manda nada'.
 		^ self. 
 	].
-	
+
 	lastNotification := aNotification.
 	
 	[

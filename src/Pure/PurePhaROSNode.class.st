@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'robot'
 	],
-	#category : #'Pure-PhaROS'
+	#category : #Pure
 }
 
 { #category : #'as yet unclassified' }
