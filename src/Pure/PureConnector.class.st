@@ -126,7 +126,6 @@ PureConnector >> receiveAnswer [
 	
 		
 		buffer := ByteArray new: 3000.
-		self socket waitForData.
 		
 		[	
 			intent := intent +1.

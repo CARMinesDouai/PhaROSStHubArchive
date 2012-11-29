@@ -25,6 +25,8 @@ IONotification >> load: notificationSource [
 	
 	decoder := notificationSource.
 	
+	
+	
 	self shouldBeImplemented.
 	" The documentation doent make much sense about the definition of this data. It talk about inputs but in very generical way "
 	

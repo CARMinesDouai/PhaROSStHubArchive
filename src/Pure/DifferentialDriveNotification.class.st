@@ -28,6 +28,10 @@ DifferentialDriveNotification >> load: notificationSource [
 	
 	decoder := notificationSource.
 	
+	
+	"Ireally hate this stupid thing "
+	decoder nextEncodedBytes: 8. 
+	
 	status := decoder nextEncodedByte.
 	targetLinearSpeed := decoder nextEncodedFloat32.
 	currentLinearSpeed  := decoder nextEncodedFloat32.

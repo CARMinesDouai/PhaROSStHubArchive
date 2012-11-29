@@ -44,8 +44,9 @@ Robulab >> connector: aConnector [
 
 { #category : #service }
 Robulab >> destroy [
-	directoryService destroy.
 	connector destroy.
+	directoryService destroy.
+	
 ]
 
 { #category : #accessing }
@@ -95,6 +96,11 @@ Robulab >> sendNotification: notifString [
 Robulab >> start [ 
 	self loadServices.
 	
+]
+
+{ #category : #service }
+Robulab >> stop [
+	self shouldBeImplemented.
 ]
 
 { #category : #service }

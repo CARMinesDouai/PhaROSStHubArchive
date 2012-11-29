@@ -93,6 +93,28 @@ NotificationManagerService >> getData [
 ]
 
 { #category : #request }
+NotificationManagerService >> getDataWith: aConnector [ 
+	| decoder get |
+
+	get := self getWith: aConnector . 
+	get ifNil: [ ^ nil ].
+	decoder := get decoder.
+
+	
+	[ decoder hasData ] whileTrue: [
+		Transcript show: decoder nextEncodedUInt16 asString, '-', decoder nextEncodedByte asString.
+		Transcript cr.
+	].
+	
+	Transcript cr.
+	
+	
+	
+	
+	
+]
+
+{ #category : #request }
 NotificationManagerService >> initialize [ 
 	super  initialize.
 	notificationServices  := Dictionary new.

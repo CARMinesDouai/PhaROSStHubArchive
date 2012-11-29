@@ -15,6 +15,12 @@ LocalizationNotification >> load: aPureNotification [
 	| decoder |
 	decoder := aPureNotification decoder.
 	
+	
+	
+	"Ireally hate this stupid thing "
+	decoder nextEncodedBytes: 8. 
+	
+	
 	self xPos: decoder nextEncodedFloat64. 
 	self yPos: decoder nextEncodedFloat64. 
 	self orientation: decoder nextEncodedFloat64. 

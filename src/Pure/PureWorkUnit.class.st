@@ -123,6 +123,8 @@ PureWorkUnit >> result [
 	[ processFinished ] whileFalse: [
 		semaphore wait.
 	].
+	error class = ConnectionTimedOut  ifTrue: [ ^ nil ].
+	
 	error ifNotNil:[
 		error signal.	
 	].

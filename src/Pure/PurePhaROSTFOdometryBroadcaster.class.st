@@ -14,17 +14,17 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 	
 	(	
 		lastNotification isNil not and:[
-			(lastNotification xPos closeTo: aNotification xPos) and: [
-				(lastNotification yPos closeTo: aNotification yPos) and: [
-					(lastNotification orientation closeTo: aNotification orientation ).
+			(lastNotification xPos closeTo: aLocalizationService xPos) and: [
+				(lastNotification yPos closeTo: aLocalizationService yPos) and: [
+					(lastNotification orientation closeTo: aLocalizationService orientation ).
 				]
 			]
 		]
 	) ifTrue: [
-		Transcript show: 'no se manda nada'.
 		^ self. 
 	].
 
+	Transcript show: 'bl'.
 	lastNotification := aNotification.
 	
 	[
@@ -34,10 +34,10 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 			transformStamped := Geometry_msgsTransformStamped new.
 			transformStamped header frame_id: '/map'.
 			transformStamped child_frame_id: '/odom'.
-			transformStamped transform translation x: aNotification xPos.		
-			transformStamped transform translation y: aNotification yPos.
+			transformStamped transform translation x: aLocalizationService xPos.		
+			transformStamped transform translation y: aLocalizationService yPos.
 			transformStamped transform translation z: 0.0.
-			self rotationAsQuaternation: aNotification orientation into:(transformStamped transform rotation).
+			self rotationAsQuaternation: aLocalizationService orientation into:(transformStamped transform rotation).
 			
 			msg addTransform: transformStamped.
 			

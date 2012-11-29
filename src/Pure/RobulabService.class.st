@@ -65,6 +65,12 @@ RobulabService >> getInstanceNumber [
 	^result.
 ]
 
+{ #category : #request }
+RobulabService >> getWith: aConnector [
+	^ (aConnector sendMessage: (PureRequest getFrom: self)) result .
+
+]
+
 { #category : #'initialize-release' }
 RobulabService >> initialize [ 
 	self listening: false.

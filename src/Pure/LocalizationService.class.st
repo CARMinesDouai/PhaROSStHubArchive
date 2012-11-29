@@ -26,6 +26,21 @@ LocalizationService >> getData [
 
 ]
 
+{ #category : #request }
+LocalizationService >> getDataWith: aConnector [ 
+	|  decoder get |
+	get := self getWith: aConnector . 
+	get ifNil: [ ^ nil ].
+	decoder := get decoder.	
+	
+	self xPos: decoder nextEncodedFloat64. 
+	self yPos: decoder nextEncodedFloat64. 
+	self orientation: decoder nextEncodedFloat64. 
+	self status: decoder nextEncodedUInt32 . 
+	
+
+]
+
 { #category : #accessing }
 LocalizationService >> isCentimetric [
 	^( (status=12) | (status=20))

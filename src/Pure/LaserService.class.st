@@ -48,6 +48,24 @@ LaserService >> getData [
 	
 ]
 
+{ #category : #request }
+LaserService >> getDataWith: aConnector [ 
+	| compteurEcho decoder get |
+
+	get := self getWith: aConnector . 
+	get ifNil: [ ^ nil ].
+	decoder := get decoder.
+
+	
+	self xposition: decoder nextEncodedFloat32. 
+	self yposition: decoder nextEncodedFloat32. 
+
+	self orientation: decoder nextEncodedFloat32. 
+	self echoNumber: decoder nextEncodedInt32. 
+
+	
+]
+
 { #category : #'initialize-release' }
 LaserService >> initialize [ 
 	self echos: Dictionary new.
