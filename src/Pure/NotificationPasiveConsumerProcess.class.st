@@ -8,7 +8,7 @@ Class {
 NotificationPasiveConsumerProcess >> consume [
 	" This strategy expect the pure stuff to send notifications when there are. "
 	| response |
-	
+	Transcript show: 'consuming'.
 	response := connector receiveAnswer.
 	response isNotification ifFalse: [
 			self error: 'there is a response which is not a notification. Something creepy is happening :-o'.
