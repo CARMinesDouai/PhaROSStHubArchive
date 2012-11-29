@@ -118,12 +118,29 @@ PureConnector >> port: aPort [
 
 { #category : #'communication private' }
 PureConnector >> receiveAnswer [
-  | buffer responseSize response |
+  | buffer responseSize response intent |
+
+	intent := 0. 
+
 	[
+	
+		
 		buffer := ByteArray new: 3000.
 		self socket waitForData.
-		responseSize := (self socket receiveUDPDataInto:  buffer) at:1.
+		
+		[	
+			intent := intent +1.
+			responseSize := (self socket receiveWithTimeOutUDPDataInto:  buffer) at:1.
+		] doWhileTrue: [
+			responseSize = 0 and:[ intent < 3]
+		].
+		
+		responseSize = 0 ifTrue: [
+			PureTooMuchTime signal.
+		].
 		response := self inflateResponse: (buffer copyFrom: 1 to: 	responseSize).
+			
+			
 	] doWhileTrue: [
 		response received.
 		response isNotification & self keepReceiving.

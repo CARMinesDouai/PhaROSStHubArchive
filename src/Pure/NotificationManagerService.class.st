@@ -114,6 +114,17 @@ NotificationManagerService >> notificationServicesFor: aService [
 ]
 
 { #category : #request }
+NotificationManagerService >> reconnectNotificationsFor: aService withPeriod: aPeriod [
+	| reconnection |
+	
+	reconnection := (notificationServices at: aService) reconnections.
+	self deleteNotificationRecordFromService: aService.
+	self addNotificationRecordToInstance: aService  withPeriod: aPeriod.
+	(notificationServices at: aService) reconnections: reconnection.
+
+]
+
+{ #category : #request }
 NotificationManagerService >> relatedNotificationClass [
 	^ self error: 'This service has not notifications'
 ]

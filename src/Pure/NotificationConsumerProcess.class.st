@@ -6,7 +6,8 @@ Class {
 		'keepRunning',
 		'service',
 		'connector',
-		'time'
+		'time',
+		'reconnections'
 	],
 	#category : #'Pure-Services'
 }
@@ -30,7 +31,7 @@ NotificationConsumerProcess >> connector: aConnector [
 { #category : #'as yet unclassified' }
 NotificationConsumerProcess >> initialize [ 
 	keepRunning := true.
-	
+	reconnections := 0.
 ]
 
 { #category : #'as yet unclassified' }
@@ -42,6 +43,16 @@ NotificationConsumerProcess >> keepRunning [
 { #category : #'as yet unclassified' }
 NotificationConsumerProcess >> keepRunning: aBoolean [
 	keepRunning := aBoolean.
+]
+
+{ #category : #'as yet unclassified' }
+NotificationConsumerProcess >> reconnections [ 
+	^ reconnections 
+]
+
+{ #category : #'as yet unclassified' }
+NotificationConsumerProcess >> reconnections: aNumber [
+	 reconnections := aNumber 
 ]
 
 { #category : #'as yet unclassified' }
@@ -60,8 +71,19 @@ NotificationConsumerProcess >> startUp [
 	process ifNil: [
 		self keepRunning: true. 
 		process := [
+			
+			Transcript show: ' Spawning with reconnection ', reconnections asString.
 			[ self keepRunning ] whileTrue: [
-				self consume.
+			
+				[
+					self consume.
+				] on: PureTooMuchTime do: [
+					service robot with: NotificationManagerService do: [
+						: manager 	| 
+						Transcript show: ' Reconnecting... '.
+						manager reconnectNotificationsFor: service withPeriod: time.
+					].
+				]
 			].
 			process := nil.
 			
