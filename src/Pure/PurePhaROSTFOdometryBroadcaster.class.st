@@ -21,7 +21,7 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 			]
 		]
 	) ifTrue: [
-		^ self. 
+		"^ self. "
 	].
 
 	Transcript show: 'bl'.
