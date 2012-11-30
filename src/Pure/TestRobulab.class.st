@@ -47,20 +47,25 @@ TestRobulab >> testIncrementationDesRequetes [
 
 { #category : #TestInitialisationConstantes }
 TestRobulab >> testInitialisationDesServices [
-	"On vérifie qu'il y a bien 8 services"
-	self assert: ((robulab directoryService services size) = 7).
-	"On vérifie que les 8 instances de services correspondent bien au bon code type"
-	self assert: ((robulab directoryService services at:'0001') type ='0001' ).
-	self assert: ((robulab directoryService services at:'0002') type ='4001' ).
-	self assert: ((robulab directoryService services at:'0003') type ='4005' ).
-	self assert: ((robulab directoryService services at:'0004') type ='4004' ).
-	self assert: ((robulab directoryService services at:'0005') type ='8002' ).
-	self assert: ((robulab directoryService services at:'0006') type ='4008' ).
-	self assert: ((robulab directoryService services at:'0007') type ='4008' ).
+	
+	robulab directoryService services do: [ :service|
+		service class = (ConstantesRobulab serviceClassPerType at: service type)	
+	].
+
 	
 ]
 
 { #category : #TestSurRequetes }
-TestRobulab >> testRequetesBasiques [
-	self testEnTeteDeRequete:'01000000'
+TestRobulab >> testRequetesBasiques [	
+	| unMessageString reponse |
+
+	unMessageString := '0100000000'.
+
+	reponse := (robulab sendMessageAndWaitResponse: unMessageString ) .
+	"Test que les 4 premiers nombres de la réponse sont égaux aux quatres premiers nombres de la requête"
+	self assert:( ((unMessageString at: 1 )asString , (unMessageString at:2) asString )= (reponse idRequete )).
+	self assert: ( ((unMessageString at:3 )asString , (unMessageString at:4) asString )= (reponse action )).
+	self assert: ( ((unMessageString at: 5 )asString , (unMessageString at:6) asString, (unMessageString at: 7 )asString , (unMessageString at:8) asString  ) = (reponse target)).
+	"Test que le code d'erreur est bien à 0"
+	self assert:  reponse success 
 ]
