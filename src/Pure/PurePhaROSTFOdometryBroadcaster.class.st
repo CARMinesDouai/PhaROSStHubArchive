@@ -24,10 +24,21 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 		"^ self. "
 	].
 
-	Transcript show: 'bl'.
+
 	lastNotification := aNotification.
 	
 	[
+	
+		self sendTo: '/pose' a: [
+			:msg |
+			
+			msg header frame_id: 'odom'.
+			msg pose position x: aLocalizationService xPos.		
+			msg pose position y: aLocalizationService yPos.						
+			msg pose position z: 0.0.
+			self rotationAsQuaternation: aLocalizationService orientation into:(msg pose orientation).
+			
+		].
 		self sendTo: '/tf' a: [: msg |
 		
 			" Odometry "
@@ -56,7 +67,7 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 			" Laser "
 			transformStamped := Geometry_msgsTransformStamped new.
 			transformStamped header frame_id: '/base_link'.
-			transformStamped child_frame_id: '/laser'.
+			transformStamped child_frame_id: '/base_laser'.
 			transformStamped transform translation z: 10.0.
 			transformStamped transform rotation w: 1.0.
 			msg addTransform: transformStamped.

@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+LaserNotification >> addEcho: aLinear and: anAngle [
+	echoes add: ( LaserEcho createEchoWithAngle: anAngle andFloatDistance: aLinear ).
+]
+
+{ #category : #'as yet unclassified' }
 LaserNotification >> angleDifferential [ 
 	self flag:#enhanceThisThing.
 	

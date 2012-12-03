@@ -50,7 +50,7 @@ LaserService >> getData [
 
 { #category : #request }
 LaserService >> getDataWith: aConnector [ 
-	| compteurEcho decoder get |
+	| decoder get |
 
 	get := self getWith: aConnector . 
 	get ifNil: [ ^ nil ].
