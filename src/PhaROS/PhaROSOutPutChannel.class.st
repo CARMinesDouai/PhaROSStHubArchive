@@ -1,0 +1,128 @@
+Class {
+	#name : #PhaROSOutPutChannel,
+	#superclass : #PhaROSChannel,
+	#instVars : [
+		'isFirstSubscriber'
+	],
+	#category : #'PhaROS-Kernel'
+}
+
+{ #category : #'as yet unclassified' }
+PhaROSOutPutChannel class >> for: aNode into: aTopic [
+
+	^ self new owner: aNode; topic: aTopic; startUp; yourself.
+]
+
+{ #category : #service }
+PhaROSOutPutChannel >> close [
+	self owner unregisterPublisherFrom: topic name.
+	subscribers do: [
+		: node |
+		node unregisterPublisher: self owner.
+	].
+	self initialize.
+	
+]
+
+{ #category : #private }
+PhaROSOutPutChannel >> createExternalNodeFor: aMessage with: aSocket [
+
+	
+	aSocket setOption: 'TCP_NODELAY' value: (aMessage  tcpNodelay).
+	self assert: aMessage topic = topic name.
+	
+	^ PhaROSExternalNode named: aMessage  callerId subscriberOf: topic with: aSocket. 
+	
+]
+
+{ #category : #service }
+PhaROSOutPutChannel >> initialize [ 
+	super initialize.
+	isFirstSubscriber := true.
+]
+
+{ #category : #private }
+PhaROSOutPutChannel >> isFirstSubscriber [ 
+	^ 	isFirstSubscriber.
+
+]
+
+{ #category : #testing }
+PhaROSOutPutChannel >> isLatchedChannel [
+	self flag: #WhatWillDoWithLatches.
+	^ true.
+	
+]
+
+{ #category : #tcp }
+PhaROSOutPutChannel >> manageIncomingConnection: aMessage with: aSocket [
+
+	self halt.
+"	self assert: topic md5Sum = aMessage md5Sum."
+	self assert: topic type = aMessage type.
+	
+	self subscribe: (self createExternalNodeFor: aMessage with: aSocket).
+	
+	
+
+]
+
+{ #category : #testing }
+PhaROSOutPutChannel >> mustSendPreviousMessagesTo: aNode [
+	^ self isFirstSubscriber or: [ self isLatchedChannel ].
+]
+
+{ #category : #'message handling' }
+PhaROSOutPutChannel >> newMessage [ 
+	^ topic newMessage.
+]
+
+{ #category : #testing }
+PhaROSOutPutChannel >> relatedWith: aByteString [ 
+	^ owner xmlRpcUrl = aByteString 
+	
+]
+
+{ #category : #'message handling' }
+PhaROSOutPutChannel >> sendAMessage: aMessageConfigurationBlock [
+	| message |
+	message := self newMessage.
+	
+	aMessageConfigurationBlock value: message value.
+	^ self send: message.
+
+]
+
+{ #category : #service }
+PhaROSOutPutChannel >> startUp [ 
+	owner registerTo: topic name with: topic type.
+	
+	
+	
+	
+]
+
+{ #category : #tcp }
+PhaROSOutPutChannel >> subscribe: aNode [
+	
+	| message |	
+	
+	super subscribe: aNode.
+	
+	aNode subscribedTo: self. 
+	
+	(self mustSendPreviousMessagesTo: aNode) ifTrue:[  
+		sent do:  [ 	:msg | 
+				aNode receive: msg veryDeepCopy  from: self. 
+				
+		].
+	].
+
+	isFirstSubscriber := false.
+]
+
+{ #category : #tcp }
+PhaROSOutPutChannel >> topic: aTopic [
+	super topic: aTopic.
+	aTopic registerOutputChannel: self at: owner xmlRpcUrl.
+]
