@@ -128,7 +128,7 @@ ConfigurationOfPureROS >> baseline10: spec [
 				spec 
 					className: 'ConfigurationOfPhaROS';
 					file: 'ConfigurationOfPhaROS' ;
-					repository: 'http://car.mines-douai.fr/squeaksource/RoSt'; 
+					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'; 
 					versionString: #bleedingEdge
 			].
 			
