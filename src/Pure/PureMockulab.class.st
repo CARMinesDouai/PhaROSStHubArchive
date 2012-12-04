@@ -1,7 +1,7 @@
 Class {
 	#name : #PureMockulab,
 	#superclass : #Object,
-	#category : #Pure
+	#category : #'Pure-Kernel'
 }
 
 { #category : #'as yet unclassified' }
