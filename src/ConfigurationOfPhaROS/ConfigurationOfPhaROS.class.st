@@ -121,7 +121,7 @@ ConfigurationOfPhaROS >> baseline10: spec [
 	<version:'1.0-baseline'>
 	spec for: #common do: [
 			spec blessing: #baseline.
-			spec repository: 'http://car.mines-douai.fr/squeaksource/RoSt'.
+			spec repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
 			spec project: 'XMLRPC' with: [
 				spec 
 					className: 'ConfigurationOfXMLRPC';
