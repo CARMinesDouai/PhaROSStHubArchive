@@ -9,7 +9,7 @@ Class {
 
 { #category : #service }
 DirectoryService >> destroy [
-	services do: [ :s | ((s isKindOf: DirectoryService) or: [s isKindOf: NotificationManagerService ]) ifFalse: [ s destroy ]].
+	services do: [ :s | ((s isKindOf: DirectoryService) ) ifFalse: [ s destroy ]].
 	super destroy.
 ]
 

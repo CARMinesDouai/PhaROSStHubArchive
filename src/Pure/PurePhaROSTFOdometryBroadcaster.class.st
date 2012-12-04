@@ -28,47 +28,40 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 	lastNotification := aNotification.
 	
 	[
-	
+
+
+
 		self sendTo: '/pose' a: [
 			:msg |
 			
 			msg header frame_id: 'odom'.
-			msg pose position x: aLocalizationService xPos.		
-			msg pose position y: aLocalizationService yPos.						
+			msg pose position x:  aNotification xPos.		
+			msg pose position y:  aNotification yPos.						
 			msg pose position z: 0.0.
-			self rotationAsQuaternation: aLocalizationService orientation into:(msg pose orientation).
+			self rotationAsQuaternation: aNotification orientation into:(msg pose orientation).
 			
 		].
+	
 		self sendTo: '/tf' a: [: msg |
 		
-			" Odometry "
-			transformStamped := Geometry_msgsTransformStamped new.
-			transformStamped header frame_id: '/map'.
-			transformStamped child_frame_id: '/odom'.
-			transformStamped transform translation x: aLocalizationService xPos.		
-			transformStamped transform translation y: aLocalizationService yPos.
-			transformStamped transform translation z: 0.0.
-			self rotationAsQuaternation: aLocalizationService orientation into:(transformStamped transform rotation).
-			
-			msg addTransform: transformStamped.
-			
-			
+		
 			" BaseLink "
 			transformStamped := Geometry_msgsTransformStamped new.
 			transformStamped header frame_id: '/odom'.
 			transformStamped child_frame_id: '/base_link'.
+			transformStamped transform translation x: aNotification xPos.		
+			transformStamped transform translation y: aNotification yPos.
 			transformStamped transform translation z: 0.1.
-			transformStamped transform rotation w: 1.0.
+			self rotationAsQuaternation: aNotification orientation into:(transformStamped transform orientation).
 			
 			msg addTransform: transformStamped.
 			
 			
-					
 			" Laser "
 			transformStamped := Geometry_msgsTransformStamped new.
 			transformStamped header frame_id: '/base_link'.
 			transformStamped child_frame_id: '/base_laser'.
-			transformStamped transform translation z: 10.0.
+			transformStamped transform translation z: 0.2.
 			transformStamped transform rotation w: 1.0.
 			msg addTransform: transformStamped.
 			
