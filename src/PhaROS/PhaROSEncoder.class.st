@@ -170,9 +170,28 @@ PhaROSEncoder >> encodefloat32: aFloat [
 { #category : #'as yet unclassified' }
 PhaROSEncoder >> encodefloat64: aFloat [
 	| encoded |
-	encoded := aFloat asFloat asIEEE32BitWord asByteArray reversed.
-	encoded :=  (ByteArray new: 8 - encoded size), encoded.
+"	encoded := aFloat asFloat asIEEE32BitWord asByteArray reversed."
+"	encoded := self encodeUint32: (aFloat basicAt:1)."
+
+
+	encoded := ByteArray new: 8.
+	
+	encoded at:1 put: ((aFloat basicAt:2) digitAt: 1).
+	encoded at:2 put: ((aFloat basicAt:2) digitAt: 2).
+	encoded at:3 put: ((aFloat basicAt:2) digitAt: 3).
+	encoded at:4 put: ((aFloat basicAt:2) digitAt: 4).
+	
+	encoded at:5 put: ((aFloat basicAt:1) digitAt: 1).
+	encoded at:6 put: ((aFloat basicAt:1) digitAt: 2).
+	encoded at:7 put: ((aFloat basicAt:1) digitAt: 3).
+	encoded at:8 put: ((aFloat basicAt:1) digitAt: 4).
+	
+	
 	stream nextPutAll: encoded.
+	
+	
+	"encoded := ByteArray readHexFrom: (PDRConverter as64BitsHexStringFromFloat: aFloat).
+	stream nextPutAll: encoded."
 ]
 
 { #category : #'as yet unclassified' }

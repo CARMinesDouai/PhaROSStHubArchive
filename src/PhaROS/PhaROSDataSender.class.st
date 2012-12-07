@@ -16,6 +16,7 @@ PhaROSDataSender class >> for: aNode [
 PhaROSDataSender >> addToMessagesQueue: aBinaryMessage [
 	| rt |
 	rt := owner socket sendData:  aBinaryMessage.
+	Transcript show: 'Size ', rt asString ,  ' Bytes'.
 	self delayBetweenMessages .
 	^ rt. 
 

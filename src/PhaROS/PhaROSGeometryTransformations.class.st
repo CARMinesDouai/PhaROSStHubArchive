@@ -32,10 +32,10 @@ k versor is related with z
 	
 	^ 
 	{ 
-		((cosins at: j) * sick) - ((sins at: j )* cisk) .
-		((cosins at: j) * sisk) - ((sins at: j )* cick) .
-		((cosins at: j) * cisk) - ((sins at: j )* sick) .
-		((cosins at: j) * cick) - ((sins at: j )* sisk) .
+		((cosins at: j) * sick) - ((sins at: j )* cisk)  roundUpTo: 0.001.
+		((cosins at: j) * sisk) - ((sins at: j )* cick)  roundUpTo: 0.001.
+		((cosins at: j) * cisk) - ((sins at: j )* sick)  roundUpTo: 0.001.
+		((cosins at: j) * cick) - ((sins at: j )* sisk)  roundUpTo: 0.001.
 	}.
 		
 	
