@@ -149,7 +149,7 @@ ConfigurationOfPhaROS >> baseline10: spec [
 					className: 'ConfigurationOfCommonTraits';
 					file: 'ConfigurationOfCommonTraits' ;
 					versionString: #bleedingEdge;
-					repository: 'http://ss3.gemstone.com/ss/CommonTraits'.
+					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
 			].
 		
 			spec package: 'PhaROS' with: [
