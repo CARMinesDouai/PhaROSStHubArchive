@@ -70,6 +70,11 @@ NotificationManagerService >> destroy [
 ]
 
 { #category : #request }
+NotificationManagerService >> enableOneNotificationEvery: anAmmount [
+	self error: 'there are no notifications of notifications '.
+]
+
+{ #category : #request }
 NotificationManagerService >> getData [
 	| decoder |
 	

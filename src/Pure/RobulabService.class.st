@@ -42,6 +42,32 @@ RobulabService >> destroy [
 ]
 
 { #category : #request }
+RobulabService >> disableNotifications [
+
+	^robulab with: NotificationManagerService do: [
+		: notificationManager |
+		notificationManager deleteNotificationRecordFromService: self 
+	].
+]
+
+{ #category : #request }
+RobulabService >> enableNotifications [
+	self enableOneNotificationEvery: 0.
+
+	
+]
+
+{ #category : #request }
+RobulabService >> enableOneNotificationEvery: anAmmount [
+
+	robulab with: NotificationManagerService do: [
+		: notificationManager |
+		
+		notificationManager addNotificationRecordToInstance: self withPeriod: anAmmount
+	].
+]
+
+{ #category : #request }
 RobulabService >> get [ 
 	^self robulab sendMessageAndWaitResponse: (PureRequest getFrom: self).
 ]
@@ -168,4 +194,11 @@ RobulabService >> type: anObject [
 { #category : #request }
 RobulabService >> upDate: data [
 	^self robulab sendMessageAndWaitResponse: (PureRequest update: data into: self).
+]
+
+{ #category : #request }
+RobulabService >> whenANotificationArrivesDo: aBlock [
+	^ robulab subscribe: self relatedNotificationClass do: aBlock.
+
+	
 ]

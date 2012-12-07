@@ -205,10 +205,12 @@ PureClientUsesExamples >> workspaceUsingNotifications [
 			: laser | 
 			notifications addNotificationRecordToInstance: laser withPeriod: 1.
 		].
+	
 		robot with: LocalizationService do: [
 			: local | 
 			notifications addNotificationRecordToInstance: local withPeriod: 0.
 		].
+	
 	].
 	
 ]

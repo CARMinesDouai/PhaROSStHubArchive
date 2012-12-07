@@ -41,3 +41,11 @@ LaserEcho >> distance [
 LaserEcho >> distance: anObject [
 	distance := anObject
 ]
+
+{ #category : #accessing }
+LaserEcho >> max: otherLaserEcho [
+
+		distance > otherLaserEcho distance 
+		ifTrue: [^self]
+		ifFalse: [^otherLaserEcho ].
+]

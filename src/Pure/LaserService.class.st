@@ -73,6 +73,11 @@ LaserService >> initialize [
 ]
 
 { #category : #accessing }
+LaserService >> maxAcceptableRange [
+	 ^10
+]
+
+{ #category : #accessing }
 LaserService >> maxAngle [
 ^(echos at:echoNumber )angle
 ]
