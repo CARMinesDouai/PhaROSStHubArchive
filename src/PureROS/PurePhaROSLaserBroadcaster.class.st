@@ -13,21 +13,19 @@ PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceI
 	self sendTo: '/scan' a: [ :msg |
 		
 		
-		
-		Transcript show: 'min: ', aLaserNotification minAngle asString,' max:', aLaserNotification maxAngle asString, ' dif:', aLaserNotification angleDifferential asString  .
-		
-		msg header frame_id: '/base_laser'.
+		msg header frame_id: '/laser'.
 		
 		msg angle_min: aLaserNotification minAngle.
 		msg angle_max: aLaserNotification maxAngle.
-		msg angle_increment: aLaserNotification angleDifferential.
+		msg angle_increment: (0.5 degreesToRadians).
 		
-		msg scan_time: 0.1.
-		msg time_increment: 0.01.
+		
+		msg scan_time: 0.0.
+		msg time_increment: 0.0.
 		
 		msg range_min: aLaserNotification minRange.
 		msg range_max: aLaserNotification maxRange.
-		msg ranges addAll: aLaserNotification distances.		
+		msg ranges addAll: aLaserNotification distances.	
 
 	].	
 	

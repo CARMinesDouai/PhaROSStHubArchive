@@ -31,19 +31,18 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 
 
 
-		self sendTo: '/pose' a: [
-			:msg |
-			
-			msg header frame_id: 'odom'.
-			msg pose position x:  aNotification xPos.		
-			msg pose position y:  aNotification yPos.						
-			msg pose position z: 0.0.
-			self rotationAsQuaternation: aNotification orientation into:(msg pose orientation).
-			
-		].
 	
 		self sendTo: '/tf' a: [: msg |
 		
+			" BaseLink "
+			transformStamped := Geometry_msgsTransformStamped new.
+			transformStamped header frame_id: '/map'.
+			transformStamped child_frame_id: '/odom'.
+			transformStamped transform translation x: 0.0.	
+			transformStamped transform translation y: 0.0.
+			transformStamped transform translation z: 0.0.
+			transformStamped transform rotation w: 1.0.
+			
 		
 			" BaseLink "
 			transformStamped := Geometry_msgsTransformStamped new.
@@ -51,8 +50,12 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 			transformStamped child_frame_id: '/base_link'.
 			transformStamped transform translation x: aNotification xPos.		
 			transformStamped transform translation y: aNotification yPos.
-			transformStamped transform translation z: 0.1.
-			self rotationAsQuaternation: aNotification orientation into:(transformStamped transform orientation).
+			transformStamped transform translation z: 0.0.
+			self rotationAsQuaternation: aNotification orientation into:(transformStamped transform rotation).
+			
+			
+			
+			
 			
 			msg addTransform: transformStamped.
 			
@@ -60,12 +63,15 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 			" Laser "
 			transformStamped := Geometry_msgsTransformStamped new.
 			transformStamped header frame_id: '/base_link'.
-			transformStamped child_frame_id: '/base_laser'.
-			transformStamped transform translation z: 0.2.
-			transformStamped transform rotation w: 1.0.
+			transformStamped child_frame_id: '/laser'.
+			transformStamped transform translation x: -0.15.
+			transformStamped transform translation z: 0.25.
+			self rotationAsQuaternation: -45.0 degreesToRadians into:(transformStamped transform rotation).
 			msg addTransform: transformStamped.
 			
+			
 	].
+
 
 ]on: Error do: [
 	:e |
@@ -84,7 +90,7 @@ PurePhaROSTFOdometryBroadcaster >> period [
 PurePhaROSTFOdometryBroadcaster >> rotationAsQuaternation: anOrientation into: aQuaternationObject [
 	| array |
 	" anOrientation is the value of the only one kind of rotation that robulab have, in terms of z axis. "
-	
+
 	array := PhaROSGeometryTransformations new quaternationFromEulerFor: 0.0 and: 0.0 and: anOrientation.
 	aQuaternationObject x: (array at:1).
 	aQuaternationObject y: (array at:2).
@@ -99,6 +105,7 @@ PurePhaROSTFOdometryBroadcaster >> setUp [
 		: notification |
 		robot with: LocalizationService  do: [
 			: localization  |
+			localization resetLocalization.
 			localization announcer subscribe: LocalizationNotification do: [ :notif |
 				 self broadcast: notif from: localization. 
 			].
@@ -118,6 +125,7 @@ PurePhaROSTFOdometryBroadcaster >> stop [
 		: notification |
 		robot with: LocalizationService  do: [
 			: localization  |
+			localization resetLocalization.
 			localization announcer unsubscribe:  LaserNotification.
 			notification deleteNotificationRecordFromService:  localization.
 		].
