@@ -26,9 +26,9 @@ PhaROSHandShakeMessageSubscriber >> topic: aTopicName [
 
 { #category : #verification }
 PhaROSHandShakeMessageSubscriber >> verificationDictionary [ 
-	^super verificationDictionary addAll: (
+	^super verificationDictionary union: (
 		{ 
 			#topic -> ByteString 
 		} asDictionary
-	); yourself.
+	).
 ]

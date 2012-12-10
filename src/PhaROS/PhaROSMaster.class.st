@@ -161,6 +161,11 @@ PhaROSMaster >> getTopicType: aByteString [
 	aByteString  = '/pose' ifTrue: [
 		^ 'geometry_msgs/PoseStamped'.
 	].
+
+	aByteString  = '/odom' ifTrue: [
+		^ 'nav_msgs/Odometry'.
+	].
+
 	^(self getTopicTypes:'/anArbitraryId') at: aByteString ifAbsent: [ 
 		self error: 'There''s no topic named ', aByteString 
 	].

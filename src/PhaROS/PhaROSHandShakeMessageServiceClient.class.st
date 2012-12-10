@@ -26,10 +26,10 @@ PhaROSHandShakeMessageServiceClient >> service: aServiceName [
 
 { #category : #accessing }
 PhaROSHandShakeMessageServiceClient >> verificationDictionary [ 
-	^super verificationDictionary addAll: (
+	^super verificationDictionary union: (
 		{ 
 			#md5Sum -> ByteString .
 			#service -> ByteString .
 		} asDictionary
-	); yourself.
+	).
 ]

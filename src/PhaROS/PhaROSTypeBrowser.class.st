@@ -52,12 +52,30 @@ PhaROSTypeBrowser >> definition: aTypeId [
 					((type indexOf: $[) = 0 ) ifTrue:[
 						association := ( name asSymbol -> (self definition: type)  ).
 					] ifFalse: [
-						association := (name asSymbol -> (PhaROSArrayType of: (self definition: (type copyReplaceAll: '[]' with: '') )  ) ).
+						((type indexOf: $]) = ((type indexOf: $[ )+1) ) ifTrue: [
+							association := (name asSymbol -> (PhaROSArrayType of: (self definition: (type copyReplaceAll: '[]' with: '') )  ) ).
+						] ifFalse: [
+							| size innerType |	
+							size := type copyFrom: ((type indexOf: $[) +1) to: ((type indexOf: $]) -1) asInteger .
+							innerType :=  self definition: (type copyFrom:1 to: ((type indexOf: $[) -1 ) ) .
+						
+						      association := ( name asSymbol ->  (PhaROSArrayFixedLenghtType of: size  of: innerType )  )
+						].
 					].
 				 ]
 			) asArray named: aTypeId) relatedClass; yourself.
 
 	]) 
+
+
+
+
+
+
+
+
+
+
 
 
 ]

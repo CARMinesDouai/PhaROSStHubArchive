@@ -14,7 +14,7 @@ PhaROSArrayFixedLenghtType class >> of: aSize of: aClass [
 
 { #category : #'as yet unclassified' }
 PhaROSArrayFixedLenghtType >> defaultValueString [ 
-	^ ' (Array new: ' , size asString, ')'.
+	^ ' (OrderedCollection new: ' , size asString, ')'.
 	
 ]
 
