@@ -29,7 +29,7 @@ LocalizationNotification >> load: aPureNotification [
 
 { #category : #accessing }
 LocalizationNotification >> orientation [ 
-	^ orientation roundUpTo: 0.001.
+	^ orientation.
 ]
 
 { #category : #accessing }
@@ -49,7 +49,7 @@ LocalizationNotification >> status: aSmallInteger [
 
 { #category : #accessing }
 LocalizationNotification >> xPos [
-	^ xPos roundUpTo: 0.001.
+	^ xPos.
 ]
 
 { #category : #accessing }
@@ -59,7 +59,7 @@ LocalizationNotification >> xPos: aFloat [
 
 { #category : #accessing }
 LocalizationNotification >> yPos [
-	^ yPos roundUpTo: 0.001.
+	^ yPos.
 ]
 
 { #category : #accessing }

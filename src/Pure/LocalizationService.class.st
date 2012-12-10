@@ -68,7 +68,7 @@ LocalizationService >> isProprioreceptive [
 
 { #category : #accessing }
 LocalizationService >> orientation [
-	^ orientation roundUpTo: 0.001
+	^ orientation.
 ]
 
 { #category : #accessing }
@@ -144,7 +144,7 @@ LocalizationService >> status: anObject [
 
 { #category : #accessing }
 LocalizationService >> xPos [
-	^ xPos roundUpTo: 0.001
+	^ xPos .
 ]
 
 { #category : #accessing }
@@ -154,7 +154,7 @@ LocalizationService >> xPos: anObject [
 
 { #category : #accessing }
 LocalizationService >> yPos [
-	^ yPos roundUpTo: 0.001
+	^ yPos .
 ]
 
 { #category : #accessing }
