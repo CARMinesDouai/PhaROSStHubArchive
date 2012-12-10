@@ -25,7 +25,7 @@ PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceI
 		
 		msg range_min: aLaserNotification minRange.
 		msg range_max: aLaserNotification maxRange.
-		msg ranges addAll: aLaserNotification distances.	
+		msg ranges addAll: (aLaserNotification distances collect: [ :float | float / 2 ]).	
 
 	].	
 	
