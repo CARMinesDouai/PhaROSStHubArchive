@@ -31,10 +31,10 @@ PhaROSTypedHandShakeMessage >> type: aString [
 
 { #category : #verification }
 PhaROSTypedHandShakeMessage >> verificationDictionary [ 
-	^super verificationDictionary union: (
+	^super verificationDictionary addAll: (
 		{ 
 			#md5Sum -> ByteString .
 			#type -> ByteString
 		} asDictionary
-	).
+	); yourself.
 ]
