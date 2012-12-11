@@ -25,7 +25,7 @@ PhaROSArrayFixedLenghtType >> isAPossibleValue: aValue [
 
 { #category : #'as yet unclassified' }
 PhaROSArrayFixedLenghtType >> serialize:aValue into: anEncoder [
-	^ anEncoder encodeFixedLenghtArray: aValue of: self relatedType encodeSelector.
+	^ anEncoder encodeFixedLenghtArray: aValue of: self relatedType.
 
 ]
 

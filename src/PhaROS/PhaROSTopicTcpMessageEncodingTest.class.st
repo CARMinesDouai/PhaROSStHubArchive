@@ -10,7 +10,7 @@ Class {
 { #category : #testing }
 PhaROSTopicTcpMessageEncodingTest >> assertEncodedEqualsExpectedInFirst: netSize ofLastElements: rawSize [
 	|encoded expected|
-	encoded := ((RoStHandShakeMessageEncoder encode: message) last: rawSize) first: netSize.
+	encoded := ((PhaROSHandShakeMessageEncoder encode: message) last: rawSize) first: netSize.
 	expected := (self expectedByteArray last:  rawSize) first: netSize.
 	self assert: encoded = expected
 ]
@@ -35,7 +35,7 @@ PhaROSTopicTcpMessageEncodingTest >> expectedHexString [
 	^'b0 00 00 00
    20 00 00 00
       6d 65 73 73 61 67 65 5f 64 65 66 69 6e 69 74 69 6f 6e 3d 73 74 72 69 6e 67
-      20 64 61 74 61 0d 0d
+      20 64 61 74 61 0a 0a
    25 00 00 00
       63 61 6c 6c 65 72 69 64 3d 2f 72 6f 73 74 6f 70 69 63 5f 34 37 36 37 5f 31
       33 31 36 39 31 32 37 34 31 35 35 37
@@ -61,9 +61,7 @@ PhaROSTopicTcpMessageEncodingTest >> setUp [
 	message := PhaROSHandShakeMessage newPublisherWith: [
 		:msg  | 
 		msg  	
-		messageDefinition: 'string data
-
-';	
+		messageDefinition: 'string data', String lf, String lf;	
 		callerId: '/rostopic_4767_1316912741557';
 		latching: true;
 

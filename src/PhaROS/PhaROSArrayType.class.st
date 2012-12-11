@@ -5,8 +5,8 @@ Class {
 }
 
 { #category : #construction }
-PhaROSArrayType class >> of: aType [
-	^ self new ofType: aType; yourself .
+PhaROSArrayType class >> of: aClass [
+	^ self new ofClass: aClass; yourself .
 ]
 
 { #category : #accessing }

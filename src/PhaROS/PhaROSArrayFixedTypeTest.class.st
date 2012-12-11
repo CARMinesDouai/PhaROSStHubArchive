@@ -26,7 +26,7 @@ PhaROSArrayFixedTypeTest >> invalidValues [
 
 { #category : #'as yet unclassified' }
 PhaROSArrayFixedTypeTest >> newTestedClassInstance [
-	^ self relatedClass of:2 of: PhaROSInt16Type .
+	^ self relatedClass of:2 of: PhaROSInt16Type.
 ]
 
 { #category : #'as yet unclassified' }
