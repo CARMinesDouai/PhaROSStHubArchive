@@ -104,7 +104,7 @@ PhaROSXMLRPCTest >> testRegisterPublisher [
 	currentData := master registerPublisher: self callerId  to: 'rosout' with: 'rosgraph_msgs/Log'  andCallerUri: 'http://127.0.0.1:9090/'.
 	
 	self assert: currentData size = 1.
-	self assert: ((currentData at: 1) beginsWith: 'http://127.0.0.1:').
+	self assert: (((currentData at: 1) beginsWith: 'http://127.0.0.1:') or: ((currentData at: 1) beginsWith: 'http://localhost:')).
 	
 
 

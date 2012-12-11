@@ -19,7 +19,7 @@ PhaROSBaseCase >> callerId [
 PhaROSBaseCase >> setUp [ 
 
 
-	masterUrl := 'http://127.0.0.1:11311/' .
+	masterUrl := 'http://localhost:11311/' .
 	
 	master := PhaROSMaster url: masterUrl.
 ]

@@ -35,7 +35,7 @@ PhaROSTopicTcpMessageEncodingTest >> expectedHexString [
 	^'b0 00 00 00
    20 00 00 00
       6d 65 73 73 61 67 65 5f 64 65 66 69 6e 69 74 69 6f 6e 3d 73 74 72 69 6e 67
-      20 64 61 74 61 0a 0a
+      20 64 61 74 61 0d 0d
    25 00 00 00
       63 61 6c 6c 65 72 69 64 3d 2f 72 6f 73 74 6f 70 69 63 5f 34 37 36 37 5f 31
       33 31 36 39 31 32 37 34 31 35 35 37
@@ -88,9 +88,6 @@ PhaROSTopicTcpMessageEncodingTest >> testCallerIdHeaderFieldSizeEncoding [
 
 { #category : #testing }
 PhaROSTopicTcpMessageEncodingTest >> testEncoding [
-
-	PhaROSHandShakeMessageDecoder decode: (PhaROSHandShakeMessageEncoder encode: message).
-	PhaROSHandShakeMessageDecoder decode: self expectedByteArray.
 	
 	self assert: (PhaROSHandShakeMessageEncoder encode: message)= (self  expectedByteArray first: 180)
 	"In our approach we dont use the body space of the message in order to use the specific tcp/messages in just one way"
