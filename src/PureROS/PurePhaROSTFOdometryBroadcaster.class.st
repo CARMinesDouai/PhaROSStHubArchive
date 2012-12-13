@@ -34,19 +34,17 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 
 
 
-
-
 	
 		self sendTo: '/tf' a: [: msg |
 		
 			
-			
+		
 			" BaseLink "
 			transformStamped := Geometry_msgsTransformStamped new.
 			transformStamped header frame_id: '/odom'.
 			transformStamped child_frame_id: '/base_link'.
-			transformStamped transform translation x: (aNotification xPos - xDelta ).		
-			transformStamped transform translation y: (aNotification yPos - yDelta ).
+			transformStamped transform translation x: (aNotification xPos + xDelta ).		
+			transformStamped transform translation y: (aNotification yPos + yDelta ).
 			transformStamped transform translation z: 0.0.
 			self rotationAsQuaternation: (aNotification orientation + oDelta) into:(transformStamped transform rotation).
 			
@@ -145,8 +143,12 @@ PurePhaROSTFOdometryBroadcaster >> stop [
 
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> zeroDifferentialX: xPos y: yPos orientation: orientation [
-
+"
 	xDelta := 0.0 - xPos. 
 	yDelta := 0.0 - yPos.
-	oDelta := 0.0 - orientation.
+	oDelta := 0.0 - orientation."
+	
+	xDelta := 0.0 . 
+	yDelta := 0.0 .
+	oDelta := 0.0 .
 ]
