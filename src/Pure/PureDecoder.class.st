@@ -60,9 +60,15 @@ PureDecoder >> nextEncodedUInt16 [
 ]
 
 { #category : #decoder }
-PureDecoder >> nextEncodedUInt32 [
+PureDecoder >> nextEncodedUint32 [
 
 	^  (stream next: 4) unsignedLongAt: 1 bigEndian: false.
+]
+
+{ #category : #decoder }
+PureDecoder >> nextEncodedUint64 [
+
+	^  (stream next: 8) unsignedLongAt: 1 bigEndian: false.
 ]
 
 { #category : #'as yet unclassified' }

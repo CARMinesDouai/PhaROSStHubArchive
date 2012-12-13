@@ -15,21 +15,21 @@ LocalizationNotification >> load: aPureNotification [
 	| decoder |
 	decoder := aPureNotification decoder.
 	
-	
-	
-	"Ireally hate this stupid thing "
-	decoder nextEncodedBytes: 8. 
-	
+	self loadTime: decoder.
 	
 	self xPos: decoder nextEncodedFloat64. 
 	self yPos: decoder nextEncodedFloat64. 
 	self orientation: decoder nextEncodedFloat64. 
-	self status: decoder nextEncodedUInt32. 
+	
+	self status: decoder nextEncodedByte. 
+	
+
+
 ]
 
 { #category : #accessing }
 LocalizationNotification >> orientation [ 
-	^ orientation.
+	^  (orientation  roundUpTo: 0.0001 )roundDownTo: -0.0001
 ]
 
 { #category : #accessing }
@@ -49,7 +49,7 @@ LocalizationNotification >> status: aSmallInteger [
 
 { #category : #accessing }
 LocalizationNotification >> xPos [
-	^ xPos.
+	^ (xPos roundUpTo: 0.0001 )roundDownTo: -0.0001
 ]
 
 { #category : #accessing }
@@ -59,7 +59,7 @@ LocalizationNotification >> xPos: aFloat [
 
 { #category : #accessing }
 LocalizationNotification >> yPos [
-	^ yPos.
+	^  (yPos roundUpTo: 0.0001 )roundDownTo: -0.0001
 ]
 
 { #category : #accessing }

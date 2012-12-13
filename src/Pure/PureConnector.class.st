@@ -125,7 +125,7 @@ PureConnector >> receiveAnswer [
 	[
 	
 		
-		buffer := ByteArray new: 3000.
+		buffer := ByteArray new: 4096.
 		
 		[	
 			intent := intent +1.

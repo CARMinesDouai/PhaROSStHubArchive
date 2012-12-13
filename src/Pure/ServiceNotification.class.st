@@ -3,7 +3,8 @@ Class {
 	#superclass : #Announcement,
 	#instVars : [
 		'service',
-		'notification'
+		'notification',
+		'time'
 	],
 	#category : #'Pure-Notifications'
 }
@@ -19,6 +20,11 @@ ServiceNotification class >> for: aTarget with: aPureNotification [
 ]
 
 { #category : #'as yet unclassified' }
+ServiceNotification >> loadTime: aDecoder [
+	time := aDecoder nextEncodedUint64 
+]
+
+{ #category : #'as yet unclassified' }
 ServiceNotification >> notification [ 
 	^notification 
 ]
@@ -31,4 +37,9 @@ ServiceNotification >> notification: aNotification [
 { #category : #'as yet unclassified' }
 ServiceNotification >> service: aService [
 	service := aService.
+]
+
+{ #category : #'as yet unclassified' }
+ServiceNotification >> time [
+	^ time.
 ]

@@ -21,7 +21,7 @@ LocalizationService >> getData [
 	self xPos: decoder nextEncodedFloat64. 
 	self yPos: decoder nextEncodedFloat64. 
 	self orientation: decoder nextEncodedFloat64. 
-	self status: decoder nextEncodedUInt32 . 
+	self status: decoder nextEncodedUint32 . 
 	
 
 ]
@@ -36,7 +36,7 @@ LocalizationService >> getDataWith: aConnector [
 	self xPos: decoder nextEncodedFloat64. 
 	self yPos: decoder nextEncodedFloat64. 
 	self orientation: decoder nextEncodedFloat64. 
-	self status: decoder nextEncodedUInt32 . 
+	self status: decoder nextEncodedUint32 . 
 	
 
 ]

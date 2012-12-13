@@ -16,6 +16,8 @@ PureNotification class >> initializeFromArray:  aByteArray forRobot: robot [
 	response target: (robot instanceRelatedTo: decoder nextEncodedUInt16).
 	"response notificationTimeStamp: (PDRConverter asFloat32FromDataArray: (response responseArray) fromIndex: 3)".
 	response data: decoder upToEnd.
+	
+	
 	^response
 ]
 

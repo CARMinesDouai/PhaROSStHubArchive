@@ -47,9 +47,7 @@ LaserNotification >> load: notificationSource [
 
 	decoder := notificationSource decoder.
 	
-	"Ireally hate this stupid thing "
-	decoder nextEncodedBytes: 8. 
-	
+	self loadTime: decoder.
 	
 	[ decoder hasData ] whileTrue: [
 		echoes add: ( LaserEcho createEchoWithAngle: (decoder nextEncodedFloat32)  andFloatDistance: (decoder nextEncodedFloat32) )
