@@ -74,7 +74,7 @@ LaserService >> initialize [
 
 { #category : #accessing }
 LaserService >> maxAcceptableRange [
-	 ^10
+	 ^10.0
 ]
 
 { #category : #accessing }

@@ -20,6 +20,11 @@ LaserNotification >> angleDifferential [
 ]
 
 { #category : #'as yet unclassified' }
+LaserNotification >> angles [
+	^ self echoes collect: [ :echo | echo angle asFloat ].
+]
+
+{ #category : #'as yet unclassified' }
 LaserNotification >> distances [
 	^ self echoes collect: [ :echo | echo distance asFloat ].
 ]
@@ -69,7 +74,7 @@ LaserNotification >> load: notificationSource [
 
 { #category : #'as yet unclassified' }
 LaserNotification >> maxAngle [
-	^ echoes last angle
+	^ self angles max.
 ]
 
 { #category : #'as yet unclassified' }
@@ -79,7 +84,7 @@ LaserNotification >> maxRange [
 
 { #category : #'as yet unclassified' }
 LaserNotification >> minAngle [
-	^ (echoes at: 1) angle
+	^ self angles min.
 ]
 
 { #category : #'as yet unclassified' }
