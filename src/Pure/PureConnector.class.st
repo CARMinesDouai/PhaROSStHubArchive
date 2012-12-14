@@ -183,8 +183,10 @@ PureConnector >> sendMessage: aMessage [
 		(PureWorkUnit do: [
 			| id |
 			id := PureSequencer instance consumeRequestId.
+			Transcript show: (id, aMessage asHex) asString.
 			self send: id, aMessage asHex.
 			self receiveAnswer. 
+			
 		]).
 ]
 

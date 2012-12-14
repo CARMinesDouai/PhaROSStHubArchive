@@ -28,7 +28,27 @@ PureDebugUtil >> laserStopTranscript [
 ]
 
 { #category : #'as yet unclassified' }
-PureDebugUtil >> laserTranscript [
+PureDebugUtil >> moveForward: aVelocity [
+
+	robot with: DifferentialDriveService do: [
+		: service |
+		service getData .
+		service printCurrentAndTargetValues. 
+		service setTargetLinearSpeed: aVelocity andTargetAngularSpeed: 0.0.	
+	].
+
+]
+
+{ #category : #'as yet unclassified' }
+PureDebugUtil >> odometryStopTranscript [
+
+	robot with: LocalizationService do: [ : aLocalizationService | 
+		aLocalizationService disableNotifications.
+	].
+]
+
+{ #category : #'as yet unclassified' }
+PureDebugUtil >> odometryTranscript [
 
 	robot with: LocalizationService do: [ : aLocalizationService | 
 		aLocalizationService enableNotifications .
@@ -39,15 +59,12 @@ PureDebugUtil >> laserTranscript [
 ]
 
 { #category : #'as yet unclassified' }
-PureDebugUtil >> moveForward: aVelocity [
+PureDebugUtil >> resetLocalizationService [
 
-	robot with: DifferentialDriveService do: [
-		: service |
-		service getData .
-		service printCurrentAndTargetValues. 
-		service setTargetLinearSpeed: aVelocity andTargetAngularSpeed: 0.0.	
+	robot with: LocalizationService do: [ : service | 
+		
+		service resetLocalization.
 	].
-
 ]
 
 { #category : #'as yet unclassified' }

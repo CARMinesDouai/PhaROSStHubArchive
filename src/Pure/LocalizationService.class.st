@@ -31,7 +31,7 @@ LocalizationService >> getDataWith: aConnector [
 	|  decoder get |
 	get := self getWith: aConnector . 
 	get ifNil: [ ^ nil ].
-	decoder := get decoder.	
+	decoder := get decoder.
 	
 	self xPos: decoder nextEncodedFloat64. 
 	self yPos: decoder nextEncodedFloat64. 
@@ -121,14 +121,9 @@ LocalizationService >> relatedNotificationClass [
 { #category : #request }
 LocalizationService >> resetLocalization [
 	| response |
+	
 	response :=self replace: '0000000000000000000000000000000000000000000000000000000000000000'.
-	response := self upDate: '0000000000000000000000000000000000000000000000000000000000000000'.
-	response :=self replace: '0000000000000000000000000000000000000000000000000000000000000000'.
-	response :=self replace: '0000000000000000000000000000000000000000000000000000000000000000'.
-	response :=self replace: '0000000000000000000000000000000000000000000000000000000000000000'.
-	response :=self replace: '0000000000000000000000000000000000000000000000000000000000000000'.
-	response := self upDate: '0000000000000000000000000000000000000000000000000000000000000000'.
-	response := self upDate: '0000000000000000000000000000000000000000000000000000000000000000'.
+"	response :=self replace: 'FFFFFFFFFFFFFFFF000000000000000000000000000000000000000000000000'."
 	response := self getData.
 ]
 
