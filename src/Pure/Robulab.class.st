@@ -61,11 +61,25 @@ Robulab >> directoryService: anObject [
 	directoryService := anObject
 ]
 
+{ #category : #convenient }
+Robulab >> disableNotificationsForService: aServiceClass [
+	self with: aServiceClass do: [ :service |
+		service disableNotifications.
+	] 
+]
+
 { #category : #service }
 Robulab >> discoverServices [
 	^ (self connector discoverServices) result.
 
 	
+]
+
+{ #category : #convenient }
+Robulab >> enableNotificationsForService: aServiceClass [
+	self with: aServiceClass do: [ :service |
+		service enableNotifications.
+	] 
 ]
 
 { #category : #sending }

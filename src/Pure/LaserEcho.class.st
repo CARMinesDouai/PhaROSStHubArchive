@@ -27,7 +27,7 @@ LaserEcho >> angle: anObject [
 	angle := anObject
 ]
 
-{ #category : #accessing }
+{ #category : #converting }
 LaserEcho >> asString [ 
 	^ '----- angle: ', angle asString, ' distance: ', distance asString.
 ]
@@ -42,7 +42,7 @@ LaserEcho >> distance: anObject [
 	distance := anObject
 ]
 
-{ #category : #accessing }
+{ #category : #comparing }
 LaserEcho >> max: otherLaserEcho [
 
 		distance > otherLaserEcho distance 
