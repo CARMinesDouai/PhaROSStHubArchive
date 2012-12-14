@@ -85,18 +85,6 @@ PhaROSType >> newPacket [
 ]
 
 { #category : #accessing }
-PhaROSType >> serialize: aValue [
-	| stream encoder |
-	self check: aValue. 
-	
-	stream := WriteStream on: (ByteArray new: self dataTypeSize).
-	encoder := FLEncoder on: stream.
-	self serialize:aValue into: encoder.
-	encoder flush.
-	^ stream contents.
-]
-
-{ #category : #accessing }
 PhaROSType >> serialize:aValue into: anEncoder [
 	^ anEncoder perform: encodeSelector with: aValue.
 ]
