@@ -54,12 +54,6 @@ LaserService >> getDataWith: aConnector [
 	
 ]
 
-{ #category : #'initialize-release' }
-LaserService >> initialize [ 
-	self echos: Dictionary new.
-	self semaphore: Semaphore new.
-]
-
 { #category : #accessing }
 LaserService >> maxAcceptableRange [
 	 ^10.0
