@@ -21,10 +21,12 @@ LaserService >> echoNumber: anInteger [
 ]
 
 { #category : #request }
-LaserService >> getData [ 
-	| compteurEcho decoder |
+LaserService >> getDataWith: aConnector [ 
+	| decoder get |
 
-	decoder := self get decoder.
+	get := self getWith: aConnector . 
+	get ifNil: [ ^ nil ].
+	decoder := get decoder.
 
 	
 	self xposition: decoder nextEncodedFloat32. 
@@ -36,13 +38,11 @@ LaserService >> getData [
 	
 ]
 
-{ #category : #request }
-LaserService >> getDataWith: aConnector [ 
-	| decoder get |
+{ #category : #'as yet unclassified' }
+LaserService >> load [ 
+	| compteurEcho decoder |
 
-	get := self getWith: aConnector . 
-	get ifNil: [ ^ nil ].
-	decoder := get decoder.
+	decoder := self get decoder.
 
 	
 	self xposition: decoder nextEncodedFloat32. 

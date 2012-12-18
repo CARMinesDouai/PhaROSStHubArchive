@@ -42,7 +42,7 @@ TestNotification >> testLocalization [
 				:not |	
 				notification := not.
 				notifications deleteNotificationRecordFromService:  local .
-				local getData.
+				local load.
 				semaphore signal. 
 			 ].
 			notifications addNotificationRecordToInstance: local withPeriod: 1.

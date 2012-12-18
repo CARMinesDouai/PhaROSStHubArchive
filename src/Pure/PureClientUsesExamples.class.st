@@ -20,7 +20,7 @@ pdr := Robulab newWith: #[192 168 1 2] and: 60000.
 "NotificationManager".
 pdr with: NotificationManagerService do: [
 	: service |
-	service getData.
+	service load.
 	
 	pdr with: LocalizationService  do: [
 		:laser |
@@ -33,14 +33,14 @@ pdr with: NotificationManagerService do: [
 "IO Service"
 pdr with: IOService do: [
 	: service |
-	service getData .
+	service load .
 ].
 
 
 "Differential Drive"
 pdr with: DifferentialDriveService do: [
 	: service |
-	service getData .
+	service load .
 	service printCurrentAndTargetValues. 
 	service setTargetLinearSpeed: 0.0 andTargetAngularSpeed: 0.4.	
 ].
@@ -50,7 +50,7 @@ pdr with: DifferentialDriveService do: [
 "Service Laser"
 pdr with: LaserService do: [
 	: service |
-	service getData .
+	service load .
 	service printEchos .
 ].
 

@@ -32,7 +32,7 @@ PureDebugUtil >> moveForward: aVelocity [
 
 	robot with: DifferentialDriveService do: [
 		: service |
-		service getData .
+		service load .
 		service printCurrentAndTargetValues. 
 		service setTargetLinearSpeed: aVelocity andTargetAngularSpeed: 0.0.	
 	].
@@ -72,7 +72,7 @@ PureDebugUtil >> rotate: aVelocity [
 
 	robot with: DifferentialDriveService do: [
 		: service |
-		service getData .
+		service load .
 		service printCurrentAndTargetValues. 
 		service setTargetLinearSpeed: 0.0 andTargetAngularSpeed: aVelocity.	
 	].

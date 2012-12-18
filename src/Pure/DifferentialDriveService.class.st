@@ -39,8 +39,8 @@ DifferentialDriveService >> currentLinearSpeed: anObject [
 	currentLinearSpeed := anObject
 ]
 
-{ #category : #request }
-DifferentialDriveService >> getData [
+{ #category : #'initialize-release' }
+DifferentialDriveService >> load [
 	|decoder | 
 	
 

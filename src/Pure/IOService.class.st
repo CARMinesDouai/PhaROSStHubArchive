@@ -94,8 +94,8 @@ IOService >> digitalOutputs: anObject [
 	digitalOutputs := anObject
 ]
 
-{ #category : #request }
-IOService >> getData [ 
+{ #category : #'initialize-release' }
+IOService >> load [ 
 | decoder |
 	Transcript show:'- - - - - - - - - -';cr.
 	Transcript show: ' Acquisition des données du IO Service:';cr.	

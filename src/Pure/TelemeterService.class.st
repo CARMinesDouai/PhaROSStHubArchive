@@ -8,8 +8,13 @@ Class {
 	#category : #'Pure-Services'
 }
 
-{ #category : #request }
-TelemeterService >> getData [
+{ #category : #'initialize-release' }
+TelemeterService >> initialize [ 
+	self telemeters: OrderedCollection new.
+]
+
+{ #category : #'initialize-release' }
+TelemeterService >> load [
 	| decoder  telemeterId  xValue |
 
 	Transcript show:'- - - - - - - - - -';cr.
@@ -31,11 +36,6 @@ TelemeterService >> getData [
 
 
 
-]
-
-{ #category : #'initialize-release' }
-TelemeterService >> initialize [ 
-	self telemeters: OrderedCollection new.
 ]
 
 { #category : #printing }

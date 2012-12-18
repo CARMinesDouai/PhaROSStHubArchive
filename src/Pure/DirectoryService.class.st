@@ -13,8 +13,26 @@ DirectoryService >> destroy [
 	super destroy.
 ]
 
-{ #category : #request }
-DirectoryService >> getData [ 
+{ #category : #accessing }
+DirectoryService >> instanceRelatedTo: anInstanceID [
+	^services at: anInstanceID.
+]
+
+{ #category : #accessing }
+DirectoryService >> instancesRelatedWith: aServiceClass [ 
+	| selected |
+	selected := services values select: [ : s | s isKindOf: aServiceClass ].
+	self assert: selected size > 0.
+	^ selected. 
+]
+
+{ #category : #accessing }
+DirectoryService >> interestedAnnouncements [
+	^ {   } 
+]
+
+{ #category : #'initialize-release' }
+DirectoryService >> load [ 
 | decoder  instanceCode serviceType |
 	Transcript show:'- - - - - - - - - -';cr.
 	Transcript show: 'Récupération des services de Robulab via le Directory Service';cr.
@@ -44,24 +62,6 @@ DirectoryService >> getData [
 	].
 	"Fin du traitement"
 	Transcript show: 'Récupération des services de Robulab terminée';cr.
-]
-
-{ #category : #accessing }
-DirectoryService >> instanceRelatedTo: anInstanceID [
-	^services at: anInstanceID.
-]
-
-{ #category : #accessing }
-DirectoryService >> instancesRelatedWith: aServiceClass [ 
-	| selected |
-	selected := services values select: [ : s | s isKindOf: aServiceClass ].
-	self assert: selected size > 0.
-	^ selected. 
-]
-
-{ #category : #accessing }
-DirectoryService >> interestedAnnouncements [
-	^ {   } 
 ]
 
 { #category : #accessing }

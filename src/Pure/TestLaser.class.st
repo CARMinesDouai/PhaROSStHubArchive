@@ -1,16 +1,27 @@
 Class {
 	#name : #TestLaser,
-	#superclass : #TestService,
+	#superclass : #TestRobulab,
 	#category : #'Pure-Test-HardwareInTheLoop'
 }
 
-{ #category : #tests }
+{ #category : #'as yet unclassified' }
 TestLaser >> testGetValuesAsynchronously [
 	
-	| aNotification |
-		
-	aNotification := self notificationForService: LaserService forNotification: LaserNotification.
+	| aNotification lockAssert |
 	
+	lockAssert := Semaphore new.
+		
+	robulab enableNotificationsForService: LaserService.
+	
+	robulab subscribe: LaserNotification  do: [ :notif | 
+		aNotification  := notif.
+		lockAssert signal.
+	].
+	
+	self deny: (lockAssert waitTimeoutSeconds: 1). 
+
+	robulab disableNotificationsForService: LaserService.
+
 	self assert: aNotification notNil.
 	self assert: aNotification echoes notEmpty.
 

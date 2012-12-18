@@ -70,6 +70,7 @@ Robulab >> disableNotificationsForService: aServiceClass [
 
 { #category : #service }
 Robulab >> discoverServices [
+	self debug: ['discovering services'].
 	^ (self connector discoverServices) result.
 
 	
@@ -77,6 +78,7 @@ Robulab >> discoverServices [
 
 { #category : #convenient }
 Robulab >> enableNotificationsForService: aServiceClass [
+
 	self with: aServiceClass do: [ :service |
 		service enableNotifications.
 	] 
@@ -89,9 +91,10 @@ Robulab >> instanceRelatedTo: anInstanceID [
 
 { #category : #'initialize-release' }
 Robulab >> loadServices [ 
+	self debug: ['initializing'].
 	self directoryService: (RobulabService createFromRobulab: self Type: 0) .  
-	self directoryService getData .
-	self directoryService services do: [ :service | service getData ].
+	self directoryService load .
+	self directoryService services do: [ :service | service load ].
 	
 
 
@@ -112,6 +115,18 @@ Robulab >> sendNotification: notifString [
 Robulab >> start [ 
 	self loadServices.
 	
+]
+
+{ #category : #announcement }
+Robulab >> subscribe: anAnnouncement do: aBlock [
+	self info: ['receiving subscription for ', anAnnouncement name  ].
+	^self resolveAnnouncer subscribe: anAnnouncement do: aBlock
+]
+
+{ #category : #announcement }
+Robulab >> unsubscribe: anAnnouncement [
+	self info: ['unsubscribing ', anAnnouncement name  ].
+	^self resolveAnnouncer unsubscribe: anAnnouncement.
 ]
 
 { #category : #service }

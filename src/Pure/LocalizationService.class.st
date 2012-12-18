@@ -11,22 +11,6 @@ Class {
 }
 
 { #category : #request }
-LocalizationService >> getData [ 
-	|  decoder |
-	Transcript show:'- - - - - - - - - -';cr.
-	Transcript show: ' Acquisition des données du Localization Service:';cr.
-	decoder := self get decoder.
-	
-	
-	self xPos: decoder nextEncodedFloat64. 
-	self yPos: decoder nextEncodedFloat64. 
-	self orientation: decoder nextEncodedFloat64. 
-	self status: decoder nextEncodedUint32 . 
-	
-
-]
-
-{ #category : #request }
 LocalizationService >> getDataWith: aConnector [ 
 	|  decoder get |
 	get := self getWith: aConnector . 
@@ -64,6 +48,22 @@ LocalizationService >> isMetric [
 { #category : #accessing }
 LocalizationService >> isProprioreceptive [
 	^((status=12 | status=10 | status=9))
+]
+
+{ #category : #'initialize-release' }
+LocalizationService >> load [ 
+	|  decoder |
+	Transcript show:'- - - - - - - - - -';cr.
+	Transcript show: ' Acquisition des données du Localization Service:';cr.
+	decoder := self get decoder.
+	
+	
+	self xPos: decoder nextEncodedFloat64. 
+	self yPos: decoder nextEncodedFloat64. 
+	self orientation: decoder nextEncodedFloat64. 
+	self status: decoder nextEncodedUint32 . 
+	
+
 ]
 
 { #category : #accessing }
@@ -124,7 +124,7 @@ LocalizationService >> resetLocalization [
 	
 	response :=self replace: '0000000000000000000000000000000000000000000000000000000000000000'.
 "	response :=self replace: 'FFFFFFFFFFFFFFFF000000000000000000000000000000000000000000000000'."
-	response := self getData.
+	response := self load.
 ]
 
 { #category : #accessing }

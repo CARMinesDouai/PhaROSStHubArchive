@@ -1,10 +1,11 @@
 Class {
 	#name : #RobulabService,
 	#superclass : #Object,
+	#traits : 'TLogger',
+	#classTraits : 'TLogger classTrait',
 	#instVars : [
 		'robulab',
-		'type',
-		'listening'
+		'type'
 	],
 	#category : #'Pure-Services'
 }
@@ -72,12 +73,6 @@ RobulabService >> get [
 	^self robulab sendMessageAndWaitResponse: (PureRequest getFrom: self).
 ]
 
-{ #category : #request }
-RobulabService >> getData [ 
-	"imlpementar"
-		self flag: #implemeeent
-]
-
 { #category : #accessing }
 RobulabService >> getInstanceNumber [
 	| result  |
@@ -97,11 +92,6 @@ RobulabService >> getWith: aConnector [
 
 ]
 
-{ #category : #'initialize-release' }
-RobulabService >> initialize [ 
-	self listening: false.
-]
-
 { #category : #request }
 RobulabService >> insert: data [
 	^self robulab sendMessageAndWaitResponse: (PureRequest insert: data into: self).
@@ -112,14 +102,10 @@ RobulabService >> interestedAnnouncements [
 	^ {  self relatedNotificationClass } 
 ]
 
-{ #category : #accessing }
-RobulabService >> listening [
-	^ listening
-]
-
-{ #category : #accessing }
-RobulabService >> listening: anObject [
-	listening := anObject
+{ #category : #'initialize-release' }
+RobulabService >> load [ 
+	"imlpementar"
+		self flag: #implemeeent
 ]
 
 { #category : #request }
