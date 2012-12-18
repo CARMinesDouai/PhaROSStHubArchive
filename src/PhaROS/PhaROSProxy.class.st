@@ -9,19 +9,6 @@ Class {
 	#category : #'PhaROS-Kernel-XmlRpc'
 }
 
-{ #category : #configuration }
-PhaROSProxy class >> configurationOfLog [
-	<logConfiguration>
-	^ [
-	     :builder |
-	     builder forClass: LoggedExampleCustomized 
-			     useLevel:#info 
-			     showingLogAs: ('%tag #%class >> %selector [%log]' asPatternFormatter) 
-			     into: Transcript asLogWriter .
-	].
-
-]
-
 { #category : #'instance creation' }
 PhaROSProxy class >> url: urlString [
 	|url|

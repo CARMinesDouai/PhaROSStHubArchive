@@ -12,7 +12,6 @@ Class {
 PhaROSCollectionType >> dataTypeSizeFor: aValue [
 self flag: #cambiarEstooo. " "
 
-
 	(self isAPossibleValue: aValue ) ifFalse: [
 		PhaROSUnexpextedValue signal: 'Unexpected value'.
 	].
@@ -44,8 +43,6 @@ PhaROSCollectionType >> isAPossibleValue: aValue [
 			self relatedType isAPossibleValue: val.
 		]	
 	].
-
-
 ]
 
 { #category : #'as yet unclassified' }

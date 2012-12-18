@@ -10,19 +10,6 @@ Class {
 	#category : #'PhaROS-Kernel-Tcp'
 }
 
-{ #category : #configuration }
-PhaROSHandShakeMessageDecoder class >> configurationOfLog [
-	<logConfiguration>
-	^ [
-	     :builder |
-	     builder forClass: LoggedExampleCustomized 
-			     useLevel:#debug 
-			     showingLogAs: ('%tag #%class >> %selector [%log]' asPatternFormatter) 
-			     into: Transcript asLogWriter .
-	].
-
-]
-
 { #category : #decoding }
 PhaROSHandShakeMessageDecoder class >> decode: aByteArray [ 
 

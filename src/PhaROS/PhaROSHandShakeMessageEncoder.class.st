@@ -9,19 +9,6 @@ Class {
 	#category : #'PhaROS-Kernel-Tcp'
 }
 
-{ #category : #configuration }
-PhaROSHandShakeMessageEncoder class >> configurationOfLog [
-	<logConfiguration>
-	^ [
-	     :builder |
-	     builder forClass: LoggedExampleCustomized 
-			     useLevel:#debug 
-			     showingLogAs: ('%tag #%class >> %selector [%log]' asPatternFormatter) 
-			     into: Transcript asLogWriter .
-	].
-
-]
-
 { #category : #encoding }
 PhaROSHandShakeMessageEncoder class >> encode: aTcpMessage [
 	^self new encode: aTcpMessage.

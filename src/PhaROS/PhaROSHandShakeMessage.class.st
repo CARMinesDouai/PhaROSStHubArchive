@@ -9,19 +9,6 @@ Class {
 	#category : #'PhaROS-Kernel-Tcp'
 }
 
-{ #category : #configuration }
-PhaROSHandShakeMessage class >> configurationOfLog [
-	<logConfiguration>
-	^ [
-	     :builder |
-	     builder forClass: LoggedExampleCustomized 
-			     useLevel:#debug 
-			     showingLogAs: ('%tag #%class >> %selector [%log]' asPatternFormatter) 
-			     into: Transcript asLogWriter .
-	].
-
-]
-
 { #category : #'instance creation' }
 PhaROSHandShakeMessage class >> configure: aMessage with: aMessageConfigurationBlock [
 	aMessageConfigurationBlock value: aMessage.
