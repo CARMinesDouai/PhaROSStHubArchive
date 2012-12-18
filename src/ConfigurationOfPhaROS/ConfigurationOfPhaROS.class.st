@@ -25,6 +25,19 @@ ConfigurationOfPhaROS class >> bootstrapPackage: aString from: aPath [
 			version workingCopy repositoryGroup addRepository: repository]
 ]
 
+{ #category : #'project log' }
+ConfigurationOfPhaROS class >> configurationOfLog [
+	<logConfiguration>
+	^ [
+	     :builder |
+	     builder forClass: LoggedExampleCustomized 
+			     useLevel:#info 
+			     showingLogAs: ('%tag #%class >> %selector [%log]' asPatternFormatter) 
+			     into: LogStdoutWriter instance.
+	].
+
+]
+
 { #category : #private }
 ConfigurationOfPhaROS class >> ensureMetacello [
 	"Bootstrap Gofer (if necessary), load latest mcz file for ConfigurationOfMetacello (using old 
@@ -107,7 +120,7 @@ ConfigurationOfPhaROS class >> project [
 { #category : #'unloading metacello' }
 ConfigurationOfPhaROS class >> testCategoriesForJenkins [
 	self flag: #weMustInstallARosInJenkinsServer. 
-	^ #( 'RoSt-Kernel-Tcp-Test' 'RoSt-Kernel-Types-Test').
+	^ #( 'PhaROS-Kernel-Tcp-Test' 'PhaROS-Kernel-Types-Test').
 ]
 
 { #category : #'unloading metacello' }
@@ -149,7 +162,7 @@ ConfigurationOfPhaROS >> baseline10: spec [
 					className: 'ConfigurationOfCommonTraits';
 					file: 'ConfigurationOfCommonTraits' ;
 					versionString: #bleedingEdge;
-					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
+					repository: 'http://ss3.gemstone.com/ss/CommonTraits'.
 			].
 		
 			spec package: 'PhaROS' with: [
