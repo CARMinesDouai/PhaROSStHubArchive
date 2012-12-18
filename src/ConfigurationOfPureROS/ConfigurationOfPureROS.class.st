@@ -26,6 +26,19 @@ ConfigurationOfPureROS class >> bootstrapPackage: aString from: aPath [
 ]
 
 { #category : #private }
+ConfigurationOfPureROS class >> configurationOfLog [
+	<logConfiguration>
+	^ [
+	     :builder |
+	     builder forClass: LoggedExampleCustomized 
+			     useLevel:#info 
+			     showingLogAs: ('%tag #%class >> %selector [%log]' asPatternFormatter) 
+			     into: LogStdoutWriter instance.
+	].
+
+]
+
+{ #category : #private }
 ConfigurationOfPureROS class >> ensureMetacello [
 	"Bootstrap Gofer (if necessary), load latest mcz file for ConfigurationOfMetacello (using old 
 	 Gofer API), then load the latest version of Metacello itself."
