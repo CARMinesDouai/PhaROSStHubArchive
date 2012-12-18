@@ -111,7 +111,7 @@ PurePhaROSTFOdometryBroadcaster >> setUp [
 		robot with: LocalizationService  do: [
 			: localization  |
 			localization resetLocalization.
-			localization getData.
+			localization load.
 			self zeroDifferentialX: localization xPos y: localization yPos orientation: localization orientation.
 			localization announcer subscribe: LocalizationNotification do: [ :notif |
 				 self broadcast: notif from: localization. 

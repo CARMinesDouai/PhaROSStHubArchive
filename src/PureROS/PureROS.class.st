@@ -21,6 +21,17 @@ PureROS class >> withMasterAt: anUrl andRobotAt: anIP and: aPort [
 ]
 
 { #category : #'as yet unclassified' }
+PureROS >> doNStepsForward: aStepAmount [
+
+	aStepAmount timesRepeat: [
+		(self moveForward: 0.1) .
+		(Delay forMilliseconds: 1900) wait.
+	].
+	
+	
+]
+
+{ #category : #'as yet unclassified' }
 PureROS >> master: aMaster [
 	master := aMaster 
 ]
