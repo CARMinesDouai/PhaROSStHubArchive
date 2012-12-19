@@ -49,16 +49,13 @@ PurePhaROSLaserBroadcaster >> period [
 
 { #category : #'as yet unclassified' }
 PurePhaROSLaserBroadcaster >> setUp [
-
-	robot with: NotificationManagerService do: [
-		: notification |
-		robot with: LaserService  do: [
-			:laser |
-			laser announcer subscribe: LaserNotification do: [ :notif |
-				 self broadcast: notif from: laser. 
-			].
-			notification addNotificationRecordToInstance: laser withPeriod:  self period.
+	
+	robot with: LaserService  do: [
+		:laser |
+		laser whenANotificationArrivesDo: [ :notif |
+			 self broadcast: notif from: laser. 
 		].
+		laser enableNotifications.
 	].
 	
 ]
@@ -72,7 +69,7 @@ PurePhaROSLaserBroadcaster >> stop [
 		robot with: LaserService  do: [
 			:laser  |
 			laser announcer unsubscribe:  LaserNotification.
-			notification deleteNotificationRecordFromService:  laser.
+			notification stopNotificating:  laser.
 		].
 	].
 	

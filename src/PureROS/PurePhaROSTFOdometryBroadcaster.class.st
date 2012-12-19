@@ -17,11 +17,7 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 	
 	(	
 		lastNotification isNil not and:[
-			(lastNotification xPos closeTo: aLocalizationService xPos) and: [
-				(lastNotification yPos closeTo: aLocalizationService yPos) and: [
-					(lastNotification orientation closeTo: aLocalizationService orientation ).
-				]
-			]
+			(lastNotification pose closeTo: aLocalizationService pose) 
 		]
 	) ifTrue: [
 		"^ self. "
@@ -43,8 +39,8 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 			transformStamped := Geometry_msgsTransformStamped new.
 			transformStamped header frame_id: '/odom'.
 			transformStamped child_frame_id: '/base_link'.
-			transformStamped transform translation x: (aNotification xPos + xDelta ).		
-			transformStamped transform translation y: (aNotification yPos + yDelta ).
+			transformStamped transform translation x: aNotification pose x.		
+			transformStamped transform translation y: aNotification pose y.
 			transformStamped transform translation z: 0.0.
 			self rotationAsQuaternation: (aNotification orientation + oDelta) into:(transformStamped transform rotation).
 			
@@ -105,20 +101,16 @@ PurePhaROSTFOdometryBroadcaster >> rotationAsQuaternationInX: anOrientation into
 
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> setUp [
-	
-	robot with: NotificationManagerService do: [
-		: notification |
 		robot with: LocalizationService  do: [
 			: localization  |
 			localization resetLocalization.
 			localization load.
-			self zeroDifferentialX: localization xPos y: localization yPos orientation: localization orientation.
-			localization announcer subscribe: LocalizationNotification do: [ :notif |
+			
+			localization whenANotificationArrivesDo:  [ :notif |
 				 self broadcast: notif from: localization. 
 			].
-			notification addNotificationRecordToInstance: localization withPeriod:  self period.
+			localization enableNotifications.
 		].
-	].
 	
 ]
 
@@ -134,7 +126,7 @@ PurePhaROSTFOdometryBroadcaster >> stop [
 			: localization  |
 			localization resetLocalization.
 			localization announcer unsubscribe:  LaserNotification.
-			notification deleteNotificationRecordFromService:  localization.
+			notification stopNotificating: localization.
 		].
 	].
 	self halt.
