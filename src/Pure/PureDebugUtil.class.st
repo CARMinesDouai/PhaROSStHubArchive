@@ -7,6 +7,11 @@ Class {
 	#category : #'Pure-Examples'
 }
 
+{ #category : #service }
+PureDebugUtil >> destroy [
+	robot destroy 
+]
+
 { #category : #'as yet unclassified' }
 PureDebugUtil >> initialize [
 	robot := Robulab newWith: #[192 168 1 2] and: 60000.
