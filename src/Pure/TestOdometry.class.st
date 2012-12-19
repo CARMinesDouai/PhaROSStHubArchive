@@ -12,8 +12,8 @@ TestOdometry >> testGetValuesAsynchronously [
 	aNotification := self notificationForService: LocalizationService forNotification: LocalizationNotification.
 	
 	self assert: aNotification notNil.
-	self assert: aNotification xPos isFloat.
-	self assert: aNotification yPos isFloat.
-	self assert: aNotification orientation isFloat.
+	self assert: aNotification pose x isFloat.
+	self assert: aNotification pose y isFloat.
+	self assert: aNotification pose orientation isFloat.
 
 ]
