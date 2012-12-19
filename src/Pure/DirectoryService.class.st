@@ -32,23 +32,27 @@ DirectoryService >> interestedAnnouncements [
 ]
 
 { #category : #'initialize-release' }
-DirectoryService >> load [ 
+DirectoryService >> load: aConnector [
+
 | decoder  instanceCode serviceType |
-	Transcript show:'- - - - - - - - - -';cr.
-	Transcript show: 'Récupération des services de Robulab via le Directory Service';cr.
+
 	(self services isNil)ifTrue: [
 		self services: Dictionary new.
 		self services at:0 put: self.
 	].
 
+	" Transform this call into a common get call just to keep consistence"
+	self flag: #TODO.
+
+
 	decoder := (self robulab discoverServices) decoder.
-	"L'enregistrement du premier service commence au 10ème nombre."
+
 	
-	"Tant qu'il reste des entrées non nulles, on boucle:"
+
 	[decoder hasData ] whileTrue: [
-		"type"
+
 		serviceType :=  decoder nextEncodedUInt16.
-		"instance"
+
 		instanceCode := decoder nextEncodedUInt16.
 		
 		ConstantesRobulab serviceClassPerType at: serviceType ifPresent: [ :v |
@@ -60,8 +64,8 @@ DirectoryService >> load [
 			Transcript show:  serviceType hex asString, ' -> not yet implemented'; cr
 		]
 	].
-	"Fin du traitement"
-	Transcript show: 'Récupération des services de Robulab terminée';cr.
+
+
 ]
 
 { #category : #accessing }

@@ -2,65 +2,53 @@ Class {
 	#name : #LocalizationService,
 	#superclass : #RobulabService,
 	#instVars : [
-		'xPos',
-		'yPos',
-		'orientation',
+		'pose',
 		'status'
 	],
 	#category : #'Pure-Services'
 }
 
-{ #category : #request }
-LocalizationService >> getDataWith: aConnector [ 
-	|  decoder get |
-	get := self getWith: aConnector . 
-	get ifNil: [ ^ nil ].
-	decoder := get decoder.
-	
-	self xPos: decoder nextEncodedFloat64. 
-	self yPos: decoder nextEncodedFloat64. 
-	self orientation: decoder nextEncodedFloat64. 
-	self status: decoder nextEncodedUint32 . 
-	
-
+{ #category : #'initialize-release' }
+LocalizationService >> initialize [ 
+	super initialize.
+	pose := Pose new.
 ]
 
 { #category : #accessing }
 LocalizationService >> isCentimetric [
-	^( (status=12) | (status=20))
+	^( (self status=12) | (self status=20))
 ]
 
 { #category : #accessing }
 LocalizationService >> isDecimetric [
-		^((status=10) | (status=18))
+		^((self status=10) | (self status=18))
 ]
 
 { #category : #accessing }
 LocalizationService >> isExterioreceptive [
-	^((status=20 | status=18 | status=17))
+	^((self status=20 | self status=18 | self status=17))
 ]
 
 { #category : #accessing }
 LocalizationService >> isMetric [
-	^((status=9 | status=17))
+	^((self status=9 | self status=17))
 ]
 
 { #category : #accessing }
 LocalizationService >> isProprioreceptive [
-	^((status=12 | status=10 | status=9))
+	^((self status=12 | self status=10 | self status=9))
 ]
 
 { #category : #'initialize-release' }
-LocalizationService >> load [ 
+LocalizationService >> load: aConnector [
 	|  decoder |
-	Transcript show:'- - - - - - - - - -';cr.
-	Transcript show: ' Acquisition des données du Localization Service:';cr.
-	decoder := self get decoder.
+
+	decoder := (self getWith: aConnector) decoder.
 	
 	
-	self xPos: decoder nextEncodedFloat64. 
-	self yPos: decoder nextEncodedFloat64. 
-	self orientation: decoder nextEncodedFloat64. 
+	self pose x: decoder nextEncodedFloat64. 
+	self pose y: decoder nextEncodedFloat64. 
+	self pose orientation: decoder nextEncodedFloat64. 
 	self status: decoder nextEncodedUint32 . 
 	
 
@@ -68,49 +56,18 @@ LocalizationService >> load [
 
 { #category : #accessing }
 LocalizationService >> orientation [
-	^ orientation.
+	self deprecated: ' use  localization pose orientation instead of orientation'. 
+	^  self pose orientation.
 ]
 
-{ #category : #accessing }
-LocalizationService >> orientation: anObject [
-	orientation := anObject
+{ #category : #'initialize-release' }
+LocalizationService >> pose [
+	^ pose
 ]
 
-{ #category : #printing }
-LocalizationService >> precisionAsString [
-(self isCentimetric)ifTrue:[^'cm'].
-(self isDecimetric)ifTrue:[^'dm'].
-(self isMetric)ifTrue:[^'m'].
-]
-
-{ #category : #printing }
-LocalizationService >> printPosition [
-	Transcript show:'Position du robulab d''après le Localization Service:';cr.
-	Transcript show:'Position axe X: ',self xPos asString ,' m';cr.
-	Transcript show:'Position axe Y: ',self yPos asString ,' m';cr.
-	Transcript show:'Orientation: ',self orientation asString ,' rad.';cr.
-	Transcript show:'Precision: '.
-	(self isMetric )ifTrue: [Transcript show:'mètrique. '].
-	(self isDecimetric )ifTrue: [Transcript show:'décimètrique. '].
-	(self isCentimetric )ifTrue: [Transcript show:'centimètrique. '].
-	(self isProprioreceptive )ifTrue: [Transcript show:'Solution calculée via propioreceptive sensors.'].
-	(self isExterioreceptive )ifTrue: [Transcript show:'Solution calculée via exterioreceptive sensors.'].
-
-
-	Transcript show:'- - - - - - - - - -'
-	
-]
-
-{ #category : #request }
-LocalizationService >> receiveNotificationFromRobulab: aLocalizationNotification [
-
-
-"	self xPos: aLocalizationNotification xPos.
-	self yPos: aLocalizationNotification yPos.
-	self orientation: aLocalizationNotification orientation.
-	self status: aLocalizationNotification status.
-	
-"
+{ #category : #'initialize-release' }
+LocalizationService >> pose: aPose [
+	pose := aPose.
 ]
 
 { #category : #printing }
@@ -129,6 +86,7 @@ LocalizationService >> resetLocalization [
 
 { #category : #accessing }
 LocalizationService >> status [
+	self deprecated: 'Our current robot is not using this information. Despite this value and derivateds from this value'.
 	^ status
 ]
 
@@ -139,20 +97,12 @@ LocalizationService >> status: anObject [
 
 { #category : #accessing }
 LocalizationService >> xPos [
-	^ xPos .
-]
-
-{ #category : #accessing }
-LocalizationService >> xPos: anObject [
-	xPos := anObject
+	self deprecated: ' use  localization pose x instead of xPos'. 
+	^  self pose x.
 ]
 
 { #category : #accessing }
 LocalizationService >> yPos [
-	^ yPos .
-]
-
-{ #category : #accessing }
-LocalizationService >> yPos: anObject [
-	yPos := anObject
+	self deprecated: ' use  localization pose y instead of yPos'. 
+	^  self pose y.
 ]

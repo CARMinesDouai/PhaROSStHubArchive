@@ -5,7 +5,7 @@ Class {
 		'angle',
 		'distance'
 	],
-	#category : #'Pure-Services'
+	#category : #'Pure-BaseTypes'
 }
 
 { #category : #'initialize-release' }

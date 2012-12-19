@@ -33,6 +33,11 @@ PureConnector >> addWork: aWork [
 	^ aWork.
 ]
 
+{ #category : #accessing }
+PureConnector >> cloneProcess [ 
+	^PureConnector ip: ip port: port robot: robot.
+]
+
 { #category : #service }
 PureConnector >> destroy [
 	self stop.
@@ -123,7 +128,6 @@ PureConnector >> receiveAnswer [
 	intent := 0. 
 
 	[
-	
 		
 		buffer := ByteArray new: 4096.
 		

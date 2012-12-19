@@ -1,8 +1,8 @@
 Class {
 	#name : #Robulab,
 	#superclass : #Object,
-	#traits : 'TAnnouncer',
-	#classTraits : 'TAnnouncer classTrait',
+	#traits : 'TAnnouncer + TLogger',
+	#classTraits : 'TAnnouncer classTrait + TLogger classTrait',
 	#instVars : [
 		'directoryService',
 		'connector',
@@ -42,6 +42,11 @@ Robulab >> connector: aConnector [
 	connector robot: self.
 ]
 
+{ #category : #logging }
+Robulab >> debug: aLog [ 
+	self class processor process: (LogEntity for:aLog in: thisContext sender with:#debug).
+]
+
 { #category : #service }
 Robulab >> destroy [
 	[	
@@ -70,7 +75,7 @@ Robulab >> disableNotificationsForService: aServiceClass [
 
 { #category : #service }
 Robulab >> discoverServices [
-	self debug: ['discovering services'].
+"	self debug: ['discovering services']."
 	^ (self connector discoverServices) result.
 
 	
@@ -91,7 +96,7 @@ Robulab >> instanceRelatedTo: anInstanceID [
 
 { #category : #'initialize-release' }
 Robulab >> loadServices [ 
-	self debug: ['initializing'].
+"	self debug: ['initializing']."
 	self directoryService: (RobulabService createFromRobulab: self Type: 0) .  
 	self directoryService load .
 	self directoryService services do: [ :service | service load ].
@@ -119,7 +124,7 @@ Robulab >> start [
 
 { #category : #announcement }
 Robulab >> subscribe: anAnnouncement do: aBlock [
-	self info: ['receiving subscription for ', anAnnouncement name  ].
+"	self info: ['receiving subscription for ', anAnnouncement name  ]."
 	^self resolveAnnouncer subscribe: anAnnouncement do: aBlock
 ]
 

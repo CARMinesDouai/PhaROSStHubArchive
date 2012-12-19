@@ -2,43 +2,42 @@ Class {
 	#name : #NotificationManagerService,
 	#superclass : #RobulabService,
 	#instVars : [
-		'notificationServices'
+		'notificationService',
+		'services',
+		'connector'
 	],
 	#category : #'Pure-Services'
 }
 
-{ #category : #'as yet unclassified' }
-NotificationManagerService class >> consumeStrategy [ 
-	^ NotificationConsumerProcess
+{ #category : #notifications }
+NotificationManagerService >> alreadyReceivinNotificationsFrom: aService [ 
+	^ services includes: aService.
+	
 ]
 
-{ #category : #request }
-NotificationManagerService >> addNotificationRecordToInstance: aService withPeriod: aPeriod [
-	|  connector  aMessage |
-	
+{ #category : #notifications }
+NotificationManagerService >> beginNotificating: aService each: nControlCycles [ 
+
 	(self alreadyReceivinNotificationsFrom: aService ) ifTrue: [
 		^ self.	
 	].
 	
-	(aPeriod between:  0 and: 255) ifFalse:[
+	(nControlCycles between:  0 and: 255) ifFalse:[
 		Error signal: ' The given period must be between 0 and 255 '.
 	].
 
-	Transcript show: 'Asking for notifications to  ', aService class name,
-					  ' instance:', aService getInstanceNumber asString ,   
-					  ' every ',aPeriod asString ,' seconds.'
-					  ; cr.
+	self debug: ['Asking for notifications to  ', aService class name, ' instance:', aService getInstanceNumber asString ,  ' every ',nControlCycles asString ,'  control cycles '].
 
+	services add: aService.
+	
+	self monitorConnector. 
+	self monitorConsumer. 
+	
+	self register: aService each: nControlCycles. 
+	
 
-	self spawnNotificationConsumerFor: aService and: self robulab connector for: aPeriod .
 
 	
-	
-]
-
-{ #category : #request }
-NotificationManagerService >> alreadyReceivinNotificationsFrom: aService [ 
-	^ notificationServices at: aService ifPresent: [ : s| true ] ifAbsent:[ false ] .
 	
 ]
 
@@ -47,31 +46,27 @@ NotificationManagerService >> delete: data using: aConnector [
 	^ (aConnector sendMessage: (PureRequest delete: data from: self)) result .
 ]
 
-{ #category : #request }
-NotificationManagerService >> deleteNotificationRecordFromService: aService [
-	Transcript show: ' shutting down notifications from  ', aService class name , ' instance:', aService getInstanceNumber asString ,'.'.
-	notificationServices at: aService ifPresent: [ :s | 
-		s stop: self.
-		notificationServices removeKey: aService.
-	].
-	
-	
-	
-]
-
-{ #category : #request }
+{ #category : #service }
 NotificationManagerService >> destroy [
-	super destroy.
-	notificationServices do: [
-		:p |
-		p stop: self . 	
-	].
-	notificationServices := nil.
+	super destroy.	
+	self stopNotificatingAllServices.
+
 ]
 
-{ #category : #request }
+{ #category : #notifications }
 NotificationManagerService >> enableOneNotificationEvery: anAmmount [
 	self error: 'there are no notifications of notifications '.
+]
+
+{ #category : #'initialize-release' }
+NotificationManagerService >> fetchNotificationsWith: aConnector [	
+
+	self getWith: aConnector.
+
+	
+	
+	
+	
 ]
 
 { #category : #request }
@@ -98,8 +93,8 @@ NotificationManagerService >> getDataWith: aConnector [
 
 { #category : #request }
 NotificationManagerService >> initialize [ 
-	super  initialize.
-	notificationServices  := Dictionary new.
+	super initialize.
+	services := Set new.
 ]
 
 { #category : #request }
@@ -113,42 +108,67 @@ NotificationManagerService >> interestedAnnouncements [
 ]
 
 { #category : #'initialize-release' }
-NotificationManagerService >> load [
+NotificationManagerService >> load: aConnector [
 	| decoder |
 	
-"Acquisition des données du Notification Manager Service"
-	Transcript show:'- - - - - - - - - -';cr.
-	Transcript cr; show: ' Acquisition des données: du Notification Manager Service';cr.
-	decoder := self get decoder.
+
+	decoder := (self getWith: aConnector) decoder.
 
 	
-	[ decoder hasData ] whileTrue: [
-		Transcript show: decoder nextEncodedUInt16 asString, '-', decoder nextEncodedByte asString.
-		Transcript cr.
+	
+	
+	
+]
+
+{ #category : #process }
+NotificationManagerService >> monitorConnector [
+
+	" connector process if is needed. "
+	((connector isNil or: [ connector keepRunning not ] ) and: [ services isEmpty not]) ifTrue: [
+		connector := robulab connector cloneProcess.
+		(notificationService isNil not and: [ notificationService keepRunning ]) ifTrue: [
+			notificationService connector: connector.
+		]
 	].
+
+]
+
+{ #category : #process }
+NotificationManagerService >> monitorConsumer [
+
+	" kill or start notification process if is needed. If kill notification process also kills connector"
 	
-	Transcript cr.
-	
-	
-	
-	
-	
+	((notificationService isNil or: [ notificationService keepRunning not]) and:[ services isEmpty not]) ifTrue: [
+		notificationService := NotificationConsumerProcess connector: connector talkingWith: self.
+	] ifFalse: [
+		(services isEmpty and: [notificationService isNil not ]) ifTrue: [
+			self stopNotificationService.
+		].
+		(services isEmpty and: [connector isNil not ]) ifTrue: [
+			self stopConnector. 
+		].
+	].
+
+
+
+
 ]
 
 { #category : #request }
-NotificationManagerService >> notificationServicesFor: aService [ 
-	^ notificationServices at: aService
-]
-
-{ #category : #request }
-NotificationManagerService >> reconnectNotificationsFor: aService withPeriod: aPeriod [
-	| reconnection |
+NotificationManagerService >> register: aService each: nControlCycles [
+	| response|  	
+		
+		[
+			response := self  insert: '0', (aService getInstanceNumber asString), '00', (PDRConverter as8BitsHexStringFromInteger: nControlCycles) into: robulab connector.		
+		] on: Error do:[
+			:e | 
+			e messageText = 'Already bound to this notification' ifFalse: [
+				self warn: [aService name, '  was already bound to notifications. '].
+				e signal.
+			].
+		].
 	
-	reconnection := (notificationServices at: aService) reconnections.
-	self deleteNotificationRecordFromService: aService.
-	self addNotificationRecordToInstance: aService  withPeriod: aPeriod.
-	(notificationServices at: aService) reconnections: reconnection.
-
+		
 ]
 
 { #category : #request }
@@ -156,9 +176,38 @@ NotificationManagerService >> relatedNotificationClass [
 	^ self error: 'This service has not notifications'
 ]
 
-{ #category : #request }
-NotificationManagerService >> spawnNotificationConsumerFor: aService and: aConnector for: aTime [ 
-	^ notificationServices at: aService put: (
-		NotificationConsumerProcess service: aService connector: aConnector for: aTime talkingWith: self
-	).
+{ #category : #process }
+NotificationManagerService >> restart [
+
+	" stop all related process, and execute monitors. If process are needed will be spawned again "
+	self stopNotificationService.
+	self stopConnector.
+	self monitorConnector.
+	self monitorConsumer.
+]
+
+{ #category : #process }
+NotificationManagerService >> stopConnector [
+	connector stopReception.
+	connector := nil
+]
+
+{ #category : #notifications }
+NotificationManagerService >> stopNotificating: aService [
+	self  delete: '0', aService getInstanceNumber asString, '00' using: robulab connector.
+	services remove: aService ifAbsent: [].
+	self monitorConsumer.
+]
+
+{ #category : #service }
+NotificationManagerService >> stopNotificatingAllServices [
+	services do: [ : serv | self stopNotificating: serv ].
+	self monitorConsumer.
+]
+
+{ #category : #process }
+NotificationManagerService >> stopNotificationService [
+	notificationService stop.
+	notificationService := nil.
+
 ]

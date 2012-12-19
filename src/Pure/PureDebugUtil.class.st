@@ -22,8 +22,19 @@ PureDebugUtil >> laserScanDefinition [
 { #category : #'as yet unclassified' }
 PureDebugUtil >> laserStopTranscript [
 
-	robot with: LocalizationService do: [ : aLocalizationService | 
-		aLocalizationService disableNotifications.
+	robot with: LaserService do: [ : laser | 
+		laser disableNotifications.
+	].
+]
+
+{ #category : #'as yet unclassified' }
+PureDebugUtil >> laserTranscript [
+
+	robot with: LaserService do: [ : laser | 
+		laser enableNotifications .
+		laser whenANotificationArrivesDo: [ : aNotification | 
+			Transcript show: ' Laser notification. Echoes: ', aNotification echoes size asString .
+		].		
 	].
 ]
 
@@ -33,7 +44,6 @@ PureDebugUtil >> moveForward: aVelocity [
 	robot with: DifferentialDriveService do: [
 		: service |
 		service load .
-		service printCurrentAndTargetValues. 
 		service setTargetLinearSpeed: aVelocity andTargetAngularSpeed: 0.0.	
 	].
 
@@ -53,7 +63,7 @@ PureDebugUtil >> odometryTranscript [
 	robot with: LocalizationService do: [ : aLocalizationService | 
 		aLocalizationService enableNotifications .
 		aLocalizationService whenANotificationArrivesDo: [ : aNotification | 
-			Transcript show: '[x:', aNotification xPos asString,'] y:[', aNotification yPos asString,  '] o:[', aNotification orientation  asString,'] stat:[', aNotification status asString, ']' ; cr.
+			Transcript show: aNotification pose asString; cr.
 		].		
 	].
 ]
@@ -73,7 +83,6 @@ PureDebugUtil >> rotate: aVelocity [
 	robot with: DifferentialDriveService do: [
 		: service |
 		service load .
-		service printCurrentAndTargetValues. 
 		service setTargetLinearSpeed: 0.0 andTargetAngularSpeed: aVelocity.	
 	].
 

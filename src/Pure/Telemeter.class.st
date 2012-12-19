@@ -10,7 +10,7 @@ Class {
 		'maximumMeasurementRange',
 		'currentMeasurementRange'
 	],
-	#category : #'Pure-Services'
+	#category : #'Pure-BaseTypes'
 }
 
 { #category : #'as yet unclassified' }

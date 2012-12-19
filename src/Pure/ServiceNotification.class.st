@@ -21,7 +21,7 @@ ServiceNotification class >> for: aTarget with: aPureNotification [
 
 { #category : #'as yet unclassified' }
 ServiceNotification >> loadTime: aDecoder [
-	time := aDecoder nextEncodedUint64 
+	time := (DateAndTime fromDosTime: aDecoder nextEncodedUint64).
 ]
 
 { #category : #'as yet unclassified' }

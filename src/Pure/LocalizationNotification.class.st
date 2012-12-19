@@ -2,13 +2,16 @@ Class {
 	#name : #LocalizationNotification,
 	#superclass : #ServiceNotification,
 	#instVars : [
-		'xPos',
-		'yPos',
-		'orientation',
+		'pose',
 		'status'
 	],
 	#category : #'Pure-Notifications'
 }
+
+{ #category : #loading }
+LocalizationNotification >> initialize [ 
+	pose := Pose new.
+]
 
 { #category : #loading }
 LocalizationNotification >> load: aPureNotification [ 
@@ -17,9 +20,9 @@ LocalizationNotification >> load: aPureNotification [
 	
 	self loadTime: decoder.
 	
-	self xPos: decoder nextEncodedFloat64. 
-	self yPos: decoder nextEncodedFloat64. 
-	self orientation: decoder nextEncodedFloat64. 
+	self pose x: (((decoder nextEncodedFloat64) roundUpTo: 0.0001 )roundDownTo: -0.0001). 
+	self pose y: (((decoder nextEncodedFloat64) roundUpTo: 0.0001 )roundDownTo: -0.0001). 
+	self pose orientation: (((decoder nextEncodedFloat64) roundUpTo: 0.0001 )roundDownTo: -0.0001). 
 	
 	self status: decoder nextEncodedByte. 
 	
@@ -29,12 +32,13 @@ LocalizationNotification >> load: aPureNotification [
 
 { #category : #accessing }
 LocalizationNotification >> orientation [ 
-	^  (orientation  roundUpTo: 0.0001 )roundDownTo: -0.0001
+	self deprecated: ' use  localization pose orientation instead of orientation'. 
+	^  self pose orientation.
 ]
 
-{ #category : #accessing }
-LocalizationNotification >> orientation: aFloat [ 
-	orientation := aFloat.
+{ #category : #loading }
+LocalizationNotification >> pose [
+	^ pose.
 ]
 
 { #category : #accessing }
@@ -49,20 +53,12 @@ LocalizationNotification >> status: aSmallInteger [
 
 { #category : #accessing }
 LocalizationNotification >> xPos [
-	^ (xPos roundUpTo: 0.0001 )roundDownTo: -0.0001
-]
-
-{ #category : #accessing }
-LocalizationNotification >> xPos: aFloat [ 
-	xPos := aFloat.
+	self deprecated: ' use  notification pose x instead of xPos'. 
+	^ self pose x
 ]
 
 { #category : #accessing }
 LocalizationNotification >> yPos [
-	^  (yPos roundUpTo: 0.0001 )roundDownTo: -0.0001
-]
-
-{ #category : #accessing }
-LocalizationNotification >> yPos: aFloat [ 
-	yPos := aFloat.
+	self deprecated: ' use  localization pose y instead of yPos'. 
+	^ self pose y.
 ]

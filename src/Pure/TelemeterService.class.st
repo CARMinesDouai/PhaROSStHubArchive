@@ -14,12 +14,12 @@ TelemeterService >> initialize [
 ]
 
 { #category : #'initialize-release' }
-TelemeterService >> load [
+TelemeterService >> load: aConnector [
 	| decoder  telemeterId  xValue |
 
 	Transcript show:'- - - - - - - - - -';cr.
 	Transcript show: ' Acquisition des données duTelemeter Service ',self getInstanceNumber asString , ':';cr.
-	decoder := self get decoder.
+	decoder := (self getWith: aConnector) decoder.
 
 	telemeters := OrderedCollection new. 
 	
@@ -53,22 +53,6 @@ TelemeterService >> printTelemetersData [
 			compteur:=compteur+1.
 			Transcript cr;cr.
 		].
-]
-
-{ #category : #request }
-TelemeterService >> receiveNotificationFromRobulab: aMessage [
-	| decoder  |
-	decoder := aMessage decoder .
-	
-	"maybe is 11 here. Must avoid the header of the message"
-	self flag:#NoticeComment.
-	decoder nextEncodedBytes: 6.
-	
-	1 to: self telemeterNumber do: [
-		:idx |
-		(self telemeters at: idx) currentMeasurementRange: decoder nextEncodedFloat32  .
-	].
-	
 ]
 
 { #category : #accessing }

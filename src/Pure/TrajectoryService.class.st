@@ -11,6 +11,14 @@ TrajectoryService >> limitSpeed: aSpeed [
 ]
 
 { #category : #'as yet unclassified' }
+TrajectoryService >> load: aConnector [
+
+	|  decoder |
+
+"	decoder := (self getWith: aConnector) decoder."
+]
+
+{ #category : #'as yet unclassified' }
 TrajectoryService >> moveFrom: aPoint to: anOtherPoint with: aSpeed [
 	| x1 y1 x2 y2 speed|
 	

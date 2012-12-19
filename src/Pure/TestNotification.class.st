@@ -41,19 +41,19 @@ TestNotification >> testLocalization [
 			robot subscribe: LocalizationNotification   do: [ 
 				:not |	
 				notification := not.
-				notifications deleteNotificationRecordFromService:  local .
+				notifications stopNotificating:  local .
 				local load.
 				semaphore signal. 
 			 ].
-			notifications addNotificationRecordToInstance: local withPeriod: 1.
+			notifications beginNotificating: local each: 1.
 		].
 	
 		
 	].
 	semaphore wait. 
 	
-	self assert: (notification xPos closeTo: notification xPos).
-	self assert: (notification yPos closeTo: notification yPos).
-	self assert: (notification orientation closeTo: notification orientation).
+	self assert: (notification pose closeTo: notification pose).
 	self assert: (notification status closeTo: notification status).
+	
+
 ]

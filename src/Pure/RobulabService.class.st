@@ -26,6 +26,11 @@ RobulabService >> announcer [
 	^ robulab announcerFor: self.
 ]
 
+{ #category : #logging }
+RobulabService >> debug: aLog [ 
+	self class processor process: (LogEntity for:aLog in: thisContext sender with:#debug).
+]
+
 { #category : #request }
 RobulabService >> delete: data [
 
@@ -47,7 +52,7 @@ RobulabService >> disableNotifications [
 
 	^robulab with: NotificationManagerService do: [
 		: notificationManager |
-		notificationManager deleteNotificationRecordFromService: self 
+		notificationManager stopNotificating: self 
 	].
 ]
 
@@ -59,12 +64,12 @@ RobulabService >> enableNotifications [
 ]
 
 { #category : #request }
-RobulabService >> enableOneNotificationEvery: anAmmount [
+RobulabService >> enableOneNotificationEvery: anAmmountOfControlCycles [
 
 	robulab with: NotificationManagerService do: [
 		: notificationManager |
 		
-		notificationManager addNotificationRecordToInstance: self withPeriod: anAmmount
+		notificationManager beginNotificating: self each: anAmmountOfControlCycles.
 	].
 ]
 
@@ -102,10 +107,15 @@ RobulabService >> interestedAnnouncements [
 	^ {  self relatedNotificationClass } 
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #request }
 RobulabService >> load [ 
-	"imlpementar"
-		self flag: #implemeeent
+	self load: robulab connector.
+]
+
+{ #category : #request }
+RobulabService >> load: aConnector [
+	self subclassResponsibility.
+
 ]
 
 { #category : #request }
@@ -115,7 +125,7 @@ RobulabService >> query: data [
 
 { #category : #request }
 RobulabService >> receiveNotificationFromRobulab: aMessage [
-	self subclassResponsibility 
+
 ]
 
 { #category : #accessing }

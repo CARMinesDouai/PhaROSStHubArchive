@@ -95,10 +95,9 @@ IOService >> digitalOutputs: anObject [
 ]
 
 { #category : #'initialize-release' }
-IOService >> load [ 
+IOService >> load: aConnector [
 | decoder |
-	Transcript show:'- - - - - - - - - -';cr.
-	Transcript show: ' Acquisition des données du IO Service:';cr.	
+
 	( self analogInputs isNil )ifTrue: [
 		self analogOutputs: Dictionary new.
 		self analogInputs: Dictionary new.
@@ -106,7 +105,7 @@ IOService >> load [
 		self digitalInputs: Dictionary new.
 	].
 
-	decoder :=  self get decoder.
+	decoder :=  (self getWith:aConnector) decoder.
 
 	
 	self analogInputNumber: decoder nextEncodedInt32.
@@ -120,13 +119,6 @@ IOService >> load [
 	
 	
 	
-]
-
-{ #category : #request }
-IOService >> receiveNotificationFromRobulab: aMessage [
-	| data compteur |
-	data := aMessage data.
-	compteur:=6.
 ]
 
 { #category : #accessing }

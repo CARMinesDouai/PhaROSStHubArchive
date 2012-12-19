@@ -1,21 +1,18 @@
 Class {
 	#name : #NotificationConsumerProcess,
-	#superclass : #Object,
+	#superclass : #PureProcess,
 	#instVars : [
-		'process',
-		'keepRunning',
-		'service',
 		'connector',
 		'time',
-		'reconnections'
+		'reconnections',
+		'notificationManager'
 	],
 	#category : #'Pure-Services'
 }
 
 { #category : #'as yet unclassified' }
-NotificationConsumerProcess class >> service: aService connector: aConnector for: aTime talkingWith: aNotificationService [
-"	^ NotificationActiveConsumerProcess new service: aService ; connector: aConnector; time: aTime; setUp: aNotificationService ; yourself."
-	^ NotificationPasiveConsumerProcess new service: aService ; connector: aConnector; time: aTime; setUp: aNotificationService ; yourself.
+NotificationConsumerProcess class >> connector: aConnector  talkingWith: aNotificationService [
+	^ self new connector: aConnector; notificationManager: aNotificationService; startUp ; yourself.
 ]
 
 { #category : #'as yet unclassified' }
@@ -29,20 +26,30 @@ NotificationConsumerProcess >> connector: aConnector [
 ]
 
 { #category : #'as yet unclassified' }
+NotificationConsumerProcess >> consume [ 
+	
+	self notificationManager fetchNotificationsWith: connector .
+]
+
+{ #category : #'as yet unclassified' }
 NotificationConsumerProcess >> initialize [ 
-	keepRunning := true.
+	super initialize.
 	reconnections := 0.
 ]
 
-{ #category : #'as yet unclassified' }
-NotificationConsumerProcess >> keepRunning [ 
-	^ keepRunning & connector socket isUnconnectedOrInvalid not.
-	
+{ #category : #service }
+NotificationConsumerProcess >> notificationManager [ 
+	^ notificationManager
 ]
 
-{ #category : #'as yet unclassified' }
-NotificationConsumerProcess >> keepRunning: aBoolean [
-	keepRunning := aBoolean.
+{ #category : #service }
+NotificationConsumerProcess >> notificationManager: aNotificationManager [
+	notificationManager := aNotificationManager
+]
+
+{ #category : #service }
+NotificationConsumerProcess >> processName [ 
+	^ 'NotificationConsumer'.
 ]
 
 { #category : #'as yet unclassified' }
@@ -56,61 +63,11 @@ NotificationConsumerProcess >> reconnections: aNumber [
 ]
 
 { #category : #'as yet unclassified' }
-NotificationConsumerProcess >> service [
-	^ service
-]
-
-{ #category : #'as yet unclassified' }
-NotificationConsumerProcess >> service: aService [ 
-	service := aService.
-]
-
-{ #category : #'as yet unclassified' }
-NotificationConsumerProcess >> startUp [
+NotificationConsumerProcess >> run [
+	[
+		self consume.
+	] on: PureTooMuchTime do: [
+		self notificationManager restart.										
+	]
 	
-	process ifNil: [
-		self keepRunning: true. 
-		process := [
-			
-			Transcript show: ' Spawning with reconnection ', reconnections asString.
-			[ self keepRunning ] whileTrue: [
-			
-				[
-					self consume.
-				] on: PureTooMuchTime do: [
-					service robot with: NotificationManagerService do: [
-						: manager 	| 
-						Transcript show: ' Reconnecting... '.
-						manager reconnectNotificationsFor: service withPeriod: time.
-					].
-				]
-			].
-			process := nil.
-			
-		] forkAt: Processor userBackgroundPriority  named: 'NotificationConsumer'.
-	].
-]
-
-{ #category : #service }
-NotificationConsumerProcess >> stop: aNotificationManagerService [ 
-	keepRunning := false.
-	(Delay forSeconds: 1) wait.
-	
-	process ifNotNil: [
-		process terminate. 
-		process := nil.
-	].
-	
-	
-	aNotificationManagerService  delete: '0', service getInstanceNumber asString, '00' using: connector.
-]
-
-{ #category : #'as yet unclassified' }
-NotificationConsumerProcess >> time [
-	^ time.
-]
-
-{ #category : #'as yet unclassified' }
-NotificationConsumerProcess >> time: aTime [
-	time := aTime.
 ]

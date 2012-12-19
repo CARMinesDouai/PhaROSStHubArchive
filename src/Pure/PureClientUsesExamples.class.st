@@ -24,7 +24,7 @@ pdr with: NotificationManagerService do: [
 	
 	pdr with: LocalizationService  do: [
 		:laser |
-		service addNotificationRecordToInstance: laser withPeriod:  2.
+		service beginNotificating: laser each: 2.
 		
 	].
 ].
@@ -41,7 +41,6 @@ pdr with: IOService do: [
 pdr with: DifferentialDriveService do: [
 	: service |
 	service load .
-	service printCurrentAndTargetValues. 
 	service setTargetLinearSpeed: 0.0 andTargetAngularSpeed: 0.4.	
 ].
 
@@ -84,12 +83,12 @@ PureClientUsesExamples >> workspaceUsingNotifications [
 		
 		robot with: LaserService do: [
 			: laser | 
-			notifications addNotificationRecordToInstance: laser withPeriod: 1.
+			notifications service beginNotificating: laser each: 1.
 		].
 	
 		robot with: LocalizationService do: [
 			: local | 
-			notifications addNotificationRecordToInstance: local withPeriod: 0.
+			notifications service beginNotificating: local each: 0.
 		].
 	
 	].
