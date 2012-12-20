@@ -25,13 +25,13 @@ ConfigurationOfPure class >> bootstrapPackage: aString from: aPath [
 			version workingCopy repositoryGroup addRepository: repository]
 ]
 
-{ #category : #private }
+{ #category : #configuration }
 ConfigurationOfPure class >> configurationOfLog [
 	<logConfiguration>
 	^ [
 	     :builder |
 	     builder forClass: LoggedExampleCustomized 
-			     useLevel:#info 
+			     useLevel:#debug
 			     showingLogAs: ('%tag #%class >> %selector [%log]' asPatternFormatter) 
 			     into: LogStdoutWriter instance.
 	].
@@ -136,8 +136,15 @@ ConfigurationOfPure >> baseline10: spec [
 					versionString: #bleedingEdge;
 					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
 			].
+		spec project: 'PAUL' with: [
+				spec 
+					className: 'ConfigurationOfPaulLePoulpe';
+					file: 'ConfigurationOfPaulLePoulpe' ;
+					repository: 'http://ss3.gemstone.com/ss/PaulLePoulpe'; 
+					versionString: #bleedingEdge.
+			].
 			spec package: 'Pure'with: [ 
-				spec requires: 'CommonTraits'
+				spec requires: #('CommonTraits' 'PAUL').
 			]
 	].
 
@@ -146,7 +153,6 @@ ConfigurationOfPure >> baseline10: spec [
 
 { #category : #'as yet unclassified' }
 ConfigurationOfPure >> project [
-
 	^ project ifNil: [
 		 | constructor |
 		
