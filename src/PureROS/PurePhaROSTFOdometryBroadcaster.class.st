@@ -2,10 +2,7 @@ Class {
 	#name : #PurePhaROSTFOdometryBroadcaster,
 	#superclass : #PurePhaROSNode,
 	#instVars : [
-		'lastNotification',
-		'xDelta',
-		'yDelta',
-		'oDelta'
+		'lastNotification'
 	],
 	#category : #PureROS
 }
@@ -30,7 +27,7 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 
 
 
-	
+		self debug: [ 'broadcasting ODOMETRY information to ROS System'].
 		self sendTo: '/tf' a: [: msg |
 		
 			
@@ -42,7 +39,7 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 			transformStamped transform translation x: aNotification pose x.		
 			transformStamped transform translation y: aNotification pose y.
 			transformStamped transform translation z: 0.0.
-			self rotationAsQuaternation: (aNotification orientation + oDelta) into:(transformStamped transform rotation).
+			self rotationAsQuaternation: (aNotification pose orientation ) into:(transformStamped transform rotation).
 			
 			
 			msg addTransform: transformStamped.
@@ -64,6 +61,7 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 
 ]on: Error do: [
 	:e |
+	self logError: [ 'Error broadcasting ODOMETRY information to ROS System ', e messageText ].
 	self stop. 
 	self halt.
 ]
@@ -101,46 +99,35 @@ PurePhaROSTFOdometryBroadcaster >> rotationAsQuaternationInX: anOrientation into
 
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> setUp [
-		robot with: LocalizationService  do: [
-			: localization  |
-			localization resetLocalization.
-			localization load.
-			
-			localization whenANotificationArrivesDo:  [ :notif |
-				 self broadcast: notif from: localization. 
-			].
-			localization enableNotifications.
+	self info: [ 'Starting ODOMETRY broadcaster node'].
+	robot with: LocalizationService  do: [
+		: localization  |
+		localization resetLocalization.
+		localization load.
+		
+		localization whenANotificationArrivesDo:  [ :notif |
+			 self broadcast: notif from: localization. 
 		].
-	
+		localization enableNotifications.
+	].
+
 ]
 
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> stop [
 
 	lastNotification := nil. 
+	self info: [ 'Shutting down ODOMETRY broadcaster node'].
 	super stop. 
 	
 	robot with: NotificationManagerService do: [
 		: notification |
 		robot with: LocalizationService  do: [
 			: localization  |
-			localization resetLocalization.
 			localization announcer unsubscribe:  LaserNotification.
 			notification stopNotificating: localization.
 		].
 	].
 	self halt.
 	
-]
-
-{ #category : #'as yet unclassified' }
-PurePhaROSTFOdometryBroadcaster >> zeroDifferentialX: xPos y: yPos orientation: orientation [
-"
-	xDelta := 0.0 - xPos. 
-	yDelta := 0.0 - yPos.
-	oDelta := 0.0 - orientation."
-	
-	xDelta := 0.0 . 
-	yDelta := 0.0 .
-	oDelta := 0.0 .
 ]

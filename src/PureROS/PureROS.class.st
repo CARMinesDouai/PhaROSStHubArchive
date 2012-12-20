@@ -21,11 +21,18 @@ PureROS class >> withMasterAt: anUrl andRobotAt: anIP and: aPort [
 ]
 
 { #category : #'as yet unclassified' }
+PureROS >> destroy [
+	PhaROSMaster stopAndUnregisterUrl: 'http://127.0.0.1:11311/'.
+	robot destroy .
+	
+]
+
+{ #category : #'as yet unclassified' }
 PureROS >> doNStepsForward: aStepAmount [
 
 	aStepAmount timesRepeat: [
 		(self moveForward: 0.1) .
-		(Delay forMilliseconds: 1900) wait.
+		(Delay forMilliseconds: 1850) wait.
 	].
 	
 	
@@ -37,8 +44,30 @@ PureROS >> master: aMaster [
 ]
 
 { #category : #'as yet unclassified' }
+PureROS >> moveForward: aVelocity [
+
+	robot with: DifferentialDriveService do: [
+		: service |
+		service load .
+		service setTargetLinearSpeed: aVelocity andTargetAngularSpeed: 0.0.	
+	].
+
+]
+
+{ #category : #'as yet unclassified' }
 PureROS >> robot: aRobot [
 	robot := aRobot 
+]
+
+{ #category : #'as yet unclassified' }
+PureROS >> rotate: aVelocity [
+
+	robot with: DifferentialDriveService do: [
+		: service |
+		service load .
+		service setTargetLinearSpeed: 0.0 andTargetAngularSpeed: aVelocity.	
+	].
+
 ]
 
 { #category : #'as yet unclassified' }

@@ -8,7 +8,7 @@ Class {
 PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceInstance [ 
 
 [
-	
+	self debug: [ 'broadcasting LASER information to ROS System'].
 	self sendTo: '/scan' a: [ :msg |
 		
 		
@@ -32,7 +32,7 @@ PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceI
 	
 	]on: Error do: [
 		:e| 
-	
+		self logError: [ 'Error broadcasting LASER information ', e messageText].
 		self stop. 
 		self halt.
 ]
@@ -49,7 +49,7 @@ PurePhaROSLaserBroadcaster >> period [
 
 { #category : #'as yet unclassified' }
 PurePhaROSLaserBroadcaster >> setUp [
-	
+	self info: [ 'Starting LASER broadcaster node'].
 	robot with: LaserService  do: [
 		:laser |
 		laser whenANotificationArrivesDo: [ :notif |
@@ -62,6 +62,7 @@ PurePhaROSLaserBroadcaster >> setUp [
 
 { #category : #'as yet unclassified' }
 PurePhaROSLaserBroadcaster >> stop [ 
+	self info: [ 'Shutting down LASER broadcaster node'].
 	super stop. 
 	
 	robot with: NotificationManagerService do: [
