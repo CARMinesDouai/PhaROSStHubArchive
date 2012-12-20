@@ -1,6 +1,8 @@
 Class {
 	#name : #PureWorkUnit,
 	#superclass : #Object,
+	#traits : 'TLogger',
+	#classTraits : 'TLogger classTrait',
 	#instVars : [
 		'priority',
 		'work',
@@ -120,13 +122,20 @@ PureWorkUnit >> priority: aPriorityNumber [
 
 { #category : #'as yet unclassified' }
 PureWorkUnit >> result [
-	[ processFinished ] whileFalse: [
+
+	self info: [ 'waiting for result '].
+	self debug: [' work related: ', work asString ].
+	
+	processFinished ifFalse: [
+		self info: [ 'waiting for result '].
 		semaphore wait.
 	].
-
-	error class = ConnectionTimedOut  ifTrue: [ ^ nil ].
-	
+		
 	error ifNotNil:[
+		error class = ConnectionTimedOut  ifTrue: [ 
+			self warn: [ 'connection timeout'].	
+			^ nil 
+		].
 		error signal.	
 	].
 
@@ -136,6 +145,8 @@ PureWorkUnit >> result [
 
 { #category : #'as yet unclassified' }
 PureWorkUnit >> result: aValue [
+
+	self debug: [ 'deploying result ', aValue asString ].
 	result := aValue.
 	processFinished := true.
 	semaphore signal.

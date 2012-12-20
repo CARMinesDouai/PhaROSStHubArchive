@@ -33,7 +33,6 @@ DirectoryService >> interestedAnnouncements [
 
 { #category : #'initialize-release' }
 DirectoryService >> load: aConnector [
-
 | decoder  instanceCode serviceType |
 
 	(self services isNil)ifTrue: [

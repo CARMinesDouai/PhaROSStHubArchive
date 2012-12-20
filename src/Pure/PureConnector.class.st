@@ -9,19 +9,29 @@ Class {
 		'queue',
 		'forWork',
 		'queueMutex',
-		'keepReceiving'
+		'keepReceiving',
+		'id'
+	],
+	#classInstVars : [
+		'LastID'
 	],
 	#category : #'Pure-Kernel'
 }
 
 { #category : #'as yet unclassified' }
+PureConnector class >> initialize [ 
+	LastID := 0.
+]
+
+{ #category : #'as yet unclassified' }
 PureConnector class >> ip: anIp port: aPort [
-	^ self new ip: anIp ; port: aPort ; startUp; yourself.
+	^ self ip: anIp port: aPort robot: nil.
 ]
 
 { #category : #'as yet unclassified' }
 PureConnector class >> ip: anIp port: aPort robot: aRobot [
-	^ self new ip: anIp ; port: aPort ; robot: aRobot ; startUp ; yourself.
+	LastID:= LastID +1.
+	^ self new ip: anIp ; port: aPort ; robot: aRobot ; id: LastID ; startUp ; yourself.
 ]
 
 { #category : #processing }
@@ -35,6 +45,7 @@ PureConnector >> addWork: aWork [
 
 { #category : #accessing }
 PureConnector >> cloneProcess [ 
+	self debug: ['spawning new connector', String cr].	
 	^PureConnector ip: ip port: port robot: robot.
 ]
 
@@ -53,6 +64,16 @@ PureConnector >> discoverServices [
 			self  send: '01000000'.
 			 self receiveAnswer.
 		]).
+]
+
+{ #category : #accessing }
+PureConnector >> id [
+	^ id.
+]
+
+{ #category : #accessing }
+PureConnector >> id: anID [
+	id := anID.
 ]
 
 { #category : #'reception management' }
@@ -121,6 +142,11 @@ PureConnector >> port: aPort [
 	port := aPort. 
 ]
 
+{ #category : #accessing }
+PureConnector >> processName [ 
+	^ 'PureConnector-', self id asString. 
+]
+
 { #category : #'communication private' }
 PureConnector >> receiveAnswer [
   | buffer responseSize response intent |
@@ -130,7 +156,7 @@ PureConnector >> receiveAnswer [
 	[
 		
 		buffer := ByteArray new: 4096.
-		
+		self debug: ['receiving message'].	
 		[	
 			intent := intent +1.
 			responseSize := (self socket receiveWithTimeOutUDPDataInto:  buffer) at:1.
@@ -145,11 +171,13 @@ PureConnector >> receiveAnswer [
 			
 			
 	] doWhileTrue: [
+	
+		self debug: ['received message: ', (response isNotification ifTrue:['notification'] ifFalse:[ response success ifTrue:['response']ifFalse:['error response']]) ].	
 		response received.
 		response isNotification & self keepReceiving.
 	].
 
-	^ response. 
+	^ response.  
 ]
 
 { #category : #accessing }
@@ -165,19 +193,26 @@ PureConnector >> robot: aRobotManager [
 { #category : #processing }
 PureConnector >> run [
 	| job |
+	
 	forWork wait.
+	self debug: ['tic'].
 	job := self peekWork.
 	job execute: self. 
+	self debug: ['tac'].
 	
+
 ]
 
 { #category : #'communication private' }
 PureConnector >> send: aStringMessage [
-	self socket sendData: (ByteArray readHexFrom: aStringMessage)
+	| size |
+	
+
+	size := self socket sendData: (ByteArray readHexFrom: aStringMessage)
 		toHost: self ip
 		port: self port.	
 
-	
+	self debug: ['sending message', size asString].	
 		
 ]
 

@@ -48,8 +48,9 @@ NotificationManagerService >> delete: data using: aConnector [
 
 { #category : #service }
 NotificationManagerService >> destroy [
-	super destroy.	
 	self stopNotificatingAllServices.
+	super destroy.	
+	
 
 ]
 

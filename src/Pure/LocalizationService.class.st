@@ -45,7 +45,7 @@ LocalizationService >> load: aConnector [
 
 	decoder := (self getWith: aConnector) decoder.
 	
-	
+
 	self pose x: decoder nextEncodedFloat64. 
 	self pose y: decoder nextEncodedFloat64. 
 	self pose orientation: decoder nextEncodedFloat64. 

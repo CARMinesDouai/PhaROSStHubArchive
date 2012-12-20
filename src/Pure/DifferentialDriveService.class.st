@@ -24,7 +24,6 @@ DifferentialDriveService >> initialize [
 DifferentialDriveService >> load: aConnector [ 
 	|decoder | 
 	
-
 	decoder := (self getWith: aConnector) decoder.
 	
 	self maximumSpeed linear:  decoder nextEncodedFloat32. 	

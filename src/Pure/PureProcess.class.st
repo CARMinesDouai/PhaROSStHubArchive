@@ -1,6 +1,8 @@
 Class {
 	#name : #PureProcess,
 	#superclass : #Object,
+	#traits : 'TLogger',
+	#classTraits : 'TLogger classTrait',
 	#instVars : [
 		'keepRunning',
 		'process',
