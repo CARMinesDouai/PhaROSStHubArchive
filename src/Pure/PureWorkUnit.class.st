@@ -75,6 +75,7 @@ PureWorkUnit >> execute [
 		self result: work value.
 	] on:Error do: [
 		:e |
+		e signal.
 		error := e.
 		self result: nil.
 	]
@@ -97,6 +98,7 @@ PureWorkUnit >> execute: aParameter and: otherParameter [
 		self result:  (work cull: aParameter cull: otherParameter).
 	] on:Error do: [
 		:e |
+		e signal.
 		error := e.
 		self result: nil.
 	]
@@ -123,17 +125,13 @@ PureWorkUnit >> priority: aPriorityNumber [
 { #category : #'as yet unclassified' }
 PureWorkUnit >> result [
 
-	self info: [ 'waiting for result '].
-	self debug: [' work related: ', work asString ].
 	
 	processFinished ifFalse: [
-		self info: [ 'waiting for result '].
 		semaphore wait.
 	].
 		
 	error ifNotNil:[
 		error class = ConnectionTimedOut  ifTrue: [ 
-			self warn: [ 'connection timeout'].	
 			^ nil 
 		].
 		error signal.	

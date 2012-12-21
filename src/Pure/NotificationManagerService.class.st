@@ -26,7 +26,7 @@ NotificationManagerService >> beginNotificating: aService each: nControlCycles [
 		Error signal: ' The given period must be between 0 and 255 '.
 	].
 
-	self debug: ['Asking for notifications to  ', aService class name, ' instance:', aService getInstanceNumber asString ,  ' every ',nControlCycles asString ,'  control cycles '].
+"	self debug: ['Asking for notifications to  ', aService class name, ' instance:', aService getInstanceNumber asString ,  ' every ',nControlCycles asString ,'  control cycles ']."
 
 	services add: aService.
 	
@@ -163,10 +163,13 @@ NotificationManagerService >> register: aService each: nControlCycles [
 			response := self  insert: '0', (aService getInstanceNumber asString), '00', (PDRConverter as8BitsHexStringFromInteger: nControlCycles) into: robulab connector.		
 		] on: Error do:[
 			:e | 
-			e messageText = 'Already bound to this notification' ifFalse: [
+			e messageText = 'Already bound to this notification' ifTrue: [
 				self warn: [aService name, '  was already bound to notifications. '].
+			] ifFalse: [
 				e signal.
-			].
+			]
+			
+			
 		].
 	
 		
