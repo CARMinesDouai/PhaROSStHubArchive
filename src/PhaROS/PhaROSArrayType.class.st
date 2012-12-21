@@ -9,6 +9,11 @@ PhaROSArrayType class >> of: aClass [
 	^ self new ofClass: aClass; yourself .
 ]
 
+{ #category : #'as yet unclassified' }
+PhaROSArrayType class >> ofType: aType [
+	^ self new relatedType: aType; yourself .
+]
+
 { #category : #accessing }
 PhaROSArrayType >> dataTypeSizeFor: aValue [
 	^ (super dataTypeSizeFor: aValue )+ 4.

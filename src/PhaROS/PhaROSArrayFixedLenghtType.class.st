@@ -13,6 +13,11 @@ PhaROSArrayFixedLenghtType class >> of: aSize of: aClass [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSArrayFixedLenghtType class >> of: aSize ofType: aType [
+	^ self new size: aSize; relatedType: aType; yourself .
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSArrayFixedLenghtType >> defaultValueString [ 
 	^ ' (OrderedCollection new: ' , size asString, ')'.
 	

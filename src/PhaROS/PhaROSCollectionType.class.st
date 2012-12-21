@@ -67,6 +67,13 @@ PhaROSCollectionType >> relatedType [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSCollectionType >> relatedType: aType [
+	relatedType := aType.
+	relatedClass := aType class.
+	
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSCollectionType >> setEncodeDecodeSelectors [
 	" Refactor needed here ."
 	encodeSelector := #doesNotApplyHere.

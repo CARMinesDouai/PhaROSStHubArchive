@@ -25,6 +25,7 @@ PhaROSTypeBrowser class >> new [
 { #category : #'as yet unclassified' }
 PhaROSTypeBrowser class >> reset [
 	instance := nil.
+	PhaROSCompositeType reset.
 ]
 
 { #category : #accessing }
@@ -36,7 +37,7 @@ PhaROSTypeBrowser >> browser [
 PhaROSTypeBrowser >> definition: aTypeId [
 
 	| firstLevel |
-	
+
 	
 	^ (self browser at: aTypeId ifAbsentPut: [
 	
@@ -53,13 +54,13 @@ PhaROSTypeBrowser >> definition: aTypeId [
 						association := ( name asSymbol -> (self definition: type)  ).
 					] ifFalse: [
 						((type indexOf: $]) = ((type indexOf: $[ )+1) ) ifTrue: [
-							association := (name asSymbol -> (PhaROSArrayType of: (self definition: (type copyReplaceAll: '[]' with: '') )  ) ).
+							association := (name asSymbol -> (PhaROSArrayType ofType: (self definition: (type copyReplaceAll: '[]' with: '') )  ) ).
 						] ifFalse: [
 							| size innerType |	
 							size := type copyFrom: ((type indexOf: $[) +1) to: ((type indexOf: $]) -1) asInteger .
 							innerType :=  self definition: (type copyFrom:1 to: ((type indexOf: $[) -1 ) ) .
 						
-						      association := ( name asSymbol ->  (PhaROSArrayFixedLenghtType of: size  of: innerType )  )
+						      association := ( name asSymbol ->  (PhaROSArrayFixedLenghtType of: size  ofType: innerType )  )
 						].
 					].
 				 ]

@@ -51,6 +51,11 @@ PhaROSCompositeType class >> remove: aName [
 	
 ]
 
+{ #category : #construction }
+PhaROSCompositeType class >> reset [
+	self initialize.
+]
+
 { #category : #serializing }
 PhaROSCompositeType >> asArrayType [
 	^ PhaROSArrayType of: self relatedClass. 
@@ -185,6 +190,11 @@ PhaROSCompositeType >> installMethodsIn: aClass [
 { #category : #serializing }
 PhaROSCompositeType >> isAPossibleValue: aTurtlesimVelocity [ 
 ^ true.
+]
+
+{ #category : #serializing }
+PhaROSCompositeType >> new [ 
+	^ self.
 ]
 
 { #category : #serializing }
