@@ -61,7 +61,7 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 
 ]on: Error do: [
 	:e |
-	self logError: [ 'Error broadcasting ODOMETRY information to ROS System ', e messageText ].
+	self logError: [ 'Error broadcasting ODOMETRY information to ROS System '].
 	self stop. 
 	self halt.
 ]
@@ -118,7 +118,6 @@ PurePhaROSTFOdometryBroadcaster >> stop [
 
 	lastNotification := nil. 
 	self info: [ 'Shutting down ODOMETRY broadcaster node'].
-	super stop. 
 	
 	robot with: NotificationManagerService do: [
 		: notification |
@@ -128,6 +127,7 @@ PurePhaROSTFOdometryBroadcaster >> stop [
 			notification stopNotificating: localization.
 		].
 	].
+	super stop. 
 	self halt.
 	
 ]

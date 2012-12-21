@@ -32,7 +32,7 @@ PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceI
 	
 	]on: Error do: [
 		:e| 
-		self logError: [ 'Error broadcasting LASER information ', e messageText].
+		self logError: [ 'Error broadcasting LASER information '].
 		self stop. 
 		self halt.
 ]
