@@ -14,12 +14,10 @@ LocalizationNotification >> initialize [
 ]
 
 { #category : #loading }
-LocalizationNotification >> load: aPureNotification [ 
+LocalizationNotification >> load: notificationSource [ 
 	| decoder |
-	decoder := aPureNotification decoder.
-	
-	self loadTime: decoder.
-	
+	super load: notificationSource.
+	decoder := notificationSource decoder.
 	self pose x: (((decoder nextEncodedFloat64) roundUpTo: 0.0001 )roundDownTo: -0.0001). 
 	self pose y: (((decoder nextEncodedFloat64) roundUpTo: 0.0001 )roundDownTo: -0.0001). 
 	self pose orientation: (((decoder nextEncodedFloat64) roundUpTo: 0.0001 )roundDownTo: -0.0001). 

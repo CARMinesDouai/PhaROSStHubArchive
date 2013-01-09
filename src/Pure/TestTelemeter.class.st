@@ -10,8 +10,8 @@ TestTelemeter >> testGetValuesAsynchronously [
 	| aNotification |
 		
 	aNotification := self notificationForService: TelemeterService forNotification: TelemeterNotification.
-	self flag: #TODO.
 	self assert: aNotification notNil.
-	aNotification inspect.
+	self assert: aNotification distances notEmpty.
+	aNotification distances inspect
 
 ]
