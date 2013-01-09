@@ -1,3 +1,8 @@
+"
+detector := TelemeterChangeDetector new.
+detector setupReferenceDistances.
+detector changedTelemeterIndices. 
+"
 Class {
 	#name : #TelemeterChangeDetector,
 	#superclass : #TestService,
@@ -12,10 +17,10 @@ TelemeterChangeDetector >> changedTelemeterIndices [
 	| newDistances changedIndices |
 	newDistances := self distances.
 	changedIndices := Set new.
-	newDistances withIndexDo: [:index :new| 
-		|old|
-		old := referenceDistances at: index.
-		(new closeTo: old) ifFlase: [changedIndices add: index]].
+	newDistances withIndexDo: [:new :index | 
+		|reference|
+		reference := referenceDistances at: index.
+		(new - reference) abs > 0.2 ifTrue: [changedIndices add: index]].
 	^changedIndices
 ]
 
