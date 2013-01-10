@@ -170,9 +170,6 @@ PhaROSEncoder >> encodefloat32: aFloat [
 { #category : #'as yet unclassified' }
 PhaROSEncoder >> encodefloat64: aFloat [
 	| encoded |
-"	encoded := aFloat asFloat asIEEE32BitWord asByteArray reversed."
-"	encoded := self encodeUint32: (aFloat basicAt:1)."
-
 
 	encoded := ByteArray new: 8.
 	
