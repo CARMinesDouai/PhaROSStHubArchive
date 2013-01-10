@@ -157,10 +157,16 @@ NotificationManagerService >> monitorConsumer [
 
 { #category : #request }
 NotificationManagerService >> register: aService each: nControlCycles [
-	| response|  	
+	| response encoder |  	
 		
 		[
-			response := self  insert: '0', (aService getInstanceNumber asString), '00', (PDRConverter as8BitsHexStringFromInteger: nControlCycles) into: robulab connector.		
+			encoder := PureEncoder forArray: (String new: (1 + 2 + 2 +  2)).
+			encoder nextPutString: '0'.
+			encoder nextPutString: aService getInstanceNumber asString.
+			encoder nextPutString: '00'.
+			encoder encodeInt8: nControlCycles.
+			
+			response := self  insert: encoder contents into: robulab connector.		
 		] on: Error do:[
 			:e | 
 			e messageText = 'Already bound to this notification' ifTrue: [

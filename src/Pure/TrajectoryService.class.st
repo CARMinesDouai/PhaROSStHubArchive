@@ -20,17 +20,24 @@ TrajectoryService >> load: aConnector [
 
 { #category : #'as yet unclassified' }
 TrajectoryService >> moveFrom: aPoint to: anOtherPoint with: aSpeed [
-	| x1 y1 x2 y2 speed|
+	| x1 y1 x2 y2 speed encoder|
 	
-	x1 := PDRConverter as64BitsHexStringFromFloat: aPoint x.
-	y1 := PDRConverter as64BitsHexStringFromFloat: aPoint y.
-	x2 := PDRConverter as64BitsHexStringFromFloat: anOtherPoint x.
-	y2 := PDRConverter as64BitsHexStringFromFloat: anOtherPoint y.
 	
-	speed := PDRConverter as32BitsHexStringFromFloat: (self limitSpeed: aSpeed).
+	
+	" 32 * 4 spaces for the 64bits float. 16 for the only one 32 bit float "
+	
+	encoder := PureEncoder forArray: (String new: (32 * 4 + 16)).
+	
+	encoder encodefloat64: aPoint x.
+	encoder encodefloat64: aPoint y.
+	encoder encodefloat64: anOtherPoint x.
+	encoder encodefloat64: anOtherPoint y.
+	
+	encoder encodefloat32: aSpeed.
+	
 	
 
-	self insert: x1, y1, x2, y2, speed.
+	self insert: encoder contents.
 ]
 
 { #category : #'as yet unclassified' }
