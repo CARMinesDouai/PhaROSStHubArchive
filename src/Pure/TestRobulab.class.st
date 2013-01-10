@@ -49,7 +49,7 @@ TestRobulab >> testIncrementationDesRequetes [
 TestRobulab >> testInitialisationDesServices [
 	
 	robulab directoryService services do: [ :service|
-		service class = (ConstantesRobulab serviceClassPerType at: service type)	
+		service class = (PureConstants serviceClassPerType at: service type)	
 	].
 
 	

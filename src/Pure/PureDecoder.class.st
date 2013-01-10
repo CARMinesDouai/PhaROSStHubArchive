@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'stream'
 	],
-	#category : #'Pure-Kernel'
+	#category : #'Pure-Messages'
 }
 
 { #category : #'as yet unclassified' }

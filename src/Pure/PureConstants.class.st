@@ -13,7 +13,7 @@ Class Instance Variables:
 	codesServices	<ProtoObject | PseudoContext>
 "
 Class {
-	#name : #ConstantesRobulab,
+	#name : #PureConstants,
 	#superclass : #Object,
 	#instVars : [
 		'services'
@@ -27,7 +27,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-ConstantesRobulab class >> actionCodes [ 
+PureConstants class >> actionCodes [ 
 	"Dictionnaire donnant la correspondance entre un code d'action et une action"
 	^ { 
 		'GET'		-> '00'.
@@ -41,7 +41,7 @@ ConstantesRobulab class >> actionCodes [
 ]
 
 { #category : #'as yet unclassified' }
-ConstantesRobulab class >> codesServices [
+PureConstants class >> codesServices [
 	"Dictionnaire faisant la correspondance entre le nom n'un service et son numéro de type"
 	^ {   
 		16r0000 -> 'DIRECTORY'.
@@ -59,7 +59,7 @@ ConstantesRobulab class >> codesServices [
 ]
 
 { #category : #accessing }
-ConstantesRobulab class >> errorMessages [
+PureConstants class >> errorMessages [
 	"Dictionnaire établissant la correspondance entre un code d'erreur et le libéllé d'une erreur"
 	^ {   16r0 -> 'Success'.
 		  16r1->'Target does not exist'.
@@ -74,7 +74,7 @@ ConstantesRobulab class >> errorMessages [
 ]
 
 { #category : #accessing }
-ConstantesRobulab class >> serviceClassPerType [
+PureConstants class >> serviceClassPerType [
 	^	{
 		16r0000 -> DirectoryService .
 	      16r0001 -> NotificationManagerService  .
