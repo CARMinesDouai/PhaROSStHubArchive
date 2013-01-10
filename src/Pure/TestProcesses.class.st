@@ -1,5 +1,5 @@
 Class {
-	#name : #TestConnector,
+	#name : #TestProcesses,
 	#superclass : #TestCase,
 	#instVars : [
 		'robot',
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-TestConnector >> destroyConnector [
+TestProcesses >> destroyConnector [
 	connector destroy.
 	
 	
@@ -17,22 +17,22 @@ TestConnector >> destroyConnector [
 ]
 
 { #category : #'as yet unclassified' }
-TestConnector >> destroyRobot [
+TestProcesses >> destroyRobot [
 	robot destroy.
 ]
 
 { #category : #'as yet unclassified' }
-TestConnector >> spawnConnector [ 
+TestProcesses >> spawnConnector [ 
 	connector := PureConnector ip: #[192 168 1 2] port: 60000.
 ]
 
 { #category : #'as yet unclassified' }
-TestConnector >> spawnRobot [
+TestProcesses >> spawnRobot [
 	robot := Robulab newWith: #[192 168 1 2] and: 60000.
 ]
 
 { #category : #'as yet unclassified' }
-TestConnector >> testSpawnAndDestroyConnector [
+TestProcesses >> testSpawnAndDestroyConnector [
 
 	self spawnConnector.
 	(Delay forSeconds: 1) wait.
@@ -51,7 +51,7 @@ TestConnector >> testSpawnAndDestroyConnector [
 ]
 
 { #category : #'as yet unclassified' }
-TestConnector >> testSpawnAndDestroyRobot [
+TestProcesses >> testSpawnAndDestroyRobot [
 
 	self spawnRobot.
 	( Delay forSeconds: 1 ) wait.
@@ -77,7 +77,7 @@ TestConnector >> testSpawnAndDestroyRobot [
 ]
 
 { #category : #'as yet unclassified' }
-TestConnector >> testSpawnEnableAndReceiveNoticationAndDestroyRobot [
+TestProcesses >> testSpawnEnableAndReceiveNoticationAndDestroyRobot [
 	| localizationAssert laserAssert localizationNotifications laserNotifications |
 	
 	self spawnRobot.
@@ -136,7 +136,7 @@ TestConnector >> testSpawnEnableAndReceiveNoticationAndDestroyRobot [
 ]
 
 { #category : #'as yet unclassified' }
-TestConnector >> testSpawnEnableAndReceiveNoticationCrashProcessAndDestroyRobot [
+TestProcesses >> testSpawnEnableAndReceiveNoticationCrashProcessAndDestroyRobot [
 	| localizationAssert laserAssert localizationNotifications laserNotifications |
 	
 	self spawnRobot.
@@ -197,7 +197,7 @@ TestConnector >> testSpawnEnableAndReceiveNoticationCrashProcessAndDestroyRobot 
 ]
 
 { #category : #'as yet unclassified' }
-TestConnector >> testSpawnEnableDisableNoticationAndDestroyRobot [
+TestProcesses >> testSpawnEnableDisableNoticationAndDestroyRobot [
 	| lockAssert |
 	
 	self spawnRobot.
@@ -240,7 +240,7 @@ TestConnector >> testSpawnEnableDisableNoticationAndDestroyRobot [
 ]
 
 { #category : #'as yet unclassified' }
-TestConnector >> testSpawnEnableNoticationAndDestroyRobot [
+TestProcesses >> testSpawnEnableNoticationAndDestroyRobot [
 	| lockAssert |
 	
 	self spawnRobot.
@@ -282,7 +282,7 @@ TestConnector >> testSpawnEnableNoticationAndDestroyRobot [
 ]
 
 { #category : #'as yet unclassified' }
-TestConnector >> testSpawnEnableNoticationCrashConnectorAndDestroyRobot [
+TestProcesses >> testSpawnEnableNoticationCrashConnectorAndDestroyRobot [
 	| lockAssert |
 	
 	self spawnRobot.
@@ -323,7 +323,7 @@ TestConnector >> testSpawnEnableNoticationCrashConnectorAndDestroyRobot [
 ]
 
 { #category : #'as yet unclassified' }
-TestConnector >> testSpawnEnableNoticationCrashNotificatorAndDestroyRobot [
+TestProcesses >> testSpawnEnableNoticationCrashNotificatorAndDestroyRobot [
 	| lockAssert |
 	
 	self spawnRobot.
@@ -364,7 +364,7 @@ TestConnector >> testSpawnEnableNoticationCrashNotificatorAndDestroyRobot [
 ]
 
 { #category : #'as yet unclassified' }
-TestConnector >> testSpawnEnableNoticationCrashProcessesAndDestroyRobot [
+TestProcesses >> testSpawnEnableNoticationCrashProcessesAndDestroyRobot [
 	| lockAssert |
 	
 	self spawnRobot.
@@ -406,7 +406,7 @@ TestConnector >> testSpawnEnableNoticationCrashProcessesAndDestroyRobot [
 ]
 
 { #category : #'as yet unclassified' }
-TestConnector >> testSpawnLoadAndDestroyRobot [
+TestProcesses >> testSpawnLoadAndDestroyRobot [
 
 	self spawnRobot.
 	( Delay forSeconds: 1 ) wait.
