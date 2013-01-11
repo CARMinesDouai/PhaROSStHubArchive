@@ -141,13 +141,13 @@ NotificationManagerService >> monitorConsumer [
 	
 	((notificationService isNil or: [ notificationService keepRunning not]) and:[ services isEmpty not]) ifTrue: [
 		notificationService := NotificationConsumerProcess connector: connector talkingWith: self.
-	] ifFalse: [
-		(services isEmpty and: [notificationService isNil not ]) ifTrue: [
-			self stopNotificationService.
-		].
-		(services isEmpty and: [connector isNil not ]) ifTrue: [
-			self stopConnector. 
-		].
+	].
+
+	(services isEmpty and: [notificationService isNil not ]) ifTrue: [
+		self stopNotificationService.
+	].
+	(services isEmpty and: [connector isNil not ]) ifTrue: [
+		self stopConnector. 
 	].
 
 
@@ -212,6 +212,7 @@ NotificationManagerService >> stopNotificating: aService [
 { #category : #service }
 NotificationManagerService >> stopNotificatingAllServices [
 	services do: [ : serv | self stopNotificating: serv ].
+	services removeAll.
 	self monitorConsumer.
 ]
 

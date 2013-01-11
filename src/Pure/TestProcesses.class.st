@@ -8,7 +8,7 @@ Class {
 	#category : #'Pure-Test-RobotDependent'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #auxiliar }
 TestProcesses >> destroyConnector [
 	connector destroy.
 	
@@ -16,22 +16,36 @@ TestProcesses >> destroyConnector [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #auxiliar }
 TestProcesses >> destroyRobot [
 	robot destroy.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #auxiliar }
+TestProcesses >> expectedNotifications [
+	^ 10.
+]
+
+{ #category : #auxiliar }
 TestProcesses >> spawnConnector [ 
 	connector := PureConnector ip: #[192 168 1 2] port: 60000.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #auxiliar }
 TestProcesses >> spawnRobot [
 	robot := Robulab newWith: #[192 168 1 2] and: 60000.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #configuration }
+TestProcesses >> tearDown [ 
+	super tearDown.
+	Smalltalk garbageCollect.
+	Smalltalk garbageCollect.
+	Smalltalk garbageCollect.
+	Smalltalk garbageCollect.
+]
+
+{ #category : #tests }
 TestProcesses >> testSpawnAndDestroyConnector [
 
 	self spawnConnector.
@@ -50,7 +64,7 @@ TestProcesses >> testSpawnAndDestroyConnector [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TestProcesses >> testSpawnAndDestroyRobot [
 
 	self spawnRobot.
@@ -76,7 +90,7 @@ TestProcesses >> testSpawnAndDestroyRobot [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'freezing-test' }
 TestProcesses >> testSpawnEnableAndReceiveNoticationAndDestroyRobot [
 	| localizationAssert laserAssert localizationNotifications laserNotifications |
 	
@@ -91,26 +105,37 @@ TestProcesses >> testSpawnEnableAndReceiveNoticationAndDestroyRobot [
 	laserNotifications := 0.
 	
 	
-	robot enableNotificationsForService: LocalizationService doing: [: n | 
-		localizationNotifications := localizationNotifications +1.
-		localizationNotifications >= 3000 ifTrue: [
-			robot disableNotificationsForService: LocalizationService.
-			localizationAssert signal.
-		].
-	]. 
+	robot with: LocalizationService do: [ : localization | 
+		localization whenANotificationArrivesDo: [
+			:n |	
+				localizationNotifications := localizationNotifications +1.
+				localizationNotifications >= self expectedNotifications  ifTrue: [
+					localization disableNotifications.
+					localizationAssert signal.
+				].
+		].	
+		localization enableNotifications.
 	
-	robot enableNotificationsForService: LaserService  doing: [: n | 
-		laserNotifications := laserNotifications +1.
-		laserNotifications >= 3000 ifTrue: [
-			robot disableNotificationsForService: LaserService .
-			laserAssert signal.
-		].
+	]. 
+
+
+	robot with: LaserService do: [ : laser | 
+		laser whenANotificationArrivesDo: [
+			:n |	
+				laserNotifications := laserNotifications +1.
+				laserNotifications >= self expectedNotifications  ifTrue: [
+					laser disableNotifications.
+					laserAssert signal.
+				].
+		].	
+		laser enableNotifications.
 	]. 
 
 
 
-	self deny: (localizationNotifications waitTimeoutSeconds: 20). 
-	self deny: (laserAssert waitTimeoutSeconds: 20). 
+
+	self assert: ((localizationAssert waitTimeoutSeconds: 10) not or:[ laserNotifications = 10 & localizationNotifications =10]). 
+	self assert: ((laserAssert waitTimeoutSeconds: 10 ) not or:[ laserNotifications = 10 & localizationNotifications =10]). 
 	
 	self destroyRobot.
 	
@@ -135,7 +160,7 @@ TestProcesses >> testSpawnEnableAndReceiveNoticationAndDestroyRobot [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests-with-crash' }
 TestProcesses >> testSpawnEnableAndReceiveNoticationCrashProcessAndDestroyRobot [
 	| localizationAssert laserAssert localizationNotifications laserNotifications |
 	
@@ -152,7 +177,7 @@ TestProcesses >> testSpawnEnableAndReceiveNoticationCrashProcessAndDestroyRobot 
 	
 	robot enableNotificationsForService: LocalizationService doing: [: n | 
 		localizationNotifications := localizationNotifications +1.
-		localizationNotifications >= 3000 ifTrue: [
+		localizationNotifications >= self expectedNotifications  ifTrue: [
 			robot disableNotificationsForService: LocalizationService.
 			localizationAssert signal.
 		].
@@ -160,7 +185,7 @@ TestProcesses >> testSpawnEnableAndReceiveNoticationCrashProcessAndDestroyRobot 
 	
 	robot enableNotificationsForService: LaserService  doing: [: n | 
 		laserNotifications := laserNotifications +1.
-		laserNotifications >= 3000 ifTrue: [
+		laserNotifications >= self expectedNotifications  ifTrue: [
 			robot disableNotificationsForService: LaserService .
 			laserAssert signal.
 		].
@@ -170,8 +195,8 @@ TestProcesses >> testSpawnEnableAndReceiveNoticationCrashProcessAndDestroyRobot 
 	(Delay forSeconds: 1) wait.
 	
 	PureProcess allSubInstances do: #stop.
-	self deny: (localizationNotifications waitTimeoutSeconds: 20). 
-	self deny: (laserAssert waitTimeoutSeconds: 20). 
+	localizationAssert waitTimeoutSeconds: 2.
+	laserAssert waitTimeoutSeconds: 2.
 	
 	self destroyRobot.
 	
@@ -196,7 +221,7 @@ TestProcesses >> testSpawnEnableAndReceiveNoticationCrashProcessAndDestroyRobot 
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TestProcesses >> testSpawnEnableDisableNoticationAndDestroyRobot [
 	| lockAssert |
 	
@@ -206,16 +231,22 @@ TestProcesses >> testSpawnEnableDisableNoticationAndDestroyRobot [
 	
 	lockAssert := Semaphore new.
 	
-	robot enableNotificationsForService: LocalizationService doing: [: n | 
-	      self assert: PureConnector allInstances size =  2.
-		self assert: NotificationConsumerProcess allInstances size = 1.
-		robot disableNotificationsForService: LocalizationService.
-		lockAssert signal.	
+	robot with: LocalizationService do: [:  localization  | 
+		localization whenANotificationArrivesDo: [
+		      self assert: PureConnector allInstances size =  2.
+			self assert: NotificationConsumerProcess allInstances size = 1.			
+			lockAssert signal.	
+		].
+		localization enableNotifications.
 	]. 
 	
 
 	self deny: (lockAssert waitTimeoutSeconds: 2). 
 	
+	robot with: LocalizationService do: [:  localization  | 
+		localization disableNotifications .		
+	].
+
 	self destroyRobot.
 	
 	PureProcess allSubInstances do: [
@@ -239,7 +270,7 @@ TestProcesses >> testSpawnEnableDisableNoticationAndDestroyRobot [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TestProcesses >> testSpawnEnableNoticationAndDestroyRobot [
 	| lockAssert |
 	
@@ -250,8 +281,10 @@ TestProcesses >> testSpawnEnableNoticationAndDestroyRobot [
 	lockAssert := Semaphore new.
 	
 	robot enableNotificationsForService: LocalizationService doing: [: n | 
-	      self assert: PureConnector allInstances size =  2.
-		self assert: NotificationConsumerProcess allInstances size = 1.
+		| a | 
+		
+            self assert: (PureConnector allInstances select: [: p | p isRunning ]) size =  2.
+		self assert: (NotificationConsumerProcess allInstances  select: [: p | p isRunning ]) size = 1.
 		lockAssert signal.	
 	]. 
 	
@@ -266,12 +299,14 @@ TestProcesses >> testSpawnEnableNoticationAndDestroyRobot [
 	].
 	
 	robot := nil. 	
-	Smalltalk garbageCollect.	
-	Smalltalk garbageCollect.
 	
-	self assert: PureProcess allSubInstances size = 0.
-      self assert: PureConnector allInstances size =  0.
-	self assert: NotificationConsumerProcess allInstances size = 0.
+	( Delay forMilliseconds: 200 ) wait.
+	
+	20 timesRepeat: [
+		Smalltalk garbageCollect.		
+	].
+
+	self assert: (PureProcess allSubInstances select: [: p | p isRunning ]) size = 0.
 	self assert: RobulabService allSubInstances size = 0.
 	self assert: Robulab  allInstances size = 0.
 	
@@ -281,7 +316,7 @@ TestProcesses >> testSpawnEnableNoticationAndDestroyRobot [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests-with-crash' }
 TestProcesses >> testSpawnEnableNoticationCrashConnectorAndDestroyRobot [
 	| lockAssert |
 	
@@ -322,7 +357,7 @@ TestProcesses >> testSpawnEnableNoticationCrashConnectorAndDestroyRobot [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests-with-crash' }
 TestProcesses >> testSpawnEnableNoticationCrashNotificatorAndDestroyRobot [
 	| lockAssert |
 	
@@ -363,7 +398,7 @@ TestProcesses >> testSpawnEnableNoticationCrashNotificatorAndDestroyRobot [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests-with-crash' }
 TestProcesses >> testSpawnEnableNoticationCrashProcessesAndDestroyRobot [
 	| lockAssert |
 	
@@ -405,7 +440,7 @@ TestProcesses >> testSpawnEnableNoticationCrashProcessesAndDestroyRobot [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TestProcesses >> testSpawnLoadAndDestroyRobot [
 
 	self spawnRobot.

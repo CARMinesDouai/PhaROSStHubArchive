@@ -43,7 +43,6 @@ DirectoryService >> load: aConnector [
 	" Transform this call into a common get call just to keep consistence"
 	self flag: #TODO.
 
-
 	decoder := (self robulab discoverServices) decoder.
 
 	
