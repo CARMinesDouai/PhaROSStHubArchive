@@ -194,7 +194,10 @@ TestProcesses >> testSpawnEnableAndReceiveNoticationCrashProcessAndDestroyRobot 
 	
 	(Delay forSeconds: 1) wait.
 	
+	self halt.
 	PureProcess allSubInstances do: #stop.
+	
+	
 	localizationAssert waitTimeoutSeconds: 2.
 	laserAssert waitTimeoutSeconds: 2.
 	
@@ -327,8 +330,8 @@ TestProcesses >> testSpawnEnableNoticationCrashConnectorAndDestroyRobot [
 	lockAssert := Semaphore new.
 	
 	robot enableNotificationsForService: LocalizationService doing: [: n | 
+		lockAssert signal.
 		PureConnector allInstances do: #stop.
-		lockAssert signal.	
 	]. 
 	
 
@@ -368,8 +371,8 @@ TestProcesses >> testSpawnEnableNoticationCrashNotificatorAndDestroyRobot [
 	lockAssert := Semaphore new.
 	
 	robot enableNotificationsForService: LocalizationService doing: [: n | 
-		NotificationConsumerProcess allInstances do: #stop.
 		lockAssert signal.	
+		NotificationConsumerProcess allInstances do: #stop.	
 	]. 
 	
 
