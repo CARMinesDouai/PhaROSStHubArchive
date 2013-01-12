@@ -145,7 +145,8 @@ ConfigurationOfPure >> baseline10: spec [
 			].
 			spec package: 'Pure'with: [ 
 				spec requires: #('CommonTraits' 'PAUL').
-			]
+			].
+			spec package: 'PureNG'.
 	].
 
 
