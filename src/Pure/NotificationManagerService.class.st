@@ -141,13 +141,13 @@ NotificationManagerService >> monitorConsumer [
 	
 	((notificationService isNil or: [ notificationService keepRunning not]) and:[ services isEmpty not]) ifTrue: [
 		notificationService := NotificationConsumerProcess connector: connector talkingWith: self.
-	].
-
-	(services isEmpty and: [notificationService isNil not ]) ifTrue: [
-		self stopNotificationService.
-	].
-	(services isEmpty and: [connector isNil not ]) ifTrue: [
-		self stopConnector. 
+	] ifFalse: [
+		(services isEmpty and: [notificationService isNil not ]) ifTrue: [
+			self stopNotificationService.
+		].
+		(services isEmpty and: [connector isNil not ]) ifTrue: [
+			self stopConnector. 
+		].
 	].
 
 
@@ -157,16 +157,10 @@ NotificationManagerService >> monitorConsumer [
 
 { #category : #request }
 NotificationManagerService >> register: aService each: nControlCycles [
-	| response encoder |  	
+	| response|  	
 		
 		[
-			encoder := PureEncoder forArray: (String new: (1 + 2 + 2 +  2)).
-			encoder nextPutString: '0'.
-			encoder nextPutString: aService getInstanceNumber asString.
-			encoder nextPutString: '00'.
-			encoder encodeInt8: nControlCycles.
-			
-			response := self  insert: encoder contents into: robulab connector.		
+			response := self  insert: '0', (aService getInstanceNumber asString), '00', (PDRConverter as8BitsHexStringFromInteger: nControlCycles) into: robulab connector.		
 		] on: Error do:[
 			:e | 
 			e messageText = 'Already bound to this notification' ifTrue: [
@@ -212,7 +206,6 @@ NotificationManagerService >> stopNotificating: aService [
 { #category : #service }
 NotificationManagerService >> stopNotificatingAllServices [
 	services do: [ : serv | self stopNotificating: serv ].
-	services removeAll.
 	self monitorConsumer.
 ]
 

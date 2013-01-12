@@ -92,15 +92,13 @@ DifferentialDriveService >> relatedNotificationClass [
 
 { #category : #request }
 DifferentialDriveService >> setTargetLinearSpeed: linspeed andTargetAngularSpeed: angspeed [
-	|  encoder |
-	
-	
-	encoder := PureEncoder forArray: (String new: 16).
-		
-	encoder encodefloat32: linspeed.
-	encoder encodefloat32: angspeed.
+	| linSpeedHex angSpeedHex |
 
-	self sendNotification:'01', encoder contents.
+	linSpeedHex:=PDRConverter as32BitsHexStringFromFloat: linspeed.
+	angSpeedHex:=PDRConverter as32BitsHexStringFromFloat: angspeed.
+
+
+	self sendNotification:'01', linSpeedHex,angSpeedHex.
 ]
 
 { #category : #accessing }

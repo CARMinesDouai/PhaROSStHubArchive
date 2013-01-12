@@ -71,9 +71,3 @@ NotificationConsumerProcess >> run [
 	]
 	
 ]
-
-{ #category : #'as yet unclassified' }
-NotificationConsumerProcess >> stop [
-	super stop.
-	connector destroy.
-]

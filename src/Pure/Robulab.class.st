@@ -89,15 +89,6 @@ Robulab >> enableNotificationsForService: aServiceClass [
 	] 
 ]
 
-{ #category : #convenient }
-Robulab >> enableNotificationsForService: aServiceClass doing: aBlock [
-
-	self with: aServiceClass do: [ :service |
-		service whenANotificationArrivesDo: aBlock.
-		service enableNotifications.
-	] 
-]
-
 { #category : #sending }
 Robulab >> instanceRelatedTo: anInstanceID [
 	^ self directoryService instanceRelatedTo: anInstanceID.
