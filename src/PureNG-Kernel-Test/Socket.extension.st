@@ -20,5 +20,5 @@ Socket >> receiveWithTimeOutUDPDataInto: aStringOrByteArray [
 
 { #category : #'*PureNG' }
 Socket class >> standardTimeout [ 
-	^20
+	^2
 ]

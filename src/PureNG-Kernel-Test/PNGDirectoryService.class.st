@@ -27,9 +27,9 @@ PNGDirectoryService >> initServices [
 	rawResult := ByteArray new: 1024.
 	rawSize := (self robot sendAndWaitForResult: PNGCommandStrings directoryServiceGetEntries withAnswer:  rawResult) at: 1.
 	stream := (rawResult copyFrom: 1 to: rawSize).
-	response := PureResponse initializeFromArray: (stream copyFrom: 2 to: rawSize) forRobot: robot.	
+	response := PNGPureResponse initializeFromArray: (stream copyFrom: 2 to: rawSize) forRobot: robot.	
 	
-	decoder := PureDecoder for: (ReadStream on: response data).
+	decoder := PNGPureDecoder for: (ReadStream on: response data).
 	
 	[decoder hasData ] whileTrue: [
 		serviceType :=  decoder nextEncodedUInt16.
