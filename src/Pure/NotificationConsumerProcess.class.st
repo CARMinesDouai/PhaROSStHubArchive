@@ -1,8 +1,7 @@
 Class {
 	#name : #NotificationConsumerProcess,
-	#superclass : #PureProcess,
+	#superclass : #PureConnector,
 	#instVars : [
-		'connector',
 		'time',
 		'reconnections',
 		'notificationManager'
@@ -12,23 +11,25 @@ Class {
 
 { #category : #'as yet unclassified' }
 NotificationConsumerProcess class >> connector: aConnector  talkingWith: aNotificationService [
-	^ self new connector: aConnector; notificationManager: aNotificationService; startUp ; yourself.
+	 ^ (self ip: aConnector ip port: aConnector port robot: aConnector robot) notificationManager: aNotificationService; startUp ; yourself.
 ]
 
 { #category : #'as yet unclassified' }
-NotificationConsumerProcess >> connector [ 
-	^connector 
+NotificationConsumerProcess class >> initialize [ 
+	LastID := 0.
 ]
 
 { #category : #'as yet unclassified' }
-NotificationConsumerProcess >> connector: aConnector [
-	connector := aConnector.
+NotificationConsumerProcess >> addWork: aWork [
+	
+	aWork execute: self.
+	 ^ aWork.
 ]
 
 { #category : #'as yet unclassified' }
 NotificationConsumerProcess >> consume [ 
 	
-	self notificationManager fetchNotificationsWith: connector .
+	self notificationManager fetchNotificationsWith: self .
 ]
 
 { #category : #'as yet unclassified' }

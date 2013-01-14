@@ -14,7 +14,7 @@ Class {
 RobulabService class >> createFromRobulab: rob Type: type [
 	| service |
 	
-	service := (ConstantesRobulab serviceClassPerType at: type ) new.
+	service := (PureConstants serviceClassPerType at: type ) new.
 	
 	service robulab: rob.
 	service type: type.

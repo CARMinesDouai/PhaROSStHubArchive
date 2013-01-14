@@ -3,8 +3,7 @@ Class {
 	#superclass : #RobulabService,
 	#instVars : [
 		'notificationService',
-		'services',
-		'connector'
+		'services'
 	],
 	#category : #'Pure-Services'
 }
@@ -30,7 +29,6 @@ NotificationManagerService >> beginNotificating: aService each: nControlCycles [
 
 	services add: aService.
 	
-	self monitorConnector. 
 	self monitorConsumer. 
 	
 	self register: aService each: nControlCycles. 
@@ -48,9 +46,10 @@ NotificationManagerService >> delete: data using: aConnector [
 
 { #category : #service }
 NotificationManagerService >> destroy [
+	self halt.
 	self stopNotificatingAllServices.
 	super destroy.	
-	
+		
 
 ]
 
@@ -64,28 +63,6 @@ NotificationManagerService >> fetchNotificationsWith: aConnector [
 
 	self getWith: aConnector.
 
-	
-	
-	
-	
-]
-
-{ #category : #request }
-NotificationManagerService >> getDataWith: aConnector [ 
-	| decoder get |
-
-	get := self getWith: aConnector . 
-	get ifNil: [ ^ nil ].
-	decoder := get decoder.
-
-	
-	[ decoder hasData ] whileTrue: [
-		Transcript show: decoder nextEncodedUInt16 asString, '-', decoder nextEncodedByte asString.
-		Transcript cr.
-	].
-	
-	Transcript cr.
-	
 	
 	
 	
@@ -122,32 +99,16 @@ NotificationManagerService >> load: aConnector [
 ]
 
 { #category : #process }
-NotificationManagerService >> monitorConnector [
-
-	" connector process if is needed. "
-	((connector isNil or: [ connector keepRunning not ] ) and: [ services isEmpty not]) ifTrue: [
-		connector := robulab connector cloneProcess.
-		(notificationService isNil not and: [ notificationService keepRunning ]) ifTrue: [
-			notificationService connector: connector.
-		]
-	].
-
-]
-
-{ #category : #process }
 NotificationManagerService >> monitorConsumer [
 
 	" kill or start notification process if is needed. If kill notification process also kills connector"
 	
 	((notificationService isNil or: [ notificationService keepRunning not]) and:[ services isEmpty not]) ifTrue: [
-		notificationService := NotificationConsumerProcess connector: connector talkingWith: self.
-	] ifFalse: [
-		(services isEmpty and: [notificationService isNil not ]) ifTrue: [
-			self stopNotificationService.
-		].
-		(services isEmpty and: [connector isNil not ]) ifTrue: [
-			self stopConnector. 
-		].
+		notificationService := NotificationConsumerProcess connector: robulab connector talkingWith: self.
+	].
+
+	(services isEmpty and: [notificationService isNil not ]) ifTrue: [
+		self stopNotificationService.
 	].
 
 
@@ -157,10 +118,16 @@ NotificationManagerService >> monitorConsumer [
 
 { #category : #request }
 NotificationManagerService >> register: aService each: nControlCycles [
-	| response|  	
+	| response encoder |  	
 		
 		[
-			response := self  insert: '0', (aService getInstanceNumber asString), '00', (PDRConverter as8BitsHexStringFromInteger: nControlCycles) into: robulab connector.		
+			encoder := PureEncoder forArray: (String new: (1 + 2 + 2 +  2)).
+			encoder nextPutString: '0'.
+			encoder nextPutString: aService getInstanceNumber asString.
+			encoder nextPutString: '00'.
+			encoder encodeInt8: nControlCycles.
+			
+			response := self  insert: encoder contents into: robulab connector.		
 		] on: Error do:[
 			:e | 
 			e messageText = 'Already bound to this notification' ifTrue: [
@@ -185,15 +152,7 @@ NotificationManagerService >> restart [
 
 	" stop all related process, and execute monitors. If process are needed will be spawned again "
 	self stopNotificationService.
-	self stopConnector.
-	self monitorConnector.
 	self monitorConsumer.
-]
-
-{ #category : #process }
-NotificationManagerService >> stopConnector [
-	connector stopReception.
-	connector := nil
 ]
 
 { #category : #notifications }
@@ -206,6 +165,7 @@ NotificationManagerService >> stopNotificating: aService [
 { #category : #service }
 NotificationManagerService >> stopNotificatingAllServices [
 	services do: [ : serv | self stopNotificating: serv ].
+	services removeAll.
 	self monitorConsumer.
 ]
 

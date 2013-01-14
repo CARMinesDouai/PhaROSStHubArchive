@@ -34,9 +34,11 @@ PureSequencer class >> reset [
 PureSequencer >> consumeRequestId [
 	| current ret | 
 	
-	current := currentRequestId.
-	self incrementRequestId.
-	
+	mutex critical: [
+		current := currentRequestId.	
+		self incrementRequestId.
+	].
+
 	((currentRequestId printStringBase: 16) size = 1) ifTrue: [ 
 			current := ('0',(currentRequestId printStringBase: 16))asString 
 	] ifFalse: [
@@ -60,6 +62,6 @@ PureSequencer >> incrementRequestId [
 
 { #category : #'as yet unclassified' }
 PureSequencer >> initialize [ 
-	currentRequestId := 1.
+	currentRequestId := 0.
 	mutex := Mutex new.
 ]

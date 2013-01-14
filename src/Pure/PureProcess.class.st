@@ -17,6 +17,11 @@ PureProcess >> initialize [
 ]
 
 { #category : #'as yet unclassified' }
+PureProcess >> isRunning [
+	^ process isNil not and: [ process isTerminated not].
+]
+
+{ #category : #'as yet unclassified' }
 PureProcess >> keepRunning [ 
 	| val |
 	processMutex  critical: [

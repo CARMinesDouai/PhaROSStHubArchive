@@ -59,7 +59,7 @@ PureResponse >> errorCode: aNumber [
 
 { #category : #'as yet unclassified' }
 PureResponse >> errorMessage [
-	^ ConstantesRobulab errorMessages at: self errorCode.
+	^ PureConstants errorMessages at: self errorCode.
 ]
 
 { #category : #accessing }

@@ -43,12 +43,6 @@ PureConnector >> addWork: aWork [
 	^ aWork.
 ]
 
-{ #category : #accessing }
-PureConnector >> cloneProcess [ 
-	self debug: ['spawning new connector', String cr].	
-	^PureConnector ip: ip port: port robot: robot.
-]
-
 { #category : #service }
 PureConnector >> destroy [
 	self stop.
@@ -152,14 +146,13 @@ PureConnector >> receiveAnswer [
   | buffer responseSize response intent |
 
 	intent := 0. 
-
 	[
 		
 		buffer := ByteArray new: 4096.
 		self debug: ['receiving message'].	
 		[	
 			intent := intent +1.
-			responseSize := (self socket receiveWithTimeOutUDPDataInto:  buffer) at:1.
+			responseSize := (self socket receiveUDPDataInto: buffer withTimeOut: self receptionTimeOutSeconds) at:1.
 		] doWhileTrue: [
 			responseSize = 0 and:[ intent < 3]
 		].
@@ -171,13 +164,17 @@ PureConnector >> receiveAnswer [
 			
 			
 	] doWhileTrue: [
-	
 		self debug: ['received message: ', (response isNotification ifTrue:['notification'] ifFalse:[ response success ifTrue:['response']ifFalse:['error response']]) ].	
 		response received.
 		response isNotification & self keepReceiving.
 	].
-
 	^ response.  
+]
+
+{ #category : #'communication private' }
+PureConnector >> receptionTimeOutSeconds [ 
+	^2
+ 
 ]
 
 { #category : #accessing }
@@ -195,10 +192,9 @@ PureConnector >> run [
 	| job |
 	
 	forWork wait.
-	self debug: ['tic'].
 	job := self peekWork.
 	job execute: self. 
-	self debug: ['tac'].
+
 	
 
 ]

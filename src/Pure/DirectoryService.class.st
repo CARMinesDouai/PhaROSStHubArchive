@@ -43,7 +43,6 @@ DirectoryService >> load: aConnector [
 	" Transform this call into a common get call just to keep consistence"
 	self flag: #TODO.
 
-
 	decoder := (self robulab discoverServices) decoder.
 
 	
@@ -54,11 +53,11 @@ DirectoryService >> load: aConnector [
 
 		instanceCode := decoder nextEncodedUInt16.
 		
-		ConstantesRobulab serviceClassPerType at: serviceType ifPresent: [ :v |
-			((ConstantesRobulab serviceClassPerType at: serviceType) = DirectoryService) ifFalse:  [
+		PureConstants serviceClassPerType at: serviceType ifPresent: [ :v |
+			((PureConstants serviceClassPerType at: serviceType) = DirectoryService) ifFalse:  [
 				self services at: (instanceCode) put:(RobulabService createFromRobulab: (self robulab) Type: (serviceType)) .
 			].
- 			Transcript show: ((ConstantesRobulab codesServices at: serviceType),' ',instanceCode asString ,': ',serviceType asString );cr.
+ 			Transcript show: ((PureConstants codesServices at: serviceType),' ',instanceCode asString ,': ',serviceType asString );cr.
 		] ifAbsent: [
 			Transcript show:  serviceType hex asString, ' -> not yet implemented'; cr
 		]
