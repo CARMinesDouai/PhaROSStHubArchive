@@ -1,11 +1,11 @@
 Class {
 	#name : #PNGNotification,
-	#superclass : #PNGPureEncodedMessage,
+	#superclass : #PNGEncodedMessage,
 	#category : #'PureNG-Kernel'
 }
 
 { #category : #'as yet unclassified' }
-PNGNotification class >> newWithRawData: rawData forRobot: aRobulab [
+PNGNotification class >> newWithDecoder: rawData forRobot: aRobulab [
 	^self flag: #todo
 ]
 

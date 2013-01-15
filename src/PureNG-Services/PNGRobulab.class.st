@@ -51,14 +51,14 @@ PNGRobulab >> port [
 
 { #category : #communication }
 PNGRobulab >> sendAndWaitForResult: commandString [
-	| responseBuffer receptionInformation rawSize responseBytes |
+	| responseBuffer receptionInformation rawSize responseStream |
 	
 	responseBuffer := ByteArray new: 1024.
 	receptionInformation := self sendAndWaitForResult: PNGCommandStrings directoryServiceGetEntries withAnswer:  responseBuffer.
 	rawSize := receptionInformation at: 1.
-	responseBytes := (responseBuffer copyFrom: 1 to: rawSize).
+	responseStream := (ReadStream on: responseBuffer from: 1 to: rawSize).
 	
-	^ PNGPureEncodedMessage createResponseOrNotificationForData: responseBytes andRobot: self 
+	^ PNGEncodedMessage createResponseOrNotificationForData: responseStream andRobot: self 
 	
 
 ]

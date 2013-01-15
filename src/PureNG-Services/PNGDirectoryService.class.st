@@ -34,8 +34,8 @@ PNGDirectoryService >> initServices [
 	services := Set with: self.		
 	encodedResponse := self robot sendAndWaitForResult: PNGCommandStrings directoryServiceGetEntries.
 	[encodedResponse hasData ] whileTrue: [
-		serviceType :=  encodedResponse nextEncodedUInt16.
-		instanceCode := encodedResponse nextEncodedUInt16.
+		serviceType :=  encodedResponse decoder nextEncodedUInt16.
+		instanceCode := encodedResponse decoder nextEncodedUInt16.
 		serviceType ~= PNGDirectoryService serviceType ifTrue:[
 			serviceClass := PNGService serviceClassForType: serviceType.
 			services add: (serviceClass newWithId: instanceCode).
