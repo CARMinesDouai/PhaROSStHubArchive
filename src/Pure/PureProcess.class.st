@@ -65,15 +65,14 @@ PureProcess >> startUp [
 
 { #category : #'as yet unclassified' }
 PureProcess >> stop [	
-	process ifNotNil: [
-		self keepRunning: false.
-		self waitForFinish.
-		process terminate.
-		process := nil.
-	].
-
-
-
+	processMutex critical: [
+		process ifNotNil: [
+			self keepRunning: false.
+			self waitForFinish.
+			process terminate.
+			process := nil.
+		].
+	]
 ]
 
 { #category : #'as yet unclassified' }

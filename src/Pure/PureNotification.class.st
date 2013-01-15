@@ -55,7 +55,12 @@ PureNotification >> isNotification [
 
 { #category : #'initialize-release' }
 PureNotification >> received [ 
-	self announcer announce: self asAnnouncement.
+	| announcer |
+	announcer := self announcer .
+	announcer ifNotNil:[
+		announcer announce: self asAnnouncement.
+	] 
+	
 ]
 
 { #category : #'initialize-release' }

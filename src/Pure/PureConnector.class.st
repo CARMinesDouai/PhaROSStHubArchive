@@ -48,6 +48,8 @@ PureConnector >> destroy [
 	self stop.
 	socket destroy.
 	robot := nil.
+	queue removeAll.
+	queue := nil.
 ]
 
 { #category : #communication }
@@ -143,13 +145,13 @@ PureConnector >> processName [
 
 { #category : #'communication private' }
 PureConnector >> receiveAnswer [
-  | buffer responseSize response intent |
+  | buffer responseSize response intent responses |
 
 	intent := 0. 
+	responses := OrderedCollection new.
 	[
 		
-		buffer := ByteArray new: 4096.
-		self debug: ['receiving message'].	
+		buffer := ByteArray new: 4096.	
 		[	
 			intent := intent +1.
 			responseSize := (self socket receiveUDPDataInto: buffer withTimeOut: self receptionTimeOutSeconds) at:1.
@@ -161,14 +163,33 @@ PureConnector >> receiveAnswer [
 			PureTooMuchTime signal.
 		].
 		response := self inflateResponse: (buffer copyFrom: 1 to: 	responseSize).
-			
+		responses add: response.
 			
 	] doWhileTrue: [
-		self debug: ['received message: ', (response isNotification ifTrue:['notification'] ifFalse:[ response success ifTrue:['response']ifFalse:['error response']]) ].	
-		response received.
 		response isNotification & self keepReceiving.
 	].
+     "Get out the lastone, which is the response"
+
+	self keepReceiving ifTrue: [
+		responses remove: response.
+		[ 
+			(Delay forMilliseconds: 500) wait.
+			responses do: #received.		
+		] forkAt: Processor userBackgroundPriority  named: 'NotificationDispatcher'.
+		
+	].
+
+	response received.
 	^ response.  
+	
+
+
+
+
+
+
+
+
 ]
 
 { #category : #'communication private' }

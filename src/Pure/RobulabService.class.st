@@ -23,7 +23,10 @@ RobulabService class >> createFromRobulab: rob Type: type [
 
 { #category : #accessing }
 RobulabService >> announcer [
-	^ robulab announcerFor: self.
+	robulab ifNotNil: [
+		^ robulab announcerFor: self
+	].
+	^ nil.
 ]
 
 { #category : #logging }

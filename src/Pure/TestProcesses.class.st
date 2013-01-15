@@ -26,16 +26,6 @@ TestProcesses >> expectedNotifications [
 	^ 10.
 ]
 
-{ #category : #'freezing-test' }
-TestProcesses >> profileSpawnEnableAndReceiveNoticationAndDestroyRobot [
- " self new profileSpawnEnableAndReceiveNoticationAndDestroyRobot "
-	TimeProfiler spyOn: [
-		self setUp .
-		self testSpawnEnableAndReceiveNoticationAndDestroyRobot.
-		self tearDown.
-	].
-]
-
 { #category : #auxiliar }
 TestProcesses >> spawnConnector [ 
 	connector := PureConnector ip: #[192 168 1 2] port: 60000.
@@ -100,7 +90,7 @@ TestProcesses >> testSpawnAndDestroyRobot [
 
 ]
 
-{ #category : #'freezing-test' }
+{ #category : #tests }
 TestProcesses >> testSpawnEnableAndReceiveNoticationAndDestroyRobot [
 	| localizationAssert laserAssert localizationNotifications laserNotifications |
 	
@@ -119,9 +109,9 @@ TestProcesses >> testSpawnEnableAndReceiveNoticationAndDestroyRobot [
 		localization whenANotificationArrivesDo: [
 			:n |	
 				localizationNotifications := localizationNotifications +1.
-				localizationNotifications >= self expectedNotifications  ifTrue: [
-					localization disableNotifications.
+				localizationNotifications = self expectedNotifications  ifTrue: [
 					localizationAssert signal.
+					localization disableNotifications.
 				].
 		].	
 		localization enableNotifications.
@@ -133,9 +123,9 @@ TestProcesses >> testSpawnEnableAndReceiveNoticationAndDestroyRobot [
 		laser whenANotificationArrivesDo: [
 			:n |	
 				laserNotifications := laserNotifications +1.
-				laserNotifications >= self expectedNotifications  ifTrue: [
-					laser disableNotifications.
+				laserNotifications = self expectedNotifications  ifTrue: [
 					laserAssert signal.
+					laser disableNotifications.
 				].
 		].	
 		laser enableNotifications.
@@ -149,11 +139,12 @@ TestProcesses >> testSpawnEnableAndReceiveNoticationAndDestroyRobot [
 	
 	self destroyRobot.
 	
-	PureProcess allSubInstances do: [
-		:p | 
-		self assert: p isRunning not.	
-	].
-	
+	self assert: 
+				(PureProcess allSubInstances select:[
+					:p | 
+					p isRunning not.	
+				]) size = 2 .
+				
 	robot := nil. 	
 	Smalltalk garbageCollect.	
 	Smalltalk garbageCollect.
@@ -170,7 +161,7 @@ TestProcesses >> testSpawnEnableAndReceiveNoticationAndDestroyRobot [
 
 ]
 
-{ #category : #'tests-with-crash' }
+{ #category : #'freezing-test' }
 TestProcesses >> testSpawnEnableAndReceiveNoticationCrashProcessAndDestroyRobot [
 	| localizationAssert laserAssert localizationNotifications laserNotifications |
 	
@@ -246,9 +237,9 @@ TestProcesses >> testSpawnEnableDisableNoticationAndDestroyRobot [
 	
 	robot with: LocalizationService do: [:  localization  | 
 		localization whenANotificationArrivesDo: [
+			lockAssert signal.	
 		      self assert: PureConnector allSubInstances size =  2.
 			self assert: NotificationConsumerProcess allInstances size = 1.			
-			lockAssert signal.	
 		].
 		localization enableNotifications.
 	]. 
@@ -260,7 +251,10 @@ TestProcesses >> testSpawnEnableDisableNoticationAndDestroyRobot [
 		localization disableNotifications .		
 	].
 
+	(Delay forMilliseconds: 500) wait.
+	
 	self destroyRobot.
+	
 	
 	PureProcess allSubInstances do: [
 		:p | 
@@ -305,7 +299,10 @@ TestProcesses >> testSpawnEnableNoticationAndDestroyRobot [
 
 	self deny: (lockAssert waitTimeoutSeconds: 2). 
 	
+	
+	
 	self destroyRobot.
+	
 	
 	PureProcess allSubInstances do: [
 		:p | 
@@ -330,7 +327,7 @@ TestProcesses >> testSpawnEnableNoticationAndDestroyRobot [
 
 ]
 
-{ #category : #'tests-with-crash' }
+{ #category : #'freezing-test' }
 TestProcesses >> testSpawnEnableNoticationCrashConnectorAndDestroyRobot [
 	| lockAssert |
 	
@@ -412,7 +409,7 @@ TestProcesses >> testSpawnEnableNoticationCrashNotificatorAndDestroyRobot [
 
 ]
 
-{ #category : #'tests-with-crash' }
+{ #category : #'freezing-test' }
 TestProcesses >> testSpawnEnableNoticationCrashProcessesAndDestroyRobot [
 	| lockAssert |
 	
@@ -471,6 +468,11 @@ TestProcesses >> testSpawnLoadAndDestroyRobot [
 	
 	robot := nil. 	
 	Smalltalk garbageCollect.	
+	Smalltalk garbageCollect.
+	Smalltalk garbageCollect.
+	Smalltalk garbageCollect.
+	Smalltalk garbageCollect.
+	Smalltalk garbageCollect.
 	Smalltalk garbageCollect.
 	
 	self assert: PureProcess allSubInstances size = 0.
