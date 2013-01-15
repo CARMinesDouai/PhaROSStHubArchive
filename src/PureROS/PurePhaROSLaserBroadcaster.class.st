@@ -32,7 +32,6 @@ PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceI
 	
 	]on: Error do: [
 		:e| 
-		self logError: [ 'Error broadcasting LASER information '].
 		self stop. 
 		self halt.
 ]
@@ -55,7 +54,7 @@ PurePhaROSLaserBroadcaster >> setUp [
 		laser whenANotificationArrivesDo: [ :notif |
 			 self broadcast: notif from: laser. 
 		].
-		laser enableNotifications.
+		laser enableOneNotificationEvery: 250.
 	].
 	
 ]

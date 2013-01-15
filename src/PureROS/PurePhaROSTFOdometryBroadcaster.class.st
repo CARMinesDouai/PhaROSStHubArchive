@@ -61,7 +61,6 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 
 ]on: Error do: [
 	:e |
-	self logError: [ 'Error broadcasting ODOMETRY information to ROS System '].
 	self stop. 
 	self halt.
 ]
@@ -108,7 +107,7 @@ PurePhaROSTFOdometryBroadcaster >> setUp [
 		localization whenANotificationArrivesDo:  [ :notif |
 			 self broadcast: notif from: localization. 
 		].
-		localization enableNotifications.
+		localization enableOneNotificationEvery:250.
 	].
 
 ]
