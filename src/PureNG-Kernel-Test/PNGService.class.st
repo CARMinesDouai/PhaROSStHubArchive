@@ -1,3 +1,9 @@
+"
+Subclasses must implement serviceType class side method
+
+Instance Variables:
+	id	<ProtoObject>
+"
 Class {
 	#name : #PNGService,
 	#superclass : #Object,

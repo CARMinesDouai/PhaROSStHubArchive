@@ -1,3 +1,11 @@
+"
+This service lists all the available services instances available on a PURE controller, including itself. 
+There is always at least one instance running on a PURE controller, with instance number 0. This gives an entry point for discovery of the robot services.
+
+Instance Variables:
+	robot	<PNGRobulab>
+	services	<(Collection of: PNGService)>
+"
 Class {
 	#name : #PNGDirectoryService,
 	#superclass : #PNGService,
@@ -17,23 +25,17 @@ PNGDirectoryService class >> for: robulab [
 
 { #category : #constants }
 PNGDirectoryService class >> serviceType [ 
-	^0
+	^16r0000
 ]
 
 { #category : #'initialize-release' }
 PNGDirectoryService >> initServices [ 
-	| rawResult decoder serviceType instanceCode serviceClass rawSize response sendInfo stream |
-	services := Set with: self.
-	rawResult := ByteArray new: 1024.
-	rawSize := (self robot sendAndWaitForResult: PNGCommandStrings directoryServiceGetEntries withAnswer:  rawResult) at: 1.
-	stream := (rawResult copyFrom: 1 to: rawSize).
-	response := PNGPureResponse initializeFromArray: (stream copyFrom: 2 to: rawSize) forRobot: robot.	
-	
-	decoder := PNGPureDecoder for: (ReadStream on: response data).
-	
-	[decoder hasData ] whileTrue: [
-		serviceType :=  decoder nextEncodedUInt16.
-		instanceCode := decoder nextEncodedUInt16.
+	|  encodedResponse serviceType instanceCode serviceClass  |
+	services := Set with: self.		
+	encodedResponse := self robot sendAndWaitForResult: PNGCommandStrings directoryServiceGetEntries.
+	[encodedResponse hasData ] whileTrue: [
+		serviceType :=  encodedResponse nextEncodedUInt16.
+		instanceCode := encodedResponse nextEncodedUInt16.
 		serviceType ~= PNGDirectoryService serviceType ifTrue:[
 			serviceClass := PNGService serviceClassForType: serviceType.
 			services add: (serviceClass newWithId: instanceCode).

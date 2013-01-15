@@ -9,16 +9,16 @@ Class {
 
 { #category : #'as yet unclassified' }
 PNGPureResponse class >> initializeFromArray:  aByteArray forRobot: robot [
-	| response decoder  |
+	| response encodedResponse  |
 	response := self new.
 
-	decoder := PureDecoder forArray: aByteArray.
+	encodedResponse := PNGEncodedResponse forArray: aByteArray.
 	
-	response action: decoder nextEncodedByte.
-	response target: (robot instanceRelatedTo: decoder nextEncodedUInt16).
-	response errorCode: decoder nextEncodedByte.
+	response action: encodedResponse nextEncodedByte.
+	response target: (robot instanceRelatedTo: encodedResponse nextEncodedUInt16).
+	response errorCode: encodedResponse nextEncodedByte.
 
-	response data: decoder upToEnd.
+	response data: encodedResponse upToEnd.
 	^response
 	
 	

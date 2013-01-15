@@ -50,6 +50,18 @@ PNGRobulab >> port [
 ]
 
 { #category : #communication }
+PNGRobulab >> sendAndWaitForResult: commandString [
+	| responseBuffer receptionInformation rawResult rawSize responseBytes response |
+	responseBuffer := ByteArray new: 1024.
+	receptionInformation := self sendAndWaitForResult: PNGCommandStrings directoryServiceGetEntries withAnswer:  responseBuffer.
+	rawSize := receptionInformation at: 1.
+	responseBytes := (responseBuffer copyFrom: 1 to: rawSize).
+	response := PNGPureResponse initializeFromArray: (responseBytes copyFrom: 2 to: rawSize) forRobot: self.	
+	^PNGEncodedResponse for: (ReadStream on: response data).
+
+]
+
+{ #category : #communication }
 PNGRobulab >> sendAndWaitForResult: commandString withAnswer:  resultBuffer [
 	| socket |
 	socket := Socket newUDP.
