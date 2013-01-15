@@ -66,7 +66,10 @@ NotificationConsumerProcess >> reconnections: aNumber [
 { #category : #'as yet unclassified' }
 NotificationConsumerProcess >> run [
 	[
+	
 		self consume.
+		(Delay forMilliseconds: 500) wait.
+		
 	] on: PureTooMuchTime do: [
 		self notificationManager restart.										
 	]

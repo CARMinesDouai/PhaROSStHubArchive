@@ -173,6 +173,12 @@ PureConnector >> receiveAnswer [
 	self keepReceiving ifTrue: [
 		responses remove: response.
 		[ 
+			responses :=
+			responses reversed inject: OrderedCollection new into: [ :acc :it | 
+				acc detect: [ :e | e class = it class ] ifNone: [ acc add: it].
+				acc.
+			].
+		
 			(Delay forMilliseconds: 500) wait.
 			responses do: #received.		
 		] forkAt: Processor userBackgroundPriority  named: 'NotificationDispatcher'.

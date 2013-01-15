@@ -8,6 +8,16 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PureDecoder class >> for: aStream [
+	^ self new stream: aStream ; yourself .
+]
+
+{ #category : #'as yet unclassified' }
+PureDecoder class >> forArray: anArray [
+	^ self new stream: (ReadStream on: anArray) ; yourself .
+]
+
+{ #category : #'as yet unclassified' }
 PureDecoder >> hasData [
 	^ stream atEnd not.
 ]
