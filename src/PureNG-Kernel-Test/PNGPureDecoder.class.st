@@ -8,16 +8,6 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PNGPureDecoder class >> for: aStream [
-	^ self new stream: aStream ; yourself .
-]
-
-{ #category : #'as yet unclassified' }
-PNGPureDecoder class >> forArray: anArray [
-	^ self new stream: (ReadStream on: anArray) ; yourself .
-]
-
-{ #category : #'as yet unclassified' }
 PNGPureDecoder >> hasData [
 	^ stream atEnd not.
 ]

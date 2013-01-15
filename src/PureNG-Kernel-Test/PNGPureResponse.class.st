@@ -43,7 +43,7 @@ PNGPureResponse >> correctResponse: tableau [
 
 { #category : #accessing }
 PNGPureResponse >> decoder [
-	^ PureDecoder for: (ReadStream on: self data).
+	^ PNGPureDecoder for: (ReadStream on: self data).
 	
 ]
 
@@ -59,7 +59,7 @@ PNGPureResponse >> errorCode: aNumber [
 
 { #category : #'as yet unclassified' }
 PNGPureResponse >> errorMessage [
-	^ PureConstants errorMessages at: self errorCode.
+	^ self responseLabelFromCode: self errorCode.
 ]
 
 { #category : #accessing }
@@ -68,6 +68,20 @@ PNGPureResponse >> received [
 	self success ifFalse: [
 		Error signal: self errorMessage.
 	].
+]
+
+{ #category : #accessing }
+PNGPureResponse >> responseLabelFromCode: responseCode [
+	
+	^ {   16r0 -> 'Success'.
+		  16r1->'Target does not exist'.
+		  16r2 ->'Action is not supported'.
+		  16r3 ->'Unknown action'.
+		  16r4 ->'Invalid length'.
+		  16r5 ->'Invalid data' .
+		16r10 -> 'Notification limit reached'.  
+		16r11 -> 'Already bound to this notification'
+		} at: responseCode
 ]
 
 { #category : #accessing }
