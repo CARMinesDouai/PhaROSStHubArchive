@@ -51,11 +51,6 @@ PNGDirectoryService >> initialize [
 ]
 
 { #category : #accessing }
-PNGDirectoryService >> instanceRelatedTo: anInstanceID [
-	^services detect: [:service | service id = anInstanceID].
-]
-
-{ #category : #accessing }
 PNGDirectoryService >> robot [
 	^ robot
 ]
@@ -65,6 +60,11 @@ PNGDirectoryService >> robot: aRobulab [
 	robot := aRobulab.
 	aRobulab directoryService: self.
 	self initServices
+]
+
+{ #category : #accessing }
+PNGDirectoryService >> serviceWithId: anInstanceID [
+	^services detect: [:service | service id = anInstanceID].
 ]
 
 { #category : #accessing }

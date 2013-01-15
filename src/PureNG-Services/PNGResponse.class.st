@@ -8,17 +8,21 @@ Class {
 }
 
 { #category : #'instance creation' }
-PNGResponse class >> newWithDecoder: aDecoder forRobot: aRobulab [
+PNGResponse class >> newWithDecoder: aDecoder [
 	
-	| response |
-	response := self new.
-	response 
-		decoder: aDecoder; 
+	^ self new 
+		initializeWithDecoder: aDecoder;
+		yourself
+
+]
+
+{ #category : #'initialize-release' }
+PNGResponse >> initializeWithDecoder: aDecoder [
+	
+	self decoder: aDecoder; 
 		action: aDecoder nextEncodedByte ;
 		target: aDecoder nextEncodedUInt16 ;
-		responseCode: aDecoder nextEncodedByte;
-		robot: aRobulab.
-	^response
+		responseCode: aDecoder nextEncodedByte.
 ]
 
 { #category : #accessing }

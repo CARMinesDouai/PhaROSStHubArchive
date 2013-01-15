@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-PNGEncodedMessage class >> createResponseOrNotificationForData: rawDataStream andRobot: aRobulab [
+PNGEncodedMessage class >> createResponseOrNotificationForData: rawDataStream [
 
 	| dataDecoder responseType responseClass |
 	
@@ -21,12 +21,12 @@ PNGEncodedMessage class >> createResponseOrNotificationForData: rawDataStream an
 	responseClass := PNGResponse.
 	((responseType = 0) or: [ responseType = 16rFF]) ifTrue: [ responseClass := PNGNotification ].
 	
-	^responseClass newWithDecoder: dataDecoder forRobot: aRobulab
+	^responseClass newWithDecoder: dataDecoder
 
 ]
 
 { #category : #'instance creation' }
-PNGEncodedMessage class >> newWithDecoder: rawData forRobot: aRobulab [
+PNGEncodedMessage class >> newWithDecoder: rawData [ 
 
 	
 	^self subclassResponsibility 

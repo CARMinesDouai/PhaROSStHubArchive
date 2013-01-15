@@ -1,17 +1,8 @@
 Class {
 	#name : #PNGServiceDiscoveryTest,
-	#superclass : #TestCase,
-	#instVars : [
-		'robulab'
-	],
+	#superclass : #PNGServiceTest,
 	#category : #'PureNG-Kernel-Test'
 }
-
-{ #category : #testing }
-PNGServiceDiscoveryTest >> setUp [
-	super setUp.
-	robulab := PNGRobulab ip: #[192 168 1 2] port: 60000.
-]
 
 { #category : #testing }
 PNGServiceDiscoveryTest >> testServicesCount [

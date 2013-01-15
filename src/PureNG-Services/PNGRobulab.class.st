@@ -28,11 +28,6 @@ PNGRobulab >> directoryService: aDirectoryService [
 ]
 
 { #category : #accessing }
-PNGRobulab >> instanceRelatedTo: anInstanceID [
-	^ self directoryService instanceRelatedTo: anInstanceID.
-]
-
-{ #category : #accessing }
 PNGRobulab >> ip [
 	^ip
 ]
@@ -58,7 +53,7 @@ PNGRobulab >> sendAndWaitForResult: commandString [
 	rawSize := receptionInformation at: 1.
 	responseStream := (ReadStream on: responseBuffer from: 1 to: rawSize).
 	
-	^ PNGEncodedMessage createResponseOrNotificationForData: responseStream andRobot: self 
+	^ PNGEncodedMessage createResponseOrNotificationForData: responseStream
 	
 
 ]
@@ -72,6 +67,11 @@ PNGRobulab >> sendAndWaitForResult: commandString withAnswer:  resultBuffer [
 		port: self port.
 	^ socket receiveWithTimeOutUDPDataInto: resultBuffer.
 	 
+]
+
+{ #category : #accessing }
+PNGRobulab >> serviceWithId: anInstanceID [
+	^ self directoryService serviceWithId: anInstanceID.
 ]
 
 { #category : #accessing }
