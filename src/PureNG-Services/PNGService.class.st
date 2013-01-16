@@ -8,7 +8,8 @@ Class {
 	#name : #PNGService,
 	#superclass : #Object,
 	#instVars : [
-		'id'
+		'id',
+		'robot'
 	],
 	#category : #'PureNG-Kernel'
 }
@@ -39,4 +40,14 @@ PNGService >> id [
 { #category : #accessing }
 PNGService >> id:  serviceId [
 	id:= serviceId
+]
+
+{ #category : #accessing }
+PNGService >> robot [
+	^ robot
+]
+
+{ #category : #accessing }
+PNGService >> robot: aRobulab [
+	robot := aRobulab
 ]

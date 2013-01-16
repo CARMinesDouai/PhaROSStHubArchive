@@ -9,10 +9,6 @@ Instance Variables:
 Class {
 	#name : #PNGDirectoryService,
 	#superclass : #PNGService,
-	#instVars : [
-		'robot',
-		'services'
-	],
 	#category : #'PureNG-Services'
 }
 
@@ -28,9 +24,10 @@ PNGDirectoryService class >> serviceType [
 	^16r0000
 ]
 
-{ #category : #'initialize-release' }
-PNGDirectoryService >> initServices [ 
-	|  encodedResponse serviceType instanceCode serviceClass  |
+{ #category : #actions }
+PNGDirectoryService >> get [ 
+	"Answers a collection of services available on the robot"
+	| services encodedResponse serviceType instanceCode serviceClass  |
 	services := Set with: self.		
 	encodedResponse := self robot sendAndWaitForResult: PNGCommandStrings directoryServiceGetEntries.
 	[encodedResponse hasData ] whileTrue: [
@@ -41,33 +38,5 @@ PNGDirectoryService >> initServices [
 			services add: (serviceClass newWithId: instanceCode).
 		]
 	].
-]
-
-{ #category : #'initialize-release' }
-PNGDirectoryService >> initialize [ 
-	super initialize.
-	id := self class serviceType
-
-]
-
-{ #category : #accessing }
-PNGDirectoryService >> robot [
-	^ robot
-]
-
-{ #category : #accessing }
-PNGDirectoryService >> robot: aRobulab [
-	robot := aRobulab.
-	aRobulab directoryService: self.
-	self initServices
-]
-
-{ #category : #accessing }
-PNGDirectoryService >> serviceWithId: anInstanceID [
-	^services detect: [:service | service id = anInstanceID].
-]
-
-{ #category : #accessing }
-PNGDirectoryService >> services [
 	^services
 ]

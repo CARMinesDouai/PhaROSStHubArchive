@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'ip',
 		'port',
-		'directoryService'
+		'serial',
+		'services'
 	],
 	#category : #'PureNG-Kernel'
 }
@@ -17,14 +18,9 @@ PNGRobulab class >> ip: aByteArray port: portNumber [
 
 ]
 
-{ #category : #accessing }
+{ #category : #services }
 PNGRobulab >> directoryService [
-	^directoryService
-]
-
-{ #category : #accessing }
-PNGRobulab >> directoryService: aDirectoryService [
-	directoryService := aDirectoryService
+	^self services detect: [:each| each isKindOf: PNGDirectoryService]
 ]
 
 { #category : #accessing }
@@ -36,7 +32,7 @@ PNGRobulab >> ip [
 PNGRobulab >> ip: aByteArray port: portNumber [ 
 	ip := aByteArray.
 	port := portNumber.
-	directoryService := PNGDirectoryService for: self
+
 ]
 
 { #category : #accessing }
@@ -70,11 +66,22 @@ PNGRobulab >> sendAndWaitForResult: commandString withAnswer:  resultBuffer [
 ]
 
 { #category : #accessing }
-PNGRobulab >> serviceWithId: anInstanceID [
-	^ self directoryService serviceWithId: anInstanceID.
+PNGRobulab >> serial [
+	^ serial
+]
+
+{ #category : #accessing }
+PNGRobulab >> serial: anObject [
+	serial := anObject
 ]
 
 { #category : #accessing }
 PNGRobulab >> services [
-	^directoryService services
+	^services
+]
+
+{ #category : #accessing }
+PNGRobulab >> services: collectionOfServices [
+	services := collectionOfServices.
+	services do: [:each| each robot: self]
 ]
