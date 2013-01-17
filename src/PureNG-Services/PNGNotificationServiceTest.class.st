@@ -7,6 +7,8 @@ Class {
 { #category : #testing }
 PNGNotificationServiceTest >> testGetEmptyNotificationEntries [
 	| notificationEntries |
+	
+	self requestAction: 'Please, reboot the robot'.
 	notificationEntries := robot notificationService get.
 	self assert: notificationEntries isEmpty
 ]

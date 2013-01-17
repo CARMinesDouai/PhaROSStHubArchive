@@ -5,6 +5,12 @@ Class {
 }
 
 { #category : #factory }
+PNGRobulabDiscoveryFactory class >> kompai2 [
+	"self kompai2"
+	^ self robulabFromIp: #[192 168 1 2] port: 60000 
+]
+
+{ #category : #factory }
 PNGRobulabDiscoveryFactory class >> robulabFromIp: ip port: port [
 	|robulab directoryService |
 	robulab := PNGRobulab ip: ip port: port.

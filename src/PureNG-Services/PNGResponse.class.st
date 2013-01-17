@@ -26,11 +26,8 @@ PNGResponse >> initializeWithDecoder: aDecoder [
 ]
 
 { #category : #accessing }
-PNGResponse >> received [
-
-	self success ifFalse: [
-		Error signal: self responseMessage 
-	].
+PNGResponse >> isSuccess [
+	^(self responseCode = 0).
 ]
 
 { #category : #accessing }
@@ -44,8 +41,8 @@ PNGResponse >> responseCode: aNumber [
 ]
 
 { #category : #accessing }
-PNGResponse >> responseLabelFromCode: responseCode [
-	
+PNGResponse >> responseMessage [
+
 	^ {   16r0 -> 'Success'.
 		  16r1->'Target does not exist'.
 		  16r2 ->'Action is not supported'.
@@ -54,15 +51,5 @@ PNGResponse >> responseLabelFromCode: responseCode [
 		  16r5 ->'Invalid data' .
 		16r10 -> 'Notification limit reached'.  
 		16r11 -> 'Already bound to this notification'
-		} at: responseCode
-]
-
-{ #category : #accessing }
-PNGResponse >> responseMessage [
-	^ self responseLabelFromCode: self responseCode 
-]
-
-{ #category : #accessing }
-PNGResponse >> success [
-	^(self responseCode = 0).
+		} asDictionary at: self responseCode 
 ]

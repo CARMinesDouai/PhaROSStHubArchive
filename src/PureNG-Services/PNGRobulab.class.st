@@ -35,6 +35,11 @@ PNGRobulab >> ip: aByteArray port: portNumber [
 
 ]
 
+{ #category : #services }
+PNGRobulab >> notificationService [
+	^self services detect: [:each| each isKindOf: PNGNotificationService]
+]
+
 { #category : #accessing }
 PNGRobulab >> port [
 	^port
@@ -42,16 +47,17 @@ PNGRobulab >> port [
 
 { #category : #communication }
 PNGRobulab >> sendAndWaitForResult: commandString [
-	| responseBuffer receptionInformation rawSize responseStream |
+	| responseBuffer receptionInformation rawSize responseStream encodedResponse |
 	
 	responseBuffer := ByteArray new: 1024.
-	receptionInformation := self sendAndWaitForResult: PNGCommandStrings directoryServiceGetEntries withAnswer:  responseBuffer.
+	receptionInformation := self sendAndWaitForResult: commandString withAnswer:  responseBuffer.
 	rawSize := receptionInformation at: 1.
 	responseStream := (ReadStream on: responseBuffer from: 1 to: rawSize).
 	
-	^ PNGEncodedMessage createResponseOrNotificationForData: responseStream
+	encodedResponse := PNGEncodedMessage createResponseOrNotificationForData: responseStream.
 	
-
+	encodedResponse isSuccess ifFalse:[PNGMessageError signal: encodedResponse responseMessage].
+	^encodedResponse
 ]
 
 { #category : #communication }
@@ -73,6 +79,12 @@ PNGRobulab >> serial [
 { #category : #accessing }
 PNGRobulab >> serial: anObject [
 	serial := anObject
+]
+
+{ #category : #services }
+PNGRobulab >> serviceWithId: id [
+
+	^self services detect:[:aService | aService id = id]
 ]
 
 { #category : #accessing }

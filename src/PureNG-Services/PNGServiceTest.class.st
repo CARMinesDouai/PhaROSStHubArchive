@@ -1,6 +1,6 @@
 Class {
 	#name : #PNGServiceTest,
-	#superclass : #TestCase,
+	#superclass : #PNGTestCase,
 	#instVars : [
 		'robot'
 	],

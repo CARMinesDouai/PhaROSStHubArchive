@@ -12,13 +12,6 @@ Class {
 	#category : #'PureNG-Services'
 }
 
-{ #category : #'instance creation' }
-PNGDirectoryService class >> for: robulab [
-	^self new
-		robot: robulab;
-		yourself
-]
-
 { #category : #constants }
 PNGDirectoryService class >> serviceType [ 
 	^16r0000
@@ -29,7 +22,7 @@ PNGDirectoryService >> get [
 	"Answers a collection of services available on the robot"
 	| services encodedResponse serviceType instanceCode serviceClass  |
 	services := Set with: self.		
-	encodedResponse := self robot sendAndWaitForResult: PNGCommandStrings directoryServiceGetEntries.
+	encodedResponse := self primitiveGet.
 	[encodedResponse hasData ] whileTrue: [
 		serviceType :=  encodedResponse decoder nextEncodedUInt16.
 		instanceCode := encodedResponse decoder nextEncodedUInt16.
@@ -39,4 +32,10 @@ PNGDirectoryService >> get [
 		]
 	].
 	^services
+]
+
+{ #category : #actions }
+PNGDirectoryService >> getCommandString [ 
+
+	^ '01000000'
 ]

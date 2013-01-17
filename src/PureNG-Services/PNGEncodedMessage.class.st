@@ -3,7 +3,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'target',
-		'robot',
 		'decoder'
 	],
 	#category : #'PureNG-Kernel'
@@ -51,18 +50,6 @@ PNGEncodedMessage >> hasData [
 { #category : #testing }
 PNGEncodedMessage >> isNotification [
 	^false
-]
-
-{ #category : #accessing }
-PNGEncodedMessage >> robot [
-	^robot
-	
-]
-
-{ #category : #accessing }
-PNGEncodedMessage >> robot: aRobulab [
-	robot := aRobulab 
-	
 ]
 
 { #category : #accessing }
