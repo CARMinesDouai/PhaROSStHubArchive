@@ -16,6 +16,21 @@ PNGNotificationService class >> serviceType [
 ]
 
 { #category : #actions }
+PNGNotificationService >> delete: aNotifyingService [
+	"This request removes an active notification from the list, and deactivates it."
+	
+	| requestEncoder |
+	requestEncoder := PNGEncoder new.
+	requestEncoder  
+		nextPutRequestId ;
+		nextPutDeleteActionCode;
+		encodeInt16: self id ;
+		encodeInt16: aNotifyingService id.
+	self robot sendAndWaitForResult: requestEncoder contents.
+	
+]
+
+{ #category : #actions }
 PNGNotificationService >> get [
 	"Answers a collection of services that send notifications"
 	| notificatifyingServicesDict encodedResponse  |
@@ -42,8 +57,8 @@ PNGNotificationService >> insert: aNotifyingService [
 	| requestEncoder |
 	requestEncoder := PNGEncoder new.
 	requestEncoder  
-		nextPutString: '01'; "request identifier (not 0x00 or 0xFF)" 
-		nextPutString: '04'; "insert code = 0x04"
+		nextPutRequestId ;
+		nextPutInsertActionCode;
 		encodeInt16: self id ;
 		encodeInt16: aNotifyingService id;
 		encodeInt8: aNotifyingService notificationPeriod.

@@ -112,6 +112,21 @@ PNGEncoder >> initialize [
 	stream := String new writeStream.
 ]
 
+{ #category : #'pure codes' }
+PNGEncoder >> nextPutDeleteActionCode [
+	self nextPutString: '05' "delete code = 0x05"
+]
+
+{ #category : #'pure codes' }
+PNGEncoder >> nextPutInsertActionCode [
+	self nextPutString: '04' "insert code = 0x04"
+]
+
+{ #category : #'pure codes' }
+PNGEncoder >> nextPutRequestId [
+	self nextPutString: '01' "request identifier (not 0x00 or 0xFF)" 
+]
+
 { #category : #encoding }
 PNGEncoder >> nextPutString: aString [
 
