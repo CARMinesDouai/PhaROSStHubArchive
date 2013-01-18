@@ -3,7 +3,7 @@ This service provides measurements from a laser range finder. A laser range find
 "
 Class {
 	#name : #PNGLaserService,
-	#superclass : #PNGService,
+	#superclass : #PNGNotifyingService,
 	#category : #'PureNG-Services'
 }
 

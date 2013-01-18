@@ -11,3 +11,25 @@ Class {
 PNGLocalizationService class >> serviceType [ 
 	^ 16r8002
 ]
+
+{ #category : #'as yet unclassified' }
+PNGLocalizationService >> get [ 
+	"Answers a PNGRobotPosition"
+	| position encodedResponse |
+	position := PNGRobotPosition new.
+	
+	encodedResponse := self primitiveGet.
+	[encodedResponse hasData ] whileTrue: [
+		position x:  encodedResponse decoder nextEncodedFloat64.
+		position y:  encodedResponse decoder nextEncodedFloat64.
+		position orientation:  encodedResponse decoder nextEncodedFloat64.
+		position status: encodedResponse decoder nextEncodedUint32.
+	].
+	^position
+]
+
+{ #category : #'as yet unclassified' }
+PNGLocalizationService >> getCommandString [ 
+
+	^ '01000500'
+]

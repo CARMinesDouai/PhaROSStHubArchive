@@ -21,6 +21,12 @@ PNGService class >> for: robulab [
 		yourself
 ]
 
+{ #category : #factory }
+PNGService class >> isClass: each forServiceType: serviceType [
+	^ (each class includesSelector: #serviceType) 
+		and: [ each serviceType = serviceType ]
+]
+
 { #category : #'instance creation' }
 PNGService class >> newWithId: serviceId [
 
@@ -29,9 +35,7 @@ PNGService class >> newWithId: serviceId [
 
 { #category : #factory }
 PNGService class >> serviceClassForType: serviceType [
-
-	^ self allSubclasses detect: [:each | each serviceType  = serviceType]
-			ifNone:[PNGUnknownService].
+	^ self allSubclasses detect: [ :each | self isClass: each forServiceType: serviceType ] ifNone: [ PNGUnknownService ]
 ]
 
 { #category : #constants }

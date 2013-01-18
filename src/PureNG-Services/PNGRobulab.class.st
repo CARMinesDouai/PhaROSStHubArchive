@@ -36,6 +36,11 @@ PNGRobulab >> ip: aByteArray port: portNumber [
 ]
 
 { #category : #services }
+PNGRobulab >> laserService [
+	^self services detect: [:each| each isKindOf: PNGLaserService]
+]
+
+{ #category : #services }
 PNGRobulab >> notificationService [
 	^self services detect: [:each| each isKindOf: PNGNotificationService]
 ]

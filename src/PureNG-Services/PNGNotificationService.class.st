@@ -34,3 +34,19 @@ PNGNotificationService >> getCommandString [
 
 	^ '01000100'
 ]
+
+{ #category : #actions }
+PNGNotificationService >> insert: aNotifyingService [
+	"This request is used to activate a notification and configure its mode."
+	
+	| requestEncoder |
+	requestEncoder := PNGEncoder new.
+	requestEncoder  
+		nextPutString: '01'; "request identifier (not 0x00 or 0xFF)" 
+		nextPutString: '04'; "insert code = 0x04"
+		encodeInt16: self id ;
+		encodeInt16: aNotifyingService id;
+		encodeInt8: aNotifyingService notificationPeriod.
+	self robot sendAndWaitForResult: requestEncoder contents.
+	
+]

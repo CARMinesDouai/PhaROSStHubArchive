@@ -9,7 +9,7 @@ Class {
 
 { #category : #accessing }
 PNGNotifyingService >> notificationPeriod [
-	^ notificationPeriod
+	^ notificationPeriod ifNil: [ notificationPeriod := 0 ]
 ]
 
 { #category : #accessing }
