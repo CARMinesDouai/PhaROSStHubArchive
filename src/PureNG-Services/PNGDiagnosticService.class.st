@@ -1,6 +1,6 @@
 Class {
 	#name : #PNGDiagnosticService,
-	#superclass : #PNGService,
+	#superclass : #PNGNotifyingService,
 	#category : #'PureNG-Services'
 }
 

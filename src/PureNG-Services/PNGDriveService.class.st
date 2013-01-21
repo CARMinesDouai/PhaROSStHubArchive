@@ -3,7 +3,7 @@ This service exposes an array of drives. It allows to get their states (status, 
 "
 Class {
 	#name : #PNGDriveService,
-	#superclass : #PNGService,
+	#superclass : #PNGNotifyingService,
 	#category : #'PureNG-Services'
 }
 

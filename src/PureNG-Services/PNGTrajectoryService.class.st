@@ -3,7 +3,7 @@ This service provides an access to the input of a trajectory following algorithm
 "
 Class {
 	#name : #PNGTrajectoryService,
-	#superclass : #PNGService,
+	#superclass : #PNGNotifyingService,
 	#category : #'PureNG-Services'
 }
 

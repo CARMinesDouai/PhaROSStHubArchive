@@ -3,7 +3,7 @@ This service provides 2D localization data. The localization provided usually re
 "
 Class {
 	#name : #PNGLocalizationService,
-	#superclass : #PNGService,
+	#superclass : #PNGNotifyingService,
 	#category : #'PureNG-Services'
 }
 

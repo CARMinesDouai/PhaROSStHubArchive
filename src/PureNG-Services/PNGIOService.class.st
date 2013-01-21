@@ -3,7 +3,7 @@ This service gives access to digital and analog inputs and outputs. The values e
 "
 Class {
 	#name : #PNGIOService,
-	#superclass : #PNGService,
+	#superclass : #PNGNotifyingService,
 	#category : #'PureNG-Services'
 }
 

@@ -31,6 +31,14 @@ PNGNotificationService >> delete: aNotifyingService [
 ]
 
 { #category : #actions }
+PNGNotificationService >> deleteAllNotifyingServices [
+
+	self get keysDo: [:aService |
+		self delete: aService.
+	].
+]
+
+{ #category : #actions }
 PNGNotificationService >> get [
 	"Answers a collection of services that send notifications"
 	| notificatifyingServicesDict encodedResponse  |

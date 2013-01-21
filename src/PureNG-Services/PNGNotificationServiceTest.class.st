@@ -5,29 +5,31 @@ Class {
 }
 
 { #category : #testing }
-PNGNotificationServiceTest >> testDeleteExistingNotifyingService [
-	
-	| notifyingServiceDict service |
-	
+PNGNotificationServiceTest >> testDeleteAllInsertedNotifyingServices [
+	| notifyingServiceDict |
+	[robot notificationService insert: robot laserService] on: PNGMessageError do:[].
+	[robot notificationService insert: robot trajectoryService ] on: PNGMessageError do:[].
+	self deny: robot notificationService get isEmpty.
+	robot notificationService deleteAllNotifyingServices.		
 	notifyingServiceDict := robot notificationService get.
-	
-	notifyingServiceDict isEmpty ifTrue: [
-		self testInsertionOfNewService.
-		notifyingServiceDict := robot notificationService get ].
-	
-	self deny: notifyingServiceDict isEmpty.
-	
-	service := notifyingServiceDict keys anyOne.
-	
-	robot notificationService delete: service.
+	self assert: notifyingServiceDict isEmpty.
 
-	notifyingServiceDict := robot notificationService get.
-	
-	self deny: (notifyingServiceDict keys includes: service)
 ]
 
 { #category : #testing }
-PNGNotificationServiceTest >> testGetEmptyNotificationEntries [
+PNGNotificationServiceTest >> testDeleteInsertedNotifyingService [
+	| notifyingServiceDict service |
+	self testGetEmptyNotificationEntriesOnRobotStartUp.
+	service := robot laserService. 
+	robot notificationService insert: service .
+	robot notificationService delete: service.		
+	notifyingServiceDict := robot notificationService get.
+	self assert: notifyingServiceDict isEmpty.
+
+]
+
+{ #category : #testing }
+PNGNotificationServiceTest >> testGetEmptyNotificationEntriesOnRobotStartUp [
 	| notificationEntries |
 	
 	self requestAction: 'Please, reboot the robot'.
@@ -36,36 +38,31 @@ PNGNotificationServiceTest >> testGetEmptyNotificationEntries [
 ]
 
 { #category : #testing }
-PNGNotificationServiceTest >> testInsertionOfAnAlreadyInsertedService [
-	
+PNGNotificationServiceTest >> testGetReturnsAnInsertedService [
 	| notifyingServiceDict |
-	self testInsertionOfNewService.
-	
-	self should: [robot notificationService insert:  robot laserService] raise: PNGMessageError.
-	
+	self testGetEmptyNotificationEntriesOnRobotStartUp.
+	robot notificationService insert:  robot laserService.	
+	notifyingServiceDict := robot notificationService get.
+	self assert: notifyingServiceDict size = 1.
+	self assert: (notifyingServiceDict keys includes: robot laserService).
+	self assert: (notifyingServiceDict at: robot laserService) = robot laserService notificationPeriod.
 	
 ]
 
 { #category : #testing }
-PNGNotificationServiceTest >> testInsertionOfNewService [
-	
-	| notifyingServiceDict numberOfNotifyingServices |
-	
-	notifyingServiceDict := robot notificationService get.
-	
-	(notifyingServiceDict keys includes: robot laserService) ifTrue: [
-		self testDeleteExistingNotifyingService.
-		notifyingServiceDict := robot notificationService get ].
-	
-	self deny: (notifyingServiceDict keys includes: robot laserService).
-	
-	numberOfNotifyingServices := notifyingServiceDict size.
-	
+PNGNotificationServiceTest >> testInsertionOfAnAlreadyInsertedService [
+	| notifyingServiceDict |
+	robot notificationService deleteAllNotifyingServices.
 	robot notificationService insert:  robot laserService.
-	
+	3 timesRepeat: [
+		self should: [robot notificationService insert:  robot laserService] 
+			raise: PNGMessageError].	
 	notifyingServiceDict := robot notificationService get.
-	self assert: notifyingServiceDict size = (numberOfNotifyingServices + 1).
+	self assert: notifyingServiceDict size = 1.
 	self assert: (notifyingServiceDict keys includes: robot laserService).
 	self assert: (notifyingServiceDict at: robot laserService) = robot laserService notificationPeriod.
+		
+	
+	
 	
 ]

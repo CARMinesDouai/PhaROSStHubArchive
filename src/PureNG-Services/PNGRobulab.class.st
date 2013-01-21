@@ -102,3 +102,8 @@ PNGRobulab >> services: collectionOfServices [
 	services := collectionOfServices.
 	services do: [:each| each robot: self]
 ]
+
+{ #category : #services }
+PNGRobulab >> trajectoryService [
+	^self services detect: [:each| each isKindOf: PNGTrajectoryService]
+]

@@ -3,7 +3,7 @@ This service exposes an array of telemeters. A telemeter is a sensor that measur
 "
 Class {
 	#name : #PNGTelemeterService,
-	#superclass : #PNGService,
+	#superclass : #PNGNotifyingService,
 	#category : #'PureNG-Services'
 }
 

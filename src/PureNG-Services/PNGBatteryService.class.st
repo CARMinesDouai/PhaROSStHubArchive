@@ -3,7 +3,7 @@ This service exposes the robot battery state. It is useful for autonomous operat
 "
 Class {
 	#name : #PNGBatteryService,
-	#superclass : #PNGService,
+	#superclass : #PNGNotifyingService,
 	#category : #'PureNG-Services'
 }
 

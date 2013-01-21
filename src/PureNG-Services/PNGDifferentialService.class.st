@@ -3,7 +3,7 @@ This service exposes a differential robot. A differential robot is controlled th
 "
 Class {
 	#name : #PNGDifferentialService,
-	#superclass : #PNGService,
+	#superclass : #PNGNotifyingService,
 	#category : #'PureNG-Services'
 }
 

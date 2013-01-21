@@ -3,7 +3,7 @@ This service executes step motion commands. A step motion is either a rotation o
 "
 Class {
 	#name : #PNGStepService,
-	#superclass : #PNGService,
+	#superclass : #PNGNotifyingService,
 	#category : #'PureNG-Services'
 }
 
