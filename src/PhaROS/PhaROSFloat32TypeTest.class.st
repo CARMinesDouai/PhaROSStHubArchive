@@ -15,7 +15,7 @@ PhaROSFloat32TypeTest >> invalidByteArrays [
 { #category : #'as yet unclassified' }
 PhaROSFloat32TypeTest >> invalidValues [ 
 	^ {
-		 'a string' . 4294967295654.232654 . 429497.32 
+		 'a string' . 4294967295654.232654 . 4299497.32 
 	}.
 
 ]

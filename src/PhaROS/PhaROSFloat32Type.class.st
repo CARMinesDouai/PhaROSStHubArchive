@@ -23,8 +23,9 @@ PhaROSFloat32Type >> decode: aFLDecoder [
 PhaROSFloat32Type >> isAPossibleValue: aFloat [ 
 	| float32 |
 	
+	(aFloat isKindOf: Number) ifFalse: [ ^ false. ] .
 
-	float32 := (aFloat roundUpTo: 0.0001) truncateTo: 0.01.
+	float32 := (aFloat asFloat roundUpTo: 0.0001) truncateTo: 0.01.
 	
 	^(float32  isKindOf: Float) and: [
 		float32  = 0 or: [
