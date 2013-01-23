@@ -7,6 +7,10 @@ An outbound notification configuration consists of two elements:
 Class {
 	#name : #PNGNotificationService,
 	#superclass : #PNGService,
+	#instVars : [
+		'socket',
+		'responseBuffer'
+	],
 	#category : #'PureNG-Services'
 }
 
@@ -58,6 +62,14 @@ PNGNotificationService >> getCommandString [
 	^ '01000100'
 ]
 
+{ #category : #'initialize-release' }
+PNGNotificationService >> initialize [
+	super initialize.
+	socket := Socket newUDP.
+	responseBuffer := ByteArray new: 1024.
+
+]
+
 { #category : #actions }
 PNGNotificationService >> insert: aNotifyingService [
 	"This request is used to activate a notification and configure its mode."
@@ -72,4 +84,16 @@ PNGNotificationService >> insert: aNotifyingService [
 		encodeInt8: aNotifyingService notificationPeriod.
 	self robot sendAndWaitForResult: requestEncoder contents.
 	
+]
+
+{ #category : #notifications }
+PNGNotificationService >> receiveNotifications [
+	| receptionInformation rawSize responseStream encodedResponse |
+	receptionInformation := socket receiveWithTimeOutUDPDataInto: responseBuffer.
+	rawSize := receptionInformation at: 1.
+	responseStream := (ReadStream on: responseBuffer from: 1 to: rawSize).
+	encodedResponse := PNGEncodedMessage createResponseOrNotificationForData: responseStream.
+	
+	encodedResponse isSuccess ifFalse:[PNGMessageError signal: encodedResponse responseMessage].
+	^encodedResponse
 ]

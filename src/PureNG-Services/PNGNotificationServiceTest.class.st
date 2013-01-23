@@ -29,6 +29,32 @@ PNGNotificationServiceTest >> testDeleteInsertedNotifyingService [
 ]
 
 { #category : #testing }
+PNGNotificationServiceTest >> testDisableNotificationForSomeService [
+	| notifyingServiceDict notificationPeriod |
+	robot notificationService deleteAllNotifyingServices.
+	robot laserService enableNotificationsEvery: 100.
+	robot laserService disableNotifications.
+	notifyingServiceDict := robot notificationService get.
+	self assert: notifyingServiceDict isEmpty
+]
+
+{ #category : #testing }
+PNGNotificationServiceTest >> testEnableNotificationForSomeService [
+	| notifyingServiceDict notificationPeriod |
+	robot notificationService deleteAllNotifyingServices.
+	notificationPeriod := 100.
+	robot laserService enableNotificationsEvery: notificationPeriod.
+	notifyingServiceDict := robot notificationService get.
+	self assert: notifyingServiceDict size = 1.
+	self assert: (notifyingServiceDict keys includes: robot laserService).
+	self assert: (notifyingServiceDict at: robot laserService) = robot laserService notificationPeriod.
+		
+	
+	
+	
+]
+
+{ #category : #testing }
 PNGNotificationServiceTest >> testGetEmptyNotificationEntriesOnRobotStartUp [
 	| notificationEntries |
 	
