@@ -41,7 +41,7 @@ Std_msgsHeader >> frame_id: aValue [
 Std_msgsHeader >> initialize [
 	super initialize.
 	 self seq: Std_msgsHeader consumeHeaderId. 
-	 self stamp:  DateAndTime now. 
+	 self stamp:  PhaROSTimestamp now. 
 	 self frame_id: ''. 
 
 ]

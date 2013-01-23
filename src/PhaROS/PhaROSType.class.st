@@ -25,6 +25,7 @@ PhaROSType >> asArrayType [
 
 { #category : #accessing }
 PhaROSType >> check: aValue [
+
 	(self isAPossibleValue: aValue ) ifFalse:[ PhaROSUnexpextedValue signal: 'Unexpected value'].
 ]
 

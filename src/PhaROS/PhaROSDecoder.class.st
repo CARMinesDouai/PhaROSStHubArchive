@@ -129,10 +129,9 @@ PhaROSDecoder >> nextEncodedString [
 
 { #category : #'as yet unclassified' }
 PhaROSDecoder >> nextEncodedTime [
-	| time |
-	time := Time new.
-	time seconds: self nextEncodedUint32 nanoSeconds: self nextEncodedUint32.
-	^ time.
+	
+ ^ PhaROSTimestamp fromUnixTime: self nextEncodedUint32  nanoSeconds: self nextEncodedUint32.
+	
 ]
 
 { #category : #'as yet unclassified' }

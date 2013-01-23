@@ -37,13 +37,13 @@ PhaROSTimeTypeTest >> testFailSerialize [
 
 { #category : #'as yet unclassified' }
 PhaROSTimeTypeTest >> testSerialize [
-				^ super baseSerialize.
+		^ super baseSerialize.
 		
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSTimeTypeTest >> testUnserialize [
-				^ super baseUnserialize.
+	^ super baseUnserialize.
 		
 ]
 
@@ -56,9 +56,11 @@ PhaROSTimeTypeTest >> testUnserializeFail [
 { #category : #'as yet unclassified' }
 PhaROSTimeTypeTest >> validValues [ 
 	^ {
-		(Time new seconds: 1 nanoSeconds: 0; yourself)  -> #[ 8 0 0 0 1 0 0 0 0 0 0 0 ] .
-		(Time new seconds: 4294967295 nanoSeconds: 4294967295; yourself)  -> #[ 8 0 0 0 255 255 255 255 255 255 255 255] .
-		(Time new seconds: 4294967295 nanoSeconds: 0; yourself)  -> #[ 8 0 0 0 255 255 255 255 0 0 0 0] .
-		(Time new seconds: 0 nanoSeconds: 4294967295; yourself)  -> #[ 8 0 0 0  0 0 0 0 255 255 255 255] .
-	}.
+		(PhaROSTimestamp new)  -> #[8 0 0 0 0 0 0 0 0 0 0 0] .
+"		(PhaROSTimestamp new seconds: 4294967295 nanoSeconds: 4294967295; yourself)  -> #[8 0 0 0 252 17 164 24 255 255 255 255].
+		(PhaROSTimestamp new seconds: 4294967295 nanoSeconds: 0; yourself)  -> #[8 0 0 0 1 18 164 24 0 0 0 0].
+		(PhaROSTimestamp new seconds: 0 nanoSeconds: 4294967295; yourself)  -> #[8 0 0 0 251 17 164 24 255 255 255 255].
+"	}.
+	
+
 ]

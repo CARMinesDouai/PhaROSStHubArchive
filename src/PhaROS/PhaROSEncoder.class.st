@@ -110,9 +110,8 @@ PhaROSEncoder >> encodeString: aString [
 
 { #category : #'as yet unclassified' }
 PhaROSEncoder >> encodeTime: aTime [
-	self flag:#FixThisUglyThing.
-	self encodeUint32: DateAndTime now asUnixTime - 3600.
-	self encodeUint32: DateAndTime now nanoSecond.
+	self encodeUint32: aTime seconds.
+	self encodeUint32: aTime nanoSeconds.
 	
 
 ]
