@@ -41,7 +41,10 @@ PhaROSEncoder >> encodeBytes: aCollection [
 
 { #category : #'as yet unclassified' }
 PhaROSEncoder >> encodeDuration: aDuration [
-	self encodeTime: aDuration.
+	self encodeUint32: aDuration secondsField.
+	self encodeUint32: aDuration nanoSeconds.
+	
+
 ]
 
 { #category : #'as yet unclassified' }

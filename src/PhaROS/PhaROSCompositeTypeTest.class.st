@@ -70,7 +70,7 @@ PhaROSCompositeTypeTest >> tearDown [
 
 { #category : #'as yet unclassified' }
 PhaROSCompositeTypeTest >> testFailSerialize [
-				^ super baseFailSerialize.
+		^ super baseFailSerialize.
 		
 ]
 
@@ -82,13 +82,13 @@ PhaROSCompositeTypeTest >> testSerialize [
 
 { #category : #'as yet unclassified' }
 PhaROSCompositeTypeTest >> testUnserialize [
-				^ super baseUnserialize.
+		^ super baseUnserialize.
 		
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSCompositeTypeTest >> testUnserializeFail [
-				^ super baseUnserializeFail.
+		^ super baseUnserializeFail.
 		
 ]
 
