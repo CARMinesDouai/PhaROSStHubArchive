@@ -188,8 +188,13 @@ PhaROSCompositeType >> installMethodsIn: aClass [
 ]
 
 { #category : #serializing }
-PhaROSCompositeType >> isAPossibleValue: aTurtlesimVelocity [ 
-^ true.
+PhaROSCompositeType >> isAPossibleSize: aSize [
+	^ aSize > 3.
+]
+
+{ #category : #serializing }
+PhaROSCompositeType >> isAPossibleValue: aValue [
+	^ aValue isBasic not.
 ]
 
 { #category : #serializing }

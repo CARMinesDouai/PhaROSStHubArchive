@@ -67,7 +67,7 @@ PhaROSType >> initialize [
 
 { #category : #accessing }
 PhaROSType >> isAPossibleSize: aSize [
-	^ self dataTypeSize = aSize.
+	^ aSize = self dataTypeSize.
 ]
 
 { #category : #accessing }

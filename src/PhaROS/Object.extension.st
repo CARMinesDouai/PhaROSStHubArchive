@@ -4,3 +4,8 @@ Extension { #name : #Object }
 Object >> asRoStByteArray [ 
 	^self asByteArray 
 ]
+
+{ #category : #'*PhaROS' }
+Object >> isBasic [
+	^ true.
+]

@@ -31,14 +31,35 @@ PhaROSValue >> at:aName put: aValue [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSValue >> closeTo: anOtherROSValue [
+	| isCloseTo |
+	isCloseTo := true.
+	
+	values keysAndValuesDo: [ :key :val |
+		isCloseTo := isCloseTo and: [(anOtherROSValue hasAttribute: key) and: [(anOtherROSValue getAt: key) = val]].
+	].	
+	^ isCloseTo.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSValue >> getAt:aName [ 
 	^ values at: aName.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSValue >> hasAttribute: aName [ 
+	^ values includesKey: aName.
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSValue >> initialize [ 
 	values := Dictionary new.
 	
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSValue >> isBasic [
+	^ false. 
 ]
 
 { #category : #'as yet unclassified' }
