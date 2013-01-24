@@ -11,7 +11,7 @@ Class {
 { #category : #'as yet unclassified' }
 PhaROSTimestamp class >> defaultOffset [
 	^ 0
-	" -3600 "
+	"^ -3600 "
 ]
 
 { #category : #'as yet unclassified' }

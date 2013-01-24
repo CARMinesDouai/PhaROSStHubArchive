@@ -113,8 +113,8 @@ PhaROSEncoder >> encodeString: aString [
 
 { #category : #'as yet unclassified' }
 PhaROSEncoder >> encodeTime: aTime [
-	self encodeUint32: aTime seconds.
-	self encodeUint32: aTime nanoSeconds.
+	self encodeUint32: aTime  seconds.
+	self encodeUint32: aTime  nanoSeconds.
 	
 
 ]
