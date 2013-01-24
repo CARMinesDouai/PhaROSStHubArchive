@@ -8,7 +8,7 @@ Class {
 PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceInstance [ 
 
 [
-	self debug: [ 'broadcasting LASER information to ROS System'].
+
 	self sendTo: '/scan' a: [ :msg |
 		
 		
@@ -48,20 +48,20 @@ PurePhaROSLaserBroadcaster >> period [
 
 { #category : #'as yet unclassified' }
 PurePhaROSLaserBroadcaster >> setUp [
-	self info: [ 'Starting LASER broadcaster node'].
+	
 	robot with: LaserService  do: [
 		:laser |
 		laser whenANotificationArrivesDo: [ :notif |
 			 self broadcast: notif from: laser. 
 		].
-		laser enableOneNotificationEvery: 250.
+		laser enableNotifications.
 	].
 	
 ]
 
 { #category : #'as yet unclassified' }
 PurePhaROSLaserBroadcaster >> stop [ 
-	self info: [ 'Shutting down LASER broadcaster node'].
+
 	super stop. 
 	
 	robot with: NotificationManagerService do: [

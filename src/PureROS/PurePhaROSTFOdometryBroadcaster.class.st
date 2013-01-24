@@ -26,8 +26,6 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 	[
 
 
-
-		self debug: [ 'broadcasting ODOMETRY information to ROS System'].
 		self sendTo: '/tf' a: [: msg |
 		
 			
@@ -98,7 +96,7 @@ PurePhaROSTFOdometryBroadcaster >> rotationAsQuaternationInX: anOrientation into
 
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> setUp [
-	self info: [ 'Starting ODOMETRY broadcaster node'].
+	
 	robot with: LocalizationService  do: [
 		: localization  |
 		localization resetLocalization.
@@ -107,7 +105,7 @@ PurePhaROSTFOdometryBroadcaster >> setUp [
 		localization whenANotificationArrivesDo:  [ :notif |
 			 self broadcast: notif from: localization. 
 		].
-		localization enableOneNotificationEvery:250.
+		localization enableOneNotificationEvery: 100.
 	].
 
 ]
@@ -116,7 +114,6 @@ PurePhaROSTFOdometryBroadcaster >> setUp [
 PurePhaROSTFOdometryBroadcaster >> stop [
 
 	lastNotification := nil. 
-	self info: [ 'Shutting down ODOMETRY broadcaster node'].
 	
 	robot with: NotificationManagerService do: [
 		: notification |
