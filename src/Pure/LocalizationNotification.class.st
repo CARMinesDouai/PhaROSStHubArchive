@@ -8,6 +8,18 @@ Class {
 	#category : #'Pure-Notifications'
 }
 
+{ #category : #accessing }
+LocalizationNotification >> closeTo: anOtherNotification [ 
+	| compare |
+	
+	compare := (anOtherNotification isKindOf: self class) .
+	
+	^ compare and: [
+		pose closeTo: anOtherNotification pose.
+	 ].
+	
+]
+
 { #category : #loading }
 LocalizationNotification >> initialize [ 
 	pose := Pose new.

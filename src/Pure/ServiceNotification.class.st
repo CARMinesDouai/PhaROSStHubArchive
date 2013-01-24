@@ -20,6 +20,11 @@ ServiceNotification class >> for: aTarget with: aPureNotification [
 ]
 
 { #category : #'as yet unclassified' }
+ServiceNotification >> closeTo: anOtherNotification [
+	^ self subclassResponsibility.
+]
+
+{ #category : #'as yet unclassified' }
 ServiceNotification >> load: notificationSource [
 	self loadTime: notificationSource decoder
 	

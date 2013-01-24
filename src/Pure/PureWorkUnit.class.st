@@ -1,15 +1,14 @@
 Class {
 	#name : #PureWorkUnit,
 	#superclass : #Object,
-	#traits : 'TLogger',
-	#classTraits : 'TLogger classTrait',
 	#instVars : [
 		'priority',
 		'work',
 		'result',
 		'semaphore',
 		'processFinished',
-		'error'
+		'error',
+		'intents'
 	],
 	#category : #'Pure-Kernel'
 }
@@ -70,26 +69,24 @@ PureWorkUnit >> >= otherWork [
 ]
 
 { #category : #'as yet unclassified' }
+PureWorkUnit >> asWork [
+	^ self.
+]
+
+{ #category : #'as yet unclassified' }
+PureWorkUnit >> asWorkAt: aPriority [
+	priority := aPriority .
+	^ self. 
+]
+
+{ #category : #'as yet unclassified' }
 PureWorkUnit >> execute [
-	[
-		self result: work value.
-	] on:Error do: [
-		:e |
-		e signal.
-		error := e.
-		self result: nil.
-	]
+	^ self execute: nil.
 ]
 
 { #category : #'as yet unclassified' }
 PureWorkUnit >> execute: aParameter [
-	[
-		self result:  (work cull: aParameter).
-	] on:Error do: [
-		:e |
-		error := e.
-		self result: nil.
-	]
+	^ self execute: nil and: nil.
 ]
 
 { #category : #'as yet unclassified' }
@@ -98,10 +95,17 @@ PureWorkUnit >> execute: aParameter and: otherParameter [
 		self result:  (work cull: aParameter cull: otherParameter).
 	] on:Error do: [
 		:e |
-		e signal.
 		error := e.
 		self result: nil.
 	]
+]
+
+{ #category : #'as yet unclassified' }
+PureWorkUnit >> fallback: anError with: aWorker [
+	intents := intents + 1.
+	intents > 2 ifTrue: [ anError signal ].	
+	
+	aWorker addWork: self. 
 ]
 
 { #category : #'as yet unclassified' }
@@ -109,6 +113,7 @@ PureWorkUnit >> initialize [
 	priority := PureWorkUnit defaultPriority.
 	semaphore := Semaphore new.
 	processFinished := false.
+	intents := 0.
 	work := [].
 ]
 
@@ -120,6 +125,11 @@ PureWorkUnit >> priority [
 { #category : #'as yet unclassified' }
 PureWorkUnit >> priority: aPriorityNumber [
 	 priority := aPriorityNumber.
+]
+
+{ #category : #'as yet unclassified' }
+PureWorkUnit >> processFinished [ 
+	^ processFinished 
 ]
 
 { #category : #'as yet unclassified' }
@@ -144,7 +154,6 @@ PureWorkUnit >> result [
 { #category : #'as yet unclassified' }
 PureWorkUnit >> result: aValue [
 
-	self debug: [ 'deploying result ', aValue asString ].
 	result := aValue.
 	processFinished := true.
 	semaphore signal.

@@ -74,6 +74,11 @@ PureConstants class >> errorMessages [
 ]
 
 { #category : #accessing }
+PureConstants class >> notificationCode [
+	^ 16rFF.
+]
+
+{ #category : #accessing }
 PureConstants class >> serviceClassPerType [
 	^	{
 		16r0000 -> DirectoryService .

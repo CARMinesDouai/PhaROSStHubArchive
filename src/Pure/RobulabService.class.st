@@ -1,8 +1,6 @@
 Class {
 	#name : #RobulabService,
 	#superclass : #Object,
-	#traits : 'TLogger',
-	#classTraits : 'TLogger classTrait',
 	#instVars : [
 		'robulab',
 		'type'
@@ -18,6 +16,7 @@ RobulabService class >> createFromRobulab: rob Type: type [
 	
 	service robulab: rob.
 	service type: type.
+	
 	^service.
 ]
 

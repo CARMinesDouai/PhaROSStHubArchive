@@ -151,7 +151,7 @@ TestProcesses >> testSpawnEnableAndReceiveNoticationAndDestroyRobot [
 	
 	self assert: PureProcess allSubInstances size = 0.
       self assert: PureConnector allInstances size =  0.
-	self assert: NotificationConsumerProcess allInstances size = 0.
+	self assert: NotificationConsumer allInstances size = 0.
 	self assert: RobulabService allSubInstances size = 0.
 	self assert: Robulab  allInstances size = 0.
 	
@@ -215,7 +215,7 @@ TestProcesses >> testSpawnEnableAndReceiveNoticationCrashProcessAndDestroyRobot 
 	
 	self assert: PureProcess allSubInstances size = 0.
       self assert: PureConnector allInstances size =  0.
-	self assert: NotificationConsumerProcess allInstances size = 0.
+	self assert: NotificationConsumer allInstances size = 0.
 	self assert: RobulabService allSubInstances size = 0.
 	self assert: Robulab  allInstances size = 0.
 	
@@ -239,7 +239,7 @@ TestProcesses >> testSpawnEnableDisableNoticationAndDestroyRobot [
 		localization whenANotificationArrivesDo: [
 			lockAssert signal.	
 		      self assert: PureConnector allSubInstances size =  2.
-			self assert: NotificationConsumerProcess allInstances size = 1.			
+			self assert: NotificationConsumer allInstances size = 1.			
 		].
 		localization enableNotifications.
 	]. 
@@ -267,7 +267,7 @@ TestProcesses >> testSpawnEnableDisableNoticationAndDestroyRobot [
 	
 	self assert: PureProcess allSubInstances size = 0.
       self assert: PureConnector allInstances size =  0.
-	self assert: NotificationConsumerProcess allInstances size = 0.
+	self assert: NotificationConsumer allInstances size = 0.
 	self assert: RobulabService allSubInstances size = 0.
 	self assert: Robulab  allInstances size = 0.
 	
@@ -291,7 +291,7 @@ TestProcesses >> testSpawnEnableNoticationAndDestroyRobot [
 		| a | 
 		a := (PureConnector allSubInstances  select: [: p | p isRunning ]).
             self assert: a size =  2.
-		self assert: (NotificationConsumerProcess allInstances  select: [: p | p isRunning ]) size = 1.
+		self assert: (NotificationConsumer allInstances  select: [: p | p isRunning ]) size = 1.
 		lockAssert signal.	
 	]. 
 	 
@@ -358,7 +358,7 @@ TestProcesses >> testSpawnEnableNoticationCrashConnectorAndDestroyRobot [
 	
 	self assert: PureProcess allSubInstances size = 0.
       self assert: PureConnector allInstances size =  0.
-	self assert: NotificationConsumerProcess allInstances size = 0.
+	self assert: NotificationConsumer allInstances size = 0.
 	self assert: RobulabService allSubInstances size = 0.
 	self assert: Robulab  allInstances size = 0.
 	
@@ -380,7 +380,7 @@ TestProcesses >> testSpawnEnableNoticationCrashNotificatorAndDestroyRobot [
 	
 	robot enableNotificationsForService: LocalizationService doing: [: n | 
 		lockAssert signal.	
-		NotificationConsumerProcess allInstances do: #stop.	
+		NotificationConsumer allInstances do: #stop.	
 	]. 
 	
 
@@ -399,7 +399,7 @@ TestProcesses >> testSpawnEnableNoticationCrashNotificatorAndDestroyRobot [
 	
 	self assert: PureProcess allSubInstances size = 0.
       self assert: PureConnector allInstances size =  0.
-	self assert: NotificationConsumerProcess allInstances size = 0.
+	self assert: NotificationConsumer allInstances size = 0.
 	self assert: RobulabService allSubInstances size = 0.
 	self assert: Robulab  allInstances size = 0.
 	
@@ -441,7 +441,7 @@ TestProcesses >> testSpawnEnableNoticationCrashProcessesAndDestroyRobot [
 	
 	self assert: PureProcess allSubInstances size = 0.
       self assert: PureConnector allInstances size =  0.
-	self assert: NotificationConsumerProcess allInstances size = 0.
+	self assert: NotificationConsumer allInstances size = 0.
 	self assert: RobulabService allSubInstances size = 0.
 	self assert: Robulab  allInstances size = 0.
 	

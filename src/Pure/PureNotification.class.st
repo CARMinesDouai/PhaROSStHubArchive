@@ -1,6 +1,9 @@
 Class {
 	#name : #PureNotification,
 	#superclass : #PureMessage,
+	#instVars : [
+		'relatedAnnouncement'
+	],
 	#classInstVars : [
 		'notificationTimeStamp'
 	],
@@ -38,8 +41,13 @@ PureNotification >> announcer [
 
 { #category : #'initialize-release' }
 PureNotification >> asAnnouncement [
-	^ ServiceNotification for: self target with: self.
+	^ relatedAnnouncement ifNil: [ relatedAnnouncement := ServiceNotification for: self target with: self ].
 
+]
+
+{ #category : #'initialize-release' }
+PureNotification >> closeTo: anOtherNotification [ 
+	^ self asAnnouncement closeTo: anOtherNotification asAnnouncement.
 ]
 
 { #category : #'initialize-release' }
@@ -54,13 +62,18 @@ PureNotification >> isNotification [
 ]
 
 { #category : #'initialize-release' }
-PureNotification >> received [ 
+PureNotification >> notificate [
 	| announcer |
 	announcer := self announcer .
 	announcer ifNotNil:[
 		announcer announce: self asAnnouncement.
 	] 
 	
+]
+
+{ #category : #'initialize-release' }
+PureNotification >> receivedBy: aRobot [
+	"aRobot with: NotificationManagerService do: [ :n | n notificate: self ]."
 ]
 
 { #category : #'initialize-release' }

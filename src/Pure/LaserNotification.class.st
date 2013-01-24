@@ -25,6 +25,20 @@ LaserNotification >> angles [
 ]
 
 { #category : #'as yet unclassified' }
+LaserNotification >> closeTo: anOtherNotification [
+| compare |
+	
+	compare := (anOtherNotification isKindOf: self class) .
+	compare ifFalse: [ ^ compare ].
+	echoes with: anOtherNotification echoes do: [
+			:e1 :e2 | compare := compare and: [ e1 closeTo: e2 ]
+	].
+
+	^ compare.
+	
+]
+
+{ #category : #'as yet unclassified' }
 LaserNotification >> distances [
 	^ self echoes collect: [ :echo | echo distance asFloat ].
 ]

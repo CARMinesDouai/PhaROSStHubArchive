@@ -1,8 +1,8 @@
 Class {
 	#name : #Robulab,
 	#superclass : #Object,
-	#traits : 'TAnnouncer + TLogger',
-	#classTraits : 'TAnnouncer classTrait + TLogger classTrait',
+	#traits : 'TAnnouncer',
+	#classTraits : 'TAnnouncer classTrait',
 	#instVars : [
 		'directoryService',
 		'connector',
@@ -139,7 +139,6 @@ Robulab >> subscribe: anAnnouncement do: aBlock [
 
 { #category : #announcement }
 Robulab >> unsubscribe: anAnnouncement [
-	self info: ['unsubscribing ', anAnnouncement name  ].
 	^self resolveAnnouncer unsubscribe: anAnnouncement.
 ]
 

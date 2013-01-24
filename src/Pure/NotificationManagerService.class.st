@@ -102,17 +102,26 @@ NotificationManagerService >> monitorConsumer [
 
 	" kill or start notification process if is needed. If kill notification process also kills connector"
 	
-	((notificationService isNil or: [ notificationService keepRunning not]) and:[ services isEmpty not]) ifTrue: [
-		notificationService := NotificationConsumerProcess connector: robulab connector talkingWith: self.
+	(notificationService isNil and:[ services isEmpty not]) ifTrue: [
+		notificationService := NotificationConsumer connector: robulab connector talkingWith: self.
+		robulab connector notificating: true.
 	].
 
 	(services isEmpty and: [notificationService isNil not ]) ifTrue: [
+		robulab connector notificating: false.
 		self stopNotificationService.
 	].
 
 
 
 
+]
+
+{ #category : #process }
+NotificationManagerService >> notificate: aSetNotification [
+	notificationService ifNotNil: [
+		notificationService addNotifications: aSetNotification 	
+	].
 ]
 
 { #category : #request }
@@ -130,7 +139,7 @@ NotificationManagerService >> register: aService each: nControlCycles [
 		] on: Error do:[
 			:e | 
 			e messageText = 'Already bound to this notification' ifTrue: [
-				self warn: [aService name, '  was already bound to notifications. '].
+				Transcript show: [aService name, '  was already bound to notifications. ']; cr.
 			] ifFalse: [
 				e signal.
 			]

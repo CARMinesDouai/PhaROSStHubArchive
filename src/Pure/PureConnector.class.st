@@ -1,16 +1,13 @@
 Class {
 	#name : #PureConnector,
-	#superclass : #PureProcess,
+	#superclass : #Object,
 	#instVars : [
 		'ip',
 		'port',
 		'socket',
 		'robot',
-		'queue',
-		'forWork',
-		'queueMutex',
-		'keepReceiving',
-		'id'
+		'process',
+		'notificating'
 	],
 	#classInstVars : [
 		'LastID'
@@ -30,53 +27,45 @@ PureConnector class >> ip: anIp port: aPort [
 
 { #category : #'as yet unclassified' }
 PureConnector class >> ip: anIp port: aPort robot: aRobot [
-	LastID:= LastID +1.
-	^ self new ip: anIp ; port: aPort ; robot: aRobot ; id: LastID ; startUp ; yourself.
-]
-
-{ #category : #processing }
-PureConnector >> addWork: aWork [
-	queueMutex critical: [
-		queue add: aWork.
-	].
-	forWork signal.
-	^ aWork.
+	^ self new ip: anIp ; port: aPort ; robot: aRobot ; yourself.
 ]
 
 { #category : #service }
 PureConnector >> destroy [
-	self stop.
+	
 	socket destroy.
+	process stop.
 	robot := nil.
-	queue removeAll.
-	queue := nil.
+	
 ]
 
 { #category : #communication }
 PureConnector >> discoverServices [ 
-
-	^ self addWork: 
-		(PureWorkUnit do: [
+	^ process addWork: [
 			self  send: '01000000'.
 			 self receiveAnswer.
-		]).
+	].
 ]
 
-{ #category : #accessing }
-PureConnector >> id [
-	^ id.
-]
-
-{ #category : #accessing }
-PureConnector >> id: anID [
-	id := anID.
+{ #category : #communication }
+PureConnector >> forceNotifications [
+	notificating ifTrue: [
+		[
+			self  send: '01000000'.
+			self receiveAnswer.
+		] on: Error do: [ : e | 
+			
+		].
+	].
 ]
 
 { #category : #'reception management' }
 PureConnector >> inflateResponse: aByteArray [
+	
 	| class |
+	
 	class := PureResponse.
-	((aByteArray at: 1) = self notificationCode) ifTrue: [
+	((aByteArray at: 1) = PureConstants notificationCode) ifTrue: [
 		class := PureNotification
 	].
 	^ class initializeFromArray: (aByteArray copyFrom: 2 to: aByteArray size) forRobot: robot.	
@@ -87,10 +76,12 @@ PureConnector >> inflateResponse: aByteArray [
 PureConnector >> initialize [ 
 	super initialize.
 	socket := Socket newUDP.
-	queueMutex := Mutex new.
-	queue := SortedCollection sortBlock: [ :w1 :w2 | w1 < w2 ].
-	forWork  := Semaphore new.
-	keepReceiving := true.
+	process := PureWorker pickOne.
+	notificating := false.
+	process onIdleTime: [
+		self forceNotifications.	
+	].
+	process waitTimeoutInSeconds: self timeout.
 ]
 
 { #category : #accessing }
@@ -104,28 +95,8 @@ PureConnector >> ip: anIp [
 ]
 
 { #category : #accessing }
-PureConnector >> keepReceiving [ 
-	| val |
-	processMutex  critical: [
-		val := keepReceiving.
-	].
-	^val. 
-]
-
-{ #category : #constants }
-PureConnector >> notificationCode [
-	^ 16rFF.
-]
-
-{ #category : #processing }
-PureConnector >> peekWork [
-	| work |
-	queueMutex critical: [
-		work := queue at:1. 
-		queue remove: work.
-	].
-
-	^ work.
+PureConnector >> notificating: aBoolean [
+	notificating := aBoolean.
 ]
 
 { #category : #accessing }
@@ -144,48 +115,25 @@ PureConnector >> processName [
 ]
 
 { #category : #'communication private' }
+PureConnector >> processNotifications: aCollectionOfNotifications [ 
+	(aCollectionOfNotifications size > 0 and: [ notificating ]) ifTrue: [
+		robot with: NotificationManagerService do: [ :n | n notificate: aCollectionOfNotifications ].
+	]
+]
+
+{ #category : #'communication private' }
 PureConnector >> receiveAnswer [
-  | buffer responseSize response intent responses |
-
-	intent := 0. 
+  | response intent responses |
+	 
 	responses := OrderedCollection new.
-	[
-		
-		buffer := ByteArray new: 4096.	
-		[	
-			intent := intent +1.
-			responseSize := (self socket receiveUDPDataInto: buffer withTimeOut: self receptionTimeOutSeconds) at:1.
-		] doWhileTrue: [
-			responseSize = 0 and:[ intent < 3]
-		].
-		
-		responseSize = 0 ifTrue: [
-			PureTooMuchTime signal.
-		].
-		response := self inflateResponse: (buffer copyFrom: 1 to: 	responseSize).
-		responses add: response.
-			
-	] doWhileTrue: [
-		response isNotification & self keepReceiving.
+	
+	[ response := responses add: (self receiveResponse: 0). ] doWhileTrue: [
+		response receivedBy: robot.
+		response isNotification.
 	].
-     "Get out the lastone, which is the response"
-
-	self keepReceiving ifTrue: [
-		responses remove: response.
-		[ 
-			responses :=
-			responses reversed inject: OrderedCollection new into: [ :acc :it | 
-				acc detect: [ :e | e class = it class ] ifNone: [ acc add: it].
-				acc.
-			].
-		
-			(Delay forMilliseconds: 500) wait.
-			responses do: #received.		
-		] forkAt: Processor userBackgroundPriority  named: 'NotificationDispatcher'.
-		
-	].
-
-	response received.
+	responses remove: response.
+	self processNotifications: responses.
+	
 	^ response.  
 	
 
@@ -199,9 +147,22 @@ PureConnector >> receiveAnswer [
 ]
 
 { #category : #'communication private' }
-PureConnector >> receptionTimeOutSeconds [ 
-	^2
+PureConnector >> receiveResponse: intent [
  
+  | buffer responseSize response   |
+	
+	intent > 3 ifTrue: [ PureTooMuchTime signal. ].
+	
+	buffer := ByteArray new: 4096.	
+		
+	responseSize := (self socket receiveUDPDataInto: buffer withTimeOut: self timeout) at:1.
+	
+	^ responseSize = 0 ifTrue: [ 
+		self receiveResponse: intent + 1 
+	 ] ifFalse: [
+		self inflateResponse: (buffer copyFrom: 1 to: 	responseSize)
+	 ].
+		
 ]
 
 { #category : #accessing }
@@ -214,50 +175,31 @@ PureConnector >> robot: aRobotManager [
 	robot := aRobotManager.
 ]
 
-{ #category : #processing }
-PureConnector >> run [
-	| job |
-	
-	forWork wait.
-	job := self peekWork.
-	job execute: self. 
-
-	
-
-]
-
 { #category : #'communication private' }
 PureConnector >> send: aStringMessage [
-	| size |
-	
-
-	size := self socket sendData: (ByteArray readHexFrom: aStringMessage)
+	^self socket sendData: (ByteArray readHexFrom: aStringMessage)
 		toHost: self ip
 		port: self port.	
 
-	self debug: ['sending message', size asString].	
-		
 ]
 
 { #category : #communication }
 PureConnector >> sendMessage: aMessage [ 
-	^ self addWork: 
-		(PureWorkUnit do: [
+	^ process addWork: [
 			| id |
 			id := PureSequencer instance consumeRequestId.
-			Transcript show: (id, aMessage asHex) asString.
 			self send: id, aMessage asHex.
 			self receiveAnswer. 
-			
-		]).
+		].
 ]
 
 { #category : #communication }
 PureConnector >> sendNotification: aMessage [ 
-	self addWork: 
-		(PureWorkUnit do: [
-			self send: (self notificationCode printStringBase: 16), aMessage asHex.	
-		] at: PureWorkUnit highPriority).
+	process addWork:( 
+		[
+			self send: (PureConstants notificationCode printStringBase: 16), aMessage asHex.	
+		] asWorkAt: PureWorkUnit highPriority
+	).
 ]
 
 { #category : #accessing }
@@ -265,9 +207,8 @@ PureConnector >> socket [
 	^ socket.
 ]
 
-{ #category : #accessing }
-PureConnector >> stopReception [ 
-	processMutex  critical: [
-		keepReceiving := false.
-	].
+{ #category : #'communication private' }
+PureConnector >> timeout [ 
+	^ 2
+ 
 ]

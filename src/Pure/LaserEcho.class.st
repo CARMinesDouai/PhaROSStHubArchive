@@ -33,6 +33,11 @@ LaserEcho >> asString [
 ]
 
 { #category : #accessing }
+LaserEcho >> closeTo: otherEcho [
+	^( angle closeTo: otherEcho angle ) and: [ distance closeTo: otherEcho distance ].
+]
+
+{ #category : #accessing }
 LaserEcho >> distance [
 	^ distance
 ]

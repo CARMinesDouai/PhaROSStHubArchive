@@ -24,6 +24,8 @@ DirectoryService >> instancesRelatedWith: aServiceClass [
 	selected := services values select: [ : s | s isKindOf: aServiceClass ].
 	self assert: selected size > 0.
 	^ selected. 
+	
+
 ]
 
 { #category : #accessing }

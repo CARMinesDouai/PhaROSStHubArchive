@@ -63,7 +63,7 @@ PureResponse >> errorMessage [
 ]
 
 { #category : #accessing }
-PureResponse >> received [
+PureResponse >> receivedBy: aRobot [
 
 	self success ifFalse: [
 		Error signal: self errorMessage.
