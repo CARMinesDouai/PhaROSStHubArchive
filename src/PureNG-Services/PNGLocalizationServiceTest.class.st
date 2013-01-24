@@ -7,5 +7,5 @@ Class {
 { #category : #testing }
 PNGLocalizationServiceTest >> testNotificationReception [
 	self robot localizationService enableNotificationsEvery: 5.
-	
+	self signalFailure: 'Todo'
 ]

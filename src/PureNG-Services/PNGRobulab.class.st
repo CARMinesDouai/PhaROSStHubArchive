@@ -5,7 +5,8 @@ Class {
 		'ip',
 		'port',
 		'serial',
-		'services'
+		'services',
+		'bridge'
 	],
 	#category : #'PureNG-Kernel'
 }
@@ -32,7 +33,7 @@ PNGRobulab >> ip [
 PNGRobulab >> ip: aByteArray port: portNumber [ 
 	ip := aByteArray.
 	port := portNumber.
-
+	bridge := PNGNetworkBridge forRobot: self
 ]
 
 { #category : #services }
@@ -52,28 +53,15 @@ PNGRobulab >> port [
 
 { #category : #communication }
 PNGRobulab >> sendAndWaitForResult: commandString [
-	| responseBuffer receptionInformation rawSize responseStream encodedResponse |
+	|   responseStream encodedResponse |
 	
-	responseBuffer := ByteArray new: 1024.
-	receptionInformation := self sendAndWaitForResult: commandString withAnswer:  responseBuffer.
-	rawSize := receptionInformation at: 1.
-	responseStream := (ReadStream on: responseBuffer from: 1 to: rawSize).
+	bridge send: commandString.
+	responseStream := bridge responseQueue next readStream. 
 	
 	encodedResponse := PNGEncodedMessage createResponseOrNotificationForData: responseStream.
 	
 	encodedResponse isSuccess ifFalse:[PNGMessageError signal: encodedResponse responseMessage].
 	^encodedResponse
-]
-
-{ #category : #communication }
-PNGRobulab >> sendAndWaitForResult: commandString withAnswer:  resultBuffer [
-	| socket |
-	socket := Socket newUDP.
-	socket  sendData: (ByteArray readHexFrom: commandString)
-		toHost: self ip
-		port: self port.
-	^ socket receiveWithTimeOutUDPDataInto: resultBuffer.
-	 
 ]
 
 { #category : #accessing }

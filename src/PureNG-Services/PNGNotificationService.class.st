@@ -74,6 +74,12 @@ PNGNotificationService >> initialize [
 PNGNotificationService >> insert: aNotifyingService [
 	"This request is used to activate a notification and configure its mode."
 	
+	self robot sendAndWaitForResult: (self insertRequestStringFor: aNotifyingService)
+	
+]
+
+{ #category : #actions }
+PNGNotificationService >> insertRequestStringFor: aNotifyingService [	
 	| requestEncoder |
 	requestEncoder := PNGEncoder new.
 	requestEncoder  
@@ -82,7 +88,7 @@ PNGNotificationService >> insert: aNotifyingService [
 		encodeInt16: self id ;
 		encodeInt16: aNotifyingService id;
 		encodeInt8: aNotifyingService notificationPeriod.
-	self robot sendAndWaitForResult: requestEncoder contents.
+	^requestEncoder contents
 	
 ]
 
