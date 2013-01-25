@@ -25,19 +25,6 @@ ConfigurationOfPhaROS class >> bootstrapPackage: aString from: aPath [
 			version workingCopy repositoryGroup addRepository: repository]
 ]
 
-{ #category : #'project log' }
-ConfigurationOfPhaROS class >> configurationOfLog [
-	<logConfiguration>
-	^ [
-	     :builder |
-	     builder forClass: LoggedExampleCustomized 
-			     useLevel:#info 
-			     showingLogAs: ('%tag #%class >> %selector [%log]' asPatternFormatter) 
-			     into: LogStdoutWriter instance.
-	].
-
-]
-
 { #category : #private }
 ConfigurationOfPhaROS class >> ensureMetacello [
 	"Bootstrap Gofer (if necessary), load latest mcz file for ConfigurationOfMetacello (using old 
@@ -120,7 +107,7 @@ ConfigurationOfPhaROS class >> project [
 { #category : #'unloading metacello' }
 ConfigurationOfPhaROS class >> testCategoriesForJenkins [
 	self flag: #weMustInstallARosInJenkinsServer. 
-	^ #( 'PhaROS-Kernel-Tcp-Test' 'PhaROS-Kernel-Types-Test').
+	^ #( 'RoSt-Kernel-Tcp-Test' 'RoSt-Kernel-Types-Test').
 ]
 
 { #category : #'unloading metacello' }
@@ -143,13 +130,12 @@ ConfigurationOfPhaROS >> baseline10: spec [
 					versionString: #bleedingEdge;
 					loads: #('XMLRPC-Client-Core' 'XMLRPC-Client-Tests' 'XMLRPC-Server-Core' 'XMLRPC-Server-Tests')
 			].
-			spec project: 'PAUL' with: [
-				spec 
-					className: 'ConfigurationOfPaulLePoulpe';
-					file: 'ConfigurationOfPaulLePoulpe' ;
-					repository: 'http://ss3.gemstone.com/ss/PaulLePoulpe'; 
-					versionString: #bleedingEdge.
-			].
+			spec project: 'PaulLePoulpe' with: [ 
+				spec 	className: 'ConfigurationOfPaulLePoulpe'; 
+						loads: #('default' );
+						file: 'ConfigurationOfPaulLePoulpe';
+						repository: 'http://ss3.gemstone.com/ss/PaulLePoulpe'. 
+			]	.
 			spec project: 'OSProcess' with: [
 				spec 
 					className: 'ConfigurationOfOSProcess';
@@ -162,7 +148,7 @@ ConfigurationOfPhaROS >> baseline10: spec [
 					className: 'ConfigurationOfCommonTraits';
 					file: 'ConfigurationOfCommonTraits' ;
 					versionString: #bleedingEdge;
-					repository: 'http://ss3.gemstone.com/ss/CommonTraits'.
+					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
 			].
 		
 			spec package: 'PhaROS' with: [
