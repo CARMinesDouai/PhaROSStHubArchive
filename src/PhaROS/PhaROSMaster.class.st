@@ -196,6 +196,7 @@ PhaROSMaster >> initialize [
 	super initialize.
 	nodes := Dictionary new. 
 	topics := Dictionary new.
+	PhaROSTimestamp defaultOffset: DateAndTime localTimeZone offset seconds * -1.
 ]
 
 { #category : #API }

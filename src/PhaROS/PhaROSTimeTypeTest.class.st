@@ -37,6 +37,7 @@ PhaROSTimeTypeTest >> testFailSerialize [
 
 { #category : #'as yet unclassified' }
 PhaROSTimeTypeTest >> testSerialize [
+	
 		^ super baseSerialize.
 		
 ]

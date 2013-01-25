@@ -115,7 +115,7 @@ PhaROSTypeMarshallingBaseTest >> relatedClass [
 { #category : #'as yet unclassified' }
 PhaROSTypeMarshallingBaseTest >> setUp [
 	super setUp.
-
+	PhaROSTimestamp initialize.
 	
 
 	validValues := self validValues collect: [

@@ -5,23 +5,35 @@ Class {
 		'timestamp',
 		'offset'
 	],
+	#classInstVars : [
+		'DefaultOffset'
+	],
 	#category : #'PhaROS-Kernel-Types'
 }
 
 { #category : #'as yet unclassified' }
 PhaROSTimestamp class >> defaultOffset [
-	^ 0
-	"^ -3600 "
+	^ DefaultOffset
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTimestamp class >> defaultOffset: anOffset [
+	DefaultOffset := anOffset.
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSTimestamp class >> fromUnixTime: anAmountOfSeconds  nanoSeconds: anAmountOfNSeconds [ 
-	^ super new timestamp: (DateAndTime unixEpoch  + (Time seconds: anAmountOfSeconds nanoSeconds: anAmountOfNSeconds  ))
+	^ super new timestamp: ((DateAndTime fromUnixTime: anAmountOfSeconds)  + (Time seconds: 0 nanoSeconds: anAmountOfNSeconds ))
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTimestamp class >> initialize [ 
+	DefaultOffset := 0.
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSTimestamp class >> new [
-	^ super new timestamp: DateAndTime unixEpoch ; offset: self defaultOffset ; yourself .
+	^ super new timestamp:( DateAndTime fromUnixTime: 0) ; offset: self defaultOffset ; yourself .
 ]
 
 { #category : #'as yet unclassified' }
@@ -46,13 +58,18 @@ PhaROSTimestamp >> nanoSeconds: anAmountOfNSeconds [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSTimestamp >> offset [ 
+	^ offset.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSTimestamp >> offset: anOffset [
 	offset := anOffset.
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSTimestamp >> seconds [
-	^ timestamp asUnixTime + offset.
+	^ timestamp asUnixTime + self offset.
 ]
 
 { #category : #'as yet unclassified' }

@@ -41,7 +41,7 @@ Std_msgsHeader >> frame_id: aValue [
 Std_msgsHeader >> initialize [
 	super initialize.
 	 self seq: Std_msgsHeader consumeHeaderId. 
-	 self stamp:  PhaROSTimestamp now. 
+	 self stamp:  #now . " now is changed by PhaROSTimestamp now. in encoding time, just before send the message "
 	 self frame_id: ''. 
 
 ]
