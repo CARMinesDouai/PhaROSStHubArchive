@@ -130,7 +130,7 @@ ConfigurationOfPhaROS >> baseline10: spec [
 					versionString: #bleedingEdge;
 					loads: #('XMLRPC-Client-Core' 'XMLRPC-Client-Tests' 'XMLRPC-Server-Core' 'XMLRPC-Server-Tests')
 			].
-			spec project: 'PaulLePoulpe' with: [ 
+			spec project: 'PAUL' with: [ 
 				spec 	className: 'ConfigurationOfPaulLePoulpe'; 
 						loads: #('default' );
 						file: 'ConfigurationOfPaulLePoulpe';
