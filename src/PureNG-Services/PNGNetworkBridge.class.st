@@ -1,3 +1,11 @@
+"
+o := Object new.
+WeakRegistry default add: o. ""a shallow copy of o is registered""
+o := nil.
+Smalltalk garbageCollect.
+""the shallow copy of o will receive the finalize message""
+
+"
 Class {
 	#name : #PNGNetworkBridge,
 	#superclass : #Object,
@@ -11,6 +19,27 @@ Class {
 	#category : #'PureNG-Kernel'
 }
 
+{ #category : #'process creation block' }
+PNGNetworkBridge class >> createProcessSocket: socket resutlBuffer: resultBuffer responseQueue: responseQueue [ 
+	^ [ 
+		[ 
+			[
+				| receptionInformation receivedByteCount |
+				receptionInformation := socket receiveWithTimeOutUDPDataInto: resultBuffer.
+				receivedByteCount := receptionInformation at: 1.
+				responseQueue nextPut: (resultBuffer copyFrom: 1 to: receivedByteCount) 
+			] on: ConnectionTimedOut do: [].
+		] repeat 
+	] newProcess
+]
+
+{ #category : #'finalization callback' }
+PNGNetworkBridge class >> finalizationBlock [
+	^ [ :processBridge :socketBridge | 
+		processBridge 	ifNotNil: [ processBridge terminate.].
+		socketBridge ifNotNil: [ socketBridge closeAndDestroy ] ]
+]
+
 { #category : #'instance creation' }
 PNGNetworkBridge class >> forRobot: aRobot [
 	^self new
@@ -20,18 +49,12 @@ PNGNetworkBridge class >> forRobot: aRobot [
 ]
 
 { #category : #'initialize-release' }
-PNGNetworkBridge >> finalize [
-	super finalize.
-	self stop.
-	Transcript cr; show: 'Bridge finalized !!!'
-]
-
-{ #category : #'initialize-release' }
 PNGNetworkBridge >> initialize [ 
 	super  initialize.
 	self resultBuffer: (ByteArray new: 1024).
 	self responseQueue: SharedQueue new.
-	self finalizationRegistry add: self 
+
+
 ]
 
 { #category : #accessing }
@@ -59,13 +82,17 @@ PNGNetworkBridge >> process: anObject [
 	process := anObject
 ]
 
-{ #category : #communicating }
-PNGNetworkBridge >> receive [
-	| receptionInformation receivedByteCount |
-	socket waitForData.
-	receptionInformation :=  socket receiveWithTimeOutUDPDataInto: resultBuffer.
-	receivedByteCount := receptionInformation at: 1.
-	^self resultBuffer copyFrom: 1 to: receivedByteCount
+{ #category : #finalization }
+PNGNetworkBridge >> registerForFinalization [
+	self finalizationRegistry
+		add: self
+		executor:
+			(ObjectFinalizer
+				receiver: self class finalizationBlock
+				selector: #cull:cull:
+				arguments:
+					{(self process).
+					(self socket)})
 ]
 
 { #category : #accessing }
@@ -118,21 +145,20 @@ PNGNetworkBridge >> socket: anObject [
 
 { #category : #activity }
 PNGNetworkBridge >> start [
-	self isStarted ifTrue: [^self]. 
+	self isStarted
+		ifTrue: [ ^ self ].
 	self socket: Socket newUDP.
-	self process: [[self responseQueue nextPut: self receive] repeat] newProcess.
-	self process 
-			priority: Processor highIOPriority;
-			resume
+	self
+		process:
+			(self class createProcessSocket: self socket resutlBuffer: self resultBuffer responseQueue: self responseQueue).
+	self process
+		priority: Processor userBackgroundPriority;
+		resume.
+	self registerForFinalization
 ]
 
 { #category : #activity }
 PNGNetworkBridge >> stop [
-	self process ifNotNil: [
-		self process terminate.
-		self process: nil].
-	self socket ifNotNil: [
-		self socket closeAndDestroy.
-		self socket: nil]
+	self class finalizationBlock cull: self process cull: self socket
 
 ]

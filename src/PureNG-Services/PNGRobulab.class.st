@@ -19,6 +19,11 @@ PNGRobulab class >> ip: aByteArray port: portNumber [
 
 ]
 
+{ #category : #accessing }
+PNGRobulab >> bridge [
+	^ bridge
+]
+
 { #category : #services }
 PNGRobulab >> directoryService [
 	^self services detect: [:each| each isKindOf: PNGDirectoryService]
