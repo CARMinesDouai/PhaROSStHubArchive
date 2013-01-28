@@ -105,7 +105,7 @@ PurePhaROSTFOdometryBroadcaster >> setUp [
 		localization whenANotificationArrivesDo:  [ :notif |
 			 self broadcast: notif from: localization. 
 		].
-		localization enableOneNotificationEvery: 100.
+		localization enableNotifications.
 	].
 
 ]

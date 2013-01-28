@@ -18,9 +18,6 @@ PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceI
 		msg angle_max: aLaserNotification maxAngle.
 		msg angle_increment: (1.0 degreesToRadians).
 		
-		Transcript show: 'Measures expected', ((aLaserNotification minAngle abs + aLaserNotification maxAngle abs)/(1.0 degreesToRadians)) asString ;cr.
-		Transcript show: 'Measures: ', aLaserNotification distances size asString;cr.
-		
 		msg scan_time: 0.0.
 		msg time_increment: 0.0.
 		
