@@ -25,12 +25,6 @@ ServiceNotification >> closeTo: anOtherNotification [
 ]
 
 { #category : #'as yet unclassified' }
-ServiceNotification >> load: notificationSource [
-	self loadTime: notificationSource decoder
-	
-]
-
-{ #category : #'as yet unclassified' }
 ServiceNotification >> loadTime: aDecoder [
 	time := (DateAndTime fromDosTime: aDecoder nextEncodedUint64).
 ]

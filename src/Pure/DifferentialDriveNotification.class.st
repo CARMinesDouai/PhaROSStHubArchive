@@ -25,8 +25,9 @@ DifferentialDriveNotification >> currentLinearSpeed [
 { #category : #accessing }
 DifferentialDriveNotification >> load: notificationSource [
 	| decoder |
-	super load: notificationSource.
+
 	decoder := notificationSource decoder.
+	self loadTime: decoder.
 	status := decoder nextEncodedByte.
 	targetLinearSpeed := decoder nextEncodedFloat32.
 	currentLinearSpeed  := decoder nextEncodedFloat32.

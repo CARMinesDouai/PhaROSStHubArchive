@@ -58,8 +58,10 @@ LaserNotification >> initialize [
 { #category : #'as yet unclassified' }
 LaserNotification >> load: notificationSource [
 	| decoder max |
-	super load: notificationSource.
+	
 	decoder := notificationSource decoder.
+	self loadTime: decoder.
+	
 	[ decoder hasData ] whileTrue: [
 		echoes add: ( LaserEcho createEchoWithAngle: (decoder nextEncodedFloat32)  andFloatDistance: (decoder nextEncodedFloat32) )
 	].

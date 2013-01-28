@@ -22,8 +22,10 @@ TelemeterNotification >> initialize [
 { #category : #'as yet unclassified' }
 TelemeterNotification >> load: notificationSource [
 	| decoder |
-	super load: notificationSource.
+
 	decoder := notificationSource decoder.
+	self loadTime: decoder.
+	
 	[ decoder hasData ] whileTrue: [
 		distances add: decoder nextEncodedFloat32
 	].
