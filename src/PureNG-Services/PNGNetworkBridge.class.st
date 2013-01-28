@@ -152,7 +152,7 @@ PNGNetworkBridge >> start [
 		process:
 			(self class createProcessSocket: self socket resutlBuffer: self resultBuffer responseQueue: self responseQueue).
 	self process
-		priority: Processor userBackgroundPriority;
+		priority: Processor highIOPriority;
 		resume.
 	self registerForFinalization
 ]

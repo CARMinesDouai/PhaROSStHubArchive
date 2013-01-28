@@ -14,25 +14,9 @@ PNGCommunicationTest >> setUp [
 ]
 
 { #category : #testing }
-PNGCommunicationTest >> testBridgeFinalization [
-	
-	| bridgeProcess bridgeSocket |
-	bridgeProcess := robot bridge process.
-	bridgeSocket := robot bridge socket.
-	
-	robot bridge finalize.
-	
-	self assert: bridgeProcess isTerminated.
-	self deny: bridgeSocket isValid.
-]
-
-{ #category : #testing }
-PNGCommunicationTest >> testBridgeFinalizationAutomaticallyTriggered [
-	
+PNGCommunicationTest >> testBridgeFinalization [	
 	| bridgeInstancesCount bridgeProcess bridgeSocket |
-	
 	bridgeInstancesCount := PNGNetworkBridge allInstances size.
-	
 	bridgeSocket := robot bridge socket.
 	bridgeProcess := robot bridge process.
 	
@@ -41,12 +25,10 @@ PNGCommunicationTest >> testBridgeFinalizationAutomaticallyTriggered [
 	
 	robot := nil.
 	Smalltalk garbageCollect.
-	"WeakRegistry default finalizeValues."
 	
 	self assert: (bridgeInstancesCount > PNGNetworkBridge allInstances size).
 	self deny: bridgeSocket isValid.
-	
-	"self assert: bridgeProcess isTerminated. ""it does not work probably because of process priorities"
+	self assert: bridgeProcess isTerminated. 
 	
 	
 	

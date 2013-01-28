@@ -61,9 +61,3 @@ PNGEncodedMessage >> target [
 PNGEncodedMessage >> target: anObject [
 	target := anObject
 ]
-
-{ #category : #decoder }
-PNGEncodedMessage >> upToEnd [ 
-
-	^ stream upToEnd.
-]
