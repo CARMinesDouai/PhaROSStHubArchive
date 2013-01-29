@@ -21,23 +21,18 @@ Class {
 
 { #category : #'process creation block' }
 PNGNetworkBridge class >> createProcessSocket: socket resutlBuffer: resultBuffer responseQueue: responseQueue [ 
-	^ [ 
-		[ 
-			[
-				| receptionInformation receivedByteCount |
-				receptionInformation := socket receiveWithTimeOutUDPDataInto: resultBuffer.
-				receivedByteCount := receptionInformation at: 1.
-				responseQueue nextPut: (resultBuffer copyFrom: 1 to: receivedByteCount) 
-			] on: ConnectionTimedOut do: [].
-		] repeat 
-	] newProcess
-]
-
-{ #category : #'finalization callback' }
-PNGNetworkBridge class >> finalizationBlock [
-	^ [ :processBridge :socketBridge | 
-		processBridge 	ifNotNil: [ processBridge terminate.].
-		socketBridge ifNotNil: [ socketBridge closeAndDestroy ] ]
+	^ ActiveObject 
+	do: [ 
+			[ 
+				[
+					| receptionInformation receivedByteCount |
+					receptionInformation := socket receiveWithTimeOutUDPDataInto: resultBuffer.
+					receivedByteCount := receptionInformation at: 1.
+					responseQueue nextPut: (resultBuffer copyFrom: 1 to: receivedByteCount) 
+				] on: ConnectionTimedOut do: [].
+			] repeat 
+		] 
+	ensure: [socket closeAndDestroy]
 ]
 
 { #category : #'instance creation' }
@@ -64,7 +59,8 @@ PNGNetworkBridge >> ip [
 
 { #category : #testing }
 PNGNetworkBridge >> isStarted [ 
-	^self process notNil
+	self process ifNil: [^false].
+	^self process isStarted 
 ]
 
 { #category : #accessing }
@@ -80,19 +76,6 @@ PNGNetworkBridge >> process [
 { #category : #accessing }
 PNGNetworkBridge >> process: anObject [
 	process := anObject
-]
-
-{ #category : #finalization }
-PNGNetworkBridge >> registerForFinalization [
-	self finalizationRegistry
-		add: self
-		executor:
-			(ObjectFinalizer
-				receiver: self class finalizationBlock
-				selector: #cull:cull:
-				arguments:
-					{(self process).
-					(self socket)})
 ]
 
 { #category : #accessing }
@@ -153,12 +136,10 @@ PNGNetworkBridge >> start [
 			(self class createProcessSocket: self socket resutlBuffer: self resultBuffer responseQueue: self responseQueue).
 	self process
 		priority: Processor highIOPriority;
-		resume.
-	self registerForFinalization
+		start
 ]
 
 { #category : #activity }
 PNGNetworkBridge >> stop [
-	self class finalizationBlock cull: self process cull: self socket
-
+	self process stop
 ]
