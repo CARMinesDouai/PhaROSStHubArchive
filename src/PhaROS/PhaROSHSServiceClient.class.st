@@ -1,31 +1,31 @@
 Class {
-	#name : #PhaROSHandShakeMessageServiceClient,
-	#superclass : #PhaROSHandShakeMessage,
+	#name : #PhaROSHSServiceClient,
+	#superclass : #PhaROSHSMessage,
 	#category : #'PhaROS-Kernel-Tcp'
 }
 
 { #category : #accessing }
-PhaROSHandShakeMessageServiceClient >> persistent [
+PhaROSHSServiceClient >> persistent [
 	^self optativeAt:'persistent'.
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessageServiceClient >> persistent: aBoolean [ 
+PhaROSHSServiceClient >> persistent: aBoolean [ 
 	^self at:'persistent' put: aBoolean .
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessageServiceClient >> service [
+PhaROSHSServiceClient >> service [
 	^self at:'service'.
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessageServiceClient >> service: aServiceName [
+PhaROSHSServiceClient >> service: aServiceName [
 	^self at:'service' put: aServiceName.
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessageServiceClient >> verificationDictionary [ 
+PhaROSHSServiceClient >> verificationDictionary [ 
 	^super verificationDictionary addAll: (
 		{ 
 			#md5Sum -> ByteString .

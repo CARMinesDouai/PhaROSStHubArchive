@@ -1,8 +1,8 @@
 Class {
-	#name : #PhaROSHandShakeMessage,
+	#name : #PhaROSHSMessage,
 	#superclass : #Object,
-	#traits : 'TEquality + TLogger',
-	#classTraits : 'TEquality classTrait + TLogger classTrait',
+	#traits : 'TEquality',
+	#classTraits : 'TEquality classTrait',
 	#instVars : [
 		'header'
 	],
@@ -10,89 +10,89 @@ Class {
 }
 
 { #category : #'instance creation' }
-PhaROSHandShakeMessage class >> configure: aMessage with: aMessageConfigurationBlock [
+PhaROSHSMessage class >> configure: aMessage with: aMessageConfigurationBlock [
 	aMessageConfigurationBlock value: aMessage.
 	^ aMessage.
 	
 ]
 
 { #category : #'instance creation decoding' }
-PhaROSHandShakeMessage class >> newFrom: byteArray [
+PhaROSHSMessage class >> newFrom: byteArray [
 	^RoStHandShakeMessageDecoder decode: byteArray.
 	
 
 ]
 
 { #category : #'instance creation' }
-PhaROSHandShakeMessage class >> newPublisher [
-	^ PhaROSHandShakeMessagePublisher new.
+PhaROSHSMessage class >> newPublisher [
+	^ PhaROSHSPublisher new.
 ]
 
 { #category : #'instance creation decoding' }
-PhaROSHandShakeMessage class >> newPublisherMessageFrom: byteArray [
-	^PhaROSHandShakeMessageDecoder decodePublisherMessage: byteArray.
+PhaROSHSMessage class >> newPublisherMessageFrom: byteArray [
+	^PhaROSHSMessageDecoder decodePublisherMessage: byteArray.
 ]
 
 { #category : #'instance creation' }
-PhaROSHandShakeMessage class >> newPublisherWith: aMessageConfigurationBlock [
+PhaROSHSMessage class >> newPublisherWith: aMessageConfigurationBlock [
 	^ self configure: self newPublisher with:  aMessageConfigurationBlock.
 ]
 
 { #category : #'instance creation' }
-PhaROSHandShakeMessage class >> newService [
-	^ PhaROSHandShakeMessageService new.
+PhaROSHSMessage class >> newService [
+	^ PhaROSHSService new.
 ]
 
 { #category : #'instance creation' }
-PhaROSHandShakeMessage class >> newServiceClient [
-	^ PhaROSHandShakeMessageServiceClient new.
+PhaROSHSMessage class >> newServiceClient [
+	^ PhaROSHSServiceClient new.
 ]
 
 { #category : #'instance creation decoding' }
-PhaROSHandShakeMessage class >> newServiceClientMessageFrom: byteArray [
-	^RoStHandShakeMessageDecoder decodeServiceClientMessage: byteArray.
+PhaROSHSMessage class >> newServiceClientMessageFrom: byteArray [
+	^PhaROSHSMessageDecoder decodeServiceClientMessage: byteArray.
 ]
 
 { #category : #'instance creation' }
-PhaROSHandShakeMessage class >> newServiceClientWith: aMessageConfigurationBlock [
+PhaROSHSMessage class >> newServiceClientWith: aMessageConfigurationBlock [
 	^ self configure: self newServiceClient with:  aMessageConfigurationBlock.
 ]
 
 { #category : #'instance creation decoding' }
-PhaROSHandShakeMessage class >> newServiceMessageFrom: byteArray [
-	^PhaROSHandShakeMessageDecoder decodeServiceMessage: byteArray.
+PhaROSHSMessage class >> newServiceMessageFrom: byteArray [
+	^PhaROSHSMessageDecoder decodeServiceMessage: byteArray.
 ]
 
 { #category : #'instance creation' }
-PhaROSHandShakeMessage class >> newServiceWith: aMessageConfigurationBlock [
+PhaROSHSMessage class >> newServiceWith: aMessageConfigurationBlock [
 	^ self configure: self newService with:  aMessageConfigurationBlock.
 ]
 
 { #category : #'instance creation' }
-PhaROSHandShakeMessage class >> newSubscriber [
-	^  PhaROSHandShakeMessageSubscriber new.
+PhaROSHSMessage class >> newSubscriber [
+	^  PhaROSHSSubscriber new.
 ]
 
 { #category : #'instance creation decoding' }
-PhaROSHandShakeMessage class >> newSubscriberMessageFrom: byteArray [
-	^PhaROSHandShakeMessageDecoder decodeSubscriberMessage: byteArray.
+PhaROSHSMessage class >> newSubscriberMessageFrom: byteArray [
+	^PhaROSHSMessageDecoder decodeSubscriberMessage: byteArray.
 ]
 
 { #category : #'instance creation' }
-PhaROSHandShakeMessage class >> newSubscriberWith: aMessageConfigurationBlock [
+PhaROSHSMessage class >> newSubscriberWith: aMessageConfigurationBlock [
 	^ self configure: self newSubscriber with:  aMessageConfigurationBlock.
 ]
 
 { #category : #'instance creation' }
-PhaROSHandShakeMessage class >> newUnknownFormat [
-	^ PhaROSHandShakeMessage new
+PhaROSHSMessage class >> newUnknownFormat [
+	^ PhaROSHSMessage new
 
 	
 	
 ]
 
 { #category : #'instance creation' }
-PhaROSHandShakeMessage class >> newWith: aMessageConfigurationBlock. [
+PhaROSHSMessage class >> newWith: aMessageConfigurationBlock. [
 	^ self configure: self newUnknownFormat  with:  aMessageConfigurationBlock.
 
 	
@@ -100,65 +100,65 @@ PhaROSHandShakeMessage class >> newWith: aMessageConfigurationBlock. [
 ]
 
 { #category : #comparing }
-PhaROSHandShakeMessage >> = anObject [ 
+PhaROSHSMessage >> = anObject [ 
 	self species = anObject species ifFalse: [^false].
 	^self valuesToCompareForEquality = anObject valuesToCompareForEquality
 ]
 
 { #category : #'base-accessing' }
-PhaROSHandShakeMessage >> at: aKey [
+PhaROSHSMessage >> at: aKey [
 	 ^ self header at: aKey.
 ]
 
 { #category : #'base-accessing' }
-PhaROSHandShakeMessage >> at: aKey put: aValue [
+PhaROSHSMessage >> at: aKey put: aValue [
 
 	^self header at: aKey put: aValue.
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessage >> attributesDo: aBlockClosure [ 
+PhaROSHSMessage >> attributesDo: aBlockClosure [ 
 	^ header associationsDo: aBlockClosure.
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessage >> callerId [
+PhaROSHSMessage >> callerId [
 	^ self at: 'callerid'.
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessage >> callerId: aString [ " String "
+PhaROSHSMessage >> callerId: aString [ " String "
 	^ self at: 'callerid' put: aString.
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessage >> communicationError [
+PhaROSHSMessage >> communicationError [
 	^self at:'error'.
 	
 
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessage >> communicationError: anError [
+PhaROSHSMessage >> communicationError: anError [
 	^self at:'error' put: anError.
 	
 
 ]
 
 { #category : #'base-accessing' }
-PhaROSHandShakeMessage >> header [ 
+PhaROSHSMessage >> header [ 
 	^header.
 ]
 
 { #category : #comparing }
-PhaROSHandShakeMessage >> initialize [
+PhaROSHSMessage >> initialize [
 	super initialize.
 	header := OrderPreservingDictionary new.
-"	self messageDefinition: ('string data', Character lf asString,  Character lf asString)."
+
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessage >> md5Sum [
+PhaROSHSMessage >> md5Sum [
 	^ self at: 'md5sum'.
 	
 	
@@ -166,7 +166,7 @@ PhaROSHandShakeMessage >> md5Sum [
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessage >> md5Sum: aStringHashed [
+PhaROSHSMessage >> md5Sum: aStringHashed [
 	^ self at: 'md5sum' put: aStringHashed.
 	
 	
@@ -174,22 +174,22 @@ PhaROSHandShakeMessage >> md5Sum: aStringHashed [
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessage >> messageDefinition [
+PhaROSHSMessage >> messageDefinition [
 	^self at: 'message_definition'.
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessage >> messageDefinition: aString [
+PhaROSHSMessage >> messageDefinition: aString [
 	^self at: 'message_definition' put: aString.
 ]
 
 { #category : #'base-accessing' }
-PhaROSHandShakeMessage >> optativeAt: aKey [
+PhaROSHSMessage >> optativeAt: aKey [
 	 ^ self header at: aKey ifAbsent: [ nil ].
 ]
 
 { #category : #printing }
-PhaROSHandShakeMessage >> printOn: aStream [
+PhaROSHSMessage >> printOn: aStream [
 	super printOn: aStream.
 	aStream 
 		crlf; 
@@ -208,54 +208,51 @@ PhaROSHandShakeMessage >> printOn: aStream [
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessage >> requestType [
+PhaROSHSMessage >> requestType [
 	^self at:'request_type'.
 	
 
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessage >> requestType: anString [
+PhaROSHSMessage >> requestType: anString [
 	^self at:'request_type' put: anString.
 	
 
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessage >> responseType [
+PhaROSHSMessage >> responseType [
 	^self at: 'response_type' 
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessage >> responseType: aString [
+PhaROSHSMessage >> responseType: aString [
 	^self at: 'response_type'  put: aString.
 ]
 
 { #category : #communication }
-PhaROSHandShakeMessage >> sendTo: aSocket [
-	aSocket sendData: (PhaROSHandShakeMessageEncoder encode: self).
+PhaROSHSMessage >> sendTo: aSocket [
+	aSocket sendData: (PhaROSHSMessageEncoder encode: self).
 		
 
 ]
 
 { #category : #comparing }
-PhaROSHandShakeMessage >> valuesToCompareForEquality [
+PhaROSHSMessage >> valuesToCompareForEquality [
 	^{ header }
 ]
 
 { #category : #verification }
-PhaROSHandShakeMessage >> verificationDictionary [
+PhaROSHSMessage >> verificationDictionary [
 	^ { 
 		#callerId -> ByteString .   
 	} asDictionary .
 ]
 
 { #category : #verification }
-PhaROSHandShakeMessage >> verify [
+PhaROSHSMessage >> verify [
 
-	self debug: [ 'Verifying header consistence with ', self verificationDictionary asString ].
-	self debug: [ self header ].
-	
 	
 	self flag:#cleanUpThisMess.
 	
@@ -268,6 +265,6 @@ PhaROSHandShakeMessage >> verify [
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessage >> withHeader: aBlockClosure [ 
+PhaROSHSMessage >> withHeader: aBlockClosure [ 
 	^ aBlockClosure value: self.
 ]

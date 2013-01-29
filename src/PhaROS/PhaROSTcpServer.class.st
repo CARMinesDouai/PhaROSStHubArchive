@@ -1,8 +1,6 @@
 Class {
 	#name : #PhaROSTcpServer,
 	#superclass : #TcpService,
-	#traits : 'TLogger',
-	#classTraits : 'TLogger classTrait',
 	#instVars : [
 		'owner'
 	],
@@ -71,7 +69,7 @@ PhaROSTcpServer >> serve: aSocket [
 	
 	
 	self flag:#makeUpToThisThing.
-	message := PhaROSHandShakeMessageDecoder decodeSubscriberMessage: (data copyFrom: 1 to: bytesRead).
+	message := PhaROSHSMessageDecoder decodeSubscriberMessage: (data copyFrom: 1 to: bytesRead).
 	message verify.
 	
 	self owner manageIncomingConnection: message with: aSocket.

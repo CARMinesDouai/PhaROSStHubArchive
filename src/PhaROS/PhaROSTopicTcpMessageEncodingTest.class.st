@@ -10,7 +10,7 @@ Class {
 { #category : #testing }
 PhaROSTopicTcpMessageEncodingTest >> assertEncodedEqualsExpectedInFirst: netSize ofLastElements: rawSize [
 	|encoded expected|
-	encoded := ((PhaROSHandShakeMessageEncoder encode: message) last: rawSize) first: netSize.
+	encoded := ((PhaROSHSMessageEncoder encode: message) last: rawSize) first: netSize.
 	expected := (self expectedByteArray last:  rawSize) first: netSize.
 	self assert: encoded = expected
 ]
@@ -18,7 +18,7 @@ PhaROSTopicTcpMessageEncodingTest >> assertEncodedEqualsExpectedInFirst: netSize
 { #category : #testing }
 PhaROSTopicTcpMessageEncodingTest >> assertEncodedEqualsExpectedInLast: netSize ofFirstElements: rawSize [
 	|encoded expected|
-	encoded := ((PhaROSHandShakeMessageEncoder encode: message) first: rawSize) last: netSize.
+	encoded := ((PhaROSHSMessageEncoder encode: message) first: rawSize) last: netSize.
 	expected := (self expectedByteArray first:  rawSize) last: netSize.
 	self assert: encoded = expected
 ]
@@ -58,7 +58,7 @@ PhaROSTopicTcpMessageEncodingTest >> setUp [
 	super setUp.
 
 "	RoStHandShakeMessageDecoder decode: self expectedByteArray."
-	message := PhaROSHandShakeMessage newPublisherWith: [
+	message := PhaROSHSMessage newPublisherWith: [
 		:msg  | 
 		msg  	
 		messageDefinition: 'string data', String lf, String lf;	
@@ -87,7 +87,7 @@ PhaROSTopicTcpMessageEncodingTest >> testCallerIdHeaderFieldSizeEncoding [
 { #category : #testing }
 PhaROSTopicTcpMessageEncodingTest >> testEncoding [
 	
-	self assert: (PhaROSHandShakeMessageEncoder encode: message)= (self  expectedByteArray first: 180)
+	self assert: (PhaROSHSMessageEncoder encode: message)= (self  expectedByteArray first: 180)
 	"In our approach we dont use the body space of the message in order to use the specific tcp/messages in just one way"
 ]
 

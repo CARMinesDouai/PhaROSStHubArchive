@@ -40,7 +40,7 @@ PhaROSTopicTcpMessageDecodingTest >> messageHexString [
 { #category : #testing }
 PhaROSTopicTcpMessageDecodingTest >> setUp [ 
 	super setUp.
-	expectedMessage := PhaROSHandShakeMessage newPublisherWith: [
+	expectedMessage := PhaROSHSMessage newPublisherWith: [
 		:msg  | 
 		msg  	
 			
@@ -61,7 +61,7 @@ PhaROSTopicTcpMessageDecodingTest >> setUp [
 PhaROSTopicTcpMessageDecodingTest >> testDecoding [
 	| decodedMessage |
 	
-	decodedMessage :=PhaROSHandShakeMessage newPublisherMessageFrom: self messageByteArray.
+	decodedMessage :=PhaROSHSMessage newPublisherMessageFrom: self messageByteArray.
 	self assert: expectedMessage = decodedMessage
 	
 ]
@@ -69,6 +69,6 @@ PhaROSTopicTcpMessageDecodingTest >> testDecoding [
 { #category : #testing }
 PhaROSTopicTcpMessageDecodingTest >> testHeaderDecoding [
 	| decodedMessage |
-	decodedMessage := PhaROSHandShakeMessage newPublisherMessageFrom: self messageByteArray.
+	decodedMessage := PhaROSHSMessage newPublisherMessageFrom: self messageByteArray.
 	self assert: expectedMessage header = decodedMessage header
 ]

@@ -1,11 +1,11 @@
 Class {
-	#name : #PhaROSTypedHandShakeMessage,
-	#superclass : #PhaROSHandShakeMessage,
+	#name : #PhaROSHSTyped,
+	#superclass : #PhaROSHSMessage,
 	#category : #'PhaROS-Kernel-Tcp'
 }
 
 { #category : #verification }
-PhaROSTypedHandShakeMessage >> digestMD5FromType [ 
+PhaROSHSTyped >> digestMD5FromType [ 
 	| md5 |
 	" The following line got for result a number in hexa as string with the base specified as a header (16r) "
 	md5 := (MD5 hashMessage: self type) asInteger hex.
@@ -16,21 +16,21 @@ PhaROSTypedHandShakeMessage >> digestMD5FromType [
 ]
 
 { #category : #accessing }
-PhaROSTypedHandShakeMessage >> type [
+PhaROSHSTyped >> type [
 	^self at: 'type'.
 		
 
 ]
 
 { #category : #accessing }
-PhaROSTypedHandShakeMessage >> type: aString [
+PhaROSHSTyped >> type: aString [
 	^self at: 'type' put: aString.
 		
 
 ]
 
 { #category : #verification }
-PhaROSTypedHandShakeMessage >> verificationDictionary [ 
+PhaROSHSTyped >> verificationDictionary [ 
 	^super verificationDictionary addAll: (
 		{ 
 			#md5Sum -> ByteString .

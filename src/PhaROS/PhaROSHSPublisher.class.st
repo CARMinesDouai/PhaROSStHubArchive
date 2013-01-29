@@ -1,31 +1,31 @@
 Class {
-	#name : #PhaROSHandShakeMessagePublisher,
-	#superclass : #PhaROSTypedHandShakeMessage,
+	#name : #PhaROSHSPublisher,
+	#superclass : #PhaROSHSTyped,
 	#category : #'PhaROS-Kernel-Tcp'
 }
 
 { #category : #accessing }
-PhaROSHandShakeMessagePublisher >> latching [
+PhaROSHSPublisher >> latching [
 	^self optativeAt: 'latching'.
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessagePublisher >> latching: aBoolean [ 
+PhaROSHSPublisher >> latching: aBoolean [ 
 	^self at: 'latching' put: aBoolean.
 ]
 
 { #category : #comparing }
-PhaROSHandShakeMessagePublisher >> topic [
+PhaROSHSPublisher >> topic [
 	^self at:'topic'.
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessagePublisher >> topic: aTopicName [
+PhaROSHSPublisher >> topic: aTopicName [
 	^self at:'topic' put: aTopicName.
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessagePublisher >> verificationDictionary [ 
+PhaROSHSPublisher >> verificationDictionary [ 
 	
 	^super verificationDictionary removeKey: 'callerId';
 			yourself. 

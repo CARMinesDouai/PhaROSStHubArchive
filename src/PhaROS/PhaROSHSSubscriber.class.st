@@ -1,31 +1,31 @@
 Class {
-	#name : #PhaROSHandShakeMessageSubscriber,
-	#superclass : #PhaROSTypedHandShakeMessage,
+	#name : #PhaROSHSSubscriber,
+	#superclass : #PhaROSHSTyped,
 	#category : #'PhaROS-Kernel-Tcp'
 }
 
 { #category : #accessing }
-PhaROSHandShakeMessageSubscriber >> tcpNodelay [
+PhaROSHSSubscriber >> tcpNodelay [
 	self optativeAt:'tcp_nodelay'.
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessageSubscriber >> tcpNodelay: aBoolean [
+PhaROSHSSubscriber >> tcpNodelay: aBoolean [
 	self at:'tcp_nodelay' put: aBoolean.
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessageSubscriber >> topic [
+PhaROSHSSubscriber >> topic [
 	^self at:'topic'.
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessageSubscriber >> topic: aTopicName [
+PhaROSHSSubscriber >> topic: aTopicName [
 	^self at:'topic' put: aTopicName.
 ]
 
 { #category : #verification }
-PhaROSHandShakeMessageSubscriber >> verificationDictionary [ 
+PhaROSHSSubscriber >> verificationDictionary [ 
 	^super verificationDictionary addAll: (
 		{ 
 			#topic -> ByteString 

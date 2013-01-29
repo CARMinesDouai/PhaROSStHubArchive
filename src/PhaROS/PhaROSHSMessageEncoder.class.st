@@ -1,8 +1,6 @@
 Class {
-	#name : #PhaROSHandShakeMessageEncoder,
+	#name : #PhaROSHSMessageEncoder,
 	#superclass : #Object,
-	#traits : 'TLogger',
-	#classTraits : 'TLogger classTrait',
 	#instVars : [
 		'tcpmessage'
 	],
@@ -10,17 +8,17 @@ Class {
 }
 
 { #category : #encoding }
-PhaROSHandShakeMessageEncoder class >> encode: aTcpMessage [
+PhaROSHSMessageEncoder class >> encode: aTcpMessage [
 	^self new encode: aTcpMessage.
 ]
 
 { #category : #encoding }
-PhaROSHandShakeMessageEncoder class >> encodeHeader: aTcpMessageHeader [
+PhaROSHSMessageEncoder class >> encodeHeader: aTcpMessageHeader [
 	^self new encodeHeader: aTcpMessageHeader.
 ]
 
 { #category : #'encoding-private' }
-PhaROSHandShakeMessageEncoder >> byteArrayForSizeOf: aCollection [
+PhaROSHSMessageEncoder >> byteArrayForSizeOf: aCollection [
 	|encodedSize sizeBytes|
 	encodedSize := #[0 0 0 0].
 	aCollection size asRoStByteArray reversed keysAndValuesDo: [:index :byte|
@@ -31,7 +29,7 @@ PhaROSHandShakeMessageEncoder >> byteArrayForSizeOf: aCollection [
 ]
 
 { #category : #encoding }
-PhaROSHandShakeMessageEncoder >> encode: aTcpHandshakeMessage [
+PhaROSHSMessageEncoder >> encode: aTcpHandshakeMessage [
 	| byteStream bodyBytes handshakeMessageBytes  |
 		
 	byteStream := ByteArray new writeStream.
@@ -46,7 +44,7 @@ PhaROSHandShakeMessageEncoder >> encode: aTcpHandshakeMessage [
 ]
 
 { #category : #encoding }
-PhaROSHandShakeMessageEncoder >> encodeMessage: aTcpHandshakeMessage [
+PhaROSHSMessageEncoder >> encodeMessage: aTcpHandshakeMessage [
 	| byteStream |
 	
 	aTcpHandshakeMessage verify.
@@ -62,7 +60,7 @@ PhaROSHandShakeMessageEncoder >> encodeMessage: aTcpHandshakeMessage [
 ]
 
 { #category : #'encoding-private' }
-PhaROSHandShakeMessageEncoder >> putSizeAndBytesOf: anObject into: byteStream [
+PhaROSHSMessageEncoder >> putSizeAndBytesOf: anObject into: byteStream [
 		|bytes|
 		bytes := anObject asRoStByteArray.
 		byteStream nextPutAll: (self byteArrayForSizeOf: bytes).

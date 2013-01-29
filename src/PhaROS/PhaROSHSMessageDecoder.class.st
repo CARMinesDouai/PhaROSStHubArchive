@@ -1,8 +1,6 @@
 Class {
-	#name : #PhaROSHandShakeMessageDecoder,
+	#name : #PhaROSHSMessageDecoder,
 	#superclass : #Object,
-	#traits : 'TLogger',
-	#classTraits : 'TLogger classTrait',
 	#instVars : [
 		'header',
 		'tcpmessage'
@@ -11,13 +9,13 @@ Class {
 }
 
 { #category : #decoding }
-PhaROSHandShakeMessageDecoder class >> decode: aByteArray [ 
+PhaROSHSMessageDecoder class >> decode: aByteArray [ 
 
-	^ self decode: aByteArray using: PhaROSHandShakeMessage newUnknownFormat.
+	^ self decode: aByteArray using: PhaROSHSMessage newUnknownFormat.
 ]
 
 { #category : #decoding }
-PhaROSHandShakeMessageDecoder class >> decode: aByteArray using: aMessage [
+PhaROSHSMessageDecoder class >> decode: aByteArray using: aMessage [
 	^ self new 	tcpmessage: aMessage; 
 				decode: aByteArray.
 
@@ -25,68 +23,66 @@ PhaROSHandShakeMessageDecoder class >> decode: aByteArray using: aMessage [
 ]
 
 { #category : #decoding }
-PhaROSHandShakeMessageDecoder class >> decodePublisherMessage: aByteArray [ 
+PhaROSHSMessageDecoder class >> decodePublisherMessage: aByteArray [ 
 
-	^ self decode: aByteArray using: PhaROSHandShakeMessage newPublisher.
+	^ self decode: aByteArray using: PhaROSHSMessage newPublisher.
 ]
 
 { #category : #decoding }
-PhaROSHandShakeMessageDecoder class >> decodeServiceClientMessage: aByteArray [ 
+PhaROSHSMessageDecoder class >> decodeServiceClientMessage: aByteArray [ 
 	^ self decode: aByteArray using: RoStHandShakeMessage newServiceClient.
 ]
 
 { #category : #decoding }
-PhaROSHandShakeMessageDecoder class >> decodeServiceMessage: aByteArray [ 
-	^ self decode: aByteArray using: PhaROSHandShakeMessage newService.
+PhaROSHSMessageDecoder class >> decodeServiceMessage: aByteArray [ 
+	^ self decode: aByteArray using: PhaROSHSMessage newService.
 ]
 
 { #category : #decoding }
-PhaROSHandShakeMessageDecoder class >> decodeSubscriberMessage: aByteArray [ 
+PhaROSHSMessageDecoder class >> decodeSubscriberMessage: aByteArray [ 
 
-	^ self decode: (aByteArray asByteArray)using: PhaROSHandShakeMessage newSubscriber.
+	^ self decode: (aByteArray asByteArray)using: PhaROSHSMessage newSubscriber.
 ]
 
 { #category : #decoding }
-PhaROSHandShakeMessageDecoder >> addTo: dataStream bodyPartAt: dataIndex from: bytes [
+PhaROSHSMessageDecoder >> addTo: dataStream bodyPartAt: dataIndex from: bytes [
 	dataStream nextPut: (self stringFrom: bytes)
 ]
 
 { #category : #'type-formatting' }
-PhaROSHandShakeMessageDecoder >> booleanFrom: bytes [
+PhaROSHSMessageDecoder >> booleanFrom: bytes [
 	^bytes first ~= 0
 ]
 
 { #category : #'header-loading' }
-PhaROSHandShakeMessageDecoder >> dataSizeFrom: byteStream [
+PhaROSHSMessageDecoder >> dataSizeFrom: byteStream [
 	^self intFrom: (byteStream next: self sizeBytesCount)
 ]
 
 { #category : #decoding }
-PhaROSHandShakeMessageDecoder >> decode: aByteArray [
+PhaROSHSMessageDecoder >> decode: aByteArray [
 	| byteStream headerSize bodySize |
 	
-	self debug: [ 'Decoding: ' , aByteArray asString ].
 	" Header parsing "
 	byteStream := aByteArray readStream.
 	headerSize := self dataSizeFrom: byteStream.
 	self initHeaderFrom: (byteStream next: headerSize).
 
-	self debug: [ 'Message decoded as ', tcpmessage asString ].
 	^tcpmessage.
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessageDecoder >> header [ 
+PhaROSHSMessageDecoder >> header [ 
 	^ tcpmessage header.
 ]
 
 { #category : #'header-loading' }
-PhaROSHandShakeMessageDecoder >> headerFieldSeparator [
+PhaROSHSMessageDecoder >> headerFieldSeparator [
 	^61 "$=  asInteger"
 ]
 
 { #category : #'body-loading' }
-PhaROSHandShakeMessageDecoder >> initBodyFrom: bytes [
+PhaROSHSMessageDecoder >> initBodyFrom: bytes [
 	| byteStream dataStream dataIndex |
 	byteStream := bytes readStream.
 	dataStream := Array new writeStream.
@@ -103,7 +99,7 @@ PhaROSHandShakeMessageDecoder >> initBodyFrom: bytes [
 ]
 
 { #category : #'header-loading' }
-PhaROSHandShakeMessageDecoder >> initFieldFrom: bytes [
+PhaROSHSMessageDecoder >> initFieldFrom: bytes [
 	| separatorIndex fieldNameBytes fieldName fieldValueBytes fieldValue |
 	separatorIndex := bytes indexOf: self headerFieldSeparator.
 	fieldNameBytes := bytes copyFrom: 1 to: separatorIndex - 1.
@@ -114,7 +110,7 @@ PhaROSHandShakeMessageDecoder >> initFieldFrom: bytes [
 ]
 
 { #category : #'header-loading' }
-PhaROSHandShakeMessageDecoder >> initHeaderFrom: byteArray [ 
+PhaROSHSMessageDecoder >> initHeaderFrom: byteArray [ 
 	| byteStream |
 	byteStream := byteArray readStream.
 	[byteStream atEnd] whileFalse: [
@@ -126,27 +122,27 @@ PhaROSHandShakeMessageDecoder >> initHeaderFrom: byteArray [
 ]
 
 { #category : #'type-formatting' }
-PhaROSHandShakeMessageDecoder >> intFrom: bytes [
+PhaROSHSMessageDecoder >> intFrom: bytes [
 	^ bytes longAt: 1 bigEndian: false.
 ]
 
 { #category : #constants }
-PhaROSHandShakeMessageDecoder >> sizeBytesCount [
+PhaROSHSMessageDecoder >> sizeBytesCount [
 	^4
 ]
 
 { #category : #'type-formatting' }
-PhaROSHandShakeMessageDecoder >> stringFrom: bytes [
+PhaROSHSMessageDecoder >> stringFrom: bytes [
 	^bytes asString
 ]
 
 { #category : #accessing }
-PhaROSHandShakeMessageDecoder >> tcpmessage: aMessage [
+PhaROSHSMessageDecoder >> tcpmessage: aMessage [
 	tcpmessage := aMessage. 
 ]
 
 { #category : #'header-loading' }
-PhaROSHandShakeMessageDecoder >> valueFrom: fieldValueBytes forField: fieldName [
+PhaROSHSMessageDecoder >> valueFrom: fieldValueBytes forField: fieldName [
 	fieldName = 'latching' ifTrue: [^self booleanFrom: fieldValueBytes].
 	^self stringFrom: fieldValueBytes
 ]

@@ -22,7 +22,7 @@ PhaROSServiceProxy class >> serviceName: serviceName uriFrom: uriString [
 
 { #category : #calling }
 PhaROSServiceProxy >> bytesForMessageWithArgs: args [
-	^ PhaROSHandShakeMessageEncoder encode: (self messageWithArgs: args).
+	^ PhaROSHSMessageEncoder encode: (self messageWithArgs: args).
 ]
 
 { #category : #calling }
@@ -41,7 +41,7 @@ PhaROSServiceProxy >> callWithArgs: args [
 	socketStr sendCommand: messageBytes, #[0 0 0 0].
 	response := socketStr upToEnd.
 	socketStr close.
-	^PhaROSHandShakeMessage newServiceMessageFrom: response asByteArray
+	^PhaROSHSMessage newServiceMessageFrom: response asByteArray
 ]
 
 { #category : #accessing }
@@ -62,7 +62,7 @@ PhaROSServiceProxy >> md5Sum [
 { #category : #calling }
 PhaROSServiceProxy >> messageWithArgs: args [
 
-	^ PhaROSHandShakeMessage newServiceClientWith: [
+	^ PhaROSHSMessage newServiceClientWith: [
 		:header |
 		header callerId: self callerId;
 				md5Sum: self md5Sum;

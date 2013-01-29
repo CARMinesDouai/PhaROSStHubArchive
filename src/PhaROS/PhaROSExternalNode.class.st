@@ -80,7 +80,7 @@ PhaROSExternalNode >> stop [
 { #category : #'message handling' }
 PhaROSExternalNode >> subscribedTo: aChannel [	
 	
-	message := PhaROSHandShakeMessage newPublisherWith: [ :msg |
+	message := PhaROSHSMessage newPublisherWith: [ :msg |
 		msg callerId: aChannel owner name.
 		msg md5Sum: topic md5Sum.
 		msg type: topic type.

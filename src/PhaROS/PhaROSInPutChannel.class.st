@@ -25,7 +25,7 @@ PhaROSInPutChannel >> close [
 { #category : #service }
 PhaROSInPutChannel >> createNodeFromHandshake: aSocket [
 	| connectionMessage | 
-	connectionMessage := PhaROSHandShakeMessage newSubscriberMessageFrom: aSocket receiveDataWithTimeout.
+	connectionMessage := PhaROSHSMessage newSubscriberMessageFrom: aSocket receiveDataWithTimeout.
 	^(PhaROSSelfProcessedExternalNode named: connectionMessage callerId subscriberOf: topic  with: aSocket).
 	
 	
@@ -64,7 +64,7 @@ PhaROSInPutChannel >> requestTopic: anUrlString [
 { #category : #service }
 PhaROSInPutChannel >> sendHandshake: aSocket [
 	| message |
-	message := PhaROSHandShakeMessage newSubscriberWith:[
+	message := PhaROSHSMessage newSubscriberWith:[
 		:msg |
 		msg callerId: owner name	;
 				topic: topic name;
