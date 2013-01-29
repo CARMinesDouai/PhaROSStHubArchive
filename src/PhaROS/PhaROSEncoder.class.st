@@ -4,12 +4,12 @@ Class {
 	#instVars : [
 		'stream'
 	],
-	#category : #'PhaROS-Kernel-Types'
+	#category : #'PhaROS-Encoding'
 }
 
 { #category : #'as yet unclassified' }
-PhaROSEncoder class >> on: aReadStream [
-	^self new stream: aReadStream; yourself.
+PhaROSEncoder class >> on: aWriteStream [
+	^self new stream: aWriteStream; yourself.
 ]
 
 { #category : #'as yet unclassified' }

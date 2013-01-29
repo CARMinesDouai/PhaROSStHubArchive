@@ -5,7 +5,7 @@ Class {
 		'validValues',
 		'invalidValues'
 	],
-	#category : #'PhaROS-Kernel-Types-Test'
+	#category : #'PhaROS-Types-Test'
 }
 
 { #category : #'as yet unclassified' }

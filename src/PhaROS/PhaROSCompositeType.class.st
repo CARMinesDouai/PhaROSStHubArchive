@@ -9,7 +9,7 @@ Class {
 	#classInstVars : [
 		'types'
 	],
-	#category : #'PhaROS-Kernel-Types'
+	#category : #'PhaROS-Types-Basic'
 }
 
 { #category : #construction }

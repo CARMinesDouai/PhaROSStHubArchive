@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'stream'
 	],
-	#category : #'PhaROS-Kernel-Types'
+	#category : #'PhaROS-Encoding'
 }
 
 { #category : #'as yet unclassified' }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'owner'
 	],
-	#category : #'PhaROS-Kernel-XmlRpc'
+	#category : #'PhaROS-Network-XmlRpc'
 }
 
 { #category : #'as yet unclassified' }

@@ -25,7 +25,7 @@ Class {
 	#instVars : [
 		'elements'
 	],
-	#category : #'PhaROS-Kernel-XmlRpc'
+	#category : #'PhaROS-Network-XmlRpc'
 }
 
 { #category : #'instance creation' }
@@ -75,5 +75,8 @@ PhaROSXmlRpcResponse >> statusMessage [
 
 { #category : #accessing }
 PhaROSXmlRpcResponse >> value [
+	self isSuccess ifFalse: [
+		PhaROSXmlRpcInvocationException signalWithResponse: self.		
+	].
 	^elements last
 ]

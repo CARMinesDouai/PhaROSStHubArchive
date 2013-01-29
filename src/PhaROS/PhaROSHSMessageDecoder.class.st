@@ -5,7 +5,7 @@ Class {
 		'header',
 		'tcpmessage'
 	],
-	#category : #'PhaROS-Kernel-Tcp'
+	#category : #'PhaROS-Network-Tcp'
 }
 
 { #category : #decoding }

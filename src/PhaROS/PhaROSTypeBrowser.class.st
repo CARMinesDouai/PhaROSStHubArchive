@@ -7,7 +7,7 @@ Class {
 	#classInstVars : [
 		'instance'
 	],
-	#category : #'PhaROS-Kernel-TypesBrowsing'
+	#category : #'PhaROS-Util'
 }
 
 { #category : #'as yet unclassified' }

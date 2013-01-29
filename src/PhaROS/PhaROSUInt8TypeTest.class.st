@@ -1,7 +1,7 @@
 Class {
 	#name : #PhaROSUInt8TypeTest,
 	#superclass : #PhaROSTypeMarshallingBaseTest,
-	#category : #'PhaROS-Kernel-Types-Test'
+	#category : #'PhaROS-Types-Test'
 }
 
 { #category : #'as yet unclassified' }

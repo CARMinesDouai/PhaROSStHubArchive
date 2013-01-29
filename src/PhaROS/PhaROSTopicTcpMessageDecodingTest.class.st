@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'expectedMessage'
 	],
-	#category : #'PhaROS-Kernel-Tcp-Test'
+	#category : #'PhaROS-Network-Tcp-Test'
 }
 
 { #category : #testing }

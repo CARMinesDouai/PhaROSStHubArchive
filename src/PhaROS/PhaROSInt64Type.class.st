@@ -1,7 +1,7 @@
 Class {
 	#name : #PhaROSInt64Type,
 	#superclass : #PhaROSType,
-	#category : #'PhaROS-Kernel-Types'
+	#category : #'PhaROS-Types-Basic'
 }
 
 { #category : #'as yet unclassified' }

@@ -1,7 +1,7 @@
 Class {
 	#name : #PhaROSCommandVelocity,
 	#superclass : #PhaROSValue,
-	#category : #'PhaROS-Kernel-Types'
+	#category : #'PhaROS-Types'
 }
 
 { #category : #'as yet unclassified' }

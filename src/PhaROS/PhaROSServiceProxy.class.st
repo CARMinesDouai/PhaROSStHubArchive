@@ -9,7 +9,7 @@ Class {
 		'uri',
 		'serviceName'
 	],
-	#category : #'PhaROS-Kernel-XmlRpc'
+	#category : #'PhaROS-Network-XmlRpc'
 }
 
 { #category : #'instance creation' }

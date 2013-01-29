@@ -9,7 +9,7 @@ Class {
 	#classInstVars : [
 		'instance'
 	],
-	#category : #'PhaROS-Kernel'
+	#category : #'PhaROS-Util'
 }
 
 { #category : #'as yet unclassified' }

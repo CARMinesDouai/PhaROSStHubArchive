@@ -6,7 +6,7 @@ Class {
 		'master',
 		'type'
 	],
-	#category : #'PhaROS-Kernel-TypesBrowsing'
+	#category : #'PhaROS-Util'
 }
 
 { #category : #construction }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'values'
 	],
-	#category : #'PhaROS-Kernel-Types'
+	#category : #'PhaROS-Types'
 }
 
 { #category : #'as yet unclassified' }

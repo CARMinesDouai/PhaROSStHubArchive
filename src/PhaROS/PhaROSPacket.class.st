@@ -5,7 +5,7 @@ Class {
 		'type',
 		'value'
 	],
-	#category : #'PhaROS-Kernel-Types'
+	#category : #'PhaROS-Network-Tcp'
 }
 
 { #category : #'as yet unclassified' }

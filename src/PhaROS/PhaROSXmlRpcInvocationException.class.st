@@ -14,7 +14,7 @@ Class {
 	#instVars : [
 		'response'
 	],
-	#category : #'PhaROS-Kernel-Error'
+	#category : #'PhaROS-Error'
 }
 
 { #category : #signaling }

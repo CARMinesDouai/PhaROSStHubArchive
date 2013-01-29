@@ -7,7 +7,7 @@ Class {
 	#classInstVars : [
 		'RoStTcpServers'
 	],
-	#category : #'PhaROS-Kernel-Tcp'
+	#category : #'PhaROS-Network-Tcp'
 }
 
 { #category : #constructors }

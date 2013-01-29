@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'tcpmessage'
 	],
-	#category : #'PhaROS-Kernel-Tcp'
+	#category : #'PhaROS-Network-Tcp'
 }
 
 { #category : #encoding }

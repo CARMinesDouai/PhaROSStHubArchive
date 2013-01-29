@@ -1,7 +1,7 @@
 Class {
 	#name : #PhaROSArrayType,
 	#superclass : #PhaROSCollectionType,
-	#category : #'PhaROS-Kernel-Types'
+	#category : #'PhaROS-Types-Basic'
 }
 
 { #category : #construction }

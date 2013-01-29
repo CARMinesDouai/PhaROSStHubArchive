@@ -1,5 +1,5 @@
 Class {
 	#name : #PhaROSError,
 	#superclass : #Error,
-	#category : #'PhaROS-Kernel-Error'
+	#category : #'PhaROS-Error'
 }

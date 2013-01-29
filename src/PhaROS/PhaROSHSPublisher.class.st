@@ -1,7 +1,7 @@
 Class {
 	#name : #PhaROSHSPublisher,
 	#superclass : #PhaROSHSTyped,
-	#category : #'PhaROS-Kernel-Tcp'
+	#category : #'PhaROS-Network-Tcp'
 }
 
 { #category : #accessing }

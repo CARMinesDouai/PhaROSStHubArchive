@@ -6,7 +6,7 @@ Class {
 	#instVars : [
 		'header'
 	],
-	#category : #'PhaROS-Kernel-Tcp'
+	#category : #'PhaROS-Network-Tcp'
 }
 
 { #category : #'instance creation' }

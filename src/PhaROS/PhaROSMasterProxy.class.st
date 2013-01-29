@@ -11,7 +11,7 @@ Class {
 	#classVars : [
 		'MasterInstances'
 	],
-	#category : #'PhaROS-Kernel-XmlRpc'
+	#category : #'PhaROS-Network-XmlRpc'
 }
 
 { #category : #'as yet unclassified' }

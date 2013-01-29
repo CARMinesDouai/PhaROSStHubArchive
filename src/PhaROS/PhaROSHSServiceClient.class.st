@@ -1,7 +1,7 @@
 Class {
 	#name : #PhaROSHSServiceClient,
 	#superclass : #PhaROSHSMessage,
-	#category : #'PhaROS-Kernel-Tcp'
+	#category : #'PhaROS-Network-Tcp'
 }
 
 { #category : #accessing }

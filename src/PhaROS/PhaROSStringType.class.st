@@ -1,7 +1,7 @@
 Class {
 	#name : #PhaROSStringType,
 	#superclass : #PhaROSType,
-	#category : #'PhaROS-Kernel-Types'
+	#category : #'PhaROS-Types-Basic'
 }
 
 { #category : #'initialize-release' }

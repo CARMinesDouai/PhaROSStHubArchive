@@ -4,9 +4,7 @@ A RoStProxy is an XML RPC proxy that wraps retrun values of method invokations i
 Class {
 	#name : #PhaROSProxy,
 	#superclass : #XMLRPCProxy,
-	#traits : 'TLogger',
-	#classTraits : 'TLogger classTrait',
-	#category : #'PhaROS-Kernel-XmlRpc'
+	#category : #'PhaROS-Network-XmlRpc'
 }
 
 { #category : #'instance creation' }
@@ -20,13 +18,12 @@ PhaROSProxy class >> url: urlString [
 
 { #category : #invoking }
 PhaROSProxy >> invokeMethod: method withArgs: args [
-	| returnArray response |
+	| returnArray |
 	
-	self debug: [ 'Calling to [' , method, '] with: [', args asString , '] to: [' , self url asString ,']' ].
 	returnArray := super invokeMethod: method withArgs: args.
-	response := self responseClass elements: returnArray.
-	response isSuccess ifTrue: [^response value].
-	PhaROSXmlRpcInvocationException signalWithResponse: response
+	^ (self responseClass elements: returnArray) value.
+	
+	
 ]
 
 { #category : #invoking }

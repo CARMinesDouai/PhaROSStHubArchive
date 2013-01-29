@@ -5,7 +5,7 @@ Class {
 		'encodeSelector',
 		'decodeSelector'
 	],
-	#category : #'PhaROS-Kernel-Types'
+	#category : #'PhaROS-Types-Basic'
 }
 
 { #category : #construction }
