@@ -4,17 +4,20 @@ Class {
 	#instVars : [
 		'process',
 		'activityBlock',
-		'stopBlock',
 		'priority'
 	],
 	#category : #Concurrency
 }
 
 { #category : #'instance creation' }
-ActiveObject class >> activityBlock: activityBlock stopBlock: stopBlock [ 
+ActiveObject class >> do: taskBlock [
+	^self do: taskBlock ensure: []
+]
+
+{ #category : #'instance creation' }
+ActiveObject class >> do: taskBlock ensure: stopBlock [ 
 	^self new
-		activityBlock: activityBlock;
-		stopBlock: stopBlock;
+		activityBlock: [taskBlock ensure: stopBlock];
 		yourself
 ]
 
@@ -61,8 +64,10 @@ ActiveObject >> priority [
 ]
 
 { #category : #accessing }
-ActiveObject >> priority: anObject [
-	priority := anObject
+ActiveObject >> priority: newPriority [
+	priority := newPriority.
+	self isStopped ifTrue: [^self].
+	self process priority: priority
 ]
 
 { #category : #accessing }
@@ -84,25 +89,15 @@ ActiveObject >> registerForFinalization [
 ActiveObject >> start [
 	self isStarted
 		ifTrue: [ ^ self ].
-	self process: [self activityBlock ensure: self stopBlock] newProcess.
-	self process
-		priority: self priority;
-		resume.
-	self registerForFinalization
+	self process: self activityBlock newProcess.
+	self process priority: self priority.
+	self registerForFinalization.
+	self process	 resume.
+
 ]
 
 { #category : #activity }
 ActiveObject >> stop [
 	self process isNil ifTrue: [^true].
-	^process isTerminated
-]
-
-{ #category : #accessing }
-ActiveObject >> stopBlock [
-	^ stopBlock
-]
-
-{ #category : #accessing }
-ActiveObject >> stopBlock: anObject [
-	stopBlock := anObject
+	process terminate
 ]

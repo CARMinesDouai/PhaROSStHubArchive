@@ -8,23 +8,15 @@ Class {
 }
 
 { #category : #testing }
-ActiveObjectTest >> setUp [
-	super setUp.
-	activeObject := ActiveObject new
-]
-
-{ #category : #testing }
 ActiveObjectTest >> testDoesActivity [
 	|counter semaphore|
 	counter := 0.
 	semaphore := Semaphore new.
-	activeObject 
-		priority: Processor userBackgroundPriority;
-		activityBlock: [
+	activeObject := ActiveObject do: [
 			counter := 1.
 			semaphore signal
-		];
-		start.
+		] ensure: [].
+	activeObject start.
 	self deny: (semaphore waitTimeoutMSecs: 500).
 	self assert: counter = 1.
 	
@@ -35,17 +27,21 @@ ActiveObjectTest >> testDoesStopBlockUponFinalization [
 	|counter semaphore process |
 	counter := 0.
 	semaphore := Semaphore new.
-	activeObject 
-		priority: Processor highestPriority;
-		activityBlock: [];
-		stopBlock: [
+	activeObject := ActiveObject 
+		do: [
+			[(Delay forMilliseconds: 50) wait]repeat
+		]
+		ensure: [
 			counter := 1.
-			semaphore signal]	;
+			semaphore signal.
+	].
+	activeObject 
+		priority: Processor lowestPriority;
 		start.
 	process := activeObject process.
 	activeObject := nil.
 	Smalltalk garbageCollect.
-	self deny: (semaphore waitTimeoutMSecs: 500).
+	self deny: (semaphore waitTimeoutSeconds: 2).
 	self assert: counter = 1.
 	self assert: process isTerminated 
 	
@@ -56,19 +52,46 @@ ActiveObjectTest >> testDoesStopBlockUponTermination [
 	|counter semaphore|
 	counter := 0.
 	semaphore := Semaphore new.
-	activeObject 
-		priority: Processor userBackgroundPriority;
-		activityBlock: [];
-		stopBlock: [
+	activeObject := ActiveObject 
+		do: []
+		ensure: [
 			counter := 1.
-			semaphore signal]	;
-		start.
+			semaphore signal].
+	activeObject start.
 	self deny: (semaphore waitTimeoutMSecs: 500).
 	self assert: counter = 1.
 	
 ]
 
 { #category : #testing }
-ActiveObjectTest >> testRejectPriorityChangeWhileStarted [
-	self signalFailure: 'todo'
+ActiveObjectTest >> testPriorityChangeWhileStarted [
+	| initialPriority newPriority |
+	initialPriority := Processor highestPriority.
+	activeObject := ActiveObject do: [
+			[(Delay forMilliseconds: 100) wait] repeat
+	].
+	activeObject 
+		priority: initialPriority;
+		start.
+	newPriority := Processor userBackgroundPriority.
+	self deny: newPriority = initialPriority.
+	self assert: activeObject isStarted.
+	activeObject priority: newPriority.
+	self assert: activeObject process priority = newPriority
+
+]
+
+{ #category : #testing }
+ActiveObjectTest >> testPriorityChangeWhileStopped [
+	| initialPriority |
+	initialPriority := Processor highestPriority.
+	activeObject := ActiveObject 
+		do: [
+			[(Delay forMilliseconds: 100) wait]repeat
+			].
+	self assert: activeObject isStopped.
+	activeObject 
+		priority: initialPriority;
+		start.
+	self assert: activeObject process priority = initialPriority 
 ]
