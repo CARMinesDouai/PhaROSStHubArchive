@@ -7,7 +7,7 @@ Class {
 	#category : #Concurrency
 }
 
-{ #category : #testing }
+{ #category : #'test activity' }
 ActiveObjectTest >> testDoesActivity [
 	|counter semaphore|
 	counter := 0.
@@ -22,7 +22,7 @@ ActiveObjectTest >> testDoesActivity [
 	
 ]
 
-{ #category : #testing }
+{ #category : #'test activity' }
 ActiveObjectTest >> testDoesStopBlockUponFinalizationForHighestPriority [
 	|counter semaphore process |
 	counter := 0.
@@ -47,7 +47,7 @@ ActiveObjectTest >> testDoesStopBlockUponFinalizationForHighestPriority [
 	
 ]
 
-{ #category : #testing }
+{ #category : #'test activity' }
 ActiveObjectTest >> testDoesStopBlockUponFinalizationForLowestPriority [
 	|counter startSemaphore finalizationSemaphore process |
 	counter := 0.
@@ -75,7 +75,7 @@ ActiveObjectTest >> testDoesStopBlockUponFinalizationForLowestPriority [
 	
 ]
 
-{ #category : #testing }
+{ #category : #'test activity' }
 ActiveObjectTest >> testDoesStopBlockUponTermination [
 	|counter semaphore|
 	counter := 0.
@@ -91,7 +91,107 @@ ActiveObjectTest >> testDoesStopBlockUponTermination [
 	
 ]
 
-{ #category : #testing }
+{ #category : #'test state requests' }
+ActiveObjectTest >> testIsStartedForNewActiveObject [
+	activeObject := ActiveObject do: [
+		[(Delay forMilliseconds: 100) wait] repeat].
+	self deny: activeObject isStarted
+]
+
+{ #category : #'test state requests' }
+ActiveObjectTest >> testIsStartedForStartedObject [
+	| startSemaphore |
+	startSemaphore := Semaphore new.
+	activeObject := ActiveObject 
+		do: [	startSemaphore signal.
+				[(Delay forMilliseconds: 50) wait]repeat
+		].
+	activeObject start.
+	self deny: (startSemaphore waitTimeoutMSecs: 100).
+	self assert: activeObject isStarted
+]
+
+{ #category : #'test state requests' }
+ActiveObjectTest >> testIsStartedForStartedThenStoppedObject [
+	| startSemaphore |
+	startSemaphore := Semaphore new.
+	activeObject := ActiveObject 
+		do: [	startSemaphore signal.
+				[(Delay forMilliseconds: 50) wait]repeat
+		].
+	activeObject start.
+	self deny: (startSemaphore waitTimeoutMSecs: 100).
+	activeObject stop.
+	self deny: activeObject isStarted
+]
+
+{ #category : #'test state requests' }
+ActiveObjectTest >> testIsStartedForStartedThenStoppedThenStartedObject [
+	| startSemaphore |
+	startSemaphore := Semaphore new.
+	activeObject := ActiveObject 
+		do: [	startSemaphore signal.
+				[(Delay forMilliseconds: 50) wait]repeat
+		].
+	activeObject start.
+	self deny: (startSemaphore waitTimeoutMSecs: 100).
+	activeObject stop.
+	activeObject start.
+	self deny: (startSemaphore waitTimeoutMSecs: 100).
+	self assert: activeObject isStarted
+]
+
+{ #category : #'test state requests' }
+ActiveObjectTest >> testIsStoppedForNewActiveObject [
+	activeObject := ActiveObject do: [
+		[(Delay forMilliseconds: 100) wait] repeat].
+	self assert: activeObject isStopped
+]
+
+{ #category : #'test state requests' }
+ActiveObjectTest >> testIsStoppedForStartedObject [
+	| startSemaphore |
+	startSemaphore := Semaphore new.
+	activeObject := ActiveObject 
+		do: [	startSemaphore signal.
+				[(Delay forMilliseconds: 50) wait]repeat
+		].
+	activeObject start.
+	self deny: (startSemaphore waitTimeoutMSecs: 100).
+	self deny: activeObject isStopped
+]
+
+{ #category : #'test state requests' }
+ActiveObjectTest >> testIsStoppedForStartedThenStoppedObject [
+	| startSemaphore |
+	startSemaphore := Semaphore new.
+	activeObject := ActiveObject 
+		do: [	startSemaphore signal.
+				[(Delay forMilliseconds: 50) wait]repeat
+		].
+	activeObject start.
+	self deny: (startSemaphore waitTimeoutMSecs: 100).
+	activeObject stop.
+	self assert: activeObject isStopped
+]
+
+{ #category : #'test state requests' }
+ActiveObjectTest >> testIsStoppedForStartedThenStoppedThenStartedObject [
+	| startSemaphore |
+	startSemaphore := Semaphore new.
+	activeObject := ActiveObject 
+		do: [	startSemaphore signal.
+				[(Delay forMilliseconds: 50) wait]repeat
+		].
+	activeObject start.
+	self deny: (startSemaphore waitTimeoutMSecs: 100).
+	activeObject stop.
+	activeObject start.
+	self deny: (startSemaphore waitTimeoutMSecs: 100).
+	self deny: activeObject isStopped
+]
+
+{ #category : #'test activity' }
 ActiveObjectTest >> testPriorityChangeWhileStarted [
 	| initialPriority newPriority |
 	initialPriority := Processor highestPriority.
@@ -109,7 +209,7 @@ ActiveObjectTest >> testPriorityChangeWhileStarted [
 
 ]
 
-{ #category : #testing }
+{ #category : #'test activity' }
 ActiveObjectTest >> testPriorityChangeWhileStopped [
 	| initialPriority |
 	initialPriority := Processor highestPriority.

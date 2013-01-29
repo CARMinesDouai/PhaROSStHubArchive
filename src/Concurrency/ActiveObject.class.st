@@ -4,6 +4,7 @@ Class {
 	#instVars : [
 		'process',
 		'activityBlock',
+		'activityLock',
 		'priority'
 	],
 	#category : #Concurrency
@@ -11,14 +12,14 @@ Class {
 
 { #category : #'instance creation' }
 ActiveObject class >> do: taskBlock [
-	^self do: taskBlock ensure: []
+	^self new
+		activityBlock: taskBlock;
+		yourself
 ]
 
 { #category : #'instance creation' }
 ActiveObject class >> do: taskBlock ensure: stopBlock [ 
-	^self new
-		activityBlock: [taskBlock ensure: stopBlock];
-		yourself
+	^self do: [taskBlock ensure: stopBlock]
 ]
 
 { #category : #accessing }
@@ -44,18 +45,21 @@ ActiveObject >> finalize [
 { #category : #'initialize-release' }
 ActiveObject >> initialize [ 
 	super initialize.
-	self priority: self defaultPriority 
+	activityLock := Mutex new.
+	self priority: self defaultPriority.
+
 ]
 
 { #category : #testing }
 ActiveObject >> isStarted [ 
-	^self process notNil
+	^self isStopped not
 ]
 
 { #category : #testing }
 ActiveObject >> isStopped [
-	self process isNil ifTrue: [^true].
-	^self process isTerminated
+	activityLock critical: [
+		self process isNil ifTrue: [^true].
+		^self process isTerminated]
 ]
 
 { #category : #accessing }
@@ -87,17 +91,20 @@ ActiveObject >> registerForFinalization [
 
 { #category : #activity }
 ActiveObject >> start [
-	self isStarted
-		ifTrue: [ ^ self ].
-	self process: self activityBlock newProcess.
-	self process priority: self priority.
-	self registerForFinalization.
-	self process	 resume.
+	activityLock critical: [
+		self isStarted
+			ifTrue: [^self].
+		self process: self activityBlock newProcess.
+		self process priority: self priority.
+		self registerForFinalization.
+		self process	 resume]
 
 ]
 
 { #category : #activity }
 ActiveObject >> stop [
-	self process isNil ifTrue: [^true].
-	process terminate
+	activityLock critical: [
+		self process isNil ifTrue: [^true].
+		process terminate]
+
 ]
