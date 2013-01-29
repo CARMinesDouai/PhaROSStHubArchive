@@ -23,7 +23,7 @@ ActiveObjectTest >> testDoesActivity [
 ]
 
 { #category : #testing }
-ActiveObjectTest >> testDoesStopBlockUponFinalization [
+ActiveObjectTest >> testDoesStopBlockUponFinalizationForHighestPriority [
 	|counter semaphore process |
 	counter := 0.
 	semaphore := Semaphore new.
@@ -36,12 +36,40 @@ ActiveObjectTest >> testDoesStopBlockUponFinalization [
 			semaphore signal.
 	].
 	activeObject 
-		priority: Processor lowestPriority;
+		priority: Processor highestPriority;
 		start.
 	process := activeObject process.
 	activeObject := nil.
 	Smalltalk garbageCollect.
 	self deny: (semaphore waitTimeoutSeconds: 2).
+	self assert: counter = 1.
+	self assert: process isTerminated 
+	
+]
+
+{ #category : #testing }
+ActiveObjectTest >> testDoesStopBlockUponFinalizationForLowestPriority [
+	|counter startSemaphore finalizationSemaphore process |
+	counter := 0.
+	startSemaphore := Semaphore new.
+	finalizationSemaphore := Semaphore new.
+	activeObject := ActiveObject 
+		do: [
+			startSemaphore signal.
+			[(Delay forMilliseconds: 50) wait]repeat
+		]
+		ensure: [
+			counter := 1.
+			finalizationSemaphore signal.
+	].
+	activeObject 
+		priority: Processor lowestPriority;
+		start.
+	self deny: (startSemaphore waitTimeoutSeconds: 2).
+	process := activeObject process.
+	activeObject := nil.
+	Smalltalk garbageCollect.
+	self deny: (finalizationSemaphore waitTimeoutSeconds: 2).
 	self assert: counter = 1.
 	self assert: process isTerminated 
 	
