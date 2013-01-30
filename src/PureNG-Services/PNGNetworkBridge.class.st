@@ -12,9 +12,9 @@ Class {
 	#instVars : [
 		'robot',
 		'socket',
-		'process',
 		'responseQueue',
-		'resultBuffer'
+		'resultBuffer',
+		'activeObject'
 	],
 	#category : #'PureNG-Kernel'
 }
@@ -43,6 +43,16 @@ PNGNetworkBridge class >> forRobot: aRobot [
 		yourself 
 ]
 
+{ #category : #accessing }
+PNGNetworkBridge >> activeObject [
+	^ activeObject
+]
+
+{ #category : #accessing }
+PNGNetworkBridge >> activeObject: anObject [
+	activeObject := anObject
+]
+
 { #category : #'initialize-release' }
 PNGNetworkBridge >> initialize [ 
 	super  initialize.
@@ -59,23 +69,13 @@ PNGNetworkBridge >> ip [
 
 { #category : #testing }
 PNGNetworkBridge >> isStarted [ 
-	self process ifNil: [^false].
-	^self process isStarted 
+	self activeObject ifNil: [^false].
+	^self activeObject isStarted 
 ]
 
 { #category : #accessing }
 PNGNetworkBridge >> port [
 	^self robot port
-]
-
-{ #category : #accessing }
-PNGNetworkBridge >> process [
-	^ process
-]
-
-{ #category : #accessing }
-PNGNetworkBridge >> process: anObject [
-	process := anObject
 ]
 
 { #category : #accessing }
@@ -132,14 +132,14 @@ PNGNetworkBridge >> start [
 		ifTrue: [ ^ self ].
 	self socket: Socket newUDP.
 	self
-		process:
+		activeObject:
 			(self class createProcessSocket: self socket resutlBuffer: self resultBuffer responseQueue: self responseQueue).
-	self process
+	self activeObject
 		priority: Processor highIOPriority;
 		start
 ]
 
 { #category : #activity }
 PNGNetworkBridge >> stop [
-	self process stop
+	self activeObject stop
 ]

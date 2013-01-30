@@ -18,7 +18,7 @@ PNGCommunicationTest >> testBridgeFinalization [
 	| bridgeInstancesCount bridgeProcess bridgeSocket |
 	bridgeInstancesCount := PNGNetworkBridge allInstances size.
 	bridgeSocket := robot bridge socket.
-	bridgeProcess := robot bridge process.
+	bridgeProcess := robot bridge activeObject process. "Get the process of the activeObject"
 	
 	self assert: bridgeSocket isConnected.
 	self deny: bridgeProcess isTerminated.
@@ -53,10 +53,10 @@ PNGCommunicationTest >> testNotificationsReceivedOnTheLastSocketUseForRequest [
 		sendData: getRequestBytes
 		toHost: robot ip
 		port: robot port.
-	self shouldnt: [100 timesRepeat: [
+	self shouldnt: [30 timesRepeat: [
 			getSocket receiveWithTimeOutUDPDataInto: String new]] 
 		raise: Exception.
-	self should: [100 timesRepeat: [
+	self should: [30 timesRepeat: [
 			notificationInsertionSocket receiveWithTimeOutUDPDataInto: String new]] 
 		raise: ConnectionTimedOut.
 	
