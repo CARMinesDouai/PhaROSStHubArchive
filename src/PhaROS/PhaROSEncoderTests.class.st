@@ -15,119 +15,385 @@ PhaROSEncoderTests >> setUp [
 
 { #category : #tests }
 PhaROSEncoderTests >> testEncodeBoolean [
-	 encoder stream: (WriteStream on: ByteArray new: 20 )
-	 self assert: (encoder encodeBoolean:nil = nil). 
-
+	 
+			| buffer |
+			buffer := ByteArray new: 1.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeBoolean: true.
+			encoder flush.
+			self assert: (buffer = #[1]).
+			
+			
+			buffer := ByteArray new: 1.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeBoolean: false.
+			encoder flush.
+			self assert: (buffer = #[0])
 ]
 
 { #category : #tests }
 PhaROSEncoderTests >> testEncodeByte [
-	 encoder stream: (WriteStream on: ByteArray new: 20 )
-	 self assert: (encoder encodeByte:nil = nil). 
-
+	 
+			| buffer |
+			buffer := ByteArray new: 1.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeByte: 0.
+			encoder flush.
+			self assert: (buffer = #[0]).
+		
 ]
 
 { #category : #tests }
 PhaROSEncoderTests >> testEncodeBytes [
-	 encoder stream: (WriteStream on: ByteArray new: 20 )
-	 self assert: (encoder encodeBytes:nil = nil). 
-
+	 
+			| buffer |
+			buffer := ByteArray new: 2.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeBytes: #[ 1 0 ].
+			encoder flush.
+			self assert: (buffer = #[ 1 0 ]).
+		
 ]
 
 { #category : #tests }
 PhaROSEncoderTests >> testEncodeDuration [
-	 encoder stream: (WriteStream on: ByteArray new: 20 )
-	 self assert: (encoder encodeDuration:nil = nil). 
-
+	 
+			| buffer |
+			buffer := ByteArray new: 8.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeDuration: (Duration seconds: 0).
+			encoder flush.
+			self assert: (buffer = #[0 0 0 0 0 0 0 0]).
+		
+			buffer := ByteArray new: 8.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeDuration: (Duration seconds: 100000).
+			encoder flush.
+			self assert: (buffer = #[160 134 1 0 0 0 0 0]).
+		
 ]
 
 { #category : #tests }
 PhaROSEncoderTests >> testEncodeInt16 [
-	 encoder stream: (WriteStream on: ByteArray new: 20 )
-	 self assert: (encoder encodeInt16:nil = nil). 
-
+	 
+			| buffer |
+			buffer := ByteArray new: 2.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeInt16: 1.
+			encoder flush.
+			self assert: (buffer = #[1 0]).
+		
+			buffer := ByteArray new: 2.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeInt16: 0.
+			encoder flush.
+			self assert: (buffer = #[0 0]).
+		
+			buffer := ByteArray new: 2.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeInt16: -1.
+			encoder flush.
+			self assert: (buffer = #[255 255]).
+			
 ]
 
 { #category : #tests }
 PhaROSEncoderTests >> testEncodeInt32 [
-	 encoder stream: (WriteStream on: ByteArray new: 20 )
-	 self assert: (encoder encodeInt32:nil = nil). 
-
+	 
+			| buffer |
+			buffer := ByteArray new: 4.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeInt32: 1.
+			encoder flush.
+			self assert: (buffer = #[ 1 0 0 0 ]).
+		
+			buffer := ByteArray new: 4.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeInt32: 0.
+			encoder flush.
+			self assert: (buffer = #[ 0 0 0 0 ]).
+			
+			buffer := ByteArray new: 4.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeInt32: -1.
+			encoder flush.
+			self assert: (buffer = #[255 255 255 255]).
 ]
 
 { #category : #tests }
 PhaROSEncoderTests >> testEncodeInt64 [
-	 encoder stream: (WriteStream on: ByteArray new: 20 )
-	 self assert: (encoder encodeInt64:nil = nil). 
 
+	 
+			| buffer |
+			buffer := ByteArray new: 8.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeInt64: 1.
+			encoder flush.
+			self assert: (buffer = #[ 1 0 0 0 0 0 0 0 ]).
+		
+			buffer := ByteArray new: 8.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeInt64: 0.
+			encoder flush.
+			self assert: (buffer = #[ 0 0 0 0 0 0 0 0 ]).
+			
+			buffer := ByteArray new: 8.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeInt64: -1.
+			encoder flush.
+			self assert: (buffer = #[255 255 255 255 255 255 255 255]).
 ]
 
 { #category : #tests }
 PhaROSEncoderTests >> testEncodeInt8 [
-	 encoder stream: (WriteStream on: ByteArray new: 20 )
-	 self assert: (encoder encodeInt8:nil = nil). 
-
+	 
+			| buffer |
+			buffer := ByteArray new: 1.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeInt8: 1.
+			encoder flush.
+			self assert: (buffer = #[ 1 ]).
+		
+			buffer := ByteArray new: 1.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeInt8: 0.
+			encoder flush.
+			self assert: (buffer = #[ 0 ]).
+			
+			
+			buffer := ByteArray new: 1.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeInt8: -1.
+			encoder flush.
+			self assert: (buffer = #[ 255 ]).
+		
 ]
 
 { #category : #tests }
 PhaROSEncoderTests >> testEncodeString [
-	 encoder stream: (WriteStream on: ByteArray new: 20 )
-	 self assert: (encoder encodeString:nil = nil). 
-
+	 
+			| buffer |
+			buffer := ByteArray new: 10.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeString: 'STRING'.
+			encoder flush.
+			self assert: (buffer = #[6 0 0 0 83 84 82 73 78 71]).
+		
 ]
 
 { #category : #tests }
 PhaROSEncoderTests >> testEncodeTime [
-	 encoder stream: (WriteStream on: ByteArray new: 20 )
-	 self assert: (encoder encodeTime:nil = nil). 
-
+	 
+			| buffer |
+			buffer := ByteArray new: 8.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeTime:  PhaROSTimestamp new.
+			encoder flush.
+			self assert: (buffer = #[0 0 0 0 0 0 0 0]).
+		
+	
+			buffer := ByteArray new: 8.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeTime:  PhaROSTimestamp new + (Duration seconds: 9999999999).
+			encoder flush.
+			self assert: (buffer = #[255 227 11 84 0 0 0 0]).
+		
 ]
 
 { #category : #tests }
 PhaROSEncoderTests >> testEncodeUint16 [
-	 encoder stream: (WriteStream on: ByteArray new: 20 )
-	 self assert: (encoder encodeUint16:nil = nil). 
-
+	 
+			| buffer |
+			buffer := ByteArray new: 2.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeUint16: 1.
+			encoder flush.
+			self assert: (buffer = #[1 0]).
+		
+			buffer := ByteArray new: 2.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeUint16: 0.
+			encoder flush.
+			self assert: (buffer = #[0 0]).
+		
+			buffer := ByteArray new: 2.
+			encoder stream: (WriteStream on: buffer).
+			
+			self should: [
+				encoder encodeUint16: -1.
+			] raise: Error.
 ]
 
 { #category : #tests }
 PhaROSEncoderTests >> testEncodeUint32 [
-	 encoder stream: (WriteStream on: ByteArray new: 20 )
-	 self assert: (encoder encodeUint32:nil = nil). 
+	 
+			| buffer |
+			buffer := ByteArray new: 4.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeUint32: 1.
+			encoder flush.
+			self assert: (buffer = #[ 1 0 0 0 ]).
+		
+			buffer := ByteArray new: 4.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeUint32: 0.
+			encoder flush.
+			self assert: (buffer = #[ 0 0 0 0 ]).
+			
+			
+			buffer := ByteArray new: 4.
+			encoder stream: (WriteStream on: buffer).
+			
+			self should: [
+				encoder encodeUint32: -1.
+			] raise: Error.
+
 
 ]
 
 { #category : #tests }
 PhaROSEncoderTests >> testEncodeUint64 [
-	 encoder stream: (WriteStream on: ByteArray new: 20 )
-	 self assert: (encoder encodeUint64:nil = nil). 
+		 	| buffer |
+			buffer := ByteArray new: 8.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeUint64: 1.
+			encoder flush.
+			self assert: (buffer = #[ 1 0 0 0 0 0 0 0 ]).
+		
+			buffer := ByteArray new: 8.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeUint64: 0.
+			encoder flush.
+			self assert: (buffer = #[ 0 0 0 0 0 0 0 0 ]).
+			
+			buffer := ByteArray new: 8.
+			encoder stream: (WriteStream on: buffer).
+			
+			self should: [
+				encoder encodeUint64: -1.	
+			] raise: Error.
+			
 
 ]
 
 { #category : #tests }
 PhaROSEncoderTests >> testEncodeUint8 [
-	 encoder stream: (WriteStream on: ByteArray new: 20 )
-	 self assert: (encoder encodeUint8:nil = nil). 
-
+	 
+			| buffer |
+			buffer := ByteArray new: 1.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeUint8: 1.
+			encoder flush.
+			self assert: (buffer = #[ 1 ]).
+		
+			buffer := ByteArray new: 1.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodeUint8: 0.
+			encoder flush.
+			self assert: (buffer = #[ 0 ]).
+			
+			
+			buffer := ByteArray new: 1.
+			encoder stream: (WriteStream on: buffer).
+			
+			self should: [
+				encoder encodeUint8: -1.
+			] raise: Error.	
 ]
 
 { #category : #tests }
 PhaROSEncoderTests >> testEncodefloat32 [
-	 encoder stream: (WriteStream on: ByteArray new: 20 )
-	 self assert: (encoder encodefloat32:nil = nil). 
-
+	 
+			| buffer |
+			buffer := ByteArray new: 4.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodefloat32: 1.0.
+			encoder flush.
+			self assert: (buffer = #[0 0 128 63]).
+		
+			buffer := ByteArray new: 4.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodefloat32: -1.0.
+			encoder flush.
+			self assert: (buffer = #[0 0 128 191]).
+		
+			buffer := ByteArray new: 4.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodefloat32: 0.0.
+			encoder flush.
+			self assert: (buffer = #[0 0 0 0]).
+			
+			buffer := ByteArray new: 4.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodefloat32: 3.
+			encoder flush.
+			self assert: (buffer = #[0 0 64 64]).
+		
 ]
 
 { #category : #tests }
 PhaROSEncoderTests >> testEncodefloat64 [
-	 encoder stream: (WriteStream on: ByteArray new: 20 )
-	 self assert: (encoder encodefloat64:nil = nil). 
-
-]
-
-{ #category : #tests }
-PhaROSEncoderTests >> testStream [
-	 encoder stream: (WriteStream on: ByteArray new: 20 )
-	 self assert: (encoder stream:nil = nil). 
-
+	 
+			| buffer |
+			buffer := ByteArray new: 8.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodefloat64: 1.0.
+			encoder flush.
+			self assert: (buffer = #[0 0 0 0 0 0 240 63]).
+		
+			buffer := ByteArray new: 8.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodefloat64: -1.0.
+			encoder flush.
+			self assert: (buffer = #[0 0 0 0 0 0 240 191]).
+		
+			buffer := ByteArray new: 8.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodefloat64: 0.0.
+			encoder flush.
+			self assert: (buffer = #[0 0 0 0 0 0 0 0]).
+			
+			buffer := ByteArray new: 8.
+			encoder stream: (WriteStream on: buffer).
+			
+			encoder encodefloat64: 3.
+			encoder flush.
+			self assert: (buffer = #[0 0 0 0 0 0 8 64]).
+		
 ]

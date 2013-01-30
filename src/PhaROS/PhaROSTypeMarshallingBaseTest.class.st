@@ -142,6 +142,30 @@ PhaROSTypeMarshallingBaseTest >> setUp [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSTypeMarshallingBaseTest >> testFailSerialize [
+				^ super baseFailSerialize.
+		
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTypeMarshallingBaseTest >> testSerialize [
+				^ super baseSerialize.
+		
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTypeMarshallingBaseTest >> testUnserialize [
+				^ super baseUnserialize.
+		
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTypeMarshallingBaseTest >> testUnserializeFail [
+				^ super baseUnserializeFail.
+		
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSTypeMarshallingBaseTest >> validValues [ 
 	self subclassResponsibility.
 ]

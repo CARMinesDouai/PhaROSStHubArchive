@@ -41,6 +41,11 @@ PhaROSTimestamp class >> now [
 	^ super new timestamp: DateAndTime now ; offset: self defaultOffset ; yourself .
 ]
 
+{ #category : #operations }
+PhaROSTimestamp >> + aDuration [
+	^ PhaROSTimestamp new timestamp: timestamp + aDuration ; yourself.
+]
+
 { #category : #'as yet unclassified' }
 PhaROSTimestamp >> closeTo: anOtherPhaROSTimeStamp [
 	^ timestamp = anOtherPhaROSTimeStamp timestamp.

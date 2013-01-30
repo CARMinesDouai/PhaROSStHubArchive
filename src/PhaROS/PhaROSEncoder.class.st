@@ -12,7 +12,7 @@ PhaROSEncoder class >> on: aWriteStream [
 	^self new stream: aWriteStream; yourself.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 PhaROSEncoder >> encodeArray: anArray of: aRelatedType [
 	self encodeUint32: anArray size.
 	self encodeFixedLenghtArray: anArray  of: aRelatedType.
@@ -20,7 +20,7 @@ PhaROSEncoder >> encodeArray: anArray of: aRelatedType [
 	
 ]
 
-{ #category : #serialize }
+{ #category : #encoding }
 PhaROSEncoder >> encodeBoolean: aBoolean [
 	^aBoolean ifTrue: [
 		stream nextPut: 1.	
@@ -29,17 +29,17 @@ PhaROSEncoder >> encodeBoolean: aBoolean [
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 PhaROSEncoder >> encodeByte: aByte [
 	stream nextPut: aByte.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 PhaROSEncoder >> encodeBytes: aCollection [
 	stream nextPutAll: aCollection.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 PhaROSEncoder >> encodeDuration: aDuration [
 	self encodeUint32: aDuration secondsField.
 	self encodeUint32: aDuration nanoSeconds.
@@ -47,7 +47,7 @@ PhaROSEncoder >> encodeDuration: aDuration [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 PhaROSEncoder >> encodeFixedLenghtArray: anArray of: aRelatedType [
 	anArray do: [
 		:item |
@@ -56,7 +56,7 @@ PhaROSEncoder >> encodeFixedLenghtArray: anArray of: aRelatedType [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 PhaROSEncoder >> encodeInt16: aSmallInteger [ 
 	"Write a signed integer to the next 4 bytes"
 	| pos |
@@ -68,7 +68,7 @@ PhaROSEncoder >> encodeInt16: aSmallInteger [
  
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 PhaROSEncoder >> encodeInt32: aSmallInteger [ 
 	"Write a signed integer to the next 4 bytes"
 	| pos |
@@ -79,7 +79,7 @@ PhaROSEncoder >> encodeInt32: aSmallInteger [
 
 ]
 
-{ #category : #encode }
+{ #category : #encoding }
 PhaROSEncoder >> encodeInt64: aSmallInteger [ 
 
 	"Write a signed integer to the next 4 bytes"
@@ -92,7 +92,7 @@ PhaROSEncoder >> encodeInt64: aSmallInteger [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 PhaROSEncoder >> encodeInt8: aSmallInteger [ 
 	"Write a signed integer to the next byte"
 	| val |
@@ -104,14 +104,14 @@ PhaROSEncoder >> encodeInt8: aSmallInteger [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 PhaROSEncoder >> encodeString: aString [
 	self encodeUint32: aString size.
 	self encodeBytes: aString asByteArray. 
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 PhaROSEncoder >> encodeTime: aTime [
 	| time |
 	time := aTime.
@@ -125,12 +125,12 @@ PhaROSEncoder >> encodeTime: aTime [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 PhaROSEncoder >> encodeUint16: aSmallInteger [ 
 	"Append to the receiver an Integer as the next two bytes."
 	
 	| array a b |
-	
+	self verifyIfIsPositive: aSmallInteger.
 	a := aSmallInteger bitShift: -8.
 	b :=  aSmallInteger bitAnd: 255.
 	array := (ByteArray new), b asByteArray , a asByteArray .
@@ -139,16 +139,18 @@ PhaROSEncoder >> encodeUint16: aSmallInteger [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 PhaROSEncoder >> encodeUint32: aSmallInteger [ 
+	self verifyIfIsPositive: aSmallInteger.
 	"Append to the receiver an Integer as the next 4 bytes."
 	1 to: 4 do: [:i | stream nextPut: (aSmallInteger digitAt: i)].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 PhaROSEncoder >> encodeUint64: aNumber [
 
 	| val |
+		self verifyIfIsPositive: aNumber.
 	val :=  aNumber asByteArray.
 	val := (ByteArray new: (8 - val size)), val.
 	val := val reversed.
@@ -156,29 +158,26 @@ PhaROSEncoder >> encodeUint64: aNumber [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 PhaROSEncoder >> encodeUint8: aSmallInteger [ 
 	"Write a signed integer to the next byte"
-	| val |
-	(aSmallInteger >= 0 and: [aSmallInteger < 256]) ifTrue:[ val :=  aSmallInteger ].
-		
-	val ifNil: [ self error: 'out of bounds.'] .
-	^self encodeByte: val.
+	self verifyIfIsPositive: aSmallInteger.
+	^self encodeByte: aSmallInteger.
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 PhaROSEncoder >> encodefloat32: aFloat [
 	| encoded |
-	encoded := aFloat asIEEE32BitWord asByteArray reversed.
+	encoded := aFloat asFloat asIEEE32BitWord asByteArray reversed.
 	encoded :=  (ByteArray new: 4 - encoded size), encoded.
 	stream nextPutAll: encoded.
 ]
 
-{ #category : #'as yet unclassified' }
-PhaROSEncoder >> encodefloat64: aFloat [
-	| encoded |
-
+{ #category : #encoding }
+PhaROSEncoder >> encodefloat64: aFloat64 [
+	| encoded aFloat |
+	aFloat := aFloat64 asFloat.
 	encoded := ByteArray new: 8.
 	
 	encoded at:1 put: ((aFloat basicAt:2) digitAt: 1).
@@ -199,14 +198,21 @@ PhaROSEncoder >> encodefloat64: aFloat [
 	stream nextPutAll: encoded."
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #serialize }
 PhaROSEncoder >> flush [
 	stream flush.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSEncoder >> stream: aStream [ 
 	stream := aStream.
 	
 
+]
+
+{ #category : #encoding }
+PhaROSEncoder >> verifyIfIsPositive: aSmallInteger [ 
+	aSmallInteger < 0 ifTrue: [
+			self error: ' number should be positive '.
+	].
 ]
