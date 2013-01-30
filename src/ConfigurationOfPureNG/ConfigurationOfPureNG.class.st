@@ -136,8 +136,14 @@ ConfigurationOfPureNG >> baseline10: spec [
 					versionString: #bleedingEdge;
 					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
 			].
+			spec project: 'Concurrency' with: [
+				spec
+					package: 'Concurrency';
+					repository: 'http://car.mines-douai.fr/squeaksource/ReusableBricks'.
+
+			].
 			spec package: 'PureNG' with: [ 
-				spec requires: #('CommonTraits').
+				spec requires: #('CommonTraits' 'Concurrency').
 			].
 	].
 
