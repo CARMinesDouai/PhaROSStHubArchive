@@ -9,16 +9,6 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PhaROSTypeMarshallingBaseTest class >> initialize [ 
-	super initialize.
-	self writeTestIfNeed: #failSerialize.
-	self writeTestIfNeed: #serialize.
-	self writeTestIfNeed: #unserialize.
-	self writeTestIfNeed: #unserializeFail.
-	
-]
-
-{ #category : #'as yet unclassified' }
 PhaROSTypeMarshallingBaseTest class >> writeTestIfNeed: aSelector [
  | testSelector callSelector | 
 
@@ -139,30 +129,6 @@ PhaROSTypeMarshallingBaseTest >> setUp [
 
 
 
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSTypeMarshallingBaseTest >> testFailSerialize [
-				^ super baseFailSerialize.
-		
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSTypeMarshallingBaseTest >> testSerialize [
-				^ super baseSerialize.
-		
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSTypeMarshallingBaseTest >> testUnserialize [
-				^ super baseUnserialize.
-		
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSTypeMarshallingBaseTest >> testUnserializeFail [
-				^ super baseUnserializeFail.
-		
 ]
 
 { #category : #'as yet unclassified' }
