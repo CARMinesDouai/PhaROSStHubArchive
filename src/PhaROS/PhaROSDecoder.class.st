@@ -12,6 +12,12 @@ PhaROSDecoder class >> on: aReadStream [
 	^self new stream: aReadStream; yourself.
 ]
 
+{ #category : #'as yet unclassified' }
+PhaROSDecoder >> hasLeft: anAmountOfBytes [
+	^stream position + anAmountOfBytes <= stream size.
+	
+]
+
 { #category : #accessing }
 PhaROSDecoder >> minimumPrecision [
 	^ 0.002
@@ -19,12 +25,14 @@ PhaROSDecoder >> minimumPrecision [
 
 { #category : #'as yet unclassified' }
 PhaROSDecoder >> nextEncodedByte [
+	self verifyDataAvailability.
 	^stream next
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSDecoder >> nextEncodedDuration [
 	| duration |
+	self verifyDataAvailability: (4 * 2).
 	duration := Duration new.
 	duration seconds: self nextEncodedUint32 nanoSeconds: self nextEncodedUint32.
 	^ duration.
@@ -33,20 +41,21 @@ PhaROSDecoder >> nextEncodedDuration [
 { #category : #'as yet unclassified' }
 PhaROSDecoder >> nextEncodedFloat32 [
 	| n barray |
-	
+	self verifyDataAvailability: (4 ).
 	^( Float fromIEEE32BitByteArray: (stream next:4)) roundUpTo: self minimumPrecision. 
 
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSDecoder >> nextEncodedFloat64 [
+	self verifyDataAvailability: (8).
 	^ (stream next:8) doubleAt: 1 bigEndian: false.
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSDecoder >> nextEncodedInt16 [
 	| n firstDigit barray |
-	
+	self verifyDataAvailability: (2).	
 	barray := ReadStream on: (stream next:2 ) reversed.
 
 	n := firstDigit := barray next.
@@ -61,6 +70,7 @@ PhaROSDecoder >> nextEncodedInt16 [
 PhaROSDecoder >> nextEncodedInt32 [
 	| n firstDigit barray |
 	
+	self verifyDataAvailability: (4).
 	barray := ReadStream on: (stream next: 4) reversed .
 
 	n := firstDigit := barray next.
@@ -78,6 +88,7 @@ PhaROSDecoder >> nextEncodedInt32 [
 PhaROSDecoder >> nextEncodedInt64 [
 	| n firstDigit barray |
 	
+	self verifyDataAvailability: (8).
 	barray := stream next: 8.
 	barray size = 8 ifFalse: [
 		PhaROSUnexpextedValue signal:' there are less than 8 bytes in the stream '.
@@ -102,6 +113,7 @@ PhaROSDecoder >> nextEncodedInt64 [
 { #category : #'as yet unclassified' }
 PhaROSDecoder >> nextEncodedInt8 [
 	| digit |
+	self verifyDataAvailability.
 	digit := stream next.
 	^digit < 128 ifTrue:[ 
 		digit
@@ -114,12 +126,13 @@ PhaROSDecoder >> nextEncodedInt8 [
 PhaROSDecoder >> nextEncodedString [
 	| length aByteArray |
 
-
+	
 	[
 		length := self nextEncodedUint32.
 	]on: Error do: [
-		RoStUnexpextedValue signal: 'Unable to load string size'.
+		PhaROSUnexpextedValue signal: 'Unable to load string size'.
 	].
+	self verifyDataAvailability: (length).
 	aByteArray := ByteArray new: length.
 
 	stream nextInto: aByteArray.
@@ -129,7 +142,7 @@ PhaROSDecoder >> nextEncodedString [
 
 { #category : #'as yet unclassified' }
 PhaROSDecoder >> nextEncodedTime [
-	
+	self verifyDataAvailability: (4 * 2).
  ^ PhaROSTimestamp fromUnixTime: self nextEncodedUint32  nanoSeconds: self nextEncodedUint32.
 	
 ]
@@ -137,7 +150,7 @@ PhaROSDecoder >> nextEncodedTime [
 { #category : #'as yet unclassified' }
 PhaROSDecoder >> nextEncodedUint16 [
 	| n barray |
-	
+	self verifyDataAvailability: (2).
 	barray := ReadStream on: (stream next:2) reversed.
 
 	n := barray next.
@@ -149,7 +162,8 @@ PhaROSDecoder >> nextEncodedUint16 [
 { #category : #'as yet unclassified' }
 PhaROSDecoder >> nextEncodedUint32 [
 	| n firstDigit barray |
-	
+
+	self verifyDataAvailability: (4).	
 	barray := ReadStream on: (stream next: 4) reversed.
 
 	
@@ -170,6 +184,7 @@ PhaROSDecoder >> nextEncodedUint32 [
 PhaROSDecoder >> nextEncodedUint64 [
 	| n firstDigit barray |
 	
+	self verifyDataAvailability: (8).
 	barray := ReadStream on: (stream next:8) reversed.
 
 	n := firstDigit := barray next.
@@ -188,7 +203,7 @@ PhaROSDecoder >> nextEncodedUint64 [
 
 { #category : #'as yet unclassified' }
 PhaROSDecoder >> nextEncodedUint8 [
-	
+	self verifyDataAvailability.
 	^stream next.
 
 ]
@@ -196,4 +211,14 @@ PhaROSDecoder >> nextEncodedUint8 [
 { #category : #'as yet unclassified' }
 PhaROSDecoder >> stream: aStream [
 	stream := aStream.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSDecoder >> verifyDataAvailability [
+	^ self verifyDataAvailability: 1.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSDecoder >> verifyDataAvailability: anAmount [
+	(self hasLeft: anAmount ) ifFalse: [ self error: 'There are no more data'].
 ]
