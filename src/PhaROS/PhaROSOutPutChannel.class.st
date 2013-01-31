@@ -57,7 +57,7 @@ PhaROSOutPutChannel >> isLatchedChannel [
 { #category : #tcp }
 PhaROSOutPutChannel >> manageIncomingConnection: aMessage with: aSocket [
 
-	self halt.
+	Transcript show: 'Managing incoming conection!'; cr.
 "	self assert: topic md5Sum = aMessage md5Sum."
 	self assert: topic type = aMessage type.
 	
