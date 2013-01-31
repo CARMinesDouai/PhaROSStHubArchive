@@ -59,7 +59,11 @@ PhaROSEncoder >> encodeFixedLenghtArray: anArray of: aRelatedType [
 { #category : #encoding }
 PhaROSEncoder >> encodeInt16: aSmallInteger [ 
 	"Write a signed integer to the next 4 bytes"
-	| pos |
+	| pos topMagnitude  |
+	
+	topMagnitude :=  (2 raisedTo: (8 * 2) ) / 2.
+	self verifyIf: aSmallInteger isBetween: topMagnitude * -1 and: topMagnitude .
+	
 	pos := aSmallInteger < 0
 		ifTrue: [ ( 0 - aSmallInteger ) bitInvert16 + 1 ]
 		ifFalse: [ aSmallInteger ].
@@ -71,7 +75,12 @@ PhaROSEncoder >> encodeInt16: aSmallInteger [
 { #category : #encoding }
 PhaROSEncoder >> encodeInt32: aSmallInteger [ 
 	"Write a signed integer to the next 4 bytes"
-	| pos |
+	| pos topMagnitude |
+	
+	topMagnitude :=  (2 raisedTo: (8 * 4) ) / 2.
+	self verifyIf: aSmallInteger isBetween: topMagnitude * -1 and: topMagnitude .
+	
+	
 	pos := aSmallInteger < 0
 		ifTrue: [(0-aSmallInteger) bitInvert32 + 1]
 		ifFalse: [aSmallInteger].
@@ -83,7 +92,11 @@ PhaROSEncoder >> encodeInt32: aSmallInteger [
 PhaROSEncoder >> encodeInt64: aSmallInteger [ 
 
 	"Write a signed integer to the next 4 bytes"
-	| pos |
+	| pos topMagnitude |
+	
+	topMagnitude :=  (2 raisedTo: (8 * 8) ) / 2.
+	self verifyIf: aSmallInteger isBetween: topMagnitude * -1 and: topMagnitude .
+	
 	pos := aSmallInteger < 0
 		ifTrue: [(0-aSmallInteger) bitInvert64 + 1]
 		ifFalse: [aSmallInteger].
@@ -95,7 +108,10 @@ PhaROSEncoder >> encodeInt64: aSmallInteger [
 { #category : #encoding }
 PhaROSEncoder >> encodeInt8: aSmallInteger [ 
 	"Write a signed integer to the next byte"
-	| val |
+	| val topMagnitude |
+	topMagnitude :=  (2 raisedTo: (8) ) / 2.
+	self verifyIf: aSmallInteger isBetween: topMagnitude * -1 and: topMagnitude .
+	
 	(aSmallInteger >= 0 and: [aSmallInteger < 128]) ifTrue:[ val :=  aSmallInteger ].
 	(aSmallInteger < 0 and: [aSmallInteger > -129]) ifTrue:[ val:= aSmallInteger abs bitInvert8 + 1].
 		
@@ -129,8 +145,11 @@ PhaROSEncoder >> encodeTime: aTime [
 PhaROSEncoder >> encodeUint16: aSmallInteger [ 
 	"Append to the receiver an Integer as the next two bytes."
 	
-	| array a b |
-	self verifyIfIsPositive: aSmallInteger.
+	| array a b topMagnitude |
+	
+	topMagnitude :=  (2 raisedTo: (8 * 2) ).
+	self verifyIf: aSmallInteger isBetween: 0 and: topMagnitude .
+	
 	a := aSmallInteger bitShift: -8.
 	b :=  aSmallInteger bitAnd: 255.
 	array := (ByteArray new), b asByteArray , a asByteArray .
@@ -141,7 +160,11 @@ PhaROSEncoder >> encodeUint16: aSmallInteger [
 
 { #category : #encoding }
 PhaROSEncoder >> encodeUint32: aSmallInteger [ 
-	self verifyIfIsPositive: aSmallInteger.
+ | topMagnitude |
+	
+	topMagnitude :=  (2 raisedTo: (8 * 4) ).
+	self verifyIf: aSmallInteger isBetween: 0 and: topMagnitude .
+	
 	"Append to the receiver an Integer as the next 4 bytes."
 	1 to: 4 do: [:i | stream nextPut: (aSmallInteger digitAt: i)].
 ]
@@ -149,8 +172,11 @@ PhaROSEncoder >> encodeUint32: aSmallInteger [
 { #category : #encoding }
 PhaROSEncoder >> encodeUint64: aNumber [
 
-	| val |
-		self verifyIfIsPositive: aNumber.
+	| val  topMagnitude |
+	
+	topMagnitude :=  (2 raisedTo: (8 * 8) ).
+	self verifyIf: aNumber  isBetween: 0 and: topMagnitude .
+	
 	val :=  aNumber asByteArray.
 	val := (ByteArray new: (8 - val size)), val.
 	val := val reversed.
@@ -161,7 +187,12 @@ PhaROSEncoder >> encodeUint64: aNumber [
 { #category : #encoding }
 PhaROSEncoder >> encodeUint8: aSmallInteger [ 
 	"Write a signed integer to the next byte"
-	self verifyIfIsPositive: aSmallInteger.
+	|  topMagnitude |
+	
+	topMagnitude :=  (2 raisedTo: (8) ).
+	self verifyIf: aSmallInteger isBetween: 0 and: topMagnitude .
+	
+	
 	^self encodeByte: aSmallInteger.
 
 ]
@@ -211,8 +242,9 @@ PhaROSEncoder >> stream: aStream [
 ]
 
 { #category : #encoding }
-PhaROSEncoder >> verifyIfIsPositive: aSmallInteger [ 
-	aSmallInteger < 0 ifTrue: [
-			self error: ' number should be positive '.
+PhaROSEncoder >> verifyIf: aNumber isBetween: aLower and: aHigher [
+	" the implementation of x between: a and: b  is  x belongs to (a, b). But i need x belongs to [a, b]. Thats why i use (a-1; b+1)"
+	(aNumber between: aLower   and: aHigher ) ifFalse: [
+			self error: ' number should be in the proper interval '.
 	].
 ]

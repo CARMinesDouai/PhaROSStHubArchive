@@ -214,10 +214,10 @@ PhaROSEncoderTests >> testEncodeTime [
 	
 			buffer := ByteArray new: 8.
 			encoder stream: (WriteStream on: buffer).
-			
-			encoder encodeTime:  PhaROSTimestamp new + (Duration seconds: 9999999999).
+		
+			encoder encodeTime:  (PhaROSTimestamp new + (Duration seconds: 99999999)).
 			encoder flush.
-			self assert: (buffer = #[255 227 11 84 0 0 0 0]).
+			self assert: (buffer = #[255 224 245 5 0 0 0 0]).
 		
 ]
 
@@ -265,6 +265,16 @@ PhaROSEncoderTests >> testEncodeUint32 [
 			encoder flush.
 			self assert: (buffer = #[ 0 0 0 0 ]).
 			
+			
+			buffer := ByteArray new: 4.
+			encoder stream: (WriteStream on: buffer).
+			
+			
+			self should: [
+				encoder encodeUint32: 9999999999.
+			] raise: Error.
+			
+
 			
 			buffer := ByteArray new: 4.
 			encoder stream: (WriteStream on: buffer).

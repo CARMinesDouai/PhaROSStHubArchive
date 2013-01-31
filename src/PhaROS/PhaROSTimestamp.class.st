@@ -1,6 +1,8 @@
 Class {
 	#name : #PhaROSTimestamp,
 	#superclass : #Object,
+	#traits : 'TEquality',
+	#classTraits : 'TEquality classTrait',
 	#instVars : [
 		'timestamp',
 		'offset'
@@ -23,7 +25,9 @@ PhaROSTimestamp class >> defaultOffset: anOffset [
 
 { #category : #'as yet unclassified' }
 PhaROSTimestamp class >> fromUnixTime: anAmountOfSeconds  nanoSeconds: anAmountOfNSeconds [ 
-	^ super new timestamp: ((DateAndTime fromUnixTime: anAmountOfSeconds)  + (Time seconds: 0 nanoSeconds: anAmountOfNSeconds ))
+	^ super new timestamp: ((DateAndTime fromUnixTime: anAmountOfSeconds)  + (Time seconds: 0 nanoSeconds: anAmountOfNSeconds ));
+				  offset: self defaultOffset; 
+				  yourself.
 ]
 
 { #category : #'as yet unclassified' }

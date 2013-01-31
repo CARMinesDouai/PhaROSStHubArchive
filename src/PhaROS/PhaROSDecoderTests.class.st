@@ -124,9 +124,12 @@ PhaROSDecoderTests >> testNextEncodedString [
 
 { #category : #'as yet unclassified' }
 PhaROSDecoderTests >> testNextEncodedTime [
-	 decoder stream: (ReadStream on: #[0 0 0 0 0 0 0 0 255 227 11 84 0 0 0 0] ).
-	 self assert: (decoder nextEncodedTime = PhaROSTimestamp new).
-	 self assert: (decoder nextEncodedTime = PhaROSTimestamp new + (Duration seconds: 9999999999)).
+	| val | 
+	 decoder stream: (ReadStream on: #[0 0 0 0 0 0 0 0 255 224 245 5 0 0 0 0] ).
+	val := decoder nextEncodedTime.
+	 self assert: ( val = PhaROSTimestamp new).
+	val := decoder nextEncodedTime.
+	 self assert: (val = (PhaROSTimestamp new + (Duration seconds: 99999999))).
 
 	 self should: [decoder nextEncodedTime] raise: Error.
 
@@ -144,11 +147,12 @@ PhaROSDecoderTests >> testNextEncodedUint16 [
 
 { #category : #'as yet unclassified' }
 PhaROSDecoderTests >> testNextEncodedUint32 [
-       decoder stream: (ReadStream on: #[1 0 0 0 0 0 0 0 255 255 255 255] ).
+       decoder stream: (ReadStream on: #[1 0 0 0 0 0 0 0 255 255 255 255 ] ).
 	
 	 self assert: (decoder nextEncodedUint32 = 1). 
 	 self assert: (decoder nextEncodedUint32 = 0). 
 	 self assert: (decoder nextEncodedUint32 = 4294967295). 
+			
 	 self should: [decoder nextEncodedUint32] raise: Error.
 ]
 
