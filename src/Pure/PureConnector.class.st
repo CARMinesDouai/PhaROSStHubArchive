@@ -50,12 +50,15 @@ PureConnector >> discoverServices [
 { #category : #communication }
 PureConnector >> forceNotifications [
 	notificating ifTrue: [
-		[
-			self  send: '01000000'.
-			self receiveAnswer.
-		] on: Error do: [ : e | 
-			
-		].
+	
+		process addWork:( [
+			[
+				self  send: '01000000'.
+				self receiveAnswerForNotfs.
+			] on: Error do: [ : e | 
+				
+			]
+		] asWorkAt: PureWorkUnit lowPriority).
 	].
 ]
 
@@ -147,6 +150,50 @@ PureConnector >> receiveAnswer [
 ]
 
 { #category : #'communication private' }
+PureConnector >> receiveAnswerForNotfs [
+  | response intent responses |
+	 
+	responses := OrderedCollection new.
+	
+	[ response := responses add: (self receiveJustNots: 0). ] doWhileTrue: [
+		response receivedBy: robot.
+		response isNotification.
+	].
+	responses remove: response.
+	self processNotifications: responses.
+	
+	^ response.  
+	
+
+
+
+
+
+
+
+
+]
+
+{ #category : #'communication private' }
+PureConnector >> receiveJustNots: intent [
+ 
+  | buffer responseSize response   |
+	
+	intent > 0 ifTrue: [ ^ self ].
+	
+	buffer := ByteArray new: 4096.	
+		
+	responseSize := (self socket receiveUDPDataInto: buffer withTimeOut: 1) at:1.
+	
+	^ responseSize = 0 ifTrue: [ 
+		self receiveResponse: intent + 1 
+	 ] ifFalse: [
+		self inflateResponse: (buffer copyFrom: 1 to: 	responseSize)
+	 ].
+		
+]
+
+{ #category : #'communication private' }
 PureConnector >> receiveResponse: intent [
  
   | buffer responseSize response   |
@@ -155,7 +202,7 @@ PureConnector >> receiveResponse: intent [
 	
 	buffer := ByteArray new: 4096.	
 		
-	responseSize := (self socket receiveUDPDataInto: buffer withTimeOut: self timeout) at:1.
+	responseSize := (self socket receiveUDPDataInto: buffer withTimeOut: 2 ) at:1.
 	
 	^ responseSize = 0 ifTrue: [ 
 		self receiveResponse: intent + 1 
@@ -209,6 +256,6 @@ PureConnector >> socket [
 
 { #category : #'communication private' }
 PureConnector >> timeout [ 
-	^ 0.6.
+	^ 0.1.
  
 ]

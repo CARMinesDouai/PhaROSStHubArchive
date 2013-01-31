@@ -6,7 +6,7 @@ Socket >> receiveUDPDataInto: aStringOrByteArray withTimeOut: aTimeOut [
 	
 	"self waitForDataFor: aTimeOut."
 	
-	200000 timesRepeat: [
+	aTimeOut * 100000 timesRepeat: [
 		self dataAvailable ifTrue: [
 			 ^ self primSocket: socketHandle
 					receiveUDPDataInto: aStringOrByteArray
