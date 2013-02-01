@@ -135,7 +135,7 @@ PhaROSEncoder >> encodeTime: aTime [
 		time := PhaROSTimestamp perform: aTime.
 	].
 
-	self encodeUint32: time  seconds.
+	self encodeUint32: time  secondsUTC.
 	self encodeUint32: time  nanoSeconds.
 	
 

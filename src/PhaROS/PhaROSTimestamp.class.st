@@ -4,45 +4,25 @@ Class {
 	#traits : 'TEquality',
 	#classTraits : 'TEquality classTrait',
 	#instVars : [
-		'timestamp',
-		'offset'
-	],
-	#classInstVars : [
-		'DefaultOffset'
+		'timestamp'
 	],
 	#category : #'PhaROS-Types-Basic'
 }
 
 { #category : #'as yet unclassified' }
-PhaROSTimestamp class >> defaultOffset [
-	^ DefaultOffset
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSTimestamp class >> defaultOffset: anOffset [
-	DefaultOffset := anOffset.
-]
-
-{ #category : #'as yet unclassified' }
 PhaROSTimestamp class >> fromUnixTime: anAmountOfSeconds  nanoSeconds: anAmountOfNSeconds [ 
 	^ super new timestamp: ((DateAndTime fromUnixTime: anAmountOfSeconds)  + (Time seconds: 0 nanoSeconds: anAmountOfNSeconds ));
-				  offset: self defaultOffset; 
 				  yourself.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSTimestamp class >> initialize [ 
-	DefaultOffset := 0.
-]
-
-{ #category : #'as yet unclassified' }
 PhaROSTimestamp class >> new [
-	^ super new timestamp:( DateAndTime fromUnixTime: 0) ; offset: self defaultOffset ; yourself .
+	^ super new timestamp:( DateAndTime fromUnixTime: 0) ; yourself .
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSTimestamp class >> now [
-	^ super new timestamp: DateAndTime now ; offset: self defaultOffset ; yourself .
+	^ super new timestamp: DateAndTime now ; yourself .
 ]
 
 { #category : #operations }
@@ -67,18 +47,8 @@ PhaROSTimestamp >> nanoSeconds: anAmountOfNSeconds [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSTimestamp >> offset [ 
-	^ offset.
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSTimestamp >> offset: anOffset [
-	offset := anOffset.
-]
-
-{ #category : #'as yet unclassified' }
 PhaROSTimestamp >> seconds [
-	^ timestamp asUnixTime + self offset -3600.
+	^ timestamp asUnixTime .
 ]
 
 { #category : #'as yet unclassified' }
@@ -90,6 +60,11 @@ PhaROSTimestamp >> seconds: anAmountOfSeconds [
 PhaROSTimestamp >> seconds: anAmountOfSeconds  nanoSeconds: anAmountOfNSeconds [ 
 	timestamp := (DateAndTime fromUnixTime: anAmountOfSeconds) + (Time seconds: 0 nanoSeconds: anAmountOfNSeconds ).
 	^ timestamp.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTimestamp >> secondsUTC [
+	^ timestamp asUnixTime - (timestamp offset asSeconds).
 ]
 
 { #category : #'as yet unclassified' }
