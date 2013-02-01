@@ -256,6 +256,6 @@ PureConnector >> socket [
 
 { #category : #'communication private' }
 PureConnector >> timeout [ 
-	^ 0.1.
+	^ 0.5.
  
 ]

@@ -57,7 +57,7 @@ LaserNotification >> initialize [
 
 { #category : #'as yet unclassified' }
 LaserNotification >> load: notificationSource [
-	| decoder max |
+	| decoder max lap |
 	
 	decoder := notificationSource decoder.
 	self loadTime: decoder.
@@ -65,21 +65,7 @@ LaserNotification >> load: notificationSource [
 	[ decoder hasData ] whileTrue: [
 		echoes add: ( LaserEcho createEchoWithAngle: (decoder nextEncodedFloat32)  andFloatDistance: (decoder nextEncodedFloat32) )
 	].
-	
-
-	max := echoes max.
-	[	
-		max distance > service maxAcceptableRange.
-	] whileTrue: [
-		| id valPrev valPost |
-		id := echoes indexOf: max.
-		
-		valPrev := echoes at:(id -1).
-		valPost := echoes at:(id +1).
-		
-		max distance: ((valPrev distance + valPost distance) / 2).
-		max := echoes max.
-	] 
+	 
 
 ]
 
