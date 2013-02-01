@@ -44,7 +44,7 @@ LaserService >> load: aConnector [
 
 { #category : #accessing }
 LaserService >> maxAcceptableRange [
-	 ^10.0
+	 ^16.0
 ]
 
 { #category : #printing }
