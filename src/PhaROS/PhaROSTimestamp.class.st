@@ -78,7 +78,7 @@ PhaROSTimestamp >> offset: anOffset [
 
 { #category : #'as yet unclassified' }
 PhaROSTimestamp >> seconds [
-	^ timestamp asUnixTime + self offset.
+	^ timestamp asUnixTime + self offset -3600.
 ]
 
 { #category : #'as yet unclassified' }

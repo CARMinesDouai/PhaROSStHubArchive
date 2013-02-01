@@ -49,6 +49,7 @@ PhaROSExternalNode >> name: aName [
 
 { #category : #'message handling' }
 PhaROSExternalNode >> receive: aMessage from: aChannel [ 
+"	name = '/rviz' ifTrue: [ Transcript show: aMessage value asString. ]."
 	self addToMessagesQueue: aMessage dump.
 	
 
