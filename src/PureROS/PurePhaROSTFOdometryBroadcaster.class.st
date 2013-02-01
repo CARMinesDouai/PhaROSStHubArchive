@@ -1,9 +1,6 @@
 Class {
 	#name : #PurePhaROSTFOdometryBroadcaster,
 	#superclass : #PurePhaROSNode,
-	#instVars : [
-		'lastNotification'
-	],
 	#category : #PureROS
 }
 
@@ -12,16 +9,6 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 	| transformStamped  |
 	
 	
-	(	
-		lastNotification isNil not and:[
-			(lastNotification pose closeTo: aLocalizationService pose) 
-		]
-	) ifTrue: [
-		"^ self. "
-	].
-
-
-	lastNotification := aNotification.
 	
 	[
 
@@ -113,7 +100,6 @@ PurePhaROSTFOdometryBroadcaster >> setUp [
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> stop [
 
-	lastNotification := nil. 
 	
 	robot with: NotificationManagerService do: [
 		: notification |
