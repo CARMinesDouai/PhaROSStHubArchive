@@ -8,7 +8,6 @@ Class {
 PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceInstance [ 
 
 [
-
 	self sendTo: '/scan' a: [ :msg |
 		
 		
@@ -23,7 +22,7 @@ PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceI
 		
 		msg range_min: aLaserNotification minRange.
 		msg range_max: (aLaserNotification maxRange max: aLaserServiceInstance maxAcceptableRange).
-		msg ranges addAll: (aLaserNotification distances select: [ :float | float <= aLaserServiceInstance maxAcceptableRange ]).	
+		msg ranges addAll: aLaserNotification distances.
 
 	].	
 	
