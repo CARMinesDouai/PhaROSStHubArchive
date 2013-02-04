@@ -15,12 +15,21 @@ TKTVariable class >> for: aValue [
 
 { #category : #'as yet unclassified' }
 TKTVariable >> apply: aBlock [
-	^ aBlock value: self get.
+	| rslt |
+	mutex critical: [
+		rslt := aBlock value: value.
+	].
+	^ rslt.
 ]
 
 { #category : #'as yet unclassified' }
 TKTVariable >> doesNotUnderstand: aMessage [ 
-	^ self get perform: aMessage selector withArguments: aMessage arguments.
+	| rslt |
+	mutex critical: [
+		rslt := value perform: aMessage selector withArguments: aMessage arguments
+	].
+	^ rslt 
+	
 ]
 
 { #category : #'as yet unclassified' }

@@ -2,52 +2,74 @@ Class {
 	#name : #TKTFuture,
 	#superclass : #Object,
 	#instVars : [
-		'result',
 		'isDeployed',
 		'error',
-		'monitor'
+		'callbacks',
+		'value',
+		'result',
+		'semaphore'
 	],
 	#category : #'TaskIT-Kernel'
 }
 
 { #category : #'as yet unclassified' }
+TKTFuture >> asResult [
+	result ifNil: [
+		result := TKTResult new. 
+		self whenFinished: [ :  aValue  |  result deployValue: aValue ].	
+	].
+	^ result.
+]
+
+{ #category : #'as yet unclassified' }
 TKTFuture >> deployError: anError [
 	error := anError.
 	isDeployed := true.
-	monitor signalAll.
+	semaphore signal.
 	
 ]
 
 { #category : #'as yet unclassified' }
-TKTFuture >> deployResult: aResult [
-	result := aResult.
+TKTFuture >> deployValue: aValue [
+	value := aValue.
 	isDeployed := true.
-	monitor signalAll.
+	callbacks do: [ : c  | c cull: aValue ].
+	semaphore signal.
 	
 ]
 
 { #category : #'as yet unclassified' }
 TKTFuture >> initialize [ 
 	isDeployed := false.
-	result := nil. 
+	value := nil. 
 	error := nil.
-	monitor := Monitor new.
-]
-
-{ #category : #'as yet unclassified' }
-TKTFuture >> resultAvailable [
-	^ isDeployed.
+	callbacks := TKTVariable for: OrderedCollection new.
+	semaphore := Semaphore new.
 ]
 
 { #category : #'as yet unclassified' }
 TKTFuture >> value [
 
-	monitor waitWhile: [ isDeployed not ].
+	semaphore wait.
 		
 	error ifNotNil:[
 		error signal.
 	].
 
-	^ result.
+	^ value.
 
+]
+
+{ #category : #'as yet unclassified' }
+TKTFuture >> valueAvailable [
+	^ isDeployed.
+]
+
+{ #category : #'as yet unclassified' }
+TKTFuture >> whenFinished: aBlock [
+	self valueAvailable ifTrue:[
+		aBlock cull: value.	
+	] ifFalse: [
+		callbacks add: aBlock.
+	]
 ]

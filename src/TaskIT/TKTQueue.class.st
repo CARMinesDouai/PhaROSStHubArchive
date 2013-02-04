@@ -4,30 +4,25 @@ Class {
 	#instVars : [
 		'queue',
 		'workAvailability',
-		'waitTimeout'
+		'timeout'
 	],
 	#category : #'TaskIT-Kernel'
 }
 
 { #category : #'as yet unclassified' }
-TKTQueue >> add: aWork [
-	| realWork |
-	realWork := aWork asWork.
+TKTQueue >> add: anObject [
 	
-	mutex critical: [
-		queue add: realWork.	
-	].
-
+	queue add: anObject.	
 	workAvailability signal.
 	
-	^ realWork.
+	^ anObject.
 ]
 
 { #category : #'as yet unclassified' }
 TKTQueue >> initialize [ 
 	queue := TKTVariable for: (OrderedCollection new).
-	workAvailability := Monitor new.
-	waitTimeout := 5000.
+	workAvailability := Semaphore new.
+	timeout := 5000.
 ]
 
 { #category : #'as yet unclassified' }
@@ -37,7 +32,7 @@ TKTQueue >> next [
 
 { #category : #'as yet unclassified' }
 TKTQueue >> nextIfTimeOut: aBlock [
-	^ (workAvailability waitWhile: [ queue get size = 0 ] maxMilliseconds: waitTimeout) ifTrue: aBlock ifFalse: [ self peek  ].
+	^ (workAvailability waitTimeoutMSecs: timeout ) ifTrue: aBlock ifFalse: [ self peek  ].
 ]
 
 { #category : #'as yet unclassified' }
@@ -54,20 +49,20 @@ TKTQueue >> peekIfNothing: aBlock [
 	theresWork := false. 
 
 	queue get size > 0 ifTrue:	[
-		work := queue get at:1. 
-		queue get remove: work.	
-		theresWork := true.		
+		work := queue get removeFirst. 
+		theresWork := true.	
 	].
 
 	^ theresWork ifFalse: aBlock ifTrue: [ work ]. 
 ]
 
 { #category : #'as yet unclassified' }
-TKTQueue >> waitTimeoutInMSeconds: anAmountOfMSeconds [
-	waitTimeout  := anAmountOfMSeconds
+TKTQueue >> size [
+	^ queue size.
 ]
 
 { #category : #'as yet unclassified' }
-TKTQueue >> waitTimeoutInSeconds: anAmountOfSeconds [
-	waitTimeout  := anAmountOfSeconds * 1000.
+TKTQueue >> timeout: aTimeout [
+	"Millseconds"
+	timeout := aTimeout.
 ]

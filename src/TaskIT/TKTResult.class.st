@@ -8,9 +8,9 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-TKTResult >> deployResult: aResult [
-	super deployResult: aResult.
-	self become: aResult.
+TKTResult >> deployValue:  aValue [
+	super deployValue:  aValue.
+	self become: aValue.
 ]
 
 { #category : #'as yet unclassified' }

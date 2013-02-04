@@ -4,3 +4,8 @@ Extension { #name : #BlockClosure }
 BlockClosure >> asTask [
 	^ TKTTask for: self.
 ]
+
+{ #category : #'*TaskIT' }
+BlockClosure >> taskIt [
+	^ Task it: self asTask.
+]

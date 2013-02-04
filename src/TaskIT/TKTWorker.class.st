@@ -6,7 +6,8 @@ Class {
 		'process',
 		'workQueue',
 		'onIdleTime',
-		'currentTask'
+		'currentTask',
+		'beginning'
 	],
 	#category : #'TaskIT-Kernel'
 }
@@ -16,23 +17,14 @@ TKTWorker class >> pickOne [
 	^ self new startUp ; yourself.
 ]
 
-{ #category : #'as yet unclassified' }
-TKTWorker >> do: aWork [
-	^ workQueue add: aWork.
+{ #category : #accessing }
+TKTWorker >> busy [
+	^ workQueue size.
 ]
 
 { #category : #'as yet unclassified' }
-TKTWorker >> forceRestart [
-	process terminate.
-	process := nil. 
-	currentTask ifNotNil: [ 
-		currentTask processFinished ifFalse: [
-			currentTask  priority: 10.
-			workQueue do: currentTask.
-		].
-	].
-
-	self startUp.
+TKTWorker >> do: aWork [
+	^ workQueue add: aWork.
 ]
 
 { #category : #'as yet unclassified' }
@@ -70,11 +62,27 @@ TKTWorker >> processName [
 ]
 
 { #category : #'as yet unclassified' }
+TKTWorker >> restart [
+	process terminate.
+	process := nil. 
+	currentTask ifNotNil: [ 
+		currentTask processFinished ifFalse: [
+			currentTask  priority: 10.
+			workQueue do: currentTask.
+		].
+	].
+
+	self startUp.
+]
+
+{ #category : #'as yet unclassified' }
 TKTWorker >> run [
 
-	currentTask := self next. 
-	currentTask execute.
-	currentTask := nil.
+	(currentTask := self next ) ifNotNil: [ 
+		beginning := DateAndTime now. 
+		currentTask execute.
+		currentTask := nil.
+	]
 ]
 
 { #category : #'as yet unclassified' }
@@ -89,7 +97,7 @@ TKTWorker >> startUp [
 
 { #category : #'as yet unclassified' }
 TKTWorker >> stop [
-	self addWork: [
+	self do: [
 		keepRunning set: false.
 	].
 	(Delay forMilliseconds: 500) wait.
@@ -98,6 +106,6 @@ TKTWorker >> stop [
 ]
 
 { #category : #accessing }
-TKTWorker >> waitTimeoutInSeconds: aSmallInteger [ 
+TKTWorker >> timeout: aSmallInteger [ 
 	^ workQueue waitTimeoutInSeconds: aSmallInteger 
 ]
