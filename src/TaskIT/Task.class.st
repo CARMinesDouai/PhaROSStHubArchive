@@ -32,12 +32,12 @@ Task class >> new [
 
 { #category : #'as yet unclassified' }
 Task >> dispatch: aTaskOrBlock [
-	| task |
+	| task future  |
 	
 	task := aTaskOrBlock asTask.
-	(self selectWorkerFor: task) do: task.
-	
-	^ task future.
+	future := TKTFuture new.
+	(self selectWorkerFor: task) scheddule: (task -> future).
+	^ future.
 ]
 
 { #category : #'as yet unclassified' }

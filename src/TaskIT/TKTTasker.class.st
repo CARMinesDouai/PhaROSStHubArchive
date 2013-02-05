@@ -1,6 +1,6 @@
 Class {
 	#name : #TKTTasker,
-	#superclass : #Object,
+	#superclass : #ProtoObject,
 	#instVars : [
 		'wrapped'
 	],
@@ -19,13 +19,8 @@ TKTTasker >> doesNotUnderstand: aMessage [
 ]
 
 { #category : #'as yet unclassified' }
-TKTTasker >> paralellized [ 
+TKTTasker >> paralellize [
 	 ^ self.
-]
-
-{ #category : #'as yet unclassified' }
-TKTTasker >> value [
-	^ [ wrapped value ] taskIt asResult.
 ]
 
 { #category : #'as yet unclassified' }

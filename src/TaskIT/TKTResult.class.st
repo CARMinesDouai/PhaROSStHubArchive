@@ -1,31 +1,29 @@
 Class {
 	#name : #TKTResult,
-	#superclass : #TKTFuture,
+	#superclass : #ProtoObject,
 	#instVars : [
-		'mutex'
+		'future'
 	],
 	#category : #'TaskIT-Kernel'
 }
 
 { #category : #'as yet unclassified' }
 TKTResult >> deployValue:  aValue [
-	super deployValue:  aValue.
-	self become: aValue.
+	| realValue |
+	
+	realValue := (aValue class = SmallInteger) ifTrue: [ aValue asFloat ] ifFalse: [ aValue ]. 	
+	self becomeForward: realValue.
+
 ]
 
 { #category : #'as yet unclassified' }
 TKTResult >> doesNotUnderstand: aMessage [
 	| rslt | 
 	
-	mutex critical: [
-		rslt := self value perform: aMessage selector withArguments: aMessage arguments.
+	future apply: [
+		: aFuture | 
+		rslt := aFuture value perform: aMessage selector withArguments: aMessage arguments.
 	].
 	
 	^ rslt.
-]
-
-{ #category : #'as yet unclassified' }
-TKTResult >> initialize [ 
-	super initialize .
-	mutex := Mutex new.
 ]

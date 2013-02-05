@@ -1,6 +1,6 @@
 Extension { #name : #Object }
 
 { #category : #'*TaskIT' }
-Object >> paralellized [
+Object >> paralellize [
 	^ TKTTasker for: self.
 ]

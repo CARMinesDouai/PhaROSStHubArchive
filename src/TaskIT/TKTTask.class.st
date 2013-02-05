@@ -3,19 +3,29 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'block',
-		'future'
+		'priority'
 	],
 	#category : #'TaskIT-Kernel'
 }
 
 { #category : #'as yet unclassified' }
 TKTTask class >> for: aBlock [ 
-	^ self new block: aBlock ; yourself .
+	^ self for: aBlock at: Processor userBackgroundPriority.
+]
+
+{ #category : #'as yet unclassified' }
+TKTTask class >> for: aBlock at: aPriority [ 
+	^ self new block: aBlock; priority: aPriority  ; yourself .
 ]
 
 { #category : #sorting }
 TKTTask >> < aTKTTask [ 
-	^ true
+	^ priority < aTKTTask priority.
+]
+
+{ #category : #sorting }
+TKTTask >> > aTKTTask [ 
+	^ priority > aTKTTask priority.
 ]
 
 { #category : #'as yet unclassified' }
@@ -28,30 +38,31 @@ TKTTask >> block: aBlock [
 	block := aBlock.
 ]
 
-{ #category : #'as yet unclassified' }
-TKTTask >> execute [
-	self setUp.
+{ #category : #sorting }
+TKTTask >> doIt [
+
+	| future |
+	future := TKTFuture new.
 	[
-		[
-			self future deployValue: ( block cull: self ).
-		] on: Error do: [ 
-			: exception |
-			self fallback: exception.
-		]
-	] ensure: [
-		self tearDown.
-	].
+		self value: future.
+	] forkAt: self priority named: 'Task'.
+
+	^ future.
 ]
 
 { #category : #'as yet unclassified' }
 TKTTask >> fallback: anError [
+	
 ]
 
 { #category : #'as yet unclassified' }
-TKTTask >> future [
-	^ future ifNil: [
-		future := TKTFuture new. 	
-	].
+TKTTask >> priority [
+	^ priority .
+]
+
+{ #category : #'as yet unclassified' }
+TKTTask >> priority: aPriority [
+	priority := aPriority.
 ]
 
 { #category : #'as yet unclassified' }
@@ -60,4 +71,24 @@ TKTTask >> setUp [
 
 { #category : #'as yet unclassified' }
 TKTTask >> tearDown [
+]
+
+{ #category : #'as yet unclassified' }
+TKTTask >> value: aFuture [ 
+	| value | 
+	self setUp.
+	[
+		[
+			value :=  ( block cull: self ). 
+		] on: Error do: [ 
+			: exception |
+			self fallback: exception.
+			aFuture deployError: exception.
+		]
+	] ensure: [
+		self tearDown.
+	].
+	aFuture deployValue: value.
+	
+	^ value.
 ]

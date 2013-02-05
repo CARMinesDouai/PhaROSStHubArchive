@@ -23,11 +23,6 @@ TKTWorker >> busy [
 ]
 
 { #category : #'as yet unclassified' }
-TKTWorker >> do: aWork [
-	^ workQueue add: aWork.
-]
-
-{ #category : #'as yet unclassified' }
 TKTWorker >> initialize [ 
 	keepRunning := TKTVariable for: false.
 	workQueue := TKTPriorityQueue new.
@@ -77,12 +72,20 @@ TKTWorker >> restart [
 
 { #category : #'as yet unclassified' }
 TKTWorker >> run [
-
+	| task future | 
 	(currentTask := self next ) ifNotNil: [ 
+		task := currentTask key.
+		future := currentTask value.
+		
 		beginning := DateAndTime now. 
-		currentTask execute.
+		task value: future.
 		currentTask := nil.
 	]
+]
+
+{ #category : #'as yet unclassified' }
+TKTWorker >> scheddule: aTaskOrBlockClosure [
+	^ workQueue add: aTaskOrBlockClosure.
 ]
 
 { #category : #'as yet unclassified' }
@@ -97,9 +100,9 @@ TKTWorker >> startUp [
 
 { #category : #'as yet unclassified' }
 TKTWorker >> stop [
-	self do: [
+	self scheddule: [
 		keepRunning set: false.
-	].
+	] asTask -> TKTFuture new.
 	(Delay forMilliseconds: 500) wait.
 	process terminate.
 	process := nil.
