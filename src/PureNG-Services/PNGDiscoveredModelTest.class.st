@@ -2,29 +2,32 @@ Class {
 	#name : #PNGDiscoveredModelTest,
 	#superclass : #PNGTestCase,
 	#instVars : [
-		'robulabFromModel',
 		'robulabFromDiscovery'
 	],
 	#category : #'PureNG-Kernel-Test'
 }
 
+{ #category : #accessing }
+PNGDiscoveredModelTest >> robulabFromModel [
+	^robot
+]
+
 { #category : #testing }
 PNGDiscoveredModelTest >> setUp [
 	super setUp.
-	robulabFromModel := PNGRobulabHandcodedFactory kompai2.
-	robulabFromDiscovery := PNGRobulabDiscoveryFactory robulabFromIp: #[192 168 1 2] port: 60000.
+	robulabFromDiscovery := PNGRobulabDiscoveryFactory robulabFromIp: robot ip port: robot port.
 ]
 
 { #category : #testing }
 PNGDiscoveredModelTest >> testNumberOfServices [
-	self assert: robulabFromDiscovery services size = robulabFromModel services size
+	self assert: robulabFromDiscovery services size = self robulabFromModel services size
 ]
 
 { #category : #testing }
 PNGDiscoveredModelTest >> testServiceClasses [
 	| classesFromDiscovery classesFromModel difference |
 	classesFromDiscovery := robulabFromDiscovery services collect: [:service| service class].
-	classesFromModel := robulabFromModel services collect: [:service| service class].
+	classesFromModel := self robulabFromModel services collect: [:service| service class].
 	difference := classesFromDiscovery copyWithoutAll: classesFromModel.
 	self assert: difference isEmpty
 ]

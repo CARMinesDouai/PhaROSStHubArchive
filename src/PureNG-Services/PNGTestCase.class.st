@@ -1,6 +1,9 @@
 Class {
 	#name : #PNGTestCase,
 	#superclass : #TestCase,
+	#instVars : [
+		'robot'
+	],
 	#classVars : [
 		'ShouldRequestAction'
 	],
@@ -27,6 +30,12 @@ PNGTestCase class >> isAbstract [
 PNGTestCase >> requestAction: aString [
 	
 	self shouldRequestAction ifTrue: [self halt: aString ]
+]
+
+{ #category : #'as yet unclassified' }
+PNGTestCase >> setUp [
+	super setUp.
+	robot := PNGRobulabHandcodedFactory kompai1
 ]
 
 { #category : #'human in the loop' }

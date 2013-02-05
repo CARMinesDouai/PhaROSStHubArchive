@@ -40,6 +40,12 @@ PNGRobulabHandcodedFactory class >> irTelemeterService [
 ]
 
 { #category : #factory }
+PNGRobulabHandcodedFactory class >> kompai1 [
+	^self kompaiVersion2010Pure41Ip: #[192 168 1 1] port: 60000 serial: '10-2-6206-2'
+	
+]
+
+{ #category : #factory }
 PNGRobulabHandcodedFactory class >> kompai2 [
 	^self kompaiVersion2010Pure41Ip: #[192 168 1 2] port: 60000 serial: '10-1-6206-2'
 	

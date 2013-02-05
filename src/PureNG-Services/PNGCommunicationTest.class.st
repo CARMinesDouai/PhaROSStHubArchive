@@ -1,17 +1,8 @@
 Class {
 	#name : #PNGCommunicationTest,
 	#superclass : #PNGTestCase,
-	#instVars : [
-		'robot'
-	],
 	#category : #'PureNG-Kernel-Test'
 }
-
-{ #category : #testing }
-PNGCommunicationTest >> setUp [
-	super setUp.
-	robot := PNGRobulabHandcodedFactory kompai2
-]
 
 { #category : #testing }
 PNGCommunicationTest >> testBridgeFinalization [	
