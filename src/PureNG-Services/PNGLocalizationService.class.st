@@ -13,12 +13,12 @@ PNGLocalizationService class >> serviceType [
 ]
 
 { #category : #'as yet unclassified' }
-PNGLocalizationService >> get [ 
-	"Answers a PNGRobotPosition"
-	| position encodedResponse |
-	position := PNGRobotPosition new.
+PNGLocalizationService >> decodePositionFromResponse: encodedResponse [
+
+	| position |
 	
-	encodedResponse := self primitiveGet.
+	position := PNGRobotPosition new.
+
 	[encodedResponse hasData ] whileTrue: [
 		position x:  encodedResponse decoder nextEncodedFloat64.
 		position y:  encodedResponse decoder nextEncodedFloat64.
@@ -26,6 +26,14 @@ PNGLocalizationService >> get [
 		position status: encodedResponse decoder nextEncodedUint32.
 	].
 	^position
+]
+
+{ #category : #'as yet unclassified' }
+PNGLocalizationService >> get [ 
+	"Answers a PNGRobotPosition"
+
+	^ self decodePositionFromResponse: self primitiveGet
+	
 ]
 
 { #category : #'as yet unclassified' }

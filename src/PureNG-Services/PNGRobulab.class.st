@@ -6,7 +6,8 @@ Class {
 		'port',
 		'serial',
 		'services',
-		'bridge'
+		'bridge',
+		'dispatcher'
 	],
 	#category : #'PureNG-Kernel'
 }
@@ -30,6 +31,16 @@ PNGRobulab >> directoryService [
 ]
 
 { #category : #accessing }
+PNGRobulab >> dispatcher [
+	^ dispatcher
+]
+
+{ #category : #accessing }
+PNGRobulab >> dispatcher: anObject [
+	dispatcher := anObject
+]
+
+{ #category : #accessing }
 PNGRobulab >> ip [
 	^ip
 ]
@@ -38,12 +49,18 @@ PNGRobulab >> ip [
 PNGRobulab >> ip: aByteArray port: portNumber [ 
 	ip := aByteArray.
 	port := portNumber.
-	bridge := PNGNetworkBridge forRobot: self
+	bridge := PNGNetworkBridge forRobot: self.
+	self dispatcher: (PNGMessageDispatcher forRobot: self).
 ]
 
 { #category : #services }
 PNGRobulab >> laserService [
 	^self services detect: [:each| each isKindOf: PNGLaserService]
+]
+
+{ #category : #services }
+PNGRobulab >> localizationService [
+	^self services detect: [:each| each isKindOf: PNGLocalizationService ]
 ]
 
 { #category : #services }
@@ -58,15 +75,14 @@ PNGRobulab >> port [
 
 { #category : #communication }
 PNGRobulab >> sendAndWaitForResult: commandString [
-	|   responseStream encodedResponse |
+	|   response encodedResponse |
 	
 	bridge send: commandString.
-	responseStream := bridge responseQueue next readStream. 
+	response := self dispatcher nextAnswer. "blocking here"
 	
-	encodedResponse := PNGEncodedMessage createResponseOrNotificationForData: responseStream.
+	response isSuccess ifFalse: [  PNGMessageError signal: response responseMessage ].
 	
-	encodedResponse isSuccess ifFalse:[PNGMessageError signal: encodedResponse responseMessage].
-	^encodedResponse
+	^response
 ]
 
 { #category : #accessing }

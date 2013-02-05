@@ -91,15 +91,3 @@ PNGNotificationService >> insertRequestStringFor: aNotifyingService [
 	^requestEncoder contents
 	
 ]
-
-{ #category : #notifications }
-PNGNotificationService >> receiveNotifications [
-	| receptionInformation rawSize responseStream encodedResponse |
-	receptionInformation := socket receiveWithTimeOutUDPDataInto: responseBuffer.
-	rawSize := receptionInformation at: 1.
-	responseStream := (ReadStream on: responseBuffer from: 1 to: rawSize).
-	encodedResponse := PNGEncodedMessage createResponseOrNotificationForData: responseStream.
-	
-	encodedResponse isSuccess ifFalse:[PNGMessageError signal: encodedResponse responseMessage].
-	^encodedResponse
-]

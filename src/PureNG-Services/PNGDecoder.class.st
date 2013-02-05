@@ -57,15 +57,15 @@ PNGDecoder >> nextEncodedUInt16 [
 ]
 
 { #category : #decoder }
-PNGDecoder >> nextEncodedUint32 [
+PNGDecoder >> nextEncodedUInt64 [
 
-	^  (self stream next: 4) unsignedLongAt: 1 bigEndian: false.
+	^  (self stream next: 8) unsignedLongAt: 1 bigEndian: false.
 ]
 
 { #category : #decoder }
-PNGDecoder >> nextEncodedUint64 [
+PNGDecoder >> nextEncodedUint32 [
 
-	^  (self stream next: 8) unsignedLongAt: 1 bigEndian: false.
+	^  (self stream next: 4) unsignedLongAt: 1 bigEndian: false.
 ]
 
 { #category : #accessing }

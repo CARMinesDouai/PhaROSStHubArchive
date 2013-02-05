@@ -8,13 +8,11 @@ Smalltalk garbageCollect.
 "
 Class {
 	#name : #PNGNetworkBridge,
-	#superclass : #Object,
+	#superclass : #PNGActiveObject,
 	#instVars : [
-		'robot',
-		'socket',
 		'responseQueue',
 		'resultBuffer',
-		'activeObject'
+		'socket'
 	],
 	#category : #'PureNG-Kernel'
 }
@@ -35,24 +33,6 @@ PNGNetworkBridge class >> createProcessSocket: socket resutlBuffer: resultBuffer
 	ensure: [socket closeAndDestroy]
 ]
 
-{ #category : #'instance creation' }
-PNGNetworkBridge class >> forRobot: aRobot [
-	^self new
-		robot: aRobot;
-		start;
-		yourself 
-]
-
-{ #category : #accessing }
-PNGNetworkBridge >> activeObject [
-	^ activeObject
-]
-
-{ #category : #accessing }
-PNGNetworkBridge >> activeObject: anObject [
-	activeObject := anObject
-]
-
 { #category : #'initialize-release' }
 PNGNetworkBridge >> initialize [ 
 	super  initialize.
@@ -67,17 +47,6 @@ PNGNetworkBridge >> ip [
 	^self robot ip
 ]
 
-{ #category : #testing }
-PNGNetworkBridge >> isStarted [ 
-	self activeObject ifNil: [^false].
-	^self activeObject isStarted 
-]
-
-{ #category : #accessing }
-PNGNetworkBridge >> port [
-	^self robot port
-]
-
 { #category : #accessing }
 PNGNetworkBridge >> responseQueue [
 	^ responseQueue
@@ -90,22 +59,12 @@ PNGNetworkBridge >> responseQueue: anObject [
 
 { #category : #accessing }
 PNGNetworkBridge >> resultBuffer [
-	^ resultBuffer
+	^ resultBuffer 
 ]
 
 { #category : #accessing }
 PNGNetworkBridge >> resultBuffer: anObject [
 	resultBuffer := anObject
-]
-
-{ #category : #accessing }
-PNGNetworkBridge >> robot [
-	^ robot
-]
-
-{ #category : #accessing }
-PNGNetworkBridge >> robot: anObject [
-	robot := anObject
 ]
 
 { #category : #communicating }
@@ -118,7 +77,7 @@ PNGNetworkBridge >> send: commandString [
 
 { #category : #accessing }
 PNGNetworkBridge >> socket [
-	^ socket
+	^ socket 
 ]
 
 { #category : #accessing }
@@ -128,8 +87,7 @@ PNGNetworkBridge >> socket: anObject [
 
 { #category : #activity }
 PNGNetworkBridge >> start [
-	self isStarted
-		ifTrue: [ ^ self ].
+	super start.	
 	self socket: Socket newUDP.
 	self
 		activeObject:
@@ -137,9 +95,4 @@ PNGNetworkBridge >> start [
 	self activeObject
 		priority: Processor highIOPriority;
 		start
-]
-
-{ #category : #activity }
-PNGNetworkBridge >> stop [
-	self activeObject stop
 ]
