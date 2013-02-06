@@ -14,13 +14,13 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-TKTWorker class >> new [
+TKTWorker class >> spawn [
 	^ self with: Processor userBackgroundPriority.
 ]
 
 { #category : #'as yet unclassified' }
 TKTWorker class >> with: aPriority [
-	^ super new priority:aPriority ; doIt ; yourself.
+	^ self new priority:aPriority ; doIt ; yourself.
 ]
 
 { #category : #accessing }

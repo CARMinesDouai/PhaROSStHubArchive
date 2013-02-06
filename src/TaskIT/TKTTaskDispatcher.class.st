@@ -22,6 +22,7 @@ TKTTaskDispatcher class >> instance [
 
 { #category : #'as yet unclassified' }
 TKTTaskDispatcher class >> instance: aTaskInstance [
+	self reset.
 	TaskInstance := aTaskInstance.
 ]
 
@@ -64,7 +65,7 @@ TKTTaskDispatcher >> dispatch: aTaskOrBlock [
 TKTTaskDispatcher >> initialize [ 
 	super initialize.
 	workers := Set new.
-	workers 	add: (TKTWorker new timeout: 5000; yourself ); 
+	workers 	add: (TKTWorker spawn timeout: 5000; yourself ); 
 				add: ((TKTWorker with: Processor systemBackgroundPriority) timeout: 300; yourself ).
 
 ]

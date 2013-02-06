@@ -123,6 +123,33 @@ TKTTaskTests >> testNewEventualTask [
 ]
 
 { #category : #'as yet unclassified' }
+TKTTaskTests >> testNewEventualTaskRequeueITSelfAtCleanup [
+	| task booleanExpression flag |
+	
+	TKTTaskDispatcher instance: TKTTaskDispatcherMock new.
+	
+	
+	booleanExpression := false. 
+	flag := false.
+	task :=  [ flag := true ]  doItWhen: [ booleanExpression ]. 
+	
+	
+	
+	self assert: TKTTaskDispatcher instance tasks size = 1.
+	self assert: (task priority = Processor systemBackgroundPriority).	
+	self assert: (TKTTaskDispatcher instance tasks removeFirst) = task.
+	self assert: TKTTaskDispatcher instance tasks size = 0.
+	
+	task cleanup.
+	
+	self assert: TKTTaskDispatcher instance tasks size = 1.
+	self assert: (TKTTaskDispatcher instance tasks removeFirst) = task.
+	self assert: TKTTaskDispatcher instance tasks size = 0.
+	
+	TKTTaskDispatcher reset.
+]
+
+{ #category : #'as yet unclassified' }
 TKTTaskTests >> testNewTask [
 	| task |
 	
@@ -132,6 +159,37 @@ TKTTaskTests >> testNewTask [
 	
 	
 
+
+]
+
+{ #category : #'as yet unclassified' }
+TKTTaskTests >> testNewTaskDispatcherDestroyWorkers [
+
+		
+	TKTTaskDispatcher reset.
+	TKTTaskDispatcher instance.
+	
+	self assert: TKTWorker allInstances size = 2.
+	
+	TKTTaskDispatcher reset.
+	Smalltalk garbageCollect.
+	
+	self assert: TKTWorker allInstances size = 0.
+	
+
+]
+
+{ #category : #'as yet unclassified' }
+TKTTaskTests >> testNewTaskDispatcherResetDestroyInstance [
+
+	| instance |
+	instance := TKTTaskDispatcherMock new.
+	TKTTaskDispatcher instance: instance.
+	
+	self deny: instance destroyed.
+	TKTTaskDispatcher reset.
+	self assert: instance destroyed.
+	
 
 ]
 
