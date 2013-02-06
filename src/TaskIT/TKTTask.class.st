@@ -38,6 +38,10 @@ TKTTask >> block: aBlock [
 	block := aBlock.
 ]
 
+{ #category : #'as yet unclassified' }
+TKTTask >> cleanup [
+]
+
 { #category : #sorting }
 TKTTask >> doIt [
 
@@ -68,6 +72,11 @@ TKTTask >> priority: aPriority [
 
 { #category : #'as yet unclassified' }
 TKTTask >> setUp [
+]
+
+{ #category : #'as yet unclassified' }
+TKTTask >> taskIt [
+	^ TKTTaskDispatcher it: self.
 ]
 
 { #category : #'as yet unclassified' }

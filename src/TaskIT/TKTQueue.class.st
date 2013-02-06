@@ -6,7 +6,7 @@ Class {
 		'workAvailability',
 		'timeout'
 	],
-	#category : #'TaskIT-Kernel'
+	#category : #'TaskIT-Channel'
 }
 
 { #category : #'as yet unclassified' }
@@ -58,7 +58,12 @@ TKTQueue >> peekIfNothing: aBlock [
 
 { #category : #'as yet unclassified' }
 TKTQueue >> size [
-	^ queue size.
+	^ queue get size.
+]
+
+{ #category : #accessing }
+TKTQueue >> timeout [
+	^ timeout
 ]
 
 { #category : #'as yet unclassified' }

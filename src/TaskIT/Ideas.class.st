@@ -1,7 +1,7 @@
 Class {
 	#name : #Ideas,
 	#superclass : #Object,
-	#category : #'TaskIT-Kernel'
+	#category : #TaskIT
 }
 
 { #category : #'as yet unclassified' }

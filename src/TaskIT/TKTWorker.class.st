@@ -7,7 +7,8 @@ Class {
 		'onIdleTime',
 		'currentTask',
 		'beginning',
-		'future'
+		'future',
+		'doneTasks'
 	],
 	#category : #'TaskIT-Worker'
 }
@@ -24,7 +25,13 @@ TKTWorker class >> with: aPriority [
 
 { #category : #accessing }
 TKTWorker >> busy [
-	^ workQueue size.
+	^ workQueue size * 500.
+]
+
+{ #category : #'as yet unclassified' }
+TKTWorker >> cleanupTasks [
+	doneTasks do: #cleanup.
+	doneTasks removeAll.
 ]
 
 { #category : #'as yet unclassified' }
@@ -41,9 +48,10 @@ TKTWorker >> initialize [
 	super initialize.
 	keepRunning := TKTVariable for: false.
 	workQueue := TKTPriorityQueue new.
+	doneTasks := Set new.
 	future := nil.
-	onIdleTime := []. 
-	block := self mainTask.
+	onIdleTime := [ self cleanupTasks. nil. ]. 
+	block := [ self workerLoop ].
 ]
 
 { #category : #'as yet unclassified' }
@@ -52,14 +60,15 @@ TKTWorker >> isRunning [
 ]
 
 { #category : #'as yet unclassified' }
-TKTWorker >> mainTask [
-	^ [
-		keepRunning set: true.
-		[ keepRunning get ] whileTrue: [ 
-			self run. 
-		]
-	].
+TKTWorker >> matching: anOtherTask [ 
+	| frequency |
 	
+	frequency :=  workQueue timeout.  
+	(anOtherTask respondsTo: #expectedFrequency) ifTrue: [
+		frequency := frequency - (1000 // anOtherTask expectedFrequency).
+	]. 
+	
+	^ ((self priority - anOtherTask priority ) abs * 1000) + self busy + frequency.
 ]
 
 { #category : #'as yet unclassified' }
@@ -89,20 +98,22 @@ TKTWorker >> restart [
 
 { #category : #'as yet unclassified' }
 TKTWorker >> run [
-	| task future | 
+	| task taskFuture | 
 	(currentTask := self next ) ifNotNil: [ 
 		task := currentTask key.
-		future := currentTask value.
+		taskFuture := currentTask value.
 		
 		beginning := DateAndTime now. 
-		task value: future.
+		task value: taskFuture.
+		doneTasks add: task.
 		currentTask := nil.
 	]
 ]
 
 { #category : #'as yet unclassified' }
-TKTWorker >> scheddule: aTaskOrBlockClosure [
-	^ workQueue add: aTaskOrBlockClosure.
+TKTWorker >> scheddule: aTaskFutureAssoc [ 
+	" aTaskFutureAssoc is an association that match the task to run with a future related with this processing instance"
+	^ workQueue add: aTaskFutureAssoc.
 ]
 
 { #category : #'as yet unclassified' }
@@ -121,4 +132,14 @@ TKTWorker >> stop [
 { #category : #accessing }
 TKTWorker >> timeout: aSmallInteger [ 
 	^ workQueue timeout: aSmallInteger 
+]
+
+{ #category : #'as yet unclassified' }
+TKTWorker >> workerLoop [
+
+	keepRunning set: true.
+	[ keepRunning get ] whileTrue: [ 
+		self run. 
+	]
+
 ]

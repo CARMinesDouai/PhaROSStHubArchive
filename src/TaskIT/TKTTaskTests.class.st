@@ -5,6 +5,46 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+TKTTaskTests >> testConsumableEventualTaskCountJustWhenConditionalApply [
+	| task booleanExpression flag |
+	
+	booleanExpression := false. 
+	flag := false.
+	task := TKTConsumableEventualTask for: [ flag := flag not ] when: [ booleanExpression ] for: 2. 
+
+	self assert: (task priority = Processor systemBackgroundPriority).
+
+	task value.
+	self deny: flag.	
+	
+	booleanExpression := true.
+	
+	task value. 
+	self assert: flag.
+	
+	booleanExpression := false.
+	
+	task value. 
+	self assert: flag.
+	task value. 
+	self assert: flag.
+	task value. 
+	self assert: flag.
+	task value. 
+	self assert: flag.
+	
+	booleanExpression := true.
+	task value. 
+	self deny: flag.
+	task value. 
+	self deny: flag.
+	task value. 
+	self deny: flag.
+	task value. 
+	self deny: flag.
+]
+
+{ #category : #'as yet unclassified' }
 TKTTaskTests >> testExecuteTask [
 	| task shouldBeTrue |
 	
@@ -33,6 +73,53 @@ TKTTaskTests >> testExecuteTaskAlsoReturnsResult [
 	
 
 
+]
+
+{ #category : #'as yet unclassified' }
+TKTTaskTests >> testNewConsumableEventualTask [
+	| task booleanExpression flag |
+	
+	booleanExpression := false. 
+	flag := false.
+	task := TKTConsumableEventualTask for: [ flag := flag not ] when: [ booleanExpression ] for: 2. 
+
+	self assert: (task priority = Processor systemBackgroundPriority).
+
+	task value.
+	self deny: flag.	
+	
+	booleanExpression := true.
+	
+	
+	
+	task value. 
+	self assert: flag.
+	
+	task value. 
+	self deny: flag.
+	
+	task value. 
+	self deny: flag.
+]
+
+{ #category : #'as yet unclassified' }
+TKTTaskTests >> testNewEventualTask [
+	| task booleanExpression flag |
+	
+	booleanExpression := false. 
+	flag := false.
+	task := TKTEventualTask for: [ flag := true ] when: [ booleanExpression ]. 
+
+	self assert: (task priority = Processor systemBackgroundPriority).
+
+	task value.
+	self deny: flag.	
+	
+	booleanExpression := true.
+	
+	task value. 
+	self assert: flag.
+	
 ]
 
 { #category : #'as yet unclassified' }

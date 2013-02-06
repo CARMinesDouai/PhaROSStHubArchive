@@ -63,6 +63,40 @@ TKTFutureAndResultTests >> testDeployValueIntoFutureWithCallback [
 ]
 
 { #category : #'as yet unclassified' }
+TKTFutureAndResultTests >> testDeployValueIntoStickyFuture [
+	| future value |
+	future := TKTStickyFuture new.
+	
+	future process: ([ [(Delay forMilliseconds: 500 )wait] whileTrue: [ true ] ] forkNamed:'Test').
+	
+	self deny: future valueAvailable.
+	self deny: future process isTerminated.
+	
+	value := TKTTestObject new.
+	future deployValue: value.
+	
+	self assert: future process isNil.
+	self assert: future valueAvailable.
+	self assert: future value = value.
+	
+]
+
+{ #category : #'as yet unclassified' }
+TKTFutureAndResultTests >> testDeployValueIntoStickyFutureWithCallback [
+	| future value shouldBeValue |
+	shouldBeValue := false.
+	future := TKTStickyFuture new.
+	value := TKTTestObject new.
+	
+	future whenFinished: [ :val | shouldBeValue := val ].
+	future deployValue: value.
+	
+	self assert: shouldBeValue = value.
+	
+	
+]
+
+{ #category : #'as yet unclassified' }
 TKTFutureAndResultTests >> testFutureResultLazyInstantiation [
 	
 	| future |
@@ -78,5 +112,36 @@ TKTFutureAndResultTests >> testNewFuture [
 	future := TKTFuture new.
 	
 	self deny: future valueAvailable.
+	
+]
+
+{ #category : #'as yet unclassified' }
+TKTFutureAndResultTests >> testNewStickyFuture [
+	| future |
+	future := TKTStickyFuture new.
+	
+	self deny: future valueAvailable.
+	
+]
+
+{ #category : #'as yet unclassified' }
+TKTFutureAndResultTests >> testResultBecomes [
+	
+	| future value result |
+	future := TKTFuture new.
+	result := future asResult.
+	future deployValue: 'STRING'.
+	self assert: result = 'STRING'.
+	self assert: future asResult = 'STRING'.
+	
+]
+
+{ #category : #'as yet unclassified' }
+TKTFutureAndResultTests >> testStickyFutureResultLazyInstantiation [
+	
+	| future |
+	future := TKTStickyFuture new.
+	
+	self assert: future asResult = future asResult.
 	
 ]

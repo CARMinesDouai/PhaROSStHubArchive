@@ -15,6 +15,7 @@ TKTChannel >> broadcast: anObject [
 { #category : #'as yet unclassified' }
 TKTChannel >> initialize [ 
 	queue := TKTQueue new.
+	queue timeout: 60 * 1000.
 ]
 
 { #category : #'as yet unclassified' }

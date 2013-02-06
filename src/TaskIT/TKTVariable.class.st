@@ -52,3 +52,8 @@ TKTVariable >> set: aValue [
 		value := aValue.	
 	]
 ]
+
+{ #category : #'as yet unclassified' }
+TKTVariable >> value [
+	^ self get value.
+]

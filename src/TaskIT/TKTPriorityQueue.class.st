@@ -1,7 +1,7 @@
 Class {
 	#name : #TKTPriorityQueue,
 	#superclass : #TKTQueue,
-	#category : #'TaskIT-Kernel'
+	#category : #'TaskIT-Channel'
 }
 
 { #category : #'as yet unclassified' }
