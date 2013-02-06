@@ -7,7 +7,9 @@ Class {
 		'serial',
 		'services',
 		'bridge',
-		'dispatcher'
+		'dispatcher',
+		'latestResponse',
+		'commandResultSemaphore'
 	],
 	#category : #'PureNG-Kernel'
 }
@@ -40,6 +42,19 @@ PNGRobulab >> dispatcher: anObject [
 	dispatcher := anObject
 ]
 
+{ #category : #'initialize-release' }
+PNGRobulab >> finalize [
+	self notificationService deleteAllNotifyingServices.
+	self bridge stop.
+	self dispatcher stop.
+]
+
+{ #category : #'initialize-release' }
+PNGRobulab >> initialize [ 
+	super initialize.
+	commandResultSemaphore := Semaphore new
+]
+
 { #category : #accessing }
 PNGRobulab >> ip [
 	^ip
@@ -58,6 +73,15 @@ PNGRobulab >> laserService [
 	^self services detect: [:each| each isKindOf: PNGLaserService]
 ]
 
+{ #category : #communication }
+PNGRobulab >> latestResponse [
+	| result |
+	result := latestResponse.
+	latestResponse := nil.
+	commandResultSemaphore initSignals. "Consume any excess signals"
+	^result
+]
+
 { #category : #services }
 PNGRobulab >> localizationService [
 	^self services detect: [:each| each isKindOf: PNGLocalizationService ]
@@ -74,14 +98,18 @@ PNGRobulab >> port [
 ]
 
 { #category : #communication }
+PNGRobulab >> receiveCommandResult: aResponse [
+	latestResponse := aResponse.
+	commandResultSemaphore signal
+]
+
+{ #category : #communication }
 PNGRobulab >> sendAndWaitForResult: commandString [
 	|   response encodedResponse |
-	
 	bridge send: commandString.
-	response := self dispatcher nextAnswer. "blocking here"
-	
+	(commandResultSemaphore waitTimeoutMSecs: 500) ifTrue: [PNGConnectionTimeOut signal].
+	response := self latestResponse.
 	response isSuccess ifFalse: [  PNGMessageError signal: response responseMessage ].
-	
 	^response
 ]
 

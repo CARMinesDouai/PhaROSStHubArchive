@@ -13,7 +13,6 @@ PNGCommunicationTest >> testBridgeFinalization [
 	
 	self assert: bridgeSocket isConnected.
 	self deny: bridgeProcess isTerminated.
-	
 	robot := nil.
 	Smalltalk garbageCollect.
 	

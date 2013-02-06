@@ -1,15 +1,11 @@
 Class {
 	#name : #PNGEncodedMessage,
 	#superclass : #Object,
-	#instVars : [
-		'target',
-		'decoder'
-	],
 	#category : #'PureNG-Kernel'
 }
 
 { #category : #'instance creation' }
-PNGEncodedMessage class >> createResponseOrNotificationForData: rawDataStream [
+PNGEncodedMessage class >> deliverData: rawDataStream to: aRobot [
 
 	| dataDecoder responseType responseClass |
 	
@@ -20,44 +16,14 @@ PNGEncodedMessage class >> createResponseOrNotificationForData: rawDataStream [
 	responseClass := PNGResponse.
 	((responseType = 0) or: [ responseType = 16rFF]) ifTrue: [ responseClass := PNGNotification ].
 	
-	^responseClass newWithDecoder: dataDecoder
+	^responseClass deliverWithDecoder: dataDecoder to: aRobot
 
 ]
 
 { #category : #'instance creation' }
-PNGEncodedMessage class >> newWithDecoder: rawData [ 
+PNGEncodedMessage class >> deliverWithDecoder: dataDecoder to: aRobot [
 
 	
 	^self subclassResponsibility 
 
-]
-
-{ #category : #accessing }
-PNGEncodedMessage >> decoder [
-	^ decoder
-]
-
-{ #category : #accessing }
-PNGEncodedMessage >> decoder: aDecoder [
-	decoder := aDecoder
-]
-
-{ #category : #testing }
-PNGEncodedMessage >> hasData [
-	^ decoder hasData 
-]
-
-{ #category : #testing }
-PNGEncodedMessage >> isNotification [
-	^false
-]
-
-{ #category : #accessing }
-PNGEncodedMessage >> target [
-	^target
-]
-
-{ #category : #accessing }
-PNGEncodedMessage >> target: anObject [
-	target := anObject
 ]

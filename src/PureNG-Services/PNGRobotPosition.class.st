@@ -1,3 +1,16 @@
+"
+PNGRobotPosition is produced by the localization service of the robot. 
+
+Instance Variables:
+	x	<Float>
+	y	<Float>
+	orientation	<Float>
+	status	<int>
+		
+-status
+This field is a bit field which gives information about the localization data. If all bits are zeroed, the data is invalid.
+(The solution has a metric/decimetric/ centimetric accuracy, ...).
+"
 Class {
 	#name : #PNGRobotPosition,
 	#superclass : #Object,

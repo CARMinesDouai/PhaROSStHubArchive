@@ -32,7 +32,7 @@ PNGTestCase >> requestAction: aString [
 	self shouldRequestAction ifTrue: [self halt: aString ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 PNGTestCase >> setUp [
 	super setUp.
 	robot := PNGRobulabHandcodedFactory kompai1
@@ -41,4 +41,10 @@ PNGTestCase >> setUp [
 { #category : #'human in the loop' }
 PNGTestCase >> shouldRequestAction [
 	^ShouldRequestAction ifNil: [ self class disableRequestAction ]
+]
+
+{ #category : #testing }
+PNGTestCase >> tearDown [ 
+	super tearDown.
+	robot finalize
 ]

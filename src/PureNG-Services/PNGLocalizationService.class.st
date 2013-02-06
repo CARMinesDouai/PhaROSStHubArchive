@@ -8,27 +8,34 @@ Class {
 }
 
 { #category : #constants }
+PNGLocalizationService class >> notificationClass [
+	^PNGLocalizationNotification 
+]
+
+{ #category : #constants }
 PNGLocalizationService class >> serviceType [ 
 	^ 16r8002
 ]
 
-{ #category : #'as yet unclassified' }
-PNGLocalizationService >> decodePositionFromResponse: encodedResponse [
+{ #category : #actions }
+PNGLocalizationService >> decodePositionFromDecoder: decoder [
 
 	| position |
-	
 	position := PNGRobotPosition new.
-
-	[encodedResponse hasData ] whileTrue: [
-		position x:  encodedResponse decoder nextEncodedFloat64.
-		position y:  encodedResponse decoder nextEncodedFloat64.
-		position orientation:  encodedResponse decoder nextEncodedFloat64.
-		position status: encodedResponse decoder nextEncodedUint32.
-	].
+	position x:  decoder nextEncodedFloat64.
+	position y:  decoder nextEncodedFloat64.
+	position orientation:  decoder nextEncodedFloat64.
+	position status: decoder nextEncodedUint32.
 	^position
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
+PNGLocalizationService >> decodePositionFromResponse: encodedResponse [
+
+	^self decodePositionFromDecoder: encodedResponse decoder
+]
+
+{ #category : #actions }
 PNGLocalizationService >> get [ 
 	"Answers a PNGRobotPosition"
 
@@ -36,7 +43,7 @@ PNGLocalizationService >> get [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 PNGLocalizationService >> getCommandString [ 
 
 	^ '01000500'

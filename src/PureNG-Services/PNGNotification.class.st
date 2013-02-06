@@ -2,38 +2,63 @@ Class {
 	#name : #PNGNotification,
 	#superclass : #PNGEncodedMessage,
 	#instVars : [
-		'timestamp'
+		'timestamp',
+		'service'
 	],
 	#category : #'PureNG-Kernel'
 }
 
-{ #category : #'as yet unclassified' }
-PNGNotification class >> newWithDecoder: aDecoder [ 
+{ #category : #delivery }
+PNGNotification class >> deliverWithDecoder: dataDecoder to: aRobot [ 
+	|notification|
+	notification := self newWithDecoder: dataDecoder robot: aRobot.
+	notification deliver
+]
 
-	^ self new 
-		initializeWithDecoder: aDecoder;
+{ #category : #'instance creation' }
+PNGNotification class >> newWithDecoder: aDecoder robot: aRobot [
+	|serviceId service notificationClass |
+	serviceId := aDecoder nextEncodedUInt16.
+	service := aRobot serviceWithId: serviceId.
+	notificationClass := service notificationClass.
+	^notificationClass new
+		service: service decoder: aDecoder;
 		yourself
 
 ]
 
-{ #category : #'as yet unclassified' }
-PNGNotification >> initializeWithDecoder: aDecoder [
-	self decoder: aDecoder; 
-		target: aDecoder nextEncodedUInt16 ;
-		timestamp: aDecoder nextEncodedUInt64.
+{ #category : #delivering }
+PNGNotification >> deliver [
+	self service receiveNotification: self
 ]
 
-{ #category : #'as yet unclassified' }
-PNGNotification >> isNotification [
-	^true
+{ #category : #'initialize-release' }
+PNGNotification >> initWithDecoder: aDecoder [
+	self subclassResponsibility 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+PNGNotification >> service [
+	^ service
+]
+
+{ #category : #accessing }
+PNGNotification >> service: anObject [
+	service := anObject
+]
+
+{ #category : #'initialize-release' }
+PNGNotification >> service:  aService decoder: aDecoder [
+	self service: aService.
+	self initWithDecoder: aDecoder
+]
+
+{ #category : #accessing }
 PNGNotification >> timestamp [
 	^timestamp 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PNGNotification >> timestamp: aNumberOfCycles [
 	timestamp := aNumberOfCycles
 ]

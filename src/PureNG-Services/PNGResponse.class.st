@@ -7,13 +7,13 @@ Class {
 	#category : #'PureNG-Kernel'
 }
 
-{ #category : #'instance creation' }
-PNGResponse class >> newWithDecoder: aDecoder [
-	
-	^ self new 
-		initializeWithDecoder: aDecoder;
-		yourself
-
+{ #category : #delivery }
+PNGResponse class >> deliverWithDecoder: dataDecoder to: aRobot [ 
+	|response|
+	response := self new 
+		initializeWithDecoder: dataDecoder;
+		yourself.
+	aRobot receiveCommandResult: response
 ]
 
 { #category : #'initialize-release' }

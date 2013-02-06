@@ -6,23 +6,18 @@ Class {
 
 { #category : #testing }
 PNGLocalizationServiceTest >> testNotificationReception [
-	| services notification timesRepeat notifyingService |
-
-	"robot localizationService enableNotificationsEvery: 2."
-	
+	| services notification timesRepeat notifyingService semaphore |
 	notifyingService := robot localizationService.
-	
-	[notifyingService enableNotificationsEvery: 2] on: PNGMessageError do: [ :error | ].
-	
+	notifyingService disableNotifications.
+	notifyingService enableNotificationsEvery: 2.
 	self assert: (robot notificationService get includesKey: notifyingService).
 	
-	notification  := nil.
-	timesRepeat := 10.
-	[notification isNil and: timesRepeat > 0] whileTrue: [ 
-		notification := robot dispatcher notificationQueue nextOrNil.
-		(Delay forMilliseconds: 50) wait.
-		timesRepeat := timesRepeat - 1 ].
-	
+	semaphore := Semaphore new.
+	notifyingService onNotificationDo: [:notif| 
+		notification := notif.
+		semaphore signal].
+	self deny: (semaphore waitTimeoutMSecs: 500).
 	self assert: notification notNil.
-	self assert: notification target = notifyingService id
+	self assert: notification service = notifyingService.
+	self assert: notification class = notifyingService notificationClass 
 ]
