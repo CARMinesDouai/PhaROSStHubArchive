@@ -1,6 +1,6 @@
 Class {
 	#name : #TKTVariable,
-	#superclass : #ProtoObject,
+	#superclass : #Object,
 	#instVars : [
 		'value',
 		'mutex'

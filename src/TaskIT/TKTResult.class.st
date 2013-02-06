@@ -1,11 +1,16 @@
 Class {
 	#name : #TKTResult,
-	#superclass : #ProtoObject,
+	#superclass : #Object,
 	#instVars : [
 		'future'
 	],
-	#category : #'TaskIT-Kernel'
+	#category : #'TaskIT-Worker'
 }
+
+{ #category : #'as yet unclassified' }
+TKTResult class >> for: aFuture [
+	^ self new future: aFuture ; yourself.
+]
 
 { #category : #'as yet unclassified' }
 TKTResult >> deployValue:  aValue [
@@ -26,4 +31,16 @@ TKTResult >> doesNotUnderstand: aMessage [
 	].
 	
 	^ rslt.
+]
+
+{ #category : #'as yet unclassified' }
+TKTResult >> future: aFuture [
+	aFuture whenFinished: [ :  aValue  |  self deployValue: aValue ].	
+	future set: aFuture.
+	
+]
+
+{ #category : #'as yet unclassified' }
+TKTResult >> initialize [ 
+	future := TKTVariable for: nil.
 ]

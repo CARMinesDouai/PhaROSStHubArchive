@@ -15,8 +15,7 @@ Class {
 { #category : #'as yet unclassified' }
 TKTFuture >> asResult [
 	result ifNil: [
-		result := TKTResult new. 
-		self whenFinished: [ :  aValue  |  result deployValue: aValue ].	
+		result := TKTResult for: self. 
 	].
 	^ result.
 ]

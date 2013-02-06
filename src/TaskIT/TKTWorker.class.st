@@ -1,20 +1,25 @@
 Class {
 	#name : #TKTWorker,
-	#superclass : #Object,
+	#superclass : #TKTTask,
 	#instVars : [
 		'keepRunning',
-		'process',
 		'workQueue',
 		'onIdleTime',
 		'currentTask',
-		'beginning'
+		'beginning',
+		'future'
 	],
-	#category : #'TaskIT-Kernel'
+	#category : #'TaskIT-Worker'
 }
 
 { #category : #'as yet unclassified' }
-TKTWorker class >> pickOne [ 
-	^ self new startUp ; yourself.
+TKTWorker class >> new [
+	^ self with: Processor userBackgroundPriority.
+]
+
+{ #category : #'as yet unclassified' }
+TKTWorker class >> with: aPriority [
+	^ super new priority:aPriority ; doIt ; yourself.
 ]
 
 { #category : #accessing }
@@ -23,15 +28,38 @@ TKTWorker >> busy [
 ]
 
 { #category : #'as yet unclassified' }
+TKTWorker >> doIt [
+	(future isNil or: [ future valueAvailable]) ifTrue: [
+		future := super doIt.	
+		future whenFinished: [: t | t inspect. ].
+	].
+	
+]
+
+{ #category : #'as yet unclassified' }
 TKTWorker >> initialize [ 
+	super initialize.
 	keepRunning := TKTVariable for: false.
 	workQueue := TKTPriorityQueue new.
+	future := nil.
 	onIdleTime := []. 
+	block := self mainTask.
 ]
 
 { #category : #'as yet unclassified' }
 TKTWorker >> isRunning [
-	^ process isNil not and: [ process isTerminated not].
+	^ future valueAvailable not.
+]
+
+{ #category : #'as yet unclassified' }
+TKTWorker >> mainTask [
+	^ [
+		keepRunning set: true.
+		[ keepRunning get ] whileTrue: [ 
+			self run. 
+		]
+	].
+	
 ]
 
 { #category : #'as yet unclassified' }
@@ -45,21 +73,10 @@ TKTWorker >> onIdleTime: aBlockOrWork [
 ]
 
 { #category : #'as yet unclassified' }
-TKTWorker >> priorityPolicy [ 
-	^ Processor userBackgroundPriority.
-]
-
-{ #category : #'as yet unclassified' }
-TKTWorker >> processName [ 
-	| pih | 
-	pih := process hash \\ 999999.
-	^ 'PureWorker-', pih asString. 
-]
-
-{ #category : #'as yet unclassified' }
 TKTWorker >> restart [
-	process terminate.
-	process := nil. 
+
+	future stop.
+
 	currentTask ifNotNil: [ 
 		currentTask processFinished ifFalse: [
 			currentTask  priority: 10.
@@ -67,7 +84,7 @@ TKTWorker >> restart [
 		].
 	].
 
-	self startUp.
+	self doIt.
 ]
 
 { #category : #'as yet unclassified' }
@@ -89,26 +106,19 @@ TKTWorker >> scheddule: aTaskOrBlockClosure [
 ]
 
 { #category : #'as yet unclassified' }
-TKTWorker >> startUp [
-	process ifNil: [
-		keepRunning set: true.
-		process := [
-			[ keepRunning get ] whileTrue: [ self run. ].
-		] forkAt: self priorityPolicy named: self processName.
-	].
-]
-
-{ #category : #'as yet unclassified' }
 TKTWorker >> stop [
 	self scheddule: [
 		keepRunning set: false.
 	] asTask -> TKTFuture new.
 	(Delay forMilliseconds: 500) wait.
-	process terminate.
-	process := nil.
+
+	future valueAvailable ifFalse: [
+		future cancel.		
+	].
+	
 ]
 
 { #category : #accessing }
 TKTWorker >> timeout: aSmallInteger [ 
-	^ workQueue waitTimeoutInSeconds: aSmallInteger 
+	^ workQueue timeout: aSmallInteger 
 ]

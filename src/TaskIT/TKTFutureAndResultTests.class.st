@@ -80,12 +80,3 @@ TKTFutureAndResultTests >> testNewFuture [
 	self deny: future valueAvailable.
 	
 ]
-
-{ #category : #'as yet unclassified' }
-TKTFutureAndResultTests >> testNewResult [
-	| result |
-	result := TKTResult new.
-	
-	self deny: result valueAvailable.
-	
-]

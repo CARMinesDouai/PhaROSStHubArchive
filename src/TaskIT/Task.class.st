@@ -7,7 +7,7 @@ Class {
 	#classInstVars : [
 		'TaskInstance'
 	],
-	#category : #'TaskIT-Kernel'
+	#category : #'TaskIT-Worker'
 }
 
 { #category : #'as yet unclassified' }
@@ -31,6 +31,11 @@ Task class >> new [
 ]
 
 { #category : #'as yet unclassified' }
+Task class >> reset [
+	TaskInstance := nil.
+]
+
+{ #category : #'as yet unclassified' }
 Task >> dispatch: aTaskOrBlock [
 	| task future  |
 	
@@ -44,7 +49,7 @@ Task >> dispatch: aTaskOrBlock [
 Task >> initialize [ 
 	super initialize.
 	workers := Set new. 
-	workers add: TKTWorker pickOne.
+	workers add: TKTWorker new.
 
 ]
 

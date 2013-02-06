@@ -42,10 +42,11 @@ TKTTask >> block: aBlock [
 TKTTask >> doIt [
 
 	| future |
-	future := TKTFuture new.
-	[
+	future := TKTStickyFuture new.
+	
+	future process:( [
 		self value: future.
-	] forkAt: self priority named: 'Task'.
+	] forkAt: self priority named: 'Task').
 
 	^ future.
 ]
@@ -71,6 +72,12 @@ TKTTask >> setUp [
 
 { #category : #'as yet unclassified' }
 TKTTask >> tearDown [
+]
+
+{ #category : #'as yet unclassified' }
+TKTTask >> value [
+	" The future is dispendable in this case, cause is executing in the same thread "
+	^ self value: TKTFuture new.
 ]
 
 { #category : #'as yet unclassified' }
