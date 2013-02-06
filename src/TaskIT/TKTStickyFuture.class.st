@@ -13,11 +13,15 @@ TKTStickyFuture >> cancel [
 ]
 
 { #category : #'as yet unclassified' }
-TKTStickyFuture >> initialize [ 
-	super initialize.
-	self whenFinished: [ 
-		self stop.	
-	]
+TKTStickyFuture >> deployError: anError [
+	super deployError: anError.
+	self stop.
+]
+
+{ #category : #'as yet unclassified' }
+TKTStickyFuture >> deployValue: aValue [
+	super deployValue: aValue.
+	self stop.
 ]
 
 { #category : #'as yet unclassified' }

@@ -32,7 +32,7 @@ TKTFuture >> deployError: anError [
 TKTFuture >> deployValue: aValue [
 	value := aValue.
 	isDeployed := true.
-	callbacks do: [ : c  | c cull: aValue ].
+	callbacks get do: [ : c  | c cull: aValue ].
 	semaphore signal.
 	
 ]
