@@ -38,7 +38,6 @@ TKTWorker >> cleanupTasks [
 TKTWorker >> doIt [
 	(future isNil or: [ future valueAvailable]) ifTrue: [
 		future := super doIt.	
-		future whenFinished: [: t | t inspect. ].
 	].
 	
 ]
