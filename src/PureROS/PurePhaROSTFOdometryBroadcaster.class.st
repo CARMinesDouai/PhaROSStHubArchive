@@ -12,7 +12,8 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 	[
 		self sendTransformations: aNotification.
 		self sendOdometry: aNotification.
-	]on: Error do: [
+	]
+	on: Error do: [
 		:e |
 		self stop. 
 		self halt.
@@ -22,7 +23,8 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> initializeMessage: aMessage [
-		(1 to: 36) do: [ 
+
+		36 timesRepeat: [ 
 			aMessage pose covariance add: 0.0. 
 			aMessage twist covariance add: 0.0.
 		].
@@ -60,27 +62,33 @@ PurePhaROSTFOdometryBroadcaster >> rotationAsQuaternationInX: anOrientation into
 
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> sendOdometry: aNotification [
-	| deltaTime | 
-	self sendTo: 'odom' typedAs: 'nav_msgs/Odometry' a: [ :msg |
+	| deltaTime a b | 
+	
+	self sendTo: '/odom' typedAs: 'nav_msgs/Odometry' a: [ :msg |
 		self initializeMessage: msg.
 		
 		msg pose pose position x: aNotification pose x.		
 		msg pose pose position y: aNotification pose y.
 		msg pose pose position z: 0.0.
-		self rotationAsQuaternation:aNotification pose orientation  into: msg pose pose rotation.
 		
-		
-		
-		previousNotification ifNotNil: [
-			deltaTime :=  aNotification time asSeconds - previousNotification time asSeconds.
+		self rotationAsQuaternation:aNotification pose orientation  into: msg pose pose orientation.
 
-			" Linear velocity "
-			msg twist twist linear x: (aNotification pose x - previousNotification pose x) / deltaTime .
-			msg twist twist linear y: (aNotification pose x - previousNotification pose x) / deltaTime .
-			
-			" Angular velocity "
-			msg twist twist angular z:  (aNotification pose orientation  - previousNotification pose orientation) / deltaTime .aNotification.
-		]	
+				
+		previousNotification ifNotNil: [
+			a := aNotification time asSeconds.
+			b := previousNotification time asSeconds.
+			deltaTime :=  (b - a) abs.
+
+			deltaTime = 0 ifFalse:[
+				" Linear velocity "
+				msg twist twist linear x: (aNotification pose x - previousNotification pose x) / deltaTime .
+				msg twist twist linear y: (aNotification pose x - previousNotification pose x) / deltaTime .
+				
+				" Angular velocity "
+				msg twist twist angular z:  (aNotification pose orientation  - previousNotification pose orientation) / deltaTime .
+			]
+		].
+		previousNotification := aNotification.
 		
 	].
 ]
@@ -128,8 +136,8 @@ PurePhaROSTFOdometryBroadcaster >> setUp [
 		localization setLocalization: (Pose new x: 3.84474; y: -3.13821; orientation: -1.92569 ).
 		localization load.
 		
-		localization whenANotificationArrivesDo:  [ :notif |
-			 self broadcast: notif from: localization. 
+		localization whenANotificationArrivesDo:  [ :notif |			 
+			self broadcast: notif from: localization. 
 		].
 		localization enableNotifications.
 	].
