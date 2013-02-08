@@ -88,7 +88,7 @@ LocalizationService >> resetLocalization [
 LocalizationService >> setLocalization: aPose [
 	| response message |
 
-	message := PureEncoder forArray:( Array new: 32 ).
+	message := PureEncoder forArray:( ByteString new: 32 ).
 	
 	message encodeUInt64: (DateAndTime now) asSeconds.
 	message encodefloat64: aPose x.

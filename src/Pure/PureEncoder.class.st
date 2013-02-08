@@ -73,9 +73,10 @@ PureEncoder >> encodeUInt64: aNumber [
 	| hex |
 
 	hex := aNumber printStringBase: 16.
-	hex := ('0000000000000000' copyFrom: 0 to:( 16 - hex size )), hex.
 	
-	stream nextPutAll: hex reversed hex.
+	hex := ('0000000000000000' copyFrom: 1 to:( 16 - hex size )), hex.
+	
+	stream nextPutAll: hex reversed.
 	
 
 
@@ -106,7 +107,7 @@ PureEncoder >> encodefloat64: float [
 	| encoded aFloat |
 
 	aFloat := float asFloat.
-	encoded := ByteArray new: 16.
+	encoded := ByteArray new: 8.
 	
 	encoded at:1 put: ((aFloat basicAt:2) digitAt: 1).
 	encoded at:2 put: ((aFloat basicAt:2) digitAt: 2).
