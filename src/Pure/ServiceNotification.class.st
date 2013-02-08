@@ -26,7 +26,10 @@ ServiceNotification >> closeTo: anOtherNotification [
 
 { #category : #'as yet unclassified' }
 ServiceNotification >> loadTime: aDecoder [
-	time := (DateAndTime fromDosTime: aDecoder nextEncodedUint64).
+	self flag: #ThisShouldBeTakedFromTheStream.
+	 aDecoder nextEncodedUint64.
+	time := DateAndTime now. 
+"	time := (DateAndTime fromDosTime: aDecoder nextEncodedUint64)."
 ]
 
 { #category : #'as yet unclassified' }
