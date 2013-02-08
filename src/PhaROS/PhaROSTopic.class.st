@@ -128,7 +128,7 @@ PhaROSTopic >> stop [
 { #category : #new }
 PhaROSTopic >> type [
 	^type.
-	"^ RoStMessageBuilder messageFactoryFor: type."
+
 	
 	 
 ]

@@ -232,6 +232,17 @@ PhaROSMaster >> lookupTopic: aTopicName [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSMaster >> lookupTopic: aTopicName typedAs: aTypeId [
+	| topic |
+	topic :=  topics at: aTopicName ifAbsentPut:[
+		PhaROSTopic build: aTopicName asking: self.
+	  ].
+
+	topic type ifNil: [ topic type: aTypeId ].
+	self assert: topic type = aTypeId.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSMaster >> registerNode: aNode [
 	nodes at: aNode name put: aNode .
 ]

@@ -107,6 +107,15 @@ PhaROSNode >> lookupTopic: aTopicName [
 
 ]
 
+{ #category : #'as yet unclassified' }
+PhaROSNode >> lookupTopic: aTopicName typedAs: aTypeId [
+	
+	^ self topics at: aTopicName ifAbsentPut: [
+		self master lookupTopic: aTopicName typedAs: aTypeId.	
+	].
+
+]
+
 { #category : #accessing }
 PhaROSNode >> master [
 	^ master.
@@ -147,6 +156,13 @@ PhaROSNode >> receiverDelegate: aReceiverDelegateOrBlock [
 { #category : #output }
 PhaROSNode >> sendTo: aTopicName a: aMessageConfigurationBlock [
 	^self publisher sendTo: (self lookupTopic: aTopicName) a: aMessageConfigurationBlock.
+	
+	
+]
+
+{ #category : #output }
+PhaROSNode >> sendTo: aTopicName typedAs: aTypeId a: aMessageConfigurationBlock [
+	^self publisher sendTo: (self lookupTopic: aTopicName typedAs: aTypeId) a: aMessageConfigurationBlock.
 	
 	
 ]
