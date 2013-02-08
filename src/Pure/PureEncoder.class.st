@@ -69,6 +69,19 @@ PureEncoder >> encodeInt8: anInteger [
 ]
 
 { #category : #encoding }
+PureEncoder >> encodeUInt64: aNumber [
+	| hex |
+
+	hex := aNumber printStringBase: 16.
+	hex := ('0000000000000000' copyFrom: 0 to:( 16 - hex size )), hex.
+	
+	stream nextPutAll: hex reversed hex.
+	
+
+
+]
+
+{ #category : #encoding }
 PureEncoder >> encodefloat32: aFloat [
 
 	| result |

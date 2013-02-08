@@ -77,11 +77,28 @@ LocalizationService >> relatedNotificationClass [
 
 { #category : #request }
 LocalizationService >> resetLocalization [
-	| response |
-	
-	response :=self replace: '0000000000000000000000000000000000000000000000000000000000000000'.
+
+	^ self setLocalization: Pose new.
+
 "	response :=self replace: 'FFFFFFFFFFFFFFFF000000000000000000000000000000000000000000000000'."
-	response := self load.
+
+]
+
+{ #category : #request }
+LocalizationService >> setLocalization: aPose [
+	| response message |
+
+	message := PureEncoder forArray:( Array new: 32 ).
+	
+	message encodeUInt64: (DateAndTime now) asSeconds.
+	message encodefloat64: aPose x.
+	message encodefloat64: aPose y.
+	message encodefloat64: aPose orientation.	
+	
+	
+	self replace: message contents.
+
+	self load.
 ]
 
 { #category : #accessing }
