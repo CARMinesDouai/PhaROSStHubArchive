@@ -124,7 +124,8 @@ PurePhaROSTFOdometryBroadcaster >> setUp [
 	
 	robot with: LocalizationService  do: [
 		: localization  |
-		localization resetLocalization.
+		"pose related with the map"
+		localization setLocalization: (Pose new x: 3.84474; y: -3.13821; orientation: -1.92569 ).
 		localization load.
 		
 		localization whenANotificationArrivesDo:  [ :notif |
