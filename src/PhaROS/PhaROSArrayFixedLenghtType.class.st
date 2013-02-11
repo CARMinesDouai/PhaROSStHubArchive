@@ -25,7 +25,7 @@ PhaROSArrayFixedLenghtType >> defaultValueString [
 
 { #category : #'as yet unclassified' }
 PhaROSArrayFixedLenghtType >> isAPossibleValue: aValue [
-	^ (super isAPossibleValue: aValue ) and: [ aValue size = size ].
+	^ (super isAPossibleValue: aValue ) and: [ aValue size = size asNumber ].
 ]
 
 { #category : #'as yet unclassified' }
@@ -36,7 +36,7 @@ PhaROSArrayFixedLenghtType >> serialize:aValue into: anEncoder [
 
 { #category : #'as yet unclassified' }
 PhaROSArrayFixedLenghtType >> size: aSize [
-	size := aSize.
+	size := aSize asNumber.
 ]
 
 { #category : #'as yet unclassified' }

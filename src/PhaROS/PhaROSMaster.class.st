@@ -240,6 +240,7 @@ PhaROSMaster >> lookupTopic: aTopicName typedAs: aTypeId [
 
 	topic type ifNil: [ topic type: aTypeId ].
 	self assert: topic type = aTypeId.
+	^ topic.
 ]
 
 { #category : #'as yet unclassified' }
