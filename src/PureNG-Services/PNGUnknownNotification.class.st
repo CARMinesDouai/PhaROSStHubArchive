@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'decoder'
 	],
-	#category : #'PureNG-Kernel'
+	#category : #'PureNG-Notifications'
 }
 
 { #category : #accessing }

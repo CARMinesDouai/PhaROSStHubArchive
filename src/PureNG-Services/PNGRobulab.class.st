@@ -27,6 +27,11 @@ PNGRobulab >> bridge [
 	^ bridge
 ]
 
+{ #category : #'initialize-release' }
+PNGRobulab >> deleteAllNotifyingServices [
+	self notificationService deleteAllNotifyingServices
+]
+
 { #category : #services }
 PNGRobulab >> directoryService [
 	^self services detect: [:each| each isKindOf: PNGDirectoryService]
@@ -44,7 +49,6 @@ PNGRobulab >> dispatcher: anObject [
 
 { #category : #'initialize-release' }
 PNGRobulab >> finalize [
-	self notificationService deleteAllNotifyingServices.
 	self bridge stop.
 	self dispatcher stop.
 ]

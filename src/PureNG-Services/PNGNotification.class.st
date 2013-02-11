@@ -50,6 +50,7 @@ PNGNotification >> service: anObject [
 { #category : #'initialize-release' }
 PNGNotification >> service:  aService decoder: aDecoder [
 	self service: aService.
+	self timestamp: aDecoder nextEncodedUInt64.
 	self initWithDecoder: aDecoder
 ]
 

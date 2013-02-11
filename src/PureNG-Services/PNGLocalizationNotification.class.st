@@ -4,10 +4,20 @@ Class {
 	#instVars : [
 		'position'
 	],
-	#category : #'PureNG-Kernel'
+	#category : #'PureNG-Notifications'
 }
 
 { #category : #'initialize-release' }
 PNGLocalizationNotification >> initWithDecoder: aDecoder [
-	^self service decodePositionFromDecoder: aDecoder 
+	self position: (self service decodePositionFromDecoder: aDecoder) 
+]
+
+{ #category : #accessing }
+PNGLocalizationNotification >> position [
+	^ position
+]
+
+{ #category : #accessing }
+PNGLocalizationNotification >> position: anObject [
+	position := anObject
 ]

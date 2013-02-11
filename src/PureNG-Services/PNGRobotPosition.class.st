@@ -20,7 +20,7 @@ Class {
 		'orientation',
 		'status'
 	],
-	#category : #'PureNG-DataTypes'
+	#category : #'PureNG-Notifications'
 }
 
 { #category : #accessing }
@@ -31,6 +31,24 @@ PNGRobotPosition >> orientation [
 { #category : #accessing }
 PNGRobotPosition >> orientation: anObject [
 	orientation := anObject
+]
+
+{ #category : #printing }
+PNGRobotPosition >> printOn: aStream [ 
+	super printOn: aStream.
+	aStream
+		nextPutAll: 'x: ';
+		print: self x;
+		cr;
+		nextPutAll: 'y: ';
+		print: self y;
+		cr;
+		nextPutAll: 'orientation: ';
+		print: self orientation;
+		cr;
+		nextPutAll: 'status: ';
+		print: self statusLabel
+
 ]
 
 { #category : #accessing }
@@ -45,12 +63,17 @@ PNGRobotPosition >> status: anObject [
 
 { #category : #accessing }
 PNGRobotPosition >> statusLabel [
+	^self statusLabelDict at: self status ifAbsent: ['Unknown status']
+]
+
+{ #category : #accessing }
+PNGRobotPosition >> statusLabelDict [
 	^{0 -> 'The solution has a metric accuracy'.
 	1 -> 'The solution has a decimetric accuracy'.
 	2 -> 'The solution has a centimetric accuracy'.
 	3 -> 'The solution is computed using proprioceptive input'.
 	4 -> 'The solution is computed using exteroceptive input'.
-	5 -> 'An error was detected in the computatin' } asDictionary at: self status
+	5 -> 'An error was detected in the computation' } asDictionary
 ]
 
 { #category : #accessing }
