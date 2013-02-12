@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'localizationService'
 	],
-	#category : #'PureNG-Kernel-Test'
+	#category : #'PureNG-Services-Test'
 }
 
 { #category : #testing }
@@ -36,9 +36,9 @@ PNGLocalizationServiceTest >> testNotificationOfStoppedRobot [
 	self assert: notification timestamp > 0.
 	position := notification position.
 	self assert: position notNil.
-	self assert: (position x closeTo: 0).
-	self assert: (position y closeTo: 0).
-	self assert: (position orientation closeTo: 0).
+	self assert: (position x < 0.001).
+	self assert: (position y < 0.001).
+	self assert: (position orientation < 0.01).
 	self assert: position status = 0
 ]
 

@@ -19,6 +19,23 @@ PNGNotificationService class >> serviceType [
 	^ 16r0001
 ]
 
+{ #category : #public }
+PNGNotificationService >> allNotifyingServices [
+	^self get
+]
+
+{ #category : #actions }
+PNGNotificationService >> decodeGetResponseFrom: decoder [
+	| notificatifyingServicesDict   |
+	notificatifyingServicesDict := Dictionary new.
+	[decoder hasData ] whileTrue: [
+		|service|
+		service := self robot serviceWithId: decoder nextEncodedUInt16.
+		notificatifyingServicesDict at: service put: decoder nextEncodedByte.
+	].
+	^notificatifyingServicesDict.
+]
+
 { #category : #actions }
 PNGNotificationService >> delete: aNotifyingService [
 	"This request removes an active notification from the list, and deactivates it."
@@ -40,20 +57,6 @@ PNGNotificationService >> deleteAllNotifyingServices [
 	self get keysDo: [:aService |
 		self delete: aService.
 	].
-]
-
-{ #category : #actions }
-PNGNotificationService >> get [
-	"Answers a collection of services that send notifications"
-	| notificatifyingServicesDict encodedResponse  |
-	notificatifyingServicesDict := Dictionary new.
-	encodedResponse := self primitiveGet.
-	[encodedResponse hasData ] whileTrue: [
-		|service|
-		service := self robot serviceWithId: encodedResponse decoder nextEncodedUInt16.
-		notificatifyingServicesDict at: service put: encodedResponse decoder nextEncodedByte.
-	].
-	^notificatifyingServicesDict.
 ]
 
 { #category : #actions }

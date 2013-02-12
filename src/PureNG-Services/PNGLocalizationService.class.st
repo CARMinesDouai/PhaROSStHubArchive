@@ -17,6 +17,17 @@ PNGLocalizationService class >> serviceType [
 	^ 16r8002
 ]
 
+{ #category : #public }
+PNGLocalizationService >> currentPosition [
+	^self get
+]
+
+{ #category : #actions }
+PNGLocalizationService >> decodeGetResponseFrom: decoder [
+	^self decodePositionFromDecoder:  decoder
+	
+]
+
 { #category : #actions }
 PNGLocalizationService >> decodePositionFromDecoder: decoder [
 
@@ -27,20 +38,6 @@ PNGLocalizationService >> decodePositionFromDecoder: decoder [
 	position orientation:  decoder nextEncodedFloat64.
 	position status: decoder nextEncodedUint32.
 	^position
-]
-
-{ #category : #actions }
-PNGLocalizationService >> decodePositionFromResponse: encodedResponse [
-
-	^self decodePositionFromDecoder: encodedResponse decoder
-]
-
-{ #category : #actions }
-PNGLocalizationService >> get [ 
-	"Answers a PNGRobotPosition"
-
-	^ self decodePositionFromResponse: self primitiveGet
-	
 ]
 
 { #category : #actions }

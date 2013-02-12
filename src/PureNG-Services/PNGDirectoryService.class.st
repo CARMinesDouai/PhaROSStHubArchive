@@ -17,15 +17,18 @@ PNGDirectoryService class >> serviceType [
 	^16r0000
 ]
 
+{ #category : #public }
+PNGDirectoryService >> allServices [
+	^self get
+]
+
 { #category : #actions }
-PNGDirectoryService >> get [ 
-	"Answers a collection of services available on the robot"
-	| services encodedResponse serviceType instanceCode serviceClass  |
+PNGDirectoryService >> decodeGetResponseFrom: decoder [ 
+	| services serviceType instanceCode serviceClass  |
 	services := Set with: self.		
-	encodedResponse := self primitiveGet.
-	[encodedResponse hasData ] whileTrue: [
-		serviceType :=  encodedResponse decoder nextEncodedUInt16.
-		instanceCode := encodedResponse decoder nextEncodedUInt16.
+	[decoder hasData] whileTrue: [
+		serviceType := decoder nextEncodedUInt16.
+		instanceCode := decoder nextEncodedUInt16.
 		serviceType ~= PNGDirectoryService serviceType ifTrue:[
 			serviceClass := PNGService serviceClassForType: serviceType.
 			services add: (serviceClass newWithId: instanceCode).

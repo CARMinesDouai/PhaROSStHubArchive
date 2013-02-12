@@ -1,5 +1,5 @@
 Class {
 	#name : #PNGServiceTest,
 	#superclass : #PNGTestCase,
-	#category : #'PureNG-Kernel-Test'
+	#category : #'PureNG-Services-Test'
 }

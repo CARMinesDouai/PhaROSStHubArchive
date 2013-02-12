@@ -1,7 +1,7 @@
 Class {
 	#name : #PNGNotificationServiceTest,
 	#superclass : #PNGServiceTest,
-	#category : #'PureNG-Kernel-Test'
+	#category : #'PureNG-Services-Test'
 }
 
 { #category : #testing }

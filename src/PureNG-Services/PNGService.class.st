@@ -44,6 +44,16 @@ PNGService class >> serviceType [
 ]
 
 { #category : #actions }
+PNGService >> decodeGetResponseFrom: decoder [
+	self subclassResponsibility 
+]
+
+{ #category : #actions }
+PNGService >> get [
+	^self decodeGetResponseFrom: self primitiveGet decoder
+]
+
+{ #category : #actions }
 PNGService >> getCommandString [
 	"Byte       1             2         3-4
 Content  Identifier  Action  Target"
