@@ -2,7 +2,8 @@ Class {
 	#name : #PurePhaROSTFOdometryBroadcaster,
 	#superclass : #PurePhaROSNode,
 	#instVars : [
-		'previousNotification'
+		'previousNotification',
+		'odometrySents'
 	],
 	#category : #PureROS
 }
@@ -10,6 +11,12 @@ Class {
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationService [
 	[
+	
+
+		aNotification pose x: aNotification pose x.
+		aNotification pose y: aNotification pose y.
+		aNotification pose orientation: aNotification pose orientation .
+		
 		self sendTransformations: aNotification.
 		self sendOdometry: aNotification.
 	]
@@ -22,6 +29,11 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 ]
 
 { #category : #'as yet unclassified' }
+PurePhaROSTFOdometryBroadcaster >> initialize [ 
+	odometrySents := 0.
+]
+
+{ #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> initializeMessage: aMessage [
 
 		36 timesRepeat: [ 
@@ -29,6 +41,11 @@ PurePhaROSTFOdometryBroadcaster >> initializeMessage: aMessage [
 			aMessage twist covariance add: 0.0.
 		].
 		
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSTFOdometryBroadcaster >> odometrySents [ 
+	^ odometrySents.
 ]
 
 { #category : #'as yet unclassified' }
@@ -80,6 +97,7 @@ PurePhaROSTFOdometryBroadcaster >> sendOdometry: aNotification [
 			deltaTime :=  (b - a) abs.
 
 			deltaTime = 0 ifFalse:[
+				odometrySents := odometrySents + 1.
 				" Linear velocity "
 				msg twist twist linear x: (aNotification pose x - previousNotification pose x) / deltaTime .
 				msg twist twist linear y: (aNotification pose x - previousNotification pose x) / deltaTime .
@@ -133,7 +151,8 @@ PurePhaROSTFOdometryBroadcaster >> setUp [
 	robot with: LocalizationService  do: [
 		: localization  |
 		"pose related with the map"
-		localization setLocalization: (Pose new x: 3.84474; y: -3.13821; orientation: -1.92569 ).
+"		localization setLocalization: (Pose new x: 3.84474; y: -3.13821; orientation: -1.92569 )."
+		localization resetLocalization.
 		localization load.
 		
 		localization whenANotificationArrivesDo:  [ :notif |			 
