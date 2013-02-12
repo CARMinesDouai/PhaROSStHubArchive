@@ -68,13 +68,7 @@ PhaROSTopic >> master: aMaster [
 
 { #category : #accessing }
 PhaROSTopic >> md5Sum [
-	self flag:#loadFromvariable.
-	^self name = '/turtle1/pose' ifTrue: [
-		'863b248d5016ca62ea2e895ae5265cf9'
-	] ifFalse: [
-		'9d5c2dcd348ac8f76ce2a4307bd63a13'
-	].
-	
+	^ type md5Sum.
 	
 	
 	

@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'typeName',
 		'typeDefinition',
-		'relatedClass'
+		'relatedClass',
+		'md5Sum'
 	],
 	#classInstVars : [
 		'types'
@@ -195,6 +196,15 @@ PhaROSCompositeType >> isAPossibleSize: aSize [
 { #category : #serializing }
 PhaROSCompositeType >> isAPossibleValue: aValue [
 	^ aValue isBasic not.
+]
+
+{ #category : #serializing }
+PhaROSCompositeType >> md5Sum [ 
+
+	md5Sum ifNil: [
+		md5Sum:= PhaROSTypeBrowser instance md5Sum: typeName.
+	].
+	^ md5Sum
 ]
 
 { #category : #serializing }

@@ -25,16 +25,24 @@ PhaROSSystemLauncher class >> new [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSSystemLauncher >> rosMsgShow: aTypeId [
-	| rosmsg outstream errstream tmp return |
+PhaROSSystemLauncher >> rosMsg: aCommand [ 
 	
-	tmp := aTypeId copyReplaceAll: '/' with:'_' .
-	outstream := StandardFileStream forceNewFileNamed: '/tmp/',tmp,'.tmp'.
-	errstream := StandardFileStream forceNewFileNamed: '/tmp/error_',tmp,'.tmp'.
+	
+	^ self rosMsg: { aCommand } tmpFile:  aCommand .
+	
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSSystemLauncher >> rosMsg: anArrayOfArguments tmpFile: aTempFileName [
+	| rosmsg outstream errstream  return |
+	
+	
+	outstream := StandardFileStream forceNewFileNamed: '/tmp/',aTempFileName,'.tmp'.
+	errstream := StandardFileStream forceNewFileNamed: '/tmp/error_',aTempFileName,'.tmp'.
 	
 	rosmsg  :=  ExternalUnixOSProcess 
 							forkAndExec: '/opt/ros/fuerte/bin/rosmsg'   
-							arguments: { 'show' . aTypeId } 
+							arguments: anArrayOfArguments 
 							environment:  nil 
 							descriptors: { FileStream stdin . outstream . errstream } .  
 		
@@ -54,6 +62,27 @@ PhaROSSystemLauncher >> rosMsgShow: aTypeId [
 
 	^ return.
 
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSSystemLauncher >> rosMsg: aCommand with: aTypeId [
+	
+	
+	^ self rosMsg: { aCommand . aTypeId } tmpFile: (aTypeId copyReplaceAll: '/' with:'_').
+	
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSSystemLauncher >> rosMsgMd5: aTypeId [
+
+		^ self rosMsg: 'md5' with: aTypeId. 
+
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSSystemLauncher >> rosMsgShow: aTypeId [
+
+	^  self rosMsg: 'show' with: aTypeId. 
 ]
 
 { #category : #'as yet unclassified' }
