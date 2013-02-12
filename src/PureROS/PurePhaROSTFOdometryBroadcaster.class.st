@@ -11,12 +11,6 @@ Class {
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationService [
 	[
-	
-
-		aNotification pose x: aNotification pose x.
-		aNotification pose y: aNotification pose y.
-		aNotification pose orientation: aNotification pose orientation .
-		
 		self sendTransformations: aNotification.
 		self sendOdometry: aNotification.
 	]
@@ -30,7 +24,10 @@ PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationS
 
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> initialize [ 
+	super initialize.
 	odometrySents := 0.
+		
+
 ]
 
 { #category : #'as yet unclassified' }
@@ -84,6 +81,7 @@ PurePhaROSTFOdometryBroadcaster >> sendOdometry: aNotification [
 	self sendTo: '/odom' typedAs: 'nav_msgs/Odometry' a: [ :msg |
 		self initializeMessage: msg.
 		
+		msg child_frame_id: 'base_link'.
 		msg pose pose position x: aNotification pose x.		
 		msg pose pose position y: aNotification pose y.
 		msg pose pose position z: 0.0.
@@ -157,6 +155,7 @@ PurePhaROSTFOdometryBroadcaster >> setUp [
 		
 		localization whenANotificationArrivesDo:  [ :notif |			 
 			self broadcast: notif from: localization. 
+			
 		].
 		localization enableNotifications.
 	].
