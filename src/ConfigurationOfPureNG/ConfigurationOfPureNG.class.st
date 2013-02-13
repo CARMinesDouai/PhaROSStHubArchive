@@ -25,19 +25,6 @@ ConfigurationOfPureNG class >> bootstrapPackage: aString from: aPath [
 			version workingCopy repositoryGroup addRepository: repository]
 ]
 
-{ #category : #configuration }
-ConfigurationOfPureNG class >> configurationOfLog [
-	<logConfiguration>
-	^ [
-	     :builder |
-	     builder forClass: LoggedExampleCustomized 
-			     useLevel:#debug
-			     showingLogAs: ('%tag #%class >> %selector [%log]' asPatternFormatter) 
-			     into: LogStdoutWriter instance.
-	].
-
-]
-
 { #category : #private }
 ConfigurationOfPureNG class >> ensureMetacello [
 	"Bootstrap Gofer (if necessary), load latest mcz file for ConfigurationOfMetacello (using old 
@@ -129,19 +116,12 @@ ConfigurationOfPureNG >> baseline10: spec [
 	spec for: #common do: [
 			spec blessing: #baseline.
 			spec repository: 'http://car.mines-douai.fr/squeaksource/Pure'.
-			spec project: 'CommonTraits' with: [
-				spec 
-					className: 'ConfigurationOfCommonTraits';
-					file: 'ConfigurationOfCommonTraits' ;
-					versionString: #bleedingEdge;
-					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
-			].
 			spec package: 'Concurrency' with: [
 				spec
 					repository: 'http://car.mines-douai.fr/squeaksource/ReusableBricks'.
 			].
 			spec package: 'PureNG' with: [ 
-				spec requires: #('CommonTraits' 'Concurrency').
+				spec requires: 'Concurrency' 
 			].
 	].
 
