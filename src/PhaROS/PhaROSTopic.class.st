@@ -68,7 +68,7 @@ PhaROSTopic >> master: aMaster [
 
 { #category : #accessing }
 PhaROSTopic >> md5Sum [
-	^ type md5Sum.
+	^ self typeFactory md5Sum.
 	
 	
 	
