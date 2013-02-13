@@ -16,14 +16,8 @@ PhaROSDataSender class >> for: aNode [
 PhaROSDataSender >> addToMessagesQueue: aBinaryMessage [
 	| rt |
 	rt := owner socket sendData:  aBinaryMessage.
-	self delayBetweenMessages .
 	^ rt. 
 
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSDataSender >> delayBetweenMessages [ 
-	"(Delay forMilliseconds: 1000) wait."
 ]
 
 { #category : #'as yet unclassified' }

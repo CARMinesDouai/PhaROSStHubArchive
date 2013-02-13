@@ -72,11 +72,6 @@ PhaROSTypeMarshallingBaseTest >> baseUnserializeFail [
 	
 ]
 
-{ #category : #'as yet unclassified' }
-PhaROSTypeMarshallingBaseTest >> expectedLenght [
-	self subclassResponsibility.
-]
-
 { #category : #accessing }
 PhaROSTypeMarshallingBaseTest >> expectedSize [
 	^ self relatedClass dataTypeSize.

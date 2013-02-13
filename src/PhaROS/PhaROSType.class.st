@@ -19,11 +19,6 @@ PhaROSType class >> float32: aByteSymbol [
 ]
 
 { #category : #accessing }
-PhaROSType >> asArrayType [
-	^ PhaROSArrayType of: self class. 
-]
-
-{ #category : #accessing }
 PhaROSType >> check: aValue [
 
 	(self isAPossibleValue: aValue ) ifFalse:[ PhaROSUnexpextedValue signal: 'Unexpected value'].

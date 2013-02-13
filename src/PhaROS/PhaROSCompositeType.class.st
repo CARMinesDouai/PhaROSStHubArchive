@@ -37,12 +37,6 @@ PhaROSCompositeType class >> new [
 ]
 
 { #category : #construction }
-PhaROSCompositeType class >> newInstanceOf: aName [
-	^ (types at: aName) newInstance.
-	
-]
-
-{ #category : #construction }
 PhaROSCompositeType class >> remove: aName [
 	types at:aName ifPresent: [
 		:type |
@@ -55,11 +49,6 @@ PhaROSCompositeType class >> remove: aName [
 { #category : #construction }
 PhaROSCompositeType class >> reset [
 	self initialize.
-]
-
-{ #category : #serializing }
-PhaROSCompositeType >> asArrayType [
-	^ PhaROSArrayType of: self relatedClass. 
 ]
 
 { #category : #serializing }
@@ -88,19 +77,6 @@ PhaROSCompositeType >> buildRelatedClass [
 
 
 
-]
-
-{ #category : #serializing }
-PhaROSCompositeType >> createAnonymousClass [
-		((ClassBuilder new)
-					name: self typeName asSymbol
-					inEnvironment: (SystemDictionary withOrganizer: (SystemOrganizer new))
-					subclassOf: PhaROSValue
-					type: PhaROSValue typeOfClass
-					instanceVariableNames: ''
-					classVariableNames: ''
-					poolDictionaries: ''
-					category: 'really-dont-care')  setTraitComposition: {} asTraitComposition ; yourself.
 ]
 
 { #category : #serializing }

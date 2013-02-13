@@ -5,11 +5,6 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PhaROSInt8TypeTest >> expectedLenght [
-	^ 1.
-]
-
-{ #category : #'as yet unclassified' }
 PhaROSInt8TypeTest >> invalidByteArrays [ 
 	^ {
 		#[25 6] . #[ 10 10 ] . 'anString' asByteArray 
