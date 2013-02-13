@@ -14,6 +14,30 @@ PNGTrajectoryServiceTest >> setUp [
 ]
 
 { #category : #testing }
+PNGTrajectoryServiceTest >> testEmergencyStopOnStoppedRobot [
+	| trajectoryState |
+	trajectoryState := trajectoryService get.
+	self assert: trajectoryState status = PNGTrajectoryState waitingStatusValue.
+	trajectoryService emergencyStop.
+	trajectoryState := trajectoryService get.
+	self assert: trajectoryState status = PNGTrajectoryState waitingStatusValue.
+
+]
+
+{ #category : #testing }
+PNGTrajectoryServiceTest >> testFollowingStateDuringMotion [
+	| trajectoryState origin target |
+	origin := 1@1.
+	target := 0@0.
+	trajectoryService insertSegmentFrom:  origin to: target speed: 0.25.
+	self halt: 'Warning: robot is supposed to move !!!!'.
+	trajectoryService startMotion.
+	trajectoryState := trajectoryService get.
+	self assert: trajectoryState status = PNGTrajectoryState followingStatusValue.
+	trajectoryService stopMotion
+]
+
+{ #category : #testing }
 PNGTrajectoryServiceTest >> testGetOfStoppedRobot [
 	| trajectoryState |
 	trajectoryState := trajectoryService get.
@@ -27,10 +51,23 @@ PNGTrajectoryServiceTest >> testGetOfStoppedRobot [
 { #category : #testing }
 PNGTrajectoryServiceTest >> testInsertOneSegmentChangesStatusFromStoppedToWaiting [
 	| trajectoryState origin target |
+	trajectoryState := trajectoryService get.
 	self assert: trajectoryState status = PNGTrajectoryState waitingStatusValue.
-	origin := 20@35.
-	target := 311@281.
-	trajectoryService insertSegmentFrom:  origin to: target.
+	origin := 0@0.
+	target := 1@0.
+	trajectoryService insertSegmentFrom:  origin to: target speed: 0.25.
+	trajectoryService stopMotion.
 	trajectoryState := trajectoryService get.
 	self assert: trajectoryState status = PNGTrajectoryState pausedStatusValue.
+]
+
+{ #category : #testing }
+PNGTrajectoryServiceTest >> testStopAlreadyStoppedRobot [
+	| trajectoryState |
+	trajectoryState := trajectoryService get.
+	self assert: trajectoryState status = PNGTrajectoryState waitingStatusValue.
+	trajectoryService stopMotion.
+	trajectoryState := trajectoryService get.
+	self assert: trajectoryState status = PNGTrajectoryState pausedStatusValue.
+
 ]

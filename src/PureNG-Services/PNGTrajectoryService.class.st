@@ -15,6 +15,20 @@ PNGTrajectoryService class >> serviceType [
 	^ 16r8001
 ]
 
+{ #category : #'public-motion planning' }
+PNGTrajectoryService >> clearSegments [
+	"ResetPath command"
+	"Resets the trajectory buffer only. Travelled distance is saved."
+	self update: 4
+]
+
+{ #category : #'public-motion planning' }
+PNGTrajectoryService >> clearTrajectory [
+	"Reset command"
+	"C`lears both segments and travelled distance"
+	self update: 3
+]
+
 { #category : #actions }
 PNGTrajectoryService >> decodeGetResponseFrom: decoder [
 	| state |
@@ -28,12 +42,81 @@ PNGTrajectoryService >> decodeGetResponseFrom: decoder [
 		yourself 
 ]
 
+{ #category : #'public-motion control' }
+PNGTrajectoryService >> emergencyStop [
+	"Halt command"
+	"Stops the robot with a strong deceleration"
+	self update: 0
+]
+
 { #category : #actions }
 PNGTrajectoryService >> getCommandString [
 	^'01000B00'
 ]
 
+{ #category : #actions }
+PNGTrajectoryService >> insertRequestStringFor: segments [
+	| requestEncoder |
+	requestEncoder := PNGEncoder new.
+	requestEncoder  
+		nextPutRequestId ;
+		nextPutInsertActionCode;
+		encodeInt16: self id.
+	segments do: [:each| each encodeInto: requestEncoder].
+	^requestEncoder contents 
+
+]
+
+{ #category : #'public-motion planning' }
+PNGTrajectoryService >> insertSegmentFrom: origin to: destination speed: speed [
+	| segments |
+	segments := {PNGTrajectorySegment from: origin to: destination speed: speed}.
+	self insertSegments: segments
+]
+
+{ #category : #'public-motion planning' }
+PNGTrajectoryService >> insertSegments: segments [
+	self robot sendAndWaitForResult: (self insertRequestStringFor: segments)
+]
+
+{ #category : #'public-motion planning' }
+PNGTrajectoryService >> resetTravelledDistance [
+	"ResetDistance command"
+	self update: 5
+]
+
+{ #category : #'public-motion control' }
+PNGTrajectoryService >> startMotion [
+	"Resume command"
+	self update: 1
+]
+
+{ #category : #'public-motion control' }
+PNGTrajectoryService >> stopMotion [
+	"Pause command"
+	"Stops the robot with a comfort deceleration"
+	self update: 2
+]
+
 { #category : #public }
 PNGTrajectoryService >> trajectoryState [
 	^self get
+]
+
+{ #category : #actions }
+PNGTrajectoryService >> update: commandNumber [
+	self robot sendAndWaitForResult: (self updateRequestStringFor: commandNumber)
+]
+
+{ #category : #actions }
+PNGTrajectoryService >> updateRequestStringFor: commandNumber [
+	| requestEncoder |
+	requestEncoder := PNGEncoder new.
+	requestEncoder  
+		nextPutRequestId ;
+		nextPutUpdateActionCode;
+		encodeInt16: self id;
+		encodeInt8: commandNumber.
+	^requestEncoder contents 
+
 ]

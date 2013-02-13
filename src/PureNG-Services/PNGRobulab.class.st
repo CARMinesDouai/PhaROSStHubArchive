@@ -47,10 +47,25 @@ PNGRobulab >> dispatcher: anObject [
 	dispatcher := anObject
 ]
 
+{ #category : #facilities }
+PNGRobulab >> emergencyStop [ 
+	self trajectoryService emergencyStop
+]
+
 { #category : #'initialize-release' }
 PNGRobulab >> finalize [
 	self bridge stop.
 	self dispatcher stop.
+]
+
+{ #category : #facilities }
+PNGRobulab >> goTo: aPoint [
+	| currentPosition |
+	currentPosition := self localizationService currentPose.
+	self trajectoryService 
+		insertSegmentFrom:  (currentPosition x@ currentPosition y) to: aPoint  speed: 0.25;
+		startMotion.
+
 ]
 
 { #category : #'initialize-release' }

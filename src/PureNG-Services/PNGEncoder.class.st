@@ -14,6 +14,51 @@ PNGEncoder >> contents [
 ]
 
 { #category : #encoding }
+PNGEncoder >> encodeFloat32: aFloat [
+
+	| result |
+	
+	
+	aFloat = 0.0 ifTrue: [
+		result := '00000000'.
+	] ifFalse: [
+		result := (ByteArray readHexFrom: (aFloat asFloat asIEEE32BitWord printStringBase: 16) ) reversed hex  .	
+	].
+	
+	stream nextPutAll: result.
+	
+
+
+]
+
+{ #category : #encoding }
+PNGEncoder >> encodeFloat64: float [
+
+
+	| encoded aFloat |
+
+	aFloat := float asFloat.
+	encoded := ByteArray new: 8.
+	
+	encoded at:1 put: ((aFloat basicAt:2) digitAt: 1).
+	encoded at:2 put: ((aFloat basicAt:2) digitAt: 2).
+	encoded at:3 put: ((aFloat basicAt:2) digitAt: 3).
+	encoded at:4 put: ((aFloat basicAt:2) digitAt: 4).
+	
+	encoded at:5 put: ((aFloat basicAt:1) digitAt: 1).
+	encoded at:6 put: ((aFloat basicAt:1) digitAt: 2).
+	encoded at:7 put: ((aFloat basicAt:1) digitAt: 3).
+	encoded at:8 put: ((aFloat basicAt:1) digitAt: 4).
+	
+				
+	stream nextPutAll: encoded hex.
+	
+	
+
+
+]
+
+{ #category : #encoding }
 PNGEncoder >> encodeHexString: aString [
 
 | correction index array |
@@ -49,53 +94,17 @@ PNGEncoder >> encodeInt16: anInteger [
 ]
 
 { #category : #encoding }
+PNGEncoder >> encodeInt64: anInteger [
+ 	| hex |
+	hex := anInteger printStringBase: 16  nDigits:  16.
+	(2 to: 16 by: 2) reverseDo: [:each|
+		stream nextPutAll: (hex copyFrom: each - 1 to: each )
+	]
+]
+
+{ #category : #encoding }
 PNGEncoder >> encodeInt8: anInteger [
  	anInteger printOn: self stream base: 16  nDigits:  2.
-	
-
-
-]
-
-{ #category : #encoding }
-PNGEncoder >> encodefloat32: aFloat [
-
-	| result |
-	
-	
-	aFloat = 0.0 ifTrue: [
-		result := '00000000'.
-	] ifFalse: [
-		result := (ByteArray readHexFrom: (aFloat asFloat asIEEE32BitWord printStringBase: 16) ) reversed hex  .	
-	].
-	
-	stream nextPutAll: result.
-	
-
-
-]
-
-{ #category : #encoding }
-PNGEncoder >> encodefloat64: float [
-
-
-	| encoded aFloat |
-
-	aFloat := float asFloat.
-	encoded := ByteArray new: 16.
-	
-	encoded at:1 put: ((aFloat basicAt:2) digitAt: 1).
-	encoded at:2 put: ((aFloat basicAt:2) digitAt: 2).
-	encoded at:3 put: ((aFloat basicAt:2) digitAt: 3).
-	encoded at:4 put: ((aFloat basicAt:2) digitAt: 4).
-	
-	encoded at:5 put: ((aFloat basicAt:1) digitAt: 1).
-	encoded at:6 put: ((aFloat basicAt:1) digitAt: 2).
-	encoded at:7 put: ((aFloat basicAt:1) digitAt: 3).
-	encoded at:8 put: ((aFloat basicAt:1) digitAt: 4).
-	
-				
-	stream nextPutAll: encoded hex.
-	
 	
 
 
@@ -123,6 +132,11 @@ PNGEncoder >> nextPutInsertActionCode [
 ]
 
 { #category : #'pure codes' }
+PNGEncoder >> nextPutReplaceActionCode [
+	self nextPutString: '02' "replace code = 0x02"
+]
+
+{ #category : #'pure codes' }
 PNGEncoder >> nextPutRequestId [
 	self nextPutString: '01' "request identifier (not 0x00 or 0xFF)" 
 ]
@@ -132,6 +146,11 @@ PNGEncoder >> nextPutString: aString [
 
 	stream nextPutAll: aString.
 
+]
+
+{ #category : #'pure codes' }
+PNGEncoder >> nextPutUpdateActionCode [
+	self nextPutString: '03' "update code = 0x03"
 ]
 
 { #category : #accessing }

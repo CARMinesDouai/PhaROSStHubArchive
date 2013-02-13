@@ -18,7 +18,7 @@ PNGLocalizationService class >> serviceType [
 ]
 
 { #category : #public }
-PNGLocalizationService >> currentPosition [
+PNGLocalizationService >> currentPose [
 	^self get
 ]
 
@@ -32,7 +32,7 @@ PNGLocalizationService >> decodeGetResponseFrom: decoder [
 PNGLocalizationService >> decodePositionFromDecoder: decoder [
 
 	| position |
-	position := PNGRobotPosition new.
+	position := PNGRobotPose new.
 	position x:  decoder nextEncodedFloat64.
 	position y:  decoder nextEncodedFloat64.
 	position orientation:  decoder nextEncodedFloat64.
@@ -44,4 +44,19 @@ PNGLocalizationService >> decodePositionFromDecoder: decoder [
 PNGLocalizationService >> getCommandString [ 
 
 	^ '01000500'
+]
+
+{ #category : #public }
+PNGLocalizationService >> x: newX y: newY orientation: newOrientation [
+	| requestEncoder |
+	requestEncoder := PNGEncoder new.
+	requestEncoder  
+		nextPutRequestId ;
+		nextPutReplaceActionCode;
+		encodeInt16: self id;
+		encodeInt64: 10;
+		encodeFloat64: newX;
+		encodeFloat64: newY;
+		encodeFloat64: newOrientation.
+	self robot sendAndWaitForResult: requestEncoder contents 
 ]

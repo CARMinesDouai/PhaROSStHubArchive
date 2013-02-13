@@ -50,3 +50,17 @@ PNGLocalizationServiceTest >> testNotificationReception [
 	self assert: notification notNil.
 
 ]
+
+{ #category : #testing }
+PNGLocalizationServiceTest >> testSetCurrentPose [
+	| initialPose newX newY newPose newOrientation |
+	initialPose := localizationService currentPose.
+	newX := 	initialPose x + 1.5.
+	newY := 	initialPose y + 1.5.
+	newOrientation := initialPose orientation + 0.75.
+	localizationService x: newX y: newY orientation: newOrientation.
+	newPose := localizationService currentPose.
+	self assert: newPose x = newX.
+	self assert: newPose y = newY.
+	self assert: newPose orientation = newOrientation
+]
