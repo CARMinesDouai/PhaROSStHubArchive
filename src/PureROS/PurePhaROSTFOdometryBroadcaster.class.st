@@ -81,7 +81,8 @@ PurePhaROSTFOdometryBroadcaster >> sendOdometry: aNotification [
 	self sendTo: '/odom' typedAs: 'nav_msgs/Odometry' a: [ :msg |
 		self initializeMessage: msg.
 		
-		msg child_frame_id: 'base_link'.
+		msg header frame_id: 'odom'.
+		msg child_frame_id: ''.
 		msg pose pose position x: aNotification pose x.		
 		msg pose pose position y: aNotification pose y.
 		msg pose pose position z: 0.0.
