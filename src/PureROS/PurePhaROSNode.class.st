@@ -1,8 +1,6 @@
 Class {
 	#name : #PurePhaROSNode,
 	#superclass : #PhaROSNode,
-	#traits : 'TLogger',
-	#classTraits : 'TLogger classTrait',
 	#instVars : [
 		'robot'
 	],
