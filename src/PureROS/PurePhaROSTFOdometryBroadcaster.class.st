@@ -11,6 +11,7 @@ Class {
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationService [
 	[
+		Transcript show: aNotification pose; cr.
 		self sendTransformations: aNotification.
 		self sendOdometry: aNotification.
 	]
@@ -120,7 +121,7 @@ PurePhaROSTFOdometryBroadcaster >> sendTransformations: aNotification [
 			transformStamped := Geometry_msgsTransformStamped new.
 			transformStamped header frame_id: '/odom'.
 			transformStamped child_frame_id: '/base_link'.
-			transformStamped transform translation x: aNotification pose x.		
+			transformStamped transform translation x: aNotification pose x.
 			transformStamped transform translation y: aNotification pose y.
 			transformStamped transform translation z: 0.0.
 			self rotationAsQuaternation: (aNotification pose orientation ) into:(transformStamped transform rotation).
@@ -150,8 +151,8 @@ PurePhaROSTFOdometryBroadcaster >> setUp [
 	robot with: LocalizationService  do: [
 		: localization  |
 		"pose related with the map"
-"		localization setLocalization: (Pose new x: 3.84474; y: -3.13821; orientation: -1.92569 )."
-		localization resetLocalization.
+		localization setLocalization: (Pose new x: 3.84474; y: -3.13821; orientation: -1.92569 ).
+"		localization resetLocalization."
 		localization load.
 		
 		localization whenANotificationArrivesDo:  [ :notif |			 
