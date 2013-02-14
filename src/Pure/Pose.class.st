@@ -9,6 +9,11 @@ Class {
 	#category : #'Pure-BaseTypes'
 }
 
+{ #category : #'as yet unclassified' }
+Pose class >> x: anX y: anY o: anO [
+	^ Pose new x: anX ;y: anY ; orientation: anO; yourself.
+]
+
 { #category : #accessing }
 Pose >> asString [
 	^ '[x:', self x asString,'] y:[', self y asString,  '] o:[', self orientation  asString, ']'.

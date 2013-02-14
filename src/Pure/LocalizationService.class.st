@@ -77,10 +77,12 @@ LocalizationService >> relatedNotificationClass [
 
 { #category : #request }
 LocalizationService >> resetLocalization [
-
-	^ self setLocalization: Pose new.
-
-"	response :=self replace: 'FFFFFFFFFFFFFFFF000000000000000000000000000000000000000000000000'."
+"	self halt.
+	self setLocalization: Pose new.
+"
+	self replace: 'FFFFFFFFFFFFFFFF000000000000000000000000000000000000000000000000'.
+	self load.
+	
 
 ]
 
