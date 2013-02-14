@@ -3,10 +3,16 @@ Class {
 	#superclass : #RobulabService,
 	#instVars : [
 		'notificationService',
-		'services'
+		'services',
+		'interestedInRawNotifications'
 	],
 	#category : #'Pure-Services'
 }
+
+{ #category : #request }
+NotificationManagerService >> addAnInterested: anInterested [
+	interestedInRawNotifications add: anInterested.
+]
 
 { #category : #notifications }
 NotificationManagerService >> alreadyReceivinNotificationsFrom: aService [ 
@@ -72,6 +78,7 @@ NotificationManagerService >> fetchNotificationsWith: aConnector [
 NotificationManagerService >> initialize [ 
 	super initialize.
 	services := Set new.
+	interestedInRawNotifications := Set new.
 ]
 
 { #category : #request }
@@ -122,6 +129,8 @@ NotificationManagerService >> notificate: aSetNotification [
 	notificationService ifNotNil: [
 		notificationService addNotifications: aSetNotification 	
 	].
+
+	interestedInRawNotifications do: [ :i | i value: aSetNotification ].
 ]
 
 { #category : #request }

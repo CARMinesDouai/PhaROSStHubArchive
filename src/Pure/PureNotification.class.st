@@ -46,6 +46,11 @@ PureNotification >> asAnnouncement [
 ]
 
 { #category : #'initialize-release' }
+PureNotification >> asBinary [
+	^ target getInstanceNumber, data.
+]
+
+{ #category : #'initialize-release' }
 PureNotification >> closeTo: anOtherNotification [ 
 	^ self asAnnouncement closeTo: anOtherNotification asAnnouncement.
 ]
