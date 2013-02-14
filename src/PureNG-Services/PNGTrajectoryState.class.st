@@ -61,6 +61,26 @@ PNGTrajectoryState >> orientationError: anObject [
 	orientationError := anObject
 ]
 
+{ #category : #printing }
+PNGTrajectoryState >> printOn: aStream [
+	super printOn: aStream.
+	aStream 
+		cr;
+		nextPutAll: 'status: ';
+		nextPutAll: self statusLabel;
+		cr;
+		nextPutAll: 'distance covered: '.
+	self distanceCovered printOn: aStream showingDecimalPlaces: 2.
+	aStream 
+		cr;
+		nextPutAll: 'lateral error: '.
+	self lateralError printOn: aStream showingDecimalPlaces: 2.
+	aStream 
+		cr;
+		nextPutAll: 'orientation error: '.
+	self orientationError printOn: aStream showingDecimalPlaces: 2
+]
+
 { #category : #accessing }
 PNGTrajectoryState >> status [
 	^ status

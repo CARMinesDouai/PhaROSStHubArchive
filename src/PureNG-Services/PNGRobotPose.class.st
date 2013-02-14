@@ -23,6 +23,11 @@ Class {
 	#category : #'PureNG-Notifications'
 }
 
+{ #category : #converting }
+PNGRobotPose >> asPoint [
+	^self x @ self y
+]
+
 { #category : #accessing }
 PNGRobotPose >> orientation [
 	^ orientation
@@ -37,14 +42,18 @@ PNGRobotPose >> orientation: anObject [
 PNGRobotPose >> printOn: aStream [ 
 	super printOn: aStream.
 	aStream
-		nextPutAll: 'x: ';
-		print: self x;
 		cr;
-		nextPutAll: 'y: ';
-		print: self y;
+		nextPutAll: 'x: '.
+	self x printOn: aStream showingDecimalPlaces: 2.
+	aStream	
+		cr; 
+		nextPutAll: 'y: '.
+	self y printOn: aStream showingDecimalPlaces: 2.
+	aStream
 		cr;
-		nextPutAll: 'orientation: ';
-		print: self orientation;
+		nextPutAll: 'orientation: '.
+	 self orientation printOn: aStream showingDecimalPlaces: 2.
+	aStream 
 		cr;
 		nextPutAll: 'status: ';
 		print: self statusLabel

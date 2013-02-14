@@ -46,6 +46,7 @@ PNGTrajectoryService >> decodeGetResponseFrom: decoder [
 PNGTrajectoryService >> emergencyStop [
 	"Halt command"
 	"Stops the robot with a strong deceleration"
+	"The trajectory service enters into an error mode. clearTrajectory is the only way to get it out of it."
 	self update: 0
 ]
 

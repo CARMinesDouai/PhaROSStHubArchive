@@ -22,6 +22,11 @@ PNGLocalizationService >> currentPose [
 	^self get
 ]
 
+{ #category : #public }
+PNGLocalizationService >> currentPosition [
+	^self currentPose asPoint
+]
+
 { #category : #actions }
 PNGLocalizationService >> decodeGetResponseFrom: decoder [
 	^self decodePositionFromDecoder:  decoder
@@ -47,6 +52,11 @@ PNGLocalizationService >> getCommandString [
 ]
 
 { #category : #public }
+PNGLocalizationService >> resetPose [
+	self x: 0 y: 0 orientation: 0
+]
+
+{ #category : #public }
 PNGLocalizationService >> x: newX y: newY orientation: newOrientation [
 	| requestEncoder |
 	requestEncoder := PNGEncoder new.
@@ -54,7 +64,7 @@ PNGLocalizationService >> x: newX y: newY orientation: newOrientation [
 		nextPutRequestId ;
 		nextPutReplaceActionCode;
 		encodeInt16: self id;
-		encodeInt64: 10;
+		encodeInt64: self robot timestamp;
 		encodeFloat64: newX;
 		encodeFloat64: newY;
 		encodeFloat64: newOrientation.
