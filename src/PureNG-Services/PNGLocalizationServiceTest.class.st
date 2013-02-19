@@ -12,6 +12,8 @@ PNGLocalizationServiceTest >> setUp [
 	super setUp.
 	robot deleteAllNotifyingServices.
 	localizationService := robot localizationService.
+	localizationService x: 0 y: 0 orientation: 0.
+	(Delay forMilliseconds: 250) wait. "Wait robot takes into account new pose"
 	localizationService enableNotificationsEvery: 10.
 
 ]
@@ -48,8 +50,9 @@ PNGLocalizationServiceTest >> testSetCurrentPose [
 	newY := 	initialPose y + 1.5.
 	newOrientation := initialPose orientation + 0.75.
 	localizationService x: newX y: newY orientation: newOrientation.
+	(Delay forMilliseconds: 250) wait. "Wait robot takes into account new pose"
 	newPose := localizationService currentPose.
-	self assert: newPose x = newX.
-	self assert: newPose y = newY.
-	self assert: newPose orientation = newOrientation
+	self assert: (newPose x closeTo: newX).
+	self assert: (newPose y closeTo: newY).
+	self assert: (newPose orientation closeTo: newOrientation)
 ]

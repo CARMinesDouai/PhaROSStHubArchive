@@ -10,17 +10,15 @@ Class {
 { #category : #testing }
 PNGTrajectoryServiceTest >> setUp [
 	super setUp.
-	trajectoryService := robot trajectoryService
+	trajectoryService := robot trajectoryService.
+	trajectoryService clearTrajectory.
 ]
 
 { #category : #testing }
 PNGTrajectoryServiceTest >> testEmergencyStopOnStoppedRobot [
-	| trajectoryState |
-	trajectoryState := trajectoryService get.
-	self assert: trajectoryState status = PNGTrajectoryState waitingStatusValue.
+	self assert: self trajectoryServiceStatus = PNGTrajectoryState waitingStatusValue.
 	trajectoryService emergencyStop.
-	trajectoryState := trajectoryService get.
-	self assert: trajectoryState status = PNGTrajectoryState waitingStatusValue.
+	self assert: self trajectoryServiceStatus = PNGTrajectoryState waitingStatusValue.
 
 ]
 
@@ -32,15 +30,14 @@ PNGTrajectoryServiceTest >> testFollowingStateDuringMotion [
 	trajectoryService insertSegmentFrom:  origin to: target speed: 0.25.
 	self halt: 'Warning: robot is supposed to move !!!!'.
 	trajectoryService startMotion.
-	trajectoryState := trajectoryService get.
-	self assert: trajectoryState status = PNGTrajectoryState followingStatusValue.
+	self assert: self trajectoryServiceStatus = PNGTrajectoryState followingStatusValue.
 	trajectoryService stopMotion
 ]
 
 { #category : #testing }
 PNGTrajectoryServiceTest >> testGetOfStoppedRobot [
 	| trajectoryState |
-	trajectoryState := trajectoryService get.
+	trajectoryState := self trajectoryServiceState.
 	self assert: trajectoryState timestamp > 0.
 	self assert: trajectoryState status = PNGTrajectoryState waitingStatusValue.
 	self assert: trajectoryState distanceCovered = 0.
@@ -50,24 +47,30 @@ PNGTrajectoryServiceTest >> testGetOfStoppedRobot [
 
 { #category : #testing }
 PNGTrajectoryServiceTest >> testInsertOneSegmentChangesStatusFromStoppedToWaiting [
-	| trajectoryState origin target |
-	trajectoryState := trajectoryService get.
-	self assert: trajectoryState status = PNGTrajectoryState waitingStatusValue.
+	| origin target |
+	self assert: self trajectoryServiceStatus = PNGTrajectoryState waitingStatusValue.
 	origin := 0@0.
 	target := 1@0.
 	trajectoryService insertSegmentFrom:  origin to: target speed: 0.25.
-	trajectoryService stopMotion.
-	trajectoryState := trajectoryService get.
-	self assert: trajectoryState status = PNGTrajectoryState pausedStatusValue.
+	self assert: self trajectoryServiceStatus = PNGTrajectoryState pausedStatusValue.
 ]
 
 { #category : #testing }
 PNGTrajectoryServiceTest >> testStopAlreadyStoppedRobot [
-	| trajectoryState |
-	trajectoryState := trajectoryService get.
-	self assert: trajectoryState status = PNGTrajectoryState waitingStatusValue.
+	self assert: self trajectoryServiceStatus = PNGTrajectoryState waitingStatusValue.
 	trajectoryService stopMotion.
-	trajectoryState := trajectoryService get.
-	self assert: trajectoryState status = PNGTrajectoryState pausedStatusValue.
+	self assert: self trajectoryServiceStatus = PNGTrajectoryState waitingStatusValue.
 
+]
+
+{ #category : #testing }
+PNGTrajectoryServiceTest >> trajectoryServiceState [
+	(Delay forMilliseconds: 250) wait. "Wait robot takes into account state change if any"
+	^trajectoryService get.
+
+]
+
+{ #category : #testing }
+PNGTrajectoryServiceTest >> trajectoryServiceStatus [
+	^self trajectoryServiceState status
 ]
