@@ -26,6 +26,25 @@ PNGCommunicationTest >> testBridgeFinalization [
 ]
 
 { #category : #testing }
+PNGCommunicationTest >> testDispatcherFinalization [	
+	| dispatcherInstancesCount dispatcherProcess |
+	dispatcherInstancesCount := PNGMessageDispatcher allInstances size.
+	dispatcherProcess := robot dispatcher activeObject process. "Get the process of the activeObject"
+	
+	self deny: dispatcherProcess isTerminated.
+	robot := nil.
+	Smalltalk garbageCollect.
+	
+	self assert: (dispatcherInstancesCount > PNGMessageDispatcher allInstances size).
+	(Delay forMilliseconds: 100) wait. "Give dispatcher process a chance to terminate"
+	self assert: dispatcherProcess isTerminated. 
+	
+	
+	
+
+]
+
+{ #category : #testing }
 PNGCommunicationTest >> testNotificationsReceivedOnTheLastSocketUseForRequest [
 	| notificationInsertionSocket insertRequestBytes getSocket getRequestBytes |
 	robot laserService notificationPeriod: 1.

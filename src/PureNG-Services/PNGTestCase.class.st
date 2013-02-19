@@ -28,8 +28,11 @@ PNGTestCase class >> isAbstract [
 
 { #category : #'human in the loop' }
 PNGTestCase >> requestAction: aString [
-	
-	self shouldRequestAction ifTrue: [self halt: aString ]
+	self shouldRequestAction ifTrue: [^self halt: aString].
+	Transcript 
+		cr; 
+		show: 'Ignored action request: '; 
+		show: aString 
 ]
 
 { #category : #testing }

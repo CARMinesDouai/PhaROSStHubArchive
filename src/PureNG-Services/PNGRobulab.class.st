@@ -70,6 +70,7 @@ PNGRobulab >> ip: aByteArray port: portNumber [
 	port := portNumber.
 	bridge := PNGNetworkBridge forRobot: self.
 	self dispatcher: (PNGMessageDispatcher forRobot: self).
+	self finalizationRegistry add: self
 ]
 
 { #category : #services }

@@ -39,12 +39,12 @@ PNGActiveObject >> port [
 
 { #category : #accessing }
 PNGActiveObject >> robot [
-	^ robot
+	^ robot first
 ]
 
 { #category : #accessing }
 PNGActiveObject >> robot: anObject [
-	robot := anObject
+	robot := WeakArray with: anObject
 ]
 
 { #category : #activity }

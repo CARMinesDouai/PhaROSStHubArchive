@@ -12,7 +12,6 @@ PNGMessageDispatcher class >> createProcessForDispatcherIn: weakArray [
 			|dispatcher|
 			dispatcher := weakArray first.
 			dispatcher deliverNextMessage.		
-
 		]
 	]
 
