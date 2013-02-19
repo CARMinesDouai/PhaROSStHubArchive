@@ -20,7 +20,7 @@ Class {
 		'orientation',
 		'status'
 	],
-	#category : #'PureNG-Notifications'
+	#category : #'PureNG-ServiceData'
 }
 
 { #category : #converting }
@@ -72,17 +72,21 @@ PNGRobotPose >> status: anObject [
 
 { #category : #accessing }
 PNGRobotPose >> statusLabel [
+	"Robot sends a fixed status value. (for pure-4.1-r1563) So, this information is meanningless"
+	"The documentation talks about bit values"
 	^self statusLabelDict at: self status ifAbsent: ['Unknown status']
 ]
 
 { #category : #accessing }
 PNGRobotPose >> statusLabelDict [
-	^{0 -> 'The solution has a metric accuracy'.
-	1 -> 'The solution has a decimetric accuracy'.
-	2 -> 'The solution has a centimetric accuracy'.
-	3 -> 'The solution is computed using proprioceptive input'.
-	4 -> 'The solution is computed using exteroceptive input'.
-	5 -> 'An error was detected in the computation' } asDictionary
+	"Robot sends a fixed status value. (for pure-4.1-r1563) So, this information is meanningless"
+	"The documentation talks about bit values"
+	^{1 -> 'The solution has a metric accuracy'.
+	2 -> 'The solution has a decimetric accuracy'.
+	4 -> 'The solution has a centimetric accuracy'.
+	8 -> 'The solution is computed using proprioceptive input'.
+	16 -> 'The solution is computed using exteroceptive input'.
+	32 -> 'An error was detected in the computation' } asDictionary
 ]
 
 { #category : #accessing }

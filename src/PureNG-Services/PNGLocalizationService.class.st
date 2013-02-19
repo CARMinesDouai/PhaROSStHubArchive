@@ -41,7 +41,7 @@ PNGLocalizationService >> decodePositionFromDecoder: decoder [
 	position x:  decoder nextEncodedFloat64.
 	position y:  decoder nextEncodedFloat64.
 	position orientation:  decoder nextEncodedFloat64.
-	position status: decoder nextEncodedUint32.
+	position status: decoder nextEncodedUInt32.
 	^position
 ]
 

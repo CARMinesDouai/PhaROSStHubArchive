@@ -47,25 +47,20 @@ PNGDecoder >> nextEncodedInt16 [
 ]
 
 { #category : #decoder }
-PNGDecoder >> nextEncodedInt32 [
-	^  (self stream next: 4) longAt: 1 bigEndian: false.
+PNGDecoder >> nextEncodedUInt16 [
+	^ ( self stream next:2 ) unsignedShortAt: 1 bigEndian: false.
 ]
 
 { #category : #decoder }
-PNGDecoder >> nextEncodedUInt16 [
-	^ ( self stream next:2 ) unsignedShortAt: 1 bigEndian: false.
+PNGDecoder >> nextEncodedUInt32 [
+
+	^  (self stream next: 4) unsignedLongAt: 1 bigEndian: false.
 ]
 
 { #category : #decoder }
 PNGDecoder >> nextEncodedUInt64 [
 
 	^  (self stream next: 8) unsignedLongAt: 1 bigEndian: false.
-]
-
-{ #category : #decoder }
-PNGDecoder >> nextEncodedUint32 [
-
-	^  (self stream next: 4) unsignedLongAt: 1 bigEndian: false.
 ]
 
 { #category : #accessing }

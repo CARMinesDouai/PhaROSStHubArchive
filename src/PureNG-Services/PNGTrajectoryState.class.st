@@ -8,7 +8,7 @@ Class {
 		'lateralError',
 		'orientationError'
 	],
-	#category : #'PureNG-Notifications'
+	#category : #'PureNG-ServiceData'
 }
 
 { #category : #status }

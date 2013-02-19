@@ -8,17 +8,6 @@ Class {
 }
 
 { #category : #testing }
-PNGLocalizationServiceTest >> notificationOrNil [
-	| semaphore notification |
-	semaphore := Semaphore new.
-	localizationService onNotificationDo: [ :notif | 
-			notification := notif.
-			semaphore signal ].
-	self deny: (semaphore waitTimeoutMSecs: 500).
-	^ notification
-]
-
-{ #category : #testing }
 PNGLocalizationServiceTest >> setUp [
 	super setUp.
 	robot deleteAllNotifyingServices.
@@ -31,7 +20,7 @@ PNGLocalizationServiceTest >> setUp [
 PNGLocalizationServiceTest >> testNotificationOfStoppedRobot [
 	|  notification position |
 	self assert: (robot notificationService get includesKey: localizationService).	
-	notification := self notificationOrNil.
+	notification := self notificationOrNilFrom: localizationService.
 	self assert: notification service = localizationService.
 	self assert: notification timestamp > 0.
 	position := notification position.
@@ -46,7 +35,7 @@ PNGLocalizationServiceTest >> testNotificationOfStoppedRobot [
 PNGLocalizationServiceTest >> testNotificationReception [
 	| notification |
 	self assert: (robot notificationService get includesKey: localizationService).	
-	notification := self notificationOrNil.
+	notification := self notificationOrNilFrom: localizationService.
 	self assert: notification notNil.
 
 ]

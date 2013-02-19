@@ -45,7 +45,14 @@ PNGService class >> serviceType [
 
 { #category : #actions }
 PNGService >> decodeGetResponseFrom: decoder [
-	self subclassResponsibility 
+	| properties |
+	properties := PNGLaserProperties new.
+	^properties 
+		x: decoder nextEncodedFloat32;
+		y: decoder nextEncodedFloat32;
+		orientation: decoder nextEncodedFloat32;
+		echoesCount: decoder nextEncodedUInt32;
+		yourself 
 ]
 
 { #category : #actions }
