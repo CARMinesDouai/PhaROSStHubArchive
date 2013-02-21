@@ -9,8 +9,8 @@ Class {
 }
 
 { #category : #construction }
-PhaROSType class >> composite: anArray named: aByteString [ 
-	^ PhaROSCompositeType named: aByteString definedBy: anArray.
+PhaROSType class >> composite: anArray named: aByteString withConstants: aConstantsArray [
+	^ PhaROSCompositeType named: aByteString definedBy: anArray withConstants: aConstantsArray.
 ]
 
 { #category : #construction }
@@ -22,6 +22,11 @@ PhaROSType class >> float32: aByteSymbol [
 PhaROSType >> check: aValue [
 
 	(self isAPossibleValue: aValue ) ifFalse:[ PhaROSUnexpextedValue signal: 'Unexpected value'].
+]
+
+{ #category : #accessing }
+PhaROSType >> constantValue: aValue [
+	^ aValue.
 ]
 
 { #category : #accessing }

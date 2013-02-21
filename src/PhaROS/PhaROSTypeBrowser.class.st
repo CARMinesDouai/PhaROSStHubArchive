@@ -44,12 +44,14 @@ PhaROSTypeBrowser >> definition: aTypeId [
 			firstLevel := (Character lf split:( PhaROSSystemLauncher instance rosMsgShow: aTypeId ) ) select: [ :str | (str beginsWith: ' ') not & (str size > 3) ] .
 						
 			(PhaROSType composite: (  
-				firstLevel collect: [
+				firstLevel select:[ : each | (each indexOf: $=) = 0] thenCollect: [
 					:each |
 					| type name association |
 					 type := ($ split: each).
 					name :=type at:2.
 					type := type at: 1.
+					
+					
 					((type indexOf: $[) = 0 ) ifTrue:[
 						association := ( name asSymbol -> (self definition: type)  ).
 					] ifFalse: [
@@ -62,21 +64,20 @@ PhaROSTypeBrowser >> definition: aTypeId [
 						
 						      association := ( name asSymbol ->  (PhaROSArrayFixedLenghtType of: size  ofType: innerType )  )
 						].
-					].
-				 ]
-			) asArray named: aTypeId) relatedClass; yourself.
+						].
+			 ]
+			)  asArray named: aTypeId withConstants:(
+				firstLevel select:[ : each | (each indexOf: $=) ~= 0] thenCollect: [: each| 
+					| token type name constantValue |
+					token := ($ split: each).
+					name :=($= split: ( token at:2))at:1.
+					type := self definition: (token at:1).
+					constantValue  := type constantValue: (($= split: ( token at:2))at:2).
+					name asSymbol -> constantValue.
+				] )
+			) relatedClass; yourself.
 
-	]) 
-
-
-
-
-
-
-
-
-
-
+		]) 
 
 
 ]

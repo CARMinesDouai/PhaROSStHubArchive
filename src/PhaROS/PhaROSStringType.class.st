@@ -4,6 +4,16 @@ Class {
 	#category : #'PhaROS-Types-Basic'
 }
 
+{ #category : #testing }
+PhaROSStringType >> constantValue: aValue [ 
+	| realValue | 
+
+	realValue := aValue copyReplaceAll: $' asString with:($' asString, $' asString).
+	
+	^  $' asString , realValue, $' asString.
+	
+]
+
 { #category : #'initialize-release' }
 PhaROSStringType >> dataTypeSizeFor: aValue [
 	(self isAPossibleValue: aValue ) ifFalse: [

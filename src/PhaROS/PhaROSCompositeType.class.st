@@ -5,7 +5,8 @@ Class {
 		'typeName',
 		'typeDefinition',
 		'relatedClass',
-		'md5Sum'
+		'md5Sum',
+		'constants'
 	],
 	#classInstVars : [
 		'types'
@@ -27,8 +28,8 @@ PhaROSCompositeType class >> named: aByteString [
 ]
 
 { #category : #construction }
-PhaROSCompositeType class >> named: aByteString definedBy: anArray [ 
-	^ (self named: aByteString) useTypeDefinition:  anArray ; yourself.
+PhaROSCompositeType class >> named: aByteString definedBy: anArray withConstants: aConstantsArray. [
+	^ (self named: aByteString) useTypeDefinition:  anArray ; useConstants: aConstantsArray yourself.
 ]
 
 { #category : #construction }
@@ -66,6 +67,7 @@ PhaROSCompositeType >> buildRelatedClass [
 		class := self createClass.
 		
 		self installMethodsIn: class.
+		self installConstantsIn: class.
 	].
 
 
@@ -77,6 +79,11 @@ PhaROSCompositeType >> buildRelatedClass [
 
 
 
+]
+
+{ #category : #serializing }
+PhaROSCompositeType >> constants [ 
+	^ constants ifNil: [ constants := Dictionary new ].
 ]
 
 { #category : #serializing }
@@ -146,6 +153,16 @@ PhaROSCompositeType >> erase [
 PhaROSCompositeType >> initialize [ 
 	"attribute's name  => attribute's type"
 	typeDefinition := OrderPreservingDictionary new.
+	constants := Dictionary new.
+]
+
+{ #category : #serializing }
+PhaROSCompositeType >> installConstantsIn: aClass [
+	| init |
+	
+	self constants keysAndValuesDo: [ :name :value |
+		aClass class compile: (('{1}', String crlf, String tab, '^{2}' , String crlf) translated format: { name asLowercase . value }) .
+	].
 ]
 
 { #category : #serializing }
@@ -237,6 +254,14 @@ PhaROSCompositeType >> typeName [
 { #category : #serializing }
 PhaROSCompositeType >> typeName: aTypeName [
 	typeName := aTypeName.
+]
+
+{ #category : #'initialize-release' }
+PhaROSCompositeType >> useConstants: aConstantsArray [ 
+	aConstantsArray do: [ :assoc |
+		self constants at: assoc key put: assoc value.
+	]
+	
 ]
 
 { #category : #'initialize-release' }

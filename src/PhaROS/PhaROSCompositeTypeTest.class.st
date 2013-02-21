@@ -46,7 +46,7 @@ PhaROSCompositeTypeTest >> setUp [
 				#int8 -> PhaROSInt8Type new .
 				#uint64Array -> (PhaROSArrayType of: PhaROSUInt64Type ).
 				#int64FixedArray -> (PhaROSArrayFixedLenghtType of: 3 of: PhaROSInt64Type ). 
-			} named: 'testedType'.
+			} named: 'testedType' withConstants:{}..
 
 	validValues := self validValues collect: [
 		:assoc |

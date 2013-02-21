@@ -24,13 +24,13 @@ PhaROSTypeEntry >> assembleIt [
 				#theta -> PhaROSFloat32Type new .
 				#linear_velocity -> PhaROSFloat32Type new .
 				#angular_velocity -> PhaROSFloat32Type new .
-			} named: self typeName.
+			} named: self typeName withConstants:{}.
 		
 	] ifFalse: [
 		type := PhaROSType composite: {	
 				#linear -> PhaROSFloat32Type new.
 				#angular -> PhaROSFloat32Type new .
-			} named: self typeName.
+			} named: self typeName withConstants:{}..
 	]
 ]
 
