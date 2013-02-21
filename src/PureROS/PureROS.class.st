@@ -6,7 +6,8 @@ Class {
 		'master',
 		'odometryNode',
 		'laserNode',
-		'driver'
+		'driver',
+		'notifications'
 	],
 	#category : #PureROS
 }
@@ -85,15 +86,18 @@ PureROS >> setUp [
 	odometryNode := master create: PurePhaROSTFOdometryBroadcaster named: '/OdometryBroadcaster' domain: '127.0.0.1' tcpPort: 9998 xmlRpcPort:  6125.
 	laserNode := master create: PurePhaROSLaserBroadcaster named: '/LaserBroadcaster' domain: '127.0.0.1' tcpPort: 9999  xmlRpcPort:  6123.
 	driver := master create: PurePhaROSDrive named: '/DriverNode' domain: '127.0.0.1' tcpPort: 9997  xmlRpcPort:  6127.
+	notifications := master create: PurePhaROSNotificationBroadcaster  named: '/PURENotifications' domain: '127.0.0.1' tcpPort: 9996  xmlRpcPort:  6131.
+
 
 	odometryNode robot: robot.
 	laserNode robot: robot.
 	driver robot: robot.
+	notifications robot: robot.
 	
 	odometryNode setUp.
 	laserNode setUp.
 	driver setUp.
-
+	notifications setUp.
 	
 
 	

@@ -27,12 +27,15 @@ PurePhaROSDrive >> moveTo: aPose [
 
 	self sendTo: '/move_base/goal' typedAs: 'move_base_msgs/MoveBaseActionGoal' a: [ :msg | 
 		
+		msg header frame_id: '/base_link'.
 		msg goal_id id: self consumeId.
 		msg goal target_pose pose position x: aPose x.
 		msg goal target_pose pose position y: aPose y.
 		msg goal target_pose pose position z: 0.0.
 		
 		array := PhaROSGeometryTransformations new quaternationFromEulerFor: 0.0 and: 0.0 and: aPose orientation .
+
+		msg goal target_pose header frame_id: '/map'.
 		msg goal target_pose pose orientation x: (array at:1).
 		msg goal target_pose pose orientation y: (array at:2).
 		msg goal target_pose pose orientation z: (array at:3).
@@ -42,5 +45,15 @@ PurePhaROSDrive >> moveTo: aPose [
 ]
 
 { #category : #'as yet unclassified' }
+PurePhaROSDrive >> receive: aMessage from: aChannel [
+	| twist |
+	twist := aMessage value.
+	
+	Transcript show: 'rec-', twist asString; cr.
+	
+]
+
+{ #category : #'as yet unclassified' }
 PurePhaROSDrive >> setUp [
+	self interestedIn: '/command_velocity'.
 ]
