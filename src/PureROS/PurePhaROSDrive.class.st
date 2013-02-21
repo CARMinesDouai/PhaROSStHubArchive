@@ -2,7 +2,9 @@ Class {
 	#name : #PurePhaROSDrive,
 	#superclass : #PurePhaROSNode,
 	#instVars : [
-		'currentId'
+		'currentId',
+		'current',
+		'pngBot'
 	],
 	#category : #PureROS
 }
@@ -16,9 +18,15 @@ PurePhaROSDrive >> consumeId [
 ]
 
 { #category : #'as yet unclassified' }
+PurePhaROSDrive >> current: aPose [
+	current := aPose.
+]
+
+{ #category : #'as yet unclassified' }
 PurePhaROSDrive >> initialize [ 
 	super initialize.
 	currentId := 1.
+	current := Pose new. 
 ]
 
 { #category : #'as yet unclassified' }
@@ -49,11 +57,26 @@ PurePhaROSDrive >> receive: aMessage from: aChannel [
 	| twist |
 	twist := aMessage value.
 	
-	Transcript show: 'rec-', twist asString; cr.
+	
+	robot with: DifferentialDriveService  do: [: ds |  ds setTargetLinearSpeed:  0.0 andTargetAngularSpeed: twist angular z].
+	
 	
 ]
 
 { #category : #'as yet unclassified' }
 PurePhaROSDrive >> setUp [
+
+	robot with: LocalizationService  do: [
+		: localization  |
+		
+		localization whenANotificationArrivesDo:  [ :notif |			 
+			self current: notif pose.
+		].
+	
+		localization enableNotifications.
+	].
+
 	self interestedIn: '/command_velocity'.
+
+
 ]
