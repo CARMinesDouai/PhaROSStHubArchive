@@ -4,8 +4,34 @@ Class {
 	#instVars : [
 		'isExpectedDefect'
 	],
+	#classVars : [
+		'expectedFails'
+	],
 	#category : #'BoTest-Kernel'
 }
+
+{ #category : #accessing }
+BoTestCase class >> expectedFails [
+	^ expectedFails
+]
+
+{ #category : #accessing }
+BoTestCase class >> expectedFails: anObject [
+	expectedFails := anObject
+]
+
+{ #category : #tagging }
+BoTestCase >> addAsExpectedFailure [
+
+	self class expectedFails ifNil:[ self class expectedFails: self expectedFailures asSet].
+	self class expectedFails add: self selector.
+]
+
+{ #category : #accessing }
+BoTestCase >> expectedFailures [
+
+	^ super expectedFailures union: self class expectedFails 
+]
 
 { #category : #testing }
 BoTestCase >> isDefect: selector [
@@ -24,6 +50,7 @@ BoTestCase >> isExpectedDefect [
 
 { #category : #accessing }
 BoTestCase >> isExpectedDefect: anObject [
+
 	isExpectedDefect := anObject
 ]
 
@@ -31,7 +58,7 @@ BoTestCase >> isExpectedDefect: anObject [
 BoTestCase >> performTest [
 	[super performTest] 
 		on:  TestResult failure , TestResult error
-		do: [ :ex | 
+		do: [ :ex |
 			self tagAsDefect: testSelector in: self class.
 			ex pass]
 ]
@@ -63,5 +90,7 @@ BoTestCase >> tagAsDefect: selector in:  testCaseClass [
 
 { #category : #tagging }
 BoTestCase >> tagAsExpectedDefect [
-	self isExpectedDefect: true
+	self isExpectedDefect: true.
+	self addAsExpectedFailure.
+	self fail.
 ]
