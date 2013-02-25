@@ -3,8 +3,7 @@ Class {
 	#superclass : #PurePhaROSNode,
 	#instVars : [
 		'currentId',
-		'current',
-		'pngBot'
+		'trajectoryController'
 	],
 	#category : #PureROS
 }
@@ -18,15 +17,9 @@ PurePhaROSDrive >> consumeId [
 ]
 
 { #category : #'as yet unclassified' }
-PurePhaROSDrive >> current: aPose [
-	current := aPose.
-]
-
-{ #category : #'as yet unclassified' }
 PurePhaROSDrive >> initialize [ 
 	super initialize.
 	currentId := 1.
-	current := Pose new. 
 ]
 
 { #category : #'as yet unclassified' }
@@ -54,34 +47,18 @@ PurePhaROSDrive >> moveTo: aPose [
 
 { #category : #'as yet unclassified' }
 PurePhaROSDrive >> receive: aMessage from: aChannel [
+	self halt.
 	
-	
-	aChannel topic name = '/command_velocity' ifTrue: [
-		| twist |
-		twist := aMessage value.
-
-		Transcript show: twist asString; cr.
-		robot with: DifferentialDriveService  do: [: ds |  ds setTargetLinearSpeed:  0.0 andTargetAngularSpeed: (twist angular z / 10)].
-
-"		(Delay forMilliseconds: 500) wait.		"
-	] ifFalse: [ self halt.] 
-	
+	trajectoryController goToAll: (aMessage value poses collect: [ : gp | gp pose position ]).
 ]
 
 { #category : #'as yet unclassified' }
 PurePhaROSDrive >> setUp [
 
-	robot with: LocalizationService  do: [
-		: localization  |
-		
-		localization whenANotificationArrivesDo:  [ :notif |			 
-			self current: notif pose.
-		].
+"	self interestedIn: '/command_velocity'."
+	trajectoryController := PNGTrajectoryServiceBasedController for: robot.
 	
-		localization enableNotifications.
-	].
-
-	self interestedIn: '/command_velocity'.
-"	self interestedIn: '/move_base/NavfnROS/plan'."
+	
+	"self interestedIn: '/move_base/NavfnROS/plan' typedAs: 'nav_msgs/Path'".
 
 ]

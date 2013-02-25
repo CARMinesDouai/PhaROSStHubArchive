@@ -3,13 +3,14 @@ Class {
 	#superclass : #PurePhaROSNode,
 	#instVars : [
 		'previousNotification',
+		'previousTime',
 		'odometrySents'
 	],
 	#category : #PureROS
 }
 
 { #category : #'as yet unclassified' }
-PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification from: aLocalizationService [
+PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification [ 
 	[
 		self sendTransformations: aNotification.
 		self sendOdometry: aNotification.
@@ -76,36 +77,39 @@ PurePhaROSTFOdometryBroadcaster >> rotationAsQuaternationInX: anOrientation into
 
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> sendOdometry: aNotification [
-	| deltaTime a b | 
+	| deltaTime a b time | 
 	
 	self sendTo: '/odom' typedAs: 'nav_msgs/Odometry' a: [ :msg |
 		self initializeMessage: msg.
 		
 		msg header frame_id: 'odom'.
 		msg child_frame_id: ''.
-		msg pose pose position x: aNotification pose x.		
-		msg pose pose position y: aNotification pose y.
+		msg pose pose position x: aNotification position x.		
+		msg pose pose position y: aNotification position y.
 		msg pose pose position z: 0.0.
 		
-		self rotationAsQuaternation:aNotification pose orientation  into: msg pose pose orientation.
+		self rotationAsQuaternation:aNotification position orientation  into: msg pose pose orientation.
 
-				
+		time := DateAndTime now.
+						
 		previousNotification ifNotNil: [
-			a := aNotification time asSeconds.
-			b := previousNotification time asSeconds.
+			
+			a := time asSeconds.
+			b := previousTime asSeconds.
 			deltaTime :=  (b - a) abs.
 
 			deltaTime = 0 ifFalse:[
 				odometrySents := odometrySents + 1.
 				" Linear velocity "
-				msg twist twist linear x: (aNotification pose x - previousNotification pose x) / deltaTime .
-				msg twist twist linear y: (aNotification pose x - previousNotification pose x) / deltaTime .
+				msg twist twist linear x: (aNotification position x - previousNotification position x) / deltaTime .
+				msg twist twist linear y: (aNotification position x - previousNotification position x) / deltaTime .
 				
 				" Angular velocity "
-				msg twist twist angular z:  (aNotification pose orientation  - previousNotification pose orientation) / deltaTime .
+				msg twist twist angular z:  (aNotification position orientation  - previousNotification position orientation) / deltaTime .
 			]
 		].
 		previousNotification := aNotification.
+		previousTime := time.
 		
 	].
 ]
@@ -120,10 +124,10 @@ PurePhaROSTFOdometryBroadcaster >> sendTransformations: aNotification [
 			transformStamped := Geometry_msgsTransformStamped new.
 			transformStamped header frame_id: '/odom'.
 			transformStamped child_frame_id: '/base_link'.
-			transformStamped transform translation x: aNotification pose x.
-			transformStamped transform translation y: aNotification pose y.
+			transformStamped transform translation x: aNotification position x.
+			transformStamped transform translation y: aNotification position y.
 			transformStamped transform translation z: 0.0.
-			self rotationAsQuaternation: (aNotification pose orientation ) into:(transformStamped transform rotation).
+			self rotationAsQuaternation: (aNotification position orientation ) into:(transformStamped transform rotation).
 			
 			
 			msg addTransform: transformStamped.
@@ -146,35 +150,16 @@ PurePhaROSTFOdometryBroadcaster >> sendTransformations: aNotification [
 
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> setUp [
-	
-	robot with: LocalizationService  do: [
-		: localization  |
-		"pose related with the map"
-"		localization setLocalization: (Pose new x: 3.84474; y: -3.13821; orientation: -1.92569 )."
-		localization resetLocalization.
-		localization load.
-		
-		localization whenANotificationArrivesDo:  [ :notif |			 
-			self broadcast: notif from: localization. 
-			
-		].
-		localization enableNotifications.
-	].
-
+	robot localizationService resetPose. 
+	robot localizationService onNotificationDo: [ : notification | self broadcast: notification ].
+	[robot localizationService enableNotificationsEvery: 0.] on: PNGMessageError do: [ ].
 ]
 
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> stop [
 
 	
-	robot with: NotificationManagerService do: [
-		: notification |
-		robot with: LocalizationService  do: [
-			: localization  |
-			localization announcer unsubscribe:  LaserNotification.
-			notification stopNotificating: localization.
-		].
-	].
+	robot localizationService onNotificationDo: [].
 	super stop. 
 	self halt.
 	

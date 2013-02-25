@@ -5,23 +5,22 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification from: aLaserServiceInstance [ 
-
+PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification [
 [
 	self sendTo: '/scan' a: [ :msg |
 		
 		
 		msg header frame_id: '/laser'.
 		
-		msg angle_min: aLaserNotification minAngle.
-		msg angle_max: aLaserNotification maxAngle.
+		msg angle_min: aLaserNotification angles min.
+		msg angle_max: aLaserNotification angles max.
 		msg angle_increment: (1.0 degreesToRadians).
 		
 		msg scan_time: 0.0.
 		msg time_increment: 0.0.
 		
-		msg range_min: aLaserNotification minRange.
-		msg range_max: (aLaserNotification maxRange max: aLaserServiceInstance maxAcceptableRange).
+		msg range_min: aLaserNotification distances min.
+		msg range_max: (aLaserNotification distances max max: robot laserService maxAcceptableRange).
 		msg ranges addAll: aLaserNotification distances.
 
 	].	
@@ -45,29 +44,15 @@ PurePhaROSLaserBroadcaster >> period [
 { #category : #'as yet unclassified' }
 PurePhaROSLaserBroadcaster >> setUp [
 	
-	robot with: LaserService  do: [
-		:laser |
-		laser whenANotificationArrivesDo: [ :notif |
-			 self broadcast: notif from: laser. 
-		].
-		laser enableNotifications.
-	].
-	
+	robot laserService onNotificationDo: [ : notification |  self broadcast: notification. 	].
+	[robot laserService enableNotificationsEvery: 0.] on: PNGMessageError do: [ ].
+
 ]
 
 { #category : #'as yet unclassified' }
 PurePhaROSLaserBroadcaster >> stop [ 
-
 	super stop. 
-	
-	robot with: NotificationManagerService do: [
-		: notification |
-		robot with: LaserService  do: [
-			:laser  |
-			laser announcer unsubscribe:  LaserNotification.
-			notification stopNotificating:  laser.
-		].
-	].
-	
+	robot laserService onNotificationDo: [].
 	self halt.
+	 
 ]

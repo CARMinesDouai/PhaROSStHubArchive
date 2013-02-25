@@ -13,11 +13,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PureROS class >> default [
+	| master robot |
+	
+	master := PhaROSMaster localhost.
+	robot := PNGRobulabHandcodedFactory kompai1.
+	
+	^self new master: master ; robot: robot ; setUp ; yourself.
+]
+
+{ #category : #'as yet unclassified' }
 PureROS class >> withMasterAt: anUrl andRobotAt: anIP and: aPort [
 	| master robot |
 	
 	master := PhaROSMaster url:  anUrl.
-	robot := Robulab newWith: anIP and: aPort.
+	robot := PNGRobulabDiscoveryFactory robulabFromIp: anIP  port: aPort.
 	
 	^self new master: master ; robot: robot ; setUp ; yourself.
 ]
