@@ -13,7 +13,7 @@ PhaROSValue >> asString [
 		
 		
 	
-	string := self class name, '>>'.
+	string := self class name, '>>', String crlf, String tab.
 	values keysAndValuesDo:[
 		:key :val |
 		string := string , key asString, ':', val asString, ' | '.

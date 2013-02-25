@@ -15,6 +15,11 @@ PhaROSStringType >> constantValue: aValue [
 ]
 
 { #category : #'initialize-release' }
+PhaROSStringType >> dataTypeSize [
+	^ 2048.
+]
+
+{ #category : #'initialize-release' }
 PhaROSStringType >> dataTypeSizeFor: aValue [
 	(self isAPossibleValue: aValue ) ifFalse: [
 		PhaROSUnexpextedValue signal: 'Unexpected value'.

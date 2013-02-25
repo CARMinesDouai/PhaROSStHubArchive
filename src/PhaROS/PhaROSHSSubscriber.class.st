@@ -30,5 +30,5 @@ PhaROSHSSubscriber >> verificationDictionary [
 		{ 
 			#topic -> ByteString 
 		} asDictionary
-	); yourself.
+	); removeKey:#type; yourself.
 ]

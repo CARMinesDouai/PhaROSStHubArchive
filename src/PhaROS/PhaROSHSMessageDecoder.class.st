@@ -63,11 +63,13 @@ PhaROSHSMessageDecoder >> dataSizeFrom: byteStream [
 PhaROSHSMessageDecoder >> decode: aByteArray [
 	| byteStream headerSize bodySize |
 	
-	" Header parsing "
+	[" Header parsing "
 	byteStream := aByteArray readStream.
 	headerSize := self dataSizeFrom: byteStream.
 	self initHeaderFrom: (byteStream next: headerSize).
-
+	] on: Error do: [ :e | 
+		tcpmessage verify. 
+	].
 	^tcpmessage.
 ]
 
