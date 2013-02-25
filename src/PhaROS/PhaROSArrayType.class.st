@@ -16,7 +16,7 @@ PhaROSArrayType class >> ofType: aType [
 
 { #category : #accessing }
 PhaROSArrayType >> dataTypeSize [
-	^ 4096.
+	^(1024*1024).
 "
 	self error: 'You need to specify the related value to this kind of array'."
 ]

@@ -23,6 +23,11 @@ PhaROSMaster class >> instances [
 ]
 
 { #category : #service }
+PhaROSMaster class >> localhost [
+	^ self url: 'http://127.0.0.1:11311/'.
+]
+
+{ #category : #service }
 PhaROSMaster class >> stopAndUnregisterUrl: anUrlString [
 	MasterInstances at: anUrlString ifPresent: [
 		: master | 
@@ -31,6 +36,11 @@ PhaROSMaster class >> stopAndUnregisterUrl: anUrlString [
 	].
 	Smalltalk garbageCollect.
 
+]
+
+{ #category : #service }
+PhaROSMaster class >> stopLocalhost [
+	^ self stopAndUnregisterUrl: 'http://127.0.0.1:11311/'.
 ]
 
 { #category : #construction }
@@ -167,7 +177,7 @@ PhaROSMaster >> getTopicType: aByteString [
 	].
 
 	^(self getTopicTypes:'/anArbitraryId') at: aByteString ifAbsent: [ 
-		self error: 'There''s no topic named ', aByteString 
+		nil
 	].
 ]
 

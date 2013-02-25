@@ -93,6 +93,11 @@ PhaROSNode >> interestedIn: aTopicName [
 	^ self subscriber interestedIn: (self lookupTopic: aTopicName)
 ]
 
+{ #category : #'as yet unclassified' }
+PhaROSNode >> interestedIn: aTopicName typedAs: aTypeId [
+	^ self subscriber interestedIn: (self lookupTopic: aTopicName typedAs: aTypeId)
+]
+
 { #category : #testing }
 PhaROSNode >> isRelatedWith: aTopicName [
 	^ topics includesKey: aTopicName.
