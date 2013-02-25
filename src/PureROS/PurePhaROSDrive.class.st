@@ -54,12 +54,17 @@ PurePhaROSDrive >> moveTo: aPose [
 
 { #category : #'as yet unclassified' }
 PurePhaROSDrive >> receive: aMessage from: aChannel [
-	| twist |
-	twist := aMessage value.
 	
 	
-	robot with: DifferentialDriveService  do: [: ds |  ds setTargetLinearSpeed:  0.0 andTargetAngularSpeed: twist angular z].
-	
+	aChannel topic name = '/command_velocity' ifTrue: [
+		| twist |
+		twist := aMessage value.
+
+		Transcript show: twist asString; cr.
+		robot with: DifferentialDriveService  do: [: ds |  ds setTargetLinearSpeed:  0.0 andTargetAngularSpeed: (twist angular z / 10)].
+
+"		(Delay forMilliseconds: 500) wait.		"
+	] ifFalse: [ self halt.] 
 	
 ]
 
@@ -77,6 +82,6 @@ PurePhaROSDrive >> setUp [
 	].
 
 	self interestedIn: '/command_velocity'.
-
+"	self interestedIn: '/move_base/NavfnROS/plan'."
 
 ]
