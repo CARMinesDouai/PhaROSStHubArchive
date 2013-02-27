@@ -33,6 +33,21 @@ PureROS class >> withMasterAt: anUrl andRobotAt: anIP and: aPort [
 ]
 
 { #category : #'as yet unclassified' }
+PureROS >> consumeGlobalPlan [
+	driver interestedIn: '/move_base/TrajectoryPlannerROS/global_plan'.
+]
+
+{ #category : #'as yet unclassified' }
+PureROS >> consumeLocalPlan [
+	driver interestedIn: '/move_base/TrajectoryPlannerROS/local_plan'.
+]
+
+{ #category : #'as yet unclassified' }
+PureROS >> consumeNavPlan [
+	driver interestedIn: '/move_base/NavfnROS/plan'.
+]
+
+{ #category : #'as yet unclassified' }
 PureROS >> destroy [
 	PhaROSMaster stopAndUnregisterUrl: 'http://127.0.0.1:11311/'.
 	robot destroy .

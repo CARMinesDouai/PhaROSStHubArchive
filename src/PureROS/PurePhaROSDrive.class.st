@@ -3,7 +3,9 @@ Class {
 	#superclass : #PurePhaROSNode,
 	#instVars : [
 		'currentId',
-		'trajectoryController'
+		'trajectoryController',
+		'currentPlanIndex',
+		'pathItarator'
 	],
 	#category : #PureROS
 }
@@ -26,6 +28,7 @@ PurePhaROSDrive >> initialize [
 PurePhaROSDrive >> moveTo: aPose [
 	| array | 
 
+	currentPlanIndex := 1.
 	self sendTo: '/move_base/goal' typedAs: 'move_base_msgs/MoveBaseActionGoal' a: [ :msg | 
 		
 		msg header frame_id: '/base_link'.
@@ -47,9 +50,11 @@ PurePhaROSDrive >> moveTo: aPose [
 
 { #category : #'as yet unclassified' }
 PurePhaROSDrive >> receive: aMessage from: aChannel [
-	self halt.
 	
-	trajectoryController goToAll: (aMessage value poses collect: [ : gp | gp pose position ]).
+	pathItarator path: aMessage value. 
+	
+	pathItarator hasNext ifTrue: [ trajectoryController goTo: pathItarator next position  ].
+
 ]
 
 { #category : #'as yet unclassified' }
@@ -57,7 +62,7 @@ PurePhaROSDrive >> setUp [
 
 "	self interestedIn: '/command_velocity'."
 	trajectoryController := PNGTrajectoryServiceBasedController for: robot.
-	
+	pathItarator := PhaRosPathIterator new.
 	
 	"self interestedIn: '/move_base/NavfnROS/plan' typedAs: 'nav_msgs/Path'".
 
