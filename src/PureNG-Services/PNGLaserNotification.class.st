@@ -7,6 +7,16 @@ Class {
 	#category : #'PureNG-Notifications'
 }
 
+{ #category : #'as yet unclassified' }
+PNGLaserNotification >> angles [
+	^ self echoes collect: [ :echo | echo angle asFloat ].
+]
+
+{ #category : #'as yet unclassified' }
+PNGLaserNotification >> distances [
+	^ self echoes collect: [ :echo | echo distance asFloat ].
+]
+
 { #category : #accessing }
 PNGLaserNotification >> echoes [
 	^ echoes

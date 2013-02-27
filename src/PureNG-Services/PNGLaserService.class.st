@@ -44,6 +44,11 @@ Content  Identifier  Action  Target"
 ]
 
 { #category : #public }
+PNGLaserService >> maxAcceptableRange [
+	 ^30.0
+]
+
+{ #category : #public }
 PNGLaserService >> properties [
 	^self get
 ]

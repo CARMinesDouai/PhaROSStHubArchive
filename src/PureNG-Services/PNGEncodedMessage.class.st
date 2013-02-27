@@ -27,3 +27,8 @@ PNGEncodedMessage class >> deliverWithDecoder: dataDecoder to: aRobot [
 	^self subclassResponsibility 
 
 ]
+
+{ #category : #'instance creation' }
+PNGEncodedMessage class >> isNotification: rawData [
+	^ (rawData at:1) = 16rFF.
+]

@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #'instance creation' }
+PNGController class >> for: aRobot [
+	^ self new robot: aRobot ; yourself.
+]
+
+{ #category : #'instance creation' }
 PNGController class >> kompai1 [
 	^self new
 		robot: PNGRobulabHandcodedFactory kompai1;

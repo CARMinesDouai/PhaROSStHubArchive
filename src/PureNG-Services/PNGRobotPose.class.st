@@ -23,6 +23,11 @@ Class {
 	#category : #'PureNG-ServiceData'
 }
 
+{ #category : #'as yet unclassified' }
+PNGRobotPose class >> x: anX y: anY o: anO [
+	^ self new x: anX ;y: anY ; orientation: anO; yourself.
+]
+
 { #category : #converting }
 PNGRobotPose >> asPoint [
 	^self x @ self y
