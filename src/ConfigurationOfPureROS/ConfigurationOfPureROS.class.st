@@ -145,17 +145,17 @@ ConfigurationOfPureROS >> baseline10: spec [
 					versionString: #bleedingEdge
 			].
 			
-		      spec project: 'Pure' with: [
+		      spec project: 'PureNG' with: [
 				spec 
-					className: 'ConfigurationOfPure';
-					file: 'ConfigurationOfPure' ;
+					className: 'ConfigurationOfPureNG';
+					file: 'ConfigurationOfPureNG' ;
 					versionString: #bleedingEdge;
 					repository: 'http://car.mines-douai.fr/squeaksource/Pure'.
 			].
 
 		
 			spec package: 'PureROS' with: [
-				spec requires: #('PhaROS' 'Pure').
+				spec requires: #('PhaROS' 'PureNG').
 			].
 	].
 
