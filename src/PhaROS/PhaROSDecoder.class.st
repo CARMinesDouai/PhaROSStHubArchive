@@ -14,8 +14,14 @@ PhaROSDecoder class >> on: aReadStream [
 
 { #category : #'as yet unclassified' }
 PhaROSDecoder >> hasLeft: anAmountOfBytes [
-	^stream position + anAmountOfBytes <= stream size.
+	 self flag: #comment.
 	
+	^ true.
+	
+	"
+		since SocketStream doesnot understand position, this maybe has not sense. 
+		^stream position + anAmountOfBytes <= stream size.
+	"
 ]
 
 { #category : #accessing }

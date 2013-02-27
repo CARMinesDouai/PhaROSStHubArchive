@@ -31,14 +31,15 @@ PhaROSValue >> at:aName put: aValue [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSValue >> closeTo: anOtherROSValue [
-	| isCloseTo |
-	isCloseTo := true.
-	
-	values keysAndValuesDo: [ :key :val |
-		isCloseTo := isCloseTo and: [(anOtherROSValue hasAttribute: key) and: [(anOtherROSValue getAt: key) = val]].
-	].	
-	^ isCloseTo.
+PhaROSValue >> closeTo: anOtherValue [
+
+	^ (self class = anOtherValue class) and:[
+		| allSatisfy|
+		
+		allSatisfy := true. 
+		values keysAndValuesDo: [ :key : val | allSatisfy := allSatisfy and: [val closeTo: (anOtherValue getAt: key)]. ].
+		allSatisfy.
+	].
 ]
 
 { #category : #'as yet unclassified' }

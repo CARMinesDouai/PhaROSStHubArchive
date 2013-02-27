@@ -56,16 +56,24 @@ PhaROSPacket >> load: aByteArray [
 		PhaROSUnexpextedValue signal:' Unexpected Value'.		
 	].
 
-	aDecoder := PhaROSDecoder on: (ReadStream on: aByteArray) .
+	^ self loadStream: (ReadStream on: aByteArray).
+
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPacket >> loadStream: aStream [ 
+	| aDecoder  |
+
+
+	aDecoder := PhaROSDecoder on: aStream .
 	
  	(type isAPossibleSize:( self decodePacketSizeFrom: aDecoder )) ifFalse: [
 		PhaROSUnexpextedValue signal:' Unexpected Value'.	
 	].
-		
-"	(self decodePacketSizeFrom: aDecoder ) = type dataTypeSize ifFalse: [
-		RoStUnexpextedValue signal:' Unexpected Value'.
-	]."
+	
 	value := type decode: aDecoder.
+
+
 ]
 
 { #category : #accessing }

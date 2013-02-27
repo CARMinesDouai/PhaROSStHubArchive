@@ -39,25 +39,26 @@ PhaROSSelfProcessedExternalNode >> timeout [
 
 { #category : #accessing }
 PhaROSSelfProcessedExternalNode >> workWith: aChannel [
-	| buffer tout bytesRead msg loop loopSubscribers | 
+	| stream peeked msg   | 
 	
 	self keepRunning: true.
 	
 	msg := topic newMessage.	
-	buffer := ByteArray new:( topic packetSize  ).
-	tout := self timeout.
+	
+	stream := SocketStream on: socket. 
+	stream binary.
+	stream timeout: self timeout.
 	
 	process := [
 		[  self keepRunning ]  whileTrue: [
-			bytesRead := socket receiveDataTimeout: tout into: buffer. 
-			bytesRead > 0 ifTrue: [
-				msg load: buffer.
+			stream peek ifNotNil: [
+				msg loadStream: stream.
 				aChannel send: msg.
-			] ifFalse: [
+			] ifNil: [
 				socket isConnected ifFalse:[
 					self keepRunning: false.
 				]
-			]
+			].
 		].
 		aChannel unsubscribe: self.
 	] forkNamed: 'ExternalNode'.
