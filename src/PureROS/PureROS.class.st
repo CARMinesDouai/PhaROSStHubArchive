@@ -71,17 +71,6 @@ PureROS >> master: aMaster [
 ]
 
 { #category : #'as yet unclassified' }
-PureROS >> moveForward: aVelocity [
-
-	robot with: DifferentialDriveService do: [
-		: service |
-		service load .
-		service setTargetLinearSpeed: aVelocity andTargetAngularSpeed: 0.0.	
-	].
-
-]
-
-{ #category : #'as yet unclassified' }
 PureROS >> moveTo: aPose [
 	^ driver moveTo: aPose.
 ]
@@ -89,17 +78,6 @@ PureROS >> moveTo: aPose [
 { #category : #'as yet unclassified' }
 PureROS >> robot: aRobot [
 	robot := aRobot 
-]
-
-{ #category : #'as yet unclassified' }
-PureROS >> rotate: aVelocity [
-
-	robot with: DifferentialDriveService do: [
-		: service |
-		service load .
-		service setTargetLinearSpeed: 0.0 andTargetAngularSpeed: aVelocity.	
-	].
-
 ]
 
 { #category : #'as yet unclassified' }
