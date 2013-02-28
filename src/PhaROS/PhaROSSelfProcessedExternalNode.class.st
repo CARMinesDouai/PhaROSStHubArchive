@@ -51,14 +51,18 @@ PhaROSSelfProcessedExternalNode >> workWith: aChannel [
 	
 	process := [
 		[  self keepRunning ]  whileTrue: [
-			stream peek ifNotNil: [
-				msg loadStream: stream.
-				aChannel send: msg.
-			] ifNil: [
-				socket isConnected ifFalse:[
-					self keepRunning: false.
-				]
-			].
+			[
+				stream peek ifNotNil: [
+					msg loadStream: stream.
+					aChannel send: msg.
+				] ifNil: [
+					socket isConnected ifFalse:[
+						self keepRunning: false.
+					]
+				].
+			] on: Error do: [ :e |
+				e class = ConnectionTimedOut ifFalse: [ self halt ].
+			]
 		].
 		aChannel unsubscribe: self.
 	] forkNamed: 'ExternalNode'.
