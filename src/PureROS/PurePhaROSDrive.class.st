@@ -51,15 +51,15 @@ PurePhaROSDrive >> moveTo: aPose [
 { #category : #'as yet unclassified' }
 PurePhaROSDrive >> receive: aMessage from: aChannel [
 	| waypoints |
-	"pathItarator path: aMessage value. 
-	
-	pathItarator hasNext ifTrue: [ trajectoryController goTo: pathItarator next position  ].
-"
 
-	trajectoryController stopMotion.
+	pathItarator path: aMessage value. 
+	
+	waypoints := OrderedCollection new. 
+	[pathItarator hasNext] whileTrue: [ waypoints add: pathItarator next position ].
+
+	trajectoryController stopMotion.	
 	trajectoryController trajectoryService clearTrajectory.
-	waypoints := aMessage value poses inject: (OrderedCollection new add: aMessage value poses first pose position; yourself ) 
-						      into: [:acc :each | (acc last closeTo: each pose position) ifFalse: [ acc add: each pose position ]. acc ].
+
 
 	trajectoryController goToAll: waypoints.
 ]

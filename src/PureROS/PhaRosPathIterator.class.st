@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'path',
-		'currentIndex'
+		'currentIndex',
+		'step'
 	],
 	#category : #PureROS
 }
@@ -11,7 +12,7 @@ Class {
 { #category : #'as yet unclassified' }
 PhaRosPathIterator >> hasNext [
 	
-	^ path poses size >=  (currentIndex + 1).
+	^ path poses size >=  (currentIndex + self step).
 
 
 ]
@@ -20,20 +21,30 @@ PhaRosPathIterator >> hasNext [
 PhaRosPathIterator >> next [
 	| nextPose |
 	
+	currentIndex := currentIndex + self step.
 	nextPose := path poses at: currentIndex.
-	currentIndex := currentIndex + 1.
 	^ nextPose pose.
 ]
 
 { #category : #'as yet unclassified' }
 PhaRosPathIterator >> path: aPath [
-	| newIndex | 
+	"| newIndex | 
 	newIndex := 1.
 	
 	path ifNotNil: [
 		[ newIndex < currentIndex and: [ (aPath poses at: newIndex) closeTo: (path poses at: newIndex)]]  whileTrue: [ newIndex := newIndex + 1]. 
 	 ].
 
-	currentIndex := newIndex.
+	step := 1 max: ( path poses size / 10 ) asInteger.
+	currentIndex := newIndex."
+	
 	path := aPath.
+	step := 1 max: ( path poses size / 10 ) asInteger.
+	currentIndex := 1. 
+	
+]
+
+{ #category : #'as yet unclassified' }
+PhaRosPathIterator >> step [
+	^ step.
 ]
