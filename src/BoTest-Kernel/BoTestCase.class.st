@@ -4,33 +4,40 @@ Class {
 	#instVars : [
 		'isExpectedDefect'
 	],
-	#classVars : [
-		'expectedFails'
-	],
 	#category : #'BoTest-Kernel'
 }
 
 { #category : #accessing }
-BoTestCase class >> expectedFails [
-	^ expectedFails
+BoTestCase class >> resources [
+	^{"BoDefectsCache"}
+]
+
+{ #category : #'initialize-release' }
+BoTestCase >> cleanUpInstanceVariables [
+	self instVarsToCleanUp do: [:ivName|
+		self instVarNamed: ivName put: nil
+	]
 ]
 
 { #category : #accessing }
-BoTestCase class >> expectedFails: anObject [
-	expectedFails := anObject
-]
-
-{ #category : #tagging }
-BoTestCase >> addAsExpectedFailure [
-
-	self class expectedFails ifNil:[ self class expectedFails: self expectedFailures asSet].
-	self class expectedFails add: self selector.
+BoTestCase >> defectCache [
+	^BoDefectsCache current 
 ]
 
 { #category : #accessing }
 BoTestCase >> expectedFailures [
+	self isExpectedDefect ifFalse: [^ super expectedFailures].
+	^ super expectedFailures copyWith: self selector 
+]
 
-	^ super expectedFailures union: self class expectedFails 
+{ #category : #'initialize-release' }
+BoTestCase >> instVarsToCleanUp [
+	^self class allInstVarNames copyWithoutAll: self instVarsToKeep 
+]
+
+{ #category : #'initialize-release' }
+BoTestCase >> instVarsToKeep [ 
+	^#('testSelector' 'isExpectedDefect')
 ]
 
 { #category : #testing }
@@ -40,7 +47,12 @@ BoTestCase >> isDefect: selector [
 
 { #category : #testing }
 BoTestCase >> isDefect: selector in: testCaseClass [ 
-	^BoDefectsCache current includes: testCaseClass -> selector
+	(self defectCache includes: testCaseClass -> selector) ifTrue: [^true]. 
+	[testCaseClass run: selector]
+		on:  Error
+		do: [ :ex | 
+			^true].
+	^false
 ]
 
 { #category : #accessing }
@@ -50,7 +62,6 @@ BoTestCase >> isExpectedDefect [
 
 { #category : #accessing }
 BoTestCase >> isExpectedDefect: anObject [
-
 	isExpectedDefect := anObject
 ]
 
@@ -65,32 +76,18 @@ BoTestCase >> performTest [
 
 { #category : #requirements }
 BoTestCase >> require: aSymbol [
-	(self isDefect: aSymbol) ifTrue: [^self tagAsExpectedDefect].
-	[self runTest: aSymbol]
-		on:  TestResult failure , TestResult error
-		do: [ :ex | 
-			self tagAsExpectedDefect.
-			ex pass ]
-]
-
-{ #category : #performing }
-BoTestCase >> runTest: selector [ 
-	(self class selector: selector) runCase
-]
-
-{ #category : #testing }
-BoTestCase >> shouldPass [
-	^super shouldPass and:  [self isExpectedDefect not] 
+	(self isDefect: aSymbol) ifFalse: [^self].
+	^self tagAsExpectedDefect
 ]
 
 { #category : #tagging }
 BoTestCase >> tagAsDefect: selector in:  testCaseClass [
-	BoDefectsCache current add: testCaseClass -> selector
+	self defectCache add: testCaseClass -> selector
 ]
 
 { #category : #tagging }
 BoTestCase >> tagAsExpectedDefect [
 	self isExpectedDefect: true.
-	self addAsExpectedFailure.
-	self fail.
+	self tagAsDefect: self selector in: self class.
+	self fail
 ]
