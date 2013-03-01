@@ -42,9 +42,10 @@ PhaRosPathIterator >> path: aPath [
 	step := 1 max: ( path poses size / 10 ) asInteger.
 	currentIndex := 1. 
 	
+
 ]
 
 { #category : #'as yet unclassified' }
 PhaRosPathIterator >> step [
-	^ step.
+	^ (step min:  (path poses size - step ) abs) max: 1.
 ]

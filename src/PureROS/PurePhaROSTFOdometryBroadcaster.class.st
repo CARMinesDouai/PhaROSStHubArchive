@@ -61,8 +61,6 @@ PurePhaROSTFOdometryBroadcaster >> receive: aMessage from: aChannel [
 	
 	orientation := PhaROSGeometryTransformations new eulerFromQuaternation: pose orientation x and: pose orientation y and: pose orientation z and: pose orientation w.
 	orientation := orientation at:3. 
-	
-	self halt. 
 	robot localizationService x: pose position x y: pose position y orientation: orientation .
 	
 

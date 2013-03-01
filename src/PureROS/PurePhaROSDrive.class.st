@@ -19,6 +19,23 @@ PurePhaROSDrive >> consumeId [
 ]
 
 { #category : #'as yet unclassified' }
+PurePhaROSDrive >> goToAll: waypoints [ 
+
+	| error |
+	
+	3 timesRepeat: [
+		[
+			trajectoryController stopMotion.	
+			trajectoryController trajectoryService clearTrajectory.
+			trajectoryController goToAll: waypoints.
+			^ self.
+		] on: PNGConnectionTimeOut do: [ 	:e | error := e. 	]
+	].
+
+	error signal.
+]
+
+{ #category : #'as yet unclassified' }
 PurePhaROSDrive >> initialize [ 
 	super initialize.
 	currentId := 1.
@@ -57,11 +74,7 @@ PurePhaROSDrive >> receive: aMessage from: aChannel [
 	waypoints := OrderedCollection new. 
 	[pathItarator hasNext] whileTrue: [ waypoints add: pathItarator next position ].
 
-	trajectoryController stopMotion.	
-	trajectoryController trajectoryService clearTrajectory.
-
-
-	trajectoryController goToAll: waypoints.
+	self goToAll: waypoints.
 ]
 
 { #category : #'as yet unclassified' }

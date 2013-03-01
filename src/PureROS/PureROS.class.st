@@ -34,17 +34,17 @@ PureROS class >> withMasterAt: anUrl andRobotAt: anIP and: aPort [
 
 { #category : #'as yet unclassified' }
 PureROS >> consumeGlobalPlan [
-	driver interestedIn: '/move_base/TrajectoryPlannerROS/global_plan'.
+	driver interestedIn: '/move_base/TrajectoryPlannerROS/global_plan' typedAs: 'nav_msgs/Path'.
 ]
 
 { #category : #'as yet unclassified' }
 PureROS >> consumeLocalPlan [
-	driver interestedIn: '/move_base/TrajectoryPlannerROS/local_plan'.
+	driver interestedIn: '/move_base/TrajectoryPlannerROS/local_plan' typedAs: 'nav_msgs/Path'.
 ]
 
 { #category : #'as yet unclassified' }
 PureROS >> consumeNavPlan [
-	driver interestedIn: '/move_base/NavfnROS/plan'.
+	driver interestedIn: '/move_base/NavfnROS/plan' typedAs: 'nav_msgs/Path'.
 ]
 
 { #category : #'as yet unclassified' }
