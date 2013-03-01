@@ -8,8 +8,8 @@ Class {
 }
 
 { #category : #accessing }
-BoTestCase class >> resources [
-	^{"BoDefectsCache"}
+BoTestCase class >> resources [ 
+	^super resources, {BoDefectsCache}
 ]
 
 { #category : #'initialize-release' }
@@ -48,8 +48,8 @@ BoTestCase >> isDefect: selector [
 { #category : #testing }
 BoTestCase >> isDefect: selector in: testCaseClass [ 
 	(self defectCache includes: testCaseClass -> selector) ifTrue: [^true]. 
-	[testCaseClass run: selector]
-		on:  Error
+	[self run: selector in: testCaseClass]
+		on:  TestResult failure , Warning, TestResult error
 		do: [ :ex | 
 			^true].
 	^false
@@ -78,6 +78,16 @@ BoTestCase >> performTest [
 BoTestCase >> require: aSymbol [
 	(self isDefect: aSymbol) ifFalse: [^self].
 	^self tagAsExpectedDefect
+]
+
+{ #category : #performing }
+BoTestCase >> run:  selector in: testClass [
+	| testCase |
+	testCase := testClass selector: selector.
+	[testCase setUp.
+	testCase performTest] ensure: [
+		testCase tearDown.
+		testCase cleanUpInstanceVariables]
 ]
 
 { #category : #tagging }

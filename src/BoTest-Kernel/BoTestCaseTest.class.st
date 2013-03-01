@@ -1,8 +1,18 @@
 Class {
 	#name : #BoTestCaseTest,
-	#superclass : #SUnitTest,
+	#superclass : #TestCase,
 	#category : #'BoTest-Kernel-Test'
 }
+
+{ #category : #testing }
+BoTestCaseTest >> assertForTestResult: aTestResult runCount: runCount passed: passedCount failed: failureCount errors: errorCount expectedFailures: expectedFailureCount [
+	self
+		assert: aTestResult runCount = runCount;
+		assert: aTestResult expectedPassCount = passedCount;
+		assert: aTestResult failureCount = failureCount;
+		assert: aTestResult errorCount = errorCount;
+		assert: aTestResult expectedDefectCount = expectedFailureCount
+]
 
 { #category : #testing }
 BoTestCaseTest >> testExpectedFailureIfRequirementsFails [
