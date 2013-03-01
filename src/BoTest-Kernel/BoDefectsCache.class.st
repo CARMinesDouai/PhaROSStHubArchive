@@ -25,12 +25,5 @@ BoDefectsCache >> includes: anAssociation [
 { #category : #running }
 BoDefectsCache >> setUp [
 	super setUp.
-	defects := Set new.
-	Transcript cr; show: 'BoDefectsCache>>setUp'
-]
-
-{ #category : #running }
-BoDefectsCache >> tearDown [
-	super tearDown.
-	self haltOnce
+	defects := Set new
 ]

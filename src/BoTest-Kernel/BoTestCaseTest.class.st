@@ -32,9 +32,43 @@ BoTestCaseTest >> testExpectedFailureIfRequirementsFails [
 ]
 
 { #category : #testing }
+BoTestCaseTest >> testExpectedFailureIfRequirementsIsError [
+	| case result |
+	case := BoRequirementExampleTest selector: #testRequiresErrorTest.
+	result := case run.
+	self assert: case isExpectedDefect.
+	self deny: case shouldPass.
+	self assert: (case expectedFailures  includes: case selector).
+	self
+		assertForTestResult: result
+		runCount: 1 "The required test is not counted here"
+		passed: 0
+		failed: 0
+		errors: 0
+		expectedFailures: 1 "The run tests is expected failure since the required one failed"
+]
+
+{ #category : #testing }
 BoTestCaseTest >> testExpectedFailureIfRequirementsIsExpectedFailure [
 	| case result |
 	case := BoRequirementExampleTest selector: #testRequiresExpectedFailure.
+	result := case run.
+	self assert: case isExpectedDefect.
+	self deny: case shouldPass.
+	self assert: (case expectedFailures  includes: case selector).
+	self
+		assertForTestResult: result
+		runCount: 1 "The required test is not counted here"
+		passed: 0
+		failed: 0
+		errors: 0
+		expectedFailures: 1 "The run tests is expected failure since the required one failed"
+]
+
+{ #category : #testing }
+BoTestCaseTest >> testExpectedFailureIfRequirementsSignalsWarning [
+	| case result |
+	case := BoRequirementExampleTest selector: #testRequiresWarningTest.
 	result := case run.
 	self assert: case isExpectedDefect.
 	self deny: case shouldPass.
