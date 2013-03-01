@@ -1,3 +1,6 @@
+"
+Counter from the resource should be incremented only once
+"
 Class {
 	#name : #BoPassingRequirementsForSingleExecutionTest,
 	#superclass : #BoTestCase,
@@ -17,6 +20,6 @@ BoPassingRequirementsForSingleExecutionTest >> testPassOnFirstExecution [
 
 { #category : #testing }
 BoPassingRequirementsForSingleExecutionTest >> testWhichPassingRequirementsAreExecutedOnlyOnce [
-	self require: #testPassOnFirstExecution.
+	self requires: #testPassOnFirstExecution.
 	self assert: BoCounterResourceForTest current count = 1
 ]

@@ -1,3 +1,6 @@
+"
+Counter from the resource should be incremented only once
+"
 Class {
 	#name : #BoFailingRequirementsForSingleExecutionTest,
 	#superclass : #BoTestCase,
@@ -18,6 +21,6 @@ BoFailingRequirementsForSingleExecutionTest >> testFailsAllTheTime [
 
 { #category : #testing }
 BoFailingRequirementsForSingleExecutionTest >> testWhichFailingRequirementsAreExecutedOnlyOnce [
-	self require: #testFailsAllTheTime.
+	self requires: #testFailsAllTheTime.
 	self assert: BoCounterResourceForTest current count = 1
 ]

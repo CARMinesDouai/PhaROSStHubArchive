@@ -17,7 +17,7 @@ BoTestCaseTest >> assertForTestResult: aTestResult runCount: runCount passed: pa
 { #category : #testing }
 BoTestCaseTest >> testExpectedFailureIfRequirementsFails [
 	| case result |
-	case := BoRequirementExampleTest selector: #testRequiresFailingTest.
+	case := BoRequirementTest selector: #testRequiresFailingTest.
 	result := case run.
 	self assert: case isExpectedDefect.
 	self deny: case shouldPass.
@@ -34,7 +34,7 @@ BoTestCaseTest >> testExpectedFailureIfRequirementsFails [
 { #category : #testing }
 BoTestCaseTest >> testExpectedFailureIfRequirementsIsError [
 	| case result |
-	case := BoRequirementExampleTest selector: #testRequiresErrorTest.
+	case := BoRequirementTest selector: #testRequiresErrorTest.
 	result := case run.
 	self assert: case isExpectedDefect.
 	self deny: case shouldPass.
@@ -51,7 +51,7 @@ BoTestCaseTest >> testExpectedFailureIfRequirementsIsError [
 { #category : #testing }
 BoTestCaseTest >> testExpectedFailureIfRequirementsIsExpectedFailure [
 	| case result |
-	case := BoRequirementExampleTest selector: #testRequiresExpectedFailure.
+	case := BoRequirementTest selector: #testRequiresExpectedFailure.
 	result := case run.
 	self assert: case isExpectedDefect.
 	self deny: case shouldPass.
@@ -68,7 +68,7 @@ BoTestCaseTest >> testExpectedFailureIfRequirementsIsExpectedFailure [
 { #category : #testing }
 BoTestCaseTest >> testExpectedFailureIfRequirementsSignalsWarning [
 	| case result |
-	case := BoRequirementExampleTest selector: #testRequiresWarningTest.
+	case := BoRequirementTest selector: #testRequiresWarningTest.
 	result := case run.
 	self assert: case isExpectedDefect.
 	self deny: case shouldPass.
@@ -85,7 +85,7 @@ BoTestCaseTest >> testExpectedFailureIfRequirementsSignalsWarning [
 { #category : #testing }
 BoTestCaseTest >> testPassAllTheTheTime [
 	| case result |
-	case := BoRequirementExampleTest selector: #testThatPassesAllTheTime.
+	case := BoRequirementTest selector: #testThatPassesAllTheTime.
 	result := case run.
 	self assert: case shouldPass.
 	self
@@ -100,7 +100,7 @@ BoTestCaseTest >> testPassAllTheTheTime [
 { #category : #testing }
 BoTestCaseTest >> testPassingTestWithPassingRequirement [
 	| case result |
-	case := BoRequirementExampleTest selector: #testRequiresPassingTest.
+	case := BoRequirementTest selector: #testRequiresPassingTest.
 	result := case run.
 	self assert: case shouldPass.
 	self

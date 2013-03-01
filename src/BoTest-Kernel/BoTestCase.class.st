@@ -75,7 +75,7 @@ BoTestCase >> performTest [
 ]
 
 { #category : #requirements }
-BoTestCase >> require: aSymbol [
+BoTestCase >> requires: aSymbol [
 	(self isDefect: aSymbol) ifFalse: [^self].
 	^self tagAsExpectedDefect
 ]
