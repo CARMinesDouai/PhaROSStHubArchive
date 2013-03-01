@@ -16,6 +16,7 @@ BoPassingRequirementsForSingleExecutionTest class >> resources [
 BoPassingRequirementsForSingleExecutionTest >> testPassOnFirstExecution [
 	BoCounterResourceForTest current increment.
 	self assert: BoCounterResourceForTest current count = 1
+	
 ]
 
 { #category : #testing }

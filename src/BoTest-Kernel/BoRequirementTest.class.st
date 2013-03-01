@@ -1,59 +1,121 @@
 Class {
 	#name : #BoRequirementTest,
-	#superclass : #BoTestCase,
+	#superclass : #TestCase,
 	#category : #'BoTest-Kernel-Test'
 }
 
 { #category : #testing }
-BoRequirementTest >> errorAllTheTime [
-	self error: 'Boum!'
+BoRequirementTest >> assertForTestResult: aResult runCount: aRunCount passed: aPassedCount failed: aFailureCount errors: anErrorCount expectedFailures: anExpectedFailureCount requirementFailures: expectedRequirementFailuresCount [
+
+	self
+		assert: aResult runCount = aRunCount;
+		assert: aResult expectedPassCount = aPassedCount;
+		assert: aResult failureCount = aFailureCount;
+		assert: aResult errorCount = anErrorCount;
+		assert: aResult expectedDefectCount = anExpectedFailureCount;
+		assert: aResult requirementFailuresCount = expectedRequirementFailuresCount
 ]
 
 { #category : #testing }
-BoRequirementTest >> failsAllTheTime [
-	self fail
+BoRequirementTest >> testPassAllTheTheTime [
+	| case result |
+	case := BoTestWithRequirements selector: #testThatPassesAllTheTime.
+	result := case run.
+	self assert: case shouldPass.
+	self
+		assertForTestResult: result
+		runCount: 1 
+		passed: 1
+		failed: 0
+		errors: 0
+		expectedFailures: 0
+		requirementFailures: 0
 ]
 
 { #category : #testing }
-BoRequirementTest >> testExpectedFailure [
-	<expectedFailure> 
-	self fail
+BoRequirementTest >> testPassingTestWithPassingRequirement [
+	| case result |
+	case := BoTestWithRequirements selector: #testRequiresPassingTest.
+	result := case run.
+	self assert: case shouldPass.
+	self
+		assertForTestResult: result
+		runCount: 1 "The required test is not counted here"
+		passed: 1 "Our test passes"
+		failed: 0 
+		errors: 0
+		expectedFailures: 0
+		requirementFailures: 0
 ]
 
 { #category : #testing }
-BoRequirementTest >> testRequiresErrorTest [
-	self requires: #errorAllTheTime
+BoRequirementTest >> testRequirementFailureIfRequirementsFails [
+	| case result |
+	case := BoTestWithRequirements selector: #testRequiresFailingTest.
+	result := case run.
+	self assert: case isExpectedDefect.
+	self deny: case shouldPass.
+	self assert: (case expectedFailures  includes: case selector).
+	self
+		assertForTestResult: result
+		runCount: 1 "The required test is not counted here"
+		passed: 0
+		failed: 0
+		errors: 0
+		expectedFailures: 0
+		requirementFailures: 1 
 ]
 
 { #category : #testing }
-BoRequirementTest >> testRequiresExpectedFailure [
-	self requires: #testExpectedFailure
-
+BoRequirementTest >> testRequirementFailureIfRequirementsIsError [
+	| case result |
+	case := BoTestWithRequirements selector: #testRequiresErrorTest.
+	result := case run.
+	self assert: case isExpectedDefect.
+	self deny: case shouldPass.
+	self assert: (case expectedFailures  includes: case selector).
+	self
+		assertForTestResult: result
+		runCount: 1 "The required test is not counted here"
+		passed: 0
+		failed: 0
+		errors: 0
+		expectedFailures: 0
+		requirementFailures: 1 
 ]
 
 { #category : #testing }
-BoRequirementTest >> testRequiresFailingTest [
-	self requires: #failsAllTheTime
+BoRequirementTest >> testRequirementFailureIfRequirementsIsExpectedFailure [
+	| case result |
+	case := BoTestWithRequirements selector: #testRequiresExpectedFailure.
+	result := case run.
+	self assert: case isExpectedDefect.
+	self deny: case shouldPass.
+	self assert: (case expectedFailures  includes: case selector).
+	self
+		assertForTestResult: result
+		runCount: 1 "The required test is not counted here"
+		passed: 0
+		failed: 0
+		errors: 0
+		expectedFailures: 0
+		requirementFailures: 1 
 ]
 
 { #category : #testing }
-BoRequirementTest >> testRequiresPassingTest [
-	self requires: #testThatPassesAllTheTime.
-
-	
-]
-
-{ #category : #testing }
-BoRequirementTest >> testRequiresWarningTest [
-	self requires: #warningAllTheTime
-]
-
-{ #category : #testing }
-BoRequirementTest >> testThatPassesAllTheTime [
-	self assert: true
-]
-
-{ #category : #testing }
-BoRequirementTest >> warningAllTheTime [
-	self notify: 'Alert!'
+BoRequirementTest >> testRequirementFailureIfRequirementsSignalsWarning [
+	| case result |
+	case := BoTestWithRequirements selector: #testRequiresWarningTest.
+	result := case run.
+	self assert: case isExpectedDefect.
+	self deny: case shouldPass.
+	self assert: (case expectedFailures  includes: case selector).
+	self
+		assertForTestResult: result
+		runCount: 1 "The required test is not counted here"
+		passed: 0
+		failed: 0
+		errors: 0
+		expectedFailures: 0
+		requirementFailures: 1 
 ]
