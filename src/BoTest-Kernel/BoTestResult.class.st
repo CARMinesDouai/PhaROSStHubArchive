@@ -2,10 +2,21 @@ Class {
 	#name : #BoTestResult,
 	#superclass : #TestResult,
 	#instVars : [
-		'requirementFailures'
+		'requirementFailures',
+		'requirementResultsDict'
 	],
 	#category : #'BoTest-Kernel'
 }
+
+{ #category : #accessing }
+BoTestResult >> addFailingRequirement: testCase [
+	requirementResultsDict at: testCase put: false
+]
+
+{ #category : #accessing }
+BoTestResult >> addPassingRequirement: testCase [
+	requirementResultsDict at: testCase put: true
+]
 
 { #category : #adding }
 BoTestResult >> addRequirementFailure: aTestCase [
@@ -20,18 +31,20 @@ BoTestResult >> failures [
 { #category : #initialization }
 BoTestResult >> initialize [
 	super initialize.
-	requirementFailures := OrderedCollection new.
-
+	requirementFailures := Set new.
+	requirementResultsDict := Dictionary new
 ]
 
 { #category : #testing }
 BoTestResult >> isPassed: selector in: testCaseClass [
-	^self passed includes: (testCaseClass selector: selector)
+	| case |
+	case := testCaseClass selector: selector.
+	^(self passed includes: case) or: [requirementResultsDict at: case ifAbsent: [false]]
 ]
 
 { #category : #testing }
-BoTestResult >> isRun: selector in: testCaseClass [
-	^self runs includes: (testCaseClass selector: selector)
+BoTestResult >> isRequirementFailure: aTestCase [
+	^self requirementFailures includes: aTestCase
 ]
 
 { #category : #printing }
@@ -51,6 +64,17 @@ BoTestResult >> requirementFailures [
 { #category : #accessing }
 BoTestResult >> requirementFailuresCount [
 	^self requirementFailures size
+]
+
+{ #category : #'as yet unclassified' }
+BoTestResult >> runCase: aTestCase [
+	[
+	aTestCase announce: TestCaseStarted withResult: self.
+	aTestCase runCase.
+	aTestCase announce: TestCaseEnded  withResult: self.
+	self addPass: aTestCase]
+		on: self class failure , Warning, self class error, BoRequirementFailureException
+		do: [:ex | ex sunitAnnounce: aTestCase toResult: self]
 ]
 
 { #category : #accessing }

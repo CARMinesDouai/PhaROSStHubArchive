@@ -35,7 +35,7 @@ BoRequirementTest >> testPassAllTheTheTime [
 { #category : #testing }
 BoRequirementTest >> testPassingTestWithPassingRequirement [
 	| case result |
-	case := BoTestWithRequirements selector: #testRequiresPassingTest.
+	case := BoTestWithRequirements selector: #testRequiresPassingTest. 
 	result := case run.
 	self assert: case shouldPass.
 	self
@@ -53,9 +53,7 @@ BoRequirementTest >> testRequirementFailureIfRequirementsFails [
 	| case result |
 	case := BoTestWithRequirements selector: #testRequiresFailingTest.
 	result := case run.
-	self assert: case isExpectedDefect.
-	self deny: case shouldPass.
-	self assert: (case expectedFailures  includes: case selector).
+	self assert: case hasFailingRequirement.
 	self
 		assertForTestResult: result
 		runCount: 1 "The required test is not counted here"
@@ -71,9 +69,7 @@ BoRequirementTest >> testRequirementFailureIfRequirementsIsError [
 	| case result |
 	case := BoTestWithRequirements selector: #testRequiresErrorTest.
 	result := case run.
-	self assert: case isExpectedDefect.
-	self deny: case shouldPass.
-	self assert: (case expectedFailures  includes: case selector).
+	self assert: case hasFailingRequirement.
 	self
 		assertForTestResult: result
 		runCount: 1 "The required test is not counted here"
@@ -89,9 +85,7 @@ BoRequirementTest >> testRequirementFailureIfRequirementsIsExpectedFailure [
 	| case result |
 	case := BoTestWithRequirements selector: #testRequiresExpectedFailure.
 	result := case run.
-	self assert: case isExpectedDefect.
-	self deny: case shouldPass.
-	self assert: (case expectedFailures  includes: case selector).
+	self assert: case hasFailingRequirement.
 	self
 		assertForTestResult: result
 		runCount: 1 "The required test is not counted here"
@@ -107,9 +101,7 @@ BoRequirementTest >> testRequirementFailureIfRequirementsSignalsWarning [
 	| case result |
 	case := BoTestWithRequirements selector: #testRequiresWarningTest.
 	result := case run.
-	self assert: case isExpectedDefect.
-	self deny: case shouldPass.
-	self assert: (case expectedFailures  includes: case selector).
+	self assert: case hasFailingRequirement.
 	self
 		assertForTestResult: result
 		runCount: 1 "The required test is not counted here"

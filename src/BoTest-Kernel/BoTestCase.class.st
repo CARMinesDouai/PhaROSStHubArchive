@@ -25,10 +25,9 @@ BoTestCase >> cleanUpInstanceVariables [
 	]
 ]
 
-{ #category : #accessing }
-BoTestCase >> expectedFailures [
-	self isExpectedDefect ifFalse: [^ super expectedFailures].
-	^ super expectedFailures copyWith: self selector 
+{ #category : #testing }
+BoTestCase >> hasFailingRequirement [
+	^ self result isRequirementFailure: self
 ]
 
 { #category : #accessing }
@@ -43,39 +42,26 @@ BoTestCase >> instVarsToCleanUp [
 
 { #category : #'initialize-release' }
 BoTestCase >> instVarsToKeep [ 
-	^#('testSelector' 'isExpectedDefect')
-]
-
-{ #category : #accessing }
-BoTestCase >> isExpectedDefect [
-	^ hasFailingRequirement ifNil: [false]
-]
-
-{ #category : #accessing }
-BoTestCase >> isExpectedDefect: anObject [
-	hasFailingRequirement := anObject
+	^#('testSelector' 'result')
 ]
 
 { #category : #testing }
-BoTestCase >> isPassed: selector [
-	^self isPassed: selector in: self class
+BoTestCase >> isSatisfied: selector [
+	^self isSatisified: selector in: self class
 ]
 
 { #category : #testing }
-BoTestCase >> isPassed: selector in: testCaseClass [ 
-	(self result isRun: selector in: testCaseClass) ifFalse: [
-		[self run: selector in: testCaseClass]
-			on:  TestResult failure , Warning, TestResult error
-		do: [ :ex | ].
-	].
+BoTestCase >> isSatisified: selector in: testCaseClass [ 
+	(self result isPassed: selector in: testCaseClass) ifTrue: [^true].
+	self run: selector in: testCaseClass.
 	^self result isPassed: selector in: testCaseClass
-
 ]
 
 { #category : #requirements }
 BoTestCase >> requires: aSymbol [
-	(self isPassed: aSymbol) ifTrue: [^self].
-	^self tagAsRequirementFailure
+	(self isSatisfied: aSymbol) ifTrue: [^self].
+	self result addRequirementFailure: self. 
+	BoRequirementFailureException signal: self selector
 ]
 
 { #category : #accessing }
@@ -99,18 +85,16 @@ BoTestCase >> run: aBoTestResult [
 ]
 
 { #category : #performing }
-BoTestCase >> run:  selector in: testClass [
+BoTestCase >> run: selector in: testClass [ 
 	| testCase |
 	testCase := testClass selector: selector.
-	[testCase setUp.
-	testCase performTest] ensure: [
-		testCase tearDown.
-		testCase cleanUpInstanceVariables]
-]
-
-{ #category : #tagging }
-BoTestCase >> tagAsRequirementFailure [
-	self result addRequirementFailure: self
+	[[testCase setUp.
+	testCase performTest.
+	self result addPassingRequirement: testCase]
+		on: TestResult failure , Warning , TestResult error
+		do: [:ex | self result addFailingRequirement: testCase]]
+		ensure: [testCase tearDown. 
+			testCase cleanUpInstanceVariables]
 ]
 
 { #category : #accessing }
