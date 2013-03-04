@@ -7,17 +7,28 @@ Class {
 		'odometryNode',
 		'laserNode',
 		'driver',
-		'notifications'
+		'notifications',
+		'currentStatus'
 	],
 	#category : #PureROS
 }
 
 { #category : #'as yet unclassified' }
-PureROS class >> default [
+PureROS class >> kompai1 [
 	| master robot |
 	
 	master := PhaROSMaster localhost.
 	robot := PNGRobulabHandcodedFactory kompai1.
+	
+	^self new master: master ; robot: robot ; setUp ; yourself.
+]
+
+{ #category : #'as yet unclassified' }
+PureROS class >> kompai2 [
+	| master robot |
+	
+	master := PhaROSMaster localhost.
+	robot := PNGRobulabHandcodedFactory kompai2.
 	
 	^self new master: master ; robot: robot ; setUp ; yourself.
 ]
@@ -48,6 +59,26 @@ PureROS >> consumeNavPlan [
 ]
 
 { #category : #'as yet unclassified' }
+PureROS >> consumeSession [
+
+
+	currentStatus ifNotNil: [ self error: ' The current status is ', currentStatus ].
+	
+	currentStatus := 'replay'.
+			
+	notifications := master create: PurePhaROSNotificationConsumer  named: '/PURENotifications' domain: '127.0.0.1' tcpPort: 9996  xmlRpcPort:  6131.
+	notifications robot: robot.		
+	notifications setUp.
+	
+	
+
+	
+
+
+
+]
+
+{ #category : #'as yet unclassified' }
 PureROS >> destroy [
 	PhaROSMaster stopAndUnregisterUrl: 'http://127.0.0.1:11311/'.
 	robot destroy .
@@ -73,6 +104,26 @@ PureROS >> master: aMaster [
 { #category : #'as yet unclassified' }
 PureROS >> moveTo: aPose [
 	^ driver moveTo: aPose.
+]
+
+{ #category : #'as yet unclassified' }
+PureROS >> recordSession [
+
+
+	currentStatus ifNotNil: [ self error: ' The current status is ', currentStatus ].
+	
+	currentStatus := 'recording'.
+			
+	notifications := master create: PurePhaROSNotificationBroadcaster  named: '/PURENotifications' domain: '127.0.0.1' tcpPort: 9996  xmlRpcPort:  6131.
+	notifications robot: robot.		
+	notifications setUp.
+	
+	
+
+	
+
+
+
 ]
 
 { #category : #'as yet unclassified' }

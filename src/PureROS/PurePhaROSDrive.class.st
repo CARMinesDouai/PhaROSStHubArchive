@@ -80,10 +80,8 @@ PurePhaROSDrive >> receive: aMessage from: aChannel [
 { #category : #'as yet unclassified' }
 PurePhaROSDrive >> setUp [
 
-"	self interestedIn: '/command_velocity'."
 	trajectoryController := PNGTrajectoryServiceBasedController for: robot.
 	pathItarator := PhaRosPathIterator new.
 	
-	"self interestedIn: '/move_base/NavfnROS/plan' typedAs: 'nav_msgs/Path'".
 
 ]

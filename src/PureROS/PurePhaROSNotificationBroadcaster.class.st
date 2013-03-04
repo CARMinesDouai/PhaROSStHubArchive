@@ -28,4 +28,5 @@ PurePhaROSNotificationBroadcaster >> setUp [
 			]
 		] repeat.
 	].
+	broadcaster start.
 ]
