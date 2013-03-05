@@ -37,7 +37,7 @@ PNGNetworkBridge class >> createProcessSocket: socket resutlBuffer: resultBuffer
 PNGNetworkBridge >> initialize [ 
 	super  initialize.
 	self resultBuffer: (ByteArray new: 4096).
-	self responseQueue: MultipleSharedQueue new.
+	self responseQueue: SharedQueue new.
 
 
 ]

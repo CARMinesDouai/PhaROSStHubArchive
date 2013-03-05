@@ -76,6 +76,28 @@ PNGRobulabHandcodedFactory class >> notificationService [
 	^PNGNotificationService newWithId: 1
 ]
 
+{ #category : #factory }
+PNGRobulabHandcodedFactory class >> recordingKompai1 [
+	^self recordingKompaiVersion2010Pure41Ip: #[192 168 1 1] port: 60000 serial: '10-2-6206-2'
+	
+]
+
+{ #category : #factory }
+PNGRobulabHandcodedFactory class >> recordingKompai2 [
+	^self recordingKompaiVersion2010Pure41Ip: #[192 168 1 2] port: 60000 serial: '10-1-6206-2'
+	
+]
+
+{ #category : #factory }
+PNGRobulabHandcodedFactory class >> recordingKompaiVersion2010Pure41Ip: ip port: port serial: serialString [
+	|bot|
+	bot := PNGRobulab recordingInstanceForIp: ip port: port.
+	bot serial: serialString.
+	bot services: self servicesForKompaiVersion2010Pure41.
+	^bot
+
+]
+
 { #category : #services }
 PNGRobulabHandcodedFactory class >> servicesForKompaiVersion2010Pure41 [
 	^{self batteryService.

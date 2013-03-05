@@ -19,7 +19,7 @@ PNGMessageDispatcher class >> createProcessForDispatcherIn: weakArray [
 
 { #category : #accessing }
 PNGMessageDispatcher >> bridgeQueue [
-	^ self robot bridge responseQueue for: self.
+	^ self robot bridge responseQueue.
 ]
 
 { #category : #activity }
@@ -37,6 +37,6 @@ PNGMessageDispatcher >> start [
 			(self class createProcessForDispatcherIn: (WeakArray with: self)).
 	
 	self activeObject
-		priority: Processor userBackgroundPriority;
+		priority: Processor highIOPriority;
 		start
 ]

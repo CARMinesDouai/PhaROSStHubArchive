@@ -18,13 +18,30 @@ Class {
 PNGRobulab class >> ip: aByteArray port: portNumber [ 
 	^self new
 		ip: aByteArray port: portNumber;
-		yourself
+		defaultConfiguration;
+		yourself.
+
+]
+
+{ #category : #'instance creation' }
+PNGRobulab class >> recordingInstanceForIp: aByteArray port: portNumber [ 
+	^self new
+		ip: aByteArray port: portNumber;
+		recordingConfiguration;
+		yourself.
 
 ]
 
 { #category : #accessing }
 PNGRobulab >> bridge [
 	^ bridge
+]
+
+{ #category : #'initialize-release' }
+PNGRobulab >> defaultConfiguration [
+	bridge := PNGNetworkBridge forRobot: self.
+	self dispatcher: (PNGMessageDispatcher forRobot: self).
+	self finalizationRegistry add: self
 ]
 
 { #category : #'initialize-release' }
@@ -64,13 +81,11 @@ PNGRobulab >> ip [
 	^ip
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #accessing }
 PNGRobulab >> ip: aByteArray port: portNumber [ 
 	ip := aByteArray.
 	port := portNumber.
-	bridge := PNGNetworkBridge forRobot: self.
-	self dispatcher: (PNGMessageDispatcher forRobot: self).
-	self finalizationRegistry add: self
+
 ]
 
 { #category : #services }
@@ -106,6 +121,13 @@ PNGRobulab >> port [
 PNGRobulab >> receiveCommandResult: aResponse [
 	latestResponse := aResponse.
 	commandResultSemaphore signal
+]
+
+{ #category : #'initialize-release' }
+PNGRobulab >> recordingConfiguration [
+	bridge := PNGMultipleDispatcherNetworkBridge forRobot: self.
+	self dispatcher: (PNGMessageDispatcher forRobot: self).
+	self finalizationRegistry add: self
 ]
 
 { #category : #communication }
