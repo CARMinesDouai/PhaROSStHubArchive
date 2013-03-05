@@ -1,3 +1,8 @@
+"
+Instance Variables:
+	requirementFailures	<Set> test cases which have a requirement that is not satified
+	requirementResultsDict	<Dictionary> results of tests that were run as requirements
+"
 Class {
 	#name : #BoTestResult,
 	#superclass : #TestResult,
@@ -23,9 +28,9 @@ BoTestResult >> addRequirementFailure: aTestCase [
 	^self requirementFailures add: aTestCase 
 ]
 
-{ #category : #accessing }
-BoTestResult >> failures [
-	^super failures, self requirementFailures
+{ #category : #testing }
+BoTestResult >> hasFailures [
+	^super hasFailures or: [self requirementFailuresCount > 0]
 ]
 
 { #category : #initialization }
@@ -66,7 +71,7 @@ BoTestResult >> requirementFailuresCount [
 	^self requirementFailures size
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 BoTestResult >> runCase: aTestCase [
 	[
 	aTestCase announce: TestCaseStarted withResult: self.
@@ -78,6 +83,6 @@ BoTestResult >> runCase: aTestCase [
 ]
 
 { #category : #accessing }
-BoTestResult >> runs [
-	^self defects, self passed
+BoTestResult >> runCount [
+	^super runCount + self requirementFailuresCount 
 ]

@@ -1,43 +1,15 @@
 Class {
 	#name : #BoRequirementTest,
-	#superclass : #TestCase,
+	#superclass : #BoTestCaseTest,
 	#category : #'BoTest-Kernel-Test'
 }
 
 { #category : #testing }
-BoRequirementTest >> assertForTestResult: aResult runCount: aRunCount passed: aPassedCount failed: aFailureCount errors: anErrorCount expectedFailures: anExpectedFailureCount requirementFailures: expectedRequirementFailuresCount [
-
-	self
-		assert: aResult runCount = aRunCount;
-		assert: aResult expectedPassCount = aPassedCount;
-		assert: aResult failureCount = aFailureCount;
-		assert: aResult errorCount = anErrorCount;
-		assert: aResult expectedDefectCount = anExpectedFailureCount;
-		assert: aResult requirementFailuresCount = expectedRequirementFailuresCount
-]
-
-{ #category : #testing }
-BoRequirementTest >> testPassAllTheTheTime [
-	| case result |
-	case := BoTestWithRequirements selector: #testThatPassesAllTheTime.
-	result := case run.
-	self assert: case shouldPass.
-	self
-		assertForTestResult: result
-		runCount: 1 
-		passed: 1
-		failed: 0
-		errors: 0
-		expectedFailures: 0
-		requirementFailures: 0
-]
-
-{ #category : #testing }
 BoRequirementTest >> testPassingTestWithPassingRequirement [
 	| case result |
-	case := BoTestWithRequirements selector: #testRequiresPassingTest. 
+	case := BoTestWithRequirementsThatPass selector: #testRequiresPassingTest. 
 	result := case run.
-	self assert: case shouldPass.
+	self deny: case hasFailingRequirement.
 	self
 		assertForTestResult: result
 		runCount: 1 "The required test is not counted here"
@@ -49,25 +21,9 @@ BoRequirementTest >> testPassingTestWithPassingRequirement [
 ]
 
 { #category : #testing }
-BoRequirementTest >> testRequirementFailureIfRequirementsFails [
-	| case result |
-	case := BoTestWithRequirements selector: #testRequiresFailingTest.
-	result := case run.
-	self assert: case hasFailingRequirement.
-	self
-		assertForTestResult: result
-		runCount: 1 "The required test is not counted here"
-		passed: 0
-		failed: 0
-		errors: 0
-		expectedFailures: 0
-		requirementFailures: 1 
-]
-
-{ #category : #testing }
 BoRequirementTest >> testRequirementFailureIfRequirementsIsError [
 	| case result |
-	case := BoTestWithRequirements selector: #testRequiresErrorTest.
+	case := BoTestWithRequirementsThatRaiseError selector: #testRequiresErrorTest.
 	result := case run.
 	self assert: case hasFailingRequirement.
 	self
@@ -83,7 +39,7 @@ BoRequirementTest >> testRequirementFailureIfRequirementsIsError [
 { #category : #testing }
 BoRequirementTest >> testRequirementFailureIfRequirementsIsExpectedFailure [
 	| case result |
-	case := BoTestWithRequirements selector: #testRequiresExpectedFailure.
+	case := BoTestWithRequirementsThatAreExpectedFailure selector: #testRequiresExpectedFailure.
 	result := case run.
 	self assert: case hasFailingRequirement.
 	self
@@ -97,9 +53,9 @@ BoRequirementTest >> testRequirementFailureIfRequirementsIsExpectedFailure [
 ]
 
 { #category : #testing }
-BoRequirementTest >> testRequirementFailureIfRequirementsSignalsWarning [
+BoRequirementTest >> testRequirementFailureIfRequirementsIsFailure [
 	| case result |
-	case := BoTestWithRequirements selector: #testRequiresWarningTest.
+	case := BoTestWithRequirementsThatFail  selector: #testRequiresFailingTest.
 	result := case run.
 	self assert: case hasFailingRequirement.
 	self
@@ -110,4 +66,64 @@ BoRequirementTest >> testRequirementFailureIfRequirementsSignalsWarning [
 		errors: 0
 		expectedFailures: 0
 		requirementFailures: 1 
+]
+
+{ #category : #testing }
+BoRequirementTest >> testSuiteWithErrorInRequirement [
+	| suite result |
+	suite := BoTestWithRequirementsThatRaiseError suite.
+	result := suite run.
+	self
+		assertForTestResult: result
+		runCount: 2 "The required test is counted only once"
+		passed: 0
+		failed: 0
+		errors: 1
+		expectedFailures: 0
+		requirementFailures: 1 
+]
+
+{ #category : #testing }
+BoRequirementTest >> testSuiteWithExpectedFailureInRequirement [
+	| suite result |
+	suite := BoTestWithRequirementsThatAreExpectedFailure suite.
+	result := suite run.
+	self
+		assertForTestResult: result
+		runCount: 2 "The required test is counted only once"
+		passed: 0
+		failed: 0
+		errors: 0
+		expectedFailures: 1
+		requirementFailures: 1 
+]
+
+{ #category : #testing }
+BoRequirementTest >> testSuiteWithFailureInRequirement [
+	| suite result |
+	suite := BoTestWithRequirementsThatFail suite.
+	result := suite run.
+	self
+		assertForTestResult: result
+		runCount: 2 "The required test is counted only once"
+		passed: 0
+		failed: 1
+		errors: 0
+		expectedFailures: 0
+		requirementFailures: 1 
+]
+
+{ #category : #testing }
+BoRequirementTest >> testSuiteWithPassingRequirement [
+	| suite result |
+	suite := BoTestWithRequirementsThatPass suite.
+	result := suite run.
+	self
+		assertForTestResult: result
+		runCount: 2 "The required test is counted only once"
+		passed: 2
+		failed: 0
+		errors: 0
+		expectedFailures: 0
+		requirementFailures: 0
 ]
