@@ -13,5 +13,5 @@ BoTestCaseTest >> assertForTestResult: aResult runCount: aRunCount passed: aPass
 		assert: aResult failureCount = aFailureCount;
 		assert: aResult errorCount = anErrorCount;
 		assert: aResult expectedDefectCount = anExpectedFailureCount;
-		assert: aResult requirementFailuresCount = expectedRequirementFailuresCount
+		assert: aResult testsWithFailingRequirementsCount = expectedRequirementFailuresCount
 ]

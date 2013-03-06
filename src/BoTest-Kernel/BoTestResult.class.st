@@ -7,8 +7,8 @@ Class {
 	#name : #BoTestResult,
 	#superclass : #TestResult,
 	#instVars : [
-		'requirementFailures',
-		'requirementResultsDict'
+		'requirementResultsDict',
+		'testWithFailingRequirements'
 	],
 	#category : #'BoTest-Kernel'
 }
@@ -24,19 +24,29 @@ BoTestResult >> addPassingRequirement: testCase [
 ]
 
 { #category : #adding }
-BoTestResult >> addRequirementFailure: aTestCase [
-	^self requirementFailures add: aTestCase 
+BoTestResult >> addTestWithFailingRequirement: aTestCase [
+	^self testsWithFailingRequirements add: aTestCase 
+]
+
+{ #category : #accessing }
+BoTestResult >> defects [
+	^super defects asSet, self testsWithFailingRequirements 
+]
+
+{ #category : #testing }
+BoTestResult >> hasFailingRequirement: aTestCase [
+	^self testsWithFailingRequirements includes: aTestCase
 ]
 
 { #category : #testing }
 BoTestResult >> hasFailures [
-	^super hasFailures or: [self requirementFailuresCount > 0]
+	^super hasFailures or: [self testsWithFailingRequirementsCount > 0]
 ]
 
 { #category : #initialization }
 BoTestResult >> initialize [
 	super initialize.
-	requirementFailures := Set new.
+	testWithFailingRequirements := Set new.
 	requirementResultsDict := Dictionary new
 ]
 
@@ -48,8 +58,15 @@ BoTestResult >> isPassed: selector in: testCaseClass [
 ]
 
 { #category : #testing }
-BoTestResult >> isRequirementFailure: aTestCase [
-	^self requirementFailures includes: aTestCase
+BoTestResult >> isRun: aSelector in: aTestCaseClass [
+
+	| case |
+	case := aTestCaseClass selector: aSelector.
+	^(self passed includes: case) or:[
+		(self defects includes: case) or:[
+			requirementResultsDict keys includes: case.
+			]
+		]
 ]
 
 { #category : #printing }
@@ -57,18 +74,8 @@ BoTestResult >> printOn: aStream [
 	super printOn: aStream.
 	aStream
 		nextPutAll: ', ';
-		nextPutAll: self requirementFailuresCount  printString;
+		nextPutAll: self testsWithFailingRequirementsCount  printString;
 		nextPutAll: ' failed requirements'
-]
-
-{ #category : #accessing }
-BoTestResult >> requirementFailures [
-	^ requirementFailures
-]
-
-{ #category : #accessing }
-BoTestResult >> requirementFailuresCount [
-	^self requirementFailures size
 ]
 
 { #category : #running }
@@ -84,5 +91,15 @@ BoTestResult >> runCase: aTestCase [
 
 { #category : #accessing }
 BoTestResult >> runCount [
-	^super runCount + self requirementFailuresCount 
+	^super runCount + self testsWithFailingRequirementsCount 
+]
+
+{ #category : #accessing }
+BoTestResult >> testsWithFailingRequirements [
+	^ testWithFailingRequirements
+]
+
+{ #category : #accessing }
+BoTestResult >> testsWithFailingRequirementsCount [
+	^self testsWithFailingRequirements size
 ]

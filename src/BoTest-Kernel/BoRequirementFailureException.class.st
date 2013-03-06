@@ -6,6 +6,6 @@ Class {
 
 { #category : #'as yet unclassified' }
 BoRequirementFailureException >> sunitAnnounce: aTestCase toResult: aTestResult [
-	aTestResult addRequirementFailure: aTestCase.
+	aTestResult addTestWithFailingRequirement: aTestCase.
 	self sunitExitWith: false.
 ]

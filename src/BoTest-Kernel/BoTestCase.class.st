@@ -2,7 +2,6 @@ Class {
 	#name : #BoTestCase,
 	#superclass : #TestCase,
 	#instVars : [
-		'hasFailingRequirement',
 		'result'
 	],
 	#category : #'BoTest-Kernel'
@@ -27,7 +26,7 @@ BoTestCase >> cleanUpInstanceVariables [
 
 { #category : #testing }
 BoTestCase >> hasFailingRequirement [
-	^ self result isRequirementFailure: self
+	^ self result hasFailingRequirement: self
 ]
 
 { #category : #accessing }
@@ -52,15 +51,15 @@ BoTestCase >> isSatisfied: selector [
 
 { #category : #testing }
 BoTestCase >> isSatisified: selector in: testCaseClass [ 
-	(self result isPassed: selector in: testCaseClass) ifTrue: [^true].
-	self run: selector in: testCaseClass.
+
+	(self result isRun: selector in: testCaseClass) ifFalse: [self run: selector in: testCaseClass].
 	^self result isPassed: selector in: testCaseClass
 ]
 
 { #category : #requirements }
 BoTestCase >> requires: aSymbol [
 	(self isSatisfied: aSymbol) ifTrue: [^self].
-	self result addRequirementFailure: self. 
+	self result addTestWithFailingRequirement: self. 
 	BoRequirementFailureException signal: self selector
 ]
 

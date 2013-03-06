@@ -38,3 +38,8 @@ BoRequirementArePerformedOnlyOnceTest >> testSuiteWithFailureInRequirement [
 BoRequirementArePerformedOnlyOnceTest >> testSuiteWithPassingRequirement [
 	self assertRequirementsExecutedOnlyOnceIn:  BoTestWithRequirementsThatPass
 ]
+
+{ #category : #testing }
+BoRequirementArePerformedOnlyOnceTest >> testSuiteWithRequirementHierarchy [
+	self assertRequirementsExecutedOnlyOnceIn: BoTestWithHierarchyOfRequirementWithFailingRoot
+]
