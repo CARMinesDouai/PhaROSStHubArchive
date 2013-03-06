@@ -15,3 +15,9 @@ BoTestWithRequirementsThatPass >> testRequiresPassingTest [
 	self requires: #testPassesAllTheTime
 
 ]
+
+{ #category : #testing }
+BoTestWithRequirementsThatPass >> testRequiresPassingTest2 [
+	self requires: #testPassesAllTheTime
+
+]

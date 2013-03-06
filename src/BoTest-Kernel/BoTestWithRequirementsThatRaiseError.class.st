@@ -14,3 +14,8 @@ BoTestWithRequirementsThatRaiseError >> testErrorAllTheTime [
 BoTestWithRequirementsThatRaiseError >> testRequiresErrorTest [
 	self requires: #testErrorAllTheTime
 ]
+
+{ #category : #testing }
+BoTestWithRequirementsThatRaiseError >> testRequiresErrorTest2 [
+	self requires: #testErrorAllTheTime
+]

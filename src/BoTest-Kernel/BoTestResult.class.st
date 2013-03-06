@@ -13,12 +13,12 @@ Class {
 	#category : #'BoTest-Kernel'
 }
 
-{ #category : #accessing }
+{ #category : #adding }
 BoTestResult >> addFailingRequirement: testCase [
 	requirementResultsDict at: testCase put: false
 ]
 
-{ #category : #accessing }
+{ #category : #adding }
 BoTestResult >> addPassingRequirement: testCase [
 	requirementResultsDict at: testCase put: true
 ]
@@ -51,22 +51,20 @@ BoTestResult >> initialize [
 ]
 
 { #category : #testing }
-BoTestResult >> isPassed: selector in: testCaseClass [
-	| case |
-	case := testCaseClass selector: selector.
-	^(self passed includes: case) or: [requirementResultsDict at: case ifAbsent: [false]]
+BoTestResult >> isPassed: aTestCase [
+	^(super isPassed: aTestCase) or: [requirementResultsDict at: aTestCase ifAbsent: [false]]
 ]
 
 { #category : #testing }
-BoTestResult >> isRun: aSelector in: aTestCaseClass [
+BoTestResult >> isRun: aTestCase [
+	^ (self passed includes: aTestCase)
+		or: [ (self defects includes: aTestCase) or: [ 
+				self isRunAsRequirement: aTestCase ] ]
+]
 
-	| case |
-	case := aTestCaseClass selector: aSelector.
-	^(self passed includes: case) or:[
-		(self defects includes: case) or:[
-			requirementResultsDict keys includes: case.
-			]
-		]
+{ #category : #testing }
+BoTestResult >> isRunAsRequirement: aTestCase [
+	^ requirementResultsDict keys includes: aTestCase
 ]
 
 { #category : #printing }
@@ -80,6 +78,11 @@ BoTestResult >> printOn: aStream [
 
 { #category : #running }
 BoTestResult >> runCase: aTestCase [
+	(self isRunAsRequirement: aTestCase) ifTrue: [
+		(requirementResultsDict at: aTestCase) ifTrue: [^self addPass: aTestCase].
+		aTestCase hasFailingRequirement ifTrue: [^self].
+		^self addFailure: aTestCase.
+	].
 	[
 	aTestCase announce: TestCaseStarted withResult: self.
 	aTestCase runCase.
@@ -92,6 +95,18 @@ BoTestResult >> runCase: aTestCase [
 { #category : #accessing }
 BoTestResult >> runCount [
 	^super runCount + self testsWithFailingRequirementsCount 
+]
+
+{ #category : #running }
+BoTestResult >> runRequiredCase: aTestCase [
+	[
+	aTestCase result: self.
+	aTestCase runCase.
+	self addPassingRequirement: aTestCase.
+	]
+		on: self class failure , Warning, self class error, BoRequirementFailureException
+		do: [:ex | 
+			self addFailingRequirement: aTestCase]
 ]
 
 { #category : #accessing }

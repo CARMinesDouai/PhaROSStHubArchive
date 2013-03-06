@@ -14,3 +14,8 @@ BoTestWithRequirementsThatFail >> testFailsAllTheTime [
 BoTestWithRequirementsThatFail >> testRequiresFailingTest [
 	self requires: #testFailsAllTheTime
 ]
+
+{ #category : #testing }
+BoTestWithRequirementsThatFail >> testRequiresFailingTest2 [
+	self requires: #testFailsAllTheTime
+]

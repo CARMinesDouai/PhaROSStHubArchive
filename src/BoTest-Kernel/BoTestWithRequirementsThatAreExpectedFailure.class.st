@@ -16,3 +16,9 @@ BoTestWithRequirementsThatAreExpectedFailure >> testRequiresExpectedFailure [
 	self requires: #testExpectedFailure
 
 ]
+
+{ #category : #testing }
+BoTestWithRequirementsThatAreExpectedFailure >> testRequiresExpectedFailure2 [
+	self requires: #testExpectedFailure
+
+]

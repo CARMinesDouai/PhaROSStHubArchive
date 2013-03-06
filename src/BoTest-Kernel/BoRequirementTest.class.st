@@ -69,18 +69,34 @@ BoRequirementTest >> testRequirementFailureIfRequirementsIsFailure [
 ]
 
 { #category : #testing }
+BoRequirementTest >> testRequirementFailureIfRequiresTestWithFailingRequirement [
+	| case result |
+	case := BoTestWithHierarchyOfRequirementWithFailingRoot selector: #testRequiresTestWithFailingRequirement.
+	result := case run.
+	self assert: case hasFailingRequirement.
+	self
+		assertForTestResult: result
+		runCount: 1 "The required test is not counted here"
+		passed: 0
+		failed: 0
+		errors: 0
+		expectedFailures: 0
+		requirementFailures: 1 
+]
+
+{ #category : #testing }
 BoRequirementTest >> testSuiteWithErrorInRequirement [
 	| suite result |
 	suite := BoTestWithRequirementsThatRaiseError suite.
 	result := suite run.
 	self
 		assertForTestResult: result
-		runCount: 2 "The required test is counted only once"
+		runCount: 3 "The required test is counted only once"
 		passed: 0
 		failed: 0
 		errors: 1
 		expectedFailures: 0
-		requirementFailures: 1 
+		requirementFailures: 2
 ]
 
 { #category : #testing }
@@ -90,12 +106,12 @@ BoRequirementTest >> testSuiteWithExpectedFailureInRequirement [
 	result := suite run.
 	self
 		assertForTestResult: result
-		runCount: 2 "The required test is counted only once"
+		runCount: 3 "The required test is counted only once"
 		passed: 0
 		failed: 0
 		errors: 0
 		expectedFailures: 1
-		requirementFailures: 1 
+		requirementFailures: 2 
 ]
 
 { #category : #testing }
@@ -105,12 +121,12 @@ BoRequirementTest >> testSuiteWithFailureInRequirement [
 	result := suite run.
 	self
 		assertForTestResult: result
-		runCount: 2 "The required test is counted only once"
+		runCount: 3 "The required test is counted only once"
 		passed: 0
 		failed: 1
 		errors: 0
 		expectedFailures: 0
-		requirementFailures: 1 
+		requirementFailures: 2 
 ]
 
 { #category : #testing }
@@ -120,8 +136,8 @@ BoRequirementTest >> testSuiteWithPassingRequirement [
 	result := suite run.
 	self
 		assertForTestResult: result
-		runCount: 2 "The required test is counted only once"
-		passed: 2
+		runCount: 3 "The required test is counted only once"
+		passed: 3
 		failed: 0
 		errors: 0
 		expectedFailures: 0

@@ -51,26 +51,30 @@ BoTestCase >> isSatisfied: selector [
 
 { #category : #testing }
 BoTestCase >> isSatisified: selector in: testCaseClass [ 
-
-	(self result isRun: selector in: testCaseClass) ifFalse: [self run: selector in: testCaseClass].
-	^self result isPassed: selector in: testCaseClass
+	|case|
+	case := testCaseClass selector: selector.
+	(self result isRun: case) ifFalse: [self result runRequiredCase: case].
+	^self result isPassed: case
 ]
 
 { #category : #requirements }
 BoTestCase >> requires: aSymbol [
 	(self isSatisfied: aSymbol) ifTrue: [^self].
-	self result addTestWithFailingRequirement: self. 
 	BoRequirementFailureException signal: self selector
 ]
 
 { #category : #accessing }
 BoTestCase >> result [
-	^ result ifNil:  [result := self testResultClass new]
+	^result
+]
+
+{ #category : #accessing }
+BoTestCase >> result: anObject [
+	^ result := anObject
 ]
 
 { #category : #performing }
 BoTestCase >> run [
-	| result |
 	result := self testResultClass new.
 	[self run: result]
 		ensure: [self testResourceClass resetResources: self resources].
@@ -79,21 +83,8 @@ BoTestCase >> run [
 
 { #category : #performing }
 BoTestCase >> run: aBoTestResult [
-	result := aBoTestResult.
+	self result: aBoTestResult.
 	super run: aBoTestResult
-]
-
-{ #category : #performing }
-BoTestCase >> run: selector in: testClass [ 
-	| testCase |
-	testCase := testClass selector: selector.
-	[[testCase setUp.
-	testCase performTest.
-	self result addPassingRequirement: testCase]
-		on: TestResult failure , Warning , TestResult error
-		do: [:ex | self result addFailingRequirement: testCase]]
-		ensure: [testCase tearDown. 
-			testCase cleanUpInstanceVariables]
 ]
 
 { #category : #accessing }
