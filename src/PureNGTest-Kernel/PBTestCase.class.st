@@ -27,12 +27,13 @@ PBTestCase class >> isAbstract [
 ]
 
 { #category : #'human in the loop' }
-PBTestCase >> requestAction: aString [
+PBTestCase >> requestAction: aString orDo: aBlock [
 	self shouldRequestAction ifTrue: [^self halt: aString].
 	Transcript 
 		cr; 
 		show: 'Ignored action request: '; 
-		show: aString 
+		show: aString.
+	aBlock value
 ]
 
 { #category : #testing }

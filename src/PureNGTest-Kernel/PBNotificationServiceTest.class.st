@@ -61,8 +61,9 @@ PBNotificationServiceTest >> testEnableNotificationForSomeService [
 { #category : #testing }
 PBNotificationServiceTest >> testGetEmptyNotificationEntriesOnRobotStartUp [
 	| notificationEntries |
-	
-	self requestAction: 'Please, reboot the robot'.
+	self requestAction: 'Please, reboot the robot' orDo: [
+		robot notificationService deleteAllNotifyingServices.
+		(Delay forMilliseconds: 300) wait].
 	notificationEntries := robot notificationService get.
 	self assert: notificationEntries isEmpty
 ]
