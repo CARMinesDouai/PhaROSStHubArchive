@@ -33,7 +33,6 @@ PBMotionTest >> testStraightLineMotion [
 	laser onNotificationDo: [:notif|
 		(notif distances allButLast anySatisfy: [:each| each < 0.3]) ifTrue: [ "Laser detects robot body"
 			controller stopMotion.
-			self halt.
 			motionFinishedSemaphore signal.
 			self fail.
 		]
