@@ -11,6 +11,7 @@ PBNotificationServiceTest >> testDeleteAllInsertedNotifyingServices [
 	[robot notificationService insert: robot laserService] on: PNGMessageError do:[].
 	[robot notificationService insert: robot trajectoryService ] on: PNGMessageError do:[].
 	robot notificationService deleteAllNotifyingServices.		
+	self waitUntilRobotProcessesPendingRequests.
 	notifyingServiceDict := robot notificationService get.
 	self assert: notifyingServiceDict isEmpty.
 
@@ -63,7 +64,7 @@ PBNotificationServiceTest >> testGetEmptyNotificationEntriesOnRobotStartUp [
 	| notificationEntries |
 	self requestAction: 'Please, reboot the robot' orDo: [
 		robot notificationService deleteAllNotifyingServices.
-		(Delay forMilliseconds: 300) wait].
+		self waitUntilRobotProcessesPendingRequests].
 	notificationEntries := robot notificationService get.
 	self assert: notificationEntries isEmpty
 ]

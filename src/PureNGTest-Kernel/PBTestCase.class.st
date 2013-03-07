@@ -39,7 +39,7 @@ PBTestCase >> requestAction: aString orDo: aBlock [
 { #category : #testing }
 PBTestCase >> setUp [
 	super setUp.
-	robot := PNGRobulabHandcodedFactory kompai1
+	robot := PNGRobulabHandcodedFactory kompai2
 ]
 
 { #category : #'human in the loop' }

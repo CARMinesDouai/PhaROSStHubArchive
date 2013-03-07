@@ -14,3 +14,8 @@ PBServiceTest >> notificationOrNilFrom: notifyingService [
 	self deny: (semaphore waitTimeoutMSecs: 500).
 	^ notification
 ]
+
+{ #category : #testing }
+PBServiceTest >> waitUntilRobotProcessesPendingRequests. [
+	(Delay forMilliseconds: 300) wait
+]

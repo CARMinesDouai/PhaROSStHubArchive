@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #testing }
+PBCommunicationTest >> giveFinalizationSomeChanceToPerform. [
+	(Delay forMilliseconds: 500) wait
+]
+
+{ #category : #testing }
 PBCommunicationTest >> testBridgeFinalization [	
 	| bridgeInstancesCount bridgeProcess bridgeSocket |
 	bridgeInstancesCount := PNGNetworkBridge allInstances size.
@@ -15,6 +20,7 @@ PBCommunicationTest >> testBridgeFinalization [
 	self deny: bridgeProcess isTerminated.
 	robot := nil.
 	Smalltalk garbageCollect.
+	self giveFinalizationSomeChanceToPerform.
 	
 	self assert: (bridgeInstancesCount > PNGNetworkBridge allInstances size).
 	self deny: bridgeSocket isValid.
