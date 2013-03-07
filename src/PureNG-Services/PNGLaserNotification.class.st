@@ -7,12 +7,12 @@ Class {
 	#category : #'PureNG-Notifications'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PNGLaserNotification >> angles [
 	^ self echoes collect: [ :echo | echo angle asFloat ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PNGLaserNotification >> distances [
 	^ self echoes collect: [ :echo | echo distance asFloat ].
 ]
@@ -27,7 +27,7 @@ PNGLaserNotification >> echoes: anObject [
 	echoes := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'initialize-release' }
 PNGLaserNotification >> initWithDecoder: aDecoder [
 	self echoes: (self service decodeEchoesFromDecoder: aDecoder)
 	

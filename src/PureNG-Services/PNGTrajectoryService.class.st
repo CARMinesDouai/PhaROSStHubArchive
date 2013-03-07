@@ -11,6 +11,11 @@ Class {
 }
 
 { #category : #constants }
+PNGTrajectoryService class >> notificationClass [
+	^PNGTrajectoryNotification
+]
+
+{ #category : #constants }
 PNGTrajectoryService class >> serviceType [ 
 	^ 16r8001
 ]
@@ -33,8 +38,14 @@ PNGTrajectoryService >> clearTrajectory [
 PNGTrajectoryService >> decodeGetResponseFrom: decoder [
 	| state |
 	state := PNGTrajectoryState new.
+	state timestamp: decoder nextEncodedUInt64.
+	self decodeStateFrom: decoder into: state.
+	^state
+]
+
+{ #category : #actions }
+PNGTrajectoryService >> decodeStateFrom: decoder into: state [
 	^state 
-		timestamp: decoder nextEncodedUInt64;
 		status: decoder nextEncodedByte;
 		distanceCovered: decoder nextEncodedFloat64;
 		lateralError: decoder nextEncodedFloat64;

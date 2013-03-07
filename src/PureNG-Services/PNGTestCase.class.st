@@ -38,7 +38,7 @@ PNGTestCase >> requestAction: aString [
 { #category : #testing }
 PNGTestCase >> setUp [
 	super setUp.
-	robot := PNGRobulabHandcodedFactory kompai2
+	robot := PNGRobulabHandcodedFactory kompai1
 ]
 
 { #category : #'human in the loop' }

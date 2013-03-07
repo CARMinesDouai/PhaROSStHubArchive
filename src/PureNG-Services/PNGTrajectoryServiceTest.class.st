@@ -56,6 +56,27 @@ PNGTrajectoryServiceTest >> testInsertOneSegmentChangesStatusFromStoppedToWaitin
 ]
 
 { #category : #testing }
+PNGTrajectoryServiceTest >> testNotificationReception [
+	| notification |
+	robot notificationService deleteAllNotifyingServices.
+	trajectoryService enableNotificationsEvery: 10.
+	self assert: (robot notificationService get includesKey: trajectoryService).	
+	notification := self notificationOrNilFrom: trajectoryService.
+	self assert: notification notNil.
+
+]
+
+{ #category : #testing }
+PNGTrajectoryServiceTest >> testNotificationsWhileWaiting [
+	| notification |
+	robot notificationService deleteAllNotifyingServices.
+	trajectoryService enableNotificationsEvery: 10.
+	notification := self notificationOrNilFrom: trajectoryService.
+	self assert: notification status = PNGTrajectoryState waitingStatusValue.
+	self assert: notification distanceCovered = 0
+]
+
+{ #category : #testing }
 PNGTrajectoryServiceTest >> testStopAlreadyStoppedRobot [
 	self assert: self trajectoryServiceStatus = PNGTrajectoryState waitingStatusValue.
 	trajectoryService stopMotion.
