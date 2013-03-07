@@ -24,6 +24,15 @@ BoTestCase >> cleanUpInstanceVariables [
 	]
 ]
 
+{ #category : #performing }
+BoTestCase >> debug [
+	|case|
+	case := self class selector: testSelector.
+	case result: self resultClass new.
+	[case runCase]
+		ensure: [TestResource resetResources: self resources]
+]
+
 { #category : #testing }
 BoTestCase >> hasFailingRequirement [
 	^ self result hasFailingRequirement: self
@@ -71,6 +80,11 @@ BoTestCase >> result [
 { #category : #accessing }
 BoTestCase >> result: anObject [
 	^ result := anObject
+]
+
+{ #category : #performing }
+BoTestCase >> resultClass [
+	^BoTestResult 
 ]
 
 { #category : #performing }
