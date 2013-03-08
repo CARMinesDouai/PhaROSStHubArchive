@@ -19,9 +19,24 @@ PBMotionTest >> setUp [
 
 { #category : #testing }
 PBMotionTest >> tearDown [
-	super tearDown.
 	robot notificationService deleteAllNotifyingServices.
-	robot trajectoryService clearTrajectory
+	robot trajectoryService clearTrajectory.
+	super tearDown.
+
+]
+
+{ #category : #testing }
+PBMotionTest >> testHexagone [
+	controller hexagone.
+	self assert: robot trajectoryService get status = PNGTrajectoryState waitingStatusValue.
+
+]
+
+{ #category : #testing }
+PBMotionTest >> testSquare [
+	controller square.
+	self assert: robot trajectoryService get status = PNGTrajectoryState waitingStatusValue.
+
 ]
 
 { #category : #testing }
