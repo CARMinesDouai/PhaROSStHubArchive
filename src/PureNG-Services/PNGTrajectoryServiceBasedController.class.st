@@ -72,22 +72,24 @@ PNGTrajectoryServiceBasedController >> goToOrigin [
 
 { #category : #'sample trajectories' }
 PNGTrajectoryServiceBasedController >> hexagone [
-	self goToAllDelta: {
-	0.75@0.
-	1.25@0.
-	2@0.75.
-	2@1.25.
-	1.25@2.
-	0.75@2.
-	0@1.25.
-	0@0.75.
-	0.75@0
-	}
+	self hexagone: 4
+]
+
+{ #category : #'sample trajectories' }
+PNGTrajectoryServiceBasedController >> hexagone: enclosingSquareLength [ 
+	| waypoints |
+	self localizationService resetPose.
+	waypoints := {0.75 @ 0. 1.25 @ 0. 2 @ 0.75. 2 @ 1.25. 1.25 @ 2. 0.75 @ 2. 0 @ 1.25. 0 @ 0.75. 0.75 @ 0}
+				collect: [:point | point * enclosingSquareLength / 2].
+	self goToAll: waypoints 
 ]
 
 { #category : #'sample trajectories' }
 PNGTrajectoryServiceBasedController >> square [
-	self goToAllDelta: {
+	self trajectoryService clearTrajectory.
+	self localizationService resetPose.
+	(Delay forMilliseconds: 500) wait.
+	self goToAll: {
 	2@0.
 	2@2.
 	0@2.
