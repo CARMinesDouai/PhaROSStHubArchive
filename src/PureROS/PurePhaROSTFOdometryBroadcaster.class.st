@@ -12,7 +12,7 @@ Class {
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification [ 
 	[
-		self sendTransformations: aNotification.
+"		self sendTransformations: aNotification."
 		self sendOdometry: aNotification.
 	]
 	on: Error do: [
@@ -54,16 +54,27 @@ PurePhaROSTFOdometryBroadcaster >> period [
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> receive: aMessage from: aChannel [
 
-	| pose orientation |
+	| pose position orientation |
 	
-	pose := aMessage value pose pose .
-	
-	
-	orientation := PhaROSGeometryTransformations new eulerFromQuaternation: pose orientation x and: pose orientation y and: pose orientation z and: pose orientation w.
-	orientation := orientation at:3. 
-	robot localizationService x: pose position x y: pose position y orientation: orientation .
-	
+	aChannel topic type = 'geometry_msgs/PoseWithCovarianceStamped' ifTrue: [
+		pose := aMessage value pose pose .
+		position := pose position. 
+		orientation := PhaROSGeometryTransformations new eulerFromQuaternation: pose orientation x and: pose orientation y and: pose orientation z and: pose orientation w.
+		orientation := orientation at:3. 	
+			
+		robot localizationService x: position x y: position y orientation: orientation .
+	].
 
+	aChannel topic type = 'geometry_msgs/Pose2D' ifTrue: [
+		pose := aMessage value.
+		position := pose x @ pose y.
+		orientation := pose theta.
+		
+		[ robot localizationService x: position x y: position y orientation: orientation . ] on: Error  do: [].
+	].
+	
+	
+	
 
 ]
 
@@ -117,11 +128,12 @@ PurePhaROSTFOdometryBroadcaster >> sendOdometry: aNotification [
 			deltaTime = 0 ifFalse:[
 				odometrySents := odometrySents + 1.
 				" Linear velocity "
-				msg twist twist linear x: (aNotification position x - previousNotification position x) / deltaTime .
-				msg twist twist linear y: (aNotification position x - previousNotification position x) / deltaTime .
+				msg twist twist linear x: ( aNotification position x - previousNotification position x ) / deltaTime .
+				msg twist twist linear y: ( aNotification position y - previousNotification position y ) / deltaTime .
 				
 				" Angular velocity "
-				msg twist twist angular z:  (aNotification position orientation  - previousNotification position orientation) / deltaTime .
+				msg twist twist angular z:  ((aNotification position orientation  - previousNotification position orientation) / deltaTime) / ( 2 * Float pi ) .
+				
 			]
 		].
 		previousNotification := aNotification.
@@ -168,8 +180,9 @@ PurePhaROSTFOdometryBroadcaster >> sendTransformations: aNotification [
 PurePhaROSTFOdometryBroadcaster >> setUp [
 	"robot localizationService resetPose. "
 	robot localizationService onNotificationDo: [ : notification | self broadcast: notification ].
-	[robot localizationService enableNotificationsEvery: 0.] on: PNGMessageError do: [ ].
+	[robot localizationService enableNotificationsEvery: 10.] on: PNGMessageError do: [ ].
 	self interestedIn: '/initialpose' typedAs: 'geometry_msgs/PoseWithCovarianceStamped'.
+	self interestedIn: '/pose2D' typedAs: 'geometry_msgs/Pose2D'.
 ]
 
 { #category : #'as yet unclassified' }

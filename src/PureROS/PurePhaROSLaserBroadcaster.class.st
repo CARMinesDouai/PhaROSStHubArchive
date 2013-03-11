@@ -45,7 +45,7 @@ PurePhaROSLaserBroadcaster >> period [
 PurePhaROSLaserBroadcaster >> setUp [
 	
 	robot laserService onNotificationDo: [ : notification |  self broadcast: notification. 	].
-	[robot laserService enableNotificationsEvery: 0.] on: PNGMessageError do: [ ].
+	[robot laserService enableNotificationsEvery: 10.] on: PNGMessageError do: [ ].
 
 ]
 

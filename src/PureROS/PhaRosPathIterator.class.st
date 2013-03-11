@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'path',
 		'currentIndex',
-		'step'
+		'step',
+		'lastCalculatedIndex'
 	],
 	#category : #PureROS
 }
@@ -28,21 +29,27 @@ PhaRosPathIterator >> next [
 
 { #category : #'as yet unclassified' }
 PhaRosPathIterator >> path: aPath [
-	"| newIndex | 
+	| newIndex | 
 	newIndex := 1.
 	
 	path ifNotNil: [
 		[ newIndex < currentIndex and: [ (aPath poses at: newIndex) closeTo: (path poses at: newIndex)]]  whileTrue: [ newIndex := newIndex + 1]. 
 	 ].
 
-	step := 1 max: ( path poses size / 10 ) asInteger.
-	currentIndex := newIndex."
+"	step := 1 max: ( path poses size / 10 ) asInteger."
+	currentIndex := newIndex.
 	
 	path := aPath.
-	step := 1 max: ( path poses size / 10 ) asInteger.
-	currentIndex := 1. 
+	step := 1.
+	currentIndex := newIndex max: ((path poses size / 10) max: 10).
 	
+	lastCalculatedIndex := currentIndex.
 
+]
+
+{ #category : #'as yet unclassified' }
+PhaRosPathIterator >> resetToLastCalculatedIndex [
+	currentIndex := lastCalculatedIndex.
 ]
 
 { #category : #'as yet unclassified' }

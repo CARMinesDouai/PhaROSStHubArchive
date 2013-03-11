@@ -23,13 +23,13 @@ PurePhaROSDrive >> goToAll: waypoints [
 
 	| error |
 	
-	3 timesRepeat: [
+	5 timesRepeat: [
 		[
 			trajectoryController stopMotion.	
 			trajectoryController trajectoryService clearTrajectory.
 			trajectoryController goToAll: waypoints.
 			^ self.
-		] on: PNGConnectionTimeOut do: [ 	:e | error := e. 	]
+		] on: PNGConnectionTimeOut do: [ 	:e | error := e.  Transcript show: 'Retrying plan'; cr. 	(Delay forMilliseconds: 1000)wait. trajectoryController trajectoryService  emergencyStop.]
 	].
 
 	error signal.
@@ -74,7 +74,13 @@ PurePhaROSDrive >> receive: aMessage from: aChannel [
 	waypoints := OrderedCollection new. 
 	[pathItarator hasNext] whileTrue: [ waypoints add: pathItarator next position ].
 
-	self goToAll: waypoints.
+	[	
+		self goToAll: waypoints.
+	] on: Error do: [
+		:e | 
+		pathItarator resetToLastCalculatedIndex.
+		e signal.
+	]
 ]
 
 { #category : #'as yet unclassified' }
