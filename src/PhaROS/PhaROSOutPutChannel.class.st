@@ -115,7 +115,7 @@ PhaROSOutPutChannel >> subscribe: aNode [
 	
 	(self mustSendPreviousMessagesTo: aNode) ifTrue:[  
 		sent do:  [ 	:msg | 
-				aNode receive: msg veryDeepCopy  from: self. 
+				aNode receive: msg  from: self. 
 				
 		].
 	].

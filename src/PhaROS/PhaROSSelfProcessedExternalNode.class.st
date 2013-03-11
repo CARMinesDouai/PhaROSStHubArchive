@@ -65,6 +65,6 @@ PhaROSSelfProcessedExternalNode >> workWith: aChannel [
 			]
 		].
 		aChannel unsubscribe: self.
-	] forkNamed: 'ExternalNode'.
+	] forkAt: Processor highIOPriority named: 'ExternalNode'.
 
 ]

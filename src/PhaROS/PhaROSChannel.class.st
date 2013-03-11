@@ -61,7 +61,7 @@ PhaROSChannel >> send: aMessage [
 	
 	self subscribers do: [
 		:aNode |
-		aNode receive: aMessage veryDeepCopy from: self.
+		aNode receive: aMessage from: self.
 	].
 ]
 
