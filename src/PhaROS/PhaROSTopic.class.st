@@ -103,6 +103,11 @@ PhaROSTopic >> packetSize [
 	^ self typeSize + 4
 ]
 
+{ #category : #construction }
+PhaROSTopic >> printOn: aStream [
+	aStream nextPutAll: 'Topic>>', self name. 
+]
+
 { #category : #accessing }
 PhaROSTopic >> registerOutputChannel: aChannel at: aXmlRpcUrl [
 	outputChannels at: aXmlRpcUrl put: aChannel.

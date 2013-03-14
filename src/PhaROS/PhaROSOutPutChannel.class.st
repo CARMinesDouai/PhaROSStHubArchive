@@ -79,6 +79,11 @@ PhaROSOutPutChannel >> newMessage [
 	^ topic newMessage.
 ]
 
+{ #category : #tcp }
+PhaROSOutPutChannel >> printOn: aStream [
+	aStream nextPutAll: 'OutputChannel>> ',topic name. 
+]
+
 { #category : #testing }
 PhaROSOutPutChannel >> relatedWith: aByteString [ 
 	^ owner xmlRpcUrl = aByteString 

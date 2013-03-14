@@ -52,6 +52,11 @@ PhaROSSubscriber >> owner: aRoStNode [
 ]
 
 { #category : #accessing }
+PhaROSSubscriber >> printOn: aStream [
+	 aStream nextPutAll: owner name, '-Subscriber'
+]
+
+{ #category : #accessing }
 PhaROSSubscriber >> receive: aMessage from: aChannel [ 
 
 	self receivedMessages add: aMessage.

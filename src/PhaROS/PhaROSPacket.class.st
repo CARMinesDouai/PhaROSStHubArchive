@@ -77,6 +77,11 @@ PhaROSPacket >> loadStream: aStream [
 ]
 
 { #category : #accessing }
+PhaROSPacket >> printOn: aStream [
+	aStream nextPutAll: 'Packet>> ', type typeName. 
+]
+
+{ #category : #accessing }
 PhaROSPacket >> type [
 	^ type
 ]

@@ -142,6 +142,11 @@ PhaROSNode >> name: aNodeName [
 ]
 
 { #category : #output }
+PhaROSNode >> printOn: aStream [
+	aStream nextPutAll: 'Node-', self name.
+]
+
+{ #category : #output }
 PhaROSNode >> publisher [ 
 	^ publisher ifNil: [ publisher := PhaROSPublisher for: self ].
 ]

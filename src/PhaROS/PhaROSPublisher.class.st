@@ -42,6 +42,11 @@ PhaROSPublisher >> owner: aNode [
 	owner := aNode.
 ]
 
+{ #category : #accessing }
+PhaROSPublisher >> printOn: aStream [
+	 aStream nextPutAll: owner name, '-Publisher'
+]
+
 { #category : #service }
 PhaROSPublisher >> registerTo: aTopicName with: aTopicType [ 
 	^ owner master registerPublisher: owner name to: aTopicName with: aTopicType andCallerUri: owner xmlRpcUrl. 

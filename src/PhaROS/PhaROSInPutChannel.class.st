@@ -48,6 +48,11 @@ PhaROSInPutChannel >> manageBroadcasterNode [
 	
 ]
 
+{ #category : #accessing }
+PhaROSInPutChannel >> printOn: aStream [
+	aStream nextPutAll: 'InputChannel>> ',topic name. 
+]
+
 { #category : #service }
 PhaROSInPutChannel >> requestTopic: anUrlString [
 	| proxy tcpConnectionData socket |

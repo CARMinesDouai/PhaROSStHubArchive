@@ -42,9 +42,19 @@ PhaROSExternalNode >> initialize [
 ]
 
 { #category : #accessing }
+PhaROSExternalNode >> name [
+	^ name
+]
+
+{ #category : #accessing }
 PhaROSExternalNode >> name: aName [
 	name := aName.
 	
+]
+
+{ #category : #bla }
+PhaROSExternalNode >> printOn: aStream [
+	aStream nextPutAll: 'ExternalNode-', self name. 
 ]
 
 { #category : #'message handling' }
