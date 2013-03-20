@@ -29,6 +29,30 @@ SGStream >> nextMessage [
 ]
 
 { #category : #'as yet unclassified' }
+SGStream >> nextPutCommand: aCommand [ 
+	^ self nextPutMessage: SGProtocol typeWrite, 
+								aCommand.
+]
+
+{ #category : #'as yet unclassified' }
+SGStream >> nextPutMessage: aMessageString [
+	^ serialStream nextPutAll: SGProtocol messageStart, aMessageString, SGProtocol messageEnd.
+]
+
+{ #category : #'as yet unclassified' }
+SGStream >> nextPutReadFor: aParameterOrCommand [
+	^ self nextPutMessage: SGProtocol typeRead, aParameterOrCommand.
+]
+
+{ #category : #'as yet unclassified' }
+SGStream >> nextPutWrite: aStringValue for: aParameter [  
+	^ self nextPutMessage: SGProtocol typeWrite, 
+								aParameter, 
+								SGProtocol separator, 
+								aStringValue.
+]
+
+{ #category : #'as yet unclassified' }
 SGStream >> serialStream: aSerialStream [
 	serialStream := aSerialStream 
 ]

@@ -2,31 +2,50 @@ Class {
 	#name : #StarGazer,
 	#superclass : #Object,
 	#instVars : [
-		'port',
 		'lastKnownPosition',
-		'polling'
+		'polling',
+		'settings',
+		'gate'
 	],
 	#category : #'StarGazer-Kernel'
 }
 
 { #category : #'as yet unclassified' }
-StarGazer class >> atPort: aPort [
-	^ self new port: aPort; yourself.
+StarGazer class >> atGate: aPort [
+	^ self new gate: aPort; yourself.
 ]
 
 { #category : #'as yet unclassified' }
 StarGazer class >> atPortId: aPortId [
-	^ self atPort:  (SGPort atPortId: aPortId).
+	^ self atGate:  (SGGate atPortId: aPortId).
 ]
 
 { #category : #'as yet unclassified' }
 StarGazer class >> default [
-	^ self atPortId: SGPort defaultPortID.
+	^ self atPortId: SGGate defaultPortID.
 ]
 
 { #category : #accessing }
 StarGazer >> finallize [
 	polling ifNotNil: [ polling cancel ].
+]
+
+{ #category : #accessing }
+StarGazer >> gate:  aSGGate [
+
+	gate ifNil: [
+		polling cancel.
+	].
+
+	gate := aSGGate asThreadsafeReference.
+	polling := self parallelize poll. 
+
+]
+
+{ #category : #accessing }
+StarGazer >> initialize [ 
+	super initialize.
+	settings := Dictionary new. 
 ]
 
 { #category : #accessing }
@@ -39,19 +58,7 @@ StarGazer >> lastKnownPosition [
 StarGazer >> poll [
 	| message |
 	[ 
-		message := port nextMessage. 
+		message := gate nextMessage. 
 		message apply: self. 
 	] repeat.
-]
-
-{ #category : #accessing }
-StarGazer >> port: aSGPort [
-
-	port ifNil: [
-		polling cancel.
-	].
-
-	port := aSGPort asThreadsafeReference.
-	polling := self parallelize poll. 
-
 ]

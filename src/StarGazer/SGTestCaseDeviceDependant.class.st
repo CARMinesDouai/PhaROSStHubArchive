@@ -17,8 +17,8 @@ SGTestCaseDeviceDependant >> closeSerialPort [
 SGTestCaseDeviceDependant >> openSerialPort [ 
 	
 	serialPort  := SerialPort new.
-	serialPort baudRate: SGPort defaultBaudRate.
-	serialPort openPort: SGPort defaultPortID.
+	serialPort baudRate: SGGate defaultBaudRate.
+	serialPort openPort: SGGate defaultPortID.
 	
 	^ serialPort
 ]

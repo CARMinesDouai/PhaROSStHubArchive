@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #'sg port manage' }
-SGTestCase >> closeSGPort [
+SGTestCase >> closeSGGate [
 	sgPort := nil.
 ]
 
@@ -20,7 +20,7 @@ SGTestCase >> closeSerialPort [
 
 { #category : #'stargazer manage' }
 SGTestCase >> createStarGazer: aPort [
-	^sg ifNil: [ sg := StarGazer atPort: aPort. ] ifNotNil: [ sg ].
+	^sg ifNil: [ sg := StarGazer atGate: aPort. ] ifNotNil: [ sg ].
 ]
 
 { #category : #'stargazer manage' }
@@ -29,8 +29,8 @@ SGTestCase >> destroyStarGazer [
 ]
 
 { #category : #'sg port manage' }
-SGTestCase >> openSGPort: aSerialPort [
-	^ sgPort ifNil: [ sgPort := SGPort atPort: aSerialPort. ] ifNotNil: [ sgPort. ] .
+SGTestCase >> openSGGate: aSerialPort [
+	^ sgPort ifNil: [ sgPort := SGGate atPort: aSerialPort. ] ifNotNil: [ sgPort. ] .
 
 ]
 
@@ -40,10 +40,10 @@ SGTestCase >> openSerialPort [
 ]
 
 { #category : #'sg port manage' }
-SGTestCase >> withDefaultSGPort: aBlock [
+SGTestCase >> withDefaultSGGate: aBlock [
 	self withDefaultSerialPort: [ : port |	
-		aBlock value: (self openSGPort: port).
-		self closeSGPort.
+		aBlock value: (self openSGGate: port).
+		self closeSGGate.
 	].
 	
 ]
@@ -60,7 +60,7 @@ SGTestCase >> withDefaultSerialPort: aBlock [
 
 { #category : #'stargazer manage' }
 SGTestCase >> withDefaultStarGazer: aBlock [
-	self withDefaultSGPort: [ : port | 
+	self withDefaultSGGate: [ : port | 
 		aBlock value: (self createStarGazer: port).	
 		self destroyStarGazer.
 	].

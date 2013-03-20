@@ -5,14 +5,14 @@ Trait {
 
 { #category : #'as yet unclassified' }
 SGUsageTestTrait >> testUsePort [
-	self withDefaultSGPort: [ : port |
-		self assert: port nextMessage isKindOf: SGMessage. 
+	self withDefaultSGGate: [ : gate |
+		self assert: gate nextMessage isKindOf: SGMessage. 
 	 ].
 ]
 
 { #category : #'as yet unclassified' }
 SGUsageTestTrait >> testUseSGStream [
-	self withDefaultSGPort: [ : port |
+	self withDefaultSerialPort: [ : port |
 		| stream |
 		stream := port asSGStream.
 		self assert: stream isKindOf: SGStream.

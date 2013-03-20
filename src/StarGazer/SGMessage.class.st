@@ -16,3 +16,8 @@ SGMessage class >> for: aContentString [
 SGMessage >> content: aContentString [ 
 	content := aContentString.
 ]
+
+{ #category : #'as yet unclassified' }
+SGMessage >> type [
+	^ content at: 1.
+]

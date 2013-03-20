@@ -42,7 +42,7 @@ SerialStream >> next: anAmount [
 
 { #category : #accessing }
 SerialStream >> nextPut: aCharacter [  
-	port nextPutAll: aCharacter asString.
+	port nextPutAll: aCharacter asString; flush.
 ]
 
 { #category : #accessing }

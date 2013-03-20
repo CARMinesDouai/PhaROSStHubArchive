@@ -10,3 +10,10 @@ SGExpectedEnvironmentTestTrait >> testOpenDefaultSerialPort [
 	].
 
 ]
+
+{ #category : #'as yet unclassified' }
+SGExpectedEnvironmentTestTrait >> testVersion [
+	self withDefaultSGGate: [ : gate |
+		self assert: ((gate get: SGProtocol version) = '2.0'). 
+	].
+]
