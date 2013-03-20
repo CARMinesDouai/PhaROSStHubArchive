@@ -5,7 +5,7 @@ Class {
 		'orientation',
 		'position'
 	],
-	#category : #'StarGazer-Kernel'
+	#category : #'StarGazer-Types'
 }
 
 { #category : #construction }

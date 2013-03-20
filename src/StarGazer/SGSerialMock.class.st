@@ -14,6 +14,11 @@ SGSerialMock class >> content: aContent steppingBy: aStep [
 	^ self new contents: aContent; step: aStep; yourself.
 ]
 
+{ #category : #converting }
+SGSerialMock >> asSGStream [
+	^ SGStream for: ( SerialStream for: self).
+]
+
 { #category : #'as yet unclassified' }
 SGSerialMock >> contents: aString [
 	contents := aString 

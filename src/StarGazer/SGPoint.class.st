@@ -6,7 +6,7 @@ Class {
 		'y',
 		'z'
 	],
-	#category : #'StarGazer-Kernel'
+	#category : #'StarGazer-Types'
 }
 
 { #category : #'as yet unclassified' }

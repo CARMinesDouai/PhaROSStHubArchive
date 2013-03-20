@@ -42,7 +42,7 @@ SGPort class >> defaultPortID [
 
 { #category : #accessing }
 SGPort >> initialize [ 
-	messages := SharedQueue new: SGPort bufferSize.
+	messages := SharedQueue new.
 ]
 
 { #category : #accessing }
