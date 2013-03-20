@@ -2,7 +2,9 @@ Class {
 	#name : #SGPort,
 	#superclass : #Object,
 	#instVars : [
-		'port'
+		'stream',
+		'messages',
+		'polling'
 	],
 	#category : #'StarGazer-Kernel'
 }
@@ -10,7 +12,7 @@ Class {
 { #category : #construction }
 SGPort class >> atPort: aPort [
 
-	^ self new port: aPort; yourself.
+	^ self new usePort: aPort; yourself.
 ]
 
 { #category : #construction }
@@ -24,6 +26,11 @@ SGPort class >> atPortId: aPortId [
 ]
 
 { #category : #defaults }
+SGPort class >> bufferSize [
+	^100
+]
+
+{ #category : #defaults }
 SGPort class >> defaultBaudRate [ 
 	^ 9600
 ]
@@ -34,11 +41,30 @@ SGPort class >> defaultPortID [
 ]
 
 { #category : #accessing }
-SGPort >> nextMessage [
-	port readString.
+SGPort >> initialize [ 
+	messages := SharedQueue new: SGPort bufferSize.
 ]
 
 { #category : #accessing }
-SGPort >> port: aPort [ 
-	port := aPort.
+SGPort >> nextMessage [
+	^ messages next. 
+	
+]
+
+{ #category : #accessing }
+SGPort >> poll [
+	| message | 
+	[
+		message := stream readString.
+		
+	]
+]
+
+{ #category : #accessing }
+SGPort >> usePort: aPort [ 
+	stream ifNotNil: [
+		polling cancel.	
+	].
+	stream := aPort asSGStream.
+	polling := self parallelize poll. 
 ]
