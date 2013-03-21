@@ -26,19 +26,19 @@ StarGazer class >> default [
 ]
 
 { #category : #accessing }
-StarGazer >> finallize [
+StarGazer >> finalize [
 	polling ifNotNil: [ polling cancel ].
 ]
 
 { #category : #accessing }
 StarGazer >> gate:  aSGGate [
 
-	gate ifNil: [
+	gate ifNotNil: [
 		polling cancel.
 	].
 
 	gate := aSGGate asThreadsafeReference.
-	polling := self parallelize poll. 
+	polling := self paralellize  poll. 
 
 ]
 

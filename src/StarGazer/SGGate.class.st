@@ -50,6 +50,11 @@ SGGate >> get: aParameterName [
 ]
 
 { #category : #accessing }
+SGGate >> hasMessages [
+	^ messages size > 0
+]
+
+{ #category : #accessing }
 SGGate >> initialize [ 
 	messages := SharedQueue new.
 ]

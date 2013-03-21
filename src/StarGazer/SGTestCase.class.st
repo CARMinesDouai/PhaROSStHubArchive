@@ -25,6 +25,7 @@ SGTestCase >> createStarGazer: aPort [
 
 { #category : #'stargazer manage' }
 SGTestCase >> destroyStarGazer [
+	sg finalize.
 	sg := nil.
 ]
 
