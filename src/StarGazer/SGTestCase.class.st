@@ -10,8 +10,10 @@ Class {
 
 { #category : #'sg port manage' }
 SGTestCase >> closeSGGate [
-	sgPort stopPolling.
-	sgPort := nil.
+	sgPort ifNotNil: [ 
+		sgPort stopPolling.
+		sgPort := nil
+	].
 ]
 
 { #category : #'serial port manage' }
@@ -26,8 +28,10 @@ SGTestCase >> createStarGazer: aPort [
 
 { #category : #'stargazer manage' }
 SGTestCase >> destroyStarGazer [
-	sg finalize.
-	sg := nil.
+	sg ifNotNil: [
+		sg finalize.
+		sg := nil.
+	]
 ]
 
 { #category : #'sg port manage' }
@@ -44,6 +48,13 @@ SGTestCase >> openSGGate: aSerialPort [
 { #category : #'serial port manage' }
 SGTestCase >> openSerialPort [
 	self subclassResponsibility.
+]
+
+{ #category : #'as yet unclassified' }
+SGTestCase >> tearDown [ 
+	self closeSerialPort.
+	self closeSGGate.
+	self destroyStarGazer.
 ]
 
 { #category : #'serial port manage' }

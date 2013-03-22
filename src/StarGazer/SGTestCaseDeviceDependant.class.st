@@ -10,7 +10,7 @@ Class {
 { #category : #'as yet unclassified' }
 SGTestCaseDeviceDependant >> closeSerialPort [
 
-	^ serialPort close.
+	^ serialPort ifNotNil: [ serialPort close ] .
 ]
 
 { #category : #'as yet unclassified' }
