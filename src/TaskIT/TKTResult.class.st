@@ -2,7 +2,8 @@ Class {
 	#name : #TKTResult,
 	#superclass : #Object,
 	#instVars : [
-		'future'
+		'future',
+		'cancelled'
 	],
 	#category : #'TaskIT-Worker'
 }
@@ -10,6 +11,12 @@ Class {
 { #category : #'as yet unclassified' }
 TKTResult class >> for: aFuture [
 	^ self new future: aFuture ; yourself.
+]
+
+{ #category : #'as yet unclassified' }
+TKTResult >> cancel [
+	cancelled := true.
+	^ future cancel.
 ]
 
 { #category : #'as yet unclassified' }
@@ -25,6 +32,9 @@ TKTResult >> deployValue:  aValue [
 TKTResult >> doesNotUnderstand: aMessage [
 	| rslt | 
 	
+	cancelled ifTrue: [
+		Error signal: 'The process was cancelled'.
+	].
 	future apply: [
 		: aFuture | 
 		rslt := aFuture value perform: aMessage selector withArguments: aMessage arguments.
@@ -42,5 +52,6 @@ TKTResult >> future: aFuture [
 
 { #category : #'as yet unclassified' }
 TKTResult >> initialize [ 
+	cancelled := false.
 	future := TKTVariable for: nil.
 ]

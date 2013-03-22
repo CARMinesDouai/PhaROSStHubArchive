@@ -9,19 +9,22 @@ Class {
 
 { #category : #'as yet unclassified' }
 TKTStickyFuture >> cancel [
-	self stop.
+	self deployValue: TKTCancelledFuture new.
+
 ]
 
 { #category : #'as yet unclassified' }
 TKTStickyFuture >> deployError: anError [
-	super deployError: anError.
 	self stop.
+	super deployError: anError.
+	
 ]
 
 { #category : #'as yet unclassified' }
 TKTStickyFuture >> deployValue: aValue [
-	super deployValue: aValue.
 	self stop.
+	super deployValue: aValue.
+	
 ]
 
 { #category : #'as yet unclassified' }
@@ -40,4 +43,5 @@ TKTStickyFuture >> stop [
 			self process terminate. 
 			self process: nil. 
 	].
+	
 ]

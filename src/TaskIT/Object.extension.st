@@ -7,5 +7,10 @@ Object >> asThreadsafeReference [
 
 { #category : #'*TaskIT' }
 Object >> paralellize [
+	^ TKTParalellizer for: self.
+]
+
+{ #category : #'*TaskIT' }
+Object >> scheddule [ 
 	^ TKTTasker for: self.
 ]

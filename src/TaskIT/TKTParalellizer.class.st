@@ -1,15 +1,15 @@
 Class {
-	#name : #TKTTasker,
+	#name : #TKTParalellizer,
 	#superclass : #TKTProxy,
 	#category : #'TaskIT-Worker'
 }
 
 { #category : #'as yet unclassified' }
-TKTTasker >> scheddule [
-	^ self.
+TKTParalellizer >> paralellize [
+	 ^ self.
 ]
 
 { #category : #'as yet unclassified' }
-TKTTasker >> spawn: aBlock [
-	^ aBlock taskIt.
+TKTParalellizer >> spawn: aBlock [ 
+	^ aBlock doIt.
 ]

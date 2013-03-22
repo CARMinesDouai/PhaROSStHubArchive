@@ -21,6 +21,11 @@ TKTFuture >> asResult [
 ]
 
 { #category : #'as yet unclassified' }
+TKTFuture >> cancel [ 
+	Warning signal: ' ShouldExpropiateProcess'
+]
+
+{ #category : #'as yet unclassified' }
 TKTFuture >> deployError: anError [
 	error := anError.
 	isDeployed := true.
