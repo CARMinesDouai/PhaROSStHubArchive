@@ -29,10 +29,10 @@ SerialStream >> next [
 SerialStream >> next: anAmount [
 	| start |
 	
-	(buffer isEmpty or: [ buffer size < position + anAmount ] ) ifTrue: [
+	(buffer isEmpty or: [ buffer size < (position + anAmount) ] ) ifTrue: [
 		self readPort.
 	].
-	buffer isEmpty ifTrue: [ ^ nil ].
+	buffer isEmpty ifTrue: [ ^ '' ].
 	
 	start := position + 1.
 	position :=( position + anAmount) min: buffer size.
@@ -68,18 +68,14 @@ SerialStream >> upTo: anObject [
 	
 	intent := 0.
 	[
-		end := buffer indexOf: anObject startingAt: position + 1 ifAbsent: [ 0 ].
+		end := buffer indexOfSubCollection: anObject startingAt: position + 1 ifAbsent: [ 0 ].
 		end = 0 and: [ intent < 10 ].
 	] whileTrue: [
 		intent := intent + 1. 
 		self readPort.
 	].
-	 
-	end = 0 ifTrue: [ 
-		Error signal: ' Unable to find ', anObject asString.
-	].
 
-	(end = position + 1) ifTrue: [ ^ ''].
+	(end = 0 or: [end = (position + 1)]) ifTrue: [ ^ ''].
 
 	start := position+1.
 	position := end.

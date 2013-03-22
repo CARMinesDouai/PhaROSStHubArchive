@@ -16,9 +16,10 @@ SGTestCaseDeviceDependant >> closeSerialPort [
 { #category : #'as yet unclassified' }
 SGTestCaseDeviceDependant >> openSerialPort [ 
 	
-	serialPort  := SerialPort new.
-	serialPort baudRate: SGGate defaultBaudRate.
-	serialPort openPort: SGGate defaultPortID.
+	serialPort  := SerialPort new
+	 						 baudRate: SGGate defaultBaudRate;
+				 			 openPort: SGGate defaultPortID;
+							 yourself.
 	
 	^ serialPort
 ]

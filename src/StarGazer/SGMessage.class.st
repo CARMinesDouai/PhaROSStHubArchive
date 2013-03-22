@@ -4,12 +4,30 @@ Class {
 	#instVars : [
 		'content'
 	],
+	#classInstVars : [
+		'NoMessage'
+	],
 	#category : #'StarGazer-Types'
 }
 
 { #category : #'as yet unclassified' }
+SGMessage class >> NoMessage [
+	^ NoMessage
+]
+
+{ #category : #'as yet unclassified' }
 SGMessage class >> for: aContentString [
-	^ self new content: aContentString; yourself.
+	^ aContentString isEmpty ifTrue: [
+		self NoMessage.	
+	] ifFalse: [
+		self new content: aContentString; yourself.
+	].
+	
+]
+
+{ #category : #'as yet unclassified' }
+SGMessage class >> initialize [ 
+	NoMessage := SGMessage for: nil.
 ]
 
 { #category : #'as yet unclassified' }

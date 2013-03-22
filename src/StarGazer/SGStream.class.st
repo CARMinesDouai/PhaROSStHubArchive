@@ -14,18 +14,45 @@ SGStream class >> for: aSerialStream [
 
 { #category : #'as yet unclassified' }
 SGStream >> nextMessage [ 
-	| message |
+	| message | 
+
+	 [ 
+		message := self nextMessageOrNoMessage. 
+	] doWhileTrue: [ 
+		(message = SGMessage NoMessage) ifTrue: [ (Delay forMilliseconds: 100) wait. true. ] ifFalse: [ false ]. 
+	].
+
+	^ message.
+]
+
+{ #category : #'as yet unclassified' }
+SGStream >> nextMessageOrNoMessage [
+	| message start  |
 	
 	" Find the begin of message mark "
 	serialStream upTo: SGProtocol messageStart.
 	
 	" consume it "
-	serialStream next.
+	start := serialStream next.
 	
-	"Make a message with the content"
-   ^ SGMessage for: (serialStream upTo: SGProtocol messageEnd).
+	(start = SGProtocol messageStart) ifFalse: [
+		" if the token is not the expected, can be that is nothing to read, or maybe that there was nothing in the bus and suddenly something appeared"
+		message:= start isEmpty ifTrue: [
+			SGMessage NoMessage.
+		] ifFalse: [
+			self nextMessage.		
+		]
+	] ifTrue: [
+		" If its the expected token, then i just build a message with the content "
+		message := SGMessage for: (serialStream upTo: SGProtocol messageEnd).
+	].
 
+	^ message.
+	
 	" The close message mark will be consumed by the next upTo call." 
+	
+
+
 ]
 
 { #category : #'as yet unclassified' }

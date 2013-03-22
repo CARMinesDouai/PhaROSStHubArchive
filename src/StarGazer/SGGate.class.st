@@ -40,7 +40,7 @@ SGGate class >> defaultPortID [
 	^ '/dev/ttyUSB0'.
 ]
 
-{ #category : #accessing }
+{ #category : #'high level protocol' }
 SGGate >> get: aParameterName [
 	| return  | 
 	stream nextPutReadFor: aParameterName.
@@ -49,65 +49,82 @@ SGGate >> get: aParameterName [
 	self halt. 
 ]
 
-{ #category : #accessing }
+{ #category : #consuming }
 SGGate >> hasMessages [
 	^ messages size > 0
 ]
 
-{ #category : #accessing }
+{ #category : #'initialize-release' }
 SGGate >> initialize [ 
 	messages := SharedQueue new.
 ]
 
-{ #category : #accessing }
+{ #category : #consuming }
 SGGate >> nextMessage [
 	^ messages next. 
 	
 ]
 
-{ #category : #accessing }
+{ #category : #producing }
 SGGate >> poll [
 	[  self singlePoll. ] repeat.
 ]
 
-{ #category : #accessing }
+{ #category : #'high level protocol' }
 SGGate >> set: aParameterName with: aValue [
 	| message |
 	stream nextPutWrite: aParameterName for: aValue.
 	stream nextMessage 
 ]
 
-{ #category : #accessing }
+{ #category : #producing }
 SGGate >> singlePoll [
 	| message | 
 	
-	messages add: stream nextMessage.
+	messages nextPut: stream nextMessage.
 	
 ]
 
-{ #category : #accessing }
+{ #category : #'high level protocol' }
 SGGate >> startCalculations [
 	| return  | 
 	stream nextPutCommand: SGProtocol commandCalcStart.
-	
-	return := stream nextMessage.
-	self halt. 
+
+	" check the messages queue "
+	self halt.
 ]
 
-{ #category : #accessing }
+{ #category : #service }
+SGGate >> startPolling [
+	polling ifNotNil: [
+		polling cancel.
+	].
+	polling := self paralellize poll.
+]
+
+{ #category : #'high level protocol' }
 SGGate >> stopCalculations [
 	| return  | 
 	stream nextPutCommand: SGProtocol commandCalcStop.
 	
-	return := stream nextMessage.
+	
 	self halt. 
+	" check the messages queue "
 ]
 
-{ #category : #accessing }
+{ #category : #service }
+SGGate >> stopPolling [
+	polling ifNotNil: [
+		polling cancel.
+		polling := nil.
+	].
+]
+
+{ #category : #'initialize-release' }
 SGGate >> usePort: aPort [ 
 	stream ifNotNil: [
 		polling cancel.	
 	].
 	stream := aPort asSGStream.
-	"polling := self parallelize poll."
+	
 ]

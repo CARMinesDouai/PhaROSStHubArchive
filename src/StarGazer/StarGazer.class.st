@@ -38,7 +38,7 @@ StarGazer >> gate:  aSGGate [
 	].
 
 	gate := aSGGate asThreadsafeReference.
-	polling := self paralellize  poll. 
+	polling := self paralellize poll. 
 
 ]
 
