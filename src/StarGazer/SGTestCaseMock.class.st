@@ -2,7 +2,8 @@ Class {
 	#name : #SGTestCaseMock,
 	#superclass : #SGTestCase,
 	#instVars : [
-		'serialMock'
+		'serialMock',
+		'selectedContent'
 	],
 	#category : #'StarGazer-Kernel-Test'
 }
@@ -14,7 +15,12 @@ SGTestCaseMock >> closeSerialPort [
 
 { #category : #'as yet unclassified' }
 SGTestCaseMock >> openSerialPort [ 
-	^ serialMock ifNil: [serialMock := SGSerialMock content: '' steppingBy: 1 ] ifNotNil: [ serialMock ].
+	^ serialMock ifNil: [serialMock := SGSerialMock content: selectedContent steppingBy: 1 ] ifNotNil: [ serialMock ].
+]
+
+{ #category : #'as yet unclassified' }
+SGTestCaseMock >> setUp [
+	selectedContent := ''
 ]
 
 { #category : #'as yet unclassified' }
