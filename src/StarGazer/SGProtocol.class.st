@@ -8,21 +8,6 @@ Class {
 SGProtocol class >> baudRate [
 	^ 'BaudRate'. "BaudRate"
 	
-"	
-
-
-	MarkHeight:='MarkHeight'.
-	MarkType:='MarkType'.
-	MarkMode:='MarkMode'.
-	BaudRate:='BaudRate'.
-	HeightCals:='HeightCalc'.
-	MapMode:='MapMode'.
-	CalcStart:='CalcStart'.
-	CalcStop:='CalcStop'.
-	SetEnd:='SetEnd'.
-	Reset:='Reset'.
-	
-	separator:='|'."
 ]
 
 { #category : #commands }
@@ -52,17 +37,7 @@ SGProtocol class >> commandSetEnd [
 { #category : #parameters }
 SGProtocol class >> heightCalc [
 	^ 'HeightCalc'. "HeightCalc"
-	
-"	
 
-
-	MapMode:='MapMode'.
-	CalcStart:='CalcStart'.
-	CalcStop:='CalcStop'.
-	SetEnd:='SetEnd'.
-	Reset:='Reset'.
-	
-	separator:='|'."
 ]
 
 { #category : #parameters }
