@@ -44,9 +44,9 @@ SGGate class >> defaultPortID [
 SGGate >> get: aParameterName [
 	| return  | 
 	stream nextPutReadFor: aParameterName.
+	self halt.
+	^ self nextMessage.
 	
-	return := stream nextMessage.
-	self halt. 
 ]
 
 { #category : #consuming }
@@ -63,6 +63,12 @@ SGGate >> initialize [
 SGGate >> nextMessage [
 	^ messages next. 
 	
+]
+
+{ #category : #consuming }
+SGGate >> nextMessageOrNoMessage [
+	
+	^ messages next ifNil:[ SGMessage NoMessage ].
 ]
 
 { #category : #producing }

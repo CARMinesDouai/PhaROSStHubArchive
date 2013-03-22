@@ -16,3 +16,8 @@ SGTestCaseMock >> closeSerialPort [
 SGTestCaseMock >> openSerialPort [ 
 	^ serialMock ifNil: [serialMock := SGSerialMock content: '' steppingBy: 1 ] ifNotNil: [ serialMock ].
 ]
+
+{ #category : #'as yet unclassified' }
+SGTestCaseMock >> waitForUser: aString [
+	
+]

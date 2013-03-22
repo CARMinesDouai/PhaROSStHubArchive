@@ -4,11 +4,16 @@ Trait {
 }
 
 { #category : #'as yet unclassified' }
-SGExpectedEnvironmentTestTrait >> testOpenDefaultSerialPort [
-	self withDefaultSerialPort: [: port  | 
-		self assert: port readString isString  description: ' error reading from port. Assure that you have privileges to read / write the default port ' 
-	].
+SGExpectedEnvironmentTestTrait >> testReadingFromGate [
 
+	self withDefaultSGGate:  [: gate | 
+		| message |
+		self waitForUser: 'Please, put a landmark near the stargazer to proceed with the test'.
+		
+		message := gate nextMessageOrNoMessage .
+		self assert: message notNil.
+		self assert: message ~= SGMessage NoMessage.
+	]
 ]
 
 { #category : #'as yet unclassified' }

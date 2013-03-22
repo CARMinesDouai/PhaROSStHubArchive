@@ -10,6 +10,7 @@ Class {
 
 { #category : #'sg port manage' }
 SGTestCase >> closeSGGate [
+	sgPort stopPolling.
 	sgPort := nil.
 ]
 
@@ -31,13 +32,23 @@ SGTestCase >> destroyStarGazer [
 
 { #category : #'sg port manage' }
 SGTestCase >> openSGGate: aSerialPort [
-	^ sgPort ifNil: [ sgPort := SGGate atPort: aSerialPort. ] ifNotNil: [ sgPort. ] .
+	^ sgPort ifNil: [ 
+		sgPort := (SGGate atPort: aSerialPort) startPolling; yourself. 
+		
+	] ifNotNil: [
+		 sgPort. 
+	] .
 
 ]
 
 { #category : #'serial port manage' }
 SGTestCase >> openSerialPort [
 	self subclassResponsibility.
+]
+
+{ #category : #'serial port manage' }
+SGTestCase >> waitForUser: aString [
+	self halt: aString.
 ]
 
 { #category : #'sg port manage' }
