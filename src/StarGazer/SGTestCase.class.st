@@ -11,7 +11,7 @@ Class {
 { #category : #'sg port manage' }
 SGTestCase >> closeSGGate [
 	sgPort ifNotNil: [ 
-		sgPort stopPolling.
+		"sgPort stopCalculations."
 		sgPort := nil
 	].
 ]
@@ -37,7 +37,7 @@ SGTestCase >> destroyStarGazer [
 { #category : #'sg port manage' }
 SGTestCase >> openSGGate: aSerialPort [
 	^ sgPort ifNil: [ 
-		sgPort := (SGGate atPort: aSerialPort) startPolling; yourself. 
+		sgPort := (SGGate atPort: aSerialPort). 
 		
 	] ifNotNil: [
 		 sgPort. 

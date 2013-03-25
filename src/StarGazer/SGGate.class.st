@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'stream',
 		'messages',
-		'polling'
+		'state'
 	],
 	#category : #'StarGazer-Kernel'
 }
@@ -40,12 +40,15 @@ SGGate class >> defaultPortID [
 	^ '/dev/ttyUSB0'.
 ]
 
+{ #category : #consuming }
+SGGate >> deployMessage: aMessage [
+	^ messages nextPut: aMessage. 
+	
+]
+
 { #category : #'high level protocol' }
 SGGate >> get: aParameterName [
-	| return  | 
-	stream nextPutReadFor: aParameterName.
-	self halt.
-	^ self nextMessage.
+	^ self state get: aParameterName.
 	
 ]
 
@@ -57,6 +60,7 @@ SGGate >> hasMessages [
 { #category : #'initialize-release' }
 SGGate >> initialize [ 
 	messages := SharedQueue new.
+	state := SGStopped for: self.
 ]
 
 { #category : #consuming }
@@ -71,65 +75,40 @@ SGGate >> nextMessageOrNoMessage [
 	^ messages next ifNil:[ SGMessage NoMessage ].
 ]
 
-{ #category : #producing }
-SGGate >> poll [
-	[  self singlePoll. ] repeat.
-]
-
 { #category : #'high level protocol' }
 SGGate >> set: aParameterName with: aValue [
-	| message |
-	stream nextPutWrite: aParameterName for: aValue.
-	stream nextMessage 
-]
-
-{ #category : #producing }
-SGGate >> singlePoll [
-	| message | 
-	
-	messages nextPut: stream nextMessage.
-	
+	^ self state set: aParameterName with: aValue.
 ]
 
 { #category : #'high level protocol' }
 SGGate >> startCalculations [
-	| return  | 
-	stream nextPutCommand: SGProtocol commandCalcStart.
-
-	" check the messages queue "
-	self halt.
+	^ self state startCalculating.
 ]
 
-{ #category : #service }
-SGGate >> startPolling [
-	polling ifNotNil: [
-		polling cancel.
-	].
-	polling := self paralellize poll.
+{ #category : #accessing }
+SGGate >> state [ 
+	^ state
+]
+
+{ #category : #accessing }
+SGGate >> state: aState [
+	state := aState.
 ]
 
 { #category : #'high level protocol' }
 SGGate >> stopCalculations [
-	| return  | 
-	stream nextPutCommand: SGProtocol commandCalcStop.
-	
-	
-	self halt. 
-	" check the messages queue "
+	^ self state stopCalculating .
 ]
 
-{ #category : #service }
-SGGate >> stopPolling [
-	polling ifNotNil: [
-		polling cancel.
-		polling := nil.
-	].
+{ #category : #accessing }
+SGGate >> stream [
+	^ stream
 ]
 
 { #category : #'initialize-release' }
 SGGate >> usePort: aPort [ 
 	stream ifNotNil: [
-		polling cancel.	
+		self stopCalculations.
 	].
 	stream := aPort asSGStream.
 	

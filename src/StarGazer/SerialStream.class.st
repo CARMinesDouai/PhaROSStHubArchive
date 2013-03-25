@@ -14,6 +14,18 @@ SerialStream class >> for: aSerialPort [
 	^ self new port: aSerialPort; yourself.
 ]
 
+{ #category : #cleanup }
+SerialStream >> cleanup [
+	10 timesRepeat: [
+		position := 0.
+		buffer := ''.
+		self readPort.
+		buffer isEmpty ifTrue: [ ^ self ].	
+	].
+	SGError signal: 'Error cleaning up Posible status error'.
+	
+]
+
 { #category : #accessing }
 SerialStream >> initialize [ 
 	buffer := String new.

@@ -12,6 +12,11 @@ SGStream class >> for: aSerialStream [
 	^ self new serialStream: aSerialStream; yourself.
 ]
 
+{ #category : #cleanup }
+SGStream >> cleanup [
+	serialStream cleanup.
+]
+
 { #category : #'as yet unclassified' }
 SGStream >> nextMessage [ 
 	| message | 

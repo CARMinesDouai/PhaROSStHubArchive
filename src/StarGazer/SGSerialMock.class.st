@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'contents',
 		'step',
-		'position'
+		'position',
+		'outgoing'
 	],
 	#category : #'StarGazer-Kernel-Test'
 }
@@ -16,7 +17,7 @@ SGSerialMock class >> content: aContent steppingBy: aStep [
 
 { #category : #converting }
 SGSerialMock >> asSGStream [
-	^ SGStream for: self.
+	^ SGStream for: ( SerialStream for: self).
 ]
 
 { #category : #'as yet unclassified' }
@@ -28,15 +29,21 @@ SGSerialMock >> contents: aString [
 SGSerialMock >> initialize [ 
 	position := 1.
 	step := 1.
+	outgoing := ''.
+]
+
+{ #category : #'as yet unclassified' }
+SGSerialMock >> nextPutAll: aString [
+	outgoing := outgoing, aString.
 ]
 
 { #category : #'as yet unclassified' }
 SGSerialMock >> readString [ 
 	| str to |
 	
-	to := (position + step ) min: ( contents size - ( position + step)).
+	to := (position + step ) min:  contents size .
 	to < 0 ifTrue: [ to := 0 ].
-	str := (to = 0 ifTrue: [ '' ] ifFalse: [ contents copyFrom: position to: to ]).
+	str := ((to = 0 or: [ position = to and: [to = contents size] ])ifTrue: [ '' ] ifFalse: [ contents copyFrom: position to: to ]).
 	position := to max: position.
 	
 	^ str.

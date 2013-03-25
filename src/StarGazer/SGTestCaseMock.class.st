@@ -15,7 +15,12 @@ SGTestCaseMock >> closeSerialPort [
 
 { #category : #'as yet unclassified' }
 SGTestCaseMock >> openSerialPort [ 
-	^ serialMock ifNil: [serialMock := SGSerialMock content: selectedContent steppingBy: 1 ] ifNotNil: [ serialMock ].
+	^ serialMock ifNil: [serialMock := SGSerialMock content: selectedContent steppingBy: 9 ] ifNotNil: [ serialMock ].
+]
+
+{ #category : #'as yet unclassified' }
+SGTestCaseMock >> selectedContent: aContent [
+	selectedContent := aContent .
 ]
 
 { #category : #'as yet unclassified' }
