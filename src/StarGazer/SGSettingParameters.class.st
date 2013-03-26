@@ -6,11 +6,11 @@ Class {
 
 { #category : #delegates }
 SGSettingParameters >> set: aParameterName with: aValue [
-	^ self tryToGetResponseFor: [
+	^ self sendAndWaitForAck: [
 		gate stream nextPutWrite: aParameterName for: aValue.
 	].
 
-
+	
 ]
 
 { #category : #delegates }

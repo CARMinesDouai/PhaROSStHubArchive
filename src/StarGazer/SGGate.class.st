@@ -60,7 +60,7 @@ SGGate >> hasMessages [
 { #category : #'initialize-release' }
 SGGate >> initialize [ 
 	messages := SharedQueue new.
-	state := SGStopped for: self.
+	
 ]
 
 { #category : #consuming }
@@ -111,5 +111,6 @@ SGGate >> usePort: aPort [
 		self stopCalculations.
 	].
 	stream := aPort asSGStream.
-	
+	state := SGStopped for: self.
+	state command: SGProtocol commandCalcStop.
 ]

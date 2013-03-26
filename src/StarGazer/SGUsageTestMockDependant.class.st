@@ -12,13 +12,6 @@ SGUsageTestMockDependant >> setUp [
 ]
 
 { #category : #'as yet unclassified' }
-SGUsageTestMockDependant >> testUsePort [
-	self withDefaultSGGate: [ : gate |
-		self deny: gate hasMessages.
-	 ].
-]
-
-{ #category : #'as yet unclassified' }
 SGUsageTestMockDependant >> testUseSGStream [
 	self withDefaultSerialPort: [ : port |
 		| stream |

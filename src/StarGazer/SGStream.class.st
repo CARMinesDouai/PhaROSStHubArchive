@@ -19,14 +19,24 @@ SGStream >> cleanup [
 
 { #category : #'as yet unclassified' }
 SGStream >> nextMessage [ 
-	| message | 
+	^ self nextMessage: 100.
+]
 
+{ #category : #'as yet unclassified' }
+SGStream >> nextMessage: anAmmountOfTimes [ 
+	| message times | 
+
+	times := 0.	
 	 [ 
+		times := times + 1.
 		message := self nextMessageOrNoMessage. 
-	] doWhileTrue: [ 
-		(message = SGMessage NoMessage) ifTrue: [ (Delay forMilliseconds: 100) wait. true. ] ifFalse: [ false ]. 
+	] doWhileTrue: [
+		
+		((message = SGMessage NoMessage) ifTrue: [ (Delay forMilliseconds: 100) wait. true. ] ifFalse: [ false ]) and: [ times < anAmmountOfTimes]. 
 	].
-
+	
+	message = SGMessage NoMessage ifTrue: [ SGError signal: 'Timeout'].
+	
 	^ message.
 ]
 
@@ -42,7 +52,7 @@ SGStream >> nextMessageOrNoMessage [
 	
 	(start = SGProtocol messageStart) ifFalse: [
 		" if the token is not the expected, can be that is nothing to read, or maybe that there was nothing in the bus and suddenly something appeared"
-		message:= start isEmpty ifTrue: [
+		message:= (start isEmpty or: [ start = nil ]) ifTrue: [
 			SGMessage NoMessage.
 		] ifFalse: [
 			self nextMessage.		

@@ -16,14 +16,14 @@ SerialStream class >> for: aSerialPort [
 
 { #category : #cleanup }
 SerialStream >> cleanup [
-	10 timesRepeat: [
+	"10 timesRepeat: [
 		position := 0.
 		buffer := ''.
 		self readPort.
 		buffer isEmpty ifTrue: [ ^ self ].	
 	].
 	SGError signal: 'Error cleaning up Posible status error'.
-	
+	"
 ]
 
 { #category : #accessing }
@@ -39,8 +39,8 @@ SerialStream >> next [
 
 { #category : #accessing }
 SerialStream >> next: anAmount [
-	| start |
-	
+	| start ret |
+
 	(buffer isEmpty or: [ buffer size < (position + anAmount) ] ) ifTrue: [
 		self readPort.
 	].
@@ -49,7 +49,9 @@ SerialStream >> next: anAmount [
 	start := position + 1.
 	position :=( position + anAmount) min: buffer size.
 	
-	^ buffer copyFrom: start to: position. 
+	ret:= buffer copyFrom: start to: position. 
+	Transcript show: '>>', ret.
+	^ ret.
 ]
 
 { #category : #accessing }
@@ -59,6 +61,7 @@ SerialStream >> nextPut: aCharacter [
 
 { #category : #accessing }
 SerialStream >> nextPutAll: aStringOrByteArray [
+	Transcript show: aStringOrByteArray ; cr.
 	port nextPutAll: aStringOrByteArray.
 ]
 

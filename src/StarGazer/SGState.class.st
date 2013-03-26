@@ -14,10 +14,10 @@ SGState class >> for: aGate [
 
 { #category : #'private delegate' }
 SGState >> command: aCommand [ 
-	^ self tryToGetResponseFor: [
+	^ self sendAndWaitForAck: [
 		gate stream nextPutCommand: aCommand.
 	].
-	
+
 ]
 
 { #category : #accessing }
@@ -30,6 +30,29 @@ SGState >> gate: aGate [
 SGState >> get: aParameterName [
 	^ self switchReading get: aParameterName.
 	
+]
+
+{ #category : #'private delegate' }
+SGState >> sendAndWaitForAck: aBlock [
+	| message |	
+	10 timesRepeat: [
+		aBlock value.
+		message := gate stream nextMessage: 10.
+		message = SGMessage NoMessage ifFalse: [
+			 ^ message 
+		].
+		(Delay forMilliseconds: 100) wait.
+	] .
+	
+
+	SGError signal: 'Timeout'.
+	
+]
+
+{ #category : #'private delegate' }
+SGState >> sendAndWaitForResponse: aBlock [
+	^ self waitForResponseIfAck: (self sendAndWaitForAck: aBlock).
+	 
 ]
 
 { #category : #delegates }
@@ -55,6 +78,7 @@ SGState >> switchCalculating [
 
 { #category : #'private state flow' }
 SGState >> switchIdle [
+	 self command: SGProtocol commandCalcStop.
 	^ SGStopped for: gate.
 ]
 
@@ -68,20 +92,18 @@ SGState >> switchWriting [
 	^ SGSettingParameters for: gate.
 ]
 
-{ #category : #'private delegate' }
-SGState >> tryToGetResponseFor: aBlock [
-	| message |	
-	10 timesRepeat: [
-		aBlock value.
-		message := gate stream nextMessageOrNoMessage.
-		message = SGMessage NoMessage ifFalse: [
-			gate stream cleanup.
-			 ^ message 
-		].
-		(Delay forMilliseconds: 100) wait.
-	] .
+{ #category : #'private state flow' }
+SGState >> waitForResponseIfAck: aSGMessage [
 	
+	aSGMessage hasAValue ifTrue: [
+		^ aSGMessage.	
+	].
 
-	SGError signal: 'Timeout'.
-	
+	^ aSGMessage isAck ifTrue: [
+		gate stream nextMessage: 20.
+	] ifFalse: [
+		SGError signal: 'Error in the protocol. Unexpected message'.
+	].
+
+
 ]

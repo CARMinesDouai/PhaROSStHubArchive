@@ -48,7 +48,7 @@ SGCalculating >> switchCalculating [
 { #category : #'private state flow' }
 SGCalculating >> switchIdle [
 	self stopPolling.
-	^ SGStopped for: gate.
+	^ super switchIdle.
 ]
 
 { #category : #'private state flow' }

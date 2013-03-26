@@ -6,11 +6,11 @@ Class {
 
 { #category : #delegates }
 SGReadingParameters >> get: aParameterName [
-	
-	^ self tryToGetResponseFor: [
+	^ self sendAndWaitForResponse: [
 		gate stream nextPutReadFor: aParameterName
 	].
 
+	
 ]
 
 { #category : #'private state flow' }
