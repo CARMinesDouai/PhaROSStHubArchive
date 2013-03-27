@@ -30,6 +30,22 @@ SGMessage class >> initialize [
 	NoMessage := SGMessage for: nil.
 ]
 
+{ #category : #testing }
+SGMessage >> asLandMark [
+	| pieces id position orientation |
+	pieces := content findBetweenSubStrs: SGProtocol separator.
+	
+	id := pieces first.
+	position := SGPoint x: pieces second
+					  y: pieces third
+					  z: pieces fourth.
+	orientation := pieces fifth.
+	
+	^ SGLandMark id: id pose: (SGPose position: position orientation: orientation).
+	
+
+]
+
 { #category : #accessing }
 SGMessage >> content [
 	^ content
@@ -45,9 +61,14 @@ SGMessage >> hasAValue [
 	^ (content indexOfSubCollection: SGProtocol separator) ~= 0. 
 ]
 
+{ #category : #testing }
+SGMessage >> isAReturn [
+	^ self type = $^.
+]
+
 { #category : #'as yet unclassified' }
 SGMessage >> isAck [ 
-	^ (content at:1) = $!.
+	^ self type = $!.
 ]
 
 { #category : #'as yet unclassified' }

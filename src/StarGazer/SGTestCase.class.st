@@ -11,7 +11,7 @@ Class {
 { #category : #'sg port manage' }
 SGTestCase >> closeSGGate [
 	sgPort ifNotNil: [ 
-		sgPort stopCalculations.
+		sgPort stopCalculating.
 		sgPort := nil
 	].
 ]

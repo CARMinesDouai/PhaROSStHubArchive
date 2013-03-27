@@ -1,11 +1,11 @@
 Class {
-	#name : #SGReadingParameters,
+	#name : #SGReadingState,
 	#superclass : #SGState,
-	#category : #'StarGazer-Kernel'
+	#category : #'StarGazer-States'
 }
 
 { #category : #delegates }
-SGReadingParameters >> get: aParameterName [
+SGReadingState >> get: aParameterName [
 	^ self sendAndWaitForResponse: [
 		gate stream nextPutReadFor: aParameterName
 	].
@@ -14,6 +14,6 @@ SGReadingParameters >> get: aParameterName [
 ]
 
 { #category : #'private state flow' }
-SGReadingParameters >> switchReading [
+SGReadingState >> switchReading [
 	^ self.
 ]

@@ -1,11 +1,11 @@
 Class {
-	#name : #SGSettingParameters,
+	#name : #SGWritingState,
 	#superclass : #SGState,
-	#category : #'StarGazer-Kernel'
+	#category : #'StarGazer-States'
 }
 
 { #category : #delegates }
-SGSettingParameters >> set: aParameterName with: aValue [
+SGWritingState >> set: aParameterName with: aValue [
 	^ self sendAndWaitForAck: [
 		gate stream nextPutWrite: aParameterName for: aValue.
 	].
@@ -14,29 +14,29 @@ SGSettingParameters >> set: aParameterName with: aValue [
 ]
 
 { #category : #delegates }
-SGSettingParameters >> setEnd [
+SGWritingState >> setEnd [
 	^ self command: SGProtocol commandSetEnd.
 ]
 
 { #category : #'private state flow' }
-SGSettingParameters >> switchCalculating [ 
+SGWritingState >> switchCalculating [ 
 	self setEnd.
 	^ super switchCalculating.
 ]
 
 { #category : #'private state flow' }
-SGSettingParameters >> switchIdle [ 
+SGWritingState >> switchIdle [ 
 	self setEnd.
 	^ super switchIdle.
 ]
 
 { #category : #'private state flow' }
-SGSettingParameters >> switchReading [
+SGWritingState >> switchReading [
 	self setEnd.
 	^ super switchReading.
 ]
 
 { #category : #'private state flow' }
-SGSettingParameters >> switchWriting [
+SGWritingState >> switchWriting [
 	^ self.
 ]

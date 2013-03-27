@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'stream',
 		'messages',
-		'state'
+		'state',
+		'landMarkReadingCallback'
 	],
 	#category : #'StarGazer-Kernel'
 }
@@ -40,10 +41,9 @@ SGGate class >> defaultPortID [
 	^ '/dev/ttyUSB0'.
 ]
 
-{ #category : #consuming }
-SGGate >> deployMessage: aMessage [
-	^ messages nextPut: aMessage. 
-	
+{ #category : #announcing }
+SGGate >> announceLandMarkReading [
+	(landMarkReadingCallback ifNil:[[]]) cull: self.
 ]
 
 { #category : #'high level protocol' }
@@ -54,7 +54,7 @@ SGGate >> get: aParameterName [
 
 { #category : #consuming }
 SGGate >> hasMessages [
-	^ messages size > 0
+	^ state hasMessages.
 ]
 
 { #category : #'initialize-release' }
@@ -65,14 +65,13 @@ SGGate >> initialize [
 
 { #category : #consuming }
 SGGate >> nextMessage [
-	^ messages next. 
+		^ state nextMessage.
 	
 ]
 
-{ #category : #consuming }
-SGGate >> nextMessageOrNoMessage [
-	
-	^ messages next ifNil:[ SGMessage NoMessage ].
+{ #category : #announcing }
+SGGate >> onLandMarkReading: aBlock [
+	landMarkReadingCallback := aBlock.
 ]
 
 { #category : #'high level protocol' }
@@ -81,7 +80,7 @@ SGGate >> set: aParameterName with: aValue [
 ]
 
 { #category : #'high level protocol' }
-SGGate >> startCalculations [
+SGGate >> startCalculating [
 	^ self state startCalculating.
 ]
 
@@ -96,7 +95,7 @@ SGGate >> state: aState [
 ]
 
 { #category : #'high level protocol' }
-SGGate >> stopCalculations [
+SGGate >> stopCalculating [
 	^ self state stopCalculating .
 ]
 
@@ -108,9 +107,9 @@ SGGate >> stream [
 { #category : #'initialize-release' }
 SGGate >> usePort: aPort [ 
 	stream ifNotNil: [
-		self stopCalculations.
+		self stopCalculating.
 	].
 	stream := aPort asSGStream.
-	state := SGStopped for: self.
+	state := SGIdleState for: self.
 	state command: SGProtocol commandCalcStop.
 ]

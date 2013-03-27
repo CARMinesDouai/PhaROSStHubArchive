@@ -69,11 +69,10 @@ SGExpectedEnvironmentTestTrait >> testReadingFromGate [
 
 	self withDefaultSGGate:  [: gate | 
 		| message |
-		gate startCalculations.
+		gate startCalculating.
 		self waitForUser: 'Please, put a landmark near the stargazer to proceed with the test'.
 		
-		message := gate nextMessageOrNoMessage .
-		self assert: message notNil.
+		message := gate nextMessage.
 		self assert: message ~= SGMessage NoMessage.
 	]
 ]

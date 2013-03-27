@@ -6,7 +6,7 @@ Class {
 		'buffer',
 		'position'
 	],
-	#category : #'StarGazer-Util'
+	#category : #'StarGazer-Stream'
 }
 
 { #category : #construction }
@@ -92,7 +92,7 @@ SerialStream >> upTo: anObject [
 
 	(end = 0 or: [end = (position + 1)]) ifTrue: [ ^ ''].
 
-	start := position+1.
+	start := position + 1.
 	position := end.
 
 	

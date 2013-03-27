@@ -8,14 +8,14 @@ SGSwitchingStatesTestTrait >> testCalculatingCalculating [
 	self withDefaultSGGate: [ : gate | 
 		| state |
 		
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState).
 		
 		gate state switchCalculating.
-		self assert: (gate state isKindOf: SGCalculating).
+		self assert: (gate state isKindOf: SGCalculatingState).
 		state := gate state.
 		
 		gate state switchCalculating.
-		self assert: (gate state isKindOf: SGCalculating).
+		self assert: (gate state isKindOf: SGCalculatingState).
 		self assert:  state = gate state.
 	].
 ]
@@ -25,13 +25,13 @@ SGSwitchingStatesTestTrait >> testCalculatingIdle [
 	self withDefaultSGGate: [ : gate | 
 		| state |
 		state := gate state.
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState ).
 		
 		gate state switchCalculating.
-		self assert: (gate state isKindOf: SGCalculating).
+		self assert: (gate state isKindOf: SGCalculatingState).
 		
 		gate state switchIdle.
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState).
 		self deny: state = gate state.
 	].
 ]
@@ -40,10 +40,10 @@ SGSwitchingStatesTestTrait >> testCalculatingIdle [
 SGSwitchingStatesTestTrait >> testCalculatingRead [
 	self withDefaultSGGate: [ : gate | 
 		
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState ).
 		
 		gate state switchCalculating.
-		self assert: (gate state isKindOf: SGCalculating).		
+		self assert: (gate state isKindOf: SGCalculatingState ).		
 		self should: [ gate state switchReading ] raise: SGError.
 	].
 ]
@@ -52,10 +52,10 @@ SGSwitchingStatesTestTrait >> testCalculatingRead [
 SGSwitchingStatesTestTrait >> testCalculatingWrite [
 	self withDefaultSGGate: [ : gate | 
 		
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState ).
 		
 		gate state switchCalculating.
-		self assert: (gate state isKindOf: SGCalculating).		
+		self assert: (gate state isKindOf: SGCalculatingState ).		
 		self should: [ gate state switchWriting ] raise: SGError.
 	].
 ]
@@ -63,10 +63,10 @@ SGSwitchingStatesTestTrait >> testCalculatingWrite [
 { #category : #'from idle' }
 SGSwitchingStatesTestTrait >> testIdleToCalculating [
 	self withDefaultSGGate: [ : gate | 
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState).
 		
 		gate state switchCalculating.
-		self assert: (gate state isKindOf: SGCalculating ).
+		self assert: (gate state isKindOf: SGCalculatingState  ).
 	].
 ]
 
@@ -76,10 +76,10 @@ SGSwitchingStatesTestTrait >> testIdleToIdle [
 		| idle |
 		
 		idle := gate state.
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState).
 		
 		gate state switchIdle .
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState).
 		self assert: idle = gate state.
 	].
 ]
@@ -87,31 +87,31 @@ SGSwitchingStatesTestTrait >> testIdleToIdle [
 { #category : #'from idle' }
 SGSwitchingStatesTestTrait >> testIdleToRead [
 	self withDefaultSGGate: [ : gate | 
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState).
 		
 		gate state switchReading.
-		self assert: (gate state isKindOf: SGReadingParameters).
+		self assert: (gate state isKindOf: SGReadingState ).
 	].
 ]
 
 { #category : #'from idle' }
 SGSwitchingStatesTestTrait >> testIdleToWrite [
 	self withDefaultSGGate: [ : gate | 
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState).
 		
 		gate state switchWriting.
-		self assert: (gate state isKindOf: SGSettingParameters).
+		self assert: (gate state isKindOf: SGWritingState ).
 	].
 ]
 
 { #category : #'from read' }
 SGSwitchingStatesTestTrait >> testReadToCalculating [
 	self withDefaultSGGate: [ : gate | 
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState).
 		gate state switchReading.
-		self assert: (gate state isKindOf: SGReadingParameters).
+		self assert: (gate state isKindOf: SGWritingState ).
 		gate state switchCalculating.
-		self assert: (gate state isKindOf: SGCalculating).
+		self assert: (gate state isKindOf: SGCalculatingState ).
 	].
 ]
 
@@ -120,11 +120,11 @@ SGSwitchingStatesTestTrait >> testReadToIdle [
 	self withDefaultSGGate: [ : gate | 
 		| state |
 		state := gate state.
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState).
 		gate state switchReading.
-		self assert: (gate state isKindOf: SGReadingParameters).
+		self assert: (gate state isKindOf: SGReadingState ).
 		gate state switchIdle.
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState).
 		self deny: state = gate state.
 	].
 ]
@@ -134,13 +134,13 @@ SGSwitchingStatesTestTrait >> testReadToRead [
 	self withDefaultSGGate: [ : gate | 
 		| state |
 		
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState).
 		gate state switchReading.
-		self assert: (gate state isKindOf: SGReadingParameters).
+		self assert: (gate state isKindOf: SGReadingState ).
 		state := gate state.
 		gate state switchReading.
 		
-		self assert: (gate state isKindOf: SGReadingParameters).
+		self assert: (gate state isKindOf: SGReadingState ).
 		self assert: gate state = state.
 	].
 ]
@@ -148,22 +148,22 @@ SGSwitchingStatesTestTrait >> testReadToRead [
 { #category : #'from read' }
 SGSwitchingStatesTestTrait >> testReadToWrite [
 	self withDefaultSGGate: [ : gate | 
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState).
 		gate state switchReading.
-		self assert: (gate state isKindOf: SGReadingParameters).
+		self assert: (gate state isKindOf: SGReadingState ).
 		gate state switchWriting.
-		self assert: (gate state isKindOf: SGSettingParameters).
+		self assert: (gate state isKindOf: SGWritingState ).
 	].
 ]
 
 { #category : #'from write' }
 SGSwitchingStatesTestTrait >> testWriteToCalculating [
 	self withDefaultSGGate: [ : gate | 
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState).
 		gate state switchWriting.
-		self assert: (gate state isKindOf: SGSettingParameters).
+		self assert: (gate state isKindOf: SGWritingState ).
 		gate state switchCalculating.
-		self assert: (gate state isKindOf: SGCalculating).
+		self assert: (gate state isKindOf: SGCalculatingState ).
 	].
 ]
 
@@ -172,11 +172,11 @@ SGSwitchingStatesTestTrait >> testWriteToIdle [
 	self withDefaultSGGate: [ : gate | 
 		| state |
 		state := gate state.
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState).
 		gate state switchWriting.
-		self assert: (gate state isKindOf: SGSettingParameters).
+		self assert: (gate state isKindOf: SGWritingState ).
 		gate state switchIdle.
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState).
 		self deny: state = gate state.
 	].
 ]
@@ -184,11 +184,11 @@ SGSwitchingStatesTestTrait >> testWriteToIdle [
 { #category : #'from write' }
 SGSwitchingStatesTestTrait >> testWriteToRead [
 	self withDefaultSGGate: [ : gate | 
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState).
 		gate state switchWriting.
-		self assert: (gate state isKindOf: SGSettingParameters).
+		self assert: (gate state isKindOf: SGWritingState ).
 		gate state switchReading.
-		self assert: (gate state isKindOf: SGReadingParameters).
+		self assert: (gate state isKindOf: SGReadingState ).
 	].
 ]
 
@@ -196,14 +196,14 @@ SGSwitchingStatesTestTrait >> testWriteToRead [
 SGSwitchingStatesTestTrait >> testWriteToWrite [
 	self withDefaultSGGate: [ : gate | 
 		| state |
-		self assert: (gate state isKindOf: SGStopped).
+		self assert: (gate state isKindOf: SGIdleState).
 		
 		gate state switchWriting.
-		self assert: (gate state isKindOf: SGSettingParameters).
+		self assert: (gate state isKindOf: SGWritingState ).
 		
 		state := gate state.
 		gate state switchWriting.
-		self assert: (gate state isKindOf: SGSettingParameters).
+		self assert: (gate state isKindOf: SGWritingState ).
 		self assert: state = gate state.
 	].
 ]

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'serialStream'
 	],
-	#category : #'StarGazer-Kernel'
+	#category : #'StarGazer-Stream'
 }
 
 { #category : #'as yet unclassified' }
@@ -17,12 +17,12 @@ SGStream >> cleanup [
 	serialStream cleanup.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #reading }
 SGStream >> nextMessage [ 
 	^ self nextMessage: 100.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #reading }
 SGStream >> nextMessage: anAmmountOfTimes [ 
 	| message times | 
 
@@ -40,7 +40,7 @@ SGStream >> nextMessage: anAmmountOfTimes [
 	^ message.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #reading }
 SGStream >> nextMessageOrNoMessage [
 	| message start  |
 	
@@ -70,23 +70,23 @@ SGStream >> nextMessageOrNoMessage [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #writing }
 SGStream >> nextPutCommand: aCommand [ 
 	^ self nextPutMessage: SGProtocol typeWrite, 
 								aCommand.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #writing }
 SGStream >> nextPutMessage: aMessageString [
 	^ serialStream nextPutAll: SGProtocol messageStart, aMessageString, SGProtocol messageEnd.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #writing }
 SGStream >> nextPutReadFor: aParameterOrCommand [
 	^ self nextPutMessage: SGProtocol typeRead, aParameterOrCommand.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #writing }
 SGStream >> nextPutWrite: aStringValue for: aParameter [  
 	^ self nextPutMessage: SGProtocol typeWrite, 
 								aParameter, 
@@ -94,7 +94,7 @@ SGStream >> nextPutWrite: aStringValue for: aParameter [
 								aStringValue.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 SGStream >> serialStream: aSerialStream [
 	serialStream := aSerialStream 
 ]

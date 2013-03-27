@@ -32,7 +32,17 @@ SGState >> get: aParameterName [
 	
 ]
 
-{ #category : #'private delegate' }
+{ #category : #delegates }
+SGState >> hasMessages [
+	^ false.
+]
+
+{ #category : #delegates }
+SGState >> nextMessage [
+	SGError signal: 'The current state of the device does not make calculations nor get messages'.
+]
+
+{ #category : #'private protocol' }
 SGState >> sendAndWaitForAck: aBlock [
 	| message |	
 	10 timesRepeat: [
@@ -49,7 +59,7 @@ SGState >> sendAndWaitForAck: aBlock [
 	
 ]
 
-{ #category : #'private delegate' }
+{ #category : #'private protocol' }
 SGState >> sendAndWaitForResponse: aBlock [
 	^ self waitForResponseIfAck: (self sendAndWaitForAck: aBlock).
 	 
@@ -73,26 +83,26 @@ SGState >> stopCalculating [
 
 { #category : #'private state flow' }
 SGState >> switchCalculating [ 
-	^  SGCalculating for: gate.
+	^  SGCalculatingState for: gate.
 ]
 
 { #category : #'private state flow' }
 SGState >> switchIdle [
 	 self command: SGProtocol commandCalcStop.
-	^ SGStopped for: gate.
+	^ SGIdleState for: gate.
 ]
 
 { #category : #'private state flow' }
 SGState >> switchReading [
-	^  SGReadingParameters for: gate.
+	^  SGReadingState for: gate.
 ]
 
 { #category : #'private state flow' }
 SGState >> switchWriting [
-	^ SGSettingParameters for: gate.
+	^ SGWritingState for: gate.
 ]
 
-{ #category : #'private state flow' }
+{ #category : #'private protocol' }
 SGState >> waitForResponseIfAck: aSGMessage [
 	
 	aSGMessage hasAValue ifTrue: [
