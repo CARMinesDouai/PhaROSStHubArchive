@@ -81,7 +81,8 @@ PureROS >> consumeSession [
 { #category : #'as yet unclassified' }
 PureROS >> destroy [
 	PhaROSMaster stopAndUnregisterUrl: 'http://127.0.0.1:11311/'.
-	robot destroy .
+	robot finalize.
+	robot := nil.
 	
 ]
 

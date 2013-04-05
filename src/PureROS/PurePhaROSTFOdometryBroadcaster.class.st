@@ -12,7 +12,7 @@ Class {
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification [ 
 	[
-"		self sendTransformations: aNotification."
+		self sendTransformations: aNotification.
 		self sendOdometry: aNotification.
 	]
 	on: Error do: [
@@ -33,12 +33,29 @@ PurePhaROSTFOdometryBroadcaster >> initialize [
 
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> initializeMessage: aMessage [
-
-		36 timesRepeat: [ 
-			aMessage pose covariance add: 0.0. 
-			aMessage twist covariance add: 0.0.
-		].
+	| dValue |
+	36 timesRepeat: [ 
+		aMessage pose covariance add: 0.0. 
+		aMessage twist covariance add: 0.0.
+	].
+	self flag: #lookAtComment.
+" This value is really arbitrar.. is based on turtlebot specs, it should be based on robulab, or even better, parametrized "
+	dValue := (0.017 * 0.017) roundUpTo: 0.0000001. 
+	
+	aMessage pose covariance at:1 put: dValue.
+	aMessage pose covariance at:8 put: dValue.
+	aMessage pose covariance at:15 put: dValue.
+	aMessage pose covariance at:22 put: dValue.
+	aMessage pose covariance at:29 put: dValue.	
+	aMessage pose covariance at:36 put: dValue.
 		
+	aMessage twist covariance at:1 put: dValue.
+	aMessage twist covariance at:8 put: dValue.
+	aMessage twist covariance at:15 put: dValue.
+	aMessage twist covariance at:22 put: dValue.
+	aMessage twist covariance at:29 put: dValue.	
+	aMessage twist covariance at:36 put: dValue.
+	
 ]
 
 { #category : #'as yet unclassified' }
@@ -149,7 +166,7 @@ PurePhaROSTFOdometryBroadcaster >> sendTransformations: aNotification [
 		self sendTo: '/tf' a: [: msg |		
 		
 			" BaseLink "
-			transformStamped := Geometry_msgsTransformStamped new.
+		"	transformStamped := Geometry_msgsTransformStamped new.
 			transformStamped header frame_id: '/odom'.
 			transformStamped child_frame_id: '/base_link'.
 			transformStamped transform translation x: aNotification position x.
@@ -160,6 +177,8 @@ PurePhaROSTFOdometryBroadcaster >> sendTransformations: aNotification [
 			
 			msg addTransform: transformStamped.
 			
+			base_footprint
+			"
 			
 			" Laser "
 			transformStamped := Geometry_msgsTransformStamped new.
@@ -167,6 +186,17 @@ PurePhaROSTFOdometryBroadcaster >> sendTransformations: aNotification [
 			transformStamped child_frame_id: '/laser'.
 			transformStamped transform translation x: -0.15.
 			transformStamped transform translation z: 0.25.
+			
+			self rotationAsQuaternation: 0.0 into:(transformStamped transform rotation).
+			msg addTransform: transformStamped.
+
+			" XSens "
+			transformStamped := Geometry_msgsTransformStamped new.
+			transformStamped header frame_id: '/base_link'.
+			transformStamped child_frame_id: '/MT0'.
+			transformStamped transform translation x: 0.0.
+			transformStamped transform translation z: 0.0.
+
 
 			self rotationAsQuaternation: 0.0 into:(transformStamped transform rotation).
 			msg addTransform: transformStamped.
