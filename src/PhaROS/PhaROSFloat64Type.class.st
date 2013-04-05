@@ -18,7 +18,10 @@ PhaROSFloat64Type >> decode: aFLDecoder [
 PhaROSFloat64Type >> isAPossibleValue: aFloat [ 
 	
 	
-	^(aFloat isKindOf: Float) and: [
+	^(aFloat isKindOf: Float)
+	
+	
+	" and: [
 		aFloat = 0 or: [
 			| encoder decoder stream |
 			stream := WriteStream on: (ByteArray new: 4).
@@ -29,7 +32,7 @@ PhaROSFloat64Type >> isAPossibleValue: aFloat [
 			decoder := PhaROSDecoder on: stream.
 			aFloat closeTo: decoder nextEncodedFloat64
 		].
-	]
+	]"
 ]
 
 { #category : #'as yet unclassified' }
