@@ -14,9 +14,10 @@ SGState class >> for: aGate [
 
 { #category : #'private delegate' }
 SGState >> command: aCommand [ 
-	^ self sendAndWaitForAck: [
+	^gate stream nextPutCommand: aCommand.
+"	^ self sendAndWaitForAck: [
 		gate stream nextPutCommand: aCommand.
-	].
+	]."
 
 ]
 

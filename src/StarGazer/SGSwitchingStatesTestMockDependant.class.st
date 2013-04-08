@@ -6,10 +6,9 @@ Class {
 	#category : #'StarGazer-Kernel-Test'
 }
 
-{ #category : #'from idle' }
-SGSwitchingStatesTestMockDependant >> setUp [ 
-	super setUp.
-	selectedContent := '~!SetEnd`'.
+{ #category : #'from read' }
+SGSwitchingStatesTestMockDependant >> openSerialPort [ 
+	^ serialMock ifNil: [serialMock := SGDummySerialMock new] ifNotNil: [ serialMock ].
 ]
 
 { #category : #'from calculate' }
