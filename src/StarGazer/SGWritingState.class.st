@@ -7,8 +7,8 @@ Class {
 { #category : #delegates }
 SGWritingState >> set: aParameterName with: aValue [
 	^ self sendAndWaitForAck: [
-		gate stream nextPutWrite: aParameterName for: aValue.
-	].
+		gate stream nextPutWrite: aValue for: aParameterName.
+	] acking: aParameterName.
 
 	
 ]
@@ -27,7 +27,7 @@ SGWritingState >> switchCalculating [
 { #category : #'private state flow' }
 SGWritingState >> switchIdle [ 
 	self setEnd.
-	^ super switchIdle.
+	^ SGIdleState for: gate.
 ]
 
 { #category : #'private state flow' }

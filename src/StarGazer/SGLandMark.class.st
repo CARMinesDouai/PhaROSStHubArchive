@@ -3,12 +3,48 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'id',
-		'pose'
+		'pose',
+		'differentialPose'
 	],
 	#category : #'StarGazer-Types'
 }
 
 { #category : #'as yet unclassified' }
 SGLandMark class >> id: anId pose: aPose [
-	^ self new id: anId; pose: aPose; yourself .
+	^ self new id: anId asNumber ; pose: aPose; yourself .
+]
+
+{ #category : #'as yet unclassified' }
+SGLandMark >> fuse: aLandMark [
+	self pose = aLandMark pose ifFalse:[
+		 self pose difference: aLandMark pose into: differentialPose.
+		Transcript show:aLandMark id; show: aLandMark pose ;cr.
+		(Delay forMilliseconds: 100) wait.
+	]. 
+	
+]
+
+{ #category : #'as yet unclassified' }
+SGLandMark >> id [
+	^ id
+]
+
+{ #category : #'as yet unclassified' }
+SGLandMark >> id: anID [
+	id := anID.
+]
+
+{ #category : #'as yet unclassified' }
+SGLandMark >> initialize [ 
+	differentialPose := SGPose zero.
+]
+
+{ #category : #accessing }
+SGLandMark >> pose [
+	^pose
+]
+
+{ #category : #'as yet unclassified' }
+SGLandMark >> pose: aPose [
+	pose := aPose.
 ]

@@ -12,6 +12,11 @@ SGStream class >> for: aSerialStream [
 	^ self new serialStream: aSerialStream; yourself.
 ]
 
+{ #category : #clean }
+SGStream >> cleanUpBuffer [
+	serialStream cleanUpBuffer
+]
+
 { #category : #cleanup }
 SGStream >> cleanup [
 	serialStream cleanup.

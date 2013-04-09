@@ -8,10 +8,16 @@ Class {
 	#category : #'StarGazer-States'
 }
 
+{ #category : #clean }
+SGCalculatingState >> cleanUpBuffer [
+	gate cleanUpBuffer.
+]
+
 { #category : #producing }
 SGCalculatingState >> deployMessage: aMessage [
-	messages nextPut: aMessage. 
 	aMessage isALandMark ifTrue: [
+		messages nextPut: aMessage. 
+		Transcript show: (aMessage content at: 2) asString; cr.
 		gate announceLandMarkReading.	
 	].
 	
@@ -41,13 +47,17 @@ SGCalculatingState >> poll [
 
 { #category : #producing }
 SGCalculatingState >> singlePoll [
-	
 	self deployMessage: gate stream nextMessage.
 	
 ]
 
 { #category : #commands }
 SGCalculatingState >> startCalculating [
+	self startPolling.
+]
+
+{ #category : #commands }
+SGCalculatingState >> startMapBuilding [ 
 	self startPolling.
 ]
 
@@ -75,6 +85,7 @@ SGCalculatingState >> switchCalculating [
 { #category : #'private state flow' }
 SGCalculatingState >> switchIdle [
 	self stopPolling.
+	self cleanUpBuffer.
 	^ super switchIdle.
 ]
 

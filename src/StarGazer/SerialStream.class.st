@@ -14,6 +14,12 @@ SerialStream class >> for: aSerialPort [
 	^ self new port: aSerialPort; yourself.
 ]
 
+{ #category : #cleaup }
+SerialStream >> cleanUpBuffer [
+	buffer := ''.
+	position := 0.
+]
+
 { #category : #cleanup }
 SerialStream >> cleanup [
 	"10 timesRepeat: [

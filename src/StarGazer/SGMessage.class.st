@@ -27,19 +27,20 @@ SGMessage class >> for: aContentString [
 
 { #category : #'as yet unclassified' }
 SGMessage class >> initialize [ 
-	NoMessage := SGMessage for: nil.
+	NoMessage := self new content: nil; yourself.
 ]
 
 { #category : #testing }
 SGMessage >> asLandMark [
 	| pieces id position orientation |
-	pieces := content findBetweenSubStrs: SGProtocol separator.
 	
-	id := pieces first.
-	position := SGPoint x: pieces second
-					  y: pieces third
-					  z: pieces fourth.
-	orientation := pieces fifth.
+	pieces := (content copyFrom:3  to: content size) findBetweenSubStrs: SGProtocol separator.
+	
+	id := pieces first asNumberSG.
+	position := SGPoint x: pieces second asNumberSG
+					  y: pieces third asNumberSG
+					  z: pieces fourth asNumberSG.
+	orientation := pieces fifth asNumberSG.
 	
 	^ SGLandMark id: id pose: (SGPose position: position orientation: orientation).
 	
@@ -59,6 +60,12 @@ SGMessage >> content: aContentString [
 { #category : #testing }
 SGMessage >> hasAValue [
 	^ (content indexOfSubCollection: SGProtocol separator) ~= 0. 
+]
+
+{ #category : #testing }
+SGMessage >> isALandMark [ 
+	self flag:#enhanceThis.
+	^ self isAReturn .
 ]
 
 { #category : #testing }

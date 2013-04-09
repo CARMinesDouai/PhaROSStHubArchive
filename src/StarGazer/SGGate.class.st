@@ -46,6 +46,16 @@ SGGate >> announceLandMarkReading [
 	(landMarkReadingCallback ifNil:[[]]) cull: self.
 ]
 
+{ #category : #clean }
+SGGate >> cleanUpBuffer [
+	stream cleanUpBuffer.
+]
+
+{ #category : #'high level protocol' }
+SGGate >> command: aParameterName with: aValue [
+	^ self state command: aParameterName with: aValue.
+]
+
 { #category : #'high level protocol' }
 SGGate >> get: aParameterName [
 	^ self state get: aParameterName.
@@ -82,6 +92,11 @@ SGGate >> set: aParameterName with: aValue [
 { #category : #'high level protocol' }
 SGGate >> startCalculating [
 	^ self state startCalculating.
+]
+
+{ #category : #builf }
+SGGate >> startMapBuilding [
+	self state startMapBuilding.
 ]
 
 { #category : #accessing }

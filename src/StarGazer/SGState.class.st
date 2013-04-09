@@ -14,11 +14,15 @@ SGState class >> for: aGate [
 
 { #category : #'private delegate' }
 SGState >> command: aCommand [ 
-	^gate stream nextPutCommand: aCommand.
-"	^ self sendAndWaitForAck: [
+	self sendAndWaitForAck: [
 		gate stream nextPutCommand: aCommand.
-	]."
+	] acking: aCommand.
 
+]
+
+{ #category : #'private delegate' }
+SGState >> command: aCommand with: aParameter [
+	^ self switchIdle command: aCommand with: aParameter.
 ]
 
 { #category : #accessing }
@@ -44,13 +48,18 @@ SGState >> nextMessage [
 ]
 
 { #category : #'private protocol' }
-SGState >> sendAndWaitForAck: aBlock [
+SGState >> sendAndWaitForAck: aBlock acking: aWord [
 	| message |	
 	10 timesRepeat: [
 		aBlock value.
 		message := gate stream nextMessage: 10.
 		message = SGMessage NoMessage ifFalse: [
-			 ^ message 
+			(message content indexOfSubCollection: aWord) = 0 ifFalse: [
+			Transcript show: message content,' (expected content)'; cr. 
+			^ message 
+			] ifTrue:[
+				Transcript show: message content,' (unexpected content)'; cr.
+			]
 		].
 		(Delay forMilliseconds: 100) wait.
 	] .
@@ -60,9 +69,9 @@ SGState >> sendAndWaitForAck: aBlock [
 	
 ]
 
-{ #category : #'private protocol' }
-SGState >> sendAndWaitForResponse: aBlock [
-	^ self waitForResponseIfAck: (self sendAndWaitForAck: aBlock).
+{ #category : #'as yet unclassified' }
+SGState >> sendAndWaitForResponse: aBlock acking: aWord [
+	^ self waitForResponseIfAck: (self sendAndWaitForAck: aBlock acking: aWord) .
 	 
 ]
 
@@ -77,13 +86,28 @@ SGState >> startCalculating [
 	^ self switchCalculating startCalculating.
 ]
 
+{ #category : #build }
+SGState >> startMapBuilding [
+	^ self switchBuilding startMapBuilding.
+	
+]
+
 { #category : #delegates }
 SGState >> stopCalculating [
 	^ self switchIdle stopCalculating.
 ]
 
+{ #category : #build }
+SGState >> switchBuilding [ 
+
+	self command: SGProtocol markMode with: 'Map'.
+	self command: SGProtocol mapMode with: 'Start'.
+	^  SGCalculatingState for: gate.
+]
+
 { #category : #'private state flow' }
 SGState >> switchCalculating [ 
+	self command: SGProtocol commandCalcStart.
 	^  SGCalculatingState for: gate.
 ]
 

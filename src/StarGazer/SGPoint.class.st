@@ -1,6 +1,8 @@
 Class {
 	#name : #SGPoint,
 	#superclass : #Object,
+	#traits : 'TEquality',
+	#classTraits : 'TEquality classTrait',
 	#instVars : [
 		'x',
 		'y',
@@ -11,7 +13,12 @@ Class {
 
 { #category : #'as yet unclassified' }
 SGPoint class >> x: anX y: anY z: anZ [
-	^ self new x: anX ;y: anY; z: anZ.
+	^ self new x: anX asNumber  ;y: anY asNumber ; z: anZ asNumber .
+]
+
+{ #category : #'as yet unclassified' }
+SGPoint >> printOn: aStream [
+	aStream nextPutAll: 'SG(', x asString, ',', y asString, ',', z asString ,')'.
 ]
 
 { #category : #accessing }

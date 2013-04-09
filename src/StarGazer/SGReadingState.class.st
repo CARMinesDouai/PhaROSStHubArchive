@@ -8,7 +8,7 @@ Class {
 SGReadingState >> get: aParameterName [
 	^ self sendAndWaitForResponse: [
 		gate stream nextPutReadFor: aParameterName
-	].
+	] acking: aParameterName .
 
 	
 ]
