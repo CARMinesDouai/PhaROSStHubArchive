@@ -3,7 +3,9 @@ Class {
 	#superclass : #SGState,
 	#instVars : [
 		'polling',
-		'messages'
+		'messages',
+		'shouldWait',
+		'shf'
 	],
 	#category : #'StarGazer-States'
 }
@@ -47,8 +49,16 @@ SGCalculatingState >> poll [
 
 { #category : #producing }
 SGCalculatingState >> singlePoll [
-	self deployMessage: gate stream nextMessage.
-	
+	shf:= 2.
+	[[
+		self deployMessage: gate stream nextMessage.
+		shouldWait := shouldWait + 1.
+		shouldWait \\ 1 = 0 ifTrue: [ (Delay forMilliseconds: 100) wait. shf := shf = 1 ifTrue: 1 ifFalse:2 ].
+	] on: SGError do: [
+		:e | Transcript show: 'Warning: ', e messageText; cr.
+	]] on: Error do: [
+		:e | 
+	].
 ]
 
 { #category : #commands }

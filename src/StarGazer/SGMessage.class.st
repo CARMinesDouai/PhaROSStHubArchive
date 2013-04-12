@@ -35,16 +35,31 @@ SGMessage >> asLandMark [
 	| pieces id position orientation |
 	
 	pieces := (content copyFrom:3  to: content size) findBetweenSubStrs: SGProtocol separator.
+	pieces size = 5 ifTrue: [	
+		id := pieces first asNumberSG.
+		orientation := pieces second asNumberSG.	
+		position := SGPoint x: pieces third asNumberSG
+						  y: pieces fourth asNumberSG
+						  z: pieces fifth asNumberSG.
+		
+	] ifFalse:[
+		id := 1.
+		orientation := pieces first asNumberSG.
+		position := SGPoint x: pieces second asNumberSG
+						  y: pieces third asNumberSG
+						  z: pieces fourth asNumberSG.
+		
+	].
 	
-	id := pieces first asNumberSG.
-	position := SGPoint x: pieces second asNumberSG
-					  y: pieces third asNumberSG
-					  z: pieces fourth asNumberSG.
-	orientation := pieces fifth asNumberSG.
 	
 	^ SGLandMark id: id pose: (SGPose position: position orientation: orientation).
 	
 
+]
+
+{ #category : #converting }
+SGMessage >> asNumber [
+	^ self value asNumber. 
 ]
 
 { #category : #accessing }

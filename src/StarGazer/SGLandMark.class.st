@@ -18,8 +18,6 @@ SGLandMark class >> id: anId pose: aPose [
 SGLandMark >> fuse: aLandMark [
 	self pose = aLandMark pose ifFalse:[
 		 self pose difference: aLandMark pose into: differentialPose.
-		Transcript show:aLandMark id; show: aLandMark pose ;cr.
-		(Delay forMilliseconds: 100) wait.
 	]. 
 	
 ]

@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'settings',
 		'gate',
-		'landmarks'
+		'landmarks',
+		'mode'
 	],
 	#category : #'StarGazer-Kernel'
 }
@@ -53,7 +54,7 @@ StarGazer >> gate:  aSGGate [
 	aSGGate onLandMarkReading: [
 		self updateWorld: (gate nextMessage asLandMark).
 	].
-
+	
 ]
 
 { #category : #accessing }
@@ -87,6 +88,7 @@ StarGazer >> initialize [
 	super initialize.
 	settings := Dictionary new. 
 	landmarks := Dictionary new. 
+	mode := SGMapMode new.
 ]
 
 { #category : #accessing }
@@ -99,7 +101,29 @@ StarGazer >> mapMode [
 StarGazer >> mapMode: aMapMode [
 	gate command:  SGProtocol mapMode with: aMapMode.
 	settings at: SGProtocol mapMode put: aMapMode.
+	aMapMode = 'Start' ifTrue: [
+		mode := mode toMapBuildingMode.
+		mode mapsize: self idNum withZeroAt: self refID.
+	] ifFalse: [
+		mode := mode toMapUsageMode.
+	].
+	
+]
 
+{ #category : #accessing }
+StarGazer >> markHeight [
+	^ self settingsAt:  SGProtocol markHeight.
+	
+	
+]
+
+{ #category : #accessing }
+StarGazer >> markHeight: aHeightInCm [
+	gate set:  SGProtocol markHeight with: aHeightInCm.
+	settings at: SGProtocol markHeight put: aHeightInCm.
+
+	
+	
 ]
 
 { #category : #accessing }
@@ -111,7 +135,7 @@ StarGazer >> markMode [
 
 { #category : #accessing }
 StarGazer >> markMode: aBaudRate [
-	gate command:  SGProtocol markMode with: aBaudRate.
+	gate set:  SGProtocol markMode with: aBaudRate.
 	settings at: SGProtocol markMode put: aBaudRate.
 
 ]
@@ -146,12 +170,13 @@ StarGazer >> refID: aRefID [
 { #category : #accessing }
 StarGazer >> settingsAt: aSettingName [
 	^ settings at: aSettingName ifAbsentPut: [
-		 gate get: aSettingName.
+		 (gate get: aSettingName) value.
 	  ].
 ]
 
 { #category : #build }
 StarGazer >> startMapBuilding [
+	self mapMode: 'Start'.
 	^ gate startMapBuilding.
 ]
 
@@ -167,6 +192,8 @@ StarGazer >> stopMeasurements [
 
 { #category : #update }
 StarGazer >> updateWorld: aLandMark [
+	mode updateWorld: aLandMark.
+	
 	landmarks at: aLandMark id ifPresent: [
 		: registered | 
 		landmarks at: aLandMark id put: (registered fuse: aLandMark).

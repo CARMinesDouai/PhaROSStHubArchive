@@ -50,13 +50,12 @@ SerialStream >> next: anAmount [
 	(buffer isEmpty or: [ buffer size < (position + anAmount) ] ) ifTrue: [
 		self readPort.
 	].
-	buffer isEmpty ifTrue: [ ^ '' ].
+	buffer isEmpty ifTrue: [  ^ '' ].
 	
 	start := position + 1.
 	position :=( position + anAmount) min: buffer size.
 	
 	ret:= buffer copyFrom: start to: position. 
-	Transcript show: '>>', ret.
 	^ ret.
 ]
 
@@ -80,6 +79,8 @@ SerialStream >> port: aSerialPort [
 SerialStream >> readPort [
 	buffer := (buffer copyFrom: position + 1 to: buffer size), port readString.  
 	position := 0.  
+	
+	
 ]
 
 { #category : #accessing }

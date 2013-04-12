@@ -3,7 +3,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'stream',
-		'messages',
 		'state',
 		'landMarkReadingCallback'
 	],
@@ -67,12 +66,6 @@ SGGate >> hasMessages [
 	^ state hasMessages.
 ]
 
-{ #category : #'initialize-release' }
-SGGate >> initialize [ 
-	messages := SharedQueue new.
-	
-]
-
 { #category : #consuming }
 SGGate >> nextMessage [
 		^ state nextMessage.
@@ -126,5 +119,5 @@ SGGate >> usePort: aPort [
 	].
 	stream := aPort asSGStream.
 	state := SGIdleState for: self.
-	state command: SGProtocol commandCalcStop.
+	
 ]

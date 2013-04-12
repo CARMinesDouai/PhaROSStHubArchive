@@ -22,19 +22,20 @@ StarGazerMeasures >> beginMeasures [
 StarGazerMeasures >> configure [
 	
 	" We want to calculate the z value, because we want to experiment with a non perpendicular to floor system".
-	sg heightFix: 'No'.
+	sg heightFix: 'Yes'.
 	
-
+	"centimeters"
+	sg markHeight: 1700.
+	
 	"RefID"
-	sg refID: '576'.
+	sg refID: 2.
 	
 	"Ammount of landmarks"
-	sg idNum: '4'.
+	sg idNum: 4.
 	
 	"With map mode we say to the stargazer, send all the information of movement relative to the coordinate system of the RefID tag"
 	sg markMode: 'Map'.
 	
-	sg mapMode: 'Start'.
 	
 	
 ]
@@ -44,7 +45,11 @@ StarGazerMeasures >> initialize [
 	super initialize.
 	sg := StarGazer default.
 	
-	self configure.
+]
+
+{ #category : #load }
+StarGazerMeasures >> loadConfiguration [
+	sg heightFix; markHeight; refID; idNum; markMode.
 ]
 
 { #category : #service }

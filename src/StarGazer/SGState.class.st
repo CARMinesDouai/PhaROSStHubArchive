@@ -50,18 +50,27 @@ SGState >> nextMessage [
 { #category : #'private protocol' }
 SGState >> sendAndWaitForAck: aBlock acking: aWord [
 	| message |	
-	10 timesRepeat: [
+	50 timesRepeat: [
 		aBlock value.
-		message := gate stream nextMessage: 10.
-		message = SGMessage NoMessage ifFalse: [
-			(message content indexOfSubCollection: aWord) = 0 ifFalse: [
-			Transcript show: message content,' (expected content)'; cr. 
-			^ message 
-			] ifTrue:[
-				Transcript show: message content,' (unexpected content)'; cr.
-			]
+		
+		[
+			message := gate stream nextMessage: 2.
+			message = SGMessage NoMessage ifFalse: [
+				((message content at:1) = $*) ifTrue: [ self halt.]. 
+				(message content indexOfSubCollection: aWord) = 0 ifFalse: [
+				Transcript show: message content,' (expected content)'; cr. 
+				^ message 
+				] ifTrue:[
+					Transcript show: message content,' (unexpected content)'; cr.
+				]
+			].
+		] on: SGError do: [
+			:e |
+			Transcript show: 'Error ', e messageText.
 		].
-		(Delay forMilliseconds: 100) wait.
+		
+		(Delay forMilliseconds: 400) wait.
+		Transcript show: 'Retrying '; cr. 
 	] .
 	
 
@@ -99,9 +108,8 @@ SGState >> stopCalculating [
 
 { #category : #build }
 SGState >> switchBuilding [ 
-
-	self command: SGProtocol markMode with: 'Map'.
-	self command: SGProtocol mapMode with: 'Start'.
+	
+	"self command: SGProtocol commandCalcStart."
 	^  SGCalculatingState for: gate.
 ]
 

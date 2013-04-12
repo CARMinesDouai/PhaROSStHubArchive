@@ -18,7 +18,7 @@ SGPoint class >> x: anX y: anY z: anZ [
 
 { #category : #'as yet unclassified' }
 SGPoint >> printOn: aStream [
-	aStream nextPutAll: 'SG(', x asString, ',', y asString, ',', z asString ,')'.
+	aStream nextPutAll: 'SG(', x asString, '|', y asString, '|', z asString ,')'.
 ]
 
 { #category : #accessing }

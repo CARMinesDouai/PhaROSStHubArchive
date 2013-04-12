@@ -6,33 +6,38 @@ Class {
 
 { #category : #delegates }
 SGWritingState >> set: aParameterName with: aValue [
-	^ self sendAndWaitForAck: [
+	 self sendAndWaitForAck: [
 		gate stream nextPutWrite: aValue for: aParameterName.
 	] acking: aParameterName.
+	self setEnd.
 
-	
+	 
 ]
 
 { #category : #delegates }
 SGWritingState >> setEnd [
-	^ self command: SGProtocol commandSetEnd.
+
+	
+	self sendAndWaitForResponse: [
+		gate stream nextPutCommand: SGProtocol commandSetEnd.
+		 (Delay forSeconds: 2) wait.
+	] acking: SGProtocol commandSetEnd.
 ]
 
 { #category : #'private state flow' }
 SGWritingState >> switchCalculating [ 
-	self setEnd.
+
 	^ super switchCalculating.
 ]
 
 { #category : #'private state flow' }
 SGWritingState >> switchIdle [ 
-	self setEnd.
 	^ SGIdleState for: gate.
 ]
 
 { #category : #'private state flow' }
 SGWritingState >> switchReading [
-	self setEnd.
+	"self setEnd."
 	^ super switchReading.
 ]
 

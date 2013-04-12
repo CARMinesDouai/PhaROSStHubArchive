@@ -30,7 +30,7 @@ SGStream >> nextMessage [
 { #category : #reading }
 SGStream >> nextMessage: anAmmountOfTimes [ 
 	| message times | 
-
+	
 	times := 0.	
 	 [ 
 		times := times + 1.
@@ -96,7 +96,7 @@ SGStream >> nextPutWrite: aStringValue for: aParameter [
 	^ self nextPutMessage: SGProtocol typeWrite, 
 								aParameter, 
 								SGProtocol separator, 
-								aStringValue.
+								aStringValue asString.
 ]
 
 { #category : #accessing }
