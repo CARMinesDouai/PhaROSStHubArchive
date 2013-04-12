@@ -26,6 +26,14 @@ SGPose class >> zero [
 ]
 
 { #category : #acessing }
+SGPose >> + aPose [
+	SGPose x: (position x + aPose position x)  
+			 y: (position y + aPose position y)
+			 z: (position z + aPose position z)  
+			 o: (orientation + aPose orientation). 
+]
+
+{ #category : #acessing }
 SGPose >> difference: aPose into: aReceptorPose [
 
 	aReceptorPose position x:( (((self position x - aPose position x) / 100) roundUpTo: 0.0001) truncateTo: 0.001).

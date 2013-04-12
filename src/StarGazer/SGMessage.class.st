@@ -52,7 +52,7 @@ SGMessage >> asLandMark [
 	].
 	
 	
-	^ SGLandMark id: id pose: (SGPose position: position orientation: orientation).
+	^ SGLandMarkMeasure id: id pose: (SGPose position: position orientation: orientation).
 	
 
 ]

@@ -12,6 +12,11 @@ SGState class >> for: aGate [
 	^ self new gate: aGate ;	yourself.
 ]
 
+{ #category : #'as yet unclassified' }
+SGState class >> tries [
+	^ 50.
+]
+
 { #category : #'private delegate' }
 SGState >> command: aCommand [ 
 	self sendAndWaitForAck: [
@@ -50,27 +55,18 @@ SGState >> nextMessage [
 { #category : #'private protocol' }
 SGState >> sendAndWaitForAck: aBlock acking: aWord [
 	| message |	
-	50 timesRepeat: [
+	SGState tries timesRepeat: [
 		aBlock value.
-		
 		[
 			message := gate stream nextMessage: 2.
 			message = SGMessage NoMessage ifFalse: [
-				((message content at:1) = $*) ifTrue: [ self halt.]. 
 				(message content indexOfSubCollection: aWord) = 0 ifFalse: [
-				Transcript show: message content,' (expected content)'; cr. 
-				^ message 
-				] ifTrue:[
-					Transcript show: message content,' (unexpected content)'; cr.
-				]
+					^ message 
+				].
 			].
-		] on: SGError do: [
-			:e |
-			Transcript show: 'Error ', e messageText.
-		].
+		] on: SGError do: [ :e |  " Timeout. We try several times before desist" ].
 		
 		(Delay forMilliseconds: 400) wait.
-		Transcript show: 'Retrying '; cr. 
 	] .
 	
 
@@ -121,6 +117,7 @@ SGState >> switchCalculating [
 
 { #category : #'private state flow' }
 SGState >> switchIdle [
+	self cleanUpBuffer.
 	 self command: SGProtocol commandCalcStop.
 	^ SGIdleState for: gate.
 ]

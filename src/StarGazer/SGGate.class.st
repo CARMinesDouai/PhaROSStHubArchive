@@ -89,6 +89,7 @@ SGGate >> startCalculating [
 
 { #category : #builf }
 SGGate >> startMapBuilding [
+	self command:  SGProtocol mapMode with: 'Start'.
 	self state startMapBuilding.
 ]
 

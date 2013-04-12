@@ -19,7 +19,6 @@ SGCalculatingState >> cleanUpBuffer [
 SGCalculatingState >> deployMessage: aMessage [
 	aMessage isALandMark ifTrue: [
 		messages nextPut: aMessage. 
-		Transcript show: (aMessage content at: 2) asString; cr.
 		gate announceLandMarkReading.	
 	].
 	
@@ -50,14 +49,12 @@ SGCalculatingState >> poll [
 { #category : #producing }
 SGCalculatingState >> singlePoll [
 	shf:= 2.
-	[[
+	[
 		self deployMessage: gate stream nextMessage.
 		shouldWait := shouldWait + 1.
 		shouldWait \\ 1 = 0 ifTrue: [ (Delay forMilliseconds: 100) wait. shf := shf = 1 ifTrue: 1 ifFalse:2 ].
-	] on: SGError do: [
+	] on: Error do: [
 		:e | Transcript show: 'Warning: ', e messageText; cr.
-	]] on: Error do: [
-		:e | 
 	].
 ]
 

@@ -3,9 +3,17 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'settings',
+		'mode',
 		'gate',
-		'landmarks',
-		'mode'
+		'heightFix',
+		'baudRate',
+		'markHeight',
+		'markMode',
+		'markType',
+		'refID',
+		'idNum',
+		'version',
+		'onNewPoseKnown'
 	],
 	#category : #'StarGazer-Kernel'
 }
@@ -25,22 +33,27 @@ StarGazer class >> default [
 	^ self atPortId: SGGate defaultPortID.
 ]
 
+{ #category : #position }
+StarGazer >> announceNewPose: aPose fromSystem: aLandMark [
+	onNewPoseKnown cull: aPose cull: aLandMark.
+]
+
 { #category : #accessing }
 StarGazer >> baudRate [
-	^ self settingsAt:  SGProtocol baudRate.
+	^ baudRate value.
 
 ]
 
 { #category : #accessing }
 StarGazer >> baudRate: aBaudRate [
-	gate set:  SGProtocol baudRate with: aBaudRate.
-	settings at: SGProtocol baudRate put: aBaudRate.
+	baudRate value: aBaudRate.
+	
 
 ]
 
 { #category : #finalize }
 StarGazer >> finalize [
-	polling ifNotNil: [ polling cancel ].
+	
 ]
 
 { #category : #accessing }
@@ -54,117 +67,106 @@ StarGazer >> gate:  aSGGate [
 	aSGGate onLandMarkReading: [
 		self updateWorld: (gate nextMessage asLandMark).
 	].
-	
+	self initializeBindings.
 ]
 
 { #category : #accessing }
 StarGazer >> heightFix [
-	^ self settingsAt: SGProtocol heightFix.
-	
+	^ heightFix value.
 	
 ]
 
 { #category : #accessing }
-StarGazer >> heightFix: aBaudRate [
-	gate set:  SGProtocol heightFix with: aBaudRate.
-	settings at: SGProtocol heightFix put: aBaudRate.
+StarGazer >> heightFix: yesOrNo [
+	heightFix value: yesOrNo
 
 ]
 
 { #category : #accessing }
 StarGazer >> idNum [
-	^ self settingsAt: SGProtocol idNum.
+	^  idNum value
 ]
 
 { #category : #accessing }
 StarGazer >> idNum: anAmmountOfLandmarks [ 
-	gate set:  SGProtocol idNum   with: anAmmountOfLandmarks.
-	settings at: SGProtocol idNum   put: anAmmountOfLandmarks.
-
+	idNum value: anAmmountOfLandmarks.
 ]
 
 { #category : #'initialize-release' }
 StarGazer >> initialize [ 
 	super initialize.
 	settings := Dictionary new. 
-	landmarks := Dictionary new. 
 	mode := SGMapMode new.
-]
-
-{ #category : #accessing }
-StarGazer >> mapMode [
-	^ self settingsAt:  SGProtocol mapMode.
+	
+	
 	
 ]
 
-{ #category : #accessing }
-StarGazer >> mapMode: aMapMode [
-	gate command:  SGProtocol mapMode with: aMapMode.
-	settings at: SGProtocol mapMode put: aMapMode.
-	aMapMode = 'Start' ifTrue: [
-		mode := mode toMapBuildingMode.
-		mode mapsize: self idNum withZeroAt: self refID.
-	] ifFalse: [
-		mode := mode toMapUsageMode.
-	].
-	
+{ #category : #'initialize-release' }
+StarGazer >> initializeBindings [
+	baudRate :=   SGBind bind: SGProtocol baudRate  trought: gate.
+	heightFix := SGBind bind: SGProtocol heightFix  trought: gate.
+	idNum := SGBind bind: SGProtocol idNum  trought: gate.
+	markHeight := SGBind bind: SGProtocol markHeight  trought: gate.
+	markMode := SGBind bind: SGProtocol markMode  trought: gate.
+	markType := SGBind bind: SGProtocol markType  trought: gate.
+	refID := SGBind bind: SGProtocol refID  trought: gate.
+		 
+	 version := SGBindReadOnly bind: SGProtocol version trought: gate.
 ]
 
 { #category : #accessing }
 StarGazer >> markHeight [
-	^ self settingsAt:  SGProtocol markHeight.
+	^  markHeight value.
 	
 	
 ]
 
 { #category : #accessing }
 StarGazer >> markHeight: aHeightInCm [
-	gate set:  SGProtocol markHeight with: aHeightInCm.
-	settings at: SGProtocol markHeight put: aHeightInCm.
-
-	
+	markHeight value: 	aHeightInCm
 	
 ]
 
 { #category : #accessing }
 StarGazer >> markMode [
-	^ self settingsAt:  SGProtocol markMode.
+	^ markMode value. 
 	
 	
 ]
 
 { #category : #accessing }
-StarGazer >> markMode: aBaudRate [
-	gate set:  SGProtocol markMode with: aBaudRate.
-	settings at: SGProtocol markMode put: aBaudRate.
+StarGazer >> markMode: aMode [
+	markMode value: aMode.
 
 ]
 
 { #category : #accessing }
 StarGazer >> markType [
-	^ self settingsAt:  SGProtocol markType.
+	^ markType value.
 	
 	
 ]
 
 { #category : #accessing }
 StarGazer >> markType: aBaudRate [
-	gate set:  SGProtocol markType with: aBaudRate.
-	settings at: SGProtocol markType put: aBaudRate.
+	markType value: aBaudRate.
+]
 
+{ #category : #position }
+StarGazer >> onNewPoseKnown: aBlock [
+	onNewPoseKnown := aBlock.
 ]
 
 { #category : #accessing }
 StarGazer >> refID [
-	^ self settingsAt:  SGProtocol refID.
+	^ refID value.
 	
 ]
 
 { #category : #accessing }
 StarGazer >> refID: aRefID [ 
-	gate set:  SGProtocol refID  with: aRefID.
-	settings at: SGProtocol refID  put: aRefID.
-
+	refID value: aRefID 
 ]
 
 { #category : #accessing }
@@ -176,7 +178,9 @@ StarGazer >> settingsAt: aSettingName [
 
 { #category : #build }
 StarGazer >> startMapBuilding [
-	self mapMode: 'Start'.
+	
+	mode withZeroAt:  (SGLandMark id: self refID pose:( SGPose x: 0.0 y: 0.0 z:0.0 o: 0.0 )).
+	
 	^ gate startMapBuilding.
 ]
 
@@ -191,19 +195,14 @@ StarGazer >> stopMeasurements [
 ]
 
 { #category : #update }
-StarGazer >> updateWorld: aLandMark [
-	mode updateWorld: aLandMark.
+StarGazer >> updateWorld: aLandMarkMeasure [
+	mode updateWorld: aLandMarkMeasure.
+	self announceNewPose: (mode absolutePoseFor: aLandMarkMeasure) fromSystem: mode currentCoordinateSystem. 
 	
-	landmarks at: aLandMark id ifPresent: [
-		: registered | 
-		landmarks at: aLandMark id put: (registered fuse: aLandMark).
-	] ifAbsent:  [
-		landmarks at: aLandMark id put: aLandMark.
-	].
 ]
 
 { #category : #accessing }
 StarGazer >> version [
-	^ self settingsAt:  SGProtocol version.
+	^ version value.
 	
 ]
