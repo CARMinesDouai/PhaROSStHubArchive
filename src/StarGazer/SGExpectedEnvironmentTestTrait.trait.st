@@ -3,7 +3,7 @@ Trait {
 	#category : #'StarGazer-Kernel-Test-Trait'
 }
 
-{ #category : #d }
+{ #category : #'environmental tests' }
 SGExpectedEnvironmentTestTrait >> assertExpectedParameter: aParameterName  with: aValue [ 
 	self withDefaultSGGate: [ : gate |
 		| val |
@@ -12,7 +12,7 @@ SGExpectedEnvironmentTestTrait >> assertExpectedParameter: aParameterName  with:
 	].
 ]
 
-{ #category : #d }
+{ #category : #'environmental tests' }
 SGExpectedEnvironmentTestTrait >> assertExpectedParameter: aParameterName  withBlock: aBlock [ 
 	self withDefaultSGGate: [ : gate |
 		| val |
@@ -21,50 +21,50 @@ SGExpectedEnvironmentTestTrait >> assertExpectedParameter: aParameterName  withB
 	].
 ]
 
-{ #category : #d }
+{ #category : #'environmental tests' }
 SGExpectedEnvironmentTestTrait >> testBaudRate [
 	self assertExpectedParameter: SGProtocol baudRate  with: '9600'.
 ]
 
-{ #category : #d }
+{ #category : #'environmental tests' }
 SGExpectedEnvironmentTestTrait >> testHeightCalc [
 	self assertExpectedParameter: SGProtocol heightCalc with: ''.
 
 ]
 
-{ #category : #d }
+{ #category : #'environmental tests' }
 SGExpectedEnvironmentTestTrait >> testHeightFix [
-	self assertExpectedParameter: SGProtocol heightFix with: 'No'.
+	self assertExpectedParameter: SGProtocol heightFix with: 'Yes'.
 ]
 
-{ #category : #d }
+{ #category : #'environmental tests' }
 SGExpectedEnvironmentTestTrait >> testIDNum [
-	self assertExpectedParameter: SGProtocol idNum with: '3'.
+	self assertExpectedParameter: SGProtocol idNum with: '4'.
 
 ]
 
-{ #category : #d }
+{ #category : #'environmental tests' }
 SGExpectedEnvironmentTestTrait >> testMapMode [
 	self assertExpectedParameter: SGProtocol mapMode with: 'Stop'.
 ]
 
-{ #category : #d }
+{ #category : #'environmental tests' }
 SGExpectedEnvironmentTestTrait >> testMarkHeight [
 	self assertExpectedParameter: SGProtocol markHeight  withBlock: [: val | val asInteger >= 0 ].
 
 ]
 
-{ #category : #d }
+{ #category : #'environmental tests' }
 SGExpectedEnvironmentTestTrait >> testMarkMode [
-	self assertExpectedParameter: SGProtocol markMode with: 'Alone'.
+	self assertExpectedParameter: SGProtocol markMode with: 'Map'.
 ]
 
-{ #category : #d }
+{ #category : #'environmental tests' }
 SGExpectedEnvironmentTestTrait >> testMarkType [
 	self assertExpectedParameter:  SGProtocol markType with:  'HLD1S'.
 ]
 
-{ #category : #d }
+{ #category : #'environmental tests' }
 SGExpectedEnvironmentTestTrait >> testReadingFromGate [
 
 	self withDefaultSGGate:  [: gate | 
@@ -77,13 +77,13 @@ SGExpectedEnvironmentTestTrait >> testReadingFromGate [
 	]
 ]
 
-{ #category : #d }
+{ #category : #'environmental tests' }
 SGExpectedEnvironmentTestTrait >> testRefID [
-	self assertExpectedParameter: SGProtocol refID with: '32'.
+	self assertExpectedParameter: SGProtocol refID with: '2'.
 
 ]
 
-{ #category : #d }
+{ #category : #'environmental tests' }
 SGExpectedEnvironmentTestTrait >> testVersion [
 	self assertExpectedParameter: SGProtocol version with: '2.1101.18'.
 	

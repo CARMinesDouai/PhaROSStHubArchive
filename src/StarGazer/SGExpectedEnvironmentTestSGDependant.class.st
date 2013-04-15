@@ -7,12 +7,6 @@ Class {
 }
 
 { #category : #d }
-SGExpectedEnvironmentTestSGDependant >> testIDNum [
-	self assertExpectedParameter: SGProtocol idNum withBlock: [ :val | val asInteger > 0 ].
-
-]
-
-{ #category : #d }
 SGExpectedEnvironmentTestSGDependant >> testReadingFromGate [
 
 	"self withDefaultSGGate:  [: gate | 
