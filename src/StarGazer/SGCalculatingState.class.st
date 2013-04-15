@@ -10,11 +10,6 @@ Class {
 	#category : #'StarGazer-States'
 }
 
-{ #category : #clean }
-SGCalculatingState >> cleanUpBuffer [
-	gate cleanUpBuffer.
-]
-
 { #category : #producing }
 SGCalculatingState >> deployMessage: aMessage [
 	aMessage isALandMark ifTrue: [

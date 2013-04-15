@@ -66,7 +66,6 @@ SerialStream >> nextPut: aCharacter [
 
 { #category : #accessing }
 SerialStream >> nextPutAll: aStringOrByteArray [
-	Transcript show: aStringOrByteArray ; cr.
 	port nextPutAll: aStringOrByteArray.
 ]
 

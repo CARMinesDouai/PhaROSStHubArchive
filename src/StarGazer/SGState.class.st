@@ -14,7 +14,12 @@ SGState class >> for: aGate [
 
 { #category : #'as yet unclassified' }
 SGState class >> tries [
-	^ 50.
+	^ 20.
+]
+
+{ #category : #'private protocol' }
+SGState >> cleanUpBuffer [
+	gate cleanUpBuffer.
 ]
 
 { #category : #'private delegate' }
@@ -58,7 +63,7 @@ SGState >> sendAndWaitForAck: aBlock acking: aWord [
 	SGState tries timesRepeat: [
 		aBlock value.
 		[
-			message := gate stream nextMessage: 2.
+			message := gate stream nextMessage: 10.
 			message = SGMessage NoMessage ifFalse: [
 				(message content indexOfSubCollection: aWord) = 0 ifFalse: [
 					^ message 
