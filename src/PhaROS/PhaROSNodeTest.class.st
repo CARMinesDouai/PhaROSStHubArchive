@@ -11,22 +11,11 @@ Class {
 { #category : #'as yet unclassified' }
 PhaROSNodeTest >> setUp [ 
 
-"	super setUp."
-		masterUrl := 'http://127.0.0.1:11311/' .
-	
-	master := PhaROSMaster url: masterUrl.
-	
+	super setUp.	
 	self startUpMaster.
 	self startUpTurtle.
 	
 	node := master create: PhaROSTestNode  named: '/TestNode' domain: '127.0.0.1' xmlRpcPort:  6123.	
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSNodeTest >> tearDown [ 
-	PhaROSMaster stopAndUnregisterUrl: 'http://127.0.0.1:11311/'.
-	self shutdownMaster.
-	self shutdownTurtle.
 ]
 
 { #category : #'as yet unclassified' }

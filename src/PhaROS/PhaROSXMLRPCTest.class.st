@@ -28,10 +28,8 @@ PhaROSXMLRPCTest >> expectedTopicTypes [
 
 { #category : #'as yet unclassified' }
 PhaROSXMLRPCTest >> setUp [ 
-
 	super setUp.
 	self startUpMaster.
-	
 	
 	expectedSystemState := PhaROSSystemState new.
 	expectedSystemState
@@ -44,9 +42,7 @@ PhaROSXMLRPCTest >> setUp [
 
 { #category : #'as yet unclassified' }
 PhaROSXMLRPCTest >> tearDown [ 
-	PhaROSMaster stopAndUnregisterUrl: 'http://127.0.0.1:11311/'.
-	self shutdownMaster.
-	self shutdownTurtle.
+	super tearDown.
 	self spin: 5.
 ]
 
@@ -79,7 +75,7 @@ PhaROSXMLRPCTest >> testGetTopicTypes [
 
 { #category : #testing }
 PhaROSXMLRPCTest >> testGetUri [
-	self assert: (master getUri: self callerId) =  masterUrl 
+	self assert: (master getUri: self callerId) =  (masterUrl, '/')
 ]
 
 { #category : #testing }
@@ -100,12 +96,15 @@ PhaROSXMLRPCTest >> testLookupService [
 
 { #category : #testing }
 PhaROSXMLRPCTest >> testRegisterPublisher [
-	| currentData |
-	currentData := master registerPublisher: self callerId  to: 'rosout' with: 'rosgraph_msgs/Log'  andCallerUri: 'http://127.0.0.1:9090/'.
+	| currentData callerURI |
 	
-	self assert: currentData size = 1.
-	self assert: (((currentData at: 1) beginsWith: 'http://127.0.0.1:') or: ((currentData at: 1) beginsWith: 'http://localhost:')).
+	callerURI := 'http://127.0.0.1:9090/'.
+	currentData := master registerPublisher: self callerId  to: 'rosout' with: 'rosgraph_msgs/Log'  andCallerUri: callerURI .
 	
+	self assert: currentData size > 0.
+	self assert: (currentData anySatisfy: [ :each | each = callerURI]) 
+	
+
 
 
 
@@ -142,19 +141,25 @@ PhaROSXMLRPCTest >> testRegisterService [
 
 { #category : #testing }
 PhaROSXMLRPCTest >> testRegisterSubscriber [
-	| currentData |
-	currentData := master registerSubscriber: self callerId  to: 'rosout' with: 'rosgraph_msgs/Log'  andCallerUri: 'http://127.0.0.1:9090/'.
-	self assert: currentData size = 0.
+	| currentData callerURI |
 	
+	callerURI := 'http://127.0.0.1:9090/'.
+	currentData := master registerSubscriber: self callerId  to: 'rosout' with: 'rosgraph_msgs/Log'  andCallerUri: callerURI.
+	self assert: currentData size = 1.
+	self assert: currentData first = callerURI 
 ]
 
 { #category : #testing }
 PhaROSXMLRPCTest >> testUnregisterPublisher [
-	| currentData |
+	| currentData callerURI |
+	
 	self testRegisterPublisher.
-	currentData := master unregisterPublisher: self callerId  from: 'rosout'  andCallerUri: 'http://127.0.0.1:9090/'.
+	
+	callerURI :=  'http://127.0.0.1:9090/'.
+	currentData := master unregisterPublisher: self callerId  from: 'rosout'  andCallerUri: callerURI.
 	self assert: currentData = 1.
-	currentData := master unregisterPublisher: self callerId  from: 'rosout'  andCallerUri: 'http://127.0.0.1:9090/'.
+	
+	currentData := master unregisterPublisher: self callerId  from: 'rosout'  andCallerUri: callerURI.
 	self assert: currentData = 0.
 	
 	

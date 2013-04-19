@@ -17,13 +17,6 @@ PhaROSServiceProxyTest >> setUp [
 ]
 
 { #category : #testing }
-PhaROSServiceProxyTest >> tearDown [ 
-	PhaROSMaster stopAndUnregisterUrl: 'http://127.0.0.1:11311/'.
-	self shutdownMaster.
-	self shutdownTurtle.
-]
-
-{ #category : #testing }
 PhaROSServiceProxyTest >> testAnswerToServiceCall [
 	| answerMessage |
 	
