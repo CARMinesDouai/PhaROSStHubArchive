@@ -39,7 +39,7 @@ PhaROSSelfProcessedExternalNode >> timeout [
 
 { #category : #accessing }
 PhaROSSelfProcessedExternalNode >> workWith: aChannel [
-	| stream peeked msg   | 
+	| stream peeked msg tries  | 
 	
 	self keepRunning: true.
 	
@@ -48,7 +48,7 @@ PhaROSSelfProcessedExternalNode >> workWith: aChannel [
 	stream := SocketStream on: socket. 
 	stream binary.
 	stream timeout: self timeout.
-	
+	tries := 0.
 	process := [
 		[  self keepRunning ]  whileTrue: [
 			[
@@ -60,8 +60,18 @@ PhaROSSelfProcessedExternalNode >> workWith: aChannel [
 						self keepRunning: false.
 					]
 				].
+				tries := 0.
 			] on: Error do: [ :e |
-				e class = ConnectionTimedOut ifFalse: [ self halt ].
+			
+				e class = ConnectionTimedOut ifFalse: [ 
+					tries := tries + 1.
+					Transcript show: 'Retrying! ', tries asString; cr.
+					tries > 10 ifTrue: [
+						self halt .						
+					].
+					(Delay forMilliseconds: 500)wait.
+					
+				].
 			]
 		].
 		aChannel unsubscribe: self.
