@@ -1,3 +1,6 @@
+"
+(ConfigurationOfPhaROS project version: '1.0-Beta1') load
+"
 Class {
 	#name : #ConfigurationOfPhaROS,
 	#superclass : #Object,
@@ -116,7 +119,7 @@ ConfigurationOfPhaROS class >> unloadMetacello [
 	Smalltalk at: #ConfigurationOfMetacello ifPresent: [:cls | cls unloadMetacello ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #baselines }
 ConfigurationOfPhaROS >> baseline10: spec [
 	<version:'1.0-baseline'>
 	spec for: #common do: [
@@ -159,7 +162,7 @@ ConfigurationOfPhaROS >> baseline10: spec [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 ConfigurationOfPhaROS >> project [
 
 	^ project ifNil: [
@@ -174,6 +177,29 @@ ConfigurationOfPhaROS >> project [
 		project loadType: #linear. "change to #atomic if desired"
 		project 
 	].
+
+
+]
+
+{ #category : #versions }
+ConfigurationOfPhaROS >> version100Beta1: spec [ 
+	<version: '1.0-Beta1' imports: #('1.0-baseline') >
+	
+	spec for: #common do: [
+		spec blessing: #alpha.
+		spec author: 'LucFabresse'.
+		spec timestamp: '19/04/2013 16:00'.
+		spec 
+			project: 'Kom' with: '1.1.1';
+			project: 'XMLRPC' with: '1.0-Beta5'.
+		spec
+			package: 'PaulLePoulpe' with: 'PaulLePoulpe-SantiagoBragagnolo.15';
+			package: 'PhaROS' with: 'PhaROS.LucFabresse.77'
+			"package: 'XMLRPC-Client-Core' with: ' XMLRPC-Client-Core-SantiagoBragagnolo.30';
+			package: 'XMLRPC-Client-Tests' with: 'XMLRPC-Client-Tests-SantiagoBragagnolo.14';
+			package: 'XMLRPC-Server-Core' with: 'XMLRPC-Server-Core-SantiagoBragagnolo.17';
+			package: 'XMLRPC-Server-Tests' with: 'XMLRPC-Server-Tests-SantiagoBragagnolo.9'"
+		].
 
 
 ]
