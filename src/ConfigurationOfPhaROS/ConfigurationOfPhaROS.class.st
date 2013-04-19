@@ -157,6 +157,8 @@ ConfigurationOfPhaROS >> baseline10: spec [
 			spec package: 'PhaROS' with: [
 				spec requires: #('XMLRPC' 'CommonTraits' 'PaulLePoulpe').
 			].
+		
+			spec group: 'default'  with: #( 'PhaROS').
 	].
 
 
@@ -195,7 +197,7 @@ ConfigurationOfPhaROS >> version100Beta1: spec [
 			 project: 'PaulLePoulpe' with: '1.0.1'.
 		spec
 			"package: 'PaulLePoulpe' with: 'PaulLePoulpe-SantiagoBragagnolo.15';"
-			package: 'PhaROS' with: 'PhaROS.LucFabresse.77'
+			package: 'PhaROS' with: 'PhaROS-LucFabresse.77'
 			"package: 'XMLRPC-Client-Core' with: ' XMLRPC-Client-Core-SantiagoBragagnolo.30';
 			package: 'XMLRPC-Client-Tests' with: 'XMLRPC-Client-Tests-SantiagoBragagnolo.14';
 			package: 'XMLRPC-Server-Core' with: 'XMLRPC-Server-Core-SantiagoBragagnolo.17';
