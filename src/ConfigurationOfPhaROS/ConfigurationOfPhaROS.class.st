@@ -192,16 +192,10 @@ ConfigurationOfPhaROS >> version100Beta1: spec [
 		spec author: 'LucFabresse'.
 		spec timestamp: '19/04/2013 16:00'.
 		spec 
-			project: 'Kom' with: '1.1.1';
-			project: 'XMLRPC' with: '1.0-Beta5';
+			project: 'XMLRPC' with: '1.0-Beta6';
 			 project: 'PaulLePoulpe' with: '1.0.1'.
 		spec
-			"package: 'PaulLePoulpe' with: 'PaulLePoulpe-SantiagoBragagnolo.15';"
 			package: 'PhaROS' with: 'PhaROS-LucFabresse.77'
-			"package: 'XMLRPC-Client-Core' with: ' XMLRPC-Client-Core-SantiagoBragagnolo.30';
-			package: 'XMLRPC-Client-Tests' with: 'XMLRPC-Client-Tests-SantiagoBragagnolo.14';
-			package: 'XMLRPC-Server-Core' with: 'XMLRPC-Server-Core-SantiagoBragagnolo.17';
-			package: 'XMLRPC-Server-Tests' with: 'XMLRPC-Server-Tests-SantiagoBragagnolo.9'"
 		].
 
 
