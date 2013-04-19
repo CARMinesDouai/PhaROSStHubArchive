@@ -155,7 +155,7 @@ ConfigurationOfPhaROS >> baseline10: spec [
 			].
 		
 			spec package: 'PhaROS' with: [
-				spec requires: #('XMLRPC' 'CommonTraits' 'PaulLePoulpe').
+				spec requires: #('XMLRPC' 'CommonTraits' 'PaulLePoulpe' 'OSProcess').
 			].
 		
 			spec group: 'default'  with: #( 'PhaROS').
