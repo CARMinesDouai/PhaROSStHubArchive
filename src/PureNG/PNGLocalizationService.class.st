@@ -57,6 +57,21 @@ PNGLocalizationService >> resetPose [
 ]
 
 { #category : #public }
+PNGLocalizationService >> suggestX: newX y: newY orientation: newOrientation [
+	| requestEncoder |
+	requestEncoder := PNGEncoder new.
+	requestEncoder  
+		nextPutRequestId ;
+		nextPutUpdateActionCode;
+		encodeInt16: self id;
+		encodeInt64: self robot timestamp;
+		encodeFloat64: newX;
+		encodeFloat64: newY;
+		encodeFloat64: newOrientation.
+	self robot sendAndWaitForResult: requestEncoder contents 
+]
+
+{ #category : #public }
 PNGLocalizationService >> x: newX y: newY orientation: newOrientation [
 	| requestEncoder |
 	requestEncoder := PNGEncoder new.
