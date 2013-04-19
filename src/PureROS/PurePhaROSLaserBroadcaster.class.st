@@ -7,7 +7,7 @@ Class {
 { #category : #'as yet unclassified' }
 PurePhaROSLaserBroadcaster >> broadcast: aLaserNotification [
 [
-	self sendTo: '/scan' a: [ :msg |
+	self sendTo: '/scan' typedAs:'sensor_msgs/LaserScan' a: [ :msg |
 		
 		
 		msg header frame_id: '/laser'.

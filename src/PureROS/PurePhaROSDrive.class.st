@@ -67,20 +67,32 @@ PurePhaROSDrive >> moveTo: aPose [
 
 { #category : #'as yet unclassified' }
 PurePhaROSDrive >> receive: aMessage from: aChannel [
-	| waypoints |
 
-	pathItarator path: aMessage value. 
+
+
+		aChannel topic name=  '/move_base/NavfnROS/plan' ifTrue: [
+			| waypoints |
+
+			pathItarator path: aMessage value. 
 	
-	waypoints := OrderedCollection new. 
-	[pathItarator hasNext] whileTrue: [ waypoints add: pathItarator next position ].
+			waypoints := OrderedCollection new. 
+			[pathItarator hasNext] whileTrue: [ waypoints add: pathItarator next position ].
 
-	[	
-		self goToAll: waypoints.
-	] on: Error do: [
-		:e | 
-		pathItarator resetToLastCalculatedIndex.
-		e signal.
-	]
+			[	
+				self goToAll: waypoints.
+			] on: Error do: [
+				:e | 
+				pathItarator resetToLastCalculatedIndex.
+				e signal.
+			]
+			
+			
+		] ifFalse: [
+		
+		
+		].
+
+
 ]
 
 { #category : #'as yet unclassified' }

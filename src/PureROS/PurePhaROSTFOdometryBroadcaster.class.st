@@ -12,6 +12,7 @@ Class {
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification [ 
 	[
+		self sendPose: aNotification.
 		self sendTransformations: aNotification.
 		self sendOdometry: aNotification.
 	]
@@ -72,22 +73,31 @@ PurePhaROSTFOdometryBroadcaster >> period [
 PurePhaROSTFOdometryBroadcaster >> receive: aMessage from: aChannel [
 
 	| pose position orientation |
+
 	
-	aChannel topic type = 'geometry_msgs/PoseWithCovarianceStamped' ifTrue: [
+				
+	aChannel topic name=  '/initialpose' ifTrue: [
 		pose := aMessage value pose pose .
 		position := pose position. 
 		orientation := PhaROSGeometryTransformations new eulerFromQuaternation: pose orientation x and: pose orientation y and: pose orientation z and: pose orientation w.
-		orientation := orientation at:3. 	
-			
+		orientation := orientation at:3. 				
 		robot localizationService x: position x y: position y orientation: orientation .
 	].
+" Take the EFK error correction from tf channel and enhance the robot information to be able to get better movement"
 
-	aChannel topic type = 'geometry_msgs/Pose2D' ifTrue: [
-		pose := aMessage value.
-		position := pose x @ pose y.
-		orientation := pose theta.
-		
-		[ robot localizationService x: position x y: position y orientation: orientation . ] on: Error  do: [].
+
+"	aChannel topic name = '/tfaas/map/base_footprint' ifTrue: [		"
+	aChannel topic name = '/tfaas/map/base_link' ifTrue: [		
+		pose := aMessage value pose .
+		position := pose position. 
+		orientation := PhaROSGeometryTransformations new eulerFromQuaternation: pose orientation x and: pose orientation y and: pose orientation z and: pose orientation w.
+		orientation := orientation at:3. 				
+
+		"Update"
+		[ robot localizationService suggestX: position x y: position y orientation: orientation . ] on: Error  do: [].
+		"Force"
+"		[ robot localizationService x: position x y: position y orientation: orientation . Transcript show: ':)'; cr.] on: Error  do: [Transcript show: ':('; cr.]."
+		"Do nothing"
 	].
 	
 	
@@ -160,15 +170,53 @@ PurePhaROSTFOdometryBroadcaster >> sendOdometry: aNotification [
 ]
 
 { #category : #'as yet unclassified' }
+PurePhaROSTFOdometryBroadcaster >> sendPose: aNotification [
+	| transformStamped |
+	
+		self sendTo: '/kompai2/pose'  typedAs: 'geometry_msgs/PoseStamped' a: [: msg |		
+		
+			" BaseLink "
+			transformStamped := Geometry_msgsTransformStamped new.
+			transformStamped header frame_id: '/base_footprint'.
+			transformStamped child_frame_id: '/base_link'.
+			
+			
+			msg pose position x: aNotification position x.
+			msg pose position y: aNotification position y.
+			msg pose position z: 0.0.
+			
+			self rotationAsQuaternation: (aNotification position orientation ) into:(msg pose orientation). 
+			
+	
+			
+		].
+
+]
+
+{ #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> sendTransformations: aNotification [
 	| transformStamped |
 	
 		self sendTo: '/tf' a: [: msg |		
 		
 			" BaseLink "
-		"	transformStamped := Geometry_msgsTransformStamped new.
-			transformStamped header frame_id: '/odom'.
+			transformStamped := Geometry_msgsTransformStamped new.
+			
 			transformStamped child_frame_id: '/base_link'.
+			
+			
+			" EFK - IMU "
+			"
+			transformStamped header frame_id: '/base_footprint'.
+			transformStamped transform translation x: 0.0.
+			transformStamped transform translation y: 0.0.
+			transformStamped transform translation z: 0.0.
+			self rotationAsQuaternation: ( 0.0 ) into:(transformStamped transform rotation).
+			"
+			
+			
+			" AMCL "
+			transformStamped header frame_id: '/odom'.
 			transformStamped transform translation x: aNotification position x.
 			transformStamped transform translation y: aNotification position y.
 			transformStamped transform translation z: 0.0.
@@ -177,29 +225,21 @@ PurePhaROSTFOdometryBroadcaster >> sendTransformations: aNotification [
 			
 			msg addTransform: transformStamped.
 			
-			base_footprint
-			"
 			
-			" Laser "
-			transformStamped := Geometry_msgsTransformStamped new.
-			transformStamped header frame_id: '/base_link'.
-			transformStamped child_frame_id: '/laser'.
-			transformStamped transform translation x: -0.15.
-			transformStamped transform translation z: 0.25.
 			
-			self rotationAsQuaternation: 0.0 into:(transformStamped transform rotation).
-			msg addTransform: transformStamped.
-
-			" XSens "
+			
 			transformStamped := Geometry_msgsTransformStamped new.
-			transformStamped header frame_id: '/base_link'.
-			transformStamped child_frame_id: '/MT0'.
-			transformStamped transform translation x: 0.0.
+			
+			transformStamped child_frame_id: '/robot'.
+			transformStamped header frame_id: '/map'.
+			transformStamped transform translation x: aNotification position x.
+			transformStamped transform translation y: aNotification position y.
 			transformStamped transform translation z: 0.0.
-
-
-			self rotationAsQuaternation: 0.0 into:(transformStamped transform rotation).
+			self rotationAsQuaternation: (aNotification position orientation ) into:(transformStamped transform rotation).
+			
+			
 			msg addTransform: transformStamped.
+			
 			
 			
 		].
@@ -212,7 +252,9 @@ PurePhaROSTFOdometryBroadcaster >> setUp [
 	robot localizationService onNotificationDo: [ : notification | self broadcast: notification ].
 	[robot localizationService enableNotificationsEvery: 10.] on: PNGMessageError do: [ ].
 	self interestedIn: '/initialpose' typedAs: 'geometry_msgs/PoseWithCovarianceStamped'.
-	self interestedIn: '/pose2D' typedAs: 'geometry_msgs/Pose2D'.
+	self interestedIn: '/tfaas/map/base_link' typedAs: 'geometry_msgs/PoseStamped'.
+	
+	"self interestedIn: '/tfaas/map/base_footprint' typedAs: 'geometry_msgs/PoseStamped'."
 ]
 
 { #category : #'as yet unclassified' }

@@ -44,6 +44,11 @@ PureROS class >> withMasterAt: anUrl andRobotAt: anIP and: aPort [
 ]
 
 { #category : #'as yet unclassified' }
+PureROS >> consumeCommandVelocity [
+	driver interestedIn: '/command_velocity'.
+]
+
+{ #category : #'as yet unclassified' }
 PureROS >> consumeGlobalPlan [
 	driver interestedIn: '/move_base/TrajectoryPlannerROS/global_plan'.
 ]
@@ -144,7 +149,7 @@ PureROS >> setUp [
 	master setParam:''  named:'/slam_gmapping/maxUrange'  with: 6.0.
 	
 	odometryNode := master create: PurePhaROSTFOdometryBroadcaster named: '/OdometryBroadcaster' domain: '127.0.0.1' tcpPort: 9998 xmlRpcPort:  6125.
-	laserNode := master create: PurePhaROSLaserBroadcaster named: '/LaserBroadcaster' domain: '127.0.0.1' tcpPort: 9999  xmlRpcPort:  6123.
+	laserNode := master create: PurePhaROSLaserBroadcaster named: '/LaserBroadcaster' domain: '127.0.0.1' tcpPort: 9929  xmlRpcPort:  6140.
 	driver := master create: PurePhaROSDrive named: '/DriverNode' domain: '127.0.0.1' tcpPort: 9997  xmlRpcPort:  6127.
 	
 
