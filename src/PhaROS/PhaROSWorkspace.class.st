@@ -171,16 +171,12 @@ PhaROSWorkspace >> workspaceTurtleReading [
 	self shutdown.
 	self startup.
 	
-	
-	
 	node := master  create: PhaROSNode named: '/ReaderSample' domain: '127.0.0.1' xmlRpcPort:  6123.	
 	node interestedIn: '/turtle1/pose'.
 	Transcript open.
 "     
 	node interestedIn: '/turtle1/command_velocity'.
 "
-
 	self halt.
-
 
 ]
