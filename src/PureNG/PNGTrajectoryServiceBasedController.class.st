@@ -4,6 +4,11 @@ Class {
 	#category : #'PureNG-Controllers'
 }
 
+{ #category : #controlling }
+PNGTrajectoryServiceBasedController >> clearTrajectory [ 
+	self trajectoryService clearTrajectory 
+]
+
 { #category : #sensing }
 PNGTrajectoryServiceBasedController >> currentPosition [
 	^ self localizationService currentPosition
@@ -100,6 +105,11 @@ PNGTrajectoryServiceBasedController >> square [
 { #category : #controlling }
 PNGTrajectoryServiceBasedController >> startMotion [
 	self trajectoryService startMotion
+]
+
+{ #category : #'sample trajectories' }
+PNGTrajectoryServiceBasedController >> status [
+	^ (self trajectoryService get)ifNotNil: [ : status | status status ]  .
 ]
 
 { #category : #controlling }
