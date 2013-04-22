@@ -8,7 +8,8 @@ Class {
 		'laserNode',
 		'driver',
 		'notifications',
-		'currentStatus'
+		'currentStatus',
+		'currentRosPosition'
 	],
 	#category : #PureROS
 }
@@ -84,6 +85,16 @@ PureROS >> consumeSession [
 ]
 
 { #category : #'as yet unclassified' }
+PureROS >> currentRosPosition [
+	^currentRosPosition
+]
+
+{ #category : #'as yet unclassified' }
+PureROS >> currentRosPosition: aPosition [
+	currentRosPosition := aPosition 
+]
+
+{ #category : #'as yet unclassified' }
 PureROS >> destroy [
 	PhaROSMaster stopAndUnregisterUrl: 'http://127.0.0.1:11311/'.
 	robot finalize.
@@ -153,9 +164,9 @@ PureROS >> setUp [
 	driver := master create: PurePhaROSDrive named: '/DriverNode' domain: '127.0.0.1' tcpPort: 9997  xmlRpcPort:  6127.
 	
 
-	odometryNode robot: robot.
-	laserNode robot: robot.
-	driver robot: robot.
+	odometryNode robot: robot; pureRos: self.
+	laserNode robot: robot; pureRos: self.
+	driver robot: robot; pureRos: self.
 "
 	notifications := master create: PurePhaROSNotificationBroadcaster  named: '/PURENotifications' domain: '127.0.0.1' tcpPort: 9996  xmlRpcPort:  6131.
 	notifications robot: robot.		

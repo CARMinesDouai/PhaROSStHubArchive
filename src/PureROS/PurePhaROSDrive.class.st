@@ -5,7 +5,8 @@ Class {
 		'currentId',
 		'trajectoryController',
 		'currentPlanIndex',
-		'pathItarator'
+		'pathItarator',
+		'lastPlannedPosition'
 	],
 	#category : #PureROS
 }
@@ -22,12 +23,12 @@ PurePhaROSDrive >> consumeId [
 PurePhaROSDrive >> goToAll: waypoints [ 
 
 	| error |
-	
+
 	5 timesRepeat: [
 		[
 			trajectoryController stopMotion.	
 			trajectoryController trajectoryService clearTrajectory.
-			trajectoryController goToAll: waypoints.
+			trajectoryController goToAllDelta: waypoints.
 			^ self.
 		] on: PNGConnectionTimeOut do: [ 	:e | error := e.  Transcript show: 'Retrying plan'; cr. 	(Delay forMilliseconds: 1000)wait. trajectoryController trajectoryService  emergencyStop.]
 	].
@@ -39,6 +40,7 @@ PurePhaROSDrive >> goToAll: waypoints [
 PurePhaROSDrive >> initialize [ 
 	super initialize.
 	currentId := 1.
+	lastPlannedPosition := 0@0.
 ]
 
 { #category : #'as yet unclassified' }
@@ -67,17 +69,46 @@ PurePhaROSDrive >> moveTo: aPose [
 
 { #category : #'as yet unclassified' }
 PurePhaROSDrive >> receive: aMessage from: aChannel [
-
-
-
+| currentPosition newPosition |
+		currentPosition := pureRos currentRosPosition.
+		currentPosition := currentPosition x @ currentPosition y.
+		self halt.
+		aChannel topic name = '/move_base/TrajectoryPlannerROS/global_plan' ifTrue: [
+			| delta |	
+				
+			newPosition := aMessage value poses last pose position.
+			newPosition := newPosition x @ newPosition y. 
+			
+			((newPosition closeTo: lastPlannedPosition) and: [trajectoryController status ~= PNGTrajectoryState followingStatusValue]) ifFalse: [
+				delta := newPosition - currentPosition.
+				
+				trajectoryController status = PNGTrajectoryState errorStatusValue ifTrue: [ 
+					trajectoryController stopMotion; clearTrajectory.	
+				].
+				trajectoryController goToDelta: delta. 	
+			].
+			Transcript show: trajectoryController status.
+			lastPlannedPosition := newPosition.
+		].
+	
+	
+	
+	
+	
 		aChannel topic name=  '/move_base/NavfnROS/plan' ifTrue: [
 			| waypoints |
 
 			pathItarator path: aMessage value. 
 	
 			waypoints := OrderedCollection new. 
-			[pathItarator hasNext] whileTrue: [ waypoints add: pathItarator next position ].
-
+			[pathItarator hasNext] whileTrue: [ 
+				| position delta |
+				position := pathItarator next position .
+				position := position x @ position y.
+				delta := position - currentPosition.	
+				waypoints add: delta.
+			 ].
+	self halt.
 			[	
 				self goToAll: waypoints.
 			] on: Error do: [

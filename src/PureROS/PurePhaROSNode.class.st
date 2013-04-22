@@ -2,7 +2,8 @@ Class {
 	#name : #PurePhaROSNode,
 	#superclass : #PhaROSNode,
 	#instVars : [
-		'robot'
+		'robot',
+		'pureRos'
 	],
 	#category : #PureROS
 }
@@ -10,6 +11,16 @@ Class {
 { #category : #'as yet unclassified' }
 PurePhaROSNode class >> with: aRobot [ 
 	^ self new robot: aRobot ; setUp; yourself.
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSNode >> pureRos [ 
+	^ pureRos 
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSNode >> pureRos: aPureROS [
+	pureRos := aPureROS 
 ]
 
 { #category : #'as yet unclassified' }

@@ -86,13 +86,22 @@ PurePhaROSTFOdometryBroadcaster >> receive: aMessage from: aChannel [
 " Take the EFK error correction from tf channel and enhance the robot information to be able to get better movement"
 
 
-"	aChannel topic name = '/tfaas/map/base_footprint' ifTrue: [		"
+      " We get AMCL error fixing here, which is the final position that ROS will use. We cannot give feedback to the robot with this position because is too unstable "
 	aChannel topic name = '/tfaas/map/base_link' ifTrue: [		
+		pose := aMessage value pose .
+		pureRos currentRosPosition: pose position. 				
+				
+	].
+
+     " We get the EFK IMU error fixing to have a better position, we use finally this error fixing to feed the robot and to have a better localization to base the odometry. "
+	aChannel topic name = '/tfaas/map/base_footprint' ifTrue: [		
+"	aChannel topic name = '/tfaas/map/base_link' ifTrue: [		"
 		pose := aMessage value pose .
 		position := pose position. 
 		orientation := PhaROSGeometryTransformations new eulerFromQuaternation: pose orientation x and: pose orientation y and: pose orientation z and: pose orientation w.
 		orientation := orientation at:3. 				
-
+		
+		
 		"Update"
 		[ robot localizationService suggestX: position x y: position y orientation: orientation . ] on: Error  do: [].
 		"Force"
@@ -253,8 +262,7 @@ PurePhaROSTFOdometryBroadcaster >> setUp [
 	[robot localizationService enableNotificationsEvery: 10.] on: PNGMessageError do: [ ].
 	self interestedIn: '/initialpose' typedAs: 'geometry_msgs/PoseWithCovarianceStamped'.
 	self interestedIn: '/tfaas/map/base_link' typedAs: 'geometry_msgs/PoseStamped'.
-	
-	"self interestedIn: '/tfaas/map/base_footprint' typedAs: 'geometry_msgs/PoseStamped'."
+	self interestedIn: '/tfaas/map/base_footprint' typedAs: 'geometry_msgs/PoseStamped'.
 ]
 
 { #category : #'as yet unclassified' }
