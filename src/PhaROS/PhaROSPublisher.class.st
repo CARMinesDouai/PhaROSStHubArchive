@@ -5,8 +5,7 @@ Class {
 		'owner',
 		'channels',
 		'tcpserver',
-		'tcpPort',
-		'publisher'
+		'tcpPort'
 	],
 	#category : #'PhaROS-Kernel'
 }
