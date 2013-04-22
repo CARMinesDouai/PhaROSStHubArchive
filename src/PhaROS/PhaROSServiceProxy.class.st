@@ -7,7 +7,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'uri',
-		'serviceName'
+		'serviceName',
+		'md5sum'
 	],
 	#category : #'PhaROS-Network-XmlRpc'
 }
@@ -56,7 +57,13 @@ PhaROSServiceProxy >> hostName [
 
 { #category : #calling }
 PhaROSServiceProxy >> md5Sum [
-	^'d41d8cd98f00b204e9800998ecf8427e'
+	md5sum  ifNil: [ md5sum := 'd41d8cd98f00b204e9800998ecf8427e' ] .
+	^md5sum.
+]
+
+{ #category : #calling }
+PhaROSServiceProxy >> md5sum: aSum [
+	md5sum := aSum.
 ]
 
 { #category : #calling }

@@ -64,9 +64,28 @@ PhaROSHSMessageDecoder >> decode: aByteArray [
 	| byteStream headerSize bodySize |
 	
 	[" Header parsing "
-	byteStream := aByteArray readStream.
-	headerSize := self dataSizeFrom: byteStream.
-	self initHeaderFrom: (byteStream next: headerSize).
+		
+		byteStream := aByteArray readStream.
+		headerSize := self dataSizeFrom: byteStream.
+		self initHeaderFrom: (byteStream next: headerSize).
+		
+		((tcpmessage header includesKey: 'response_type') )ifTrue: [
+			(tcpmessage header at: 'response_type') = 'roscpp/GetLoggersResponse' ifTrue: [
+				| type body |
+				
+				type := 
+				 PhaROSType composite: {
+					#loggers -> (PhaROSArrayType of: (PhaROSTypeBrowser instance definition: 'roscpp/Logger') ).
+				} named: 'roscpp/GetLoggersResponse' withConstants:{}. 
+				
+				body := type decode: (PhaROSDecoder on: (ReadStream on: (aByteArray copyFrom: headerSize +10  to: aByteArray size)) ).
+				tcpmessage response: body.
+				
+			] ifFalse: [
+				self error: 'the response type is not implemented!'.
+			].
+		].
+		
 	] on: Error do: [ :e | 
 		tcpmessage verify. 
 	].
