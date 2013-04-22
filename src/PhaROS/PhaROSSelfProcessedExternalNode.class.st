@@ -68,6 +68,7 @@ PhaROSSelfProcessedExternalNode >> workWith: aChannel [
 					Transcript show: 'Retrying! ', tries asString; cr.
 					tries > 10 ifTrue: [
 						self halt .						
+						tries := 0.
 					].
 					(Delay forMilliseconds: 500)wait.
 					
