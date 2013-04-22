@@ -1,5 +1,5 @@
 "
-(ConfigurationOfPhaROS project version: '1.0-Beta1') load
+(ConfigurationOfPhaROS project version: #pharosRoboshop1) load
 "
 Class {
 	#name : #ConfigurationOfPhaROS,
@@ -164,6 +164,22 @@ ConfigurationOfPhaROS >> baseline10: spec [
 
 ]
 
+{ #category : #versions }
+ConfigurationOfPhaROS >> pharosRoboshop1: spec [
+	"symbolic version name used in the RoboShop deliverable 1"
+	<symbolicVersion: #pharosRoboshop1>
+	spec for: #'pharo1.4.x' version: '1.0-Beta1'.
+	spec for: #common version: #notDefined.
+]
+
+{ #category : #versions }
+ConfigurationOfPhaROS >> pharosStage1: spec [
+	"symbolic version name used in the RoboShop deliverable 1"
+	<symbolicVersion: #pharosStage1>
+	spec for: #'pharo1.4.x' version: '1.0-Beta1'.
+	spec for: #common version: #notDefined.
+]
+
 { #category : #accessing }
 ConfigurationOfPhaROS >> project [
 
@@ -195,7 +211,7 @@ ConfigurationOfPhaROS >> version100Beta1: spec [
 			project: 'XMLRPC' with: '1.0-Beta6';
 			 project: 'PaulLePoulpe' with: '1.0.1'.
 		spec
-			package: 'PhaROS' with: 'PhaROS-LucFabresse.77'
+			package: 'PhaROS' with: 'PhaROS-LucFabresse.79'
 		].
 
 
