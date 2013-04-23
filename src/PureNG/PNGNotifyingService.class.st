@@ -56,6 +56,6 @@ PNGNotifyingService >> onNotificationDo: aBlock [
 
 { #category : #notifications }
 PNGNotifyingService >> receiveNotification: notification [
-	self notificationHandlingBlock ifNil: [^self].
+	self notificationHandlingBlock ifNil: [^self]. 
 	self notificationHandlingBlock cull: notification
 ]

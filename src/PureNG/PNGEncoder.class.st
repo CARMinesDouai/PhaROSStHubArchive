@@ -132,6 +132,11 @@ PNGEncoder >> nextPutInsertActionCode [
 ]
 
 { #category : #'pure codes' }
+PNGEncoder >> nextPutNotificationId [
+	self nextPutString: 'FF' "request identifier (not 0x00 or 0xFF)" 
+]
+
+{ #category : #'pure codes' }
 PNGEncoder >> nextPutReplaceActionCode [
 	self nextPutString: '02' "replace code = 0x02"
 ]

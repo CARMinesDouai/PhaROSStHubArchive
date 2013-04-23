@@ -139,10 +139,16 @@ PNGRobulab >> recordingConfiguration [
 PNGRobulab >> sendAndWaitForResult: commandString [
 	|   response encodedResponse |
 	bridge send: commandString.
-	(commandResultSemaphore waitTimeoutMSecs: 500) ifTrue: [PNGConnectionTimeOut signal].
+	(commandResultSemaphore waitTimeoutMSecs: 1500) ifTrue: [PNGConnectionTimeOut signal].
 	response := self latestResponse.
 	response isSuccess ifFalse: [  PNGMessageError signal: response responseMessage ].
 	^response
+]
+
+{ #category : #communication }
+PNGRobulab >> sendNotification: commandString [
+	bridge send: commandString.
+	
 ]
 
 { #category : #accessing }
@@ -175,6 +181,11 @@ PNGRobulab >> services: collectionOfServices [
 { #category : #services }
 PNGRobulab >> sonarTelemeterService [
 	^self services detect: [:each| (each isKindOf: PNGTelemeterService) and:[each id = 7]].
+]
+
+{ #category : #services }
+PNGRobulab >> stepService [
+	^self services detect: [:each| each isKindOf: PNGStepService]
 ]
 
 { #category : #accessing }

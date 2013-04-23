@@ -42,6 +42,11 @@ PNGController >> robot: anObject [
 ]
 
 { #category : #services }
+PNGController >> stepService [ 
+	^self robot stepService
+]
+
+{ #category : #services }
 PNGController >> trajectoryService [ 
 	^self robot trajectoryService
 ]
