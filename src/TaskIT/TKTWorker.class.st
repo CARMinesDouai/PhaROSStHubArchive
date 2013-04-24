@@ -45,17 +45,20 @@ TKTWorker >> doIt [
 { #category : #'as yet unclassified' }
 TKTWorker >> initialize [ 
 	super initialize.
-	keepRunning := TKTVariable for: false.
 	workQueue := TKTPriorityQueue new.
-	doneTasks := Set new.
-	future := nil.
 	onIdleTime := [ self cleanupTasks. nil. ]. 
 	block := [ self workerLoop ].
+	self onStart.
 ]
 
 { #category : #'as yet unclassified' }
 TKTWorker >> isRunning [
 	^ future valueAvailable not.
+]
+
+{ #category : #'as yet unclassified' }
+TKTWorker >> isWorkingWith: aFuture [
+	^ currentTask value = aFuture 
 ]
 
 { #category : #'as yet unclassified' }
@@ -81,17 +84,26 @@ TKTWorker >> onIdleTime: aBlockOrWork [
 ]
 
 { #category : #'as yet unclassified' }
+TKTWorker >> onStart [ 
+	keepRunning := TKTVariable for: false.
+	doneTasks := Set new.
+	future := nil.
+]
+
+{ #category : #'as yet unclassified' }
 TKTWorker >> restart [
 
 	future stop.
-
+	future := nil.
+	
+	 
 	currentTask ifNotNil: [ 
-		currentTask processFinished ifFalse: [
+		currentTask value processFinished ifFalse: [
 			currentTask  priority: 10.
 			workQueue do: currentTask.
 		].
 	].
-
+	self onStart.
 	self doIt.
 ]
 
@@ -126,6 +138,13 @@ TKTWorker >> stop [
 		future cancel.		
 	].
 	
+]
+
+{ #category : #'as yet unclassified' }
+TKTWorker >> stopWorkingOnThat [ 
+	currentTask value deployValue: TKTCancelledFuture new.
+	currentTask := nil. 
+	self restart.
 ]
 
 { #category : #accessing }

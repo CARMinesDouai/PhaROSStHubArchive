@@ -50,6 +50,7 @@ TKTTask >> doIt [
 	
 	future process:( [
 		self value: future.
+		
 	] forkAt: self priority named: 'Task').
 
 	^ future.

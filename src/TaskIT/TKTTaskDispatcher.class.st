@@ -12,6 +12,12 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+TKTTaskDispatcher class >> expropiate: aFuture [
+	^ self instance expropiate: aFuture.
+	 
+]
+
+{ #category : #'as yet unclassified' }
 TKTTaskDispatcher class >> instance [
 	TaskInstance ifNil: [
 		TaskInstance := super new.	
@@ -59,6 +65,11 @@ TKTTaskDispatcher >> dispatch: aTaskOrBlock [
 	future := TKTFuture new.
 	(self selectWorkerFor: task) scheddule: (task -> future).
 	^ future.
+]
+
+{ #category : #'as yet unclassified' }
+TKTTaskDispatcher >> expropiate: aFuture [
+	workers select: [ : w | w isWorkingWith: aFuture ] thenDo: [ :w | w stopWorkingOnThat ].
 ]
 
 { #category : #'as yet unclassified' }

@@ -40,6 +40,16 @@ TaskITExamples >> commonTaskResult [
 ]
 
 { #category : #'as yet unclassified' }
+TaskITExamples >> referencedProcess [
+	^ [[ true ] whileTrue: [ Transcript show: 'running'; cr. (Delay forMilliseconds: 500) wait] ] doIt asStickyReference.
+]
+
+{ #category : #'as yet unclassified' }
+TaskITExamples >> referencedTask [
+	^ [[ true ] whileTrue: [ Transcript show: 'running in a task'; cr. (Delay forMilliseconds: 500) wait] ] taskIt asStickyReference.
+]
+
+{ #category : #'as yet unclassified' }
 TaskITExamples >> wrappingCalls [
 	"
 	self new wrappingCalls. 

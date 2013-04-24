@@ -21,8 +21,13 @@ TKTFuture >> asResult [
 ]
 
 { #category : #'as yet unclassified' }
+TKTFuture >> asStickyReference [ 
+	^ TKTStickyReference for: self.
+]
+
+{ #category : #'as yet unclassified' }
 TKTFuture >> cancel [ 
-	Warning signal: ' ShouldExpropiateProcess'
+	TKTTaskDispatcher expropiate: self.
 ]
 
 { #category : #'as yet unclassified' }
@@ -43,12 +48,22 @@ TKTFuture >> deployValue: aValue [
 ]
 
 { #category : #'as yet unclassified' }
+TKTFuture >> finalize [ 
+	self cancel.
+]
+
+{ #category : #'as yet unclassified' }
 TKTFuture >> initialize [ 
 	isDeployed := false.
 	value := nil. 
 	error := nil.
 	callbacks := TKTVariable for: OrderedCollection new.
 	semaphore := Semaphore new.
+]
+
+{ #category : #testing }
+TKTFuture >> processFinished [
+	self shouldBeImplemented.
 ]
 
 { #category : #'as yet unclassified' }
