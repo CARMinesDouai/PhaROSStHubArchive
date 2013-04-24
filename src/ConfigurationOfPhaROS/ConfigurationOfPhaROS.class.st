@@ -211,7 +211,7 @@ ConfigurationOfPhaROS >> version100Beta1: spec [
 			project: 'XMLRPC' with: '1.0-Beta6';
 			 project: 'PaulLePoulpe' with: '1.0.1'.
 		spec
-			package: 'PhaROS' with: 'PhaROS-LucFabresse.79'
+			package: 'PhaROS' with: 'PhaROS-SantiagoBragagnolo.81'
 		].
 
 
