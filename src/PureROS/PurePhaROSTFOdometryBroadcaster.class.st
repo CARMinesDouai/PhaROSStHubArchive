@@ -12,7 +12,7 @@ Class {
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification [ 
 	[
-		self sendPose: aNotification.
+"		self sendPose: aNotification."
 		self sendTransformations: aNotification.
 		self sendOdometry: aNotification.
 	]
@@ -77,11 +77,7 @@ PurePhaROSTFOdometryBroadcaster >> receive: aMessage from: aChannel [
 	
 				
 	aChannel topic name=  '/initialpose' ifTrue: [
-		pose := aMessage value pose pose .
-		position := pose position. 
-		orientation := PhaROSGeometryTransformations new eulerFromQuaternation: pose orientation x and: pose orientation y and: pose orientation z and: pose orientation w.
-		orientation := orientation at:3. 				
-		robot localizationService x: position x y: position y orientation: orientation .
+		self setInitialPose: aMessage value pose pose.
 	].
 " Take the EFK error correction from tf channel and enhance the robot information to be able to get better movement"
 
@@ -89,13 +85,15 @@ PurePhaROSTFOdometryBroadcaster >> receive: aMessage from: aChannel [
       " We get AMCL error fixing here, which is the final position that ROS will use. We cannot give feedback to the robot with this position because is too unstable "
 	aChannel topic name = '/tfaas/map/base_link' ifTrue: [		
 		pose := aMessage value pose .
-		pureRos currentRosPosition: pose position. 				
+		pureRos currentRosPose: pose. 				
 				
 	].
 
      " We get the EFK IMU error fixing to have a better position, we use finally this error fixing to feed the robot and to have a better localization to base the odometry. "
 	aChannel topic name = '/tfaas/map/base_footprint' ifTrue: [		
 "	aChannel topic name = '/tfaas/map/base_link' ifTrue: [		"
+		
+		pureRos currentIMUPose:  aMessage value pose.
 		pose := aMessage value pose .
 		position := pose position. 
 		orientation := PhaROSGeometryTransformations new eulerFromQuaternation: pose orientation x and: pose orientation y and: pose orientation z and: pose orientation w.
@@ -108,6 +106,7 @@ PurePhaROSTFOdometryBroadcaster >> receive: aMessage from: aChannel [
 "		[ robot localizationService x: position x y: position y orientation: orientation . Transcript show: ':)'; cr.] on: Error  do: [Transcript show: ':('; cr.]."
 		"Do nothing"
 	].
+	
 	
 	
 	
@@ -136,6 +135,32 @@ PurePhaROSTFOdometryBroadcaster >> rotationAsQuaternationInX: anOrientation into
 	aQuaternationObject y: (array at:2).
 	aQuaternationObject z: (array at:3).
 	aQuaternationObject w: (array at:4).
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSTFOdometryBroadcaster >> sendInitialPose: aPose [
+	
+	self halt. 
+	self sendTo: '/initialpose' typedAs: 'geometry_msgs/PoseWithCovarianceStamped' a: [ : msg | 
+		
+		msg header frame_id: '/map'.
+		
+		36 timesRepeat: [ msg pose covariance add: 0.0 ].
+		msg pose covariance at: 1 put: 0.25.
+		msg pose covariance at: 8 put: 0.25.
+		msg pose covariance at: 36 put: 0.068.
+		
+		
+		msg pose pose position x: aPose position x. 
+		msg pose pose position y: aPose position y. 
+		msg pose pose position z: aPose position z. 
+		
+		msg pose pose orientation x: aPose orientation x. 
+		msg pose pose orientation y: aPose orientation y. 
+		msg pose pose orientation z: aPose orientation z. 
+		msg pose pose orientation w: aPose orientation w. 
+		
+	].
 ]
 
 { #category : #'as yet unclassified' }
@@ -253,6 +278,17 @@ PurePhaROSTFOdometryBroadcaster >> sendTransformations: aNotification [
 			
 		].
 
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSTFOdometryBroadcaster >> setInitialPose: aPose [
+	|  pose position orientation |
+	
+		pose := aPose .
+		position := pose position. 
+		orientation := PhaROSGeometryTransformations new eulerFromQuaternation: pose orientation x and: pose orientation y and: pose orientation z and: pose orientation w.
+		orientation := orientation at:3. 				
+		robot localizationService x: position x y: position y orientation: orientation .
 ]
 
 { #category : #'as yet unclassified' }

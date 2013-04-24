@@ -9,7 +9,8 @@ Class {
 		'driver',
 		'notifications',
 		'currentStatus',
-		'currentRosPosition'
+		'currentRosPose',
+		'currentIMUPose'
 	],
 	#category : #PureROS
 }
@@ -42,6 +43,25 @@ PureROS class >> withMasterAt: anUrl andRobotAt: anIP and: aPort [
 	robot := PNGRobulabDiscoveryFactory robulabFromIp: anIP  port: aPort.
 	
 	^self new master: master ; robot: robot ; setUp ; yourself.
+]
+
+{ #category : #'as yet unclassified' }
+PureROS >> checkError [
+	| imu ros |
+	
+	imu := currentIMUPose.
+	ros := currentRosPose.	
+	(imu notNil and: [ ros notNil ] ) ifTrue: [
+"		Transcript show: ((imu position x @ imu position y) dist: (ros position x @ ros position y)) asString; cr."
+		((imu position x @ imu position y) dist: (ros position x @ ros position y)) > 1.0 ifTrue: [
+			currentIMUPose := nil.
+			Transcript show: ' Error threshold!' ;cr; 
+			show: ((imu position x @ imu position y) dist: (ros position x @ ros position y))  asString ;cr.
+			odometryNode sendInitialPose: ros. 
+			
+		]
+		
+	].
 ]
 
 { #category : #'as yet unclassified' }
@@ -85,13 +105,25 @@ PureROS >> consumeSession [
 ]
 
 { #category : #'as yet unclassified' }
-PureROS >> currentRosPosition [
-	^currentRosPosition
+PureROS >> currentIMUPose [
+	^ currentIMUPose
 ]
 
 { #category : #'as yet unclassified' }
-PureROS >> currentRosPosition: aPosition [
-	currentRosPosition := aPosition 
+PureROS >> currentIMUPose: anImuPose [
+	currentIMUPose := anImuPose .
+	self checkError.
+]
+
+{ #category : #'as yet unclassified' }
+PureROS >> currentRosPose [
+	^currentRosPose
+]
+
+{ #category : #'as yet unclassified' }
+PureROS >> currentRosPose: aPose [
+	currentRosPose := aPose .
+	self checkError.
 ]
 
 { #category : #'as yet unclassified' }
