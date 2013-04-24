@@ -80,10 +80,10 @@ PNGStepServiceBasedController >> manageNotification: aNotification [
 PNGStepServiceBasedController >> monitorNotification [
 	
 	mutex critical: [
-		(differentials isEmpty and: notificating ) ifTrue:[
+		"(differentials isEmpty and: notificating ) ifTrue:[
 			notificating := false. 
 			self stepService disableNotifications.
-		].
+		]."
 		(differentials isEmpty not and: notificating not ) ifTrue:[
 			self stepService onNotificationDo: self notificationCallback.
 			self stepService enableNotificationsEvery: 40.
