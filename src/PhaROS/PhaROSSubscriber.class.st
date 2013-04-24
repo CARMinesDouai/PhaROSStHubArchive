@@ -92,6 +92,18 @@ PhaROSSubscriber >> unregisterPublisher: aRoStPublisher [
 ]
 
 { #category : #accessing }
+PhaROSSubscriber >> unregisterSubscriber: aNode [
+
+	(channels inject: Set new into: [: acc :each | 
+		acc addAll: ( each select:  [ :chn | chn owner = aNode ] ); yourself.
+	]) do: [
+		: chn | 
+		(channels at: chn topic name ) remove: chn
+	].
+		
+]
+
+{ #category : #accessing }
 PhaROSSubscriber >> xmlRpcUrl [
 	^owner xmlRpcUrl.
 ]
