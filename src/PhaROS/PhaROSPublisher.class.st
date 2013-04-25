@@ -29,7 +29,9 @@ PhaROSPublisher >> lookupChannelFor: aTopic [
 
 { #category : #accessing }
 PhaROSPublisher >> manageIncomingConnection: aMessage with: aSocket [ 
-	
+	self flag: #lookThisDelay.
+	(Delay forMilliseconds: 500) wait.
+
 	^ (self lookupChannelFor: (owner lookupTopic: aMessage topic)) manageIncomingConnection: aMessage with: aSocket.
 	
 	
