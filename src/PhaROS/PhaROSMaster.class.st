@@ -112,6 +112,17 @@ PhaROSMaster >> create: aNodeClass named: name domain: aDomain xmlRpcPort: aXmlR
 	
 ]
 
+{ #category : #construction }
+PhaROSMaster >> create: aSouledNodeClass named: name domain: aDomain xmlRpcPort: aXmlRpcPort delegate: aReceiverDelegateOrBlock [
+	| node |
+	self verifyName: name.
+	node := aSouledNodeClass name: name domain: aDomain xmlRpcPort: aXmlRpcPort master: self delegate: aReceiverDelegateOrBlock.
+	self registerNode: node.
+
+	^ node.
+	
+]
+
 { #category : #'API-Data-Mutators' }
 PhaROSMaster >> deleteParam: aCallerId named: aParameterName [ 
 	^ masterXmlRpc deleteParam: aCallerId named: aParameterName.
