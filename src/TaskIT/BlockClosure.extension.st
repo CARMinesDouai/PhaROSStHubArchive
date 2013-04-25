@@ -40,5 +40,5 @@ BlockClosure >> taskItAt: aPriority [
 
 { #category : #'*TaskIT' }
 BlockClosure >> when: aConditionalBlock [ 
-	
+	^ aConditionalBlock doItWhen:self.
 ]
