@@ -82,7 +82,7 @@ PhaROSNodeTest >> testPublisherNode [
 	node interestedIn: '/turtle1/command_velocity'.
 	
 	
-	semaphore waitTimeoutSeconds: 5.
+	semaphore waitTimeoutSeconds: 10.
 	
 	asserts do: [ :b | self assert: b ].
 

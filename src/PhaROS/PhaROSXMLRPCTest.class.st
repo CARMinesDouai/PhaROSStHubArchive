@@ -97,17 +97,13 @@ PhaROSXMLRPCTest >> testLookupService [
 { #category : #testing }
 PhaROSXMLRPCTest >> testRegisterPublisher [
 	| currentData callerURI |
-	
+
 	callerURI := 'http://127.0.0.1:9090/'.
 	currentData := master registerPublisher: self callerId  to: 'rosout' with: 'rosgraph_msgs/Log'  andCallerUri: callerURI .
 	
 	self assert: currentData size > 0.
-	self assert: (currentData anySatisfy: [ :each | each = callerURI]) 
-	
-
-
-
-
+	self assert: (currentData anySatisfy: [ :each | (each indexOfSubCollection: self defaultMasterIp) > 0]) 
+		
 
 
 ]
@@ -145,8 +141,8 @@ PhaROSXMLRPCTest >> testRegisterSubscriber [
 	
 	callerURI := 'http://127.0.0.1:9090/'.
 	currentData := master registerSubscriber: self callerId  to: 'rosout' with: 'rosgraph_msgs/Log'  andCallerUri: callerURI.
-	self assert: currentData size = 1.
-	self assert: currentData first = callerURI 
+	self deny: currentData isNil
+	
 ]
 
 { #category : #testing }

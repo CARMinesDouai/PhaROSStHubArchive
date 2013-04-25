@@ -149,7 +149,7 @@ PhaROSSystemLauncher >> startUpMaster [
 					arguments: {  } 
 					environment:  nil 
 					descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
-		self spin: 10.
+		self spin: 20.
 	].
 ]
 
@@ -161,6 +161,6 @@ PhaROSSystemLauncher >> startUpTurtle [
 							arguments: { 'turtlesim' . 'turtlesim_node' } 
 							environment:  nil 
 							descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
-		self spin: 4.
+		self spin: 20.
 	].
 ]

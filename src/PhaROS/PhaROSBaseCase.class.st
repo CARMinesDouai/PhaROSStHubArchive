@@ -18,7 +18,7 @@ PhaROSBaseCase >> callerId [
 
 { #category : #'default parameters' }
 PhaROSBaseCase >> defaultMasterIp [
-	^ '10.1.160.135'
+	^ '127.0.0.1'
 ]
 
 { #category : #'default parameters' }
