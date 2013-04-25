@@ -28,6 +28,29 @@ PhaROSTypeBrowser class >> reset [
 	PhaROSCompositeType reset.
 ]
 
+{ #category : #'as yet unclassified' }
+PhaROSTypeBrowser >> browseAll [
+
+	| stdout |
+	
+	
+	
+	stdout :=  FileStream stdout
+			wantsLineEndConversion: true;
+			converter; "Force lazy initialization of converter"
+			yourself.
+
+
+	(String lf split: (PhaROSSystemLauncher instance rosMsg:'list'))  do: [ :typeId | 
+		typeId ~= '' ifTrue:[
+			stdout nextPutAll: typeId, String crlf .
+			[
+				(PhaROSTypeBrowser instance definition: typeId) md5Sum.
+			] on: Error do: [ :e | self halt. ]
+		].
+	].
+]
+
 { #category : #accessing }
 PhaROSTypeBrowser >> browser [
 	^browse.
