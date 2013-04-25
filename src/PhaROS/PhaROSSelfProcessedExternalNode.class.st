@@ -50,6 +50,7 @@ PhaROSSelfProcessedExternalNode >> workWith: aChannel [
 	stream timeout: self timeout.
 	tries := 0.
 	process := [
+		
 		[  self keepRunning ]  whileTrue: [
 			[
 				stream peek ifNotNil: [
@@ -63,16 +64,17 @@ PhaROSSelfProcessedExternalNode >> workWith: aChannel [
 				tries := 0.
 			] on: Error do: [ :e |
 			
-				e class = ConnectionTimedOut ifFalse: [ 
+				(e class = ConnectionTimedOut or: [ e class = PNGConnectionTimeOut ] )ifTrue: [ 
 					tries := tries + 1.
 					Transcript show: 'Retrying! ', tries asString; cr.
+
 					tries > 10 ifTrue: [
-						self halt .						
+						self halt .					
 						tries := 0.
 					].
 					(Delay forMilliseconds: 500)wait.
 					
-				].
+				] ifFalse: [" self halt ."].
 			]
 		].
 		aChannel unsubscribe: self.

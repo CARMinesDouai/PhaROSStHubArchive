@@ -1,3 +1,27 @@
+"
+This node represent a basic node in the ROS environment. 
+	
+	It is related with a XMLRPC Server and a TCP server. 
+	
+	Is thinked to be subclassed, and specialized for each case. 
+	
+	It counts with messages for publishing and subscribing  
+	
+	
+	publishing:
+	
+	#sendTo: aTopicID a: [:msg | ""configure here your message ""]
+	#sendTo: aTopicID typedAs: aTypeID a: [:msg |  ""configure here your message ""]. 
+	
+	subscribing:
+	
+	#interestedIn: aTopicID.
+	#interestedIn: aTopicID typedAs: aTypeID. 
+	
+	In this version, you need to set also a delegate to let the node know what to do when it receives a message from outside. 
+	
+	#receiverDelegate: [ :msg :chn | ].
+"
 Class {
 	#name : #PhaROSNode,
 	#superclass : #Object,
