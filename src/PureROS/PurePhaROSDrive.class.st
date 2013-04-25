@@ -16,21 +16,36 @@ Class {
 { #category : #'as yet unclassified' }
 PurePhaROSDrive >> commandVelocity: aMessage [
 
+"	dd based "
+
+	self assert: aMessage value linear y = 0.0.
+	self assert: aMessage value linear z = 0.0.
+	self assert: aMessage value angular y = 0.0.
+	self assert: aMessage value angular x = 0.0.
+	
+	robot differentialService moveAt: aMessage value linear x  and: aMessage value angular z.
+	
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSDrive >> commandVelocityVelocity: aMessage [
+
 	(lastMeasure notNil and: [ lastMeasure closeTo: aMessage value ]) ifTrue: [^ self].
 	lastMeasure := aMessage value.
 	
-"
-	step based 
+
+"	step based "
 	aMessage value linear y = 0.0 ifFalse: [ Transcript show: 'Y: ', aMessage value linear y asString; cr. ].
 	self assert: aMessage value linear y = 0.0.
 	self assert: aMessage value linear z = 0.0.
 	self assert: aMessage value angular y = 0.0.
 	self assert: aMessage value angular x = 0.0.
 	
+	aMessage value angular z ~= 0 ifTrue: [ stepController thenRotate: (aMessage value angular z) ].	
 	aMessage value linear x ~= 0 ifTrue: [ stepController thenMoveForward: aMessage value linear x ].
-	aMessage value angular z ~= 0 ifTrue: [ stepController thenRotate: (aMessage value angular z) ].
-"	
 	
+
+"	
 
 	 aMessage value linear y ~= 0 ifTrue: [
 		trajectoryController goToDelta: (aMessage value linear x @ aMessage value linear y).	
@@ -45,7 +60,7 @@ PurePhaROSDrive >> commandVelocity: aMessage [
 		aMessage value angular z ~= 0 ifTrue: [ stepController thenRotate: (aMessage value angular z) ].		
 	]
 
-
+"
 ]
 
 { #category : #'as yet unclassified' }
@@ -54,6 +69,20 @@ PurePhaROSDrive >> consumeId [
 	anId := currentId.
 	currentId := currentId + 1.
 	^ 'pharo-',self name, anId asString.
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSDrive >> followPath: aCollectionOfPoints [
+	
+	[
+	
+		trajectoryController stopMotion ;	clearTrajectory .
+		trajectoryController goToAll: aCollectionOfPoints.
+		self halt.
+	] on: Error do: [
+		: e| self halt.
+	].
+	
 ]
 
 { #category : #'as yet unclassified' }
@@ -101,6 +130,36 @@ PurePhaROSDrive >> initialize [
 	super initialize.
 	currentId := 1.
 	lastPlannedPosition := 0@0.
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSDrive >> localPlaning: aMessage [
+
+| delta currentPosition newPosition |	
+			
+			currentPosition := pureRos currentRosPose position.
+			currentPosition := currentPosition x @ currentPosition y
+			.	
+			newPosition := aMessage value poses last pose position.
+			newPosition := newPosition x @ newPosition y. 
+			
+			((newPosition closeTo: lastPlannedPosition) and: [trajectoryController status ~= PNGTrajectoryState followingStatusValue]) ifFalse: [
+				delta := newPosition - currentPosition.
+				
+				trajectoryController status = PNGTrajectoryState errorStatusValue ifTrue: [ 
+					trajectoryController stopMotion; clearTrajectory.	
+				].
+				(delta closeTo: (0.0 @ 0.0) )ifTrue: [
+					Transcript show: ' asked for a small delta! ', delta asString ; cr.
+				] ifFalse: [
+					trajectoryController goToDelta: delta. 	
+				]
+			].
+			
+			
+		
+"			Transcript show: trajectoryController status."
+			lastPlannedPosition := newPosition.
 ]
 
 { #category : #'as yet unclassified' }
@@ -161,6 +220,9 @@ PurePhaROSDrive >> receive: aMessage from: aChannel [
 
 		aChannel topic name = '/move_base/TrajectoryPlannerROS/global_plan' ifTrue: [
 			self globalPlaning: aMessage.
+		].
+		aChannel topic name = '/move_base/TrajectoryPlannerROS/local_plan' ifTrue: [
+			self localPlaning: aMessage.
 		].
 		aChannel topic name=  '/move_base/NavfnROS/plan' ifTrue: [
 			self navigationPlanning: aMessage.

@@ -12,7 +12,7 @@ Class {
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> broadcast: aNotification [ 
 	[
-"		self sendPose: aNotification."
+		self sendPose: aNotification.
 		self sendTransformations: aNotification.
 		self sendOdometry: aNotification.
 	]
@@ -75,7 +75,16 @@ PurePhaROSTFOdometryBroadcaster >> receive: aMessage from: aChannel [
 	| pose position orientation |
 
 	
-				
+	aChannel topic name=  '/imu_data' ifTrue: [
+		
+		orientation := PhaROSGeometryTransformations new eulerFromQuaternation: aMessage value orientation x and: aMessage value orientation y and: aMessage value orientation z and: aMessage value orientation w.
+		orientation := orientation at:3. 	
+		position := robot localizationService currentPosition.
+		[ robot localizationService suggestX: position x y: position y orientation: orientation . ] on: Error  do: [].
+			
+	].
+
+
 	aChannel topic name=  '/initialpose' ifTrue: [
 		self setInitialPose: aMessage value pose pose.
 	].
@@ -205,16 +214,8 @@ PurePhaROSTFOdometryBroadcaster >> sendOdometry: aNotification [
 
 { #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> sendPose: aNotification [
-	| transformStamped |
-	
+
 		self sendTo: '/kompai2/pose'  typedAs: 'geometry_msgs/PoseStamped' a: [: msg |		
-		
-			" BaseLink "
-			transformStamped := Geometry_msgsTransformStamped new.
-			transformStamped header frame_id: '/base_footprint'.
-			transformStamped child_frame_id: '/base_link'.
-			
-			
 			msg pose position x: aNotification position x.
 			msg pose position y: aNotification position y.
 			msg pose position z: 0.0.

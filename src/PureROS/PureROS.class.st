@@ -10,7 +10,8 @@ Class {
 		'notifications',
 		'currentStatus',
 		'currentRosPose',
-		'currentIMUPose'
+		'currentIMUPose',
+		'waypoints'
 	],
 	#category : #PureROS
 }
@@ -111,8 +112,17 @@ PureROS >> currentIMUPose [
 
 { #category : #'as yet unclassified' }
 PureROS >> currentIMUPose: anImuPose [
-	currentIMUPose := anImuPose .
-	self checkError.
+	currentIMUPose ifNil: [
+		currentIMUPose := anImuPose.
+	].
+
+	((currentIMUPose position x @ currentIMUPose position y ) dist: (anImuPose position x @ anImuPose position y ) )> 1 ifTrue: [
+		waypoints add: anImuPose.
+		currentIMUPose := anImuPose .	
+		
+	].
+	
+"	self checkError."
 ]
 
 { #category : #'as yet unclassified' }
@@ -123,7 +133,8 @@ PureROS >> currentRosPose [
 { #category : #'as yet unclassified' }
 PureROS >> currentRosPose: aPose [
 	currentRosPose := aPose .
-	self checkError.
+
+"	self checkError."
 ]
 
 { #category : #'as yet unclassified' }
@@ -143,6 +154,16 @@ PureROS >> doNStepsForward: aStepAmount [
 	].
 	
 	
+]
+
+{ #category : #'as yet unclassified' }
+PureROS >> followPath: aPath [
+	driver followPath: aPath.
+]
+
+{ #category : #'as yet unclassified' }
+PureROS >> initialize [ 
+	waypoints := OrderedCollection new.
 ]
 
 { #category : #'as yet unclassified' }
