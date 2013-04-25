@@ -86,7 +86,7 @@ PNGStepServiceBasedController >> monitorNotification [
 		]."
 		(differentials isEmpty not and: notificating not ) ifTrue:[
 			self stepService onNotificationDo: self notificationCallback.
-			self stepService enableNotificationsEvery: 40.
+			self stepService enableNotificationsEvery: 100.
 			notificating := true.
 		]	
 	].

@@ -7,17 +7,17 @@ Class {
 	#category : #'PureNG-Notifications'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'initialize-release' }
 PNGStepNotification >> initWithDecoder: aDecoder [
 	self stepProperties: (self service decodeStepPropertiesFromDecoder:  aDecoder) 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PNGStepNotification >> stepProperties [ 
 	^ stepProperties 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PNGStepNotification >> stepProperties: aStepPropertiesObject [
 	stepProperties := aStepPropertiesObject.
 ]

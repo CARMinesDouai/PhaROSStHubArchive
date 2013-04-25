@@ -50,6 +50,11 @@ PNGRobulab >> deleteAllNotifyingServices [
 ]
 
 { #category : #services }
+PNGRobulab >> differentialService [
+	^self services detect: [:each| each isKindOf: PNGDifferentialService]
+]
+
+{ #category : #services }
 PNGRobulab >> directoryService [
 	^self services detect: [:each| each isKindOf: PNGDirectoryService]
 ]
