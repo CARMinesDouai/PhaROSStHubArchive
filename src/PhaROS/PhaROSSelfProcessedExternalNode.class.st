@@ -64,7 +64,7 @@ PhaROSSelfProcessedExternalNode >> workWith: aChannel [
 				tries := 0.
 			] on: Error do: [ :e |
 			
-				(e class = ConnectionTimedOut or: [ e class = PNGConnectionTimeOut ] )ifTrue: [ 
+				(e class = ConnectionTimedOut  )ifTrue: [ 
 					tries := tries + 1.
 					Transcript show: 'Retrying! ', tries asString; cr.
 

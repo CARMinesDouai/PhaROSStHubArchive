@@ -61,8 +61,7 @@ PhaROSInPutChannel >> requestTopic: anUrlString [
 	tcpConnectionData := proxy invokeMethod: 'requestTopic' withArgs: { owner name . topic name . {{ 'TCPROS' }}}.
 	
 	socket := Socket newTCP.
-	socket connectTo: ( NetNameResolver addressFromString:  (tcpConnectionData at: 2) )  port: (tcpConnectionData at: 3).
-	
+	socket connectTo: ( NetNameResolver addressForName:  (tcpConnectionData at: 2) )  port: (tcpConnectionData at: 3).
 	^ socket.
 ]
 
