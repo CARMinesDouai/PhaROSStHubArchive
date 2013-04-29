@@ -5,103 +5,102 @@ Class {
 }
 
 { #category : #testing }
-PBLaserTest >> testLaserWhenRobotAtBottomLeftOfTheBox [
-	| laser notification allDistances minVal maxVal wrongDistances |
-	minVal := 0.25.
-	maxVal := 0.75.
-	wrongDistances := OrderedCollection new.
+PBLaserTest >> assert: distancesCollection areLessThan: maxVal andGreaterThan: minVal [
 	
-	self requestAction: 'Please, put the robot at the bottom left of the 1x1 box' orDo:[].
+	| wrongDistances |
+	wrongDistances := Set new.
+	
+	distancesCollection doWithIndex:[ :e :i | (e > maxVal or: [e < minVal]) ifTrue:[wrongDistances add:  (i -> e) ]].
+	
+	self assert: wrongDistances isEmpty.
+]
+
+{ #category : #testing }
+PBLaserTest >> testLaserWhenRobotAtBottomLeftOfTheBox [
+	| laser notification allDistances |
+
+	self requestAction: 'Please, put the robot at the bottom left of the 1x1 box'.
 	
 	laser := robot laserService.
 	laser enableNotificationsEvery: 10.
 	notification := self notificationOrNilFrom: laser.
-	notification distances doWithIndex:[ :e :i | (e > maxVal or: [e < minVal]) ifTrue:[wrongDistances add:  (i -> e) ]].
 	
-	self assert: (wrongDistances isEmpty).
+	allDistances := notification distances.
+	self assert: allDistances areLessThan: 0.75 andGreaterThan: 0.25
+	
 ]
 
 { #category : #testing }
 PBLaserTest >> testLaserWhenRobotAtBottomRightOfTheBox [
-	| laser notification allDistances minVal maxVal wrongDistances |
-	minVal := 0.25.
-	maxVal := 0.75.
-	wrongDistances := OrderedCollection new.
+	| laser notification allDistances |
 	
-	self requestAction: 'Please, put the robot at the bottom right of the 1x1 box' orDo:[].
+	self requestAction: 'Please, put the robot at the bottom right of the 1x1 box'.
 	
 	laser := robot laserService.
 	laser enableNotificationsEvery: 10.
 	notification := self notificationOrNilFrom: laser.
-	notification distances doWithIndex:[ :e :i | (e > maxVal or: [e < minVal]) ifTrue:[wrongDistances add:  (i -> e) ]].
 	
-	self assert: (wrongDistances isEmpty).
+	allDistances := notification distances.
+	self assert: allDistances areLessThan: 0.75 andGreaterThan: 0.25
+
 ]
 
 { #category : #testing }
 PBLaserTest >> testLaserWhenRobotAtCenterOfTheBox [
-	| laser notification minVal maxVal wrongDistances|
-	minVal := 0.25.
-	maxVal := 0.56.
+	| laser notification allDistances |
 	
-	wrongDistances := OrderedCollection new.
-	
-	self requestAction: 'Please, put the robot at the center of the 1x1 box' orDo:[].
+	self requestAction: 'Please, put the robot at the center of the 1x1 box'.
 	
 	laser := robot laserService.
 	laser enableNotificationsEvery: 10.
 	notification := self notificationOrNilFrom: laser.
-	notification distances doWithIndex:[ :e :i | (e > maxVal or: [e < minVal]) ifTrue:[wrongDistances add:  (i -> e) ]].
 	
-	self assert: (wrongDistances isEmpty).
+	allDistances := notification distances.
+	self assert: allDistances areLessThan: 0.56 andGreaterThan: 0.25
+
 ]
 
 { #category : #testing }
 PBLaserTest >> testLaserWhenRobotAtTopLeftOfTheBox [
-	| laser notification allDistances minVal maxVal wrongDistances |
-	minVal := 0.15.
-	maxVal := 0.75.
-	wrongDistances := OrderedCollection new.
-	
-	self requestAction: 'Please, put the robot at the top left of the 1x1 box' orDo:[].
+	| laser notification allDistances |
+		
+	self requestAction: 'Please, put the robot at the top left of the 1x1 box'.
 	
 	laser := robot laserService.
 	laser enableNotificationsEvery: 10.
 	notification := self notificationOrNilFrom: laser.
-	notification distances doWithIndex:[ :e :i | (e > maxVal or: [e < minVal]) ifTrue:[wrongDistances add:  (i -> e) ]].
 	
-	self assert: (wrongDistances isEmpty).
+	allDistances := notification distances.
+	self assert: allDistances areLessThan: 0.75 andGreaterThan: 0.15
+
 ]
 
 { #category : #testing }
 PBLaserTest >> testLaserWhenRobotAtTopRightOfTheBox [
-	| laser notification allDistances minVal maxVal wrongDistances |
-	minVal := 0.15.
-	maxVal := 0.75.
-	wrongDistances := OrderedCollection new.
+	| laser notification allDistances |
 	
-	self requestAction: 'Please, put the robot at the top right of the 1x1 box' orDo:[].
+	self requestAction: 'Please, put the robot at the top right of the 1x1 box'.
 	
 	laser := robot laserService.
 	laser enableNotificationsEvery: 10.
 	notification := self notificationOrNilFrom: laser.
-	notification distances doWithIndex:[ :e :i | (e > maxVal or: [e < minVal]) ifTrue:[wrongDistances add:  (i -> e) ]].
 	
-	self assert: (wrongDistances isEmpty).
+	allDistances := notification distances.
+	self assert: allDistances areLessThan: 0.75 andGreaterThan: 0.15
+
 ]
 
 { #category : #testing }
 PBLaserTest >> testLaserWhenRobotInsideTheBoxFacingObstacleAt2m [
-	| laser notification allDistances  maxVal wrongDistances |
-	maxVal := 2.
-	wrongDistances := OrderedCollection new.
-	self requestAction: 'Please, put the robot in the 1x1 box facing the hole and an obstacle at 2m' orDo: [  ].
+	| laser notification allDistances  |
+	
+	self requestAction: 'Please, put the robot in the 1x1 box facing the hole and an obstacle at 2m'.
+	
 	laser := robot laserService.
 	laser enableNotificationsEvery: 10.
 	notification := self notificationOrNilFrom: laser.
-	notification distances
-		doWithIndex: [ :e :i | 
-			e > maxVal 
-				ifTrue: [ wrongDistances add: i -> e ] ].
-	self assert: wrongDistances isEmpty
+	
+	allDistances := notification distances.
+	self assert: allDistances areLessThan: 2 andGreaterThan: 0
+
 ]

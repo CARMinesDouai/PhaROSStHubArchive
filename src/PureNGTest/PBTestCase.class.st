@@ -27,6 +27,11 @@ PBTestCase class >> isAbstract [
 ]
 
 { #category : #'human in the loop' }
+PBTestCase >> requestAction: aString [ 
+	self requestAction: aString orDo: [ ]
+]
+
+{ #category : #'human in the loop' }
 PBTestCase >> requestAction: aString orDo: aBlock [
 	self shouldRequestAction ifTrue: [^self halt: aString].
 	Transcript 
