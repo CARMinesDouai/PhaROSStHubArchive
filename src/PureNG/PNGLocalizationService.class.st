@@ -52,8 +52,20 @@ PNGLocalizationService >> getCommandString [
 ]
 
 { #category : #public }
+PNGLocalizationService >> pose: aPNGRobotPose [ 
+	^ self x: aPNGRobotPose x y: aPNGRobotPose y orientation: aPNGRobotPose orientation.
+
+]
+
+{ #category : #public }
 PNGLocalizationService >> resetPose [
 	self x: 0 y: 0 orientation: 0
+]
+
+{ #category : #public }
+PNGLocalizationService >> suggest: aPNGRobotPose [ 
+	^ self suggestX: aPNGRobotPose x y: aPNGRobotPose y orientation: aPNGRobotPose orientation.
+
 ]
 
 { #category : #public }

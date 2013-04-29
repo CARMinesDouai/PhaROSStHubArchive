@@ -59,6 +59,11 @@ PNGDifferentialService >> initialize [
 ]
 
 { #category : #'as yet unclassified' }
+PNGDifferentialService >> moveAt: aDifferentialVelocity [
+	^ self  moveAt: aDifferentialVelocity linear and: aDifferentialVelocity angular.
+]
+
+{ #category : #'as yet unclassified' }
 PNGDifferentialService >> moveAt: aLinearSpeed and: anAngularSpeed [ 
 	| encoder |
 	encoder := PNGEncoder new.
