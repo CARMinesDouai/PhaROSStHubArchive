@@ -2,34 +2,63 @@ Class {
 	#name : #PhaROSSelfProcessedExternalNode,
 	#superclass : #PhaROSExternalNode,
 	#instVars : [
-		'keepRunning',
-		'process',
-		'mutex'
+		'msg',
+		'stream',
+		'tries',
+		'processResult'
 	],
 	#category : #'PhaROS-Kernel'
 }
 
 { #category : #accessing }
-PhaROSSelfProcessedExternalNode >> initialize [ 
-	keepRunning := false.
-	mutex := Mutex new.
+PhaROSSelfProcessedExternalNode >> attend: aChannel [
+		[ self spinOnceOver: aChannel ] on: Error do: [: e | self manageError: e ].
+
 ]
 
 { #category : #accessing }
-PhaROSSelfProcessedExternalNode >> keepRunning [ 
-	| val |
-	mutex critical: [
-		val := keepRunning.
+PhaROSSelfProcessedExternalNode >> checkConnection [
+	socket isConnected ifFalse:[
+		PhaROSError signal: 'Socket closed'.	
 	].
-	^val. 
+
 ]
 
 { #category : #accessing }
-PhaROSSelfProcessedExternalNode >> keepRunning: aBoolean [
-	mutex critical: [
-		keepRunning := aBoolean.
-		
+PhaROSSelfProcessedExternalNode >> manageError: e [ 	
+	(e class isTimeOut ) ifFalse: [ 
+		self stop.
 	].
+
+]
+
+{ #category : #accessing }
+PhaROSSelfProcessedExternalNode >> setup [
+	
+	msg := topic newMessage.	
+	stream := SocketStream on: self socket. 
+	stream binary.
+	stream timeout: self timeout.
+	tries := 0.
+	
+
+
+]
+
+{ #category : #accessing }
+PhaROSSelfProcessedExternalNode >> spinOnceOver: aChannel [
+	
+	self checkConnection. 
+	stream peek ifNotNil: [
+		msg loadStream: stream.
+		aChannel send: msg.
+	] 
+]
+
+{ #category : #accessing }
+PhaROSSelfProcessedExternalNode >> stop [
+	socket close. 
+	processResult  := nil.
 ]
 
 { #category : #'as yet unclassified' }
@@ -39,45 +68,8 @@ PhaROSSelfProcessedExternalNode >> timeout [
 
 { #category : #accessing }
 PhaROSSelfProcessedExternalNode >> workWith: aChannel [
-	| stream peeked msg tries  | 
+	self setup. 
+	processResult := (self paralellize looping attend: aChannel) asStickyReference. 
 	
-	self keepRunning: true.
-	
-	msg := topic newMessage.	
-	
-	stream := SocketStream on: socket. 
-	stream binary.
-	stream timeout: self timeout.
-	tries := 0.
-	process := [
-		self halt.
-		[  self keepRunning ]  whileTrue: [
-			[
-				stream peek ifNotNil: [
-					msg loadStream: stream.
-					aChannel send: msg.
-				] ifNil: [
-					socket isConnected ifFalse:[
-						self keepRunning: false.
-					]
-				].
-				tries := 0.
-			] on: Error do: [ :e |
-			
-				(e class = ConnectionTimedOut  )ifTrue: [ 
-					tries := tries + 1.
-					Transcript show: 'Retrying! ', tries asString; cr.
-
-					tries > 10 ifTrue: [
-						self halt .					
-						tries := 0.
-					].
-					(Delay forMilliseconds: 500)wait.
-					
-				] ifFalse: [" self halt ."].
-			]
-		].
-		aChannel unsubscribe: self.
-	] forkAt: Processor highIOPriority named: 'ExternalNode'.
 
 ]

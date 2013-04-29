@@ -55,12 +55,6 @@ PhaROSTopicFlux >> imInterestedIn: aMessage from: aChannel [
 ]
 
 { #category : #dispatching }
-PhaROSTopicFlux >> initialize [ 
-	condition := PhaROSTopicFlux defaultConditional.
-	adapter := PhaROSTopicFlux defaultAdapter.
-]
-
-{ #category : #dispatching }
 PhaROSTopicFlux >> printOn: aStream [
 
 	aStream nextPutAll: ' For all messages that '.
@@ -75,7 +69,6 @@ PhaROSTopicFlux >> printOn: aStream [
 
 { #category : #dispatching }
 PhaROSTopicFlux >> receive: aMessage from: aChannel [
-
 	(self imInterestedIn: aMessage from: aChannel) ifTrue: [
 		self redirect: (self adapt: aMessage ) from: aChannel.
 	].
