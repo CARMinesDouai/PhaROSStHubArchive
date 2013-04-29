@@ -9,7 +9,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSMessageAdapter >> \> anAdaption [
-	 chainOfAdaption add: anAdaption adapToAdapter.
+	 chainOfAdaption add: anAdaption adaptToAdapter.
 	^ self.
 ]
 

@@ -61,6 +61,19 @@ PhaROSTopicFlux >> initialize [
 ]
 
 { #category : #dispatching }
+PhaROSTopicFlux >> printOn: aStream [
+
+	aStream nextPutAll: ' For all messages that '.
+	condition printOn: aStream.
+	aStream nextPutAll: String cr.
+	aStream nextPutAll: ' with value defined as '.
+	adapter printOn: aStream.
+	aStream nextPutAll: String cr.
+	aStream nextPutAll: ' is executed '.
+	callback printOn: aStream.
+]
+
+{ #category : #dispatching }
 PhaROSTopicFlux >> receive: aMessage from: aChannel [
 
 	(self imInterestedIn: aMessage from: aChannel) ifTrue: [

@@ -50,7 +50,7 @@ PhaROSSelfProcessedExternalNode >> workWith: aChannel [
 	stream timeout: self timeout.
 	tries := 0.
 	process := [
-		
+		self halt.
 		[  self keepRunning ]  whileTrue: [
 			[
 				stream peek ifNotNil: [

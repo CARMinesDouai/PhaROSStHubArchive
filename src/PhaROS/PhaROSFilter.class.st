@@ -2,19 +2,19 @@ Class {
 	#name : #PhaROSFilter,
 	#superclass : #Object,
 	#instVars : [
-		'property'
+		'unaryMessage'
 	],
 	#category : #'PhaROS-MessageAdapter'
 }
 
 { #category : #'as yet unclassified' }
-PhaROSFilter class >> for: aProperty [
-	^ self new property: aProperty; yourself.
+PhaROSFilter class >> for: anUnaryMessage [
+	^ self new unaryMessage: anUnaryMessage; yourself.
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSFilter >> adapt: aPhaROSValue [ 
-	^ aPhaROSValue getAt: property.
+	^ aPhaROSValue perform: unaryMessage.
 ]
 
 { #category : #'as yet unclassified' }
@@ -24,10 +24,10 @@ PhaROSFilter >> adaptToAdapter [
 
 { #category : #'as yet unclassified' }
 PhaROSFilter >> printOn: aStream [
-	property printOn: aStream.
+	unaryMessage printOn: aStream.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSFilter >> property: aProperty [ 
-	property := aProperty
+PhaROSFilter >> unaryMessage: anUnaryMessage [ 
+	unaryMessage := anUnaryMessage.
 ]
