@@ -123,18 +123,6 @@ PurePhaROSTFOdometryBroadcaster >> receive: aMessage from: aChannel [
 ]
 
 { #category : #'as yet unclassified' }
-PurePhaROSTFOdometryBroadcaster >> rotationAsQuaternation: anOrientation into: aQuaternationObject [
-	| array |
-	" anOrientation is the value of the only one kind of rotation that robulab have, in terms of z axis. "
-
-	array := PhaROSGeometryTransformations new quaternationFromEulerFor: 0.0 and: 0.0 and: anOrientation.
-	aQuaternationObject x: (array at:1).
-	aQuaternationObject y: (array at:2).
-	aQuaternationObject z: (array at:3).
-	aQuaternationObject w: (array at:4).
-]
-
-{ #category : #'as yet unclassified' }
 PurePhaROSTFOdometryBroadcaster >> rotationAsQuaternationInX: anOrientation into: aQuaternationObject [
 	| array |
 	" anOrientation is the value of the only one kind of rotation that robulab have, in terms of z axis. "
@@ -185,7 +173,7 @@ PurePhaROSTFOdometryBroadcaster >> sendOdometry: aNotification [
 		msg pose pose position y: aNotification position y.
 		msg pose pose position z: 0.0.
 		
-		self rotationAsQuaternation:aNotification position orientation  into: msg pose pose orientation.
+		PhaROSGeometryTransformations rotationAsQuaternation: aNotification position orientation  into: msg pose pose orientation.
 
 		time := DateAndTime now.
 						
@@ -220,7 +208,7 @@ PurePhaROSTFOdometryBroadcaster >> sendPose: aNotification [
 			msg pose position y: aNotification position y.
 			msg pose position z: 0.0.
 			
-			self rotationAsQuaternation: (aNotification position orientation ) into:(msg pose orientation). 
+			PhaROSGeometryTransformations rotationAsQuaternation: (aNotification position orientation ) into:(msg pose orientation). 
 			
 	
 			
@@ -246,7 +234,7 @@ PurePhaROSTFOdometryBroadcaster >> sendTransformations: aNotification [
 			transformStamped transform translation x: 0.0.
 			transformStamped transform translation y: 0.0.
 			transformStamped transform translation z: 0.0.
-			self rotationAsQuaternation: ( 0.0 ) into:(transformStamped transform rotation).
+			PhaROSGeometryTransformations rotationAsQuaternation: ( 0.0 ) into:(transformStamped transform rotation).
 			"
 			
 			

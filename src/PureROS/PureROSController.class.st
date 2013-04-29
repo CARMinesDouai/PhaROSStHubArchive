@@ -124,7 +124,7 @@ PureROSController >> notificateTransformationOn: aFrameID withParent: aParentFra
 	transformStamped transform translation x: aPNGRobotPose x.
 	transformStamped transform translation y: aPNGRobotPose y.
 	transformStamped transform translation z: 0.0.
-	self rotationAsQuaternation: (aPNGRobotPose orientation ) into:(transformStamped transform rotation).
+	PhaROSGeometryTransformations rotationAsQuaternation: (aPNGRobotPose orientation ) into:(transformStamped transform rotation).
 	
 	transformations add: transformStamped.
 ]
@@ -142,16 +142,4 @@ PureROSController >> notificationController [
 { #category : #accessing }
 PureROSController >> robot: aRobot [
 	robot := aRobot.
-]
-
-{ #category : #util }
-PureROSController >> rotationAsQuaternation: anOrientation into: aQuaternationObject [
-	| array |
-	" anOrientation is the value of the only one kind of rotation that robulab have, in terms of z axis. "
-
-	array := PhaROSGeometryTransformations new quaternationFromEulerFor: 0.0 and: 0.0 and: anOrientation.
-	aQuaternationObject x: (array at:1).
-	aQuaternationObject y: (array at:2).
-	aQuaternationObject z: (array at:3).
-	aQuaternationObject w: (array at:4).
 ]
