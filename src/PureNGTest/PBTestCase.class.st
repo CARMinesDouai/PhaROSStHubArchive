@@ -26,14 +26,10 @@ PBTestCase class >> isAbstract [
 	^self == PNGTestCase.
 ]
 
-{ #category : #'human in the loop' }
-PBTestCase >> requestAction: aString [ 
-	self requestAction: aString orDo: [ ]
-]
-
-{ #category : #'human in the loop' }
+{ #category : #'tester actions' }
 PBTestCase >> requestAction: aString orDo: aBlock [
-	self shouldRequestAction ifTrue: [^self halt: aString].
+	self shouldRequestAction ifTrue: [
+		^UIManager default message: aString].
 	Transcript 
 		cr; 
 		show: 'Ignored action request: '; 

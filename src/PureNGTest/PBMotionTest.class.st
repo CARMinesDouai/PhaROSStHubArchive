@@ -42,34 +42,28 @@ PBMotionTest >> testSquare [
 
 { #category : #testing }
 PBMotionTest >> testStraightLineMotion [
-	| laser trajectoryService motionFinishedSemaphore startIndex finalValuesToSkip previousStatus |
-	(Delay forMilliseconds:  200) wait.
-	startIndex:= 3.
-	finalValuesToSkip := 3.
-	motionFinishedSemaphore := Semaphore new.
-	previousStatus := nil.
+	| laser trajectoryService motionFinishedSemaphore |
 	
-	"laser := robot laserService.
+	self requires: #PBLaserTest.
+	self requestAction: 'Put the robot in a corridor (1.3m wide) with at least 4m free in front of it'.
+	
+	motionFinishedSemaphore := Semaphore new.
+	
+	laser := robot laserService.
 	laser enableNotificationsEvery: 10.
 	laser onNotificationDo: [:notif|
-		((notif distances copyFrom: startIndex to: (notif distances size - finalValuesToSkip)) anySatisfy: [:each| each < 0.3]) ifTrue: [ ""Laser detects robot body""
+		(notif distances anySatisfy: [:each| each < 0.3]) ifTrue: [
 			controller stopMotion.
 			motionFinishedSemaphore signal.
-			self fail.
+			self fail. 
 		]
-	]. ".
+	]. 
+
+	controller goTo: 4@0.
+	
+	self deny: (motionFinishedSemaphore waitTimeoutMSecs: 5000).
+
 	trajectoryService := robot trajectoryService.
-	trajectoryService enableNotificationsEvery: 5.
-	trajectoryService onNotificationDo: [:notif|
-		Transcript cr;show: notif statusLabel.
-		((previousStatus = PNGTrajectoryState followingStatusValue) and: [notif status = PNGTrajectoryState waitingStatusValue ]) ifTrue: [
-			motionFinishedSemaphore signal].
-		((previousStatus isNil )and: [notif status = PNGTrajectoryState followingStatusValue ]) ifTrue: [
-			previousStatus := PNGTrajectoryState followingStatusValue
-		].
-		(notif status = PNGTrajectoryState errorStatusValue) ifTrue: [ self fail ] 
-	].
-	controller goTo: 3@0.
-	self deny: (motionFinishedSemaphore waitTimeoutMSecs: 10000).
-	self assert: trajectoryService get status = PNGTrajectoryState waitingStatusValue 
+	self assert: trajectoryService get status = PNGTrajectoryState waitingStatusValue.
+	self requestAssert: 'Did the robot move 4m?'
 ]

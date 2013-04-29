@@ -11,7 +11,7 @@ PBIrTelemeterTest >> testIrWhenRobotAtBottomLeftOfTheBox [
 	maxVal := 0.45.
 	wrongDistances := OrderedCollection new.
 	
-	self requestAction: 'Please, put the robot at the bottom left of the 1x1 box' orDo:[].
+	self requestAction: 'Please, put the robot at the bottom left of the 1x1 box'.
 	
 	laser := robot irTelemeterService.
 	laser enableNotificationsEvery: 10.
@@ -28,7 +28,7 @@ PBIrTelemeterTest >> testIrWhenRobotAtBottomRightOfTheBox [
 	maxVal := 0.45.
 	wrongDistances := OrderedCollection new.
 	
-	self requestAction: 'Please, put the robot at the bottom right of the 1x1 box' orDo:[].
+	self requestAction: 'Please, put the robot at the bottom right of the 1x1 box'.
 	
 	laser := robot irTelemeterService.
 	laser enableNotificationsEvery: 10.
@@ -46,7 +46,7 @@ PBIrTelemeterTest >> testIrWhenRobotAtCenterOfTheBox [
 	
 	wrongDistances := OrderedCollection new.
 	
-	self requestAction: 'Please, put the robot at the center of the 1x1 box' orDo:[].
+	self requestAction: 'Please, put the robot at the center of the 1x1 box'.
 	
 	laser := robot irTelemeterService.
 	laser enableNotificationsEvery: 10.
@@ -63,7 +63,7 @@ PBIrTelemeterTest >> testIrWhenRobotAtTopLeftOfTheBox [
 	maxVal := 0.45.
 	wrongDistances := OrderedCollection new.
 	
-	self requestAction: 'Please, put the robot at the top left of the 1x1 box' orDo:[].
+	self requestAction: 'Please, put the robot at the top left of the 1x1 box'.
 	
 	laser := robot irTelemeterService.
 	laser enableNotificationsEvery: 10.
@@ -80,7 +80,7 @@ PBIrTelemeterTest >> testIrWhenRobotAtTopRightOfTheBox [
 	maxVal := 0.45.
 	wrongDistances := OrderedCollection new.
 	
-	self requestAction: 'Please, put the robot at the top right of the 1x1 box' orDo:[].
+	self requestAction: 'Please, put the robot at the top right of the 1x1 box'.
 	
 	laser := robot irTelemeterService.
 	laser enableNotificationsEvery: 10.

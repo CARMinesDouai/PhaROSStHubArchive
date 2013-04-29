@@ -11,7 +11,7 @@ PBSonarTelemeterTest >> testSonarWhenRobotAtBottomLeftOfTheBox [
 	maxVal := 0.45.
 	wrongDistances := OrderedCollection new.
 	
-	self requestAction: 'Please, put the robot at the bottom left of the 1x1 box' orDo:[].
+	self requestAction: 'Please, put the robot at the bottom left of the 1x1 box'.
 	
 	laser := robot sonarTelemeterService.
 	laser enableNotificationsEvery: 10.
@@ -28,7 +28,7 @@ PBSonarTelemeterTest >> testSonarWhenRobotAtBottomRightOfTheBox [
 	maxVal := 0.45.
 	wrongDistances := OrderedCollection new.
 	
-	self requestAction: 'Please, put the robot at the bottom right of the 1x1 box' orDo:[].
+	self requestAction: 'Please, put the robot at the bottom right of the 1x1 box'.
 	
 	laser := robot sonarTelemeterService.
 	laser enableNotificationsEvery: 10.
@@ -46,7 +46,7 @@ PBSonarTelemeterTest >> testSonarWhenRobotAtCenterOfTheBox [
 	
 	wrongDistances := OrderedCollection new.
 	
-	self requestAction: 'Please, put the robot at the center of the 1x1 box' orDo:[].
+	self requestAction: 'Please, put the robot at the center of the 1x1 box'.
 	
 	laser := robot sonarTelemeterService.
 	laser enableNotificationsEvery: 10.
@@ -63,7 +63,7 @@ PBSonarTelemeterTest >> testSonarWhenRobotAtTopLeftOfTheBox [
 	maxVal := 0.45.
 	wrongDistances := OrderedCollection new.
 	
-	self requestAction: 'Please, put the robot at the top left of the 1x1 box' orDo:[].
+	self requestAction: 'Please, put the robot at the top left of the 1x1 box'.
 	
 	laser := robot sonarTelemeterService.
 	laser enableNotificationsEvery: 10.
@@ -80,7 +80,7 @@ PBSonarTelemeterTest >> testSonarWhenRobotAtTopRightOfTheBox [
 	maxVal := 0.45.
 	wrongDistances := OrderedCollection new.
 	
-	self requestAction: 'Please, put the robot at the top right of the 1x1 box' orDo:[].
+	self requestAction: 'Please, put the robot at the top right of the 1x1 box'.
 	
 	laser := robot sonarTelemeterService.
 	laser enableNotificationsEvery: 10.
