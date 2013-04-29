@@ -237,6 +237,7 @@ PhaROSNode >> startXmlService [
 
 { #category : #service }
 PhaROSNode >> stop [
+	self master unregisterNode: self.
 	self unregisterFromAllTopics.
 	self stopXmlService.
 	self stopPublisher.

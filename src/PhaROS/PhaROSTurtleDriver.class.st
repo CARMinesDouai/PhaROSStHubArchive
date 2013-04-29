@@ -2,7 +2,7 @@ Class {
 	#name : #PhaROSTurtleDriver,
 	#superclass : #PhaROSNode,
 	#instVars : [
-		'isStarted'
+		'process'
 	],
 	#category : #'PhaROS-Experiments-RoboShopDeliverable1'
 }
@@ -21,21 +21,31 @@ PhaROSTurtleDriver class >> driverExample [
 ]
 
 { #category : #controlling }
-PhaROSTurtleDriver >> start [
+PhaROSTurtleDriver >> publishingLoop [
 	|delay|
-	super start.
 	delay := 1 second asDelay.
-	isStarted := true.
-	[[isStarted] whileTrue: [    delay wait.
-            self sendTo: '/turtle1/command_velocity' a: [ :msg |
-                msg angular: 1.0.
-                msg linear: -2.0	
-            ]. 
-        ]] forkAt: Processor userBackgroundPriority named: self printString
+	[
+		delay wait.
+            self 
+			sendTo: '/turtle1/command_velocity' 
+			a: [ :message |
+  		            	message angular: 1.0.
+    		           		message linear: 2.0]
+	] repeat
+]
+
+{ #category : #controlling }
+PhaROSTurtleDriver >> start [
+	super start.
+	process := [self publishingLoop] newProcess.
+	process
+		name: 'Turtle Driver';
+		priority: Processor userBackgroundPriority;
+		resume
 ]
 
 { #category : #controlling }
 PhaROSTurtleDriver >> stop [
 	super stop.
-	isStarted := false
+	process terminate
 ]

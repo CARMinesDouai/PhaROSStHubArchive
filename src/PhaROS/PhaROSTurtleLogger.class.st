@@ -20,9 +20,8 @@ PhaROSTurtleLogger class >> loggerExample [
 { #category : #'initialize-release' }
 PhaROSTurtleLogger >> start [ 
 	super start.
-	self receiverDelegate:  [ :msg :chn |
-        "this block will be executed each time a message arrives on one the topics this node is subscribed to"
-        Transcript show: msg value asString.
-    ].
-self interestedIn: '/turtle1/command_velocity' typedAs: 'turtlesim/Velocity'.
+	self receiverDelegate:  [ :message :channel |
+       							Transcript show: message value asString].
+	self interestedIn: '/turtle1/command_velocity' 
+	
 ]
