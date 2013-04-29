@@ -1,5 +1,5 @@
 Class {
-	#name : #PureROSGmappings,
+	#name : #PureROSAMCL,
 	#superclass : #Object,
 	#category : #'PureROS-Experiments'
 }

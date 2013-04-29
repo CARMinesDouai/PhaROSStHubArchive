@@ -13,7 +13,7 @@ Class {
 		'currentIMUPose',
 		'waypoints'
 	],
-	#category : #PureROS
+	#category : #'PureROS-Deprecated'
 }
 
 { #category : #'as yet unclassified' }

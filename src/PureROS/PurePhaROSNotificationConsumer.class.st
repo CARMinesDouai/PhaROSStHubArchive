@@ -1,7 +1,7 @@
 Class {
 	#name : #PurePhaROSNotificationConsumer,
 	#superclass : #PurePhaROSNode,
-	#category : #PureROS
+	#category : #'PureROS-Deprecated'
 }
 
 { #category : #'as yet unclassified' }

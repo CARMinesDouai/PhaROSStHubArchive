@@ -6,7 +6,7 @@ Class {
 		'previousTime',
 		'odometrySents'
 	],
-	#category : #PureROS
+	#category : #'PureROS-Deprecated'
 }
 
 { #category : #'as yet unclassified' }

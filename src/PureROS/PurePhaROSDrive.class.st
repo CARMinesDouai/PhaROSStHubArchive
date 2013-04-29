@@ -10,7 +10,7 @@ Class {
 		'stepController',
 		'lastMeasure'
 	],
-	#category : #PureROS
+	#category : #'PureROS-Deprecated'
 }
 
 { #category : #'as yet unclassified' }

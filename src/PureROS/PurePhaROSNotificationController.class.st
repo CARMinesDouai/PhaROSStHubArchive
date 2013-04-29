@@ -1,0 +1,58 @@
+Class {
+	#name : #PurePhaROSNotificationController,
+	#superclass : #PNGController,
+	#instVars : [
+		'movementCallbacks',
+		'laserCallbacks'
+	],
+	#category : #'PureROS-Controllers'
+}
+
+{ #category : #'as yet unclassified' }
+PurePhaROSNotificationController >> activateLaserNotifications [
+	robot laserService onNotificationDo: [ : notification |  self onLaserNotification: notification. 	].
+	[robot laserService enableNotificationsEvery: 0.] on: PNGMessageError do: [ ].
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSNotificationController >> activateMovementNotifications [
+	robot localizationService onNotificationDo: [ : notification |  self onMovementNotification: notification. 	].
+	[robot localizationService enableNotificationsEvery: 0.] on: PNGMessageError do: [ ].
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSNotificationController >> initialize [ 
+	movementCallbacks := Set new.
+	laserCallbacks := Set new.
+			
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSNotificationController >> laserCallbacks [ 
+	^ laserCallbacks
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSNotificationController >> movementCallbacks [  
+	^ movementCallbacks
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSNotificationController >> notificateLaserTo: aCallback [
+	self laserCallbacks add: aCallback.
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSNotificationController >> notificateMovementTo: aCallback [
+	self movementCallbacks add: aCallback.
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSNotificationController >> onLaserNotification: aLaserNotification [
+	self laserCallbacks do: [ : cb | cb value: aLaserNotification ].
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSNotificationController >> onMovementNotification: aMovementNotification [
+	self movementCallbacks  do: [ : cb | cb value: aMovementNotification ].
+]

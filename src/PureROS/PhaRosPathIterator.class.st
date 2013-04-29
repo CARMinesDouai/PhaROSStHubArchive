@@ -7,7 +7,7 @@ Class {
 		'step',
 		'lastCalculatedIndex'
 	],
-	#category : #PureROS
+	#category : #'PureROS-Util'
 }
 
 { #category : #'as yet unclassified' }
