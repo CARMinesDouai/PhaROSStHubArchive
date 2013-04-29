@@ -1,8 +1,22 @@
 Class {
 	#name : #TKTParalellizer,
 	#superclass : #TKTProxy,
+	#instVars : [
+		'looping'
+	],
 	#category : #'TaskIT-Worker'
 }
+
+{ #category : #'as yet unclassified' }
+TKTParalellizer >> initialize [ 
+	looping := false.
+]
+
+{ #category : #'as yet unclassified' }
+TKTParalellizer >> looping [
+	looping := true .
+	^ self.
+]
 
 { #category : #'as yet unclassified' }
 TKTParalellizer >> paralellize [
@@ -11,5 +25,10 @@ TKTParalellizer >> paralellize [
 
 { #category : #'as yet unclassified' }
 TKTParalellizer >> spawn: aBlock [ 
-	^ aBlock doIt.
+	^ looping ifTrue: [
+		(TKTLoopingTask for: aBlock) doIt.
+	] ifFalse: [
+		aBlock doIt.
+	].
+	
 ]

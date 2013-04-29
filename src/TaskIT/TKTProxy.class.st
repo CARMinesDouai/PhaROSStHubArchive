@@ -15,7 +15,7 @@ TKTProxy class >> for: anObject [
 { #category : #'as yet unclassified' }
 TKTProxy >> doesNotUnderstand: aMessage [
 
-	^ (self spawn: ([ wrapped perform: aMessage selector  withArguments: aMessage arguments ] )) asResult.
+	^ (self spawn: ([  wrapped perform: aMessage selector  withArguments: aMessage arguments ] )) asResult.
 ]
 
 { #category : #'as yet unclassified' }

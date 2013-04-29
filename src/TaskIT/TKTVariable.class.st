@@ -23,12 +23,29 @@ TKTVariable >> apply: aBlock [
 ]
 
 { #category : #'as yet unclassified' }
+TKTVariable >> at: anObject [
+	^ self get at: anObject .
+]
+
+{ #category : #'as yet unclassified' }
+TKTVariable >> at: anObject put: anOtherObject [
+	^ self get at: anObject put: anOtherObject.
+]
+
+{ #category : #'as yet unclassified' }
 TKTVariable >> doesNotUnderstand: aMessage [ 
 	| rslt |
 	mutex critical: [
 		rslt := value perform: aMessage selector withArguments: aMessage arguments
 	].
 	^ rslt 
+	
+]
+
+{ #category : #'as yet unclassified' }
+TKTVariable >> finalize [ 
+	value finalize.
+	super finalize.
 	
 ]
 

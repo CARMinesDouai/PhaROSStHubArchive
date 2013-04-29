@@ -7,7 +7,8 @@ Class {
 		'callbacks',
 		'value',
 		'result',
-		'semaphore'
+		'semaphore',
+		'processData'
 	],
 	#category : #'TaskIT-Kernel'
 }
@@ -23,6 +24,16 @@ TKTFuture >> asResult [
 { #category : #'as yet unclassified' }
 TKTFuture >> asStickyReference [ 
 	^ TKTStickyReference for: self.
+]
+
+{ #category : #'as yet unclassified' }
+TKTFuture >> at: anObject [
+	^ processData at: anObject
+]
+
+{ #category : #'as yet unclassified' }
+TKTFuture >> at: anObject put: aValue [
+	processData at: anObject put: aValue.
 ]
 
 { #category : #'as yet unclassified' }
@@ -59,6 +70,7 @@ TKTFuture >> initialize [
 	error := nil.
 	callbacks := TKTVariable for: OrderedCollection new.
 	semaphore := Semaphore new.
+	processData := TKTVariable for: Dictionary new.
 ]
 
 { #category : #testing }

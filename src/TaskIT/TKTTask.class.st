@@ -96,7 +96,7 @@ TKTTask >> value: aFuture [
 	self setUp.
 	[
 		[
-			value :=  ( block cull: self ). 
+			value :=  ( block cull: self cull: aFuture ). 
 		] on: Error do: [ 
 			: exception |
 			self fallback: exception.
