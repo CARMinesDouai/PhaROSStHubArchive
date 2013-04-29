@@ -29,7 +29,7 @@ PureROSController class >> kompai2 [
 	masterController := PhaROSHandleController localhost.
 	robot := PNGRobulabHandcodedFactory kompai2.
 	
-	^self new masterController: masterController ; robot: robot ; setUp ; yourself.
+	^self new masterController: masterController ; robot: robot  ; yourself.
 ]
 
 { #category : #'as yet unclassified' }
@@ -47,6 +47,8 @@ PureROSController class >> withMasterAt: anUrl andRobotAt: anIP and: aPort [
 PureROSController >> broadcastTransformations [
 	
 	| transformationsToSend |
+	
+	transformations size = 0 ifTrue: [ ^ self ].
 	transformationsToSend := transformations shallowCopy.
 	
 	masterController node sendTo: '/tf' a: [: msg |		
@@ -135,6 +137,7 @@ PureROSController >> notificationController [
 		notificationController  := PurePhaROSNotificationController for: robot. 
 		notificationController activateMovementNotifications.
 		notificationController activateLaserNotifications.
+		notificationController whenAllMovementCallbacksHasBeenCalled: [ self broadcastTransformations ].
 		notificationController.
 	].
 ]
