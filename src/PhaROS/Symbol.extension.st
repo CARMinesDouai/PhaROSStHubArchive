@@ -1,7 +1,7 @@
 Extension { #name : #Symbol }
 
 { #category : #'*PhaROS' }
-Symbol >> adapToAdapter [ 
+Symbol >> adaptToAdapter [ 
 	^ (self at:1) isLowercase ifTrue: [
 		PhaROSFilter for: self.	
 	] ifFalse: [

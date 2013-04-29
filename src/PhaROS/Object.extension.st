@@ -6,7 +6,7 @@ Object >> \> anAdaption [
 ]
 
 { #category : #'*PhaROS' }
-Object >> adapToAdapter [ 
+Object >> adaptToAdapter [ 
 	self error: ' Just symbols and classes can be uses as convertions '
 ]
 

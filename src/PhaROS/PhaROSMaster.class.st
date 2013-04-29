@@ -59,70 +59,6 @@ PhaROSMaster class >> url: anUrl [
 
 ]
 
-{ #category : #construction }
-PhaROSMaster >> create: aNodeClass named: name domain: aDomain tcpPort: aTcpPort xmlRpcPort: aXmlRpcPort [ 
-	| node |
-	self verifyName: name.
-	node := aNodeClass name: name domain: aDomain tcpPort: aTcpPort xmlRpcPort: aXmlRpcPort master: self .
-	self registerNode: node.
-	^ node.
-	
-]
-
-{ #category : #construction }
-PhaROSMaster >> create: aNodeClass named: name domain: aDomain tcpPort: aTcpPort xmlRpcPort: aXmlRpcPort delegate: aReceiverDelegateOrBlock [
-	| node |
-	self verifyName: name.
-	node := aNodeClass name: name domain: aDomain tcpPort: aTcpPort xmlRpcPort: aXmlRpcPort master: self delegate: aReceiverDelegateOrBlock.
-	self registerNode: node.
-	^ node.
-	
-]
-
-{ #category : #construction }
-PhaROSMaster >> create: aSouledNodeClass named: name domain: aDomain tcpPort: aTcpPort xmlRpcPort: aXmlRpcPort soul: aBlock [
-	| node |
-	self verifyName: name.
-	node := aSouledNodeClass name: name domain: aDomain tcpPort: aTcpPort xmlRpcPort: aXmlRpcPort master: self soul: aBlock.
-	self registerNode: node.
-
-	^ node.
-	
-]
-
-{ #category : #construction }
-PhaROSMaster >> create: aSouledNodeClass named: name domain: aDomain tcpPort: aTcpPort xmlRpcPort: aXmlRpcPort soul: aBlock delegate: aReceiverDelegateOrBlock [
-	| node |
-	self verifyName: name.
-	node := aSouledNodeClass name: name domain: aDomain tcpPort: aTcpPort xmlRpcPort: aXmlRpcPort master: self soul: aBlock delegate: aReceiverDelegateOrBlock.
-	self registerNode: node.
-
-	^ node.
-	
-]
-
-{ #category : #construction }
-PhaROSMaster >> create: aNodeClass named: name domain: aDomain xmlRpcPort: aXmlRpcPort [ 
-	| node |
-	self verifyName: name.
-	node := aNodeClass name: name domain: aDomain xmlRpcPort: aXmlRpcPort master: self .
-	self registerNode: node.
-	
-	^ node.
-	
-]
-
-{ #category : #construction }
-PhaROSMaster >> create: aSouledNodeClass named: name domain: aDomain xmlRpcPort: aXmlRpcPort delegate: aReceiverDelegateOrBlock [
-	| node |
-	self verifyName: name.
-	node := aSouledNodeClass name: name domain: aDomain xmlRpcPort: aXmlRpcPort master: self delegate: aReceiverDelegateOrBlock.
-	self registerNode: node.
-
-	^ node.
-	
-]
-
 { #category : #'API-Data-Mutators' }
 PhaROSMaster >> deleteParam: aCallerId named: aParameterName [ 
 	^ masterXmlRpc deleteParam: aCallerId named: aParameterName.
@@ -212,7 +148,7 @@ PhaROSMaster >> hasParam: aCallerId named: aParameterName [
 	
 ]
 
-{ #category : #construction }
+{ #category : #'initialize-release' }
 PhaROSMaster >> initialize [ 
 	super initialize.
 	nodes := Dictionary new. 

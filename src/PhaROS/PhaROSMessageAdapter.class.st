@@ -19,6 +19,11 @@ PhaROSMessageAdapter >> adapt: aMessage [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSMessageAdapter >> adaptToAdapter [
+	^ self 
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSMessageAdapter >> initialize [ 
 	chainOfAdaption := OrderedCollection new.
 ]

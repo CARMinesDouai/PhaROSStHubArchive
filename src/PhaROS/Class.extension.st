@@ -1,6 +1,6 @@
 Extension { #name : #Class }
 
 { #category : #'*PhaROS' }
-Class >> adapToAdapter [ 
+Class >> adaptToAdapter [ 
 	^ PhaROSConverter convertTo: self .
 ]

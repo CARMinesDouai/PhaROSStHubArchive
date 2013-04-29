@@ -13,13 +13,13 @@ PhaROSFilter class >> for: aProperty [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSFilter >> adapToAdapter [ 
-	 ^ self
+PhaROSFilter >> adapt: aPhaROSValue [ 
+	^ aPhaROSValue getAt: property.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSFilter >> adapt: aPhaROSValue [ 
-	^ aPhaROSValue getAt: property.
+PhaROSFilter >> adaptToAdapter [ 
+	 ^ self
 ]
 
 { #category : #'as yet unclassified' }

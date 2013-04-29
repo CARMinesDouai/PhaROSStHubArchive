@@ -23,53 +23,65 @@ Class {
 	#category : #'PhaROS-Kernel'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #building }
+PhaROSNodeHandle >> buildConnectionFor: aTopicName [
+	^ PhaROSTopicConectionBuilder node: self topicName: aTopicName.
+]
+
+{ #category : #dispatching }
 PhaROSNodeHandle >> dispatch: aMessage for: aChannel [
-	topicHandle at: aChannel topic name ifPresent: [ : callback | 
-		callback cull: aMessage cull: aChannel 
+	topicHandle at: aChannel topic  ifPresent: [ : callbackSet | 
+		callbackSet do: [ : callback | callback receive: aMessage value from: aChannel]. 
 	] ifAbsent: [
 		Transcript show: ' Receiving packets from ', aChannel topic name, ' with out packet handle'; cr.
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'initialize-release' }
 PhaROSNodeHandle >> initialize [ 
 	super initialize.
 	topicHandle := Dictionary new.
 	receiverDelegate := [: msg :chn | self dispatch: msg for: chn ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #banished }
 PhaROSNodeHandle >> interestedIn: aTopicName [
-	self error: 'This method is not available in this node. Call instead interestedIn: onReceive: '.
+	self error: 'This method is not available in this node. Call instead interestedIn: for: '.
 ]
 
-{ #category : #'as yet unclassified' }
-PhaROSNodeHandle >> interestedIn: aTopicName onReceive: aCallback [
-	self register: aCallback for: aTopicName.
-	^ super interestedIn: aTopicName.
+{ #category : #'topic-consume' }
+PhaROSNodeHandle >> interestedIn: aTopicName for: aCallback [
+	self register: aCallback for:  (self lookupTopic: aTopicName).
+
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #banished }
 PhaROSNodeHandle >> interestedIn: aTopicName typedAs: aTypeId [
 	self error: 'This method is not available in this node. Call instead interestedIn: typedAs: onReceive: '.
 ]
 
-{ #category : #'as yet unclassified' }
-PhaROSNodeHandle >> interestedIn: aTopicName typedAs: aTypeId onReceive: aCallback [
-	self register: aCallback for: aTopicName. 
-	super interestedIn: aTopicName typedAs: aTypeId.
+{ #category : #'topic-consume' }
+PhaROSNodeHandle >> interestedIn: aTopicName typedAs: aTypeId for: aCallback [
+	self register: aCallback for:  (self lookupTopic: aTopicName typedAs: aTypeId). 
 
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #banished }
 PhaROSNodeHandle >> receiverDelegate: aDelegate [
 	self error: 'this node is a handle node. It receives delegates per topic'.
 ]
 
-{ #category : #'as yet unclassified' }
-PhaROSNodeHandle >> register: aCallback for: aTopicName [
-	topicHandle at: aTopicName put: aCallback.
+{ #category : #building }
+PhaROSNodeHandle >> register: aCallback for: aTopic [
+	topicHandle at: aTopic  ifPresent: [
+		: aCollectionOfCallbacks | aCollectionOfCallbacks add: aCallback.
+	]  ifAbsent:[
+		topicHandle at:aTopic put: (Set newFrom: { aCallback }).
+		self subscriber interestedIn: aTopic. 
+	] .  
+	
+	
+	
 ]

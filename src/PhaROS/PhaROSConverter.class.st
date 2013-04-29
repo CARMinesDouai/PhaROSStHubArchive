@@ -13,7 +13,12 @@ PhaROSConverter class >> convertTo: aClass [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSConverter >> adapToAdapter [ 
+PhaROSConverter >> adapt: aPhaROSValue [ 
+	^ aPhaROSValue linear @ aPhaROSValue angular.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSConverter >> adaptToAdapter [ 
 	^ self 
 ]
 
