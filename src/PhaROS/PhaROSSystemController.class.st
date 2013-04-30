@@ -23,6 +23,11 @@ PhaROSSystemController class >> url: anUrl [
 ]
 
 { #category : #accessing }
+PhaROSSystemController >> finalize [ 
+	master stopAndUnregister.
+]
+
+{ #category : #accessing }
 PhaROSSystemController >> master:aMaster [
 	master := aMaster
 ]

@@ -224,11 +224,16 @@ PhaROSMaster >> setParam: aCallerId named: aParameterName with: anObject [
 
 { #category : #service }
 PhaROSMaster >> stop [
-	nodes valuesDo:#stop.
 	topics valuesDo:#stop.
+	nodes valuesDo:#destroy.
 	nodes removeAll.
 	topics removeAll.
 	
+]
+
+{ #category : #service }
+PhaROSMaster >> stopAndUnregister [
+	^ PhaROSMaster stopAndUnregisterUrl: masterXmlRpc url asString.
 ]
 
 { #category : #accessing }

@@ -86,11 +86,36 @@ PhaROSSystemLauncher >> rosMsgShow: aTypeId [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSSystemLauncher >> roslaunch: aConfigurationFile [
+| roslaunch |
+
+	roslaunch := ExternalUnixOSProcess 
+					forkAndExec: '/opt/ros/fuerte/bin/roslaunch'   
+					arguments: { aConfigurationFile  } 
+					environment:  nil 
+					descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
+	roslaunch spin: 20.
+	
+	^ roslaunch.
+
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSSystemLauncher >> rosrun: anArrayOfArguments [
+	| process | 
+	process :=  ExternalUnixOSProcess 
+							forkAndExec: '/opt/ros/fuerte/bin/rosrun'   
+							arguments: anArrayOfArguments
+							environment:  nil 
+							descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
+	process spin: 20.
+	^ process. 
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSSystemLauncher >> shutdownGMapping [
 	gmappingProcess  ifNotNil: [
-		gmappingProcess  sigterm.
-		self spin: 5. 
-		gmappingProcess  sigkill.
+		gmappingProcess finalize.
 		gmappingProcess  := nil.
 	].
 
@@ -99,9 +124,7 @@ PhaROSSystemLauncher >> shutdownGMapping [
 { #category : #'as yet unclassified' }
 PhaROSSystemLauncher >> shutdownMaster [
 	masterProcess ifNotNil: [
-		masterProcess sigterm.
-		self spin: 5.
-		masterProcess sigkill.
+		gmappingProcess finalize.
 		masterProcess := nil.
 	].
 
@@ -110,22 +133,10 @@ PhaROSSystemLauncher >> shutdownMaster [
 { #category : #'as yet unclassified' }
 PhaROSSystemLauncher >> shutdownTurtle [
 	turtleProcess ifNotNil: [
-		turtleProcess sigterm.
-		self spin: 5. 
-		turtleProcess sigkill.
+		turtleProcess finalize.
 		turtleProcess := nil.
 	].
 
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSSystemLauncher >> spin: times [
-	times timesRepeat: [
-		(times * 100) timesRepeat: [].
-		(Delay forMilliseconds: 100) wait.
-	]
-
-	
 ]
 
 { #category : #'as yet unclassified' }
@@ -136,7 +147,7 @@ PhaROSSystemLauncher >> startUpGMapping [
 							arguments: { 'gmapping' . 'slam_gmapping' } 
 							environment:  nil 
 							descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
-		self spin: 4.
+		gmappingProcess spin: 4.
 	].
 ]
 
@@ -149,7 +160,7 @@ PhaROSSystemLauncher >> startUpMaster [
 					arguments: {  } 
 					environment:  nil 
 					descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
-		self spin: 20.
+		masterProcess spin: 20.
 	].
 ]
 
@@ -161,6 +172,6 @@ PhaROSSystemLauncher >> startUpTurtle [
 							arguments: { 'turtlesim' . 'turtlesim_node' } 
 							environment:  nil 
 							descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
-		self spin: 20.
+		turtleProcess spin: 20.
 	].
 ]

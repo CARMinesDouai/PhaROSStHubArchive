@@ -59,6 +59,11 @@ PhaROSHandleController >> node [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSHandleController >> stop [
+	master stopAndUnregister.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSHandleController >> tcpPort [
 	^9090
 ]

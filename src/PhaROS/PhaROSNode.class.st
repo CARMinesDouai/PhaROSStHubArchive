@@ -42,7 +42,14 @@ Class {
 { #category : #'as yet unclassified' }
 PhaROSNode class >> name: aName domain: aDomain tcpPort: aTcpPort xmlRpcPort: aXmlRpcPort master: aMaster [
 
-	^ self name: aName domain: aDomain tcpPort: aTcpPort xmlRpcPort: aXmlRpcPort master: aMaster delegate: [].
+	^ super new 	name: aName; 
+				domain: aDomain ; 
+				tcpPort: aTcpPort ; 
+				xmlRpcPort: aXmlRpcPort; 
+				master: aMaster;
+				start; 
+				yourself.
+	
 ]
 
 { #category : #'as yet unclassified' }
@@ -110,6 +117,7 @@ PhaROSNode >> domain: anIp [
 PhaROSNode >> initialize [ 
 	slave := PhaROSSlave for: self.
 	topics := Dictionary new.
+	receiverDelegate := [].
 ]
 
 { #category : #service }
@@ -248,7 +256,7 @@ PhaROSNode >> stop [
 
 { #category : #service }
 PhaROSNode >> stopPublisher [
-	publisher ifNotNil: [ publisher stop ].
+	publisher ifNotNil: [ publisher stop. publisher := nil ].
 ]
 
 { #category : #service }
