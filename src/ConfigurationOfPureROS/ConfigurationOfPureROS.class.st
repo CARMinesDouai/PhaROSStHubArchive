@@ -152,10 +152,12 @@ ConfigurationOfPureROS >> baseline10: spec [
 					versionString: #bleedingEdge;
 					repository: 'http://car.mines-douai.fr/squeaksource/Pure'.
 			].
-
+			spec package: 'TaskIT' with: [
+				spec repository: 'http://smalltalkhub.com/mc/sbragagnolo/TaskIT/main'.
+			].
 		
 			spec package: 'PureROS' with: [
-				spec requires: #('PhaROS' 'PureNG').
+				spec requires: #('PhaROS' 'PureNG' 'TaskIT').
 			].
 	].
 
