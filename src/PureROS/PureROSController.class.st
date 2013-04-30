@@ -59,6 +59,12 @@ PureROSController >> broadcastTransformations [
 	]
 ]
 
+{ #category : #accessing }
+PureROSController >> buildConnectionFor: aTopicID [
+	^ masterController node buildConnectionFor: aTopicID.
+
+]
+
 { #category : #util }
 PureROSController >> createNotificationCallbackFor: aTopicName typedAs: aTypeID transformedBy: aBlock [
 	^ [: aNotification | 

@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'pureros',
-		'launch'
+		'launch',
+		'tracker'
 	],
 	#category : #'PureROS-Experiments'
 }
@@ -24,7 +25,51 @@ PureROSBasicExperiment >> beginExperiment [
 
 ]
 
-{ #category : #configure }
+{ #category : #util }
+PureROSBasicExperiment >> buildValueTrackerFor: aTopicID [ 
+	| connector |
+	
+	connector := pureros buildConnectionFor: aTopicID.	
+	connector for: [ : aValue | tracker track: aValue from: aTopicID ] .
+	^ connector.
+]
+
+{ #category : #'configure-subscribing' }
+PureROSBasicExperiment >> configureCommandVelocity [
+	| connector |
+	
+	connector := pureros buildConnectionFor: '/command_velocity'.
+	
+	connector 
+			typedAs: 'geometry_msgs/Twist';
+			adapted: PNGDifferentiaVelocity;
+			when: [ :msg | 
+
+					self assert: msg value linear y = 0.0 description: ' Ensure that  holonomic_robot: false in the planner configuration (commonly named base_local_planner_params.yaml)'.
+					self assert: msg value linear z = 0.0 description: ' Ensure that  holonomic_robot: false in the planner configuration (commonly named base_local_planner_params.yaml)'.
+					self assert: msg value angular y = 0.0 description: ' Ensure that  holonomic_robot: false in the planner configuration (commonly named base_local_planner_params.yaml)'.
+					self assert: msg value angular x = 0.0 description: ' Ensure that  holonomic_robot: false in the planner configuration (commonly named base_local_planner_params.yaml)'.
+			];
+			for: [ : aPNGRobotPose | pureros locationController setPose: aPNGRobotPose ] .
+
+	connector connect.
+]
+
+{ #category : #'configure-subscribing' }
+PureROSBasicExperiment >> configureInitialPose [
+	| connector |
+	
+	connector := pureros buildConnectionFor: '/initialpose'.
+	
+	connector 
+			typedAs: 'geometry_msgs/PoseWithCovarianceStamped';
+			adapted: #pose \> #pose \> PNGRobotPose;
+			for: [ : aPNGRobotPose | pureros locationController setPose: aPNGRobotPose ] .
+
+	connector connect.
+]
+
+{ #category : #'configure-publishing' }
 PureROSBasicExperiment >> configureLaser [
 	pureros laserBroadcasterAt: '/scan' typedAs: 'sensor_msgs/LaserScan' transformedBy: [ :notification : msg | 
 		msg header frame_id: '/laser'.
@@ -38,7 +83,7 @@ PureROSBasicExperiment >> configureLaser [
 	
 ]
 
-{ #category : #configure }
+{ #category : #'configure-publishing' }
 PureROSBasicExperiment >> configureOdometry [
 	pureros movementBroadcasterAt: '/odom' typedAs: 'nav_msgs/Odometry'  transformedBy: PureROSOdometryDelegate new callback.
 	
@@ -47,7 +92,7 @@ PureROSBasicExperiment >> configureOdometry [
 	
 ]
 
-{ #category : #configure }
+{ #category : #'configure-publishing' }
 PureROSBasicExperiment >> configurePoseStamped [
 	pureros movementBroadcasterAt: '/kompai2/pose' typedAs: 'geometry_msgs/PoseStamped'  transformedBy: [ : notification : msg | 
 		notification position intoGeometry_msgs_Pose: msg pose.
@@ -57,7 +102,20 @@ PureROSBasicExperiment >> configurePoseStamped [
 	
 ]
 
-{ #category : #configure }
+{ #category : #'configure-subscribing' }
+PureROSBasicExperiment >> configureTFAASTrackerFrom: aFrame to: anOtherFrame [
+	| connector topicName |
+	
+	topicName := self tfaasTopicNameFor: aFrame and: anOtherFrame.
+	
+	connector := self buildValueTrackerFor: topicName.
+	connector typedAs: 'geometry_msgs/PoseStamped'.
+	connector connect.
+	
+	^ self valueTracker: topicName.
+]
+
+{ #category : #'configure-publishing' }
 PureROSBasicExperiment >> configureTFIn: aFrameID withParent: aParentFrameID [
 	pureros notificateMovementAsTF: aFrameID withParent: aParentFrameID
 	
@@ -88,11 +146,23 @@ PureROSBasicExperiment >> finalize [
 PureROSBasicExperiment >> initialize [ 
 	super initialize.
 	self finalizationRegistry add: self.
+	tracker := PureROSValueTracker new. 
 ]
 
-{ #category : #configure }
+{ #category : #'configure-system' }
 PureROSBasicExperiment >> launch: aConfigurationFile [
 	launch := (PhaROSSystemLauncher instance roslaunch: aConfigurationFile) asStickyReference.
+]
+
+{ #category : #util }
+PureROSBasicExperiment >> normalizeFrame: aFrame [
+	
+	^ (aFrame at: 1 ) = $/ ifTrue: [
+		aFrame copyFrom: 2 to: aFrame size.	
+	   ] ifFalse: [
+		aFrame.
+	   ].
+	
 ]
 
 { #category : #accessing }
@@ -101,7 +171,7 @@ PureROSBasicExperiment >> pureros: aPureROSController [
 	
 ]
 
-{ #category : #configure }
+{ #category : #'configure-system' }
 PureROSBasicExperiment >> run: anArrayOfArguments [ 
 	^ (PhaROSSystemLauncher instance rosrun: anArrayOfArguments).
 ]
@@ -119,5 +189,22 @@ PureROSBasicExperiment >> teardown [
 
 	
 	
+	
+]
+
+{ #category : #util }
+PureROSBasicExperiment >> tfaasTopicNameFor: aFrame and: anOtherFrame [
+	| from to |
+	
+	from := self normalizeFrame: aFrame.
+	to := self normalizeFrame: anOtherFrame.
+	
+	
+	^ '/tfaas/', from, '/', to.
+]
+
+{ #category : #util }
+PureROSBasicExperiment >> valueTracker: aTopicID [ 
+	^ tracker tracker: aTopicID.
 	
 ]
