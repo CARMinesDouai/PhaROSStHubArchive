@@ -78,6 +78,20 @@ PureROSController >> driveControler [
 ]
 
 { #category : #'initialize-release' }
+PureROSController >> finalize [
+	notificationController desactivateMovementNotifications.
+	notificationController desactivateLaserNotifications.
+	
+	driveControler finalize.
+	locationController finalize.
+	
+	
+	masterController stop.
+	masterController := nil.
+	robot := nil. 
+]
+
+{ #category : #'initialize-release' }
 PureROSController >> initialize [ 
 	super initialize.
 	transformations := OrderedCollection new.

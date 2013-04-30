@@ -18,7 +18,7 @@ PureROSOdometryDelegate >> callback [
 			msg child_frame_id: ''.
 			
 			notification position intoGeometry_msgs_Pose: msg pose pose.
-			(self measurePoseDiference: notification) intoTwist: msg twist twist.
+			(self measurePoseDiference: notification) intoGeometry_msgs_Twist: msg twist twist.
 		].
 
 	
@@ -75,4 +75,5 @@ PureROSOdometryDelegate >> measurePoseDiference: aNotification [
 	].
 	previousNotification := aNotification.
 	previousTime := time.
+	^ poseDifference.
 ]

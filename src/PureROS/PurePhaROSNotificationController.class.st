@@ -23,6 +23,18 @@ PurePhaROSNotificationController >> activateMovementNotifications [
 ]
 
 { #category : #'as yet unclassified' }
+PurePhaROSNotificationController >> desactivateLaserNotifications [
+	robot laserService disableNotifications.
+	
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSNotificationController >> desactivateMovementNotifications [
+	robot localizationService disableNotifications.
+	
+]
+
+{ #category : #'as yet unclassified' }
 PurePhaROSNotificationController >> initialize [ 
 	movementCallbacks := Set new.
 	laserCallbacks := Set new.
@@ -52,13 +64,13 @@ PurePhaROSNotificationController >> notificateMovementTo: aCallback [
 { #category : #'as yet unclassified' }
 PurePhaROSNotificationController >> onLaserNotification: aLaserNotification [
 	self laserCallbacks do: [ : cb | cb value: aLaserNotification ].
-	allLaserCallbacksCalled cull: aLaserNotification.
+	allLaserCallbacksCalled ifNotNil: [ allLaserCallbacksCalled cull: aLaserNotification].
 ]
 
 { #category : #'as yet unclassified' }
 PurePhaROSNotificationController >> onMovementNotification: aMovementNotification [
 	self movementCallbacks  do: [ : cb | cb value: aMovementNotification ].
-	allMovementCallbacksCalled cull: aMovementNotification.
+	allMovementCallbacksCalled ifNotNil:[ allMovementCallbacksCalled cull: aMovementNotification.]
 ]
 
 { #category : #'as yet unclassified' }
