@@ -153,9 +153,12 @@ ConfigurationOfPhaROS >> baseline10: spec [
 					versionString: #bleedingEdge;
 					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
 			].
+			spec package: 'TaskIT' with: [
+				spec repository: 'http://smalltalkhub.com/mc/sbragagnolo/TaskIT/main'.
+			].
 		
 			spec package: 'PhaROS' with: [
-				spec requires: #('XMLRPC' 'CommonTraits' 'PaulLePoulpe' 'OSProcess').
+				spec requires: #('XMLRPC' 'CommonTraits' 'PaulLePoulpe' 'OSProcess' 'TaskIT').
 			].
 		
 			spec group: 'default'  with: #( 'PhaROS').
