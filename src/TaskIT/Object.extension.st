@@ -1,6 +1,11 @@
 Extension { #name : #Object }
 
 { #category : #'*TaskIT' }
+Object >> asStickyReference [ 
+	^ TKTStickyReference for: self.
+]
+
+{ #category : #'*TaskIT' }
 Object >> asThreadsafeReference [
 	^ TKTVariable for: self.
 ]

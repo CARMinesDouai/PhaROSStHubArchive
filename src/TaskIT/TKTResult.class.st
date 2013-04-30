@@ -14,11 +14,6 @@ TKTResult class >> for: aFuture [
 ]
 
 { #category : #'as yet unclassified' }
-TKTResult >> asStickyReference [ 
-	^ TKTStickyReference for: self.
-]
-
-{ #category : #'as yet unclassified' }
 TKTResult >> cancel [
 	cancelled := true.
 	^ future cancel.

@@ -22,11 +22,6 @@ TKTFuture >> asResult [
 ]
 
 { #category : #'as yet unclassified' }
-TKTFuture >> asStickyReference [ 
-	^ TKTStickyReference for: self.
-]
-
-{ #category : #'as yet unclassified' }
 TKTFuture >> at: anObject [
 	^ processData at: anObject
 ]

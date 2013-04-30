@@ -13,6 +13,11 @@ TKTStickyReference class >> for: anObject [
 ]
 
 { #category : #'as yet unclassified' }
+TKTStickyReference >> asStickyReference [ 
+	^ self .
+]
+
+{ #category : #'as yet unclassified' }
 TKTStickyReference >> finalize [ 
 	ref finalize.
 	ref := nil. 
