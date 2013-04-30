@@ -1,5 +1,5 @@
 "
-"" Be sure that you have gmappings.launch file in the same folder than the image, and then execute the following two lines ""
+"" Be sure that you have gmappings.launch file in the same folder than the image, and then execute the following two lines. ( Change kompai2 to kompai1 if is the case ) ""
 
 		experiment := PureROSGmappings kompai2.
 		experiment beginExperiment.
