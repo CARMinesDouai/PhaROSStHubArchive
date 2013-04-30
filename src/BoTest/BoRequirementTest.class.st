@@ -143,3 +143,18 @@ BoRequirementTest >> testSuiteWithPassingRequirement [
 		expectedFailures: 0
 		requirementFailures: 0
 ]
+
+{ #category : #testing }
+BoRequirementTest >> testSuiteWithPassingRequirementsInSameClass [
+	| suite result |
+	suite := BoTestWithRequirementsThatPassInSameClass suite.
+	result := suite run.
+	self
+		assertForTestResult: result
+		runCount: 1 "The required test is counted only once"
+		passed: 1
+		failed: 0
+		errors: 0
+		expectedFailures: 0
+		requirementFailures: 0
+]

@@ -77,9 +77,17 @@ BoTestCase >> requestAssert: aMessage [
 ]
 
 { #category : #requirements }
-BoTestCase >> requires: aSymbol [
-	(self isSatisfied: aSymbol) ifTrue: [^self].
-	BoRequirementFailureException signal: self selector
+BoTestCase >> requires: aSymbolOrATestCaseClass [
+	aSymbolOrATestCaseClass isBehavior ifTrue: [  
+		aSymbolOrATestCaseClass testSelectors do: [  :each |
+				(self isSatisified: each in: aSymbolOrATestCaseClass) ifTrue: [^self].
+				BoRequirementFailureException signal: self selector
+	]]. 
+	aSymbolOrATestCaseClass isSymbol ifTrue: [  
+			(self isSatisfied: aSymbolOrATestCaseClass) ifTrue: [^self].
+			BoRequirementFailureException signal: self selector		
+	].
+	BoRequirementFailureException signal: 'Unknown requirement: ', aSymbolOrATestCaseClass printString
 ]
 
 { #category : #accessing }
