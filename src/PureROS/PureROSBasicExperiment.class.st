@@ -51,7 +51,7 @@ PureROSBasicExperiment >> configureOdometry [
 PureROSBasicExperiment >> configurePoseStamped [
 	pureros movementBroadcasterAt: '/kompai2/pose' typedAs: 'geometry_msgs/PoseStamped'  transformedBy: [ : notification : msg | 
 		notification position intoGeometry_msgs_Pose: msg pose.
-	] 	
+	]. 	
 	
 	
 	
