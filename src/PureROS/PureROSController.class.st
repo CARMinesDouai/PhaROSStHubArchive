@@ -13,6 +13,12 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PureROSController class >> initialize [
+	"Force type generation. There are some generated types used from the experiments and they have they dependencies. "
+	PhaROSTypeBrowser instance browseAll.
+]
+
+{ #category : #'as yet unclassified' }
 PureROSController class >> kompai1 [
 	| masterController robot |
 	
