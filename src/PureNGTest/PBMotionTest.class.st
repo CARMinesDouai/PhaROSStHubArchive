@@ -26,6 +26,11 @@ PBMotionTest >> tearDown [
 ]
 
 { #category : #testing }
+PBMotionTest >> testEmergencyStop [
+	self fail
+]
+
+{ #category : #testing }
 PBMotionTest >> testHexagone [
 	controller hexagone.
 	self assert: robot trajectoryService get status = PNGTrajectoryState waitingStatusValue.
@@ -44,8 +49,9 @@ PBMotionTest >> testSquare [
 PBMotionTest >> testStraightLineMotion [
 	| laser trajectoryService motionFinishedSemaphore |
 	
-	self requires: #PBLaserTest.
-	self requestAction: 'Put the robot in a corridor (1.3m wide) with at least 4m free in front of it'.
+	self requires: PBLaserTest.
+	self requires: #testEmergencyStop.
+	self requestAction: 'Put the robot in a corridor (1.3m wide) with at least 5m free in front of it'.
 	
 	motionFinishedSemaphore := Semaphore new.
 	
