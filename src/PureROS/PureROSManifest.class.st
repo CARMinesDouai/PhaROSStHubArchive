@@ -1,3 +1,6 @@
+"
+This class is here just to initialize project-level things, like the generation of PhaROS Types 
+"
 Class {
 	#name : #PureROSManifest,
 	#superclass : #Object,

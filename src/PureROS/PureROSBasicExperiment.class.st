@@ -154,17 +154,6 @@ PureROSBasicExperiment >> launch: aConfigurationFile [
 	launch := (PhaROSSystemLauncher instance roslaunch: aConfigurationFile) asStickyReference.
 ]
 
-{ #category : #util }
-PureROSBasicExperiment >> normalizeFrame: aFrame [
-	
-	^ (aFrame at: 1 ) = $/ ifTrue: [
-		aFrame copyFrom: 2 to: aFrame size.	
-	   ] ifFalse: [
-		aFrame.
-	   ].
-	
-]
-
 { #category : #accessing }
 PureROSBasicExperiment >> pureros: aPureROSController [
 	pureros := aPureROSController.
@@ -196,8 +185,8 @@ PureROSBasicExperiment >> teardown [
 PureROSBasicExperiment >> tfaasTopicNameFor: aFrame and: anOtherFrame [
 	| from to |
 	
-	from := self normalizeFrame: aFrame.
-	to := self normalizeFrame: anOtherFrame.
+	from := aFrame normalizeFrame.
+	to := anOtherFrame normalizeFrame.
 	
 	
 	^ '/tfaas/', from, '/', to.

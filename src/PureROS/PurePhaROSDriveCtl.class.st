@@ -1,3 +1,6 @@
+"
+This class is a facade  to the three movement services that are available in PNG: Step, Trajectory, Differential Drive. It depends on the kind of message it delegates to the proper service. 
+"
 Class {
 	#name : #PurePhaROSDriveCtl,
 	#superclass : #PNGController,
@@ -9,13 +12,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PurePhaROSDriveCtl >> avance: aPoint [
+PurePhaROSDriveCtl >> advance: aPoint [
 	trajectoryController goToDelta: aPoint.
 ]
 
 { #category : #'as yet unclassified' }
-PurePhaROSDriveCtl >> avanceTrough: aDeltaCollection [
+PurePhaROSDriveCtl >> advanceTrough: aDeltaCollection [
 	trajectoryController goToAllDelta: aDeltaCollection.
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSDriveCtl >> drawSquare [
+	^ trajectoryController square.
 ]
 
 { #category : #'as yet unclassified' }
@@ -50,6 +58,18 @@ PurePhaROSDriveCtl >> step: aPoint [
 ]
 
 { #category : #'as yet unclassified' }
+PurePhaROSDriveCtl >> stepController: aController [
+	stepController := aController
+
+]
+
+{ #category : #'as yet unclassified' }
 PurePhaROSDriveCtl >> stepForward:  aDistance [
 	stepController thenMoveForward: aDistance.
+]
+
+{ #category : #'as yet unclassified' }
+PurePhaROSDriveCtl >> trajectoryController: aController [
+	trajectoryController := aController
+
 ]

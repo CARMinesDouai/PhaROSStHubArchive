@@ -1,3 +1,6 @@
+"
+This controller makes a dispatching of notifications for several callbacks. It also signal when al the callbacks are executed for a notification. 
+"
 Class {
 	#name : #PurePhaROSNotificationController,
 	#superclass : #PNGController,

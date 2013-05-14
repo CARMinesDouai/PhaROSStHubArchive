@@ -1,3 +1,6 @@
+"
+This controller is a domain specific facade, that makes easy to build the objects related with each service, manage notification callbacks, localization position, etc.
+"
 Class {
 	#name : #PureROSController,
 	#superclass : #Object,
@@ -79,7 +82,7 @@ PureROSController >> createNotificationCallbackFor: aTopicName typedAs: aTypeID 
 ]
 
 { #category : #'png-controllers' }
-PureROSController >> driveControler [ 
+PureROSController >> driveController [ 
 	^ driveControler ifNil: [ driveControler := PurePhaROSDriveCtl for: robot ].
 ]
 

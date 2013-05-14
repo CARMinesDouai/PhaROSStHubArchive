@@ -13,15 +13,15 @@
 Class {
 	#name : #PureROSGmappings,
 	#superclass : #PureROSBasicExperiment,
-	#category : #'PureROS-Experiments'
+	#category : #'PureROS-Experiments-SLAM'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #save }
 PureROSGmappings >> saveMap [ 
 	((self run: {'map_server' . 'map_saver'}) spin: 20) finalize.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #configuration }
 PureROSGmappings >> setup [
 	self launch: 'gmappings.launch'.
 	
@@ -33,7 +33,8 @@ PureROSGmappings >> setup [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #configuration }
 PureROSGmappings >> teardown [ 
 	self saveMap.
+	
 ]
