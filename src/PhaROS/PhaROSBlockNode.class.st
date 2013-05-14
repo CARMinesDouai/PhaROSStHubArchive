@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'soul'
 	],
-	#category : #'PhaROS-Kernel'
+	#category : #'PhaROS-Kernel-Nodes'
 }
 
 { #category : #'as yet unclassified' }

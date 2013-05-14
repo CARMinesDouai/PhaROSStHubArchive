@@ -81,9 +81,9 @@ PhaROSChannel >> storeSent: aMessageBlock [
 ]
 
 { #category : #accessing }
-PhaROSChannel >> subscribe: aRoStSubscriber [ 
+PhaROSChannel >> subscribe: aSubscriber [ 
 	mutex critical: [
-		subscribers add: aRoStSubscriber.
+		subscribers add: aSubscriber.
 	]
 ]
 
@@ -107,12 +107,12 @@ PhaROSChannel >> topic: aTopic [
 ]
 
 { #category : #accessing }
-PhaROSChannel >> unsubscribe: aRoStPublisher [ 
-	self owner == aRoStPublisher ifTrue: [
+PhaROSChannel >> unsubscribe: aPublisher [ 
+	self owner == aPublisher ifTrue: [
 		^ self close.
 	].
 	mutex critical:[
-		subscribers remove: aRoStPublisher ifAbsent: [].
+		subscribers remove: aPublisher ifAbsent: [].
 	].
 	
 

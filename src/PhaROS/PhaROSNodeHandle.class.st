@@ -20,7 +20,7 @@ Class {
 	#instVars : [
 		'topicHandle'
 	],
-	#category : #'PhaROS-Kernel'
+	#category : #'PhaROS-Kernel-Nodes'
 }
 
 { #category : #building }

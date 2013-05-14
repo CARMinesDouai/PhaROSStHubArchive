@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'process'
 	],
-	#category : #'PhaROS-Kernel'
+	#category : #'PhaROS-Kernel-Nodes'
 }
 
 { #category : #'as yet unclassified' }

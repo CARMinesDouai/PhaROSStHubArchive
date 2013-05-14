@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'isFirstSubscriber'
 	],
-	#category : #'PhaROS-Kernel'
+	#category : #'PhaROS-Kernel-Channels'
 }
 
 { #category : #'as yet unclassified' }
