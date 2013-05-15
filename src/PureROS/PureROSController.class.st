@@ -22,7 +22,7 @@ PureROSController class >> kompai1 [
 	masterController := PhaROSHandleController localhost.
 	robot := PNGRobulabHandcodedFactory kompai1.
 	
-	^self new masterController: masterController ; robot: robot ; setUp ; yourself.
+	^self new masterController: masterController ; robot: robot  ; yourself.
 ]
 
 { #category : #'as yet unclassified' }

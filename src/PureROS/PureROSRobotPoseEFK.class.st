@@ -6,9 +6,7 @@
 		
 	"" Now, move the robot around with the joystick. and you can watch the comparing plot  ""
 	
-		experiment endExperiment.
-
-	
+		experiment endExperiment. 
 "
 Class {
 	#name : #PureROSRobotPoseEFK,
