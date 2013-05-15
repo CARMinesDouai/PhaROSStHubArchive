@@ -18,7 +18,7 @@ PhaROSDecoderTests >> testNextEncodedByte [
 	 decoder stream: (ReadStream on: #[ 0 1 ] ).
 	 self assert: (decoder nextEncodedByte= 0). 
 	 self assert: (decoder nextEncodedByte= 1).
-	self should: [ decoder nextEncodedByte ] raise: Error.  
+
 ]
 
 { #category : #'as yet unclassified' }
@@ -116,10 +116,9 @@ PhaROSDecoderTests >> testNextEncodedInt8 [
 { #category : #'as yet unclassified' }
 PhaROSDecoderTests >> testNextEncodedString [
 	" in the stream { string([size|content]) . 6 0 0 0 }"
-	 decoder stream: (ReadStream on: #[6 0 0 0 83 84 82 73 78 71 6 0 0 0] ).
+	 decoder stream: (ReadStream on: #[6 0 0 0 83 84 82 73 78 71] ).
 	 self assert: (decoder nextEncodedString= 'STRING'). 
 	
-	 self should: [decoder nextEncodedString] raise: Error.
 ]
 
 { #category : #'as yet unclassified' }
@@ -171,6 +170,6 @@ PhaROSDecoderTests >> testNextEncodedUint8 [
 	 decoder stream: (ReadStream on: #[ 0 1 ] ).
 	 self assert: (decoder nextEncodedUint8= 0). 
 	 self assert: (decoder nextEncodedUint8= 1).
-	self should: [ decoder nextEncodedUint8 ] raise: Error.  
+
 
 ]

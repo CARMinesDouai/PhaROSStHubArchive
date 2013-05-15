@@ -1,3 +1,6 @@
+"
+This class manage a tcp server related with a node. Here there is just the Handshake and the initialization routine for a new socket.
+"
 Class {
 	#name : #PhaROSTcpServer,
 	#superclass : #TcpService,
@@ -70,8 +73,8 @@ PhaROSTcpServer >> serve: aSocket [
 	
 	self flag:#makeUpToThisThing.
 	message := PhaROSHSMessageDecoder decodeSubscriberMessage: (data copyFrom: 1 to: bytesRead).
-	message verify.
 	
+	PhaROSHeaderVerifier new verify: message. 
 	self owner manageIncomingConnection: message with: aSocket.
 	
 	

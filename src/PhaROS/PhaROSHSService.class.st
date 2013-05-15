@@ -4,8 +4,15 @@ Class {
 	#instVars : [
 		'response'
 	],
-	#category : #'PhaROS-Network-Tcp'
+	#category : #'PhaROS-Network-Tcp-Messages'
 }
+
+{ #category : #verification }
+PhaROSHSService class >> verificationDictionary [
+	^ {
+	
+	   }
+]
 
 { #category : #comparing }
 PhaROSHSService >> ok [
@@ -25,11 +32,4 @@ PhaROSHSService >> response [
 { #category : #verification }
 PhaROSHSService >> response: aResponse [ 
 	response := aResponse 
-]
-
-{ #category : #verification }
-PhaROSHSService >> verificationDictionary [
-	^ {
-	
-	   }
 ]

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'tcpmessage'
 	],
-	#category : #'PhaROS-Network-Tcp'
+	#category : #'PhaROS-Network-Tcp-Encoding'
 }
 
 { #category : #encoding }
@@ -47,7 +47,7 @@ PhaROSHSMessageEncoder >> encode: aTcpHandshakeMessage [
 PhaROSHSMessageEncoder >> encodeMessage: aTcpHandshakeMessage [
 	| byteStream |
 	
-	aTcpHandshakeMessage verify.
+	PhaROSHeaderVerifier new verify: aTcpHandshakeMessage.
 	byteStream := ByteArray new writeStream.
 	
 	aTcpHandshakeMessage attributesDo:  [

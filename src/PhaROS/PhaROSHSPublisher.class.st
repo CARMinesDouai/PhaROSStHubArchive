@@ -1,8 +1,15 @@
 Class {
 	#name : #PhaROSHSPublisher,
 	#superclass : #PhaROSHSTyped,
-	#category : #'PhaROS-Network-Tcp'
+	#category : #'PhaROS-Network-Tcp-Messages'
 }
+
+{ #category : #accessing }
+PhaROSHSPublisher class >> verificationDictionary [ 
+	
+	^super verificationDictionary removeKey: 'callerId';
+			yourself. 
+]
 
 { #category : #accessing }
 PhaROSHSPublisher >> latching [
@@ -22,11 +29,4 @@ PhaROSHSPublisher >> topic [
 { #category : #accessing }
 PhaROSHSPublisher >> topic: aTopicName [
 	^self at:'topic' put: aTopicName.
-]
-
-{ #category : #accessing }
-PhaROSHSPublisher >> verificationDictionary [ 
-	
-	^super verificationDictionary removeKey: 'callerId';
-			yourself. 
 ]

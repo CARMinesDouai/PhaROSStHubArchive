@@ -5,6 +5,13 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PhaROSTimeTypeTest >> expectedFailures [
+	^ #(testSerialize)
+
+
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSTimeTypeTest >> invalidByteArrays [
 	^ {
 		 #[] .

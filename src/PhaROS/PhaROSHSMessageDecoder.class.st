@@ -5,7 +5,7 @@ Class {
 		'header',
 		'tcpmessage'
 	],
-	#category : #'PhaROS-Network-Tcp'
+	#category : #'PhaROS-Network-Tcp-Encoding'
 }
 
 { #category : #decoding }
@@ -87,7 +87,7 @@ PhaROSHSMessageDecoder >> decode: aByteArray [
 		].
 		
 	] on: Error do: [ :e | 
-		tcpmessage verify. 
+		PhaROSHeaderVerifier new verify: tcpmessage. 
 	].
 	^tcpmessage.
 ]

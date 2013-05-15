@@ -1,8 +1,17 @@
 Class {
 	#name : #PhaROSHSSubscriber,
 	#superclass : #PhaROSHSTyped,
-	#category : #'PhaROS-Network-Tcp'
+	#category : #'PhaROS-Network-Tcp-Messages'
 }
+
+{ #category : #verification }
+PhaROSHSSubscriber class >> verificationDictionary [ 
+	^super verificationDictionary addAll: (
+		{ 
+			#topic -> ByteString 
+		} asDictionary
+	); removeKey:#type; yourself.
+]
 
 { #category : #accessing }
 PhaROSHSSubscriber >> tcpNodelay [
@@ -22,13 +31,4 @@ PhaROSHSSubscriber >> topic [
 { #category : #accessing }
 PhaROSHSSubscriber >> topic: aTopicName [
 	^self at:'topic' put: aTopicName.
-]
-
-{ #category : #verification }
-PhaROSHSSubscriber >> verificationDictionary [ 
-	^super verificationDictionary addAll: (
-		{ 
-			#topic -> ByteString 
-		} asDictionary
-	); removeKey:#type; yourself.
 ]
