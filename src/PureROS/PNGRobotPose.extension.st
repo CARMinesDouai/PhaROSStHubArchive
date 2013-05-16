@@ -4,10 +4,10 @@ Extension { #name : #PNGRobotPose }
 PNGRobotPose classSide >> fromGeometry_msgsPose: aROSPose [
 	| pose orientation |
 	pose := self new. 
-	pose x: pose position x.
-	pose y: pose position y.
+	pose x: aROSPose position x.
+	pose y: aROSPose position y.
 	
-	orientation := PhaROSGeometryTransformations new eulerFromQuaternation: pose orientation x and: pose orientation y and: pose orientation z and: pose orientation w.
+	orientation := PhaROSGeometryTransformations new eulerFromQuaternation: aROSPose orientation x and: aROSPose orientation y and: aROSPose orientation z and: aROSPose orientation w.
 	orientation := orientation at:3. 				
 
 	pose orientation: orientation.

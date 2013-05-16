@@ -29,7 +29,8 @@ PureROSPlottingExperiment >> plot: aPlotSpecBlock [
 { #category : #'configure-system' }
 PureROSPlottingExperiment >> teardown [ 
 	super teardown .
+	plottingProcess ifNotNil: [
 	plottingProcess do: #finalize.
 	plottingProcess removeAll.
-	plottingProcess := nil.
+	plottingProcess := nil.]
 ]

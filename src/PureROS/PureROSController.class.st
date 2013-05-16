@@ -129,6 +129,11 @@ PureROSController >> movementBroadcasterAt: aTopicName typedAs: aTypeID transfor
 	
 ]
 
+{ #category : #accessing }
+PureROSController >> node [
+	^ masterController node
+]
+
 { #category : #sendings }
 PureROSController >> notificateMovementAsTF: aFrameID withParent: aParentFrameID [
 	" Brodcast the localization information in the TF topic under the specified frames "

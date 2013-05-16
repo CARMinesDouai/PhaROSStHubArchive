@@ -9,17 +9,14 @@
 		experiment endExperiment.
 
 	"" In this experiment we have in the teardown process the map saving. You will find a map.yaml file in the same folder as the image. (It not check the override of the files, take care of that) ""
+	
+
 "
 Class {
 	#name : #PureROSGmappings,
-	#superclass : #PureROSBasicExperiment,
+	#superclass : #PureROSSLAMBase,
 	#category : #'PureROS-Experiments-SLAM'
 }
-
-{ #category : #save }
-PureROSGmappings >> saveMap [ 
-	((self run: {'map_server' . 'map_saver'}) spin: 20) finalize.
-]
 
 { #category : #configuration }
 PureROSGmappings >> setup [
@@ -30,11 +27,5 @@ PureROSGmappings >> setup [
 	self configureTFIn: '/base_link' withParent: '/odom'.
 
 	
-	
-]
-
-{ #category : #configuration }
-PureROSGmappings >> teardown [ 
-	self saveMap.
 	
 ]

@@ -13,7 +13,12 @@ Class {
 
 { #category : #'as yet unclassified' }
 PureROSPlotBuilder >> addEFKPose [
-	^ self newLineFor: '/robot_pose_ekf/odom_combined'. 
+	^ self newLineFor: '/robot_pose_ekf/odom'. 
+]
+
+{ #category : #'as yet unclassified' }
+PureROSPlotBuilder >> addHectorPose [
+	^ self newLineFor: '/pose'. 
 ]
 
 { #category : #'as yet unclassified' }
@@ -38,5 +43,6 @@ PureROSPlotBuilder >> newLineFor: aTopicID [
 
 { #category : #'as yet unclassified' }
 PureROSPlotBuilder >> plottingLines [
+	(interests collect: #entries )sum > 8 ifTrue: [ self error: 'rxplot work with a limit of 8 topics (or variables)'].
 	^ interests collect: #plotLine	
 ]

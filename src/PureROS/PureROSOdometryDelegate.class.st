@@ -12,16 +12,20 @@ Class {
 PureROSOdometryDelegate >> callback [
 
 	^ [	: notification :msg | 
-			
-			self initializeMessage: msg.
-			msg header frame_id: 'odom'.
-			msg child_frame_id: ''.
-			
-			notification position intoGeometry_msgs_Pose: msg pose pose.
-			(self measurePoseDiference: notification) intoGeometry_msgs_Twist: msg twist twist.
+			self configure: msg with: notification.
 		].
 
 	
+]
+
+{ #category : #'as yet unclassified' }
+PureROSOdometryDelegate >> configure: aMessage with: aNotification [
+	self initializeMessage: aMessage.
+	aMessage header frame_id: 'odom'.
+	aMessage child_frame_id: ''.
+	
+	aNotification position intoGeometry_msgs_Pose: aMessage pose pose.
+	(self measurePoseDiference: aNotification) intoGeometry_msgs_Twist: aMessage twist twist.
 ]
 
 { #category : #'as yet unclassified' }

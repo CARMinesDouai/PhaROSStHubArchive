@@ -34,6 +34,11 @@ PureROSPlotTopic >> doesNotUnderstand: aMessage [
 ]
 
 { #category : #'as yet unclassified' }
+PureROSPlotTopic >> entries [
+	^ variables size max: 1.
+]
+
+{ #category : #'as yet unclassified' }
 PureROSPlotTopic >> fields: anArrayOfFields [
 	variables := anArrayOfFields collect: #asString.
 	^ self .

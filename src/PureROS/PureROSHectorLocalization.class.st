@@ -7,7 +7,7 @@
 	
 ""
 
-		experiment := PureROSRobotPoseEFK kompai2.
+		experiment := PureROSHectorLocalization kompai2.
 		experiment beginExperiment.
 		
 	"" Now, move the robot around with the joystick. and you can watch the comparing plot  ""
@@ -22,32 +22,30 @@
 ""
 "
 Class {
-	#name : #PureROSRobotPoseEFK,
+	#name : #PureROSHectorLocalization,
 	#superclass : #PureROSPlottingExperiment,
 	#category : #'PureROS-Experiments-Localization'
 }
 
-{ #category : #configuration }
-PureROSRobotPoseEFK >> plot [
+{ #category : #'as yet unclassified' }
+PureROSHectorLocalization >> plot [
 	self plot: [
 		: spec |
 		spec addPoseStamped pose orientation fields: { #z . #w }.
-		spec addEFKPose pose pose orientation fields: { #z . #w }.
+		spec addHectorPose pose orientation fields: { #z . #w }.
 		
 		spec addPoseStamped pose position fields: { #x . #y }.
-		spec addEFKPose pose pose position fields: { #x . #y }.
+		spec addHectorPose pose position fields: { #x . #y }.
 	].
 ]
 
-{ #category : #configuration }
-PureROSRobotPoseEFK >> setup [
-	self launch: 'efk.launch'.
-
-	self configureOdometry.
-	
-	self configureTFIn: '/robot' withParent: '/map'. " Watching the raw position in the map "
-	
+{ #category : #'as yet unclassified' }
+PureROSHectorLocalization >> setup [ 
+	self launch: 'hector-localization.launch'.
+	self configurePoseStampedWithCovarianceAs: '/poseupdate'.
 	self configurePoseStamped. "For plotting"
+	self configureInitialPose.
+	
 	
 	self plot.
 ]

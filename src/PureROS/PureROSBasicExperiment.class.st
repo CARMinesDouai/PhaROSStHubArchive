@@ -60,12 +60,12 @@ PureROSBasicExperiment >> configureInitialPose [
 	| connector |
 	
 	connector := pureros buildConnectionFor: '/initialpose'.
-	
+
 	connector 
 			typedAs: 'geometry_msgs/PoseWithCovarianceStamped';
 			adapted: #pose \> #pose \> PNGRobotPose;
 			for: [ : aPNGRobotPose | pureros locationController setPose: aPNGRobotPose ] .
-
+	
 	connector connect.
 ]
 
@@ -94,8 +94,27 @@ PureROSBasicExperiment >> configureOdometry [
 
 { #category : #'configure-publishing' }
 PureROSBasicExperiment >> configurePoseStamped [
-	pureros movementBroadcasterAt: '/kompai2/pose' typedAs: 'geometry_msgs/PoseStamped'  transformedBy: [ : notification : msg | 
+	self configurePoseStampedAs: '/kompai2/pose'.  
+	
+	
+	
+]
+
+{ #category : #'configure-publishing' }
+PureROSBasicExperiment >> configurePoseStampedAs: aTopicID [ 
+	pureros movementBroadcasterAt: aTopicID typedAs: 'geometry_msgs/PoseStamped'  transformedBy: [ : notification : msg | 
 		notification position intoGeometry_msgs_Pose: msg pose.
+	]. 	
+	
+	
+	
+]
+
+{ #category : #'configure-publishing' }
+PureROSBasicExperiment >> configurePoseStampedWithCovarianceAs: aTopicID [
+	pureros movementBroadcasterAt: aTopicID typedAs: 'geometry_msgs/PoseWithCovarianceStamped'  transformedBy: [ : notification : msg | 
+		notification position intoGeometry_msgs_Pose: msg pose pose.
+		self setCovariance: msg pose.
 	]. 	
 	
 	
@@ -163,6 +182,25 @@ PureROSBasicExperiment >> pureros: aPureROSController [
 { #category : #'configure-system' }
 PureROSBasicExperiment >> run: anArrayOfArguments [ 
 	^ (PhaROSSystemLauncher instance rosrun: anArrayOfArguments).
+]
+
+{ #category : #'configure-publishing' }
+PureROSBasicExperiment >> setCovariance: aMessage [
+	| dValue |
+	(36 - (aMessage covariance size) ) timesRepeat: [ 
+		aMessage covariance add: 0.0. 
+	].
+	self flag: #lookAtComment.
+" This value is really arbitrar.. is based on turtlebot specs, it should be based on robulab, or even better, parametrized "
+	dValue := (0.017 * 0.017) roundUpTo: 0.0000001. 
+	
+	aMessage  covariance at:1 put: dValue.
+	aMessage covariance at:8 put: dValue.
+	aMessage  covariance at:15 put: dValue.
+	aMessage covariance at:22 put: dValue.
+	aMessage covariance at:29 put: dValue.	
+	aMessage covariance at:36 put: dValue.
+		
 ]
 
 { #category : #'initialize-release' }
