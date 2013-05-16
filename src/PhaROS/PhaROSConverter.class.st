@@ -31,8 +31,8 @@ PhaROSConverter class >> turtlesimVelocityToPoint: aPhaROSValue [
 PhaROSConverter >> adapt: aPhaROSValue [ 
 	| constructor |
 	
-	constructor := 'from', aPhaROSValue class name,':' asSymbol.
-	(convertTo respondsTo: constructor ) ifTrue: [
+	constructor := ('from', aPhaROSValue class name,':') asSymbol.
+	(convertTo class canUnderstand:  constructor ) ifTrue: [
 		^ convertTo perform: constructor with: aPhaROSValue.
 	].
 	

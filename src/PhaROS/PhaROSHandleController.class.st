@@ -42,7 +42,7 @@ PhaROSHandleController >> domain [
 
 { #category : #'as yet unclassified' }
 PhaROSHandleController >> handleName [
-	^ SmalltalkImage current imageName 
+	^ '/PharoHandle'
 ]
 
 { #category : #'as yet unclassified' }
@@ -65,10 +65,10 @@ PhaROSHandleController >> stop [
 
 { #category : #'as yet unclassified' }
 PhaROSHandleController >> tcpPort [
-	^9090
+	^9099
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSHandleController >> xmlRpcPort [ 
-	^ 6623
+	^ 6630
 ]

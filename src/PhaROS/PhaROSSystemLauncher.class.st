@@ -94,7 +94,7 @@ PhaROSSystemLauncher >> roslaunch: aConfigurationFile [
 					arguments: { aConfigurationFile  } 
 					environment:  nil 
 					descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
-	roslaunch spin: 20.
+	roslaunch spin: 40.
 	
 	^ roslaunch.
 
