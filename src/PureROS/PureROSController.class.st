@@ -112,6 +112,11 @@ PureROSController >> laserBroadcasterAt: aTopicName typedAs: aTypeID transformed
 	self notificationController notificateLaserTo: (self createNotificationCallbackFor: aTopicName typedAs: aTypeID transformedBy: aBlock).
 ]
 
+{ #category : #accessing }
+PureROSController >> lastPosition [
+	^ notificationController lastMovementNotification position.
+]
+
 { #category : #'png-controllers' }
 PureROSController >> locationController [ 
 	^ locationController  ifNil: [ locationController := PurePhaROSLocation for: robot ].

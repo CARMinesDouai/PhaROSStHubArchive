@@ -8,7 +8,8 @@ Class {
 		'movementCallbacks',
 		'laserCallbacks',
 		'allMovementCallbacksCalled',
-		'allLaserCallbacksCalled'
+		'allLaserCallbacksCalled',
+		'lastMovementNotification'
 	],
 	#category : #'PureROS-Controllers'
 }
@@ -50,6 +51,11 @@ PurePhaROSNotificationController >> laserCallbacks [
 ]
 
 { #category : #'as yet unclassified' }
+PurePhaROSNotificationController >> lastMovementNotification [ 
+	^ lastMovementNotification.
+]
+
+{ #category : #'as yet unclassified' }
 PurePhaROSNotificationController >> movementCallbacks [  
 	^ movementCallbacks
 ]
@@ -73,7 +79,8 @@ PurePhaROSNotificationController >> onLaserNotification: aLaserNotification [
 { #category : #'as yet unclassified' }
 PurePhaROSNotificationController >> onMovementNotification: aMovementNotification [
 	self movementCallbacks  do: [ : cb | cb value: aMovementNotification ].
-	allMovementCallbacksCalled ifNotNil:[ allMovementCallbacksCalled cull: aMovementNotification.]
+	allMovementCallbacksCalled ifNotNil:[ allMovementCallbacksCalled cull: aMovementNotification.].
+	lastMovementNotification := aMovementNotification.
 ]
 
 { #category : #'as yet unclassified' }

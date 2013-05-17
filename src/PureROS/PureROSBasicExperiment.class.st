@@ -55,6 +55,16 @@ PureROSBasicExperiment >> configureCommandVelocity [
 	connector connect.
 ]
 
+{ #category : #'configure-publishing' }
+PureROSBasicExperiment >> configureImu: aCallback [ 
+	self configureImuAt: '/imu/data' for: aCallback.
+]
+
+{ #category : #'configure-publishing' }
+PureROSBasicExperiment >> configureImuAt: aTopicID for: aCallback [ 
+	^ (pureros node buildConnectionFor: aTopicID)  typedAs: 'sensor_msgs/Imu'; for: aCallback; forDebug ; connect.
+]
+
 { #category : #'configure-subscribing' }
 PureROSBasicExperiment >> configureInitialPose [
 	| connector |
