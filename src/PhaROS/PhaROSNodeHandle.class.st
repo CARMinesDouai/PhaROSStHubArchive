@@ -24,12 +24,15 @@ Class {
 }
 
 { #category : #building }
-PhaROSNodeHandle >> buildConnectionFor: aTopicName [
-	^ PhaROSTopicConectionBuilder node: self topicName: aTopicName.
+PhaROSNodeHandle >> buildConnectionFor: aTopicID [
+	^ PhaROSTopicConectionBuilder node: self topicName: aTopicID.
 ]
 
 { #category : #dispatching }
 PhaROSNodeHandle >> dispatch: aMessage for: aChannel [
+
+	aChannel topic name = '/raw_imu' ifTrue: [ self halt] .
+	
 	topicHandle at: aChannel topic  ifPresent: [ : callbackSet | 
 		callbackSet do: [ : callback | callback receive: aMessage value from: aChannel]. 
 	] ifAbsent: [

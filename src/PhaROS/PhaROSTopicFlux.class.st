@@ -25,7 +25,7 @@ PhaROSTopicFlux class >> defaultConditional [
 
 { #category : #'as yet unclassified' }
 PhaROSTopicFlux class >> initialize [ 
-	defaultAdapter := [: a | a ].
+	defaultAdapter :=  #value.
 	defaultConditional := [ true ]. 
 ]
 
@@ -78,6 +78,6 @@ PhaROSTopicFlux >> receive: aMessage from: aChannel [
 ]
 
 { #category : #dispatching }
-PhaROSTopicFlux >> redirect: anAdaptedMessage from: aChannel. [
+PhaROSTopicFlux >> redirect: anAdaptedMessage from: aChannel [
 	^ callback receive: anAdaptedMessage from: aChannel.
 ]

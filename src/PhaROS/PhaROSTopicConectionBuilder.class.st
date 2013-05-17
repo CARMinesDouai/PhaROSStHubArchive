@@ -7,7 +7,8 @@ Class {
 		'callback',
 		'topicName',
 		'adapter',
-		'when'
+		'when',
+		'forDebug'
 	],
 	#classInstVars : [
 		'typeID'
@@ -30,7 +31,12 @@ PhaROSTopicConectionBuilder >> adapted: anAdaption [
 PhaROSTopicConectionBuilder >> build [
 	self assert: callback notNil description: 'Callback is not optative. Send #for: aCallback to set it'.
 	
-	^ PhaROSTopicFlux new adapter: adapter; condition: when; callback: callback; yourself.
+	
+	^  forDebug ifTrue: [
+		PhaROSTopicFluxDebug new adapter: adapter; condition: when; callback: callback; yourself
+	   ] ifFalse:  [
+		PhaROSTopicFlux new adapter: adapter; condition: when; callback: callback; yourself
+	   ].
 	
 
 ]
@@ -53,10 +59,16 @@ PhaROSTopicConectionBuilder >> for: aCallbackOrArrayOfCallbacks [
 ]
 
 { #category : #setting }
+PhaROSTopicConectionBuilder >> forDebug [
+	forDebug := true.
+]
+
+{ #category : #setting }
 PhaROSTopicConectionBuilder >> initialize [ 
 	super initialize.
 	when := PhaROSTopicFlux defaultConditional.
 	adapter := PhaROSTopicFlux defaultAdapter.
+	forDebug := false.
 ]
 
 { #category : #accessing }
