@@ -33,6 +33,13 @@ PNGRobotPose >> asPoint [
 	^self x @ self y
 ]
 
+{ #category : #comparing }
+PNGRobotPose >> closeTo: anOtherRobotPose [
+	
+	^ { x - anOtherRobotPose x . y - anOtherRobotPose y . orientation - anOtherRobotPose orientation } allSatisfy: [: n | n < 0.001 ].
+	 
+]
+
 { #category : #accessing }
 PNGRobotPose >> orientation [
 	^ orientation
