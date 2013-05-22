@@ -86,7 +86,6 @@ PureROSBasicExperiment >> configureLaser [
 		notification intoSensor_msgs_LaserScan: msg.
 	].
 
-	pureros movementBroadcasterAt: '/odom' typedAs: 'nav_msgs/Odometry'  transformedBy: PureROSOdometryDelegate new callback.
 	
 	
 	
@@ -96,10 +95,7 @@ PureROSBasicExperiment >> configureLaser [
 { #category : #'configure-publishing' }
 PureROSBasicExperiment >> configureOdometry [
 	pureros movementBroadcasterAt: '/odom' typedAs: 'nav_msgs/Odometry'  transformedBy: PureROSOdometryDelegate new callback.
-	
-	
-	
-	
+
 ]
 
 { #category : #'configure-publishing' }
@@ -112,8 +108,8 @@ PureROSBasicExperiment >> configurePoseStamped [
 
 { #category : #'configure-publishing' }
 PureROSBasicExperiment >> configurePoseStampedAs: aTopicID [ 
-	pureros movementBroadcasterAt: aTopicID typedAs: 'geometry_msgs/PoseStamped'  transformedBy: [ : notification : msg | 
-		notification position intoGeometry_msgs_Pose: msg pose.
+	pureros movementBroadcasterAt: aTopicID typedAs: 'geometry_msgs/PoseStamped'  transformedBy: [ : position : msg | 
+		 position intoGeometry_msgs_Pose: msg pose.
 	]. 	
 	
 	
@@ -122,8 +118,8 @@ PureROSBasicExperiment >> configurePoseStampedAs: aTopicID [
 
 { #category : #'configure-publishing' }
 PureROSBasicExperiment >> configurePoseStampedWithCovarianceAs: aTopicID [
-	pureros movementBroadcasterAt: aTopicID typedAs: 'geometry_msgs/PoseWithCovarianceStamped'  transformedBy: [ : notification : msg | 
-		notification position intoGeometry_msgs_Pose: msg pose pose.
+	pureros movementBroadcasterAt: aTopicID typedAs: 'geometry_msgs/PoseWithCovarianceStamped'  transformedBy: [ : position : msg | 
+		 position intoGeometry_msgs_Pose: msg pose pose.
 		self setCovariance: msg pose.
 	]. 	
 	
@@ -238,6 +234,22 @@ PureROSBasicExperiment >> tfaasTopicNameFor: aFrame and: anOtherFrame [
 	
 	
 	^ '/tfaas/', from, '/', to.
+]
+
+{ #category : #'configure-publishing' }
+PureROSBasicExperiment >> useIMUAsOrientation [
+	pureros usingIMUAsOrientation.
+	self usePoseToFeedRobot.
+]
+
+{ #category : #'configure-publishing' }
+PureROSBasicExperiment >> usePoseToFeedRobot [
+	pureros notificatePoseTo: [: position | 
+		(pureros notificationController lastMovementNotification position closeTo: position) ifFalse: [ 
+			pureros locationController setPose: position 
+		]
+		
+	].
 ]
 
 { #category : #util }

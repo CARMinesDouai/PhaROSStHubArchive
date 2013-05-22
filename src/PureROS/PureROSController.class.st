@@ -10,7 +10,9 @@ Class {
 		'locationController',
 		'notificationController',
 		'masterController',
-		'transformations'
+		'transformations',
+		'lastOrientation',
+		'positionTransformer'
 	],
 	#category : #'PureROS-Controllers'
 }
@@ -104,6 +106,7 @@ PureROSController >> finalize [
 PureROSController >> initialize [ 
 	super initialize.
 	transformations := OrderedCollection new.
+	positionTransformer := [:n | n ].
 ]
 
 { #category : #sendings }
@@ -130,7 +133,7 @@ PureROSController >> masterController: aMasterController [
 { #category : #sendings }
 PureROSController >> movementBroadcasterAt: aTopicName typedAs: aTypeID transformedBy: aBlock [
 	" broadcast a localization incoming notification into a topic. A transformation LocalizationNotification >> Specified-Ros-Type is required "
-	self notificationController notificateMovementTo: (self createNotificationCallbackFor: aTopicName typedAs: aTypeID transformedBy: aBlock).
+	self  notificatePoseTo: (self createNotificationCallbackFor: aTopicName typedAs: aTypeID transformedBy: aBlock).
 	
 ]
 
@@ -143,9 +146,14 @@ PureROSController >> node [
 PureROSController >> notificateMovementAsTF: aFrameID withParent: aParentFrameID [
 	" Brodcast the localization information in the TF topic under the specified frames "
 
-	self notificationController notificateMovementTo: [ : aLocalizationNotification | 
-		self notificateTransformationOn: aFrameID withParent: aParentFrameID at: aLocalizationNotification position. 	
+	self  notificatePoseTo: [ : position | 
+		self notificateTransformationOn: aFrameID withParent: aParentFrameID at:  position. 	
 	].
+]
+
+{ #category : #accessing }
+PureROSController >> notificatePoseTo: aCallback [ 
+	self notificationController notificateMovementTo: [ :notification | aCallback cull: (self positionTransformer value: notification position) ].
 ]
 
 { #category : #util }
@@ -176,6 +184,35 @@ PureROSController >> notificationController [
 ]
 
 { #category : #accessing }
+PureROSController >> positionTransformer [
+	^ positionTransformer
+]
+
+{ #category : #accessing }
+PureROSController >> positionTransformer: aBlock [
+	 positionTransformer := aBlock.
+]
+
+{ #category : #accessing }
 PureROSController >> robot: aRobot [
 	robot := aRobot.
+]
+
+{ #category : #accessing }
+PureROSController >> usingIMUAsOrientation [
+	| connection |
+	
+	connection := self buildConnectionFor: '/imu/orientation'.
+	connection typedAs: 'geometry_msgs/QuaternionStamped'; for: [: quaternion | lastOrientation := quaternion. ].
+	connection connect.
+	
+	self positionTransformer: [
+		: position  |
+		lastOrientation ifNotNil: [
+			 (self locationController merge: lastOrientation quaternion with: position  received: lastOrientation header stamp) 
+		] ifNil: [
+			position
+		]
+	].	
+
 ]

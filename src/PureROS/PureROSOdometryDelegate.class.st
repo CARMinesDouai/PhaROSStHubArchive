@@ -2,8 +2,8 @@ Class {
 	#name : #PureROSOdometryDelegate,
 	#superclass : #Object,
 	#instVars : [
-		'previousNotification',
-		'previousTime'
+		'previousTime',
+		'previousPosition'
 	],
 	#category : #'PureROS-Util'
 }
@@ -11,21 +11,21 @@ Class {
 { #category : #'as yet unclassified' }
 PureROSOdometryDelegate >> callback [
 
-	^ [	: notification :msg | 
-			self configure: msg with: notification.
+	^ [	: position :msg | 
+			self configure: msg with: position .
 		].
 
 	
 ]
 
 { #category : #'as yet unclassified' }
-PureROSOdometryDelegate >> configure: aMessage with: aNotification [
+PureROSOdometryDelegate >> configure: aMessage with: aPosition [
 	self initializeMessage: aMessage.
 	aMessage header frame_id: 'odom'.
 	aMessage child_frame_id: ''.
 	
-	aNotification position intoGeometry_msgs_Pose: aMessage pose pose.
-	(self measurePoseDiference: aNotification) intoGeometry_msgs_Twist: aMessage twist twist.
+	aPosition intoGeometry_msgs_Pose: aMessage pose pose.
+	(self measurePoseDiference: aPosition) intoGeometry_msgs_Twist: aMessage twist twist.
 ]
 
 { #category : #'as yet unclassified' }
@@ -56,7 +56,7 @@ PureROSOdometryDelegate >> initializeMessage: aMessage [
 ]
 
 { #category : #'as yet unclassified' }
-PureROSOdometryDelegate >> measurePoseDiference: aNotification [
+PureROSOdometryDelegate >> measurePoseDiference: aPosition [
 
 | time a b deltaTime  poseDifference | 
 
@@ -65,19 +65,19 @@ PureROSOdometryDelegate >> measurePoseDiference: aNotification [
 								
 	poseDifference := PNGRobotPose x:0 y:0 o:0.
 	
-	previousNotification ifNotNil: [
+	previousPosition ifNotNil: [
 		a := time asSeconds.
 		b := previousTime asSeconds.
 		deltaTime :=  (b - a) abs.
 		
 		deltaTime = 0 ifFalse:[
-			poseDifference  x: ( aNotification position x - previousNotification position x ) / deltaTime.
-			poseDifference y: ( aNotification position y - previousNotification position y ) / deltaTime  .
-			poseDifference orientation:  ((aNotification position orientation  - previousNotification position orientation) / deltaTime) / ( 2 * Float pi ).
+			poseDifference  x: ( aPosition x - previousPosition position x ) / deltaTime.
+			poseDifference y: ( aPosition y - previousPosition position y ) / deltaTime  .
+			poseDifference orientation:  ((aPosition orientation  - previousPosition position orientation) / deltaTime) / ( 2 * Float pi ).
 		
 		]
 	].
-	previousNotification := aNotification.
+	previousPosition := aPosition.
 	previousTime := time.
 	^ poseDifference.
 ]

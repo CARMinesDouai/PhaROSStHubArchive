@@ -28,41 +28,6 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PureROSHectorLocalization >> consumeHLPose [
-	 (pureros node buildConnectionFor: '/imu/orientation')  typedAs: 'geometry_msgs/Quaternion'; for: [ :msg :chn | self onOrientationReceived: msg ]  ; connect.
-]
-
-{ #category : #'as yet unclassified' }
-PureROSHectorLocalization >> onOrientationReceived: aQuaternion [
-
-"Transcript show: aQuaternion ;cr.
-"
-
-	pureros node sendTo: '/poseupdate' typedAs: 'geometry_msgs/PoseWithCovarianceStamped' a: [: msg | 
-		pureros lastPosition intoGeometry_msgs_Pose: msg pose pose.
-		self setCovariance: msg pose.	
-		msg pose pose orientation x: aQuaternion x.
-		msg pose pose orientation y: aQuaternion y.
-		msg pose pose orientation z: aQuaternion z.
-		msg pose pose orientation w: aQuaternion w.
-		
-	].
-]
-
-{ #category : #'as yet unclassified' }
-PureROSHectorLocalization >> onPoseReceived: aMsg [
-	pureros node sendTo: '/poseupdate' typedAs: 'geometry_msgs/PoseWithCovarianceStamped' a: [: msg | 
-		pureros lastPosition intoGeometry_msgs_Pose: msg pose pose.
-		self setCovariance: msg pose.	
-		msg pose pose orientation x: aMsg pose orientation x.
-		msg pose pose orientation y: aMsg pose orientation y.
-		msg pose pose orientation z: aMsg pose orientation z.
-		msg pose pose orientation w: aMsg pose orientation w.
-		Transcript show: msg;cr.
-	]
-]
-
-{ #category : #'as yet unclassified' }
 PureROSHectorLocalization >> plot [
 	self plot: [
 		: spec |
@@ -77,10 +42,11 @@ PureROSHectorLocalization >> plot [
 { #category : #'as yet unclassified' }
 PureROSHectorLocalization >> setup [ 
 	self launch: 'hector-localization.launch'.
-"	self configurePoseStampedWithCovarianceAs: '/poseupdate'."
+	
+
+	self configurePoseStampedWithCovarianceAs: '/poseupdate'.
 	self configurePoseStamped. "For plotting"
 	self configureInitialPose.
-	self consumeHLPose.
 	
 	self plot.
 ]
