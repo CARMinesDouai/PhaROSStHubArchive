@@ -82,7 +82,7 @@ PhaROSNode class >> name: aName domain: aDomain xmlRpcPort: aXmlRpcPort  master:
 
 { #category : #'as yet unclassified' }
 PhaROSNode class >> new [ 
-	self error: ' You must used #name:domain:tcpPort:xmlRpcPort:master:  in order to instanciate a RoStNode. ' 
+	self error: ' You must used #name:domain:tcpPort:xmlRpcPort:master:  in order to instanciate a PhaROSNode. ' 
 ]
 
 { #category : #service }

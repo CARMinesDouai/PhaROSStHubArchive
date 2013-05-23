@@ -36,6 +36,7 @@ PhaROSTurtleDriver >> publishingLoop [
 
 { #category : #controlling }
 PhaROSTurtleDriver >> start [
+
 	super start.
 	process := [self publishingLoop] newProcess.
 	process
