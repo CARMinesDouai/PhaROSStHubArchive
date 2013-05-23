@@ -78,9 +78,10 @@ PurePhaROSNotificationController >> onLaserNotification: aLaserNotification [
 
 { #category : #'as yet unclassified' }
 PurePhaROSNotificationController >> onMovementNotification: aMovementNotification [
-	self movementCallbacks  do: [ : cb | cb value: aMovementNotification ].
+
+[	self movementCallbacks  do: [ : cb | cb value: aMovementNotification ].
 	allMovementCallbacksCalled ifNotNil:[ allMovementCallbacksCalled cull: aMovementNotification.].
-	lastMovementNotification := aMovementNotification.
+	lastMovementNotification := aMovementNotification.] taskIt.
 ]
 
 { #category : #'as yet unclassified' }

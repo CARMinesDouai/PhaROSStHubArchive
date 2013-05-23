@@ -71,9 +71,9 @@ PureROSOdometryDelegate >> measurePoseDiference: aPosition [
 		deltaTime :=  (b - a) abs.
 		
 		deltaTime = 0 ifFalse:[
-			poseDifference  x: ( aPosition x - previousPosition position x ) / deltaTime.
-			poseDifference y: ( aPosition y - previousPosition position y ) / deltaTime  .
-			poseDifference orientation:  ((aPosition orientation  - previousPosition position orientation) / deltaTime) / ( 2 * Float pi ).
+			poseDifference  x: ( aPosition x - previousPosition  x ) / deltaTime.
+			poseDifference y: ( aPosition y - previousPosition  y ) / deltaTime  .
+			poseDifference orientation:  ((aPosition orientation  - previousPosition orientation) / deltaTime) / ( 2 * Float pi ).
 		
 		]
 	].

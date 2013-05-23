@@ -20,7 +20,15 @@ Class {
 
 { #category : #configuration }
 PureROSGmappings >> setup [
-	self launch: 'gmappings.launch'.
+"	self launch: 'gmappings.launch'."
+	
+	self launch: [ : spec |
+		spec gmapping.
+		spec rviz.
+		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
+		spec staticZeroTFFrom: '/map'  to: '/odom_combined'.
+		spec staticZeroTFFrom: '/base_footprint'  to: '/MT0'.
+	].
 	
 	" Output "
 	self configureLaser.

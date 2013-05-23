@@ -1,19 +1,24 @@
+"
+Failed experiment :(
+
+"
 Class {
-	#name : #PureROSAMCLBasedPathPlanning,
+	#name : #PureROSHLAMCLBasedPathPlanning,
 	#superclass : #PureROSBasicExperiment,
 	#category : #'PureROS-Experiments-Planning'
 }
 
-{ #category : #configuration }
-PureROSAMCLBasedPathPlanning >> setup [
-	self launch: 'amcl_path_planning.launch'.
+{ #category : #'as yet unclassified' }
+PureROSHLAMCLBasedPathPlanning >> setup [
+	self launch: 'hl_amcl_path_planning.launch'.
 
 
 	self configureLaser.			"It will send laser scans to /scan topic"
 	self configureInitialPose.		"It will read /initialpose topic and change the robot pose"
-	self configureTFIn: '/base_link' withParent: '/odom'. "It will inform the position in terms of the robot in TF topic"
+	self configurePoseStampedWithCovarianceAs: '/poseupdate'.
 	
-	self configureOdometry.
+	
+	
 	
 	
 	"Since we have a differential drive robot, we just want to compare the changing variables"

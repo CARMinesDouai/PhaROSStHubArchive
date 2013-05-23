@@ -175,8 +175,18 @@ PureROSBasicExperiment >> initialize [
 ]
 
 { #category : #'configure-system' }
-PureROSBasicExperiment >> launch: aConfigurationFile [
-	launch := (PhaROSSystemLauncher instance roslaunch: aConfigurationFile) asStickyReference.
+PureROSBasicExperiment >> launch: aConfigurationFileOrBlock [
+	| configuration path |
+	
+	path := (aConfigurationFileOrBlock isKindOf: String) ifTrue: [
+		aConfigurationFileOrBlock.
+	] ifFalse: [
+		configuration := PhaROSLaunchBuilder new .
+		aConfigurationFileOrBlock value: configuration.
+		configuration writeFile.
+	].
+
+	launch := (PhaROSSystemLauncher instance roslaunch: path) asStickyReference.
 ]
 
 { #category : #accessing }
@@ -245,7 +255,7 @@ PureROSBasicExperiment >> useIMUAsOrientation [
 { #category : #'configure-publishing' }
 PureROSBasicExperiment >> usePoseToFeedRobot [
 	pureros notificatePoseTo: [: position | 
-		(pureros notificationController lastMovementNotification position closeTo: position) ifFalse: [ 
+		((pureros notificationController lastMovementNotification position orientation - position orientation) abs < 0.01) ifFalse: [ 
 			pureros locationController setPose: position 
 		]
 		
