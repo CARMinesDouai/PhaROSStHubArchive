@@ -202,6 +202,19 @@ PhaROSLaunchBuilder >> package: aPackageName type:aType named: aName [
 	^ self addChild: (PhaROSNodeBuilder package: aPackageName type:aType named: aName) 
 ]
 
+{ #category : #util }
+PhaROSLaunchBuilder >> relayTopic: aTopicID to: anOtherTopicID [ 
+	|conf |
+	
+	conf := self package: 'topic_tools' 
+				type:'relay'  
+				named: (aTopicID normalizeFrame, '_' ,anOtherTopicID normalizeFrame, '_relay').
+				
+	conf args: ('/{1} /{2}' format: {aTopicID normalizeFrame . anOtherTopicID normalizeFrame }).
+	
+	^ conf.
+]
+
 { #category : #localization }
 PhaROSLaunchBuilder >> robotEFKPose [
 	| conf |

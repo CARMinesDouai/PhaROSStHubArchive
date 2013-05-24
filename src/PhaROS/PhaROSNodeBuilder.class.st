@@ -28,6 +28,11 @@ PhaROSNodeBuilder >> doesNotUnderstand: aMessage [
 	super doesNotUnderstand: aMessage.
 ]
 
+{ #category : #childs }
+PhaROSNodeBuilder >> findOrCreateParam: aName [
+	^ childs detect: [:c | c name = aName ] ifNone: [self param name: aName; yourself].
+]
+
 { #category : #properties }
 PhaROSNodeBuilder >> name: aName [
 	^ self at: #name put: aName ofType: String.
@@ -50,7 +55,7 @@ PhaROSNodeBuilder >> param [
 
 { #category : #childs }
 PhaROSNodeBuilder >> param: aName value: aValue [
-	^ self param name: aName; value: aValue; yourself.
+	^ (self  findOrCreateParam: aName) value: aValue; yourself.
 	
 ]
 
