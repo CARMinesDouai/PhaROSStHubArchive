@@ -30,7 +30,16 @@ PureROSAMCL >> plot [
 
 { #category : #configuration }
 PureROSAMCL >> setup [
-	self launch: 'amcl.launch'.
+
+	"self launch: 'amcl.launch'."
+	
+	self launch: [ : spec | 
+		spec mapServer: '/home/santiago/mapimu/map.yaml'.
+		spec rviz.
+		spec staticZeroTFFrom:'/base_link' to: '/laser'.
+		spec xsens param: 'imu_topic_name' value: '/imu_data'.
+		spec amcl.
+	].
 
 
 	self configureLaser.			"It will send laser scans to /scan topic"

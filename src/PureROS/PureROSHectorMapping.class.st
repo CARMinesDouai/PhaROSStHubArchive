@@ -2,7 +2,7 @@ Class {
 	#name : #PureROSHectorMapping,
 	#superclass : #PureROSSLAMBase,
 	#instVars : [
-		'launchFile'
+		'configuration'
 	],
 	#classInstVars : [
 		'launchFile'
@@ -16,14 +16,20 @@ PureROSHectorMapping >> command: aCommand [
 ]
 
 { #category : #'initialize-release' }
-PureROSHectorMapping >> initialize [ 
-	super initialize.
-	launchFile := 'hector-mapping.launch'.
+PureROSHectorMapping >> defaultConfiguration [
+		^ [ 	: spec |
+			spec rviz.
+			spec staticZeroTFFrom: '/base_link' to: '/laser'. 
+			spec staticZeroTFFrom: '/odom' to: '/base_link'.
+			spec hectorMapping.	
+		]
 ]
 
-{ #category : #accessing }
-PureROSHectorMapping >> launchFile: aStringPath [ 
-	launchFile := aStringPath 
+{ #category : #'initialize-release' }
+PureROSHectorMapping >> initialize [ 
+	super initialize.
+	configuration := self defaultConfiguration.
+	"configuration := 'hector-mapping.launch'."
 ]
 
 { #category : #commands }
@@ -33,7 +39,7 @@ PureROSHectorMapping >> reset [
 
 { #category : #configuration }
 PureROSHectorMapping >> setup [
-	self launch: launchFile.
+	self launch: configuration.
 	
 	" Output "
 	self configureLaser.
@@ -41,6 +47,25 @@ PureROSHectorMapping >> setup [
 
 { #category : #configuration }
 PureROSHectorMapping >> withImu [
-	self launchFile: 'hector-mapping-imu.launch'.
+
+	"configuration := 'hector-mapping-imu.launch'."
+
+	 configuration:= [
+		:spec | 
+		
+			spec rviz.
+			spec staticZeroTFFrom: '/base_link' to: '/laser'. 
+			spec staticZeroTFFrom: '/base_link' to: '/MT0'.
+			spec staticZeroTFFrom: '/odom' to: '/base_link'.
+			spec hectorMapping.	
+				
+			spec xsens param: 'imu_topic_name' value:'/imu_topic' .
+			
+			(spec package: 'hector_imu_attitude_to_tf' type: 'imu_attitude_to_tf_node' named: 'hector_imu_attitude_to_tf')
+					param: 'base_stabilized_frame' value: 'base_link';
+					param: 'base_frame' value: 'base_imu_link'.
+			
+			
+	].
 	^ self.
 ]

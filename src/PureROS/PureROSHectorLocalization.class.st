@@ -41,8 +41,19 @@ PureROSHectorLocalization >> plot [
 
 { #category : #'as yet unclassified' }
 PureROSHectorLocalization >> setup [ 
-	self launch: 'hector-localization.launch'.
+"	self launch: 'hector-localization.launch'."
 	
+	self launch: [ : spec | 
+		spec mapServer: '/home/santiago/map4/map.yaml'.
+		spec rviz.
+		spec xsens param: 'imu_topic_name' value: '/raw_imu'.
+		
+		spec staticZeroTFFrom: 'base_footprint' to: 'laser'.
+		spec staticZeroTFFrom: 'map' to: 'MT0'.
+		spec staticZeroTFFrom: 'map' to: 'odom'.
+		spec hectorLocalization.
+		
+	].
 
 	self configurePoseStampedWithCovarianceAs: '/poseupdate'.
 	self configurePoseStamped. "For plotting"

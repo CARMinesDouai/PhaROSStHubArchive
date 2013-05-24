@@ -13,6 +13,15 @@ Class {
 
 { #category : #'as yet unclassified' }
 PurePhaROSDriveCtl >> advance: aPoint [
+	"=
+		# arguments:
+			- aPoint: Point
+		# return: Self. 
+		# example: 
+			[PureROSAMCLBasedPathPlanning/msg][blablabla]
+	="
+
+
 	trajectoryController goToDelta: aPoint.
 ]
 

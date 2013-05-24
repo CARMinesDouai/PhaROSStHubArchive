@@ -41,7 +41,24 @@ PureROSRobotPoseEFK >> plot [
 
 { #category : #configuration }
 PureROSRobotPoseEFK >> setup [
-	self launch: 'efk.launch'.
+"	self launch: 'efk.launch'."
+	
+		self launch: [ : spec | 
+
+		spec mapServer: '/home/santiago/map4/map.yaml'.
+
+		spec rviz.
+		
+		spec xsens param: 'imu_topic_name' value: '/imu_data'.
+		
+		spec staticZeroTFFrom: 'base_footprint' to: 'base_link'.
+		spec staticZeroTFFrom: 'base_link' to: 'MT0'.
+		spec staticZeroTFFrom: 'map' to: 'odom'.
+
+		spec hectorLocalization.
+		spec robotEFKPose.
+		
+	].
 
 	self configureOdometry.
 	
