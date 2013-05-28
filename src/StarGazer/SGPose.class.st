@@ -43,6 +43,16 @@ SGPose >> difference: aPose into: aReceptorPose [
 	aReceptorPose orientation: (self orientation - aPose orientation).
 ]
 
+{ #category : #comparing }
+SGPose >> intoGeometry_msgs_Pose: aRosPose [
+	aRosPose position x: self position x.		
+	aRosPose position y: self position y.
+	aRosPose position z: self position z.
+		
+	PhaROSGeometryTransformations rotationAsQuaternation: self orientation into: aRosPose orientation.
+
+]
+
 { #category : #accessing }
 SGPose >> orientation [
 	^ orientation

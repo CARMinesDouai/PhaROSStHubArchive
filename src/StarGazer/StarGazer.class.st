@@ -13,7 +13,7 @@ Class {
 		'refID',
 		'idNum',
 		'version',
-		'onNewPoseKnown'
+		'onLandMarkRead'
 	],
 	#category : #'StarGazer-Kernel'
 }
@@ -35,7 +35,7 @@ StarGazer class >> default [
 
 { #category : #position }
 StarGazer >> announceNewPose: aPose fromSystem: aLandMark [
-	onNewPoseKnown cull: aPose cull: aLandMark.
+	onLandMarkRead cull: aPose cull: aLandMark.
 ]
 
 { #category : #accessing }
@@ -154,8 +154,8 @@ StarGazer >> markType: aBaudRate [
 ]
 
 { #category : #position }
-StarGazer >> onNewPoseKnown: aBlock [
-	onNewPoseKnown := aBlock.
+StarGazer >> onLandMarkRead:  aBlock [
+	onLandMarkRead := aBlock.
 ]
 
 { #category : #accessing }
