@@ -91,6 +91,11 @@ PhaROSType >> serialize:aValue into: anEncoder [
 ]
 
 { #category : #accessing }
+PhaROSType >> typeName [
+	^ self subclassResponsibility 
+]
+
+{ #category : #accessing }
 PhaROSType >> unserialize: aStream [
 	| decoder aByteArray | 
 	

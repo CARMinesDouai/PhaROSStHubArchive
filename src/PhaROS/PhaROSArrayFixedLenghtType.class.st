@@ -43,3 +43,8 @@ PhaROSArrayFixedLenghtType >> size: aSize [
 PhaROSArrayFixedLenghtType >> sizeFor: aDecoder [ 
 	^ size.
 ]
+
+{ #category : #'as yet unclassified' }
+PhaROSArrayFixedLenghtType >> typeName [
+	^ relatedType typeName, ('[{1}] ' format: { size })
+]

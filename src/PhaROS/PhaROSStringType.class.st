@@ -52,3 +52,8 @@ PhaROSStringType >> setEncodeDecodeSelectors [
 	encodeSelector := #encodeString:.
 	decodeSelector := #nextEncodedString.
 ]
+
+{ #category : #'initialize-release' }
+PhaROSStringType >> typeName [ 
+	^ 'string'
+]

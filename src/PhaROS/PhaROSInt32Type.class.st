@@ -27,3 +27,8 @@ PhaROSInt32Type >> setEncodeDecodeSelectors [
 	decodeSelector := #nextEncodedInt32.
 	encodeSelector := #encodeInt32:.
 ]
+
+{ #category : #initializing }
+PhaROSInt32Type >> typeName [ 
+	^ 'int32'
+]

@@ -2,22 +2,29 @@ Class {
 	#name : #PhaROSHandleController,
 	#superclass : #PhaROSSystemController,
 	#instVars : [
-		'node'
+		'node',
+		'packages'
 	],
 	#category : #'PhaROS-Controllers'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #construction }
 PhaROSHandleController class >> localhost [
 	^ super localhost configureNode; yourself.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #construction }
 PhaROSHandleController class >> url: anUrl [
 	^( super url:anUrl) configureNode; yourself.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+PhaROSHandleController >> configureDependencies: aLaunchSpec [
+	
+	packages do: [:p | p configureDependencies: aLaunchSpec ]
+]
+
+{ #category : #'initialize-release' }
 PhaROSHandleController >> configureNode [ 
 	| handle |
 	
@@ -33,19 +40,19 @@ PhaROSHandleController >> configureNode [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSHandleController >> domain [
 	self flag: #askToTheHost.
 	"NetNameResolver"
 	^ '127.0.0.1'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSHandleController >> handleName [
 	^ '/PharoHandle'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSHandleController >> installHandleNode: aNode [
 	node ifNotNil:[
 		self error: ' There is already a node installed! '.
@@ -53,22 +60,27 @@ PhaROSHandleController >> installHandleNode: aNode [
 	node := aNode.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSHandleController >> node [
 	^ node
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #service }
 PhaROSHandleController >> stop [
 	master stopAndUnregister.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSHandleController >> tcpPort [
 	^9099
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+PhaROSHandleController >> use: aPackage [ 
+	self packages add: aPackage.
+]
+
+{ #category : #accessing }
 PhaROSHandleController >> xmlRpcPort [ 
 	^ 6630
 ]

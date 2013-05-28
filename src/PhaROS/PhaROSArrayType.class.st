@@ -47,3 +47,8 @@ PhaROSArrayType >> serialize:aValue into: anEncoder [
 PhaROSArrayType >> sizeFor: aDecoder [ 
 	^ aDecoder nextEncodedUint32.
 ]
+
+{ #category : #initialize }
+PhaROSArrayType >> typeName [
+	^ relatedType typeName, '[]'
+]

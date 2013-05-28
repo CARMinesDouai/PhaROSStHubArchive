@@ -44,3 +44,8 @@ PhaROSBoolType >> setEncodeDecodeSelectors [
 	encodeSelector := #encodeBoolean:.
 	
 ]
+
+{ #category : #'as yet unclassified' }
+PhaROSBoolType >> typeName [
+	^ 'bool'
+]

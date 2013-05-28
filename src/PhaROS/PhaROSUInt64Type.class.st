@@ -31,3 +31,8 @@ PhaROSUInt64Type >> setEncodeDecodeSelectors [
 	
 
 ]
+
+{ #category : #'as yet unclassified' }
+PhaROSUInt64Type >> typeName [ 
+	^ 'int64'
+]

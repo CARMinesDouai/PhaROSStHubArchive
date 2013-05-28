@@ -37,3 +37,8 @@ PhaROSUInt16Type >> setEncodeDecodeSelectors [
 	
 	
 ]
+
+{ #category : #'as yet unclassified' }
+PhaROSUInt16Type >> typeName [ 
+	^ 'uint16'
+]

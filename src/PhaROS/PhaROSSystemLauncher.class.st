@@ -24,7 +24,32 @@ PhaROSSystemLauncher class >> new [
 	self error: 'This is a singleton object, use instance instead of new'.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #types }
+PhaROSSystemLauncher >> deployType: aTypeName definedAs: aCompositeType [
+	
+	| outstream |
+	outstream := StandardFileStream forceNewFileNamed:( self typeFileName: aTypeName).
+	outstream ascii.
+	outstream nextPutAll: aCompositeType stringDefinition.
+	outstream flush.
+	outstream close.
+	
+	self makeTypes.
+	
+	PhaROSTypeBrowser instance definition: 'pharos/', aTypeName.
+]
+
+{ #category : #types }
+PhaROSSystemLauncher >> makeTypes [
+	^ self rosmake: #pharos.
+]
+
+{ #category : #environment }
+PhaROSSystemLauncher >> pharosHome [
+	^ '/home/santiago/pharos/pharos'.
+]
+
+{ #category : #types }
 PhaROSSystemLauncher >> rosMsg: aCommand [ 
 	
 	
@@ -32,7 +57,7 @@ PhaROSSystemLauncher >> rosMsg: aCommand [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #types }
 PhaROSSystemLauncher >> rosMsg: anArrayOfArguments tmpFile: aTempFileName [
 	| rosmsg outstream errstream  return |
 	
@@ -64,7 +89,7 @@ PhaROSSystemLauncher >> rosMsg: anArrayOfArguments tmpFile: aTempFileName [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #types }
 PhaROSSystemLauncher >> rosMsg: aCommand with: aTypeId [
 	
 	
@@ -72,20 +97,20 @@ PhaROSSystemLauncher >> rosMsg: aCommand with: aTypeId [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #types }
 PhaROSSystemLauncher >> rosMsgMd5: aTypeId [
 
 		^ self rosMsg: 'md5' with: aTypeId. 
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #types }
 PhaROSSystemLauncher >> rosMsgShow: aTypeId [
 
 	^  self rosMsg: 'show' with: aTypeId. 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #launching }
 PhaROSSystemLauncher >> roslaunch: aConfigurationFile [
 | roslaunch |
 
@@ -100,7 +125,40 @@ PhaROSSystemLauncher >> roslaunch: aConfigurationFile [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #make }
+PhaROSSystemLauncher >> rosmake: aPackage [
+	| rosmake outstream errstream  return |
+	
+	
+	outstream := StandardFileStream forceNewFileNamed: '/tmp/',aPackage,'.tmp'.
+	errstream := StandardFileStream forceNewFileNamed: '/tmp/error_',aPackage,'.tmp'.
+	
+	rosmake  :=  ExternalUnixOSProcess 
+							forkAndExec: '/opt/ros/fuerte/bin/rosmake'   
+							arguments: {aPackage} 
+							environment:  nil 
+							descriptors: { FileStream stdin . outstream . errstream } .  
+		
+	[ rosmake isComplete not ] whileTrue: [
+		(Delay forMilliseconds: 100) wait.
+	].
+	
+	rosmake succeeded ifTrue: [
+		return := outstream reset; upToEnd.
+		outstream close.
+		errstream close.
+	] ifFalse: [
+		(outstream reset; upToEnd) inspect.
+		Error signal: 'Error making package. Is this process running in a ROS environment?'.
+		outstream close.
+		errstream close.
+	].
+
+	^ return.
+
+]
+
+{ #category : #launching }
 PhaROSSystemLauncher >> rosrun: anArrayOfArguments [
 	| process | 
 	process :=  ExternalUnixOSProcess 
@@ -112,7 +170,7 @@ PhaROSSystemLauncher >> rosrun: anArrayOfArguments [
 	^ process. 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #deprecated }
 PhaROSSystemLauncher >> shutdownGMapping [
 	gmappingProcess  ifNotNil: [
 		gmappingProcess finalize.
@@ -121,7 +179,7 @@ PhaROSSystemLauncher >> shutdownGMapping [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #deprecated }
 PhaROSSystemLauncher >> shutdownMaster [
 	masterProcess ifNotNil: [
 		gmappingProcess finalize.
@@ -130,7 +188,7 @@ PhaROSSystemLauncher >> shutdownMaster [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #deprecated }
 PhaROSSystemLauncher >> shutdownTurtle [
 	turtleProcess ifNotNil: [
 		turtleProcess finalize.
@@ -139,7 +197,7 @@ PhaROSSystemLauncher >> shutdownTurtle [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #deprecated }
 PhaROSSystemLauncher >> startUpGMapping [
 	gmappingProcess ifNil: [
 		gmappingProcess :=  ExternalUnixOSProcess 
@@ -151,7 +209,7 @@ PhaROSSystemLauncher >> startUpGMapping [
 	].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #deprecated }
 PhaROSSystemLauncher >> startUpMaster [
 	" Remember that the environment variables must be setted before run this! "
 	masterProcess ifNil: [
@@ -164,7 +222,7 @@ PhaROSSystemLauncher >> startUpMaster [
 	].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #deprecated }
 PhaROSSystemLauncher >> startUpTurtle [
 	turtleProcess ifNil: [
 		turtleProcess :=  ExternalUnixOSProcess 
@@ -174,4 +232,9 @@ PhaROSSystemLauncher >> startUpTurtle [
 							descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
 		turtleProcess spin: 20.
 	].
+]
+
+{ #category : #environment }
+PhaROSSystemLauncher >> typeFileName: aTypeName [ 
+	^ self pharosHome, '/msg/', aTypeName ,'.msg'.
 ]

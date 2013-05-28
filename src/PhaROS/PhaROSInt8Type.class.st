@@ -32,3 +32,8 @@ PhaROSInt8Type >> setEncodeDecodeSelectors [
 	 
 	
 ]
+
+{ #category : #'as yet unclassified' }
+PhaROSInt8Type >> typeName [ 
+	^ 'int8'
+]

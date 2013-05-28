@@ -53,3 +53,8 @@ PhaROSFloat32Type >> setEncodeDecodeSelectors [
 	encodeSelector := #encodefloat32:.
 	 
 ]
+
+{ #category : #'as yet unclassified' }
+PhaROSFloat32Type >> typeName [ 
+	^ 'float32'
+]

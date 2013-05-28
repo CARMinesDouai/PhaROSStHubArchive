@@ -33,3 +33,8 @@ PhaROSDurationType >> setEncodeDecodeSelectors [
 	encodeSelector := #encodeDuration:.
 	decodeSelector := #nextEncodedDuration.
 ]
+
+{ #category : #'as yet unclassified' }
+PhaROSDurationType >> typeName [ 
+	^ 'duration'
+]

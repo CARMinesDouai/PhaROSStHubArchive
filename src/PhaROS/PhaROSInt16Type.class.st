@@ -26,3 +26,8 @@ PhaROSInt16Type >> setEncodeDecodeSelectors [
 	decodeSelector := #nextEncodedInt16.
 	encodeSelector := #encodeInt16:.
 ]
+
+{ #category : #initializing }
+PhaROSInt16Type >> typeName [ 
+	^ 'int16'
+]

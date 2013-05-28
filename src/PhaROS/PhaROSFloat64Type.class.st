@@ -46,3 +46,8 @@ PhaROSFloat64Type >> setEncodeDecodeSelectors [
 	encodeSelector := #encodefloat64:.
 	 
 ]
+
+{ #category : #'as yet unclassified' }
+PhaROSFloat64Type >> typeName [ 
+	^ 'float64'
+]

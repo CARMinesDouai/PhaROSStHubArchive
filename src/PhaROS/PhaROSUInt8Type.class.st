@@ -39,3 +39,8 @@ PhaROSUInt8Type >> setEncodeDecodeSelectors [
 	encodeSelector := #encodeUint8:.
 	
 ]
+
+{ #category : #'as yet unclassified' }
+PhaROSUInt8Type >> typeName [ 
+	^ 'int8'
+]

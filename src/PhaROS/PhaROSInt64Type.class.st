@@ -29,3 +29,8 @@ PhaROSInt64Type >> setEncodeDecodeSelectors [
 	
 
 ]
+
+{ #category : #initialize }
+PhaROSInt64Type >> typeName [ 
+	^ 'int64'
+]

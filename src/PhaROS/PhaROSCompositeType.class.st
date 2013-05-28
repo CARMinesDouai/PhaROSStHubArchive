@@ -241,6 +241,17 @@ PhaROSCompositeType >> setEncodeDecodeSelectors [
 	
 ]
 
+{ #category : #deploying }
+PhaROSCompositeType >> stringDefinition [
+	| return |
+	return := String crlf.
+	typeDefinition keysAndValuesDo: [:k :v | 
+		return := return,  v typeName, ' ',  k asString, String crlf.
+	].
+	^ return.
+
+]
+
 { #category : #serializing }
 PhaROSCompositeType >> typeDefinition [ 
 	^typeDefinition 

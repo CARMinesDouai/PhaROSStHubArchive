@@ -31,3 +31,8 @@ PhaROSUInt32Type >> setEncodeDecodeSelectors [
 	
 
 ]
+
+{ #category : #'as yet unclassified' }
+PhaROSUInt32Type >> typeName [ 
+	^ 'int32'
+]

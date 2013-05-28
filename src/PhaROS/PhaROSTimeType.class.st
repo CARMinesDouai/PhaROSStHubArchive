@@ -33,3 +33,8 @@ PhaROSTimeType >> setEncodeDecodeSelectors [
 	encodeSelector := #encodeTime:.
 	decodeSelector := #nextEncodedTime.
 ]
+
+{ #category : #'as yet unclassified' }
+PhaROSTimeType >> typeName [ 
+	^ 'time'
+]
