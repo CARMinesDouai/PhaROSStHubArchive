@@ -34,7 +34,10 @@ Class {
 		'slave',
 		'publisher',
 		'subscriber',
-		'receiverDelegate'
+		'receiverDelegate',
+		'heartRate',
+		'heartbeatActions',
+		'heartbeat'
 	],
 	#category : #'PhaROS-Kernel'
 }
@@ -113,11 +116,29 @@ PhaROSNode >> domain: anIp [
 	domain := anIp.
 ]
 
+{ #category : #heartbeat }
+PhaROSNode >> enableHeartbeatAt: aRate [
+	heartRate set: aRate . 
+	heartbeat ifNil: [ heartbeat := (self paralellize looping heartbeat) asStickyReference ].
+]
+
+{ #category : #heartbeat }
+PhaROSNode >> heartbeat [
+	heartbeatActions do: [: c | 
+		[ c value: self ] on: Error do: [ : e | 
+			Transcript show: 'Error calling callback ', e messageText; cr.
+		] 
+	].
+	(Delay forRate: heartRate get) wait.
+]
+
 { #category : #accessing }
 PhaROSNode >> initialize [ 
 	slave := PhaROSSlave for: self.
 	topics := Dictionary new.
 	receiverDelegate := [].
+	heartbeat := Set new.
+	heartRate := 1 asThreadsafeReference.
 ]
 
 { #category : #service }
@@ -146,7 +167,6 @@ PhaROSNode >> lookupTopic: aTopicName [
 
 { #category : #'as yet unclassified' }
 PhaROSNode >> lookupTopic: aTopicName typedAs: aTypeId [
-	
 	^ self topics at: aTopicName ifAbsentPut: [
 		self master lookupTopic: aTopicName typedAs: aTypeId.	
 	].
@@ -173,6 +193,11 @@ PhaROSNode >> name: aNodeName [
 	name := aNodeName.
 ]
 
+{ #category : #'as yet unclassified' }
+PhaROSNode >> onSubscribe: aNode to: aChannel [
+	"when a node is subscribed to a topic that is broadcasted by this node, you receive this message"
+]
+
 { #category : #output }
 PhaROSNode >> printOn: aStream [
 	aStream nextPutAll: 'Node-', self name.
@@ -193,6 +218,11 @@ PhaROSNode >> receive: aMessage from: aChannel [
 PhaROSNode >> receiverDelegate: aReceiverDelegateOrBlock [
 	receiverDelegate := aReceiverDelegateOrBlock. 
 	
+]
+
+{ #category : #heartbeat }
+PhaROSNode >> registerHeartbeat: aCallback [
+	heartbeatActions add: aCallback.
 ]
 
 { #category : #output }

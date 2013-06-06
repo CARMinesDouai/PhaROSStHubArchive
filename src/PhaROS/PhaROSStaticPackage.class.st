@@ -1,7 +1,7 @@
 Class {
 	#name : #PhaROSStaticPackage,
 	#superclass : #PhaROSPackage,
-	#category : #'PhaROS-Controllers'
+	#category : #'PhaROS-Packages'
 }
 
 { #category : #'as yet unclassified' }

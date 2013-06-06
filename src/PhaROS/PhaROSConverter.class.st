@@ -5,7 +5,7 @@ Class {
 		'convertTo',
 		'converter'
 	],
-	#category : #'PhaROS-MessageAdapter'
+	#category : #'PhaROS-TopicHandlers'
 }
 
 { #category : #construction }

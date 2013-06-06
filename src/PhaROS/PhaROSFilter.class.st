@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'unaryMessage'
 	],
-	#category : #'PhaROS-MessageAdapter'
+	#category : #'PhaROS-TopicHandlers'
 }
 
 { #category : #'as yet unclassified' }

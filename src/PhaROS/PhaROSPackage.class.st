@@ -1,7 +1,7 @@
 Class {
 	#name : #PhaROSPackage,
 	#superclass : #Object,
-	#category : #'PhaROS-Controllers'
+	#category : #'PhaROS-Packages'
 }
 
 { #category : #'as yet unclassified' }
@@ -22,8 +22,20 @@ PhaROSPackage >> dependencies [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSPackage >> finalize [
+	
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSPackage >> install [
-	self types asDictionary keysAndValuesDo: [ : typeName : definition | PhaROSSystemLauncher deployType: typeName definedAs: definition ].
+	self types asDictionary keysAndValuesDo: [ : typeName : definition | 
+		
+		[
+			PhaROSTypeBrowser instance definition: 'pharos/', typeName. 
+		] on: Error do: [
+			PhaROSSystemLauncher instance deployType: typeName definedAs: definition 
+		].
+	]
 ]
 
 { #category : #'as yet unclassified' }

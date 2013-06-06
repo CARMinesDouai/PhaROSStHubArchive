@@ -1,0 +1,59 @@
+Class {
+	#name : #PhaROSPose,
+	#superclass : #Object,
+	#instVars : [
+		'position',
+		'orientation'
+	],
+	#category : #'PhaROS-Util-Geometry'
+}
+
+{ #category : #'as yet unclassified' }
+PhaROSPose class >> fromTransformation: aTransformation [
+	^self position: ( PhaROSPosition fromTranslation: aTransformation translation ) orientation: (PhaROSQuaternion fromRotation: aTransformation rotation )
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPose class >> position: aPosition orientation: anOrientation [
+	^ self new  position: aPosition; orientation: anOrientation; yourself .
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPose class >> x: anX y: anY o: aZOrientation [
+	^ self x: anX y: anY z: 0.0 o: aZOrientation
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPose class >> x: anX y: anY z: aZ o: aZOrientation [
+	^ self position: (PhaROSPosition x: anX y: anY z: aZ )  orientation:( PhaROS2DOrientation z: aZOrientation).
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPose class >> zero [
+	^ self x: 0.0 y: 0.0  z:0.0  o: 0.0.  
+]
+
+{ #category : #operators }
+PhaROSPose >> + anOtherPose [
+	^ PhaROSPose position: (self position +  anOtherPose position) orientation: (self orientation + anOtherPose orientation).
+]
+
+{ #category : #operators }
+PhaROSPose >> - anOtherPose [
+	^ PhaROSPose position: (self position -  anOtherPose position) orientation: (self orientation - anOtherPose orientation).
+]
+
+{ #category : #accessing }
+PhaROSPose >> orientation: anOrientation [
+	orientation := anOrientation asQuaternion.
+]
+
+{ #category : #accessing }
+PhaROSPose >> position: aPosition [
+	position := aPosition 
+]
+
+{ #category : #printing }
+PhaROSPose >> printOn: aStream [ 
+	('[{1},{2}]' format: { position . orientation }) printOn: aStream.
+]

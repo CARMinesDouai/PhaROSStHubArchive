@@ -65,6 +65,11 @@ PhaROSChannel >> send: aMessage [
 	].
 ]
 
+{ #category : #'as yet unclassified' }
+PhaROSChannel >> send: aMessage to: aNode [
+	aNode receive: aMessage from: self
+]
+
 { #category : #service }
 PhaROSChannel >> startUp [
 	self subclassResponsibility.

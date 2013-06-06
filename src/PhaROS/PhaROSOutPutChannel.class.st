@@ -62,7 +62,7 @@ PhaROSOutPutChannel >> manageIncomingConnection: aMessage with: aSocket [
 	Transcript show: 'Managing incoming conection!'; cr.
 "	self assert: topic md5Sum = aMessage md5Sum."
 "	self assert: topic type = aMessage type."
-	
+
 	self subscribe: (self createExternalNodeFor: aMessage with: aSocket).
 	
 	
@@ -100,6 +100,16 @@ PhaROSOutPutChannel >> sendAMessage: aMessageConfigurationBlock [
 
 ]
 
+{ #category : #'message handling' }
+PhaROSOutPutChannel >> sendAMessage: aMessageConfigurationBlock to: aNode [
+	| message |
+	message := self newMessage.
+	
+	aMessageConfigurationBlock value: message value.
+	^ self send: message to: aNode.
+
+]
+
 { #category : #service }
 PhaROSOutPutChannel >> startUp [ 
 	owner registerTo: topic name with: topic type.
@@ -115,6 +125,7 @@ PhaROSOutPutChannel >> subscribe: aNode [
 	| message |	
 	
 	super subscribe: aNode.
+	self owner onSubscribe: aNode to: self. 
 	
 	aNode subscribedTo: self. 
 	

@@ -1,0 +1,124 @@
+Class {
+	#name : #PhaROSTFFrame,
+	#superclass : #Object,
+	#instVars : [
+		'name',
+		'pose',
+		'stamp',
+		'parent'
+	],
+	#category : #'PhaROS-Packages-TF'
+}
+
+{ #category : #'as yet unclassified' }
+PhaROSTFFrame class >> id: aFrameID [
+	^ self new name: aFrameID ; yourself.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTFFrame class >> id: aFrameID parent: aParent [
+	^ self new name: aFrameID ; parent: aParent; yourself.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTFFrame >> absolutePose [ 
+	^ self poseRelativeToParent: nil. " From here to the end of the tree "
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTFFrame >> name [
+	^ name 
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTFFrame >> name: aName [
+	name := aName
+	
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTFFrame >> parent [
+	^ parent
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTFFrame >> parent: aParentFrame [
+	parent := aParentFrame
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTFFrame >> pose: aPose [
+	pose := aPose
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTFFrame >> poseRelativeTo: aFrame [
+	| selfParents aux  | 	
+	
+	self flag: #shouldUseABetterAlgorithm.
+	"This algorithm is O2 complexity ".
+	
+	selfParents := Set new.
+
+	aux := self. 
+	[ 
+		selfParents add: aux.
+		aux := aux parent. 
+	 ] doWhileTrue: [ aux notNil ].
+	
+	aux := aFrame. 
+	[ 
+		(selfParents includes: aux ) ifTrue: [
+			^ (aFrame poseRelativeToParent: aux) - (self poseRelativeToParent: aux) .
+		].
+		aux := aux parent. 
+	 ] doWhileTrue: [ aux notNil ].
+
+	PhaROSTFError signal: ' Theres no way to reach ', aFrame name, ' from ', self name. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTFFrame >> poseRelativeToParent: aParent [
+	
+	| aux relative |
+	
+	aux :=  self.
+	relative := PhaROSPose zero.
+	
+	[ aux ~= parent and: [aux ~= nil ]] whileTrue: [
+		relative := relative + aux pose. 
+	].
+	aParent ifNotNil: [
+		self assert: aux notNil description: 'the given parent is not a parent! '.
+	].
+
+	^ relative.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTFFrame >> updateFrom: aTransformation using: db [
+
+	
+		aTransformation child_frame_id = self name ifTrue: [
+				self pose: (PhaROSPose fromTransformation: aTransformation transform).
+				self parent: (db at: aTransformation header frame_id ).
+				self stamp: aTransformation header stamp. 
+		].
+		
+	
+]

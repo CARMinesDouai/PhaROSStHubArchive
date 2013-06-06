@@ -38,6 +38,11 @@ PhaROSPublisher >> manageIncomingConnection: aMessage with: aSocket [
 
 ]
 
+{ #category : #events }
+PhaROSPublisher >> onSubscribe: aPhaROSExternalNode to: aPhaROSOutPutChannel [ 
+	owner onSubscribe: aPhaROSExternalNode to: aPhaROSOutPutChannel. 
+]
+
 { #category : #accessing }
 PhaROSPublisher >> owner: aNode [ 
 	owner := aNode.

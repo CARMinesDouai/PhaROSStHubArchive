@@ -10,7 +10,7 @@ Class {
 		'defaultAdapter',
 		'defaultConditional'
 	],
-	#category : #'PhaROS-MessageAdapter'
+	#category : #'PhaROS-TopicHandlers'
 }
 
 { #category : #'as yet unclassified' }
@@ -50,6 +50,11 @@ PhaROSTopicFlux >> condition: aCondition [
 ]
 
 { #category : #dispatching }
+PhaROSTopicFlux >> fetchStamp: aMessage [
+	^ (aMessage hasAttribute: #header) ifTrue: [ aMessage header stamp ] ifFalse: [ DateAndTime now ].
+]
+
+{ #category : #dispatching }
 PhaROSTopicFlux >> imInterestedIn: aMessage from: aChannel [
 	^ condition cull: aMessage cull: aChannel.
 ]
@@ -70,7 +75,7 @@ PhaROSTopicFlux >> printOn: aStream [
 { #category : #dispatching }
 PhaROSTopicFlux >> receive: aMessage from: aChannel [
 	(self imInterestedIn: aMessage from: aChannel) ifTrue: [
-		self redirect: (self adapt: aMessage ) from: aChannel.
+		self redirect: (self adapt: aMessage ) from: aChannel at: (self fetchStamp: aMessage).
 	].
 
 
@@ -78,6 +83,6 @@ PhaROSTopicFlux >> receive: aMessage from: aChannel [
 ]
 
 { #category : #dispatching }
-PhaROSTopicFlux >> redirect: anAdaptedMessage from: aChannel [
-	^ callback receive: anAdaptedMessage from: aChannel.
+PhaROSTopicFlux >> redirect: anAdaptedMessage from: aChannel at: aTimeStamp [ 
+	^ callback receive: anAdaptedMessage from: aChannel at: aTimeStamp .
 ]

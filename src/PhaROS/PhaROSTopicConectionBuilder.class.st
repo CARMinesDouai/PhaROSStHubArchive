@@ -13,7 +13,7 @@ Class {
 	#classInstVars : [
 		'typeID'
 	],
-	#category : #'PhaROS-MessageAdapter'
+	#category : #'PhaROS-TopicHandlers'
 }
 
 { #category : #'as yet unclassified' }
@@ -29,8 +29,6 @@ PhaROSTopicConectionBuilder >> adapted: anAdaption [
 
 { #category : #building }
 PhaROSTopicConectionBuilder >> build [
-	self assert: callback notNil description: 'Callback is not optative. Send #for: aCallback to set it'.
-	
 	
 	^  forDebug ifTrue: [
 		PhaROSTopicFluxDebug new adapter: adapter; condition: when; callback: callback; yourself
@@ -69,6 +67,7 @@ PhaROSTopicConectionBuilder >> initialize [
 	when := PhaROSTopicFlux defaultConditional.
 	adapter := PhaROSTopicFlux defaultAdapter.
 	forDebug := false.
+	callback := [ :msg :chn | Transcript show: 'Warning! This topic conection it has no callback configured! '; cr.].
 ]
 
 { #category : #accessing }

@@ -18,10 +18,16 @@ Class {
 	#name : #PhaROSNodeHandle,
 	#superclass : #PhaROSNode,
 	#instVars : [
-		'topicHandle'
+		'topicHandle',
+		'subscribingHandle'
 	],
 	#category : #'PhaROS-Kernel-Nodes'
 }
+
+{ #category : #events }
+PhaROSNodeHandle >> atSubscribing: aTopicID do: aBlock [
+	subscribingHandle at: aTopicID put: aBlock.
+]
 
 { #category : #building }
 PhaROSNodeHandle >> buildConnectionFor: aTopicID [
@@ -31,8 +37,6 @@ PhaROSNodeHandle >> buildConnectionFor: aTopicID [
 { #category : #dispatching }
 PhaROSNodeHandle >> dispatch: aMessage for: aChannel [
 
-	aChannel topic name = '/raw_imu' ifTrue: [ self halt] .
-	
 	topicHandle at: aChannel topic  ifPresent: [ : callbackSet | 
 		callbackSet do: [ : callback | callback receive: aMessage value from: aChannel]. 
 	] ifAbsent: [
@@ -43,6 +47,7 @@ PhaROSNodeHandle >> dispatch: aMessage for: aChannel [
 { #category : #'initialize-release' }
 PhaROSNodeHandle >> initialize [ 
 	super initialize.
+	subscribingHandle := Dictionary new.
 	topicHandle := Dictionary new.
 	receiverDelegate := [: msg :chn | self dispatch: msg for: chn ].
 ]
@@ -71,6 +76,11 @@ PhaROSNodeHandle >> interestedIn: aTopicName typedAs: aTypeId for: aCallback [
 		
 ]
 
+{ #category : #events }
+PhaROSNodeHandle >> onSubscribe: aNode to: aChannel [
+	subscribingHandle at: aChannel topic name ifPresent: [: handle | handle cull: aNode cull: aChannel ].
+]
+
 { #category : #banished }
 PhaROSNodeHandle >> receiverDelegate: aDelegate [
 	self error: 'this node is a handle node. It receives delegates per topic'.
@@ -87,4 +97,9 @@ PhaROSNodeHandle >> register: aCallback for: aTopic [
 	
 	
 	
+]
+
+{ #category : #building }
+PhaROSNodeHandle >> topicPublisher: aTopicName typedAs: aTypeId [
+	^ PhaROSTopicPublisher node: self topic: (self lookupTopic: aTopicName typedAs: aTypeId).
 ]

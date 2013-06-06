@@ -5,7 +5,7 @@ Class {
 		'types',
 		'dependencies'
 	],
-	#category : #'PhaROS-Controllers'
+	#category : #'PhaROS-Packages'
 }
 
 { #category : #'as yet unclassified' }
