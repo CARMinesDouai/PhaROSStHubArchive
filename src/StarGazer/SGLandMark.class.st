@@ -38,3 +38,9 @@ SGLandMark >> pose: aPose [
 	self assert: aPose isNil.
 	pose := aPose.
 ]
+
+{ #category : #'as yet unclassified' }
+SGLandMark >> printOn: aStream [
+	aStream nextPutAll: ('ID:{1}::' format: { id asString }).
+	pose printOn: aStream.
+]

@@ -56,6 +56,11 @@ SGGate >> command: aParameterName with: aValue [
 ]
 
 { #category : #'high level protocol' }
+SGGate >> finalize [
+	state finalize.
+]
+
+{ #category : #'high level protocol' }
 SGGate >> get: aParameterName [
 	^ self state get: aParameterName.
 	
@@ -119,6 +124,5 @@ SGGate >> usePort: aPort [
 		self stopCalculating.
 	].
 	stream := aPort asSGStream.
-	state := SGIdleState for: self.
 	
 ]

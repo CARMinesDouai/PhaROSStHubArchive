@@ -20,6 +20,11 @@ SGCalculatingState >> deployMessage: aMessage [
 	
 ]
 
+{ #category : #commands }
+SGCalculatingState >> finalize [ 
+	polling finalize
+]
+
 { #category : #consuming }
 SGCalculatingState >> hasMessages [
 	^ messages size > 0
@@ -43,14 +48,14 @@ SGCalculatingState >> poll [
 
 { #category : #producing }
 SGCalculatingState >> singlePoll [
-	shf:= 2.
+
 	[
 		self deployMessage: gate stream nextMessage.
-		shouldWait := shouldWait + 1.
-		shouldWait \\ 1 = 0 ifTrue: [ (Delay forMilliseconds: 100) wait. shf := shf = 1 ifTrue: 1 ifFalse:2 ].
+		(Delay forMilliseconds: 100) wait.
 	] on: Error do: [
 		:e | Transcript show: 'Warning: ', e messageText; cr.
 	].
+
 ]
 
 { #category : #commands }

@@ -1,46 +1,32 @@
 Class {
 	#name : #SGROSBroadcaster,
-	#superclass : #SGROSPackage,
+	#superclass : #Object,
 	#instVars : [
-		'stargazer'
+		'stargazer',
+		'topicPublisher'
 	],
 	#category : #'StarGazer-Ros'
 }
 
-{ #category : #types }
-SGROSBroadcaster class >> landMarkTypeDefinition [
-	^ PhaROSCompositeType named: 'pharos/SGLandMark' definedBy: {
-		#header -> (PhaROSTypeBrowser instance definition: 'std_msgs/Header'). 
-		#pose -> (PhaROSTypeBrowser instance definition: 'geometry_msgs/Pose') .
-		#landmark -> (PhaROSUInt16Type new)
-	}  withConstants: {}.
-]
-
-{ #category : #types }
-SGROSBroadcaster class >> types [
-	^ { #SGLandMark -> self landMarkTypeDefinition }.
-]
-
 { #category : #broadcasting }
-SGROSBroadcaster >> broadcast: pose of: landmark [ 
-
-	rosnode sendTo: self landmarkTopic  typedAs: self landmarkTopicType a: [ :msg | 
+SGROSBroadcaster >> broadcast: landmark [ 
+	
+	topicPublisher send: [ :msg | 
 		msg header frame_id: 'stargazer'.
-		pose intoGeometry_msgs_Pose: msg pose.
+		landmark pose intoGeometry_msgs_Pose: msg pose.
 		msg landmark: landmark id.		
 	]
 ]
 
 { #category : #package }
-SGROSBroadcaster >> configure: aNode [
-	super configure: aNode.
-	stargazer := StarGazer default.
-	stargazer onLandMarkRead: [ : pose : landmark | self broadcast: pose of: landmark ].
-	stargazer startMeasurements.
+SGROSBroadcaster >> configure: aController [
+	topicPublisher := aController node topicPublisher: SGROSStarGazerPackage landmarkTopic  typedAs: SGROSStarGazerPackage landmarkTopicType.
+	stargazer := StarGazer default: [  : landmark | self broadcast: landmark ].
+	
 	
 ]
 
 { #category : #package }
-SGROSBroadcaster >> name [
-	^ 'StarGazer'
+SGROSBroadcaster >> finalize [ 
+	stargazer finalize.
 ]

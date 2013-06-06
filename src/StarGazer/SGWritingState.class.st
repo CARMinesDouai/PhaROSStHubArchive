@@ -25,12 +25,6 @@ SGWritingState >> setEnd [
 ]
 
 { #category : #'private state flow' }
-SGWritingState >> switchCalculating [ 
-
-	^ super switchCalculating.
-]
-
-{ #category : #'private state flow' }
 SGWritingState >> switchIdle [ 
 	^ SGIdleState for: gate.
 ]

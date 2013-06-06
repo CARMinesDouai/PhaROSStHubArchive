@@ -19,18 +19,39 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-StarGazer class >> atGate: aPort [
-	^ self new gate: aPort; yourself.
+StarGazer class >> atGate: aGate  forMode: aMode [
+
+	^ self new gate: aGate;  mode: aMode; yourself.
 ]
 
 { #category : #'as yet unclassified' }
-StarGazer class >> atPortId: aPortId [
-	^ self atGate:  (SGGate atPortId: aPortId).
+StarGazer class >> atPortId: aPortId  withInitialState: aStateClass forMode: aMode [ 
+	| gate |
+	gate :=  (SGGate atPortId: aPortId).
+	gate state: (aStateClass for: gate).
+	^ self atGate:  gate  forMode: aMode
 ]
 
 { #category : #'as yet unclassified' }
 StarGazer class >> default [
-	^ self atPortId: SGGate defaultPortID.
+
+	" The default configuration open ttyUSB0, is already able to scan and in stand alone mode (each landmark give the data needed )"
+
+	^ self atPortId: SGGate defaultPortID
+		    withInitialState: SGCalculatingState 
+		    forMode: SGStandAloneMode new. 
+	
+]
+
+{ #category : #'as yet unclassified' }
+StarGazer class >> default: aCallbackForMeasures [
+
+	" The default configuration open ttyUSB0, is already able to scan and in stand alone mode (each landmark give the data needed )"
+
+	^( self atPortId: SGGate defaultPortID
+		    withInitialState: SGCalculatingState 
+		    forMode: (SGStandAloneMode new callback: aCallbackForMeasures ;yourself)) startMeasurements; yourself  . 
+	
 ]
 
 { #category : #position }
@@ -53,7 +74,7 @@ StarGazer >> baudRate: aBaudRate [
 
 { #category : #finalize }
 StarGazer >> finalize [
-	
+	gate finalize.
 ]
 
 { #category : #accessing }
@@ -153,6 +174,11 @@ StarGazer >> markType: aBaudRate [
 	markType value: aBaudRate.
 ]
 
+{ #category : #accessing }
+StarGazer >> mode: aMode [ 
+	mode := aMode
+]
+
 { #category : #position }
 StarGazer >> onLandMarkRead:  aBlock [
 	onLandMarkRead := aBlock.
@@ -197,8 +223,9 @@ StarGazer >> stopMeasurements [
 { #category : #update }
 StarGazer >> updateWorld: aLandMarkMeasure [
 	mode updateWorld: aLandMarkMeasure.
-	self announceNewPose: (mode absolutePoseFor: aLandMarkMeasure) fromSystem: mode currentCoordinateSystem. 
-	
+
+	"self announceNewPose: (mode absolutePoseFor: aLandMarkMeasure) fromSystem: mode currentCoordinateSystem. 
+	"
 ]
 
 { #category : #accessing }
