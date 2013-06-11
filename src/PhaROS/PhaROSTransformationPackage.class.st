@@ -1,5 +1,12 @@
 "
-This packages is not currently working. 
+controller := PhaROSHandleController localhost. 
+controller packages use: PhaROSTransformationTestPackage as: #tftest.
+controller packages use: PhaROSTransformationPackage as: #transformation.
+controller packages transformation between: '/map' and: '/odom'  for: [ : pose | Transcript show:'map/odom'; show: pose; cr. ] .
+controller packages transformation between: '/map' and: '/laser'  for: [ : pose | Transcript show:'map/laser'; show: pose; cr. ]. 
+controller packages transformation between: '/laser' and: '/sonar'  for: [ : pose | Transcript show:'map/odom'; show: pose; cr. ] .
+
+
 "
 Class {
 	#name : #PhaROSTransformationPackage,
