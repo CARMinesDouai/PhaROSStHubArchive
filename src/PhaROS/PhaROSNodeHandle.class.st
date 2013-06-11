@@ -36,7 +36,6 @@ PhaROSNodeHandle >> buildConnectionFor: aTopicID [
 
 { #category : #dispatching }
 PhaROSNodeHandle >> dispatch: aMessage for: aChannel [
-	self halt.
 	topicHandle at: aChannel topic  ifPresent: [ : callbackSet | 
 		callbackSet do: [ : callback | callback receive: aMessage value from: aChannel]. 
 	] ifAbsent: [

@@ -49,7 +49,7 @@ PhaROSSelfProcessedExternalNode >> setup [
 PhaROSSelfProcessedExternalNode >> spinOnceOver: aChannel [
 	
 	self checkConnection. 
-	self halt.
+
 	[stream peek ifNotNil: [
 		msg loadStream: stream.
 		aChannel send: msg.

@@ -44,8 +44,23 @@ PhaROSPose >> - anOtherPose [
 ]
 
 { #category : #accessing }
+PhaROSPose >> orientation [
+	^ orientation
+]
+
+{ #category : #accessing }
 PhaROSPose >> orientation: anOrientation [
 	orientation := anOrientation asQuaternion.
+]
+
+{ #category : #accessing }
+PhaROSPose >> poseRelativeTo: anOtherPose [
+	^ PhaROSPose position: (self position -  anOtherPose position) orientation: (anOtherPose orientation * self orientation inverse ).
+]
+
+{ #category : #accessing }
+PhaROSPose >> position [
+	^ position
 ]
 
 { #category : #accessing }

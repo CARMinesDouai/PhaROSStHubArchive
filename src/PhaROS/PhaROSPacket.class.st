@@ -71,7 +71,7 @@ PhaROSPacket >> loadStream: aStream [
 
 
 	aDecoder := PhaROSDecoder on: aStream .
-	self halt.
+
 	size := self decodePacketSizeFrom: aDecoder.
  	(type isAPossibleSize: size ) ifFalse: [
 		PhaROSUnexpextedValue signal:' Unexpected Value'.	

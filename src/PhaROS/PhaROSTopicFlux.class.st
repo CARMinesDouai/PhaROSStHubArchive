@@ -57,7 +57,6 @@ PhaROSTopicFlux >> fetchStamp: aMessage [
 
 { #category : #accessing }
 PhaROSTopicFlux >> for: aBlockClosure [ 
-	self halt.
 	self callback: aBlockClosure.
 	
 ]

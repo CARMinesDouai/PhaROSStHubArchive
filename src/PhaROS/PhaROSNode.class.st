@@ -200,7 +200,7 @@ PhaROSNode >> onSubscribe: aNode to: aChannel [
 
 { #category : #output }
 PhaROSNode >> printOn: aStream [
-	aStream nextPutAll: 'Node-', self name.
+	aStream nextPutAll: 'Node-', (self name ifNil:'').
 ]
 
 { #category : #output }

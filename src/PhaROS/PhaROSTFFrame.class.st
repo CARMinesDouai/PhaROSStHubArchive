@@ -46,6 +46,15 @@ PhaROSTFFrame >> parent: aParentFrame [
 	parent := aParentFrame
 ]
 
+{ #category : #accessing }
+PhaROSTFFrame >> pose [
+	(pose isNil and: [ parent isNil ]) ifTrue: [
+		" fixed "
+		^ PhaROSPose zero.	
+	].
+	^ pose.
+]
+
 { #category : #'as yet unclassified' }
 PhaROSTFFrame >> pose: aPose [
 	pose := aPose
@@ -69,7 +78,7 @@ PhaROSTFFrame >> poseRelativeTo: aFrame [
 	aux := aFrame. 
 	[ 
 		(selfParents includes: aux ) ifTrue: [
-			^ (aFrame poseRelativeToParent: aux) - (self poseRelativeToParent: aux) .
+			^ (aFrame poseRelativeToParent: aux) poseRelativeTo: (self poseRelativeToParent: aux) .
 		].
 		aux := aux parent. 
 	 ] doWhileTrue: [ aux notNil ].
@@ -100,14 +109,26 @@ PhaROSTFFrame >> poseRelativeToParent: aParent [
 	aux :=  self.
 	relative := PhaROSPose zero.
 	
-	[ aux ~= parent and: [aux ~= nil ]] whileTrue: [
+	[ aux ~= aParent and: [aux ~= nil ]] whileTrue: [
 		relative := relative + aux pose. 
+		aux := aux parent.
 	].
 	aParent ifNotNil: [
 		self assert: aux notNil description: 'the given parent is not a parent! '.
 	].
 
 	^ relative.
+]
+
+{ #category : #printing }
+PhaROSTFFrame >> printOn: aStream [
+	'Frame:', name printOn: aStream.
+
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTFFrame >> stamp: aStamp [ 
+	stamp := aStamp
 ]
 
 { #category : #'as yet unclassified' }

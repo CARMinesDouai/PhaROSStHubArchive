@@ -1,0 +1,27 @@
+Class {
+	#name : #PhaROSTransformationTestPackage,
+	#superclass : #PhaROSStaticPackage,
+	#instVars : [
+		'tfs'
+	],
+	#category : #'PhaROS-Packages-TF'
+}
+
+{ #category : #'as yet unclassified' }
+PhaROSTransformationTestPackage >> configure: aController [
+	self launchTest.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTransformationTestPackage >> launchTest [
+	tfs := PhaROSSystemLauncher instance launch: [
+		: launch |
+		launch staticTFFrom: '/map' to: '/odom'  of: '0 0 0 0 0 0' rate: 100. 
+		launch staticTFFrom: '/odom' to: '/base_footprint'  of: '1 1 2 0 0 0' rate: 100.	
+		launch staticTFFrom: '/base_footprint' to: '/base_link'  of: '1 1 2 0 0 0' rate: 100.	
+		launch staticTFFrom: '/base_link' to: '/laser'  of: '1 1 2 0 0 0' rate: 100.		
+		launch staticTFFrom: '/base_link' to: '/sonar'  of: '1 1 2 0 0 0' rate: 100.		
+		launch staticTFFrom: '/base_link' to: '/infrared'  of: '1 1 2 0 0 0' rate: 100.	
+		launch staticTFFrom: '/base_link' to: '/stargazer'  of: '1 1 2 0 0 0' rate: 100.				
+	] .
+]
