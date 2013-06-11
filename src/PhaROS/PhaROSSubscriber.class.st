@@ -25,9 +25,9 @@ PhaROSSubscriber >> interestedIn: aTopic [
 
 	| currentChannels newChannels |
 	
-	self halt.
-	currentChannels  :=  channels at: aTopic name ifAbsentPut: [ Set new ].
 	
+	currentChannels  :=  channels at: aTopic name ifAbsentPut: [ Set new ].
+	self halt.
 	newChannels := aTopic allInputChannelsFor: self  but: currentChannels.
 	
 	newChannels do: [ :ch | ch subscribe: self ].

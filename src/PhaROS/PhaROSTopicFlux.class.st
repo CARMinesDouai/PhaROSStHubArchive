@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'adapter',
 		'condition',
-		'callback'
+		'callback',
+		'mutex'
 	],
 	#classInstVars : [
 		'defaultAdapter',
@@ -54,6 +55,13 @@ PhaROSTopicFlux >> fetchStamp: aMessage [
 	^ (aMessage hasAttribute: #header) ifTrue: [ aMessage header stamp ] ifFalse: [ DateAndTime now ].
 ]
 
+{ #category : #accessing }
+PhaROSTopicFlux >> for: aBlockClosure [ 
+	self halt.
+	self callback: aBlockClosure.
+	
+]
+
 { #category : #dispatching }
 PhaROSTopicFlux >> imInterestedIn: aMessage from: aChannel [
 	^ condition cull: aMessage cull: aChannel.
@@ -85,4 +93,5 @@ PhaROSTopicFlux >> receive: aMessage from: aChannel [
 { #category : #dispatching }
 PhaROSTopicFlux >> redirect: anAdaptedMessage from: aChannel at: aTimeStamp [ 
 	^ callback receive: anAdaptedMessage from: aChannel at: aTimeStamp .
+
 ]

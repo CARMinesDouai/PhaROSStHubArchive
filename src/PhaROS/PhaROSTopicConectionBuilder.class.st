@@ -41,12 +41,16 @@ PhaROSTopicConectionBuilder >> build [
 
 { #category : #building }
 PhaROSTopicConectionBuilder >> connect [
+	| flux |
+	flux := self build. 
 	
 	typeID ifNil: [
-		node interestedIn: topicName for: self build. 	
+		node interestedIn: topicName for: flux	
 	] ifNotNil: [
-		node interestedIn: topicName typedAs: typeID for: self build. 	
+		node interestedIn: topicName typedAs: typeID for: flux 	
 	].
+
+	^ flux.
 ]
 
 { #category : #setting }
@@ -67,7 +71,7 @@ PhaROSTopicConectionBuilder >> initialize [
 	when := PhaROSTopicFlux defaultConditional.
 	adapter := PhaROSTopicFlux defaultAdapter.
 	forDebug := false.
-	callback := [ :msg :chn | Transcript show: 'Warning! This topic conection it has no callback configured! '; cr.].
+	callback := [ :msg :chn | self halt. Transcript show: 'Warning! This topic conection it has no callback configured! '; cr.].
 ]
 
 { #category : #accessing }

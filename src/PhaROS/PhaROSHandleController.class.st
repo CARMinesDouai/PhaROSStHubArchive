@@ -15,7 +15,7 @@ PhaROSHandleController class >> localhost [
 
 { #category : #construction }
 PhaROSHandleController class >> turtlebot [
-	^ self url: 'http://10.1.161.20:11311'
+	^ self url: 'http://10.1.161.20:11311/'
 ]
 
 { #category : #construction }
@@ -88,6 +88,7 @@ PhaROSHandleController >> handleName [
 PhaROSHandleController >> initialize [
 	super initialize .
 	packages := PhaROSPackageContainer new  controller: self; yourself.
+	
 ]
 
 { #category : #package }

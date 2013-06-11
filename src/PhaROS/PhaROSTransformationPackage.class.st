@@ -1,34 +1,50 @@
+"
+This packages is not currently working. 
+"
 Class {
 	#name : #PhaROSTransformationPackage,
 	#superclass : #PhaROSStaticPackage,
 	#instVars : [
 		'rosnode',
 		'db',
-		'interested',
-		'messages'
+		'tfWriter'
 	],
 	#category : #'PhaROS-Packages-TF'
 }
 
 { #category : #'as yet unclassified' }
-PhaROSTransformationPackage >> configure: aNode [
-	rosnode := aNode.
-	self consumeTF.
-	
+PhaROSTransformationPackage class >> tfTopic [
+	^ '/tf'
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSTransformationPackage >> consumeTF [ 
-	| connection |
-	connection := rosnode buildConnectionFor: '/tf'.
-	connection typedAs: 'tf/tfMessage'; for: [ : msg | db process: msg ].
-	connection connect. 
-	
+PhaROSTransformationPackage class >> tfTopicType [
+	^ 'tf/tfMessage'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #package }
+PhaROSTransformationPackage >> configure: aController [
+	rosnode := aController node.
+	self tf for: [ : t | db process: t.].
+	tfWriter := aController node topicPublisher: PhaROSTransformationPackage tfTopic 
+								  typedAs: PhaROSTransformationPackage tfTopicType
+]
+
+{ #category : #'initialize-release' }
 PhaROSTransformationPackage >> initialize [ 
 
-	messages := OrderedCollection new.
-	interested := Set new.
+	db := PhaROSTransformationDataBase new.
+]
+
+{ #category : #topic }
+PhaROSTransformationPackage >> tf [
+	^(rosnode buildConnectionFor: '/tf')
+				typedAs: 'tf/tfMessage'; 
+				connect . 
+	
+]
+
+{ #category : #topic }
+PhaROSTransformationPackage >> tf: aMessageConfiguration [
+	^ tfWriter send: aMessageConfiguration.
 ]

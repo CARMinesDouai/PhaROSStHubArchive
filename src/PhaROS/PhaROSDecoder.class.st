@@ -167,10 +167,13 @@ PhaROSDecoder >> nextEncodedUint16 [
 
 { #category : #'as yet unclassified' }
 PhaROSDecoder >> nextEncodedUint32 [
-	| n firstDigit barray |
+	| n n2 firstDigit src barray |
 
 	self verifyDataAvailability: (4).	
-	barray := ReadStream on: (stream next: 4) reversed.
+	
+	src := stream next: 4.
+
+	barray := ReadStream on: src reversed.
 
 	
 	[

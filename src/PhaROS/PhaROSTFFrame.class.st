@@ -114,11 +114,11 @@ PhaROSTFFrame >> poseRelativeToParent: aParent [
 PhaROSTFFrame >> updateFrom: aTransformation using: db [
 
 	
-		aTransformation child_frame_id = self name ifTrue: [
-				self pose: (PhaROSPose fromTransformation: aTransformation transform).
-				self parent: (db at: aTransformation header frame_id ).
-				self stamp: aTransformation header stamp. 
-		].
-		
+	aTransformation child_frame_id = self name ifTrue: [
+		self pose: (PhaROSPose fromTransformation: aTransformation transform).
+		self parent: (db at: aTransformation header frame_id ).
+		self stamp: aTransformation header stamp. 
+	].
+	
 	
 ]

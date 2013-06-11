@@ -32,8 +32,30 @@ PhaROSPackageContainer >> initialize [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPackageContainer >> use: aPackage as: aPackageImportName [
-	packages at: aPackageImportName ifPresent: [ self error: ' there is alread a package related with this name '].
-	packages at: aPackageImportName put: aPackage.
-	controller install: aPackage.
+PhaROSPackageContainer >> use: aPackageConstructor as: aPackageImportName [
+	
+	"=
+		# arguments
+			1. aPackageConstructor : Object that understand buildPackage message and gives a package to install in the name.
+			2. aPackageImportName : Symbol to install the package.
+		# behavior
+			install a package with the given name. If there is a package alread installed it check that is the same kind. If is not raise a signal. 
+		# error
+			 there is alread a package related with this name '.
+			
+	="
+
+	packages at: aPackageImportName ifPresent: [ : p | 
+		(aPackageConstructor hasConstructed: p) ifFalse: [
+			self error: ' there is alread a package related with this name '
+		].
+	] ifAbsent: [
+		| package |
+		
+		package := aPackageConstructor buildPackage. 
+
+		packages at: aPackageImportName put: package.
+		controller install: package.	
+	].
+	
 ]

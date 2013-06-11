@@ -39,6 +39,21 @@ PhaROSSystemLauncher >> deployType: aTypeName definedAs: aCompositeType [
 	PhaROSTypeBrowser instance definition: 'pharos/', aTypeName.
 ]
 
+{ #category : #launching }
+PhaROSSystemLauncher >> launch: aConfigurationFileOrBlock [
+	| configuration path |
+	
+	path := (aConfigurationFileOrBlock isKindOf: String) ifTrue: [
+		aConfigurationFileOrBlock.
+	] ifFalse: [
+		configuration := PhaROSLaunchBuilder new .
+		aConfigurationFileOrBlock value: configuration.
+		configuration writeFile.
+	].
+
+	^ (self roslaunch: path) asStickyReference.
+]
+
 { #category : #types }
 PhaROSSystemLauncher >> makeTypes [
 	^ self rosmake: #pharos.

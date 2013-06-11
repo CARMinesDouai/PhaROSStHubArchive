@@ -5,6 +5,16 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PhaROSPackage class >> buildPackage [
+	^ self new.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPackage class >> hasConstructed: aPackage [
+	^ aPackage isKindOf: self.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSPackage >> configure: aNode [
 	self subclassResponsibility.
 ]
