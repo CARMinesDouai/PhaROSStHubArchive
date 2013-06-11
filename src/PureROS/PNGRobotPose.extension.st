@@ -17,7 +17,7 @@ PNGRobotPose classSide >> fromGeometry_msgsPose: aROSPose [
 
 { #category : #'*PureROS' }
 PNGRobotPose >> intoGeometry_msgs_Pose: aRosPose [
-	aRosPose position x: self x.		
+	aRosPose position x: self x .		
 	aRosPose position y: self y.
 	aRosPose position z: 0.0.
 		
