@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PhaROSTransformationTestPackage >> configure: aController [
+PhaROSTransformationTestPackage >> configure [
 	self launchTest.
 ]
 

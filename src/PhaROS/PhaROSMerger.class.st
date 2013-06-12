@@ -39,9 +39,9 @@ PhaROSMerger >> merge [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSMerger >> merge: aTopicConnectionBuilder with: anOtherTopicConnectionBuilder using: aTransformation redirectingTo: aTopicPublisher [
-	aTopicConnectionBuilder for: (self mergerCallback:aTopicConnectionBuilder).
-	anOtherTopicConnectionBuilder for: (self mergerCallback: anOtherTopicConnectionBuilder).
+PhaROSMerger >> merge: aConnectedTopicFlux with: anOtherConnectedTopicFlux using: aTransformation redirectingTo: aTopicPublisher [
+	aConnectedTopicFlux for: (self mergerCallback: aConnectedTopicFlux).
+	anOtherConnectedTopicFlux for: (self mergerCallback: anOtherConnectedTopicFlux).
 	transformation := aTransformation.
 	outgoing := aTopicPublisher.
 ]

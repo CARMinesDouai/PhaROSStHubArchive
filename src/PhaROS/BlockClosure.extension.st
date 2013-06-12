@@ -4,3 +4,8 @@ Extension { #name : #BlockClosure }
 BlockClosure >> receive: aMessage from: aChannel [ 
 	^ self cull: aMessage cull: aChannel.
 ]
+
+{ #category : #'*PhaROS' }
+BlockClosure >> receive: aMessage from: aChannel  at: aStamp [
+	^ self cull: aMessage cull: aChannel cull: aStamp.
+]

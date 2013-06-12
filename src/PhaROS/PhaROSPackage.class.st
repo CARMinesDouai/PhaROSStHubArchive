@@ -1,6 +1,9 @@
 Class {
 	#name : #PhaROSPackage,
 	#superclass : #Object,
+	#instVars : [
+		'controller'
+	],
 	#category : #'PhaROS-Packages'
 }
 
@@ -15,14 +18,24 @@ PhaROSPackage class >> hasConstructed: aPackage [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPackage >> configure: aNode [
-	self subclassResponsibility.
+PhaROSPackage >> configure [
+
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSPackage >> configureDependencies: aLaunchSpec [
 	self dependencies do: [: dep | dep value: aLaunchSpec ].
 	^ aLaunchSpec 
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPackage >> controller [
+	^ controller
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPackage >> controller: aController [ 
+	controller := aController.
 ]
 
 { #category : #'as yet unclassified' }
@@ -54,8 +67,13 @@ PhaROSPackage >> name [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPackage >> runOver: aNode [
-	self configure: aNode.
+PhaROSPackage >> packages [
+	^ self controller packages.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPackage >> rosnode [
+	^ self controller node.
 ]
 
 { #category : #'as yet unclassified' }

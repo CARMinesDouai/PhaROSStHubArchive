@@ -49,11 +49,20 @@ PhaROSSelfProcessedExternalNode >> setup [
 PhaROSSelfProcessedExternalNode >> spinOnceOver: aChannel [
 	
 	self checkConnection. 
-
-	[stream peek ifNotNil: [
-		msg loadStream: stream.
-		aChannel send: msg.
-	] ] on: Error do: [ :e | self halt ].
+	[
+		[	
+			stream peek ifNotNil: [
+				msg loadStream: stream.
+				aChannel send: msg.
+			] 
+		] on: ConnectionTimedOut do:[ 
+			socket isConnected ifFalse: [
+				self halt. 	
+			]
+		] 
+	] on: Error do: [ :e | 
+		self halt 
+	].
 ]
 
 { #category : #accessing }

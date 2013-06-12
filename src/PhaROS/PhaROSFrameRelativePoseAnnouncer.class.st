@@ -1,0 +1,71 @@
+Class {
+	#name : #PhaROSFrameRelativePoseAnnouncer,
+	#superclass : #PhaROSTopicFlux,
+	#instVars : [
+		'fromFrame',
+		'toFrame'
+	],
+	#category : #'PhaROS-Packages-TF'
+}
+
+{ #category : #'as yet unclassified' }
+PhaROSFrameRelativePoseAnnouncer class >> from: aFrame to: anOtherFrame [
+	^ self new from: aFrame; to: anOtherFrame; yourself.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSFrameRelativePoseAnnouncer >> checkStamp: aFrame [
+	((aFrame stamp - DateAndTime now) asMilliSeconds < self threshold) ifFalse: [
+		PhaROSTFError signal: aFrame name, ' data is too old '.
+	].
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSFrameRelativePoseAnnouncer >> fetchStamp: aPose [
+	^ fromFrame stamp max: toFrame stamp.
+	
+	
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSFrameRelativePoseAnnouncer >> for: aCallback [
+	callback add: aCallback 
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSFrameRelativePoseAnnouncer >> from: aFrame [
+	fromFrame := aFrame
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSFrameRelativePoseAnnouncer >> inform [
+
+	self checkStamp: fromFrame.
+	self checkStamp: toFrame.
+
+	self receive: (fromFrame poseRelativeTo: toFrame) from: self. 
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSFrameRelativePoseAnnouncer >> initialize [
+	super initialize. 
+	callback := Set new.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSFrameRelativePoseAnnouncer >> redirect: anAdaptedMessage from: aChannel at: aTimeStamp [ 
+	callback do: [
+		: cb |
+		cb cull: anAdaptedMessage cull: aChannel cull: aTimeStamp.	
+	].
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSFrameRelativePoseAnnouncer >> threshold [ 
+	^ 500 "milliseconds"
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSFrameRelativePoseAnnouncer >> to: aFrame [ 
+	toFrame := aFrame.
+]

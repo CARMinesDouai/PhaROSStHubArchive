@@ -12,10 +12,9 @@ Class {
 	#name : #PhaROSTransformationPackage,
 	#superclass : #PhaROSStaticPackage,
 	#instVars : [
-		'rosnode',
-		'db',
 		'tfWriter',
-		'tfs'
+		'tfs',
+		'container'
 	],
 	#category : #'PhaROS-Packages-TF'
 }
@@ -32,36 +31,36 @@ PhaROSTransformationPackage class >> tfTopicType [
 
 { #category : #topic }
 PhaROSTransformationPackage >> between: aFrameID and: anOtherFrameID [
-	
+	^ container pseudoTopicBetween: aFrameID  and: anOtherFrameID.
 ]
 
 { #category : #topic }
 PhaROSTransformationPackage >> between: aFrameID and: anOtherFrameID for: aCallback [
-	^ db pseudoTopicBetween:  aFrameID and: anOtherFrameID for: aCallback
+	^ (container pseudoTopicBetween:  aFrameID and: anOtherFrameID) for: aCallback
 ]
 
 { #category : #package }
-PhaROSTransformationPackage >> configure: aController [
-	rosnode := aController node.
+PhaROSTransformationPackage >> configure [
+
 	self configureTfCallback.
-	tfWriter := aController node topicPublisher: PhaROSTransformationPackage tfTopic 
+	tfWriter := self rosnode topicPublisher: PhaROSTransformationPackage tfTopic 
 								  typedAs: PhaROSTransformationPackage tfTopicType
 ]
 
 { #category : #package }
 PhaROSTransformationPackage >> configureTfCallback. [
-	self tf for: [ : t | db process: t.].
+	self tf for: [ : t | container process: t.].
 ]
 
 { #category : #'initialize-release' }
 PhaROSTransformationPackage >> initialize [ 
 
-	db := PhaROSTransformationDataBase new.
+	container := PhaROSFrameContainer new.
 ]
 
 { #category : #topic }
 PhaROSTransformationPackage >> tf [
-	^(rosnode buildConnectionFor: '/tf')
+	^(self rosnode buildConnectionFor: '/tf')
 				typedAs: 'tf/tfMessage'; 
 				connect . 
 	

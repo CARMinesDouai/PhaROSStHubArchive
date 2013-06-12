@@ -50,20 +50,13 @@ Class {
 	#superclass : #PhaROSStaticPackage,
 	#instVars : [
 		'server',
-		'markers',
-		'rosnode'
+		'markers'
 	],
 	#category : #'PhaROS-Packages-InteractiveMarker'
 }
 
 { #category : #'as yet unclassified' }
-PhaROSInteractiveMarkerPackage >> configure: aNode [
-	rosnode := aNode
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSInteractiveMarkerPackage >> rosnode [
-	^ rosnode
+PhaROSInteractiveMarkerPackage >> configure [
 ]
 
 { #category : #'as yet unclassified' }

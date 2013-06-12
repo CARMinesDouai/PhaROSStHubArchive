@@ -13,7 +13,6 @@ Class {
 	#superclass : #PhaROSStaticPackage,
 	#instVars : [
 		'tfWriter',
-		'rosnode',
 		'topicsBroadcasted'
 	],
 	#category : #'PhaROS-Packages-TFAAS'
@@ -29,21 +28,31 @@ PhaROSTFAASPackage class >> staticTFFrom: aFrame to: anOtherFrame  of: aStringOf
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSTFAASPackage >> between: aFrame and: anOtherFrame for: aCallback [
+PhaROSTFAASPackage class >> tfaasTopicType [
+	^ 'geometry_msgs/PoseStamped'
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTFAASPackage >> between: aFrame and: anOtherFrame [ 
 	| conn |
 	(self isBeingBroadcasted: (aFrame, anOtherFrame )) ifFalse: [
 		self launchTFAASBetween: aFrame and: anOtherFrame.
 	].
 
-	conn := rosnode buildConnectionFor: (self tfaasTopicNameFor: aFrame and: anOtherFrame ).
-	conn typedAs: PhaROSTFAASPackage tfaasTopicType; adapted: #pose ; for: aCallback; connect.
+	conn := self rosnode buildConnectionFor: (self tfaasTopicNameFor: aFrame and: anOtherFrame ).
+	^ conn typedAs: PhaROSTFAASPackage tfaasTopicType; adapted: #pose ; connect.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSTFAASPackage >> configure: aController [
-	rosnode := aController node. 
+PhaROSTFAASPackage >> between: aFrame and: anOtherFrame for: aCallback [
+	^ (self between: aFrame and: anOtherFrame) for: aCallback
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTFAASPackage >> configure [
+
 	
-	tfWriter := aController node topicPublisher: PhaROSTransformationPackage tfTopic 
+	tfWriter := self rosnode topicPublisher: PhaROSTransformationPackage tfTopic 
 		  							    typedAs: PhaROSTransformationPackage tfTopicType.
 									
 								

@@ -94,7 +94,8 @@ PhaROSHandleController >> initialize [
 { #category : #package }
 PhaROSHandleController >> install: aPackage [
 	aPackage install.
-	aPackage configure: self.
+	aPackage controller: self. 
+	aPackage configure
 ]
 
 { #category : #accessing }
