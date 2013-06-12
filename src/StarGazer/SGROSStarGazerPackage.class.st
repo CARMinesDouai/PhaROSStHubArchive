@@ -57,9 +57,7 @@ SGROSStarGazerPackage >> absoluteLandmark [
 SGROSStarGazerPackage >> broadcastLandmarks [
 	broadcaster ifNil: [ 
 		broadcaster := SGROSBroadcaster new.
-		broadcaster install.
-		broadcaster controller: controller.
-	      broadcaster configure.
+		broadcaster configure: controller.
 	].
 ]
 
