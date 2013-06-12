@@ -12,7 +12,7 @@ Class {
 { #category : #'as yet unclassified' }
 PhaROSMerger >> checkStamps: stamps [
 
-	^ (((stamps max - stamps min) asMilliSeconds < self threshold) and: [ (DateAndTime now - stamps max ) < self threshold ] )
+	^ (((stamps max - stamps min) asMilliSeconds < self threshold) and: [ (DateAndTime now - stamps max ) asMilliSeconds < self threshold ] )
 ]
 
 { #category : #'as yet unclassified' }
@@ -57,4 +57,9 @@ PhaROSMerger >> mergerCallback: aTopicConnectionBuilder [
 PhaROSMerger >> register: msg at: stamp for: aTopicConnectionBuilder [
 	messages at: aTopicConnectionBuilder put: {msg . stamp} .
 	self merge.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSMerger >> threshold [
+	^ 500. "milliseconds"
 ]

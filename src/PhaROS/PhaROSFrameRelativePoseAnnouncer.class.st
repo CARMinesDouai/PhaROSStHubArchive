@@ -14,6 +14,16 @@ PhaROSFrameRelativePoseAnnouncer class >> from: aFrame to: anOtherFrame [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSFrameRelativePoseAnnouncer >> checkFrame: aFrame [
+	self checkStamp: aFrame.
+	aFrame isBeingBroadcasted ifFalse: [
+		PhaROSTFError signal: aFrame name, ' is not being broadcasted. '.	
+	].
+
+
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSFrameRelativePoseAnnouncer >> checkStamp: aFrame [
 	((aFrame stamp - DateAndTime now) asMilliSeconds < self threshold) ifFalse: [
 		PhaROSTFError signal: aFrame name, ' data is too old '.
@@ -40,9 +50,9 @@ PhaROSFrameRelativePoseAnnouncer >> from: aFrame [
 { #category : #'as yet unclassified' }
 PhaROSFrameRelativePoseAnnouncer >> inform [
 
-	self checkStamp: fromFrame.
-	self checkStamp: toFrame.
-
+	self checkFrame: fromFrame.
+	self checkFrame: toFrame.
+	
 	self receive: (fromFrame poseRelativeTo: toFrame) from: self. 
 ]
 
@@ -50,6 +60,8 @@ PhaROSFrameRelativePoseAnnouncer >> inform [
 PhaROSFrameRelativePoseAnnouncer >> initialize [
 	super initialize. 
 	callback := Set new.
+	condition := PhaROSTopicFlux defaultConditional.
+	adapter := PhaROSTopicFlux defaultAdapter adaptToAdapter.
 ]
 
 { #category : #'as yet unclassified' }

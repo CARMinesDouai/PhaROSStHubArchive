@@ -49,13 +49,26 @@ PhaROSTransformationPackage >> configure [
 
 { #category : #package }
 PhaROSTransformationPackage >> configureTfCallback. [
-	self tf for: [ : t | container process: t.].
+	self tf for: [ : t | self process: t.].
+]
+
+{ #category : #topic }
+PhaROSTransformationPackage >> finalize [
+	tfWriter := nil.
+	 tfs := nil .
+	container finalize.
+	container := nil.
 ]
 
 { #category : #'initialize-release' }
 PhaROSTransformationPackage >> initialize [ 
 
 	container := PhaROSFrameContainer new.
+]
+
+{ #category : #package }
+PhaROSTransformationPackage >> process: aMessage [
+	container process: aMessage.
 ]
 
 { #category : #topic }

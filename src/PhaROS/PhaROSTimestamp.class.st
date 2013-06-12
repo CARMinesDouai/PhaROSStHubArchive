@@ -30,6 +30,21 @@ PhaROSTimestamp >> + aDuration [
 	^ PhaROSTimestamp new timestamp: timestamp + aDuration ; yourself.
 ]
 
+{ #category : #operations }
+PhaROSTimestamp >> - aDateAndTime [
+	^ timestamp - aDateAndTime asDateAndTime.
+]
+
+{ #category : #operations }
+PhaROSTimestamp >> < aDateAndTime [
+	^ timestamp < aDateAndTime asDateAndTime.
+]
+
+{ #category : #operations }
+PhaROSTimestamp >> > aDateAndTime [
+	^ timestamp > aDateAndTime asDateAndTime.
+]
+
 { #category : #'as yet unclassified' }
 PhaROSTimestamp >> closeTo: anOtherPhaROSTimeStamp [
 	^ timestamp = anOtherPhaROSTimeStamp timestamp.

@@ -14,6 +14,13 @@ PhaROSFrameContainer >> at: aFrameID [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSFrameContainer >> finalize [ 
+	frames removeAll.
+	interested removeAll.
+	
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSFrameContainer >> initialize [ 
 	frames := Dictionary new.
 	interested := Dictionary new. 

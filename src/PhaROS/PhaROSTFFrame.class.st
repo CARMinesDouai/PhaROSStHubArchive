@@ -26,6 +26,11 @@ PhaROSTFFrame >> absolutePose [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSTFFrame >> isBeingBroadcasted [
+	^ self pose notNil.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSTFFrame >> name [
 	^ name 
 ]
@@ -123,6 +128,16 @@ PhaROSTFFrame >> poseRelativeToParent: aParent [
 { #category : #printing }
 PhaROSTFFrame >> printOn: aStream [
 	'Frame:', name printOn: aStream.
+
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTFFrame >> stamp [
+	(stamp isNil and: [ parent isNil ]) ifTrue: [
+		" fixed "
+		^ DateAndTime now.	
+	].
+	^ stamp.
 
 ]
 
