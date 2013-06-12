@@ -2,7 +2,6 @@ Class {
 	#name : #SGROSStarGazerPackage,
 	#superclass : #PhaROSStaticPackage,
 	#instVars : [
-		'controller',
 		'broadcaster'
 	],
 	#category : #'StarGazer-Ros'
@@ -51,7 +50,7 @@ SGROSStarGazerPackage class >> types [
 
 { #category : #publish }
 SGROSStarGazerPackage >> absoluteLandmark [ 
-	^ controller node topicPublisher: SGROSStarGazerPackage absoluteLandmarkTopic typedAs: SGROSStarGazerPackage absoluteLandmarkTopicType.
+	^ self rosnode topicPublisher: SGROSStarGazerPackage absoluteLandmarkTopic typedAs: SGROSStarGazerPackage absoluteLandmarkTopicType.
 ]
 
 { #category : #publish }
@@ -59,7 +58,8 @@ SGROSStarGazerPackage >> broadcastLandmarks [
 	broadcaster ifNil: [ 
 		broadcaster := SGROSBroadcaster new.
 		broadcaster install.
-	      broadcaster configure: controller.
+		broadcaster controller: controller.
+	      broadcaster configure.
 	].
 ]
 
@@ -70,16 +70,16 @@ SGROSStarGazerPackage >> configure: aController [
 
 { #category : #subscribe }
 SGROSStarGazerPackage >> landmarks [
-	^ (controller node buildConnectionFor: SGROSStarGazerPackage landmarkTopic ) 
+	^ (self rosnode buildConnectionFor: SGROSStarGazerPackage landmarkTopic ) 
 					typedAs: SGROSStarGazerPackage landmarkTopicType; 
 					adapted: #pose; 
-					connect; 
-					yourself.
+					connect.
+					
 ]
 
 { #category : #publish }
 SGROSStarGazerPackage >> mergeWithPose: aPoseTopicReader [ 
-	controller packages merger merge: self landmarks 
+	self packages merger merge: self landmarks 
 								     with: aPoseTopicReader 
 								   using: self poseMerger 
 						  redirectingTo: self absoluteLandmark. 
