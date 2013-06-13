@@ -4,7 +4,9 @@ Class {
 	#instVars : [
 		'outgoing',
 		'transformation',
-		'messages'
+		'messages',
+		'this',
+		'that'
 	],
 	#category : #'PhaROS-Packages-Merger'
 }
@@ -34,9 +36,7 @@ PhaROSMerger >> merge [
 	] ifTrue:[
 		(self checkStamps:  (messages values collect: [ : ms  | ms at: 2 ]) ) ifTrue: [
 			outgoing send: [ :msg |
-				| storedMsgs |
-				storedMsgs := (messages values collect: [ : ms  | ms at: 1 ]).
-				transformation cull: msg cull: (storedMsgs at:1) cull:(storedMsgs at:2)
+				transformation cull: msg cull: ((messages at: that ) at: 1) cull:((messages at:this) at:1)
 			]	
 		] ifFalse: [Transcript show: 'data out of syncro or too old'; cr.]
 	]
@@ -44,6 +44,9 @@ PhaROSMerger >> merge [
 
 { #category : #'as yet unclassified' }
 PhaROSMerger >> merge: aConnectedTopicFlux with: anOtherConnectedTopicFlux using: aTransformation redirectingTo: aTopicPublisher [
+	this := aConnectedTopicFlux.
+	that := anOtherConnectedTopicFlux.
+	
 	aConnectedTopicFlux for: (self mergerCallback: aConnectedTopicFlux).
 	anOtherConnectedTopicFlux for: (self mergerCallback: anOtherConnectedTopicFlux).
 	transformation := aTransformation.
@@ -53,13 +56,13 @@ PhaROSMerger >> merge: aConnectedTopicFlux with: anOtherConnectedTopicFlux using
 { #category : #'as yet unclassified' }
 PhaROSMerger >> mergerCallback: aTopicConnectionBuilder [
 	^ [ : msg : chn : stamp | 
-		self halt.
 		self register: msg at: stamp for: aTopicConnectionBuilder.
 	].
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSMerger >> register: msg at: stamp for: aTopicConnectionBuilder [
+	self halt.
 	messages at: aTopicConnectionBuilder put: {msg . stamp} .
 	self merge.
 ]

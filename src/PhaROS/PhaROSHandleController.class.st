@@ -15,7 +15,10 @@ PhaROSHandleController class >> localhost [
 
 { #category : #construction }
 PhaROSHandleController class >> turtlebot [
-	^ self url: 'http://10.1.161.20:11311/'
+	| ttb |
+	ttb :=  self url: 'http://10.1.161.20:11311/'.
+	ttb packages use: PhaROSTurtlebotPackage as: #turtlebot.
+	^ ttb.
 ]
 
 { #category : #construction }

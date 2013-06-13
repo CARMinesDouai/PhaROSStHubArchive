@@ -14,6 +14,11 @@ PhaROSFrameContainer >> at: aFrameID [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSFrameContainer >> currentFixedFrame [
+	^ frames values detect: [ : f | f isFixed ]
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSFrameContainer >> finalize [ 
 	frames removeAll.
 	interested removeAll.

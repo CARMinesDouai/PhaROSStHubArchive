@@ -39,6 +39,12 @@ PhaROSTransformationPackage >> between: aFrameID and: anOtherFrameID for: aCallb
 	^ (container pseudoTopicBetween:  aFrameID and: anOtherFrameID) for: aCallback
 ]
 
+{ #category : #topic }
+PhaROSTransformationPackage >> betweenFixedFrameAnd: aFrameID [
+	^ self between: container currentFixedFrame name and: aFrameID
+
+]
+
 { #category : #package }
 PhaROSTransformationPackage >> configure [
 

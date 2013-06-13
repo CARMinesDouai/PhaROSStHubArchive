@@ -36,6 +36,11 @@ PhaROSTFFrame >> isBeingBroadcasted [
 	^ self pose notNil.
 ]
 
+{ #category : #accessing }
+PhaROSTFFrame >> isFixed [
+	^ parent isNil.
+]
+
 { #category : #'as yet unclassified' }
 PhaROSTFFrame >> name [
 	^ name 
