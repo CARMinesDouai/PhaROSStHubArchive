@@ -49,7 +49,7 @@ PhaROSTransformationPackage >> configure [
 
 { #category : #package }
 PhaROSTransformationPackage >> configureTfCallback. [
-	self tf for: [ : t | self process: t.].
+	self tf for: [ : t :chn | self process: t from: chn].
 ]
 
 { #category : #topic }
@@ -67,8 +67,8 @@ PhaROSTransformationPackage >> initialize [
 ]
 
 { #category : #package }
-PhaROSTransformationPackage >> process: aMessage [
-	container process: aMessage.
+PhaROSTransformationPackage >> process: aMessage from: aChn [
+	container process: aMessage from: aChn
 ]
 
 { #category : #topic }

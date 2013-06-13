@@ -8,3 +8,8 @@ Symbol >> adaptToAdapter [
 		PhaROSConverter convertTo: (Smalltalk at: self ifAbsent: [ self error: ' The target class does not exist']).
 	].
 ]
+
+{ #category : #'*PhaROS' }
+Symbol >> asDateAndTime [
+	^ self = #now ifTrue: [ DateAndTime now ] ifFalse: [ super asDateAndTime ].
+]

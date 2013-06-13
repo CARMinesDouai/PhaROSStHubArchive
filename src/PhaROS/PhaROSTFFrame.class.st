@@ -5,7 +5,8 @@ Class {
 		'name',
 		'pose',
 		'stamp',
-		'parent'
+		'parent',
+		'broadcaster'
 	],
 	#category : #'PhaROS-Packages-TF'
 }
@@ -23,6 +24,11 @@ PhaROSTFFrame class >> id: aFrameID parent: aParent [
 { #category : #'as yet unclassified' }
 PhaROSTFFrame >> absolutePose [ 
 	^ self poseRelativeToParent: nil. " From here to the end of the tree "
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTFFrame >> broadcaster: aBroadcaster [
+	broadcaster := aBroadcaster 
 ]
 
 { #category : #'as yet unclassified' }
@@ -127,7 +133,7 @@ PhaROSTFFrame >> poseRelativeToParent: aParent [
 
 { #category : #printing }
 PhaROSTFFrame >> printOn: aStream [
-	'Frame:', name printOn: aStream.
+	('Frame:{1} BroadcastedBy:{2}' format: {name . broadcaster }) printOn: aStream.
 
 ]
 
@@ -147,13 +153,14 @@ PhaROSTFFrame >> stamp: aStamp [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSTFFrame >> updateFrom: aTransformation using: db [
+PhaROSTFFrame >> updateFrom: aTransformation using: db broadcaster: aNode [
 
 	
 	aTransformation child_frame_id = self name ifTrue: [
 		self pose: (PhaROSPose fromTransformation: aTransformation transform).
 		self parent: (db at: aTransformation header frame_id ).
 		self stamp: aTransformation header stamp. 
+		self broadcaster: aNode.
 	].
 	
 	

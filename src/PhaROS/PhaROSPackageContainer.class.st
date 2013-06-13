@@ -24,6 +24,8 @@ PhaROSPackageContainer >> doesNotUnderstand: aMessage [
 { #category : #'as yet unclassified' }
 PhaROSPackageContainer >> finalize [
 	packages valuesDo: #finalize.
+	packages removeAll.
+	controller := nil.
 ]
 
 { #category : #'as yet unclassified' }

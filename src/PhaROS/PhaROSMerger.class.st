@@ -29,13 +29,17 @@ PhaROSMerger >> initialize [
 
 { #category : #'as yet unclassified' }
 PhaROSMerger >> merge [
-	(self checkStamps:  (messages values collect: [ : ms  | ms at: 2 ]) ) ifTrue: [
-		outgoing send: [ :msg |
-			| storedMsgs |
-			storedMsgs := (messages values collect: [ : ms  | ms at: 1 ]).
-			transformation cull: msg cull: (storedMsgs at:1) cull:(storedMsgs at:2)
-		]	
-	] ifFalse: [Transcript show: 'data out of syncro or too old'; cr.]
+	messages size = 2 ifFalse: [ 
+		Transcript show: 'waiting for have data from two topics to start merging'
+	] ifTrue:[
+		(self checkStamps:  (messages values collect: [ : ms  | ms at: 2 ]) ) ifTrue: [
+			outgoing send: [ :msg |
+				| storedMsgs |
+				storedMsgs := (messages values collect: [ : ms  | ms at: 1 ]).
+				transformation cull: msg cull: (storedMsgs at:1) cull:(storedMsgs at:2)
+			]	
+		] ifFalse: [Transcript show: 'data out of syncro or too old'; cr.]
+	]
 ]
 
 { #category : #'as yet unclassified' }
@@ -49,6 +53,7 @@ PhaROSMerger >> merge: aConnectedTopicFlux with: anOtherConnectedTopicFlux using
 { #category : #'as yet unclassified' }
 PhaROSMerger >> mergerCallback: aTopicConnectionBuilder [
 	^ [ : msg : chn : stamp | 
+		self halt.
 		self register: msg at: stamp for: aTopicConnectionBuilder.
 	].
 ]

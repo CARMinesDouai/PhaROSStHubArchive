@@ -77,6 +77,7 @@ PhaROSHandleController >> domain [
 PhaROSHandleController >> finalize [ 
 	super finalize.
 	packages finalize.
+
 ]
 
 { #category : #accessing }

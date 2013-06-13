@@ -52,7 +52,7 @@ PhaROSTopicFlux >> condition: aCondition [
 
 { #category : #dispatching }
 PhaROSTopicFlux >> fetchStamp: aMessage [
-	^ (aMessage hasAttribute: #header) ifTrue: [ aMessage header stamp ] ifFalse: [ DateAndTime now ].
+	^ (aMessage hasAttribute: #header) ifTrue: [ aMessage header stamp asDateAndTime ] ifFalse: [ DateAndTime now ].
 ]
 
 { #category : #accessing }

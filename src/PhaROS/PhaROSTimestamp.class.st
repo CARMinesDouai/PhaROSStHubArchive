@@ -46,6 +46,11 @@ PhaROSTimestamp >> > aDateAndTime [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSTimestamp >> asDateAndTime [
+	^ timestamp
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSTimestamp >> closeTo: anOtherPhaROSTimeStamp [
 	^ timestamp = anOtherPhaROSTimeStamp timestamp.
 	

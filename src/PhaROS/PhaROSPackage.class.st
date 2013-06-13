@@ -46,7 +46,7 @@ PhaROSPackage >> dependencies [
 
 { #category : #'as yet unclassified' }
 PhaROSPackage >> finalize [
-	
+	controller := nil.
 ]
 
 { #category : #'as yet unclassified' }
