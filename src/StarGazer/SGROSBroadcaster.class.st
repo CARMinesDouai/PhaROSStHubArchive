@@ -23,7 +23,7 @@ SGROSBroadcaster >> configure: aController [
 	topicPublisher := aController node topicPublisher: SGROSStarGazerPackage landmarkTopic  typedAs: SGROSStarGazerPackage landmarkTopicType.
 	stargazer := StarGazer default: [  : landmark | self broadcast: landmark ].
 	
-	
+	self broadcast: SGLandMarkMeasure zero. "opening the channel to the world"
 ]
 
 { #category : #package }

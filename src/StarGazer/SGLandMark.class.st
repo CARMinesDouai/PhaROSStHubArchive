@@ -1,3 +1,6 @@
+"
+This represent a landmark, id and position in the map.
+"
 Class {
 	#name : #SGLandMark,
 	#superclass : #Object,
@@ -35,7 +38,6 @@ SGLandMark >> pose [
 
 { #category : #'as yet unclassified' }
 SGLandMark >> pose: aPose [ 
-	self assert: aPose isNil.
 	pose := aPose.
 ]
 

@@ -1,3 +1,6 @@
+"
+this represents a landmark measure, ID and distance from the robot. 
+"
 Class {
 	#name : #SGLandMarkMeasure,
 	#superclass : #Object,
@@ -11,6 +14,11 @@ Class {
 { #category : #'as yet unclassified' }
 SGLandMarkMeasure class >> id: anId pose: aPose [
 	^ self new id: anId asNumber ; pose: aPose; yourself .
+]
+
+{ #category : #'as yet unclassified' }
+SGLandMarkMeasure class >> zero [
+	^ self id: 0 pose: SGPose zero.
 ]
 
 { #category : #'as yet unclassified' }

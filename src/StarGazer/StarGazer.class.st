@@ -205,7 +205,7 @@ StarGazer >> settingsAt: aSettingName [
 { #category : #build }
 StarGazer >> startMapBuilding [
 	
-	mode withZeroAt:  (SGLandMark id: self refID pose:( SGPose x: 0.0 y: 0.0 z:0.0 o: 0.0 )).
+	mode withZeroAt:  (SGLandMarkMeasure id: self refID pose: SGPose zero ).
 	
 	^ gate startMapBuilding.
 ]
