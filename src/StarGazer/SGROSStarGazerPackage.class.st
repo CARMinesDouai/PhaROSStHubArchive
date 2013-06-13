@@ -62,21 +62,21 @@ SGROSStarGazerPackage >> broadcastLandmarks [
 ]
 
 { #category : #package }
-SGROSStarGazerPackage >> configure: aController [
-	controller := aController
+SGROSStarGazerPackage >> configure [
+	self packages use: PhaROSMergerPackage as: #merger.
 ]
 
 { #category : #subscribe }
 SGROSStarGazerPackage >> landmarks [
 	^ (self rosnode buildConnectionFor: SGROSStarGazerPackage landmarkTopic ) 
 					typedAs: SGROSStarGazerPackage landmarkTopicType; 
-					adapted: #pose; 
 					connect.
 					
 ]
 
 { #category : #publish }
 SGROSStarGazerPackage >> mergeWithPose: aPoseTopicReader [ 
+	
 	self packages merger merge: self landmarks 
 								     with: aPoseTopicReader 
 								   using: self poseMerger 
@@ -97,10 +97,10 @@ SGROSStarGazerPackage >> poseMerger [
 		msg pose position y: pose position y + landmark pose position y. 
 		msg pose position z: pose position z + landmark pose position z. 
 		
-		msg pose orientation x: pose orientation x + landmark orientation x.
-		msg pose orientation y: pose orientation y + landmark orientation y.
-		msg pose orientation z: pose orientation z + landmark orientation z.
-		msg pose orientation w: pose orientation w + landmark orientation w.
+		msg pose orientation x: pose orientation x + landmark pose orientation x.
+		msg pose orientation y: pose orientation y + landmark pose orientation y.
+		msg pose orientation z: pose orientation z + landmark pose orientation z.
+		msg pose orientation w: pose orientation w + landmark pose orientation w.
 		
 		msg landmark: landmark landmark.
 	   ].
