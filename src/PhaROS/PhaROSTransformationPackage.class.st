@@ -55,7 +55,7 @@ PhaROSTransformationPackage >> configure [
 
 { #category : #package }
 PhaROSTransformationPackage >> configureTfCallback. [
-	self tf for: [ : t :chn | self process: t from: chn].
+	self tf for: self tfcallback.
 ]
 
 { #category : #topic }
@@ -88,4 +88,9 @@ PhaROSTransformationPackage >> tf [
 { #category : #topic }
 PhaROSTransformationPackage >> tf: aMessageConfiguration [
 	^ tfWriter send: aMessageConfiguration.
+]
+
+{ #category : #package }
+PhaROSTransformationPackage >> tfcallback [
+	^ [ : t :chn | self process: t from: chn].
 ]

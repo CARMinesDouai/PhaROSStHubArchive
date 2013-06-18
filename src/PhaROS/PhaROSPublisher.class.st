@@ -50,7 +50,7 @@ PhaROSPublisher >> owner: aNode [
 
 { #category : #accessing }
 PhaROSPublisher >> printOn: aStream [
-	 aStream nextPutAll: owner name, '-Publisher'
+	 aStream nextPutAll: owner name
 ]
 
 { #category : #service }

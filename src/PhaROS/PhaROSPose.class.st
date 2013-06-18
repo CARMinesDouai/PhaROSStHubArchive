@@ -9,6 +9,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PhaROSPose class >> fromGeometry_msgsPose: aPose [
+	^ self position: (PhaROSPosition from: aPose position) orientation: (PhaROSQuaternion from: aPose orientation)
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSPose class >> fromTransformation: aTransformation [
 	^self position: ( PhaROSPosition fromTranslation: aTransformation translation ) orientation: (PhaROSQuaternion fromRotation: aTransformation rotation )
 ]
@@ -41,6 +46,11 @@ PhaROSPose >> + anOtherPose [
 { #category : #operators }
 PhaROSPose >> - anOtherPose [
 	^ PhaROSPose position: (self position -  anOtherPose position) orientation: (self orientation - anOtherPose orientation).
+]
+
+{ #category : #operators }
+PhaROSPose >> / anScalar [
+	^ PhaROSPose
 ]
 
 { #category : #accessing }

@@ -137,7 +137,6 @@ PhaROSNode >> initialize [
 	slave := PhaROSSlave for: self.
 	topics := Dictionary new.
 	receiverDelegate := [].
-	heartbeat := Set new.
 	heartRate := 1 asThreadsafeReference.
 ]
 

@@ -53,7 +53,7 @@ PhaROSSubscriber >> owner: aRoStNode [
 
 { #category : #accessing }
 PhaROSSubscriber >> printOn: aStream [
-	 aStream nextPutAll: owner name, '-Subscriber'
+	 aStream nextPutAll: owner name.
 ]
 
 { #category : #accessing }

@@ -10,6 +10,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PhaROSPosition class >> from: aPosition [
+	^ self x: aPosition x y: aPosition y  z: aPosition z 
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSPosition class >> fromTranslation: aTranslation [
 	^self x: aTranslation x y: aTranslation y  z: aTranslation z.
 ]
@@ -20,6 +25,11 @@ PhaROSPosition class >> x: anX y: anY z: aZ [
 ]
 
 { #category : #operators }
+PhaROSPosition >> * anScalar [
+	^ PhaROSPosition x: (x * anScalar) y: (y * anScalar) z: (z  * anScalar) 
+]
+
+{ #category : #operators }
 PhaROSPosition >> + anOtherPosition [
 	^ PhaROSPosition x: (x + anOtherPosition x) y: (y + anOtherPosition y) z: (z + anOtherPosition z) 
 ]
@@ -27,6 +37,19 @@ PhaROSPosition >> + anOtherPosition [
 { #category : #operators }
 PhaROSPosition >> - anOtherPosition [
 	^ PhaROSPosition x: (x - anOtherPosition x) y: (y - anOtherPosition y) z: (z - anOtherPosition z) 
+]
+
+{ #category : #operators }
+PhaROSPosition >> / anScalar [
+	^ PhaROSPosition x: (x / anScalar) y: (y / anScalar) z: (z  / anScalar) 
+]
+
+{ #category : #operators }
+PhaROSPosition >> approximated: anOtherPosition threshold: anScalar [
+
+	| cmp |
+	cmp := self - anOtherPosition.
+	^ cmp x < anScalar and: [ cmp y < anScalar and: [ cmp z < anScalar ]] .
 ]
 
 { #category : #printing }
