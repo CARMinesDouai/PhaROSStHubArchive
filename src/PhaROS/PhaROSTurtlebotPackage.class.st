@@ -24,7 +24,7 @@ PhaROSTurtlebotPackage >> defaultPose [
 PhaROSTurtlebotPackage >> detectLandmarks [
 	self packages stargazer broadcastLandmarks.
 	self packages stargazer mergeWithPose: self defaultPose.
-	self packages localizer learn:( self packages stargazer absoluteLandmarks ) .
+	
 ]
 
 { #category : #pose }
@@ -40,6 +40,11 @@ PhaROSTurtlebotPackage >> goTo: aLandMark [
 { #category : #pose }
 PhaROSTurtlebotPackage >> goToAll: aLandMarkSet [
 
+]
+
+{ #category : #pose }
+PhaROSTurtlebotPackage >> localizeLandmarks [
+	self packages localizer learn:( self packages stargazer absoluteLandmarks ) .
 ]
 
 { #category : #pose }
