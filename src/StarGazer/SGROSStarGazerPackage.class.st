@@ -53,6 +53,14 @@ SGROSStarGazerPackage >> absoluteLandmark [
 	^ self rosnode topicPublisher: SGROSStarGazerPackage absoluteLandmarkTopic typedAs: SGROSStarGazerPackage absoluteLandmarkTopicType.
 ]
 
+{ #category : #subscribe }
+SGROSStarGazerPackage >> absoluteLandmarks [
+	^ (self rosnode buildConnectionFor: SGROSStarGazerPackage absoluteLandmarkTopic  ) 
+					typedAs: SGROSStarGazerPackage absoluteLandmarkTopicType ; 
+					connect.
+					
+]
+
 { #category : #publish }
 SGROSStarGazerPackage >> broadcastLandmarks [
 	broadcaster ifNil: [ 
