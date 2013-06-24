@@ -33,7 +33,7 @@ SGBind >> initialize [
 
 { #category : #'as yet unclassified' }
 SGBind >> printOn: aStream [ 
-	aStream nextPutAll: propertyName, '|',  self value asString.
+	aStream nextPutAll: propertyName, '|',  value asString.
 ]
 
 { #category : #'as yet unclassified' }
