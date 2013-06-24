@@ -33,19 +33,22 @@ PhaROSLocalizerPackage class >> measureThreshold [
 
 { #category : #'as yet unclassified' }
 PhaROSLocalizerPackage >> broadcastEntities [
+	| points |
 	
-	entities do: [
-		:e |
-		mapping send: [ : msg | 
+	points := entities values inject: OrderedCollection new into: [  :acc : e | acc addAll: e asGeometry_msgsPointCollection. acc ].
+	mapping send: [ : msg | 
 			msg header frame_id: '/map'.
 			msg cell_width: 0.05.
 			msg cell_height: 0.05.
-			msg cells addAll:  e asGeometry_msgsPointCollection.
-		].		
-		
-	].
-	
+			msg cells addAll:  points
+	].	
 
+
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLocalizerPackage >> entities [
+	^ entities values.
 ]
 
 { #category : #'as yet unclassified' }

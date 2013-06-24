@@ -138,6 +138,7 @@ PhaROSNode >> initialize [
 	topics := Dictionary new.
 	receiverDelegate := [].
 	heartRate := 1 asThreadsafeReference.
+	heartbeatActions := Set new.
 ]
 
 { #category : #service }

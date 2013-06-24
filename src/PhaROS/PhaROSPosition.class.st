@@ -52,6 +52,11 @@ PhaROSPosition >> approximated: anOtherPosition threshold: anScalar [
 	^ cmp x < anScalar and: [ cmp y < anScalar and: [ cmp z < anScalar ]] .
 ]
 
+{ #category : #converting }
+PhaROSPosition >> asPose [ 
+	^PhaROSPose position: self orientation: PhaROSQuaternion zero.
+]
+
 { #category : #printing }
 PhaROSPosition >> printOn: aStream [ 
 	('({1},{2},{3})' format: { x . y . z}) printOn: aStream.

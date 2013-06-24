@@ -25,6 +25,11 @@ PhaROSQuaternion class >> x: x y:y  z:z w:w [
 	^ self new x: x ; y: y ; z: z; w: w; yourself.
 ]
 
+{ #category : #'as yet unclassified' }
+PhaROSQuaternion class >> zero [
+	^ self x: 0.0 y:0.0  z:0.0 w: 1.0. 
+]
+
 { #category : #operators }
 PhaROSQuaternion >> * aQ2 [
 ^ PhaROSQuaternion x: ((self w * aQ2 x )+ (self x * aQ2 w) + (self y * aQ2 z) -( self z * aQ2 y)) 

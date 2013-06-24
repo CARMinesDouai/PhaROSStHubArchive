@@ -22,6 +22,14 @@ PhaROSHandleController class >> turtlebot [
 ]
 
 { #category : #construction }
+PhaROSHandleController class >> turtlesim [
+	| ttb |
+	ttb :=  self localhost.
+	ttb packages use: PhaROSTurtlebotPackage as: #turtlesim.
+	^ ttb.
+]
+
+{ #category : #construction }
 PhaROSHandleController class >> url: anUrl [
 	^( super url:anUrl) configureNode; yourself.
 ]

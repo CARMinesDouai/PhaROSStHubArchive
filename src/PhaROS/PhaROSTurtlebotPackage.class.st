@@ -12,6 +12,7 @@ PhaROSTurtlebotPackage >> configure [
 	self packages use: PhaROSTransformationPackage as: #transformation.
 	self packages use: SGROSStarGazerPackage as: #stargazer.
 	self packages use: PhaROSLocalizerPackage as: #localizer.
+	self packages use: PhaROSMoveBasePackage as: #movebase.
 ]
 
 { #category : #pose }
@@ -23,7 +24,6 @@ PhaROSTurtlebotPackage >> defaultPose [
 { #category : #pose }
 PhaROSTurtlebotPackage >> detectLandmarks [
 	self packages stargazer broadcastLandmarks.
-	self packages stargazer mergeWithPose: self defaultPose.
 	
 ]
 
@@ -33,13 +33,19 @@ PhaROSTurtlebotPackage >> exploreMap [
 ]
 
 { #category : #pose }
-PhaROSTurtlebotPackage >> goTo: aLandMark [
-
+PhaROSTurtlebotPackage >> fuseLandmarks [
+	self packages stargazer mergeWithPose: self defaultPose.
+	
 ]
 
 { #category : #pose }
-PhaROSTurtlebotPackage >> goToAll: aLandMarkSet [
+PhaROSTurtlebotPackage >> goTo: aLandMark [
+	self packages movebase simpleGoal: aLandMark center asPose.
+]
 
+{ #category : #pose }
+PhaROSTurtlebotPackage >> landmarks [
+	^ self packages localizer entities.
 ]
 
 { #category : #pose }

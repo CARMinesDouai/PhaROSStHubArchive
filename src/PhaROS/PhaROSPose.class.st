@@ -53,6 +53,23 @@ PhaROSPose >> / anScalar [
 	^ PhaROSPose
 ]
 
+{ #category : #printing }
+PhaROSPose >> asGeometry_msgsPose [
+	| gp |
+	gp := Geometry_msgsPose new.
+	gp position x: position x.
+	gp position y: position y.
+	gp position z: position z.
+	
+	gp orientation x: orientation x.
+	gp orientation y: orientation y.
+	gp orientation z: orientation z.
+	gp orientation w: orientation w.
+	
+
+	^ gp.
+]
+
 { #category : #accessing }
 PhaROSPose >> orientation [
 	^ orientation
