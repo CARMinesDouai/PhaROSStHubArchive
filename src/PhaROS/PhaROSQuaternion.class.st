@@ -32,10 +32,8 @@ PhaROSQuaternion class >> zero [
 
 { #category : #operators }
 PhaROSQuaternion >> * aQ2 [
-^ PhaROSQuaternion x: ((self w * aQ2 x )+ (self x * aQ2 w) + (self y * aQ2 z) -( self z * aQ2 y)) 
-					  y: 	((self w * aQ2 y) +( self y * aQ2 w) + (self z * aQ2 x) -( self x * aQ2 z))
-					  z: ((self w * aQ2 z) + (self z * aQ2 w) +( self x * aQ2 y) - (self y * aQ2 x))
-					  w: ((self w * aQ2 w) -( self x * aQ2 x) - (self y * aQ2 y) - (self z * aQ2 z)). 
+	^ aQ2 multiplyQuaternionByYou: self. 
+
 ]
 
 { #category : #operators }
@@ -70,9 +68,28 @@ PhaROSQuaternion >> inverse [
 	^ PhaROSQuaternion x: (x * -1) y: (y * -1) z: (z * -1) w: w.
 ]
 
+{ #category : #operators }
+PhaROSQuaternion >> multiplyQuaternionByYou: aQuaternion [
+^ PhaROSQuaternion x: ((aQuaternion w * self  x )+ (aQuaternion x * self  w) + (aQuaternion y * self  z) -( aQuaternion z * self  y)) 
+					  y: 	((aQuaternion w * self  y) +( aQuaternion y * self  w) + (aQuaternion z * self  x) -( aQuaternion x * self  z))
+					  z: ((aQuaternion w * self  z) + (aQuaternion z * self  w) +( aQuaternion x * self  y) - (aQuaternion y * self  x))
+					  w: ((aQuaternion w * self  w) -( aQuaternion x * self  x) - (aQuaternion y * self  y) - (aQuaternion z * self  z)). 
+
+
+
+
+]
+
 { #category : #printing }
 PhaROSQuaternion >> printOn: aStream [ 
 	('Q({1},{2},{3},{4})' format: { x . y . z . w}) printOn: aStream.
+]
+
+{ #category : #operators }
+PhaROSQuaternion >> rotatePosition: aPosition [
+	| quaternion |
+	quaternion := (self * aPosition) * self inverse. 
+	^ (PhaROSPosition x: quaternion x y: quaternion y z: quaternion z).
 ]
 
 { #category : #accessing }

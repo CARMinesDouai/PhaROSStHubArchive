@@ -39,8 +39,9 @@ PhaROSPose class >> zero [
 ]
 
 { #category : #operators }
-PhaROSPose >> + anOtherPose [
-	^ PhaROSPose position: (self position +  anOtherPose position) orientation: (self orientation + anOtherPose orientation).
+PhaROSPose >> + anOtherPose [	 	
+	^ PhaROSPose 	position: ((anOtherPose orientation rotatePosition: self position) + anOtherPose position) 
+					orientation: (anOtherPose orientation * self orientation).
 ]
 
 { #category : #operators }

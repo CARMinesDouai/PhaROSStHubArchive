@@ -57,6 +57,15 @@ PhaROSPosition >> asPose [
 	^PhaROSPose position: self orientation: PhaROSQuaternion zero.
 ]
 
+{ #category : #operators }
+PhaROSPosition >> multiplyQuaternionByYou: aQuaternion [
+	^ PhaROSQuaternion x: ((aQuaternion w * self x) + (aQuaternion y * self z) - (aQuaternion z * self y))
+		   y: ((aQuaternion w * self y) + (aQuaternion z * self x) - (aQuaternion x * self z))
+		   z: ((aQuaternion w * self z) + (aQuaternion x * self y) - (aQuaternion y * self x))
+		   w: ((aQuaternion x * self x * -1) - (aQuaternion y * self y) - (aQuaternion z * self z)).
+
+]
+
 { #category : #printing }
 PhaROSPosition >> printOn: aStream [ 
 	('({1},{2},{3})' format: { x . y . z}) printOn: aStream.
