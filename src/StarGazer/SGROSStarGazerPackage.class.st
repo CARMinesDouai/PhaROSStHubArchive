@@ -98,18 +98,22 @@ SGROSStarGazerPackage >> name [
 
 { #category : #publish }
 SGROSStarGazerPackage >> poseMerger [
-	^ [ :msg :pose :landmark | 
-		msg header frame_id: '/stargazer'.
-		
-		msg pose position x: pose position x + landmark pose position x. 
+
+"HAY QUE CAMBIAR ESTO!  (TRANSFORMAR PUNTO DE LANDMARK COORDENADAS DE /map)"
+
+"		msg pose position x: pose position x + landmark pose position x. 
 		msg pose position y: pose position y + landmark pose position y. 
 		msg pose position z: pose position z + landmark pose position z. 
 		
 		msg pose orientation x: pose orientation x + landmark pose orientation x.
 		msg pose orientation y: pose orientation y + landmark pose orientation y.
 		msg pose orientation z: pose orientation z + landmark pose orientation z.
-		msg pose orientation w: pose orientation w + landmark pose orientation w.
-		
+		msg pose orientation w: pose orientation w + landmark pose orientation w.		
+"
+
+	^ [ :msg :pose :landmark | 
+		msg header frame_id: '/stargazer'.
+		msg pose: pose + (PhaROSPose fromGeometry_msgsPose: landmark pose).
 		msg landmark: landmark landmark.
 	   ].
 ]
