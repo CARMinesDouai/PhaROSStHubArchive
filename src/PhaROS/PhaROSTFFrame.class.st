@@ -125,6 +125,7 @@ PhaROSTFFrame >> poseRelativeToParent: aParent [
 	aux :=  self.
 	relative := PhaROSPose zero.
 	
+	
 	[ aux ~= aParent and: [aux ~= nil ]] whileTrue: [
 		relative := relative + aux pose. 
 		aux := aux parent.

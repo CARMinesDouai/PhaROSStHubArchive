@@ -13,8 +13,10 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSMerger >> checkStamps: stamps [
-
-	^ (((stamps max - stamps min) asMilliSeconds < self threshold) and: [ (DateAndTime now - stamps max ) asMilliSeconds < self threshold ] )
+	self flag: #uncommentCheck.
+	^true.
+	
+	" (((stamps max - stamps min) asMilliSeconds < self threshold) and: [ (DateAndTime now - stamps max ) asMilliSeconds < self threshold ] )"
 ]
 
 { #category : #'as yet unclassified' }

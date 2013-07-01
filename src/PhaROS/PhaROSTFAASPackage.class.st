@@ -40,7 +40,7 @@ PhaROSTFAASPackage >> between: aFrame and: anOtherFrame [
 	].
 
 	conn := self rosnode buildConnectionFor: (self tfaasTopicNameFor: aFrame and: anOtherFrame ).
-	^ conn typedAs: PhaROSTFAASPackage tfaasTopicType; adapted: #pose ; connect.
+	^ conn typedAs: PhaROSTFAASPackage tfaasTopicType; adapted: #pose \> PhaROSPose ; connect.
 ]
 
 { #category : #'as yet unclassified' }

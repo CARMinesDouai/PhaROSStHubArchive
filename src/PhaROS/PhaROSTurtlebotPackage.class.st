@@ -9,7 +9,7 @@ Class {
 
 { #category : #pose }
 PhaROSTurtlebotPackage >> configure [
-	self packages use: PhaROSTransformationPackage as: #transformation.
+	self packages use: PhaROSTFAASPackage Package as: #transformation.
 	self packages use: SGROSStarGazerPackage as: #stargazer.
 	self packages use: PhaROSLocalizerPackage as: #localizer.
 	self packages use: PhaROSMoveBasePackage as: #movebase.
@@ -67,5 +67,5 @@ PhaROSTurtlebotPackage >> startMapBuilding [
 
 { #category : #pose }
 PhaROSTurtlebotPackage >> tfpose [
-	^ tfpose ifNil: [ tfpose := self packages transformation betweenFixedFrameAnd: '/base_link'.]
+	^ tfpose ifNil: [ tfpose := self packages transformation between:'/map' and: '/base_link'.]
 ]
