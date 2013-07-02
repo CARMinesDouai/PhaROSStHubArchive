@@ -3,7 +3,8 @@ Class {
 	#superclass : #PhaROSSystemController,
 	#instVars : [
 		'node',
-		'packages'
+		'packages',
+		'handleName'
 	],
 	#category : #'PhaROS-Controllers'
 }
@@ -81,7 +82,7 @@ PhaROSHandleController >> connectTF [
 PhaROSHandleController >> domain [
 	self flag: #askToTheHost.
 	"NetNameResolver"
-	^ '127.0.0.1'
+	^ '10.1.161.20'
 ]
 
 { #category : #package }
@@ -93,7 +94,7 @@ PhaROSHandleController >> finalize [
 
 { #category : #accessing }
 PhaROSHandleController >> handleName [
-	^ '/PharoHandle'
+	^ handleName ifNil: [ handleName := '/PharoHandle-' ,  DateAndTime now asUnixTime asString  ]. 
 ]
 
 { #category : #accessing }

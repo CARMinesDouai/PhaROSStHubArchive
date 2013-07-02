@@ -61,7 +61,7 @@ PhaROSSystemLauncher >> makeTypes [
 
 { #category : #environment }
 PhaROSSystemLauncher >> pharosHome [
-	^ '/home/santiago/pharos/pharos'.
+	^ '/home/turtlebot/ros/pharos'.
 ]
 
 { #category : #types }
@@ -81,7 +81,7 @@ PhaROSSystemLauncher >> rosMsg: anArrayOfArguments tmpFile: aTempFileName [
 	errstream := StandardFileStream forceNewFileNamed: '/tmp/error_',aTempFileName,'.tmp'.
 	
 	rosmsg  :=  ExternalUnixOSProcess 
-							forkAndExec: '/opt/ros/fuerte/bin/rosmsg'   
+							forkAndExec: '/opt/ros/groovy/bin/rosmsg'   
 							arguments: anArrayOfArguments 
 							environment:  nil 
 							descriptors: { FileStream stdin . outstream . errstream } .  
@@ -149,7 +149,7 @@ PhaROSSystemLauncher >> rosmake: aPackage [
 	errstream := StandardFileStream forceNewFileNamed: '/tmp/error_',aPackage,'.tmp'.
 	
 	rosmake  :=  ExternalUnixOSProcess 
-							forkAndExec: '/opt/ros/fuerte/bin/rosmake'   
+							forkAndExec: '/opt/ros/groovy/bin/rosmake'   
 							arguments: {aPackage} 
 							environment:  nil 
 							descriptors: { FileStream stdin . outstream . errstream } .  

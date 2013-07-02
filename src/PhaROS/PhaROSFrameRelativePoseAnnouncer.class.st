@@ -25,9 +25,17 @@ PhaROSFrameRelativePoseAnnouncer >> checkFrame: aFrame [
 
 { #category : #'as yet unclassified' }
 PhaROSFrameRelativePoseAnnouncer >> checkStamp: aFrame [
-	((aFrame stamp - DateAndTime now) asMilliSeconds < self threshold) ifFalse: [
+	self flag: #uncommentThisAndCheckWTFIsgoingONWithSyncro.
+	
+	
+	"	| now st | 
+	
+	now := DateAndTime now.
+	st := aFrame stamp timestamp.
+	((aFrame stamp - now) asMilliSeconds < self threshold) ifFalse: [
+		self halt.
 		PhaROSTFError signal: aFrame name, ' data is too old '.
-	].
+	]."
 ]
 
 { #category : #'as yet unclassified' }

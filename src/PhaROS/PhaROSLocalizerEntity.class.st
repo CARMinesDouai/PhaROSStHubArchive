@@ -3,7 +3,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'id',
-		'measures'
+		'measures',
+		'm',
+		'adding'
 	],
 	#category : #'PhaROS-Packages-Localizer'
 }
@@ -15,7 +17,16 @@ PhaROSLocalizerEntity class >> for: anId [
 
 { #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> add: aMeasure [ 
-	measures add: aMeasure pose position.
+
+	adding ifTrue: [
+		measures add: aMeasure pose position.
+		measures size > 1500 ifTrue: [ 
+			self compact > 30 ifTrue: [
+				adding := false.
+			]
+		].
+		m := m +1.
+	].
 ]
 
 { #category : #'as yet unclassified' }
@@ -49,10 +60,13 @@ PhaROSLocalizerEntity >> compact [
 	| new | 
 	new := Set new. 
 	
-	measures do: [ : m | 
-		new detect: [ : m2 | m  approximated: m2  threshold: PhaROSLocalizerPackage measureThreshold] ifNone: [new add: m ].
+	measures do: [ : measure | 
+		new detect: [ : m2 | 
+			measure  approximated: m2  threshold: PhaROSLocalizerPackage measureThreshold 
+		] ifNone: [new add: measure ].
 	].
 	measures := new.
+	^ new size.
 ]
 
 { #category : #'as yet unclassified' }
@@ -68,6 +82,8 @@ PhaROSLocalizerEntity >> id: anId [
 { #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> initialize [ 
 	measures := Set new.
+	m := 0.
+	adding := true.
 ]
 
 { #category : #'as yet unclassified' }

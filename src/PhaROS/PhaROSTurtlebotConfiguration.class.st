@@ -6,7 +6,7 @@ Class {
 
 { #category : #pose }
 PhaROSTurtlebotConfiguration class >> poseTopic [
-	^ '/robot_pose_ekf/pose'
+	^ '/odom_combined'
 ]
 
 { #category : #pose }

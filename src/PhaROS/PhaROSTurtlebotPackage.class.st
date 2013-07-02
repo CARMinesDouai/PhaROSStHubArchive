@@ -9,7 +9,7 @@ Class {
 
 { #category : #pose }
 PhaROSTurtlebotPackage >> configure [
-	self packages use: PhaROSTFAASPackage Package as: #transformation.
+	self packages use: PhaROSTransformationPackage as: #transformation.
 	self packages use: SGROSStarGazerPackage as: #stargazer.
 	self packages use: PhaROSLocalizerPackage as: #localizer.
 	self packages use: PhaROSMoveBasePackage as: #movebase.
@@ -18,7 +18,7 @@ PhaROSTurtlebotPackage >> configure [
 { #category : #pose }
 PhaROSTurtlebotPackage >> defaultPose [
 	"^ self pose."
-	^ self tfpose 
+	^ self pose 
 ]
 
 { #category : #pose }
@@ -57,7 +57,7 @@ PhaROSTurtlebotPackage >> localizeLandmarks [
 PhaROSTurtlebotPackage >> pose [
 	^ (self rosnode buildConnectionFor: PhaROSTurtlebotConfiguration poseTopic) 
 		typedAs: PhaROSTurtlebotConfiguration poseTopicType; 
-		adapted: #pose; 
+		adapted: #pose \> #pose; 
 		connect. 
 ]
 

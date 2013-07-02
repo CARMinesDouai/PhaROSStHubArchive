@@ -43,7 +43,7 @@ PhaROSLocalizerPackage >> broadcastEntities [
 			msg cells addAll:  points
 	].	
 
-
+	(Delay forMilliseconds: 1000) wait.
 ]
 
 { #category : #'as yet unclassified' }
@@ -65,10 +65,8 @@ PhaROSLocalizerPackage >> learn: aTopicFlux [
 PhaROSLocalizerPackage >> map [
 	mapping ifNil: [
 		mapping := self rosnode topicPublisher: PhaROSLocalizerPackage mapTopic typedAs: PhaROSLocalizerPackage mapTopicType.
-		self rosnode enableHeartbeatAt: ( PhaROSLocalizerPackage expectedRate ).
-		self rosnode registerHeartbeat: [ 
-			self broadcastEntities.
-		].
+		
+		self paralellize looping broadcastEntities.
 		
 	].
 ]

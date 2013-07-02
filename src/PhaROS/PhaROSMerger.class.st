@@ -6,17 +6,26 @@ Class {
 		'transformation',
 		'messages',
 		'this',
-		'that'
+		'that',
+		'minSync',
+		'maxSync'
 	],
 	#category : #'PhaROS-Packages-Merger'
 }
 
 { #category : #'as yet unclassified' }
 PhaROSMerger >> checkStamps: stamps [
-	self flag: #uncommentCheck.
-	^true.
+	| minDif maxDif ret |
 	
-	" (((stamps max - stamps min) asMilliSeconds < self threshold) and: [ (DateAndTime now - stamps max ) asMilliSeconds < self threshold ] )"
+	minDif :=  (DateAndTime now - stamps min ) asMilliSeconds.
+	maxDif :=  (DateAndTime now - stamps max ) asMilliSeconds.
+	
+	ret := minSync ifNil: [true] ifNotNil:[( minDif - minSync) < self threshold and: [ (maxDif - maxSync ) < self threshold ]].
+	
+	minSync := minDif.
+	maxSync := maxDif.
+	
+	^ret.
 ]
 
 { #category : #'as yet unclassified' }
