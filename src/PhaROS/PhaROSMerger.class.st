@@ -8,7 +8,8 @@ Class {
 		'this',
 		'that',
 		'minSync',
-		'maxSync'
+		'maxSync',
+		'condition'
 	],
 	#category : #'PhaROS-Packages-Merger'
 }
@@ -38,6 +39,7 @@ PhaROSMerger >> finalize [
 { #category : #'as yet unclassified' }
 PhaROSMerger >> initialize [ 
 	messages := Dictionary new.
+
 ]
 
 { #category : #'as yet unclassified' }
@@ -46,20 +48,29 @@ PhaROSMerger >> merge [
 		Transcript show: 'waiting for have data from two topics to start merging'
 	] ifTrue:[
 		(self checkStamps:  (messages values collect: [ : ms  | ms at: 2 ]) ) ifTrue: [
-			outgoing send: [ :msg |
-				transformation cull: msg cull: ((messages at: that ) at: 1) cull:((messages at:this) at:1)
-			]	
+			
+			(condition cull: ((messages at: that ) at: 1) cull:((messages at:this) at:1)) ifTrue: [
+				outgoing send: [ :msg |
+					transformation cull: msg cull: ((messages at: that ) at: 1) cull:((messages at:this) at:1)
+				].
+			]	.
 		] ifFalse: [Transcript show: 'data out of syncro or too old'; cr.]
-	]
+	].
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSMerger >> merge: aConnectedTopicFlux with: anOtherConnectedTopicFlux using: aTransformation redirectingTo: aTopicPublisher [
+	^ self merge: aConnectedTopicFlux with: anOtherConnectedTopicFlux using: aTransformation when: [true] redirectingTo: aTopicPublisher
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSMerger >> merge: aConnectedTopicFlux with: anOtherConnectedTopicFlux using: aTransformation when: aCondition redirectingTo: aTopicPublisher [
 	this := aConnectedTopicFlux.
 	that := anOtherConnectedTopicFlux.
 	
 	aConnectedTopicFlux for: (self mergerCallback: aConnectedTopicFlux).
 	anOtherConnectedTopicFlux for: (self mergerCallback: anOtherConnectedTopicFlux).
+	condition := aCondition.
 	transformation := aTransformation.
 	outgoing := aTopicPublisher.
 ]
