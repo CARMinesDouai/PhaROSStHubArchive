@@ -69,6 +69,13 @@ SGROSStarGazerPackage >> broadcastLandmarks [
 	].
 ]
 
+{ #category : #publish }
+SGROSStarGazerPackage >> conditionMerger [
+	
+	^[ : aMeasure | 
+			(((aMeasure pose position x * aMeasure pose position x) + (aMeasure pose position y * aMeasure pose position y)) sqrt < 0.5)] 
+]
+
 { #category : #package }
 SGROSStarGazerPackage >> configure [
 	self packages use: PhaROSMergerPackage as: #merger.
@@ -87,7 +94,8 @@ SGROSStarGazerPackage >> mergeWithPose: aPoseTopicReader [
 	
 	self packages merger merge: self landmarks 
 								     with: aPoseTopicReader 
-								   using: self poseMerger 
+								   using: self poseMerger
+								  when: self conditionMerger  
 						  redirectingTo: self absoluteLandmark. 
 ]
 
@@ -112,8 +120,11 @@ SGROSStarGazerPackage >> poseMerger [
 "
 
 	^ [ :msg :pose :landmark | 
+		| lp |
 		msg header frame_id: '/stargazer'.
-		msg pose: pose + (PhaROSPose fromGeometry_msgsPose: landmark pose).
+		lp := PhaROSPose fromGeometry_msgsPose: landmark pose.
+		msg pose: (PhaROSPose 	position: (pose position + (pose orientation rotatePosition: lp position)) 
+									orientation: pose orientation) asGeometry_msgsPose .
 		msg landmark: landmark landmark.
 	   ].
 ]
