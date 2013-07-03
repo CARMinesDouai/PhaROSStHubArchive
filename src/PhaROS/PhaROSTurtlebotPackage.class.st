@@ -9,7 +9,7 @@ Class {
 
 { #category : #pose }
 PhaROSTurtlebotPackage >> configure [
-	self packages use: PhaROSTransformationPackage as: #transformation.
+	self packages use: PhaROSTFAASPackage as: #transformation.
 	self packages use: SGROSStarGazerPackage as: #stargazer.
 	self packages use: PhaROSLocalizerPackage as: #localizer.
 	self packages use: PhaROSMoveBasePackage as: #movebase.
@@ -18,7 +18,7 @@ PhaROSTurtlebotPackage >> configure [
 { #category : #pose }
 PhaROSTurtlebotPackage >> defaultPose [
 	"^ self pose."
-	^ self pose 
+	^ self tfpose 
 ]
 
 { #category : #pose }
@@ -40,7 +40,7 @@ PhaROSTurtlebotPackage >> fuseLandmarks [
 
 { #category : #pose }
 PhaROSTurtlebotPackage >> goTo: aLandMark [
-	self packages movebase simpleGoal: aLandMark center asPose.
+	^ self packages movebase client goTo: aLandMark center asPose.
 ]
 
 { #category : #pose }

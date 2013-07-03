@@ -2,7 +2,8 @@ Class {
 	#name : #PhaROSMoveBasePackage,
 	#superclass : #PhaROSStaticPackage,
 	#instVars : [
-		'simpleGoal'
+		'simpleGoal',
+		'client'
 	],
 	#category : #'PhaROS-Packages-MoveBase'
 }
@@ -15,6 +16,11 @@ PhaROSMoveBasePackage class >> simpleGoalTopic [
 { #category : #'as yet unclassified' }
 PhaROSMoveBasePackage class >> simpleGoalTopicType [
 	^ 'geometry_msgs/PoseStamped'
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSMoveBasePackage >> client [
+	^ client ifNil: [ client := PhaROSMoveBaseClient new configure: self ; yourself  ].
 ]
 
 { #category : #'as yet unclassified' }
