@@ -72,8 +72,14 @@ SGROSStarGazerPackage >> broadcastLandmarks [
 { #category : #publish }
 SGROSStarGazerPackage >> conditionMerger [
 	
-	^[ : aMeasure | 
-			(((aMeasure pose position x * aMeasure pose position x) + (aMeasure pose position y * aMeasure pose position y)) sqrt < 0.5)] 
+	^[ : aMeasure : aLandMark |
+		
+			Transcript show: (((aLandMark pose   position x * aLandMark pose   position x) + (aLandMark pose   position y * aLandMark pose   position y)) sqrt ) asString; cr.		
+			(((aLandMark pose   position x * aLandMark pose   position x) + (aLandMark pose   position y * aLandMark pose   position y)) sqrt < 0.5).
+			
+	]. 
+		
+	
 ]
 
 { #category : #package }
@@ -119,10 +125,11 @@ SGROSStarGazerPackage >> poseMerger [
 		msg pose orientation w: pose orientation w + landmark pose orientation w.		
 "
 
-	^ [ :msg :pose :landmark | 
-		| lp |
+	^ [ :msg :gpose :landmark | 
+		| lp pose |
 		msg header frame_id: '/stargazer'.
 		lp := PhaROSPose fromGeometry_msgsPose: landmark pose.
+		pose := PhaROSPose fromGeometry_msgsPose: gpose.
 		msg pose: (PhaROSPose 	position: (pose position + (pose orientation rotatePosition: lp position)) 
 									orientation: pose orientation) asGeometry_msgsPose .
 		msg landmark: landmark landmark.

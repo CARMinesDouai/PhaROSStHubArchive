@@ -10,11 +10,14 @@ Class {
 
 { #category : #broadcasting }
 SGROSBroadcaster >> broadcast: landmark [ 
-	
-	topicPublisher send: [ :msg | 
-		msg header frame_id: 'stargazer'.
-		landmark pose intoGeometry_msgs_Pose: msg pose.
-		msg landmark: landmark id.		
+	({ 2 . 82 . 608 } includes: landmark id ) ifTrue: [
+		topicPublisher send: [ :msg | 
+			msg header frame_id: 'stargazer'.
+			landmark pose intoGeometry_msgs_Pose: msg pose.
+			msg landmark: landmark id.		
+		]
+	] ifFalse: [
+		Transcript show: 'LandmarkID:', landmark id asString, ' Detected'; cr.
 	]
 ]
 
