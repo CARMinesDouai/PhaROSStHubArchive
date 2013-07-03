@@ -18,7 +18,7 @@ PhaROSTurtlebotPackage >> configure [
 { #category : #pose }
 PhaROSTurtlebotPackage >> defaultPose [
 	"^ self pose."
-	^ self tfpose 
+	^ self pose 
 ]
 
 { #category : #pose }

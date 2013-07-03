@@ -12,7 +12,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSMoveBaseClient class >> feedbackTopic [
-	^ 'move_base/feedback'
+	^ '/move_base/feedback'
 ]
 
 { #category : #'as yet unclassified' }
@@ -22,7 +22,7 @@ PhaROSMoveBaseClient class >> feedbackTopicType [
 
 { #category : #'as yet unclassified' }
 PhaROSMoveBaseClient class >> goalTopic [
-	^ 'move_base/goal'.
+	^ '/move_base/goal'.
 ]
 
 { #category : #'as yet unclassified' }
@@ -32,7 +32,7 @@ PhaROSMoveBaseClient class >> goalTopicType [
 
 { #category : #'as yet unclassified' }
 PhaROSMoveBaseClient class >> statusTopic [
-	^ 'move_base/status'
+	^ '/move_base/status'
 ]
 
 { #category : #'as yet unclassified' }
@@ -45,20 +45,27 @@ PhaROSMoveBaseClient >> configure: aPackage [
 	
 	(aPackage rosnode buildConnectionFor: PhaROSMoveBaseClient feedbackTopic) 
 		typedAs: PhaROSMoveBaseClient feedbackTopicType;
-		for: [ : msg | self feedback: msg ] .
+		for: [ : msg | self feedback: msg ] ;
+		connect.
 	
 	(aPackage rosnode buildConnectionFor: PhaROSMoveBaseClient statusTopic) 
 		typedAs: PhaROSMoveBaseClient statusTopicType;
-		for: [ : msg | self status: msg ] .
+		for: [ : msg | self status: msg ] ; 
+		connect.
 	
 	movebaseGoal := aPackage rosnode topicPublisher: PhaROSMoveBaseClient goalTopic  typedAs: PhaROSMoveBaseClient goalTopicType. 
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSMoveBaseClient >> feedback: aMoveBaseFeedback [
-	currentPosition set: (PhaROSPose fromGeometry_msgsPose: aMoveBaseFeedback feedback base_position pose).
-	self inform: aMoveBaseFeedback status.	
+	currentPosition := (PhaROSPose fromGeometry_msgsPose: aMoveBaseFeedback feedback base_position pose).
+	self registerStatus: aMoveBaseFeedback status.	
 
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSMoveBaseClient >> get: aGoalID [
+	^ goals at: aGoalID ifAbsent: [ nil ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -69,6 +76,7 @@ PhaROSMoveBaseClient >> goTo: aPose [
 { #category : #'as yet unclassified' }
 PhaROSMoveBaseClient >> goToGoal: aGoal [
 	goals at: aGoal id put: aGoal.
+	aGoal client: self.
 	movebaseGoal send: [ : msg | 
 		msg header frame_id: '/map'.
 		msg goal_id id: aGoal id.
@@ -80,17 +88,17 @@ PhaROSMoveBaseClient >> goToGoal: aGoal [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSMoveBaseClient >> inform: aGoalStatus [
+PhaROSMoveBaseClient >> initialize [ 
+	currentPosition := PhaROSPose zero.
+	goals := Dictionary new.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSMoveBaseClient >> registerStatus: aGoalStatus [
 	(self get: aGoalStatus goal_id id) ifNotNil: [: goal | 
 		goal status: aGoalStatus status.
 		goal text: aGoalStatus text.	
 	].
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSMoveBaseClient >> initialize [ 
-	currentPosition := PhaROSPose zero asThreadsafeReference.
-	goals := Dictionary new.
 ]
 
 { #category : #'as yet unclassified' }
@@ -100,8 +108,9 @@ PhaROSMoveBaseClient >> remove: aGoal [
 
 { #category : #'as yet unclassified' }
 PhaROSMoveBaseClient >> status: goalStatusArray [
+	
 	goalStatusArray status_list do: [
 		:status |
-		self inform: status.	
+		self registerStatus: status.	
 	]
 ]

@@ -39,6 +39,21 @@ PhaROSMoveBaseGoal >> cancel [
 ]
 
 { #category : #accessing }
+PhaROSMoveBaseGoal >> client: aClient [
+	client := aClient
+]
+
+{ #category : #accessing }
+PhaROSMoveBaseGoal >> destination [ 
+	^ destination 
+]
+
+{ #category : #accessing }
+PhaROSMoveBaseGoal >> destination: aPose [
+	 destination := aPose 
+]
+
+{ #category : #accessing }
 PhaROSMoveBaseGoal >> id [
 	^ id
 ]
@@ -49,7 +64,7 @@ PhaROSMoveBaseGoal >> initialize [
 	super initialize.
 	id := DateAndTime now asUnixTime asString.
 	callbacks := Dictionary new. 
-	
+	status := Actionlib_msgsGoalStatus pending.
 	stop := [ self stopTracking ].
 	self onSucceeded: stop.
 	self onAborted: stop.
@@ -123,6 +138,11 @@ PhaROSMoveBaseGoal >> recall [
 ]
 
 { #category : #accessing }
+PhaROSMoveBaseGoal >> status [
+	^ status 
+]
+
+{ #category : #accessing }
 PhaROSMoveBaseGoal >> status: aStatus [
 	status := aStatus.
 	callbacks at: status  ifPresent: [ : callsFor | 
@@ -132,7 +152,7 @@ PhaROSMoveBaseGoal >> status: aStatus [
 
 { #category : #accessing }
 PhaROSMoveBaseGoal >> statusText [
-	self class texts at: self status. 
+	^ self class texts at: self status. 
 ]
 
 { #category : #manage }
