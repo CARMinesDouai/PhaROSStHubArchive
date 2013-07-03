@@ -27,3 +27,12 @@ PhaROSMergerPackage >> merge: aTopicConnectionBuilder with: anOtherTopicConnecti
 	mergers add: merger.
 	^ merger.
 ]
+
+{ #category : #'as yet unclassified' }
+PhaROSMergerPackage >> merge: aTopicConnectionBuilder with: anOtherTopicConnectionBuilder using: aTransformation when: aCondition redirectingTo: aTopicPublisher [
+	| merger |
+	merger := PhaROSMerger new.
+	merger merge: aTopicConnectionBuilder with: anOtherTopicConnectionBuilder using: aTransformation  when: aCondition redirectingTo: aTopicPublisher.
+	mergers add: merger.
+	^ merger.
+]

@@ -18,14 +18,11 @@ PhaROSLocalizerEntity class >> for: anId [
 { #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> add: aMeasure [ 
 
-	adding ifTrue: [		 
+	adding ifTrue: [
 		measures add: aMeasure pose position.
-		measures size > 1500 ifTrue: [ 
-			self compact > 10 ifTrue: [
-				adding := false.
-			]
+		self compact > 10 ifTrue: [
+			adding := false.
 		].
-	
 		m := m +1.
 	].
 ]
