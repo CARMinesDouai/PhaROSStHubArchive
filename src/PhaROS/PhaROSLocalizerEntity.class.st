@@ -19,11 +19,13 @@ PhaROSLocalizerEntity class >> for: anId [
 PhaROSLocalizerEntity >> add: aMeasure [ 
 
 	adding ifTrue: [
-		measures add: aMeasure pose position.
-		self compact > 50 ifTrue: [
-			adding := false.
-		].
-		m := m +1.
+		(measures size = 0 or: [ (self center - aMeasure pose position ) module2d < 1.0 ] ) ifTrue: [
+			measures add: aMeasure pose position.
+			self compact > 10 ifTrue: [
+				adding := false.
+			].
+			m := m +1.
+		] ifFalse: [ Transcript show: 'Rejecting measure'; show: aMeasure ;cr ].
 	].
 ]
 
