@@ -24,6 +24,11 @@ PhaROSMoveBasePackage >> client [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSMoveBasePackage >> goRandomOf: anArrayOfPoses while: aBlock [
+ 	^ PhaROSMoveBaseRandomGoals new poses: anArrayOfPoses; while: aBlock; client: self client; start.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSMoveBasePackage >> simpleGoal [
 	^simpleGoal ifNil: [ 
 		simpleGoal := self rosnode topicPublisher: PhaROSMoveBasePackage simpleGoalTopic 

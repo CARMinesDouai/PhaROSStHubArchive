@@ -58,6 +58,11 @@ PhaROSPosition >> asPose [
 ]
 
 { #category : #operators }
+PhaROSPosition >> module2d [
+	^ ((x * x) + (y * y)) sqrt
+]
+
+{ #category : #operators }
 PhaROSPosition >> multiplyQuaternionByYou: aQuaternion [
 	^ PhaROSQuaternion x: ((aQuaternion w * self x) + (aQuaternion y * self z) - (aQuaternion z * self y))
 		   y: ((aQuaternion w * self y) + (aQuaternion z * self x) - (aQuaternion x * self z))

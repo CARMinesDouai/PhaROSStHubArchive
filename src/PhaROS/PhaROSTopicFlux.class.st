@@ -5,7 +5,8 @@ Class {
 		'adapter',
 		'condition',
 		'callback',
-		'mutex'
+		'mutex',
+		'lastTimeStamp'
 	],
 	#classInstVars : [
 		'defaultAdapter',
@@ -72,6 +73,12 @@ PhaROSTopicFlux >> imInterestedIn: aMessage from: aChannel [
 ]
 
 { #category : #dispatching }
+PhaROSTopicFlux >> lastTimeStamp [ 
+	^lastTimeStamp 
+	
+]
+
+{ #category : #dispatching }
 PhaROSTopicFlux >> printOn: aStream [
 
 	aStream nextPutAll: ' For all messages that '.
@@ -87,6 +94,7 @@ PhaROSTopicFlux >> printOn: aStream [
 { #category : #dispatching }
 PhaROSTopicFlux >> receive: aMessage from: aChannel [
 	(self imInterestedIn: aMessage from: aChannel) ifTrue: [
+		lastTimeStamp := DateAndTime now.
 		self redirect: (self adapt: aMessage ) from: aChannel at: (self fetchStamp: aMessage).
 	].
 

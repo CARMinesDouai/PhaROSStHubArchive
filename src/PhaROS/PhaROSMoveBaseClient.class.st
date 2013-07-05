@@ -5,7 +5,8 @@ Class {
 		'package',
 		'currentPosition',
 		'goals',
-		'movebaseGoal'
+		'movebaseGoal',
+		'reachedGoals'
 	],
 	#category : #'PhaROS-Packages-MoveBase'
 }
@@ -77,6 +78,7 @@ PhaROSMoveBaseClient >> goTo: aPose [
 PhaROSMoveBaseClient >> goToGoal: aGoal [
 	goals at: aGoal id put: aGoal.
 	aGoal client: self.
+	reachedGoals := reachedGoals +1.
 	movebaseGoal send: [ : msg | 
 		msg header frame_id: '/map'.
 		msg goal_id id: aGoal id.
@@ -91,6 +93,12 @@ PhaROSMoveBaseClient >> goToGoal: aGoal [
 PhaROSMoveBaseClient >> initialize [ 
 	currentPosition := PhaROSPose zero.
 	goals := Dictionary new.
+	reachedGoals := 0.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSMoveBaseClient >> reachedGoals [
+^reachedGoals
 ]
 
 { #category : #'as yet unclassified' }

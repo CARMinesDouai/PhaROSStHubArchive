@@ -20,7 +20,7 @@ PhaROSLocalizerEntity >> add: aMeasure [
 
 	adding ifTrue: [
 		measures add: aMeasure pose position.
-		self compact > 10 ifTrue: [
+		self compact > 50 ifTrue: [
 			adding := false.
 		].
 		m := m +1.
@@ -65,6 +65,11 @@ PhaROSLocalizerEntity >> compact [
 	].
 	measures := new.
 	^ new size.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLocalizerEntity >> complete [ 
+	^ adding not.
 ]
 
 { #category : #'as yet unclassified' }

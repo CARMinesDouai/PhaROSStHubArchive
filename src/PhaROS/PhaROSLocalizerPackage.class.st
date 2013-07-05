@@ -78,3 +78,8 @@ PhaROSLocalizerPackage >> register: aMeasure [
 	measure := PhaROSLocalizerMeasure fromPharosSGLandMark: aMeasure.
 	(entities at: measure id ifAbsentPut: [ PhaROSLocalizerEntity for: measure id ]) add: measure .
 ]
+
+{ #category : #'as yet unclassified' }
+PhaROSLocalizerPackage >> scannedEntities [ 
+	^ self entities select: #complete
+]
