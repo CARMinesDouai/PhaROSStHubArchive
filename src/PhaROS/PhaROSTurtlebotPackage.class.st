@@ -54,7 +54,7 @@ PhaROSTurtlebotPackage >> goTo: aLandMark [
 
 { #category : #pose }
 PhaROSTurtlebotPackage >> landmarkNavigation [
-	self packages movebase goRandomOf: (self packages localizer entities collect:[ :e | e center asPose ]) asArray while: [ self packages movebase reachedGoals < 7 ].
+	self packages movebase goRandomOf: (self packages localizer entities collect:[ :e | e center asPose ]) asArray while: [ self packages movebase client reachedGoals < 7 ].
 ]
 
 { #category : #pose }
