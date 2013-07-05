@@ -28,6 +28,19 @@ PhaROSLocalizerEntity >> add: aMeasure [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSLocalizerEntity >> adding: aBoolean [
+	adding := aBoolean 
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLocalizerEntity >> asDump [
+	| ms | 
+	ms := (measures inject:'{' into: [ :acc : mr | acc, mr asDump , '.']), '}'.
+	^ 'PhaROSLocalizerEntity new id: {1}; measures: {2}; adding: {3};yourself' format: { id asString . ms . adding asString  }.
+	
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> asGeometry_msgsPointCollection [
 	| center a b  points |
 	center := self center.
@@ -77,6 +90,11 @@ PhaROSLocalizerEntity >> fix: aPose [
 	
 ]
 
+{ #category : #accessing }
+PhaROSLocalizerEntity >> id [
+	^ id
+]
+
 { #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> id: anId [ 	
 	id := anId 
@@ -92,6 +110,11 @@ PhaROSLocalizerEntity >> initialize [
 { #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> length [
 	^ 1.0
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLocalizerEntity >> measures: aMeasureset [
+	measures := aMeasureset asSet
 ]
 
 { #category : #'as yet unclassified' }

@@ -52,6 +52,11 @@ PhaROSPosition >> approximated: anOtherPosition threshold: anScalar [
 	^ cmp x < anScalar and: [ cmp y < anScalar and: [ cmp z < anScalar ]] .
 ]
 
+{ #category : #printing }
+PhaROSPosition >> asDump [
+	^ 'PhaROSPosition x: {1} y:{2} z:{3}' format:{x asString . y asString . z asString }.
+]
+
 { #category : #converting }
 PhaROSPosition >> asPose [ 
 	^PhaROSPose position: self orientation: PhaROSQuaternion zero.
