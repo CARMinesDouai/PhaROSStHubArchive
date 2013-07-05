@@ -50,7 +50,7 @@ SGPose >> intoGeometry_msgs_Pose: aRosPose [
 	aRosPose position y: self position y / 100.
 	aRosPose position z: self position z / 100.
 		
-	PhaROSGeometryTransformations rotationAsQuaternation: self orientation into: aRosPose orientation.
+	PhaROSGeometryTransformations rotationAsQuaternation: (self orientation * Float pi) / 180 into: aRosPose orientation.
 
 ]
 

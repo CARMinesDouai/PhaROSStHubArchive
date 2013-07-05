@@ -40,3 +40,9 @@ SGLandMarkMeasure >> pose [
 SGLandMarkMeasure >> pose: aPose [
 	pose := aPose.
 ]
+
+{ #category : #'as yet unclassified' }
+SGLandMarkMeasure >> printOn: aStream [
+	id printOn: aStream.
+	pose printOn: aStream .
+]

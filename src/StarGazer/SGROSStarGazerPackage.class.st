@@ -2,7 +2,8 @@ Class {
 	#name : #SGROSStarGazerPackage,
 	#superclass : #PhaROSStaticPackage,
 	#instVars : [
-		'broadcaster'
+		'broadcaster',
+		'landmarks'
 	],
 	#category : #'StarGazer-Ros'
 }
@@ -73,9 +74,9 @@ SGROSStarGazerPackage >> broadcastLandmarks [
 SGROSStarGazerPackage >> conditionMerger [
 	
 	^[ : aMeasure : aLandMark |
-		
-			Transcript show: (((aLandMark pose   position x * aLandMark pose   position x) + (aLandMark pose   position y * aLandMark pose   position y)) sqrt ) asString; cr.		
-			(((aLandMark pose   position x * aLandMark pose   position x) + (aLandMark pose   position y * aLandMark pose   position y)) sqrt < 0.5).
+		(DateAndTime now - landmarks lastTimeStamp) asMilliSeconds < 100 and: [ 
+			(((aLandMark pose   position x * aLandMark pose   position x) + (aLandMark pose   position y * aLandMark pose   position y)) sqrt < 0.5)
+		].
 			
 	]. 
 		
@@ -89,10 +90,11 @@ SGROSStarGazerPackage >> configure [
 
 { #category : #subscribe }
 SGROSStarGazerPackage >> landmarks [
-	^ (self rosnode buildConnectionFor: SGROSStarGazerPackage landmarkTopic ) 
-					typedAs: SGROSStarGazerPackage landmarkTopicType; 
-					connect.
-					
+	^landmarks ifNil: [
+		landmarks :=  (self rosnode buildConnectionFor: SGROSStarGazerPackage landmarkTopic ) 
+		typedAs: SGROSStarGazerPackage landmarkTopicType; 
+		connect.
+	]
 ]
 
 { #category : #publish }
@@ -126,12 +128,25 @@ SGROSStarGazerPackage >> poseMerger [
 "
 
 	^ [ :msg :gpose :landmark | 
-		| lp pose |
-		msg header frame_id: '/stargazer'.
-		lp := PhaROSPose fromGeometry_msgsPose: landmark pose.
+		| lp pose th module |
+		
+		lp := PhaROSPose fromGeometry_msgsPose: landmark pose.	
 		pose := PhaROSPose fromGeometry_msgsPose: gpose.
-		msg pose: (PhaROSPose 	position: (pose position + (pose orientation rotatePosition: lp position)) 
-									orientation: pose orientation) asGeometry_msgsPose .
+				
+		th := pose orientation as2DOrientation z.
+		module := lp position module2d.
+		pose position: pose position + (PhaROSPosition x: (th cos * module) y: (th sin * module)  z:  0.0).
+		
+		msg header frame_id: '/map'.
+		msg pose: pose asGeometry_msgsPose.
+		 
+		"msg pose: (PhaROSPose 	position: (lp position + (lp orientation rotatePosition: pose position)) 
+									orientation: lp orientation) asGeometry_msgsPose ."
 		msg landmark: landmark landmark.
 	   ].
+
+
+
+
+
 ]
