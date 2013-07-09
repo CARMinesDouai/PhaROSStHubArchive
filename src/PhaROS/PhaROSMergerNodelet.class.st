@@ -1,6 +1,6 @@
 Class {
-	#name : #PhaROSMergerPackage,
-	#superclass : #PhaROSStaticPackage,
+	#name : #PhaROSMergerNodelet,
+	#superclass : #PhaROSStaticNodelet,
 	#instVars : [
 		'mergers'
 	],
@@ -8,19 +8,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PhaROSMergerPackage >> finalize [
+PhaROSMergerNodelet >> finalize [
 	super finalize.
 	mergers do: #finalize.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSMergerPackage >> initialize [ 
+PhaROSMergerNodelet >> initialize [ 
 	super initialize.
 	mergers := Set new.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSMergerPackage >> merge: aTopicConnectionBuilder with: anOtherTopicConnectionBuilder using: aTransformation redirectingTo: aTopicPublisher [
+PhaROSMergerNodelet >> merge: aTopicConnectionBuilder with: anOtherTopicConnectionBuilder using: aTransformation redirectingTo: aTopicPublisher [
 	| merger |
 	merger := PhaROSMerger new.
 	merger merge: aTopicConnectionBuilder with: anOtherTopicConnectionBuilder using: aTransformation redirectingTo: aTopicPublisher.
@@ -29,7 +29,7 @@ PhaROSMergerPackage >> merge: aTopicConnectionBuilder with: anOtherTopicConnecti
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSMergerPackage >> merge: aTopicConnectionBuilder with: anOtherTopicConnectionBuilder using: aTransformation when: aCondition redirectingTo: aTopicPublisher [
+PhaROSMergerNodelet >> merge: aTopicConnectionBuilder with: anOtherTopicConnectionBuilder using: aTransformation when: aCondition redirectingTo: aTopicPublisher [
 	| merger |
 	merger := PhaROSMerger new.
 	merger merge: aTopicConnectionBuilder with: anOtherTopicConnectionBuilder using: aTransformation  when: aCondition redirectingTo: aTopicPublisher.

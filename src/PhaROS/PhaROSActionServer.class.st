@@ -1,5 +1,5 @@
 Class {
 	#name : #PhaROSActionServer,
-	#superclass : #PhaROSStaticPackage,
+	#superclass : #PhaROSStaticNodelet,
 	#category : #'PhaROS-Nodelets-Action'
 }

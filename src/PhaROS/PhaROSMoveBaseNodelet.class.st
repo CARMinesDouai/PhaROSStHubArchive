@@ -1,6 +1,6 @@
 Class {
-	#name : #PhaROSMoveBasePackage,
-	#superclass : #PhaROSStaticPackage,
+	#name : #PhaROSMoveBaseNodelet,
+	#superclass : #PhaROSStaticNodelet,
 	#instVars : [
 		'simpleGoal',
 		'client'
@@ -9,35 +9,35 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PhaROSMoveBasePackage class >> simpleGoalTopic [
+PhaROSMoveBaseNodelet class >> simpleGoalTopic [
 	^ '/move_base_simple/goal'
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSMoveBasePackage class >> simpleGoalTopicType [
+PhaROSMoveBaseNodelet class >> simpleGoalTopicType [
 	^ 'geometry_msgs/PoseStamped'
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSMoveBasePackage >> client [
+PhaROSMoveBaseNodelet >> client [
 	^ client ifNil: [ client := PhaROSMoveBaseClient new configure: self ; yourself  ].
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSMoveBasePackage >> goRandomOf: anArrayOfPoses while: aBlock [
+PhaROSMoveBaseNodelet >> goRandomOf: anArrayOfPoses while: aBlock [
  	^ PhaROSMoveBaseRandomGoals new poses: anArrayOfPoses; while: aBlock; client: self client; start.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSMoveBasePackage >> simpleGoal [
+PhaROSMoveBaseNodelet >> simpleGoal [
 	^simpleGoal ifNil: [ 
-		simpleGoal := self rosnode topicPublisher: PhaROSMoveBasePackage simpleGoalTopic 
-									 typedAs: PhaROSMoveBasePackage simpleGoalTopicType 
+		simpleGoal := self rosnode topicPublisher: PhaROSMoveBaseNodelet simpleGoalTopic 
+									 typedAs: PhaROSMoveBaseNodelet simpleGoalTopicType 
 	].
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSMoveBasePackage >> simpleGoal: aPose [
+PhaROSMoveBaseNodelet >> simpleGoal: aPose [
 
 	^ self simpleGoal send: [: msg | 
 		msg header frame_id: '/map'.

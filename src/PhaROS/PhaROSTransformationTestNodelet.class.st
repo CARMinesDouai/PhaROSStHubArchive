@@ -1,6 +1,6 @@
 Class {
-	#name : #PhaROSTransformationTestPackage,
-	#superclass : #PhaROSStaticPackage,
+	#name : #PhaROSTransformationTestNodelet,
+	#superclass : #PhaROSStaticNodelet,
 	#instVars : [
 		'tfs'
 	],
@@ -8,12 +8,12 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PhaROSTransformationTestPackage >> configure [
+PhaROSTransformationTestNodelet >> configure [
 	self launchTest.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSTransformationTestPackage >> launchTest [
+PhaROSTransformationTestNodelet >> launchTest [
 	tfs := PhaROSSystemLauncher instance launch: [
 		: launch |
 		launch staticTFFrom: '/map' to: '/odom'  of: '0 0 0 0 0 0' rate: 100. 

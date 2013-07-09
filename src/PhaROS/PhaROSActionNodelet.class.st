@@ -1,6 +1,6 @@
 Class {
-	#name : #PhaROSActionPackage,
-	#superclass : #PhaROSStaticPackage,
+	#name : #PhaROSActionNodelet,
+	#superclass : #PhaROSStaticNodelet,
 	#instVars : [
 		'clients',
 		'servers'
@@ -9,17 +9,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PhaROSActionPackage >> clientFor: anAction [
+PhaROSActionNodelet >> clientFor: anAction [
 	^ clients at: anAction ifAbsentPut: [ PhaROSActionClient for: anAction ].
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSActionPackage >> initialize [ 
+PhaROSActionNodelet >> initialize [ 
 	clients := Dictionary new.
 	servers := Dictionary new.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSActionPackage >> serverFor: anAction [
+PhaROSActionNodelet >> serverFor: anAction [
 	^ servers at: anAction ifAbsentPut: [ PhaROSActionServer for: anAction ].
 ]

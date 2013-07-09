@@ -9,8 +9,8 @@ controller packages transformation between: '/laser' and: '/sonar'  for: [ : pos
 
 "
 Class {
-	#name : #PhaROSTFAASPackage,
-	#superclass : #PhaROSStaticPackage,
+	#name : #PhaROSTFAASNodelet,
+	#superclass : #PhaROSStaticNodelet,
 	#instVars : [
 		'tfWriter',
 		'topicsBroadcasted'
@@ -19,7 +19,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PhaROSTFAASPackage class >> staticTFFrom: aFrame to: anOtherFrame  of: aStringOfShift rate: aRate [
+PhaROSTFAASNodelet class >> staticTFFrom: aFrame to: anOtherFrame  of: aStringOfShift rate: aRate [
 	
 	| launchBuilder |
 	
@@ -28,54 +28,54 @@ PhaROSTFAASPackage class >> staticTFFrom: aFrame to: anOtherFrame  of: aStringOf
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSTFAASPackage class >> tfaasTopicType [
+PhaROSTFAASNodelet class >> tfaasTopicType [
 	^ 'geometry_msgs/PoseStamped'
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSTFAASPackage >> between: aFrame and: anOtherFrame [ 
+PhaROSTFAASNodelet >> between: aFrame and: anOtherFrame [ 
 	| conn |
 	(self isBeingBroadcasted: (aFrame, anOtherFrame )) ifFalse: [
 		self launchTFAASBetween: aFrame and: anOtherFrame.
 	].
 
 	conn := self rosnode buildConnectionFor: (self tfaasTopicNameFor: aFrame and: anOtherFrame ).
-	^ conn typedAs: PhaROSTFAASPackage tfaasTopicType; adapted: #pose \> PhaROSPose ; connect.
+	^ conn typedAs: PhaROSTFAASNodelet tfaasTopicType; adapted: #pose \> PhaROSPose ; connect.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSTFAASPackage >> between: aFrame and: anOtherFrame for: aCallback [
+PhaROSTFAASNodelet >> between: aFrame and: anOtherFrame for: aCallback [
 	^ (self between: aFrame and: anOtherFrame) for: aCallback
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSTFAASPackage >> configure [
+PhaROSTFAASNodelet >> configure [
 
 	
-	tfWriter := self rosnode topicPublisher: PhaROSTransformationPackage tfTopic 
-		  							    typedAs: PhaROSTransformationPackage tfTopicType.
+	tfWriter := self rosnode topicPublisher: PhaROSTransformationNodelet tfTopic 
+		  							    typedAs: PhaROSTransformationNodelet tfTopicType.
 									
 								
 	
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSTFAASPackage >> defaultRate [ 
+PhaROSTFAASNodelet >> defaultRate [ 
 	^ 50
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSTFAASPackage >> initialize [ 
+PhaROSTFAASNodelet >> initialize [ 
 	topicsBroadcasted := Dictionary new.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSTFAASPackage >> isBeingBroadcasted: aKey [
+PhaROSTFAASNodelet >> isBeingBroadcasted: aKey [
 	^ topicsBroadcasted includesKey: aKey
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSTFAASPackage >> launchTFAASBetween: aFrame and: anOtherFrame [
+PhaROSTFAASNodelet >> launchTFAASBetween: aFrame and: anOtherFrame [
 	topicsBroadcasted at: (aFrame, anOtherFrame) ifAbsentPut: [
 		PhaROSSystemLauncher instance launch: [ : launch | 
 			launch tfaas: aFrame to: anOtherFrame  rate: self defaultRate. 	
@@ -84,7 +84,7 @@ PhaROSTFAASPackage >> launchTFAASBetween: aFrame and: anOtherFrame [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSTFAASPackage >> tfaasTopicNameFor: aFrame and: anOtherFrame [
+PhaROSTFAASNodelet >> tfaasTopicNameFor: aFrame and: anOtherFrame [
 	| from to |
 	
 	from := aFrame normalizeFrame.

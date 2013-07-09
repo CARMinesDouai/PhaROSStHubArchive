@@ -1,25 +1,25 @@
 Class {
-	#name : #PhaROSStaticPackage,
-	#superclass : #PhaROSPackage,
+	#name : #PhaROSStaticNodelet,
+	#superclass : #PhaROSNodelet,
 	#category : #'PhaROS-Nodelets'
 }
 
 { #category : #'as yet unclassified' }
-PhaROSStaticPackage class >> dependencies [
+PhaROSStaticNodelet class >> dependencies [
 	^ {}
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSStaticPackage class >> types [
+PhaROSStaticNodelet class >> types [
 	^ {}
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSStaticPackage >> dependencies [
+PhaROSStaticNodelet >> dependencies [
 	^ self class dependencies.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSStaticPackage >> types [
+PhaROSStaticNodelet >> types [
 	^ self class types.
 ]

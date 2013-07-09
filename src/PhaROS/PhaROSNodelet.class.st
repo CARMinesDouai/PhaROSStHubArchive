@@ -1,5 +1,5 @@
 Class {
-	#name : #PhaROSPackage,
+	#name : #PhaROSNodelet,
 	#superclass : #Object,
 	#instVars : [
 		'controller'
@@ -8,49 +8,49 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PhaROSPackage class >> buildPackage [
+PhaROSNodelet class >> buildPackage [
 	^ self new.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPackage class >> hasConstructed: aPackage [
+PhaROSNodelet class >> hasConstructed: aPackage [
 	^ aPackage isKindOf: self.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPackage >> configure [
+PhaROSNodelet >> configure [
 
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPackage >> configureDependencies: aLaunchSpec [
+PhaROSNodelet >> configureDependencies: aLaunchSpec [
 	self dependencies do: [: dep | dep value: aLaunchSpec ].
 	^ aLaunchSpec 
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPackage >> controller [
+PhaROSNodelet >> controller [
 	^ controller
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPackage >> controller: aController [ 
+PhaROSNodelet >> controller: aController [ 
 	controller := aController.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPackage >> dependencies [
+PhaROSNodelet >> dependencies [
 	" [ : launchSpec | launchSpec add here all the dependencies ]"
 	^ self subclassResponsibility
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPackage >> finalize [
+PhaROSNodelet >> finalize [
 	controller := nil.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPackage >> install [
+PhaROSNodelet >> install [
 	self types asDictionary keysAndValuesDo: [ : typeName : definition | 
 		
 		[
@@ -62,22 +62,22 @@ PhaROSPackage >> install [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPackage >> name [
+PhaROSNodelet >> name [
 	^self subclassResponsibility 
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPackage >> packages [
+PhaROSNodelet >> packages [
 	^ self controller packages.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPackage >> rosnode [
+PhaROSNodelet >> rosnode [
 	^ self controller node.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPackage >> types [
+PhaROSNodelet >> types [
 	"{ #name -> PhaROSCompositeType } asDictionary"
 	^ self subclassResponsibility.
 	

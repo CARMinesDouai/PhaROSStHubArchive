@@ -18,7 +18,7 @@ PhaROSHandleController class >> localhost [
 PhaROSHandleController class >> turtlebot [
 	| ttb |
 	ttb :=  self url: 'http://10.1.161.20:11311/'.
-	ttb packages use: PhaROSTurtlebotPackage as: #turtlebot.
+	ttb packages use: PhaROSTurtlebotNodelet as: #turtlebot.
 	^ ttb.
 ]
 
@@ -26,7 +26,7 @@ PhaROSHandleController class >> turtlebot [
 PhaROSHandleController class >> turtlesim [
 	| ttb |
 	ttb :=  self localhost.
-	ttb packages use: PhaROSTurtlebotPackage as: #turtlesim.
+	ttb packages use: PhaROSTurtlebotNodelet as: #turtlesim.
 	^ ttb.
 ]
 

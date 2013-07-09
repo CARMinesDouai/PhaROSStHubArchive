@@ -46,8 +46,8 @@ controller packages marker server marker: [ : m |
 ].
 "
 Class {
-	#name : #PhaROSInteractiveMarkerPackage,
-	#superclass : #PhaROSStaticPackage,
+	#name : #PhaROSInteractiveMarkerNodelet,
+	#superclass : #PhaROSStaticNodelet,
 	#instVars : [
 		'server',
 		'markers'
@@ -56,10 +56,10 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PhaROSInteractiveMarkerPackage >> configure [
+PhaROSInteractiveMarkerNodelet >> configure [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSInteractiveMarkerPackage >> server [
+PhaROSInteractiveMarkerNodelet >> server [
 	^ server ifNil: [ server := PhaROSInteractiveMarkerServer with: self ]
 ]

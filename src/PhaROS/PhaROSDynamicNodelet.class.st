@@ -1,6 +1,6 @@
 Class {
-	#name : #PhaROSDynamicPackage,
-	#superclass : #PhaROSPackage,
+	#name : #PhaROSDynamicNodelet,
+	#superclass : #PhaROSNodelet,
 	#instVars : [
 		'types',
 		'dependencies'
@@ -9,27 +9,27 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PhaROSDynamicPackage >> dependencies [ 
+PhaROSDynamicNodelet >> dependencies [ 
 	^ dependencies
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSDynamicPackage >> initialize [ 
+PhaROSDynamicNodelet >> initialize [ 
 	dependencies := Set new.
 	types := Dictionary new. 
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSDynamicPackage >> registerDependency: aBlock [
+PhaROSDynamicNodelet >> registerDependency: aBlock [
 	dependencies add: aBlock
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSDynamicPackage >> registerType: aTypeName with: aDefinition [
+PhaROSDynamicNodelet >> registerType: aTypeName with: aDefinition [
 	types at: aTypeName put: aDefinition.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSDynamicPackage >> types [ 
+PhaROSDynamicNodelet >> types [ 
 	^ types 
 ]

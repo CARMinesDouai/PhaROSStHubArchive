@@ -75,7 +75,7 @@ PhaROSLocalizerEntity >> compact [
 	
 	measures do: [ : measure | 
 		new detect: [ : m2 | 
-			measure  approximated: m2  threshold: PhaROSLocalizerPackage measureThreshold 
+			measure  approximated: m2  threshold: PhaROSLocalizerNodelet measureThreshold 
 		] ifNone: [new add: measure ].
 	].
 	measures := new.

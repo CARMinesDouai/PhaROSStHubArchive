@@ -1,6 +1,6 @@
 Class {
-	#name : #PhaROSTurtlebotPackage,
-	#superclass : #PhaROSStaticPackage,
+	#name : #PhaROSTurtlebotNodelet,
+	#superclass : #PhaROSStaticNodelet,
 	#instVars : [
 		'tfpose',
 		'keepMoving'
@@ -9,27 +9,27 @@ Class {
 }
 
 { #category : #pose }
-PhaROSTurtlebotPackage >> configure [
-	self packages use: PhaROSTransformationPackage as: #transformation.
+PhaROSTurtlebotNodelet >> configure [
+	self packages use: PhaROSTransformationNodelet as: #transformation.
 	self packages use: SGROSStarGazerPackage as: #stargazer.
-	self packages use: PhaROSLocalizerPackage as: #localizer.
-	self packages use: PhaROSMoveBasePackage as: #movebase.
+	self packages use: PhaROSLocalizerNodelet as: #localizer.
+	self packages use: PhaROSMoveBaseNodelet as: #movebase.
 ]
 
 { #category : #pose }
-PhaROSTurtlebotPackage >> defaultPose [
+PhaROSTurtlebotNodelet >> defaultPose [
 	"^ self pose."
 	^ self tfpose 
 ]
 
 { #category : #pose }
-PhaROSTurtlebotPackage >> detectLandmarks [
+PhaROSTurtlebotNodelet >> detectLandmarks [
 	self packages stargazer broadcastLandmarks.
 	
 ]
 
 { #category : #pose }
-PhaROSTurtlebotPackage >> exploreMap [
+PhaROSTurtlebotNodelet >> exploreMap [
 	self packages movebase goRandomOf: 
 	{ 
 		(PhaROSPosition x: 0.216 y: 1.640 z: 0.000) asPose . 
@@ -43,44 +43,44 @@ PhaROSTurtlebotPackage >> exploreMap [
 ]
 
 { #category : #pose }
-PhaROSTurtlebotPackage >> fuseLandmarks [
+PhaROSTurtlebotNodelet >> fuseLandmarks [
 	self packages stargazer mergeWithPose: self defaultPose.
 	
 ]
 
 { #category : #pose }
-PhaROSTurtlebotPackage >> goTo: aLandMark [
+PhaROSTurtlebotNodelet >> goTo: aLandMark [
 	^ self packages movebase client goTo: aLandMark center asPose.
 ]
 
 { #category : #pose }
-PhaROSTurtlebotPackage >> keepMoving [ 
+PhaROSTurtlebotNodelet >> keepMoving [ 
 	^ keepMoving
 ]
 
 { #category : #pose }
-PhaROSTurtlebotPackage >> keepMoving: aBoolean [
+PhaROSTurtlebotNodelet >> keepMoving: aBoolean [
 	 keepMoving := aBoolean 
 ]
 
 { #category : #pose }
-PhaROSTurtlebotPackage >> landmarkNavigation [
+PhaROSTurtlebotNodelet >> landmarkNavigation [
 	self keepMoving: true.
 	self packages movebase goRandomOf: (self packages localizer entities collect:[ :e | e center asPose ]) asArray while: [ self keepMoving ].
 ]
 
 { #category : #pose }
-PhaROSTurtlebotPackage >> landmarks [
+PhaROSTurtlebotNodelet >> landmarks [
 	^ self packages localizer entities.
 ]
 
 { #category : #pose }
-PhaROSTurtlebotPackage >> localizeLandmarks [
+PhaROSTurtlebotNodelet >> localizeLandmarks [
 	self packages localizer learn:( self packages stargazer absoluteLandmarks ) .
 ]
 
 { #category : #pose }
-PhaROSTurtlebotPackage >> pose [
+PhaROSTurtlebotNodelet >> pose [
 	^ (self rosnode buildConnectionFor: PhaROSTurtlebotConfiguration poseTopic) 
 		typedAs: PhaROSTurtlebotConfiguration poseTopicType; 
 		adapted: #pose \> #pose; 
@@ -88,11 +88,11 @@ PhaROSTurtlebotPackage >> pose [
 ]
 
 { #category : #pose }
-PhaROSTurtlebotPackage >> stopLandmarkNavigation [
+PhaROSTurtlebotNodelet >> stopLandmarkNavigation [
 	self keepMoving: false.
 ]
 
 { #category : #pose }
-PhaROSTurtlebotPackage >> tfpose [
+PhaROSTurtlebotNodelet >> tfpose [
 	^ tfpose ifNil: [ tfpose := self packages transformation between:'/map' and: '/base_link'.]
 ]

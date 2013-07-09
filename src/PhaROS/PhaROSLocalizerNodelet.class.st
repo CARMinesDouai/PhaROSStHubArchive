@@ -2,8 +2,8 @@
 This package has its mean to receive vectors in form of geometry_msgs/Pose (or polimorphic) that point to an id. With that data, this package obtain the best positioning. It learns from the measures and also give feedback. The more info it accumulates the more accuracy it have. 
 "
 Class {
-	#name : #PhaROSLocalizerPackage,
-	#superclass : #PhaROSStaticPackage,
+	#name : #PhaROSLocalizerNodelet,
+	#superclass : #PhaROSStaticNodelet,
 	#instVars : [
 		'entities',
 		'mapping'
@@ -12,27 +12,27 @@ Class {
 }
 
 { #category : #accessing }
-PhaROSLocalizerPackage class >> expectedRate [
+PhaROSLocalizerNodelet class >> expectedRate [
 	^ 0.1
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSLocalizerPackage class >> mapTopic [
+PhaROSLocalizerNodelet class >> mapTopic [
 	^'/localizer/entities'
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSLocalizerPackage class >> mapTopicType [ 
+PhaROSLocalizerNodelet class >> mapTopicType [ 
 	^ 'nav_msgs/GridCells'
 ]
 
 { #category : #accessing }
-PhaROSLocalizerPackage class >> measureThreshold [
+PhaROSLocalizerNodelet class >> measureThreshold [
 	^ 0.0000000000001
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSLocalizerPackage >> broadcastEntities [
+PhaROSLocalizerNodelet >> broadcastEntities [
 	| points |
 	
 	points := entities values inject: OrderedCollection new into: [  :acc : e | acc addAll: e asGeometry_msgsPointCollection. acc ].
@@ -47,12 +47,12 @@ PhaROSLocalizerPackage >> broadcastEntities [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSLocalizerPackage >> entities [
+PhaROSLocalizerNodelet >> entities [
 	^ entities values.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSLocalizerPackage >> filein: aFileName [
+PhaROSLocalizerNodelet >> filein: aFileName [
 	| fl buffer |
 	
 	fl := StandardFileStream readOnlyFileNamed: aFileName.
@@ -72,7 +72,7 @@ PhaROSLocalizerPackage >> filein: aFileName [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSLocalizerPackage >> fileout: aFileName [
+PhaROSLocalizerNodelet >> fileout: aFileName [
 	| fl |
 	
 	fl := StandardFileStream forceNewFileNamed: aFileName.
@@ -82,19 +82,19 @@ PhaROSLocalizerPackage >> fileout: aFileName [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSLocalizerPackage >> initialize [ 
+PhaROSLocalizerNodelet >> initialize [ 
 	entities := Dictionary new.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSLocalizerPackage >> learn: aTopicFlux [
+PhaROSLocalizerNodelet >> learn: aTopicFlux [
 	aTopicFlux for: [ : measure : chn : stamp |  self register: measure ].
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSLocalizerPackage >> map [
+PhaROSLocalizerNodelet >> map [
 	mapping ifNil: [
-		mapping := self rosnode topicPublisher: PhaROSLocalizerPackage mapTopic typedAs: PhaROSLocalizerPackage mapTopicType.
+		mapping := self rosnode topicPublisher: PhaROSLocalizerNodelet mapTopic typedAs: PhaROSLocalizerNodelet mapTopicType.
 		
 		self paralellize looping broadcastEntities.
 		
@@ -102,7 +102,7 @@ PhaROSLocalizerPackage >> map [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSLocalizerPackage >> register: aMeasure [ 
+PhaROSLocalizerNodelet >> register: aMeasure [ 
 	| measure | 
 	self flag: #uncoupleLandmarkFromLocalizerPackage.
 	measure := PhaROSLocalizerMeasure fromPharosSGLandMark: aMeasure.
@@ -110,6 +110,6 @@ PhaROSLocalizerPackage >> register: aMeasure [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSLocalizerPackage >> scannedEntities [ 
+PhaROSLocalizerNodelet >> scannedEntities [ 
 	^ self entities select: #complete
 ]

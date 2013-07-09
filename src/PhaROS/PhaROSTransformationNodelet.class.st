@@ -9,8 +9,8 @@ controller packages transformation between: '/laser' and: '/sonar'  for: [ : pos
 
 "
 Class {
-	#name : #PhaROSTransformationPackage,
-	#superclass : #PhaROSStaticPackage,
+	#name : #PhaROSTransformationNodelet,
+	#superclass : #PhaROSStaticNodelet,
 	#instVars : [
 		'tfWriter',
 		'tfs',
@@ -20,46 +20,46 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PhaROSTransformationPackage class >> tfTopic [
+PhaROSTransformationNodelet class >> tfTopic [
 	^ '/tf'
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSTransformationPackage class >> tfTopicType [
+PhaROSTransformationNodelet class >> tfTopicType [
 	^ 'tf/tfMessage'
 ]
 
 { #category : #topic }
-PhaROSTransformationPackage >> between: aFrameID and: anOtherFrameID [
+PhaROSTransformationNodelet >> between: aFrameID and: anOtherFrameID [
 	^ container pseudoTopicBetween: aFrameID  and: anOtherFrameID.
 ]
 
 { #category : #topic }
-PhaROSTransformationPackage >> between: aFrameID and: anOtherFrameID for: aCallback [
+PhaROSTransformationNodelet >> between: aFrameID and: anOtherFrameID for: aCallback [
 	^ (container pseudoTopicBetween:  aFrameID and: anOtherFrameID) for: aCallback
 ]
 
 { #category : #topic }
-PhaROSTransformationPackage >> betweenFixedFrameAnd: aFrameID [
+PhaROSTransformationNodelet >> betweenFixedFrameAnd: aFrameID [
 	^ self between: container currentFixedFrame name and: aFrameID
 
 ]
 
 { #category : #package }
-PhaROSTransformationPackage >> configure [
+PhaROSTransformationNodelet >> configure [
 
 	self configureTfCallback.
-	tfWriter := self rosnode topicPublisher: PhaROSTransformationPackage tfTopic 
-								  typedAs: PhaROSTransformationPackage tfTopicType
+	tfWriter := self rosnode topicPublisher: PhaROSTransformationNodelet tfTopic 
+								  typedAs: PhaROSTransformationNodelet tfTopicType
 ]
 
 { #category : #package }
-PhaROSTransformationPackage >> configureTfCallback. [
+PhaROSTransformationNodelet >> configureTfCallback. [
 	self tf for: self tfcallback.
 ]
 
 { #category : #topic }
-PhaROSTransformationPackage >> finalize [
+PhaROSTransformationNodelet >> finalize [
 	tfWriter := nil.
 	 tfs := nil .
 	container finalize.
@@ -67,18 +67,18 @@ PhaROSTransformationPackage >> finalize [
 ]
 
 { #category : #'initialize-release' }
-PhaROSTransformationPackage >> initialize [ 
+PhaROSTransformationNodelet >> initialize [ 
 
 	container := PhaROSFrameContainer new.
 ]
 
 { #category : #package }
-PhaROSTransformationPackage >> process: aMessage from: aChn [
+PhaROSTransformationNodelet >> process: aMessage from: aChn [
 	container process: aMessage from: aChn
 ]
 
 { #category : #topic }
-PhaROSTransformationPackage >> tf [
+PhaROSTransformationNodelet >> tf [
 	^(self rosnode buildConnectionFor: '/tf')
 				typedAs: 'tf/tfMessage'; 
 				connect . 
@@ -86,11 +86,11 @@ PhaROSTransformationPackage >> tf [
 ]
 
 { #category : #topic }
-PhaROSTransformationPackage >> tf: aMessageConfiguration [
+PhaROSTransformationNodelet >> tf: aMessageConfiguration [
 	^ tfWriter send: aMessageConfiguration.
 ]
 
 { #category : #package }
-PhaROSTransformationPackage >> tfcallback [
+PhaROSTransformationNodelet >> tfcallback [
 	^ [ : t :chn | self process: t from: chn].
 ]
