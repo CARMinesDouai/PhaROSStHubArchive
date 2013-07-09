@@ -44,7 +44,7 @@ SGROSStarGazerNodelet >> conditionMerger [
 
 { #category : #package }
 SGROSStarGazerNodelet >> configure [
-	self packages use: PhaROSMergerNodelet as: #merger.
+	self nodelets use: PhaROSMergerNodelet as: #merger.
 ]
 
 { #category : #subscribe }
@@ -59,7 +59,7 @@ SGROSStarGazerNodelet >> landmarks [
 { #category : #publish }
 SGROSStarGazerNodelet >> mergeWithPose: aPoseTopicReader [ 
 	
-	self packages merger merge: self landmarks 
+	self nodelets merger merge: self landmarks 
 								     with: aPoseTopicReader 
 								   using: self poseMerger
 								  when: self conditionMerger  
