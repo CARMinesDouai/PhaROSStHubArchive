@@ -10,10 +10,10 @@ Class {
 
 { #category : #pose }
 PhaROSTurtlebotNodelet >> configure [
-	self packages use: PhaROSTransformationNodelet as: #transformation.
-	self packages use: SGROSStarGazerPackage as: #stargazer.
-	self packages use: PhaROSLocalizerNodelet as: #localizer.
-	self packages use: PhaROSMoveBaseNodelet as: #movebase.
+	self nodelets use: PhaROSTransformationNodelet as: #transformation.
+	self nodelets use: SGROSStarGazerNodelet as: #stargazer.
+	self nodelets use: PhaROSLocalizerNodelet as: #localizer.
+	self nodelets use: PhaROSMoveBaseNodelet as: #movebase.
 ]
 
 { #category : #pose }
@@ -24,13 +24,13 @@ PhaROSTurtlebotNodelet >> defaultPose [
 
 { #category : #pose }
 PhaROSTurtlebotNodelet >> detectLandmarks [
-	self packages stargazer broadcastLandmarks.
+	self nodelets stargazer broadcastLandmarks.
 	
 ]
 
 { #category : #pose }
 PhaROSTurtlebotNodelet >> exploreMap [
-	self packages movebase goRandomOf: 
+	self nodelets movebase goRandomOf: 
 	{ 
 		(PhaROSPosition x: 0.216 y: 1.640 z: 0.000) asPose . 
 		(PhaROSPosition x: 4.498 y: 2.175 z: 0.000) asPose . 
@@ -39,18 +39,18 @@ PhaROSTurtlebotNodelet >> exploreMap [
 		(PhaROSPosition x: 3.231 y: 0.170 z: 0.000) asPose .
 		(PhaROSPosition x: 2.765 y: 0.953 z: 0.000) asPose . 
 	},
-	(self packages localizer entities collect:[ :e | e center asPose ]) asArray while: [ self packages localizer scannedEntities size < 3 ].
+	(self nodelets localizer entities collect:[ :e | e center asPose ]) asArray while: [ self nodelets localizer scannedEntities size < 3 ].
 ]
 
 { #category : #pose }
 PhaROSTurtlebotNodelet >> fuseLandmarks [
-	self packages stargazer mergeWithPose: self defaultPose.
+	self nodelets stargazer mergeWithPose: self defaultPose.
 	
 ]
 
 { #category : #pose }
 PhaROSTurtlebotNodelet >> goTo: aLandMark [
-	^ self packages movebase client goTo: aLandMark center asPose.
+	^ self nodelets movebase client goTo: aLandMark center asPose.
 ]
 
 { #category : #pose }
@@ -66,17 +66,17 @@ PhaROSTurtlebotNodelet >> keepMoving: aBoolean [
 { #category : #pose }
 PhaROSTurtlebotNodelet >> landmarkNavigation [
 	self keepMoving: true.
-	self packages movebase goRandomOf: (self packages localizer entities collect:[ :e | e center asPose ]) asArray while: [ self keepMoving ].
+	self nodelets movebase goRandomOf: (self nodelets localizer entities collect:[ :e | e center asPose ]) asArray while: [ self keepMoving ].
 ]
 
 { #category : #pose }
 PhaROSTurtlebotNodelet >> landmarks [
-	^ self packages localizer entities.
+	^ self nodelets localizer entities.
 ]
 
 { #category : #pose }
 PhaROSTurtlebotNodelet >> localizeLandmarks [
-	self packages localizer learn:( self packages stargazer absoluteLandmarks ) .
+	self nodelets localizer learn:( self nodelets stargazer absoluteLandmarks ) .
 ]
 
 { #category : #pose }
@@ -94,5 +94,5 @@ PhaROSTurtlebotNodelet >> stopLandmarkNavigation [
 
 { #category : #pose }
 PhaROSTurtlebotNodelet >> tfpose [
-	^ tfpose ifNil: [ tfpose := self packages transformation between:'/map' and: '/base_link'.]
+	^ tfpose ifNil: [ tfpose := self nodelets transformation between:'/map' and: '/base_link'.]
 ]

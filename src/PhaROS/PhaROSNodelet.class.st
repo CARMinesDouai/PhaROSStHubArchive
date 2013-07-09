@@ -8,13 +8,13 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PhaROSNodelet class >> buildPackage [
+PhaROSNodelet class >> buildNodelet [
 	^ self new.
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSNodelet class >> hasConstructed: aPackage [
-	^ aPackage isKindOf: self.
+PhaROSNodelet class >> hasConstructed: aNodeletInstance [
+	^ aNodeletInstance isKindOf: self.
 ]
 
 { #category : #'as yet unclassified' }
@@ -67,8 +67,8 @@ PhaROSNodelet >> name [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSNodelet >> packages [
-	^ self controller packages.
+PhaROSNodelet >> nodelets [
+	^ self controller nodelets.
 ]
 
 { #category : #'as yet unclassified' }

@@ -6,7 +6,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSTurtlesimNodelet >> configure [
-	self packages use: PhaROSTransformationNodelet as: #transformation.
-	self packages use: SGROSStarGazerPackage as: #stargazer.
-	self packages use: PhaROSLocalizerNodelet as: #localizer.
+	self nodelets use: PhaROSTransformationNodelet as: #transformation.
+	self nodelets use: SGROSStarGazerNodelet as: #stargazer.
+	self nodelets use: PhaROSLocalizerNodelet as: #localizer.
 ]

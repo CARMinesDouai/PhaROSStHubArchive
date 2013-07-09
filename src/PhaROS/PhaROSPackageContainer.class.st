@@ -38,7 +38,7 @@ PhaROSPackageContainer >> use: aPackageConstructor as: aPackageImportName [
 	
 	"=
 		# arguments
-			1. aPackageConstructor : Object that understand buildPackage message and gives a package to install in the name.
+			1. aPackageConstructor : Object that understand buildNodelet message and gives a package to install in the name.
 			2. aPackageImportName : Symbol to install the package.
 		# behavior
 			install a package with the given name. If there is a package alread installed it check that is the same kind. If is not raise a signal. 
@@ -54,7 +54,7 @@ PhaROSPackageContainer >> use: aPackageConstructor as: aPackageImportName [
 	] ifAbsent: [
 		| package |
 		
-		package := aPackageConstructor buildPackage. 
+		package := aPackageConstructor buildNodelet. 
 
 		packages at: aPackageImportName put: package.
 		controller install: package.	
