@@ -3,8 +3,8 @@ Class {
 	#superclass : #PhaROSSystemController,
 	#instVars : [
 		'node',
-		'packages',
-		'handleName'
+		'handleName',
+		'nodelets'
 	],
 	#category : #'PhaROS-Controllers'
 }
@@ -39,7 +39,7 @@ PhaROSHandleController class >> url: anUrl [
 PhaROSHandleController >> configureDependencies: aLaunchSpec [	
 	self flag: #thisShouldChange.
 	" now the node is being configured during the instanciation, we need to have an explicit launchtime, when we can ask packages for it launch configuration.  "
-	packages do: [:p | p configureDependencies: aLaunchSpec ]
+	nodelets do: [:p | p configureDependencies: aLaunchSpec ]
 ]
 
 { #category : #'initialize-release' }
@@ -88,7 +88,7 @@ PhaROSHandleController >> domain [
 { #category : #package }
 PhaROSHandleController >> finalize [ 
 	super finalize.
-	packages finalize.
+	nodelets finalize.
 
 ]
 
@@ -100,7 +100,7 @@ PhaROSHandleController >> handleName [
 { #category : #accessing }
 PhaROSHandleController >> initialize [
 	super initialize .
-	packages := PhaROSPackageContainer new  controller: self; yourself.
+	nodelets := PhaROSNodeletContainer new  controller: self; yourself.
 	
 ]
 
@@ -125,8 +125,8 @@ PhaROSHandleController >> node [
 ]
 
 { #category : #accessing }
-PhaROSHandleController >> packages [
-	^ packages 
+PhaROSHandleController >> nodelets [
+	^ nodelets 
 ]
 
 { #category : #service }
