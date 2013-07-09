@@ -84,7 +84,7 @@ PhaROSMerger >> mergerCallback: aTopicConnectionBuilder [
 
 { #category : #'as yet unclassified' }
 PhaROSMerger >> register: msg at: stamp for: aTopicConnectionBuilder [
-	messages at: aTopicConnectionBuilder put: {msg . stamp} .
+	messages at: aTopicConnectionBuilder put: {msg . stamp asDateAndTime} .
 	self merge.
 ]
 

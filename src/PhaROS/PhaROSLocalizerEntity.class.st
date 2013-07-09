@@ -21,7 +21,7 @@ PhaROSLocalizerEntity >> add: aMeasure [
 	adding ifTrue: [
 		(measures size = 0 or: [ (self center - aMeasure pose position ) module2d < 1.0 ] ) ifTrue: [
 			measures add: aMeasure pose position.
-			self compact > 10 ifTrue: [
+			self compact > 20 ifTrue: [
 				adding := false.
 			].
 			m := m +1.

@@ -2,7 +2,8 @@ Class {
 	#name : #PhaROSTurtlebotPackage,
 	#superclass : #PhaROSStaticPackage,
 	#instVars : [
-		'tfpose'
+		'tfpose',
+		'keepMoving'
 	],
 	#category : #'PhaROS-Packages-Turtlebot'
 }
@@ -53,8 +54,19 @@ PhaROSTurtlebotPackage >> goTo: aLandMark [
 ]
 
 { #category : #pose }
+PhaROSTurtlebotPackage >> keepMoving [ 
+	^ keepMoving
+]
+
+{ #category : #pose }
+PhaROSTurtlebotPackage >> keepMoving: aBoolean [
+	 keepMoving := aBoolean 
+]
+
+{ #category : #pose }
 PhaROSTurtlebotPackage >> landmarkNavigation [
-	self packages movebase goRandomOf: (self packages localizer entities collect:[ :e | e center asPose ]) asArray while: [ self packages movebase client reachedGoals < 7 ].
+	self keepMoving: true.
+	self packages movebase goRandomOf: (self packages localizer entities collect:[ :e | e center asPose ]) asArray while: [ self keepMoving ].
 ]
 
 { #category : #pose }
@@ -73,6 +85,11 @@ PhaROSTurtlebotPackage >> pose [
 		typedAs: PhaROSTurtlebotConfiguration poseTopicType; 
 		adapted: #pose \> #pose; 
 		connect. 
+]
+
+{ #category : #pose }
+PhaROSTurtlebotPackage >> stopLandmarkNavigation [
+	self keepMoving: false.
 ]
 
 { #category : #pose }
