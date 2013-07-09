@@ -11,7 +11,7 @@ Class {
 		'maxSync',
 		'condition'
 	],
-	#category : #'PhaROS-Packages-Merger'
+	#category : #'PhaROS-Nodelets-Merger'
 }
 
 { #category : #'as yet unclassified' }

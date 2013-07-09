@@ -52,7 +52,7 @@ Class {
 		'server',
 		'markers'
 	],
-	#category : #'PhaROS-Packages-InteractiveMarker'
+	#category : #'PhaROS-Nodelets-InteractiveMarker'
 }
 
 { #category : #'as yet unclassified' }

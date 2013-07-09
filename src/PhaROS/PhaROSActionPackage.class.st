@@ -5,7 +5,7 @@ Class {
 		'clients',
 		'servers'
 	],
-	#category : #'PhaROS-Packages-Action'
+	#category : #'PhaROS-Nodelets-Action'
 }
 
 { #category : #'as yet unclassified' }

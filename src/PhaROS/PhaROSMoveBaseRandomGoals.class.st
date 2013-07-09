@@ -9,7 +9,7 @@ Class {
 		'currentPoseIDX',
 		'stats'
 	],
-	#category : #'PhaROS-Packages-MoveBase'
+	#category : #'PhaROS-Nodelets-MoveBase'
 }
 
 { #category : #'as yet unclassified' }

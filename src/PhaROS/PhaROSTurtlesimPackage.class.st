@@ -1,7 +1,7 @@
 Class {
 	#name : #PhaROSTurtlesimPackage,
 	#superclass : #PhaROSStaticPackage,
-	#category : #'PhaROS-Packages-Turtlebot'
+	#category : #'PhaROS-Nodelets-Turtlebot'
 }
 
 { #category : #'as yet unclassified' }

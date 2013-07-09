@@ -8,7 +8,7 @@ Class {
 		'parent',
 		'broadcaster'
 	],
-	#category : #'PhaROS-Packages-TF'
+	#category : #'PhaROS-Nodelets-TF'
 }
 
 { #category : #'as yet unclassified' }

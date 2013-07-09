@@ -5,7 +5,7 @@ Class {
 		'marker',
 		'isDirty'
 	],
-	#category : #'PhaROS-Packages-InteractiveMarker'
+	#category : #'PhaROS-Nodelets-InteractiveMarker'
 }
 
 { #category : #'as yet unclassified' }

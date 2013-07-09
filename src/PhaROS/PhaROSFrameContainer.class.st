@@ -5,7 +5,7 @@ Class {
 		'frames',
 		'interested'
 	],
-	#category : #'PhaROS-Packages-TF'
+	#category : #'PhaROS-Nodelets-TF'
 }
 
 { #category : #'as yet unclassified' }

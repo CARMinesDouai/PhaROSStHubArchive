@@ -5,7 +5,7 @@ Class {
 		'markers',
 		'name'
 	],
-	#category : #'PhaROS-Packages-InteractiveMarker'
+	#category : #'PhaROS-Nodelets-InteractiveMarker'
 }
 
 { #category : #init }

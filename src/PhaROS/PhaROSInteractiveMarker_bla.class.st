@@ -8,7 +8,7 @@ Class {
 		'controls',
 		'menu'
 	],
-	#category : #'PhaROS-Packages-InteractiveMarker'
+	#category : #'PhaROS-Nodelets-InteractiveMarker'
 }
 
 { #category : #'space-accessing' }

@@ -1,7 +1,7 @@
 Class {
 	#name : #PhaROSStaticPackage,
 	#superclass : #PhaROSPackage,
-	#category : #'PhaROS-Packages'
+	#category : #'PhaROS-Nodelets'
 }
 
 { #category : #'as yet unclassified' }

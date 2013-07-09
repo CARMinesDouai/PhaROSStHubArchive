@@ -1,7 +1,7 @@
 Class {
 	#name : #PhaROSTurtlebotConfiguration,
 	#superclass : #Object,
-	#category : #'PhaROS-Packages-Turtlebot'
+	#category : #'PhaROS-Nodelets-Turtlebot'
 }
 
 { #category : #pose }

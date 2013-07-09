@@ -5,7 +5,7 @@ Class {
 		'pose',
 		'id'
 	],
-	#category : #'PhaROS-Packages-Localizer'
+	#category : #'PhaROS-Nodelets-Localizer'
 }
 
 { #category : #'as yet unclassified' }

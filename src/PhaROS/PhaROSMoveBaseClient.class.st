@@ -8,7 +8,7 @@ Class {
 		'movebaseGoal',
 		'reachedGoals'
 	],
-	#category : #'PhaROS-Packages-MoveBase'
+	#category : #'PhaROS-Nodelets-MoveBase'
 }
 
 { #category : #'as yet unclassified' }

@@ -9,7 +9,7 @@ Class {
 		'text',
 		'id'
 	],
-	#category : #'PhaROS-Packages-MoveBase'
+	#category : #'PhaROS-Nodelets-MoveBase'
 }
 
 { #category : #'as yet unclassified' }

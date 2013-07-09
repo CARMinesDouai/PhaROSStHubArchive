@@ -81,7 +81,7 @@ PhaROSSystemLauncher >> rosMsg: anArrayOfArguments tmpFile: aTempFileName [
 	errstream := StandardFileStream forceNewFileNamed: '/tmp/error_',aTempFileName,'.tmp'.
 	
 	rosmsg  :=  ExternalUnixOSProcess 
-							forkAndExec: '/opt/ros/groovy/bin/rosmsg'   
+							forkAndExec: '/opt/ros/fuerte/bin/rosmsg'   
 							arguments: anArrayOfArguments 
 							environment:  nil 
 							descriptors: { FileStream stdin . outstream . errstream } .  

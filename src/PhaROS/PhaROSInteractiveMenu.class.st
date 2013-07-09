@@ -1,5 +1,5 @@
 Class {
 	#name : #PhaROSInteractiveMenu,
 	#superclass : #Object,
-	#category : #'PhaROS-Packages-InteractiveMarker'
+	#category : #'PhaROS-Nodelets-InteractiveMarker'
 }

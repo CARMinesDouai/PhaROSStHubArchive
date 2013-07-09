@@ -7,7 +7,7 @@ Class {
 		'm',
 		'adding'
 	],
-	#category : #'PhaROS-Packages-Localizer'
+	#category : #'PhaROS-Nodelets-Localizer'
 }
 
 { #category : #'as yet unclassified' }

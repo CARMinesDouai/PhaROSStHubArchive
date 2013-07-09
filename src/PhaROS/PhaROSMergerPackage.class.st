@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'mergers'
 	],
-	#category : #'PhaROS-Packages-Merger'
+	#category : #'PhaROS-Nodelets-Merger'
 }
 
 { #category : #'as yet unclassified' }

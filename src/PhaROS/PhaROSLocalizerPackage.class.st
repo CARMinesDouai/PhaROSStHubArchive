@@ -8,7 +8,7 @@ Class {
 		'entities',
 		'mapping'
 	],
-	#category : #'PhaROS-Packages-Localizer'
+	#category : #'PhaROS-Nodelets-Localizer'
 }
 
 { #category : #accessing }

@@ -5,7 +5,7 @@ Class {
 		'tfpose',
 		'keepMoving'
 	],
-	#category : #'PhaROS-Packages-Turtlebot'
+	#category : #'PhaROS-Nodelets-Turtlebot'
 }
 
 { #category : #pose }

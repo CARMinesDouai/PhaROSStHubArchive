@@ -8,7 +8,7 @@ Class {
 		'callback',
 		'rosnode'
 	],
-	#category : #'PhaROS-Packages-TFAAS'
+	#category : #'PhaROS-Nodelets-TFAAS'
 }
 
 { #category : #'as yet unclassified' }
