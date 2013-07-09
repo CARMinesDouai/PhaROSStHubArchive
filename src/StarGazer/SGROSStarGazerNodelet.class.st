@@ -1,6 +1,6 @@
 Class {
-	#name : #SGROSStarGazerPackage,
-	#superclass : #PhaROSStaticPackage,
+	#name : #SGROSStarGazerNodelet,
+	#superclass : #PhaROSStaticNodelet,
 	#instVars : [
 		'broadcaster',
 		'landmarks'
@@ -8,62 +8,21 @@ Class {
 	#category : #'StarGazer-Ros'
 }
 
-{ #category : #types }
-SGROSStarGazerPackage class >> absoluteLandmarkTopic [
-	^ '/stargazer/absolute'
-]
-
-{ #category : #types }
-SGROSStarGazerPackage class >> absoluteLandmarkTopicType [ 
-	^ 'pharos/SGLandMark'
-]
-
-{ #category : #types }
-SGROSStarGazerPackage class >> dependencies [ 
-	^ [ : launch | 
-		launch staticTFFrom: '/base_link' to: '/stargazer' of:' 0 0 20 0 0 0' rate: 50.	
-	]
-]
-
-{ #category : #types }
-SGROSStarGazerPackage class >> landMarkTypeDefinition [
-	^ PhaROSCompositeType named: 'pharos/SGLandMark' definedBy: {
-		#header -> (PhaROSTypeBrowser instance definition: 'std_msgs/Header'). 
-		#pose -> (PhaROSTypeBrowser instance definition: 'geometry_msgs/Pose') .
-		#landmark -> (PhaROSUInt16Type new)
-	}  withConstants: {}.
-]
-
-{ #category : #landmark }
-SGROSStarGazerPackage class >> landmarkTopic [
-	^ '/stargazer/landmark'
-]
-
-{ #category : #landmark }
-SGROSStarGazerPackage class >> landmarkTopicType [
-	^  'pharos/SGLandMark'
-]
-
-{ #category : #types }
-SGROSStarGazerPackage class >> types [
-	^ { #SGLandMark -> self landMarkTypeDefinition }.
-]
-
 { #category : #publish }
-SGROSStarGazerPackage >> absoluteLandmark [ 
-	^ self rosnode topicPublisher: SGROSStarGazerPackage absoluteLandmarkTopic typedAs: SGROSStarGazerPackage absoluteLandmarkTopicType.
+SGROSStarGazerNodelet >> absoluteLandmark [ 
+	^ self rosnode topicPublisher: SGROSStarGazerNodelet absoluteLandmarkTopic typedAs: SGROSStarGazerNodelet absoluteLandmarkTopicType.
 ]
 
 { #category : #subscribe }
-SGROSStarGazerPackage >> absoluteLandmarks [
-	^ (self rosnode buildConnectionFor: SGROSStarGazerPackage absoluteLandmarkTopic  ) 
-					typedAs: SGROSStarGazerPackage absoluteLandmarkTopicType ; 
+SGROSStarGazerNodelet >> absoluteLandmarks [
+	^ (self rosnode buildConnectionFor: SGROSStarGazerNodelet absoluteLandmarkTopic  ) 
+					typedAs: SGROSStarGazerNodelet absoluteLandmarkTopicType ; 
 					connect.
 					
 ]
 
 { #category : #publish }
-SGROSStarGazerPackage >> broadcastLandmarks [
+SGROSStarGazerNodelet >> broadcastLandmarks [
 	broadcaster ifNil: [ 
 		broadcaster := SGROSBroadcaster new.
 		broadcaster configure: controller.
@@ -71,7 +30,7 @@ SGROSStarGazerPackage >> broadcastLandmarks [
 ]
 
 { #category : #publish }
-SGROSStarGazerPackage >> conditionMerger [
+SGROSStarGazerNodelet >> conditionMerger [
 	
 	^[ : aMeasure : aLandMark |
 		(DateAndTime now - landmarks lastTimeStamp) asMilliSeconds < 100 and: [ 
@@ -84,21 +43,21 @@ SGROSStarGazerPackage >> conditionMerger [
 ]
 
 { #category : #package }
-SGROSStarGazerPackage >> configure [
-	self packages use: PhaROSMergerPackage as: #merger.
+SGROSStarGazerNodelet >> configure [
+	self packages use: PhaROSMergerNodelet as: #merger.
 ]
 
 { #category : #subscribe }
-SGROSStarGazerPackage >> landmarks [
+SGROSStarGazerNodelet >> landmarks [
 	^landmarks ifNil: [
-		landmarks :=  (self rosnode buildConnectionFor: SGROSStarGazerPackage landmarkTopic ) 
-		typedAs: SGROSStarGazerPackage landmarkTopicType; 
+		landmarks :=  (self rosnode buildConnectionFor: SGROSStarGazerNodelet landmarkTopic ) 
+		typedAs: SGROSStarGazerNodelet landmarkTopicType; 
 		connect.
 	]
 ]
 
 { #category : #publish }
-SGROSStarGazerPackage >> mergeWithPose: aPoseTopicReader [ 
+SGROSStarGazerNodelet >> mergeWithPose: aPoseTopicReader [ 
 	
 	self packages merger merge: self landmarks 
 								     with: aPoseTopicReader 
@@ -108,12 +67,12 @@ SGROSStarGazerPackage >> mergeWithPose: aPoseTopicReader [
 ]
 
 { #category : #package }
-SGROSStarGazerPackage >> name [
+SGROSStarGazerNodelet >> name [
 	^ 'StarGazer'
 ]
 
 { #category : #publish }
-SGROSStarGazerPackage >> poseMerger [
+SGROSStarGazerNodelet >> poseMerger [
 
 "HAY QUE CAMBIAR ESTO!  (TRANSFORMAR PUNTO DE LANDMARK COORDENADAS DE /map)"
 
