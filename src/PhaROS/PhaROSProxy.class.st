@@ -16,6 +16,11 @@ PhaROSProxy class >> url: urlString [
 		yourself
 ]
 
+{ #category : #bla }
+PhaROSProxy >> destroy [
+	self stop.
+]
+
 { #category : #invoking }
 PhaROSProxy >> invokeMethod: method withArgs: args [
 	| returnArray |

@@ -39,7 +39,7 @@ PhaROSBaseCase >> masterURL: aString [
 { #category : #'setup / teardown' }
 PhaROSBaseCase >> setUp [
 	masterUrl := self masterURL.
-	master := PhaROSMaster url: masterUrl
+	master := PhaROSMasiveNodeController url: masterUrl
 ]
 
 { #category : #actions }
@@ -55,9 +55,12 @@ PhaROSBaseCase >> shutdownTurtle [
 
 { #category : #accessing }
 PhaROSBaseCase >> spin: times [
-	PhaROSSystemLauncher instance spin: times.
-		
+	times timesRepeat: [
+		(times * 100) timesRepeat: [].
+		(Delay forMilliseconds: 100) wait.
+	]
 
+	
 ]
 
 { #category : #actions }

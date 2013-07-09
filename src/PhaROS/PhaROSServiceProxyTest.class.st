@@ -23,7 +23,7 @@ PhaROSServiceProxyTest >> testAnswerToServiceCall [
 	
 	self startUpTurtle.
 	
-	service := master lookupService: '/reset' with: self callerId .
+	service := master master lookupService: '/reset' with: self callerId .
 	
 	answerMessage := service call.
 	answerMessage withHeader: [ 
@@ -38,7 +38,7 @@ PhaROSServiceProxyTest >> testAnswerToServiceCall [
 
 { #category : #testing }
 PhaROSServiceProxyTest >> testCallForLoggers [
-	self halt. 
+
 	service := master lookupService: '/rosout/get_loggers' with: '/andID' .
 service md5sum: '32e97e85527d4678a8f9279894bb64b0'.
 loggers := service call response.

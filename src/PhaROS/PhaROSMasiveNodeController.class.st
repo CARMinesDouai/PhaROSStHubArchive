@@ -67,3 +67,8 @@ PhaROSMasiveNodeController >> create: aSouledNodeClass named: name domain: aDoma
 	^ node.
 	
 ]
+
+{ #category : #constructor }
+PhaROSMasiveNodeController >> master [
+	^ master
+]
