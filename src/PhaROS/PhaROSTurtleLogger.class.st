@@ -7,9 +7,9 @@ Class {
 { #category : #examples }
 PhaROSTurtleLogger class >> loggerExample [
 	"self loggerExample"
-	| master |
-	master := PhaROSMaster url: 'http://127.0.0.1:11311/'.
-	^ master
+	| controller |
+	controller := PhaROSMasiveNodeController localhost.
+	^ controller
 		create: self
 		named: '/myTurtleLogger'
 		domain: '127.0.0.1'
