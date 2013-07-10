@@ -5,7 +5,8 @@ Class {
 		'received',
 		'topic',
 		'type',
-		'flux'
+		'flux',
+		'messageBlock'
 	],
 	#category : #'PhaROS-TopicHandlers-Test'
 }
@@ -36,6 +37,11 @@ PhaROSNodeMock >> interestedIn: topicName typedAs: typeID for: aFlux [
 	flux := aFlux
 ]
 
+{ #category : #mock }
+PhaROSNodeMock >> messageBlock [ 
+	^ messageBlock 
+]
+
 { #category : #accessing }
 PhaROSNodeMock >> received [
 	^ received
@@ -44,6 +50,14 @@ PhaROSNodeMock >> received [
 { #category : #accessing }
 PhaROSNodeMock >> received: anObject [
 	received := anObject
+]
+
+{ #category : #mock }
+PhaROSNodeMock >> sendTo: topicName typedAs: typeID a: aBlock [
+	received := #sendTo:typedAs:a:.
+	topic := topicName. 
+	type := typeID.
+	messageBlock := aBlock 
 ]
 
 { #category : #accessing }

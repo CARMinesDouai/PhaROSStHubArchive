@@ -4,7 +4,7 @@ Class {
 	#category : #'PhaROS-TopicHandlers-Test'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #subscribing }
 PhaROSTopicHandlerTests >> testTopicAdaptedAndTypedBuilder [
 	| node builder topicID flux  rslt | 
 	
@@ -30,7 +30,7 @@ PhaROSTopicHandlerTests >> testTopicAdaptedAndTypedBuilder [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #subscribing }
 PhaROSTopicHandlerTests >> testTopicAdaptedBuilder [
 	| node builder topicID flux  rslt | 
 	
@@ -56,7 +56,7 @@ PhaROSTopicHandlerTests >> testTopicAdaptedBuilder [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #subscribing }
 PhaROSTopicHandlerTests >> testTopicConditionAdaptedAndTypedBuilder [
 	| node builder topicID flux  rslt conditional | 
 	
@@ -89,7 +89,7 @@ PhaROSTopicHandlerTests >> testTopicConditionAdaptedAndTypedBuilder [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #subscribing }
 PhaROSTopicHandlerTests >> testTopicConditionAndTypedBuilder [
 	| node builder topicID flux  rslt conditional | 
 	
@@ -117,7 +117,7 @@ PhaROSTopicHandlerTests >> testTopicConditionAndTypedBuilder [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #subscribing }
 PhaROSTopicHandlerTests >> testTopicConditionBuilder [
 	| node builder topicID flux  rslt conditional | 
 	
@@ -145,7 +145,7 @@ PhaROSTopicHandlerTests >> testTopicConditionBuilder [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #subscribing }
 PhaROSTopicHandlerTests >> testTopicDefaultBuilder [
 	| node builder topicID flux  rslt | 
 	
@@ -171,7 +171,23 @@ PhaROSTopicHandlerTests >> testTopicDefaultBuilder [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #publishing }
+PhaROSTopicHandlerTests >> testTopicPublisher [
+	| publisher  typeID node topic  |
+
+
+	node := PhaROSNodeMock new.
+	topic := PhaROSTopic new name: 'topic'; type: 'type'; yourself .
+ 
+	publisher := PhaROSTopicPublisher node: node topic: topic.
+
+	publisher send: [].
+	self assert: 'topic' = node topic.
+	self assert: node received = #sendTo:typedAs:a:.
+	
+]
+
+{ #category : #subscribing }
 PhaROSTopicHandlerTests >> testTopicTypedBuilder [
 	| node builder topicID flux  rslt typeName| 
 	
