@@ -8,6 +8,14 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PhaROSMessageAdapter >> = anAdaption [
+	^ self == anAdaption or: [
+	(anAdaption isKindOf: PhaROSMessageAdapter) and:[ 
+		chainOfAdaption allSatisfy: [ :a | anAdaption chainOfAdaption includes: a ].	
+	] ].
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSMessageAdapter >> \> anAdaption [
 	 chainOfAdaption add: anAdaption adaptToAdapter.
 	^ self.
@@ -21,6 +29,16 @@ PhaROSMessageAdapter >> adapt: aMessage [
 { #category : #'as yet unclassified' }
 PhaROSMessageAdapter >> adaptToAdapter [
 	^ self 
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSMessageAdapter >> chainOfAdaption [ 
+	^ chainOfAdaption 
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSMessageAdapter >> hash [
+	^ chainOfAdaption hash.
 ]
 
 { #category : #'as yet unclassified' }

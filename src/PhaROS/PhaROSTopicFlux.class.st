@@ -37,6 +37,11 @@ PhaROSTopicFlux >> adapt: aMessage [
 ]
 
 { #category : #accessing }
+PhaROSTopicFlux >> adapter [
+	^ adapter.
+]
+
+{ #category : #accessing }
 PhaROSTopicFlux >> adapter: anAdaption [
 	adapter ifNil: [
 		adapter := anAdaption adaptToAdapter.		
@@ -49,6 +54,11 @@ PhaROSTopicFlux >> adapter: anAdaption [
 { #category : #accessing }
 PhaROSTopicFlux >> callback: aCallback [
 	callback := aCallback
+]
+
+{ #category : #accessing }
+PhaROSTopicFlux >> condition [ 
+	^ condition 
 ]
 
 { #category : #accessing }

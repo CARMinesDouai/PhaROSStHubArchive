@@ -13,6 +13,11 @@ PhaROSFilter class >> for: anUnaryMessage [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSFilter >> =anOtherFilter [
+	^ self == anOtherFilter or: [ unaryMessage == anOtherFilter unaryMessage]
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSFilter >> adapt: aPhaROSValue [ 
 	^ aPhaROSValue perform: unaryMessage.
 ]
@@ -23,8 +28,18 @@ PhaROSFilter >> adaptToAdapter [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSFilter >> hash [
+	^ unaryMessage hash.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSFilter >> printOn: aStream [
 	unaryMessage printOn: aStream.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSFilter >> unaryMessage [ 
+	^ unaryMessage 
 ]
 
 { #category : #'as yet unclassified' }
