@@ -6,7 +6,6 @@ Class {
 		'topic',
 		'socket',
 		'message',
-		'isConnected',
 		'nodeDataSender'
 	],
 	#category : #'PhaROS-Kernel'
@@ -99,6 +98,11 @@ PhaROSExternalNode >> subscribedTo: aChannel [
 	].
 	message sendTo: socket.
 	
+]
+
+{ #category : #accessing }
+PhaROSExternalNode >> topic [
+	^ topic
 ]
 
 { #category : #accessing }

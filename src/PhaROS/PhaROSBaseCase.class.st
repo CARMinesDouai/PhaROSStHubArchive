@@ -4,9 +4,9 @@ Class {
 	#instVars : [
 		'masterProcess',
 		'turtleProcess',
-		'master',
 		'masterUrl',
-		'masterURL'
+		'masterURL',
+		'controller'
 	],
 	#category : #'PhaROS-Kernel-Test'
 }
@@ -39,7 +39,7 @@ PhaROSBaseCase >> masterURL: aString [
 { #category : #'setup / teardown' }
 PhaROSBaseCase >> setUp [
 	masterUrl := self masterURL.
-	master := PhaROSMasiveNodeController url: masterUrl
+	controller := PhaROSMasiveNodeController url: masterUrl
 ]
 
 { #category : #actions }

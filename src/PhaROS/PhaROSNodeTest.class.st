@@ -15,7 +15,7 @@ PhaROSNodeTest >> setUp [
 	self startUpMaster.
 	self startUpTurtle.
 	
-	node := master create: PhaROSTestNode  named: '/TestNode' domain: '127.0.0.1' xmlRpcPort:  6123.	
+	node := controller create: PhaROSTestNode  named: '/TestNode' domain: '127.0.0.1' xmlRpcPort:  6123.	
 ]
 
 { #category : #'as yet unclassified' }
@@ -52,7 +52,7 @@ PhaROSNodeTest >> testPublisherNode [
 	
 	semaphore := Semaphore new.
 	
-	publisherNode := master  create: PhaROSBlockNode named: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:  9999  xmlRpcPort:  6127 soul: [
+	publisherNode := controller  create: PhaROSBlockNode named: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:  9999  xmlRpcPort:  6127 soul: [
 		: me |
 		me sendTo: '/turtle1/command_velocity' a: [ :msg |
 			msg linear: 1.0. 

@@ -46,6 +46,11 @@ PhaROSTopic >> initialize [
 	outputChannels := Dictionary  new.
 ]
 
+{ #category : #accessing }
+PhaROSTopic >> inputChannels [ 
+	^ inputChannels 
+]
+
 { #category : #service }
 PhaROSTopic >> lookupInputChannelFor: aPhaROSNode with: anXMLRPCUrl [ 
 	^ outputChannels at: anXMLRPCUrl  ifAbsent:[ 
@@ -96,6 +101,11 @@ PhaROSTopic >> newMessage [
 { #category : #'as yet unclassified' }
 PhaROSTopic >> outputChannelFor: aPublisher [
 	^ PhaROSChannel outPutChannelfor: aPublisher  into: self.
+]
+
+{ #category : #accessing }
+PhaROSTopic >> outputChannels [ 
+	^ outputChannels 
 ]
 
 { #category : #construction }
