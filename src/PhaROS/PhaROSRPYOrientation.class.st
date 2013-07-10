@@ -14,6 +14,12 @@ PhaROSRPYOrientation class >> roll: roll pitch: pitch yaw: yaw [
 	^ self new roll: roll; pitch: pitch; yaw: yaw; yourself.
 ]
 
+{ #category : #'as yet unclassified' }
+PhaROSRPYOrientation class >> zero [ 
+	^ self roll: 0.0 pitch: 0.0 yaw: 0.0
+
+]
+
 { #category : #operators }
 PhaROSRPYOrientation >> + anOther [
 	^PhaROSRPYOrientation roll: roll + anOther roll pitch: pitch + anOther pitch yaw: yaw + anOther yaw.

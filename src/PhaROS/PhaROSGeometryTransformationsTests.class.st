@@ -5,6 +5,50 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PhaROSGeometryTransformationsTests >> testQuaternionAsRPY [
+	| ang |
+	
+	ang := PhaROSQuaternion zero asRPY .
+	
+	self assert: ang roll = 0.0.
+	self assert: ang pitch = 0.0.
+	self assert: ang yaw = 0.0.	
+	
+
+	
+
+	ang := (PhaROSQuaternion x: 0.0 y: 0.001 z: 0.0 w: -1.0) asRPY .
+	
+	self assert: ang roll = Float pi.
+	self assert: ang pitch = Float pi.
+	self assert: ang yaw = Float pi.	
+	
+
+	
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSGeometryTransformationsTests >> testRPYAsQuaternion [
+	| ang |
+	
+	ang := PhaROSRPYOrientation zero asQuaternion  .
+	
+	self assert: ang x = 0.0.
+	self assert: ang y = 0.0.
+	self assert: ang z = 0.0.	
+	self assert: ang w = 1.0.
+	
+
+	ang := (PhaROSRPYOrientation roll: Float pi pitch: Float pi  yaw: Float pi ) asQuaternion .
+	
+	self assert: ang x = 0.0.
+	self assert: ang y = 0.001.
+	self assert: ang z = 0.0.	
+	self assert: ang w = -1.0.
+	
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSGeometryTransformationsTests >> testTransformation [
 	| util |
 	util := PhaROSGeometryTransformations new.
