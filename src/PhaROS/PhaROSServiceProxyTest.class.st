@@ -52,6 +52,6 @@ self assert: (loggers loggers  anySatisfy: [: logger | logger name = 'ros.roscpp
 { #category : #testing }
 PhaROSServiceProxyTest >> testCallingAServiceWithNoArgs [
 	self startUpTurtle.
-	service := controller lookupService: '/reset' with: self callerId.
+	service := controller master lookupService: '/reset' with: self callerId.
 	self shouldnt: [service call] raise:  Error
 ]
