@@ -47,10 +47,10 @@ PhaROSTopic >> initialize [
 ]
 
 { #category : #service }
-PhaROSTopic >> lookupInputChannelFor: aRoStNode with: anXMLRPCUrl [ 
+PhaROSTopic >> lookupInputChannelFor: aPhaROSNode with: anXMLRPCUrl [ 
 	^ outputChannels at: anXMLRPCUrl  ifAbsent:[ 
 		     inputChannels  at: anXMLRPCUrl  ifAbsentPut:[  
-				PhaROSChannel inputChannelfor: aRoStNode into: self  to: anXMLRPCUrl.
+				PhaROSChannel inputChannelfor: aPhaROSNode into: self  to: anXMLRPCUrl.
 		].
 	]
 ]
@@ -99,11 +99,6 @@ PhaROSTopic >> outputChannelFor: aPublisher [
 ]
 
 { #category : #construction }
-PhaROSTopic >> packetSize [ 
-	^ self typeSize + 4
-]
-
-{ #category : #construction }
 PhaROSTopic >> printOn: aStream [
 	aStream nextPutAll: 'Topic>>', self name. 
 ]
@@ -142,9 +137,4 @@ PhaROSTopic >> type: aTopicType [
 { #category : #construction }
 PhaROSTopic >> typeFactory [
 	^self master typeFactory: self type
-]
-
-{ #category : #construction }
-PhaROSTopic >> typeSize [
-	^ self typeFactory dataTypeSize.	
 ]

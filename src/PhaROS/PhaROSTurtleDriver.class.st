@@ -10,9 +10,9 @@ Class {
 { #category : #examples }
 PhaROSTurtleDriver class >> driverExample [
 	"self driverExample"
-	| master |
-	master := PhaROSMaster url: 'http://127.0.0.1:11311/'.
-	^ master
+	| controller |
+	controller := PhaROSMasiveNodeController localhost.
+	^ controller
 		create: self
 		named: '/myTurtleDriver'
 		domain: '127.0.0.1'
