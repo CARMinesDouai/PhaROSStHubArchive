@@ -26,7 +26,7 @@ PBLaserTest >> testLaserWhenRobotAtBottomLeftOfTheBox [
 	notification := self notificationOrNilFrom: laser.
 	
 	allDistances := notification distances.
-	self assert: allDistances areLessThan: 0.75 andGreaterThan: 0.25
+	self assert: allDistances areLessThan: 1.1 andGreaterThan: 0.20
 	
 ]
 
@@ -41,7 +41,7 @@ PBLaserTest >> testLaserWhenRobotAtBottomRightOfTheBox [
 	notification := self notificationOrNilFrom: laser.
 	
 	allDistances := notification distances.
-	self assert: allDistances areLessThan: 0.75 andGreaterThan: 0.25
+	self assert: allDistances areLessThan: 1.1 andGreaterThan: 0.20
 
 ]
 
@@ -56,7 +56,7 @@ PBLaserTest >> testLaserWhenRobotAtCenterOfTheBox [
 	notification := self notificationOrNilFrom: laser.
 	
 	allDistances := notification distances.
-	self assert: allDistances areLessThan: 0.56 andGreaterThan: 0.25
+	self assert: allDistances areLessThan: 0.8 andGreaterThan: 0.3
 
 ]
 
@@ -71,7 +71,7 @@ PBLaserTest >> testLaserWhenRobotAtTopLeftOfTheBox [
 	notification := self notificationOrNilFrom: laser.
 	
 	allDistances := notification distances.
-	self assert: allDistances areLessThan: 0.75 andGreaterThan: 0.15
+	self assert: allDistances areLessThan: 1.2 andGreaterThan: 0.05
 
 ]
 
@@ -86,7 +86,7 @@ PBLaserTest >> testLaserWhenRobotAtTopRightOfTheBox [
 	notification := self notificationOrNilFrom: laser.
 	
 	allDistances := notification distances.
-	self assert: allDistances areLessThan: 0.75 andGreaterThan: 0.15
+	self assert: allDistances areLessThan: 1.2 andGreaterThan: 0.05
 
 ]
 

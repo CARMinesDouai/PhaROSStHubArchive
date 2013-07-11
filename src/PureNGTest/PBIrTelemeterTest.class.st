@@ -7,8 +7,8 @@ Class {
 { #category : #testing }
 PBIrTelemeterTest >> testIrWhenRobotAtBottomLeftOfTheBox [
 	| laser notification minVal maxVal wrongDistances |
-	minVal := 0.05.
-	maxVal := 0.45.
+	minVal := 0.0.
+	maxVal := 0.90.
 	wrongDistances := OrderedCollection new.
 	
 	self requestAction: 'Please, put the robot at the bottom left of the 1x1 box'.
@@ -24,8 +24,8 @@ PBIrTelemeterTest >> testIrWhenRobotAtBottomLeftOfTheBox [
 { #category : #testing }
 PBIrTelemeterTest >> testIrWhenRobotAtBottomRightOfTheBox [
 	| laser notification minVal maxVal wrongDistances |
-	minVal := 0.05.
-	maxVal := 0.45.
+	minVal := 0.0.
+	maxVal := 0.90.
 	wrongDistances := OrderedCollection new.
 	
 	self requestAction: 'Please, put the robot at the bottom right of the 1x1 box'.
@@ -41,8 +41,8 @@ PBIrTelemeterTest >> testIrWhenRobotAtBottomRightOfTheBox [
 { #category : #testing }
 PBIrTelemeterTest >> testIrWhenRobotAtCenterOfTheBox [
 	| laser notification minVal maxVal wrongDistances|
-	minVal := 0.21.
-	maxVal := 0.30.
+	minVal := 0.25.
+	maxVal := 0.50.
 	
 	wrongDistances := OrderedCollection new.
 	
@@ -59,8 +59,8 @@ PBIrTelemeterTest >> testIrWhenRobotAtCenterOfTheBox [
 { #category : #testing }
 PBIrTelemeterTest >> testIrWhenRobotAtTopLeftOfTheBox [
 	| laser notification minVal maxVal wrongDistances |
-	minVal := 0.05.
-	maxVal := 0.45.
+	minVal := 0.0.
+	maxVal := 0.90.
 	wrongDistances := OrderedCollection new.
 	
 	self requestAction: 'Please, put the robot at the top left of the 1x1 box'.
@@ -76,8 +76,8 @@ PBIrTelemeterTest >> testIrWhenRobotAtTopLeftOfTheBox [
 { #category : #'as yet unclassified' }
 PBIrTelemeterTest >> testIrWhenRobotAtTopRightOfTheBox [
 	| laser notification minVal maxVal wrongDistances |
-	minVal := 0.05.
-	maxVal := 0.45.
+	minVal := 0.0.
+	maxVal := 0.90.
 	wrongDistances := OrderedCollection new.
 	
 	self requestAction: 'Please, put the robot at the top right of the 1x1 box'.

@@ -7,8 +7,8 @@ Class {
 { #category : #testing }
 PBSonarTelemeterTest >> testSonarWhenRobotAtBottomLeftOfTheBox [
 	| laser notification minVal maxVal wrongDistances |
-	minVal := 0.05.
-	maxVal := 0.45.
+	minVal := 0.0.
+	maxVal := 0.90.
 	wrongDistances := OrderedCollection new.
 	
 	self requestAction: 'Please, put the robot at the bottom left of the 1x1 box'.
@@ -24,8 +24,8 @@ PBSonarTelemeterTest >> testSonarWhenRobotAtBottomLeftOfTheBox [
 { #category : #testing }
 PBSonarTelemeterTest >> testSonarWhenRobotAtBottomRightOfTheBox [
 	| laser notification minVal maxVal wrongDistances |
-	minVal := 0.05.
-	maxVal := 0.45.
+	minVal := 0.0.
+	maxVal := 0.90.
 	wrongDistances := OrderedCollection new.
 	
 	self requestAction: 'Please, put the robot at the bottom right of the 1x1 box'.
@@ -41,8 +41,8 @@ PBSonarTelemeterTest >> testSonarWhenRobotAtBottomRightOfTheBox [
 { #category : #testing }
 PBSonarTelemeterTest >> testSonarWhenRobotAtCenterOfTheBox [
 	| laser notification minVal maxVal wrongDistances|
-	minVal := 0.20.
-	maxVal := 0.30.
+	minVal := 0.25.
+	maxVal := 0.50.
 	
 	wrongDistances := OrderedCollection new.
 	
@@ -59,8 +59,8 @@ PBSonarTelemeterTest >> testSonarWhenRobotAtCenterOfTheBox [
 { #category : #testing }
 PBSonarTelemeterTest >> testSonarWhenRobotAtTopLeftOfTheBox [
 	| laser notification minVal maxVal wrongDistances |
-	minVal := 0.05.
-	maxVal := 0.45.
+	minVal := 0.0.
+	maxVal := 0.90.
 	wrongDistances := OrderedCollection new.
 	
 	self requestAction: 'Please, put the robot at the top left of the 1x1 box'.
@@ -76,8 +76,8 @@ PBSonarTelemeterTest >> testSonarWhenRobotAtTopLeftOfTheBox [
 { #category : #'as yet unclassified' }
 PBSonarTelemeterTest >> testSonarWhenRobotAtTopRightOfTheBox [
 	| laser notification minVal maxVal wrongDistances |
-	minVal := 0.05.
-	maxVal := 0.45.
+	minVal := 0.0.
+	maxVal := 0.90.
 	wrongDistances := OrderedCollection new.
 	
 	self requestAction: 'Please, put the robot at the top right of the 1x1 box'.
