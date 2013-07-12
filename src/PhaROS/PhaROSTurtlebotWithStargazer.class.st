@@ -64,8 +64,25 @@ PhaROSTurtlebotWithStargazer >> initialize [
 	^turtlebot
 ]
 
+{ #category : #navigation }
+PhaROSTurtlebotWithStargazer >> landmarks [
+	^turtlebot landmarks 
+]
+
 { #category : #'landmark localization' }
 PhaROSTurtlebotWithStargazer >> localizeLandmarks [ 
 
 	^ turtlebot localizeLandmarks
+]
+
+{ #category : #navigation }
+PhaROSTurtlebotWithStargazer >> startLandmarkNavigationDemo [
+	turtlebot landmarkNavigation 
+	
+]
+
+{ #category : #navigation }
+PhaROSTurtlebotWithStargazer >> stopLandmarkNavigationDemo [
+	turtlebot stopLandmarkNavigation  
+	
 ]
