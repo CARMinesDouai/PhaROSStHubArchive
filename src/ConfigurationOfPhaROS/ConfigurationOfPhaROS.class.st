@@ -176,6 +176,14 @@ ConfigurationOfPhaROS >> pharosRoboshop1: spec [
 ]
 
 { #category : #versions }
+ConfigurationOfPhaROS >> pharosRoboshop2: spec [
+	"symbolic version name used in the RoboShop deliverable 1"
+	<symbolicVersion: #pharosRoboshop2>
+	spec for: #'pharo1.4.x' version: '1.0-Beta2'.
+	spec for: #common version: #notDefined.
+]
+
+{ #category : #versions }
 ConfigurationOfPhaROS >> pharosStage1: spec [
 	"symbolic version name used in the RoboShop deliverable 1"
 	<symbolicVersion: #pharosStage1>
@@ -233,6 +241,24 @@ ConfigurationOfPhaROS >> version100Beta1: spec [
 			 project: 'PaulLePoulpe' with: '1.0.1'.
 		spec
 			package: 'PhaROS' with: 'PhaROS-NouryBouraqadi.86'
+		].
+
+
+]
+
+{ #category : #versions }
+ConfigurationOfPhaROS >> version100Beta2: spec [ 
+	<version: '1.0-Beta2' imports: #('1.0-baseline') >
+	
+	spec for: #common do: [
+		spec blessing: #alpha.
+		spec author: 'JannikLaval'.
+		spec timestamp: '12/07/2013 12:00'.
+		spec 
+			project: 'XMLRPC' with: '1.0-Beta6';
+			 project: 'PaulLePoulpe' with: '1.0.1'.
+		spec
+			package: 'PhaROS' with: 'PhaROS-janniklaval.144'
 		].
 
 
