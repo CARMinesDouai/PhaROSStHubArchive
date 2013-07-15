@@ -7,24 +7,24 @@ Class {
 		'messages',
 		'this',
 		'that',
-		'minSync',
-		'maxSync',
-		'condition'
+		'condition',
+		'thisSync',
+		'thatSync'
 	],
 	#category : #'PhaROS-Nodelets-Merger'
 }
 
 { #category : #'as yet unclassified' }
-PhaROSMerger >> checkStamps: stamps [
-	| minDif maxDif ret |
+PhaROSMerger >> checkStamps [
+	| thisDif thatDif ret |
+
+	thisDif :=  (DateAndTime now - ((messages at: this) at: 2) ) asMilliSeconds.
+	thatDif :=  (DateAndTime now - ((messages at: that) at: 2) ) asMilliSeconds.
 	
-	minDif :=  (DateAndTime now - stamps min ) asMilliSeconds.
-	maxDif :=  (DateAndTime now - stamps max ) asMilliSeconds.
+	ret := thisSync ifNil: [true] ifNotNil:[( thisDif - thisSync) < self threshold and: [ (thatDif - thatSync ) < self threshold ]].
 	
-	ret := minSync ifNil: [true] ifNotNil:[( minDif - minSync) < self threshold and: [ (maxDif - maxSync ) < self threshold ]].
-	
-	minSync := minDif.
-	maxSync := maxDif.
+	thisSync := thisDif.
+	thatSync := thatDif.
 	
 	^ret.
 ]
@@ -47,7 +47,7 @@ PhaROSMerger >> merge [
 	messages size = 2 ifFalse: [ 
 		Transcript show: 'waiting for have data from two topics to start merging'
 	] ifTrue:[
-		(self checkStamps:  (messages values collect: [ : ms  | ms at: 2 ]) ) ifTrue: [
+		self checkStamps ifTrue: [
 			
 			(condition cull: ((messages at: that ) at: 1) cull:((messages at:this) at:1)) ifTrue: [
 				outgoing send: [ :msg |
