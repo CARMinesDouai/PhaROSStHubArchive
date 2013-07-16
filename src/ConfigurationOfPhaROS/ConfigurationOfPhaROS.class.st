@@ -153,6 +153,9 @@ ConfigurationOfPhaROS >> baseline10: spec [
 					versionString: #bleedingEdge;
 					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
 			].
+		      spec package: 'StarGazer' with: [
+				spec repository: 'http://car.mines-douai.fr/squeaksource/Peripherics'.
+			].
 			spec package: 'TaskIT' with: [
 				spec repository: 'http://smalltalkhub.com/mc/sbragagnolo/TaskIT/main'.
 			].
@@ -160,8 +163,10 @@ ConfigurationOfPhaROS >> baseline10: spec [
 			spec package: 'PhaROS' with: [
 				spec requires: #('XMLRPC' 'CommonTraits' 'PaulLePoulpe' 'OSProcess' 'TaskIT').
 			].
-		
-			spec group: 'default'  with: #( 'PhaROS').
+		      spec package: 'PhaROS-Peripherics' with: [
+				spec requires: #( 'PhaROS' 'StarGazer').
+			].
+			spec group: 'default'  with: #( 'PhaROS' ).
 	].
 
 
