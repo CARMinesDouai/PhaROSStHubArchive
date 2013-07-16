@@ -29,17 +29,17 @@ PhaROSTransformationNodelet class >> tfTopicType [
 	^ 'tf/tfMessage'
 ]
 
-{ #category : #topic }
+{ #category : #'topic-reading' }
 PhaROSTransformationNodelet >> between: aFrameID and: anOtherFrameID [
 	^ container pseudoTopicBetween: aFrameID  and: anOtherFrameID.
 ]
 
-{ #category : #topic }
+{ #category : #'topic-reading' }
 PhaROSTransformationNodelet >> between: aFrameID and: anOtherFrameID for: aCallback [
 	^ (container pseudoTopicBetween:  aFrameID and: anOtherFrameID) for: aCallback
 ]
 
-{ #category : #topic }
+{ #category : #'topic-reading' }
 PhaROSTransformationNodelet >> betweenFixedFrameAnd: aFrameID [
 	^ self between: container currentFixedFrame name and: aFrameID
 
@@ -58,7 +58,7 @@ PhaROSTransformationNodelet >> configureTfCallback. [
 	self tf for: self tfcallback.
 ]
 
-{ #category : #topic }
+{ #category : #finalization }
 PhaROSTransformationNodelet >> finalize [
 	tfWriter := nil.
 	 tfs := nil .
@@ -77,7 +77,7 @@ PhaROSTransformationNodelet >> process: aMessage from: aChn [
 	container process: aMessage from: aChn
 ]
 
-{ #category : #topic }
+{ #category : #'topic-reading' }
 PhaROSTransformationNodelet >> tf [
 	^(self rosnode buildConnectionFor: '/tf')
 				typedAs: 'tf/tfMessage'; 
@@ -85,7 +85,7 @@ PhaROSTransformationNodelet >> tf [
 	
 ]
 
-{ #category : #topic }
+{ #category : #'topic-writing' }
 PhaROSTransformationNodelet >> tf: aMessageConfiguration [
 	^ tfWriter send: aMessageConfiguration.
 ]
@@ -93,4 +93,21 @@ PhaROSTransformationNodelet >> tf: aMessageConfiguration [
 { #category : #package }
 PhaROSTransformationNodelet >> tfcallback [
 	^ [ : t :chn | self process: t from: chn].
+]
+
+{ #category : #'topic-writing' }
+PhaROSTransformationNodelet >> writerFor: aFrame [ 
+	^ PhaROSFrameRelativePoseWriter for: aFrame through: self.
+]
+
+{ #category : #'topic-writing' }
+PhaROSTransformationNodelet >> writerFor: aFrameID withParent: aParentFrameID [
+	 | frame parent |
+	frame :=  container at: aFrameID.
+	parent := container at: aParentFrameID.
+	
+	frame parent ifNil: [ frame parent: parent ].
+	
+	self assert: frame parent = parent description: 'The frame is already being broadcasted with other parent!'. 
+	^ self writerFor: frame. 
 ]

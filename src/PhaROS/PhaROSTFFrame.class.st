@@ -21,17 +21,47 @@ PhaROSTFFrame class >> id: aFrameID parent: aParent [
 	^ self new name: aFrameID ; parent: aParent; yourself.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'frame calculations' }
 PhaROSTFFrame >> absolutePose [ 
 	^ self poseRelativeToParent: nil. " From here to the end of the tree "
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #converting }
+PhaROSTFFrame >> asTransform [
+	| transform | 
+	transform := Geometry_msgsTransform new .
+	
+	transform translation x: self pose position x.
+	transform translation y: self pose position y.
+	transform translation z: self pose position z.
+	
+	transform rotation x: self pose orientation x. 
+	transform rotation y: self pose orientation y. 
+	transform rotation z: self pose orientation z. 
+	transform rotation w: self pose orientation w.
+	
+	^ transform
+]
+
+{ #category : #converting }
+PhaROSTFFrame >> asTransformStamped [
+	| transformStamped | 
+	
+		transformStamped := Geometry_msgsTransformStamped new.
+		
+		transformStamped child_frame_id:  name.
+		transformStamped header frame_id:  (parent ifNil: [''] ifNotNil: [ parent name ]).
+		transformStamped transform: self asTransform.
+		
+	^ transformStamped.
+]
+
+{ #category : #accessing }
 PhaROSTFFrame >> broadcaster: aBroadcaster [
 	broadcaster := aBroadcaster 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 PhaROSTFFrame >> isBeingBroadcasted [
 	^ self pose notNil.
 ]
@@ -41,23 +71,23 @@ PhaROSTFFrame >> isFixed [
 	^ parent isNil.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSTFFrame >> name [
 	^ name 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSTFFrame >> name: aName [
 	name := aName
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSTFFrame >> parent [
 	^ parent
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSTFFrame >> parent: aParentFrame [
 	parent := aParentFrame
 ]
@@ -71,12 +101,12 @@ PhaROSTFFrame >> pose [
 	^ pose.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSTFFrame >> pose: aPose [
 	pose := aPose
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'frame calculations' }
 PhaROSTFFrame >> poseRelativeTo: aFrame [
 	| selfParents aux  | 	
 	
@@ -117,7 +147,7 @@ PhaROSTFFrame >> poseRelativeTo: aFrame [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'frame calculations' }
 PhaROSTFFrame >> poseRelativeToParent: aParent [
 	
 	| aux relative |
@@ -143,7 +173,7 @@ PhaROSTFFrame >> printOn: aStream [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSTFFrame >> stamp [
 	(stamp isNil and: [ parent isNil ]) ifTrue: [
 		" fixed "
@@ -153,12 +183,12 @@ PhaROSTFFrame >> stamp [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSTFFrame >> stamp: aStamp [ 
 	stamp := aStamp
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #updating }
 PhaROSTFFrame >> updateFrom: aTransformation using: db broadcaster: aNode [
 
 	
