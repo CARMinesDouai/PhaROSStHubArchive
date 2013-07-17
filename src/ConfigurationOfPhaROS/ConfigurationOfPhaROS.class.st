@@ -93,6 +93,11 @@ ConfigurationOfPhaROS class >> loadBleedingEdge [
 	(self project version: #bleedingEdge) load.
 ]
 
+{ #category : #loading }
+ConfigurationOfPhaROS class >> loadBleedingEdgeWithPeripherics [
+	(self project version: #bleedingEdge) load.
+]
+
 { #category : #'metacello tool support' }
 ConfigurationOfPhaROS class >> metacelloVersion: versionString loads: anArrayOrString [
 	"Stash the last version loaded and the list of packages loaded for that version. The list
@@ -163,9 +168,8 @@ ConfigurationOfPhaROS >> baseline10: spec [
 			spec package: 'PhaROS' with: [
 				spec requires: #('XMLRPC' 'CommonTraits' 'PaulLePoulpe' 'OSProcess' 'TaskIT').
 			].
-		      spec package: 'PhaROS-Peripherics' with: [
-				spec requires: #( 'PhaROS' 'StarGazer').
-			].
+		      spec group: 'PhaROS-Peripherics' with: #( 'PhaROS' 'StarGazer').
+			
 			spec group: 'default'  with: #( 'PhaROS' ).
 	].
 
