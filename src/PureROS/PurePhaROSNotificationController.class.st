@@ -11,7 +11,7 @@ Class {
 		'allLaserCallbacksCalled',
 		'lastMovementNotification'
 	],
-	#category : #'PureROS-Controllers'
+	#category : #'PureROS-Nodelet'
 }
 
 { #category : #'as yet unclassified' }
