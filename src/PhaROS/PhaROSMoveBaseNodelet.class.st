@@ -9,6 +9,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PhaROSMoveBaseNodelet class >> dependencies [
+	^ [ : spec | spec movebase ].
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSMoveBaseNodelet class >> simpleGoalTopic [
 	^ '/move_base_simple/goal'
 ]

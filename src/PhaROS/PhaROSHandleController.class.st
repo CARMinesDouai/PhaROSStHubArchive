@@ -10,11 +10,6 @@ Class {
 }
 
 { #category : #construction }
-PhaROSHandleController class >> localhost [
-	^ super localhost configureNode; yourself.
-]
-
-{ #category : #construction }
 PhaROSHandleController class >> turtlebot [
 	| ttb |
 	ttb :=  self url: 'http://10.1.161.20:11311/'.

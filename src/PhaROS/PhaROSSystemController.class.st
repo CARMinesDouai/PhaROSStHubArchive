@@ -14,12 +14,12 @@ PhaROSSystemController class >> for: aMaster [
 
 { #category : #'as yet unclassified' }
 PhaROSSystemController class >> localhost [
-	^self new master: PhaROSMaster localhost; yourself.
+	^self url: 'http://127.0.0.1:11311/'.
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSSystemController class >> url: anUrl [
-	^self new master: (PhaROSMaster url: anUrl ); yourself.
+	^self for: (PhaROSMaster url: anUrl ).
 ]
 
 { #category : #accessing }

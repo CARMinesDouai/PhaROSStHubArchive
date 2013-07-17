@@ -2,7 +2,8 @@ Class {
 	#name : #PhaROSNodelet,
 	#superclass : #Object,
 	#instVars : [
-		'controller'
+		'controller',
+		'launch'
 	],
 	#category : #'PhaROS-Nodelets'
 }
@@ -47,6 +48,7 @@ PhaROSNodelet >> dependencies [
 { #category : #'as yet unclassified' }
 PhaROSNodelet >> finalize [
 	controller := nil.
+	launch := nil.
 ]
 
 { #category : #'as yet unclassified' }
@@ -59,6 +61,14 @@ PhaROSNodelet >> install [
 			PhaROSSystemLauncher instance deployType: typeName definedAs: definition 
 		].
 	]
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSNodelet >> launch [
+	launch ifNil: [ self dependencies size > 0 ifTrue: [
+			launch := PhaROSSystemLauncher instance launch: [ :b | self configureDependencies: b ]
+		]
+	].
 ]
 
 { #category : #'as yet unclassified' }
