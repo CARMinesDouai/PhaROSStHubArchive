@@ -81,7 +81,7 @@ PhaROSSystemLauncher >> rosMsg: anArrayOfArguments tmpFile: aTempFileName [
 	errstream := StandardFileStream forceNewFileNamed: '/tmp/error_',aTempFileName,'.tmp'.
 	
 	rosmsg  :=  ExternalUnixOSProcess 
-							forkAndExec: '/opt/ros/fuerte/bin/rosmsg'   
+							forkAndExec: '/opt/ros/groovy/bin/rosmsg'   
 							arguments: anArrayOfArguments 
 							environment:  nil 
 							descriptors: { FileStream stdin . outstream . errstream } .  
@@ -130,11 +130,11 @@ PhaROSSystemLauncher >> roslaunch: aConfigurationFile [
 | roslaunch |
 
 	roslaunch := ExternalUnixOSProcess 
-					forkAndExec: '/opt/ros/fuerte/bin/roslaunch'   
+					forkAndExec: '/opt/ros/groovy/bin/roslaunch'   
 					arguments: { aConfigurationFile  } 
 					environment:  nil 
 					descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
-	roslaunch spin: 40.
+	roslaunch spin: 50.
 	
 	^ roslaunch.
 
@@ -177,7 +177,7 @@ PhaROSSystemLauncher >> rosmake: aPackage [
 PhaROSSystemLauncher >> rosrun: anArrayOfArguments [
 	| process | 
 	process :=  ExternalUnixOSProcess 
-							forkAndExec: '/opt/ros/fuerte/bin/rosrun'   
+							forkAndExec: '/opt/ros/groovy/bin/rosrun'   
 							arguments: anArrayOfArguments
 							environment:  nil 
 							descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
@@ -216,7 +216,7 @@ PhaROSSystemLauncher >> shutdownTurtle [
 PhaROSSystemLauncher >> startUpGMapping [
 	gmappingProcess ifNil: [
 		gmappingProcess :=  ExternalUnixOSProcess 
-							forkAndExec: '/opt/ros/fuerte/bin/rosrun'   
+							forkAndExec: '/opt/ros/groovy/bin/rosrun'   
 							arguments: { 'gmapping' . 'slam_gmapping' } 
 							environment:  nil 
 							descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
@@ -229,7 +229,7 @@ PhaROSSystemLauncher >> startUpMaster [
 	" Remember that the environment variables must be setted before run this! "
 	masterProcess ifNil: [
 		masterProcess := ExternalUnixOSProcess 
-					forkAndExec: '/opt/ros/fuerte/bin/roscore'   
+					forkAndExec: '/opt/ros/groovy/bin/roscore'   
 					arguments: {  } 
 					environment:  nil 
 					descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
@@ -241,7 +241,7 @@ PhaROSSystemLauncher >> startUpMaster [
 PhaROSSystemLauncher >> startUpTurtle [
 	turtleProcess ifNil: [
 		turtleProcess :=  ExternalUnixOSProcess 
-							forkAndExec: '/opt/ros/fuerte/bin/rosrun'   
+							forkAndExec: '/opt/ros/groovy/bin/rosrun'   
 							arguments: { 'turtlesim' . 'turtlesim_node' } 
 							environment:  nil 
 							descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  

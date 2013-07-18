@@ -77,7 +77,7 @@ PhaROSHandleController >> connectTF [
 PhaROSHandleController >> domain [
 	self flag: #askToTheHost.
 	"NetNameResolver"
-	^ '10.1.161.20'
+	^ '127.0.0.1'
 ]
 
 { #category : #package }

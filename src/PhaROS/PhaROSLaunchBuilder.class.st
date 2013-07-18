@@ -261,6 +261,7 @@ PhaROSLaunchBuilder >> rviz [
 
 	conf := self package: 'rviz' type:'rviz'  named: 'rviz'.
 	conf output: 'screen'.
+	conf respawn: true.
 	
 	^ conf.
 ]
@@ -328,4 +329,14 @@ PhaROSLaunchBuilder >> xsens [
 	conf param:'frame_id' value: '/MT0'.
 	
 	^ conf.
+]
+
+{ #category : #writing }
+PhaROSLaunchBuilder >> yaml: aBlock named: aName [
+	|builder outName| 
+	builder := PhaROSYamlBuilder new .
+	aBlock value: builder.
+	outName := '/tmp/', aName.
+	builder writeFile: outName.
+	^ outName	
 ]
