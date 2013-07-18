@@ -23,6 +23,11 @@ PureROSRobulabNodelet class >> baseLinkFrame [
 ]
 
 { #category : #'as yet unclassified' }
+PureROSRobulabNodelet class >> baseLinkParentFrame [ 	
+	^ self odomFrame.
+]
+
+{ #category : #'as yet unclassified' }
 PureROSRobulabNodelet class >> dependencies [ 
 	^ [ : spec |  
 		spec rviz. 
@@ -40,6 +45,11 @@ PureROSRobulabNodelet class >> mapFrame [
 ]
 
 { #category : #'as yet unclassified' }
+PureROSRobulabNodelet class >> odomFrame [ 
+	^ '/odom'
+]
+
+{ #category : #'as yet unclassified' }
 PureROSRobulabNodelet class >> scanTopic [
 	^ '/scan'
 ]
@@ -52,9 +62,7 @@ PureROSRobulabNodelet >> broadcastLandmarks [
 
 { #category : #broadcast }
 PureROSRobulabNodelet >> broadcastLocalization [
-	notificationController notificateMovementTo: [ 	: pose |  self frameWritter pose: pose asPhaROSPose.	 ] .
-	
-	
+	notificationController notificateMovementTo: [ 	: notification |  self frameWritter pose: notification position asPhaROSPose.	 ] .
 ]
 
 { #category : #broadcast }
@@ -101,8 +109,9 @@ PureROSRobulabNodelet >> defaultPose [
 
 { #category : #'private-out' }
 PureROSRobulabNodelet >> frameWritter [ 
+	self halt.
 	^frameWritter ifNil: [
-		frameWritter := self transformation writerFor: PureROSRobulabNodelet poseFrame withParent:  PureROSRobulabNodelet poseParentFrame. 
+		frameWritter := self nodelets transformation writerFor: PureROSRobulabNodelet baseLinkFrame withParent:  PureROSRobulabNodelet baseLinkParentFrame. 
 	]
 	
 ]
@@ -110,7 +119,11 @@ PureROSRobulabNodelet >> frameWritter [
 { #category : #'initialize-release' }
 PureROSRobulabNodelet >> initialize: aRobot [
 	robot := aRobot value: PNGRobulabHandcodedFactory.
+	
+	
 	notificationController := PurePhaROSNotificationController for: robot.
+	notificationController activateMovementNotifications.
+	notificationController activateLaserNotifications.
 
 	self broadcastLocalization.
 	self broadcastSensors.
@@ -152,7 +165,7 @@ PureROSRobulabNodelet >> poseStampedTopic [
 { #category : #broadcast }
 PureROSRobulabNodelet >> scan: aLaserMeasure [
 	self scanOut send: [ : msg | 
-		msg header frame_id: self PureROSRobulabNodelet laserFrame. 
+		msg header frame_id: '/laser'. 
 		aLaserMeasure intoSensor_msgs_LaserScan: msg.
 	].
 

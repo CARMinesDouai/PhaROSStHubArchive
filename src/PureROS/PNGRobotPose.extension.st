@@ -1,6 +1,11 @@
 Extension { #name : #PNGRobotPose }
 
 { #category : #'*PureROS' }
+PNGRobotPose >> asPhaROSPose [
+	^ PhaROSPose x: x y: y o: orientation.
+]
+
+{ #category : #'*PureROS' }
 PNGRobotPose classSide >> fromGeometry_msgsPose: aROSPose [
 	| pose orientation |
 	pose := self new. 
