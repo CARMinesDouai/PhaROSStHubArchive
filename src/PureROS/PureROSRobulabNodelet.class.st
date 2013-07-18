@@ -9,7 +9,9 @@ Class {
 		'robot',
 		'poseStamped',
 		'localizationController',
-		'scan'
+		'scan',
+		'odometer',
+		'odometryOut'
 	],
 	#classInstVars : [
 		'initialpose'
@@ -50,6 +52,11 @@ PureROSRobulabNodelet class >> odomFrame [
 ]
 
 { #category : #'as yet unclassified' }
+PureROSRobulabNodelet class >> odometryTopic [
+	^ '/odom'
+]
+
+{ #category : #'as yet unclassified' }
 PureROSRobulabNodelet class >> scanTopic [
 	^ '/scan'
 ]
@@ -63,6 +70,14 @@ PureROSRobulabNodelet >> broadcastLandmarks [
 { #category : #broadcast }
 PureROSRobulabNodelet >> broadcastLocalization [
 	notificationController notificateMovementTo: [ 	: notification |  self frameWritter pose: notification position asPhaROSPose.	 ] .
+]
+
+{ #category : #broadcast }
+PureROSRobulabNodelet >> broadcastOdometry [
+	notificationController notificateMovementTo: [ 	: pose |  	
+			self odometry: pose position.
+ 	] .
+	
 ]
 
 { #category : #broadcast }
@@ -85,6 +100,10 @@ PureROSRobulabNodelet >> configure [
 "	self nodelets use: SGROSStarGazerNodelet as: #stargazer."
 	self nodelets use: PhaROSLocalizerNodelet as: #localizer.
 	self nodelets use: PhaROSMoveBaseNodelet as: #movebase.
+]
+
+{ #category : #'initialize-release' }
+PureROSRobulabNodelet >> consumeCommandVelocity [
 ]
 
 { #category : #consume }
@@ -139,6 +158,27 @@ PureROSRobulabNodelet >> localizationController [
 PureROSRobulabNodelet >> localizeLandmarks [
 	self nodelets localizer learn:( self nodelets stargazer absoluteLandmarks ) .
 	self nodelets localizer map.
+]
+
+{ #category : #broadcast }
+PureROSRobulabNodelet >> odometer [
+	^ odometer ifNil: [ odometer := PureROSOdometryDelegate new ].
+]
+
+{ #category : #broadcast }
+PureROSRobulabNodelet >> odometry: aPose [
+
+	self odometryOut send: [ :msg | 
+		self odometer configure: msg with: aPose.
+		
+
+	]
+]
+
+{ #category : #broadcast }
+PureROSRobulabNodelet >> odometryOut [
+	odometryOut ifNil: [ odometryOut := self rosnode topicPublisher: PureROSRobulabNodelet odometryTopic typedAs: 'nav_msgs/Odometry' ].
+	
 ]
 
 { #category : #broadcast }
