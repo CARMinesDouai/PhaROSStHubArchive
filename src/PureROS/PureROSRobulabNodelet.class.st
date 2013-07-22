@@ -146,6 +146,7 @@ PureROSRobulabNodelet >> initialize: aRobot [
 
 	self broadcastLocalization.
 	self broadcastSensors.
+	self broadcastOdometry.
 	self consumeInitialPose.
 ]
 
