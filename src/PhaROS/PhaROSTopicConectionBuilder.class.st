@@ -2,18 +2,18 @@
 PhaROSTopicConectionBuilder is an object that build a topic flux, which is a representation of a topic for consuming from outside. 
 It allows to configure 
 
-	1- type: #typedAs: aTypeID
-	2- message adaptions: #adapted: anAdaption
-	3- callback: #for: aCallback
-	4- condition: #when: aConditionBlock
+	1- typedAs: aTypeID
+	2- adapted: anAdaption
+	3- for: aCallback
+	4- when: aConditionBlock
 	
 In order to build the connection, the message expected is
 
-	#connect
+	connect
 	
 	This last message returns a PhaROSTopicFlux configured.
 	
-	{ class_documentation: PhaROSTopicFlux }
+	{  PhaROSTopicFlux documentation }
 	
 "
 Class {

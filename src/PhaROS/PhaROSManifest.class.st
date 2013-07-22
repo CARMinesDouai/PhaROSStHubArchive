@@ -32,23 +32,23 @@
 		
 			
 		### Master 
-			{ class_documentation: PhaROSMaster }
+			{  PhaROSMaster documentation }
 	
 		### Controller
-			{ class_documentation: PhaROSSystemController }
+			{ PhaROSSystemController documentation}
 			
 		### Node 
-			{ class_documentation: PhaROSNode }
-			{ class_documentation: PhaROSExternalNode }
+			{ PhaROSNode documentation }
+			{ PhaROSExternalNode documentation}
 			
 		#### Topics
-			{ class_documentation: PhaROSTopic }
+			{ PhaROSTopic documentation}
 			
 		#### Services
-			{ not yet developed }
+			
 			
 		### Nodelets
-			{ class_documentation:  PhaROSNodelet }
+			{  PhaROSNodelet documentation }
 
 		### Types
 		
@@ -56,7 +56,7 @@
 		
 		### Processes
 
-	
+	 
 	## DOC
 		
 	

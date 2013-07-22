@@ -9,14 +9,14 @@ receive: aMessage from: aChannel
 	].
 
 
-#imInterestedIn:from:
+imInterestedIn:from:
 	Is based on a given conditional block.
 
-#adapt:
+adapt:
 	It takes the message and return a transformation. 
 	It is based on a given adaption.  < PhaROSMessageAdapter | PhaROSFilter | PhaROSConverter >
 	
-#redirect:from:at:
+redirect:from:at:
 	It takes the adapted message, the channel and the timestamp if it exists and give them to the callback
 	It is based on the given callback
 	

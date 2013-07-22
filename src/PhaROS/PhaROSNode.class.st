@@ -33,31 +33,31 @@ PhaROSNode already counts with some subclasses that solve some common problems:
 		This class has a soul block, that allows to define an active routine of execution of the node in a block.
 		In order to execute it, there is a message
 			
-		#PhaROSBlockNode>>execute.
+		PhaROSBlockNode>>execute.
 	       
 
 	2- PhaROSBlockProcessNode
 		This class is based on PhaROSBlockNode, but it put the active routine in a new process.  The messages to manage the related process are:
 
-		#PhaROSBlockProcessNode>>startUp.
-		#PhaROSBlockProcessNode>>terminate.
+		PhaROSBlockProcessNode>>startUp.
+		PhaROSBlockProcessNode>>terminate.
 
 	3- PhaROSNodeHandle
 		This class is based in PhaROSNode. The idea of this class is to make possible to easy compose behaviors, using the node as communication handle. In order to achieve that, PhaROSNodeHandle makes a second dispatching of incomming messages, letting have several callbacks for the same message.
 		Also gives an easier way to deal with topics
 		
 		a- publishing:
-			#PhaROSNodeHandle>>buildConnectionFor: aTopicName.
+			PhaROSNodeHandle>>buildConnectionFor: aTopicName.
 			
 			This method returns a PhaROSTopicConectionBuilder.
-			{class_documentation: PhaROSTopicConectionBuilder}
+			{ PhaROSTopicConectionBuilder documentation}
 			
 			
 		b- subscribing
-			#PhaROSNodeHandle>>topicPublisher: aTopicName typedAs: aTypeName
+			PhaROSNodeHandle>>topicPublisher: aTopicName typedAs: aTypeName
 		
 			This method returns a PhaROSTopicPublisher.
-			{class_documentation: PhaROSTopicConectionBuilder}	
+			{PhaROSTopicConectionBuilder documentation}	
 
 
 
