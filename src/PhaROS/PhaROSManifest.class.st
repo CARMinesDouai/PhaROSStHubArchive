@@ -69,3 +69,14 @@ Class {
 	#superclass : #Object,
 	#category : #PhaROS
 }
+
+{ #category : #'as yet unclassified' }
+PhaROSManifest class >> tex [
+	| op converter |
+	op := StandardFileStream forceNewFileNamed: '/tmp/pharos-documentation.mkd'.
+	op nextPutAll: self documentation.
+	op close. 
+	Deprecation raiseWarning: false.
+	CommandShell command: 'mmd2tex < /tmp/pharos-documentation.mkd > /tmp/pharos-documentation.tex'.
+	Deprecation raiseWarning: true.
+]
