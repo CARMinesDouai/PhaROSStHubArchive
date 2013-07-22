@@ -15,7 +15,7 @@ Class {
 		'tfWriter',
 		'topicsBroadcasted'
 	],
-	#category : #'PhaROS-Nodelets-TFAAS'
+	#category : #'PhaROS-Nodelets-TFAAS-Deprecated'
 }
 
 { #category : #'as yet unclassified' }

@@ -1,3 +1,8 @@
+"
+PhaROSTopic is the representation of a [ ros topic | http://www.ros.org/wiki/Topics ].
+
+This representation put together a set of input and output channels, that represents the communcation between one publisher node and n subscribers nodes. 
+"
 Class {
 	#name : #PhaROSTopic,
 	#superclass : #Object,

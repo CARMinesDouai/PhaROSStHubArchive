@@ -9,7 +9,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSYamlBuilder >> initialize [ 
-	properties := Set new
+	properties := OrderedCollection  new
 ]
 
 { #category : #'as yet unclassified' }
