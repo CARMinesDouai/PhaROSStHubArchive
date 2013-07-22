@@ -203,7 +203,7 @@ PhaROSLaunchBuilder >> moveBase [
 	conf remap:'base_scan' to: '/scan'.
 	conf remap:'base_laser' to: '/laser'.
 	conf remap:'/cmd_vel' to: '/command_velocity'.
-"	conf param:'controller_frequency' value:'10.0'."
+	conf param:'controller_frequency' value:'10.0'.
 	
 	"common costmap configuration "
 	path := self yaml: [
@@ -211,6 +211,7 @@ PhaROSLaunchBuilder >> moveBase [
 		common name:'obstacle_range' value: 6.0.
 		common name:'raytrace_range' value: 6.5.
 		common name:'footprint' value: '[[-0.25, 0.225], [0.25, 0.225], [0.25, -0.225], [-0.25, -0.225] ]'.
+		common name:'#robot_radius' value: 0.10.
 		common name:'inflation_radius' value: 1.3.
 		common name:'unknown_cost_value' value: 255.
 		common name:'observation_sources' value: 'scan'.
@@ -267,38 +268,38 @@ PhaROSLaunchBuilder >> moveBase [
 		: planner |
 		
 		planner name: 'TrajectoryPlannerROS' value:''.
-		planner name: '        transform_tolerance' value: 0.4.
+		planner name: 'transform_tolerance' value: 0.4.
 
 		"Robot Configuration Parameters"
-		planner name: '        acc_lim_x' value: 2.0.
-		planner name: '        acc_lim_y' value: 0.0.
-		planner name: '        acc_lim_th' value: 6.0.
+		planner name: 'acc_lim_x' value: 2.0.
+		planner name: 'acc_lim_y' value: 0.0.
+		planner name: 'acc_lim_th' value: 6.0.
 
-		planner name: '        max_vel_x' value: 0.3.
-		planner name: '        min_vel_x' value: 0.1.
+		planner name: 'max_vel_x' value: 0.3.
+		planner name: 'min_vel_x' value: 0.1.
 
-		planner name: '        y_vels' value:'[ 0.0 ]'.
+		planner name: 'y_vels' value:'[ 0.0 ]'.
 
-		planner name: '        max_rotational_vel' value: 0.8.
-		planner name: '        min_in_place_rotational_vel' value: 0.3.
-		planner name: '        holonomic_robot' value: false.
+		planner name: 'max_rotational_vel' value: 0.8.
+		planner name: 'min_in_place_rotational_vel' value: 0.3.
+		planner name: 'holonomic_robot' value: false.
 
 		"Goal Tolerance Parameters"
-		planner name: '        xy_goal_tolerance' value: 0.2.
-		planner name: '        yaw_goal_tolerance' value:  3.14.
+		planner name: 'xy_goal_tolerance' value: 0.2.
+		planner name: 'yaw_goal_tolerance' value:  3.14.
 
 
 		"Trajectory Scoring Parameters"
-		planner name: '        goal_distance_bias' value: 0.8.
-		planner name: '        path_distance_bias' value: 0.6.
-		planner name: '        occdist_scale' value: 0.04.
-		planner name: '        heading_lookahead' value: 0.325.
-		planner name: '        dwa' value: true.
-		planner name: '        allow_unknown' value: false.
+		planner name: 'goal_distance_bias' value: 0.8.
+		planner name: 'path_distance_bias' value: 0.6.
+		planner name: 'occdist_scale' value: 0.04.
+		planner name: 'heading_lookahead' value: 0.325.
+		planner name: 'dwa' value: true.
+		planner name: 'allow_unknown' value: false.
 
 		"Oscillation Prevention Parameters"
-		planner name: '        oscillation_reset_dist' value: 0.1.
-		planner name: '        controller_frequency' value: 0.5.
+		planner name: 'oscillation_reset_dist' value: 0.1.
+		planner name: 'controller_frequency' value: 0.5.
 		
 	] named: 'base_local_planner_params.yaml'.
 

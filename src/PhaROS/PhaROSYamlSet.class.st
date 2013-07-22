@@ -6,7 +6,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSYamlSet >> initialize [ 
-	value := OrderedCollection  new.
+	value := Set new.
 ]
 
 { #category : #'as yet unclassified' }
@@ -16,5 +16,5 @@ PhaROSYamlSet >> property [
 
 { #category : #'as yet unclassified' }
 PhaROSYamlSet >> yaml [ 
-	 ^ name, ': {', String crlf,  ((',', String crlf) join: (value collect: [ :i | '        ', i yaml ])), String crlf,'}', String crlf
+	 ^ name, ': {', String crlf,  ((',', String crlf) join: (value collect: #yaml)), String crlf,'}', String crlf
 ]

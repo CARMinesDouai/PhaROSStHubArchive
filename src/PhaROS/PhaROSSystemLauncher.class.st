@@ -130,7 +130,7 @@ PhaROSSystemLauncher >> roslaunch: aConfigurationFile [
 | roslaunch |
 
 	roslaunch := ExternalUnixOSProcess 
-					forkAndExec: '/opt/ros/fuerte/bin/roslaunch'   
+					forkAndExec: '/opt/ros/groovy/bin/roslaunch'   
 					arguments: { aConfigurationFile  } 
 					environment:  nil 
 					descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
