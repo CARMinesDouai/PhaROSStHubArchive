@@ -53,26 +53,6 @@ PhaROSHandleController >> configureNode [
 
 ]
 
-{ #category : #trash }
-PhaROSHandleController >> connectGoal [
-	| connection |
-	connection := node buildConnectionFor: '/move_base/goal'.
-	connection typedAs: 'move_base_msgs/MoveBaseActionGoal'; for: [ :msg | 
-		Transcript show: msg; cr.
-	]; connect.
-	
-]
-
-{ #category : #trash }
-PhaROSHandleController >> connectTF [
-	| connection |
-	connection := node buildConnectionFor: '/tf'.
-	connection typedAs: 'tf/tfMessage'; for: [ :msg | 
-		Transcript show: msg; cr.
-	]; connect.
-	
-]
-
 { #category : #accessing }
 PhaROSHandleController >> domain [
 	self flag: #askToTheHost.
