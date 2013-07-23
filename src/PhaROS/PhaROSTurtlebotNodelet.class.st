@@ -1,3 +1,15 @@
+"
+PhaROSTurtlebotNodelet is a nodelet that provides a base configuration to interact and control a turtlebot robot.
+It depends on
+
+	self nodelets use: PhaROSTransformationNodelet as: #transformation.
+	self nodelets use: SGROSStarGazerNodelet as: #stargazer.
+	self nodelets use: PhaROSLocalizerNodelet as: #localizer.
+	self nodelets use: PhaROSMoveBaseNodelet as: #movebase.
+	
+
+And it allows to recognize and localize stargazer landmarks in an environment manually and automatically. It allows also to move the robot to known landmarks and to arbitrary poses. 
+"
 Class {
 	#name : #PhaROSTurtlebotNodelet,
 	#superclass : #PhaROSStaticNodelet,
