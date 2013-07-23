@@ -1,7 +1,12 @@
 "
-PhaROSTopic is the representation of a [ ros topic | http://www.ros.org/wiki/Topics ].
+Topics are named buses over which nodes exchange messages. Topics have anonymous publish/subscribe semantics, which decouples the production of information from its consumption. In general, nodes are not aware of who they are communicating with. Instead, nodes that are interested in data subscribe to the relevant topic; nodes that generate data publish to the relevant topic. There can be multiple publishers and subscribers to a topic.  ( [ ros topic | http://www.ros.org/wiki/Topics ])
 
-This representation put together a set of input and output channels, that represents the communcation between one publisher node and n subscribers nodes. 
+PhaROSTopic is the Pharo representation of this concept, in it you can find input and output channels (based on PhaROSChannel) that relate a broadcaster node with the subscribers. 
+
+{ PhaROSChannel documentation }
+
+
+When a node registers in a topic as publisher, the topic add a new PhaROSOutPutChannel,  when a node register as subscriber, the topic register the node in all existing channels as subscriber, register in the master as subscriber. Thanks to this architecture, if we have a local publisher and a local subscriber of the same topic, the connection in between them will be just an object, avoiding not just connection, but also serialization process. 
 "
 Class {
 	#name : #PhaROSTopic,

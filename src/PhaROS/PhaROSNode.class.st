@@ -58,15 +58,7 @@ PhaROSNode already counts with some subclasses that solve some common problems:
 		
 			This method returns a PhaROSTopicPublisher.
 			{PhaROSTopicConectionBuilder documentation}	
-
-
-
-
-
-
-
-
-
+			
 "
 Class {
 	#name : #PhaROSNode,
