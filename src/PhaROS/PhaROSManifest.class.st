@@ -77,6 +77,6 @@ PhaROSManifest class >> tex [
 	op nextPutAll: self documentation.
 	op close. 
 	Deprecation raiseWarning: false.
-	CommandShell command: 'mmd2tex < /tmp/pharos-documentation.mkd > /tmp/pharos-documentation.tex'.
+	OSProcess command: 'mmd2tex < /tmp/pharos-documentation.mkd > /tmp/pharos-documentation.tex'.
 	Deprecation raiseWarning: true.
 ]
