@@ -13,6 +13,16 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PhaROSSystemLauncher class >> fuerte [
+	^'/opt/ros/fuerte/bin/'
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSSystemLauncher class >> groovy [
+	^'/opt/ros/groovy/bin/'
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSSystemLauncher class >> instance [
 	^ instance ifNil: [
 		instance := super new.	
@@ -22,6 +32,11 @@ PhaROSSystemLauncher class >> instance [
 { #category : #'as yet unclassified' }
 PhaROSSystemLauncher class >> new [
 	self error: 'This is a singleton object, use instance instead of new'.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSSystemLauncher class >> path: aCommand [
+	^ self fuerte, '/', aCommand 
 ]
 
 { #category : #types }
@@ -81,7 +96,7 @@ PhaROSSystemLauncher >> rosMsg: anArrayOfArguments tmpFile: aTempFileName [
 	errstream := StandardFileStream forceNewFileNamed: '/tmp/error_',aTempFileName,'.tmp'.
 	
 	rosmsg  :=  ExternalUnixOSProcess 
-							forkAndExec: '/opt/ros/groovy/bin/rosmsg'   
+							forkAndExec: (PhaROSSystemLauncher path: 'rosmsg' )  
 							arguments: anArrayOfArguments 
 							environment:  nil 
 							descriptors: { FileStream stdin . outstream . errstream } .  
@@ -130,7 +145,7 @@ PhaROSSystemLauncher >> roslaunch: aConfigurationFile [
 | roslaunch |
 
 	roslaunch := ExternalUnixOSProcess 
-					forkAndExec: '/opt/ros/fuerte/bin/roslaunch'   
+					forkAndExec:  (PhaROSSystemLauncher path:'roslaunch'  ) 
 					arguments: { aConfigurationFile  } 
 					environment:  nil 
 					descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
@@ -149,7 +164,7 @@ PhaROSSystemLauncher >> rosmake: aPackage [
 	errstream := StandardFileStream forceNewFileNamed: '/tmp/error_',aPackage,'.tmp'.
 	
 	rosmake  :=  ExternalUnixOSProcess 
-							forkAndExec: '/opt/ros/groovy/bin/rosmake'   
+							forkAndExec:  (PhaROSSystemLauncher path:'rosmake' )  
 							arguments: {aPackage} 
 							environment:  nil 
 							descriptors: { FileStream stdin . outstream . errstream } .  
@@ -177,7 +192,7 @@ PhaROSSystemLauncher >> rosmake: aPackage [
 PhaROSSystemLauncher >> rosrun: anArrayOfArguments [
 	| process | 
 	process :=  ExternalUnixOSProcess 
-							forkAndExec: '/opt/ros/groovy/bin/rosrun'   
+							forkAndExec:  (PhaROSSystemLauncher path:'rosrun')  
 							arguments: anArrayOfArguments
 							environment:  nil 
 							descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
@@ -216,7 +231,7 @@ PhaROSSystemLauncher >> shutdownTurtle [
 PhaROSSystemLauncher >> startUpGMapping [
 	gmappingProcess ifNil: [
 		gmappingProcess :=  ExternalUnixOSProcess 
-							forkAndExec: '/opt/ros/groovy/bin/rosrun'   
+							forkAndExec:  (PhaROSSystemLauncher path:'rosrun')   
 							arguments: { 'gmapping' . 'slam_gmapping' } 
 							environment:  nil 
 							descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
@@ -229,7 +244,7 @@ PhaROSSystemLauncher >> startUpMaster [
 	" Remember that the environment variables must be setted before run this! "
 	masterProcess ifNil: [
 		masterProcess := ExternalUnixOSProcess 
-					forkAndExec: '/opt/ros/groovy/bin/roscore'   
+					forkAndExec:  (PhaROSSystemLauncher path:'roscore' )  
 					arguments: {  } 
 					environment:  nil 
 					descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
@@ -241,7 +256,7 @@ PhaROSSystemLauncher >> startUpMaster [
 PhaROSSystemLauncher >> startUpTurtle [
 	turtleProcess ifNil: [
 		turtleProcess :=  ExternalUnixOSProcess 
-							forkAndExec: '/opt/ros/groovy/bin/rosrun'   
+							forkAndExec:  (PhaROSSystemLauncher path:'rosrun'   )
 							arguments: { 'turtlesim' . 'turtlesim_node' } 
 							environment:  nil 
 							descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
