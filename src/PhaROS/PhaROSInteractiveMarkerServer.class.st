@@ -42,6 +42,7 @@ PhaROSInteractiveMarkerServer >> connectInitializerThrought: aPackage [
 
 { #category : #update }
 PhaROSInteractiveMarkerServer >> connectToHeartbeat: aPackage [
+	self halt.
 	aPackage rosnode registerHeartbeat: [ : node | self partialUpdate: node ].
 ]
 

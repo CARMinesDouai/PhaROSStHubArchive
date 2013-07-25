@@ -72,10 +72,7 @@ Class {
 		'slave',
 		'publisher',
 		'subscriber',
-		'receiverDelegate',
-		'heartRate',
-		'heartbeatActions',
-		'heartbeat'
+		'receiverDelegate'
 	],
 	#category : #'PhaROS-Kernel'
 }
@@ -154,29 +151,12 @@ PhaROSNode >> domain: anIp [
 	domain := anIp.
 ]
 
-{ #category : #heartbeat }
-PhaROSNode >> enableHeartbeatAt: aRate [
-	heartRate set: aRate . 
-	heartbeat ifNil: [ heartbeat := (self paralellize looping heartbeat) asStickyReference ].
-]
-
-{ #category : #heartbeat }
-PhaROSNode >> heartbeat [
-	heartbeatActions do: [: c | 
-		[ c value: self ] on: Error do: [ : e | 
-			Transcript show: 'Error calling callback ', e messageText; cr.
-		] 
-	].
-	(Delay forRate: heartRate get) wait.
-]
-
 { #category : #accessing }
 PhaROSNode >> initialize [ 
 	slave := PhaROSSlave for: self.
 	topics := Dictionary new.
 	receiverDelegate := [].
-	heartRate := 1 asThreadsafeReference.
-	heartbeatActions := Set new.
+
 ]
 
 { #category : #service }
@@ -256,11 +236,6 @@ PhaROSNode >> receive: aMessage from: aChannel [
 PhaROSNode >> receiverDelegate: aReceiverDelegateOrBlock [
 	receiverDelegate := aReceiverDelegateOrBlock. 
 	
-]
-
-{ #category : #heartbeat }
-PhaROSNode >> registerHeartbeat: aCallback [
-	heartbeatActions add: aCallback.
 ]
 
 { #category : #output }
