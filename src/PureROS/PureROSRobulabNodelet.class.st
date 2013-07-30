@@ -130,6 +130,7 @@ PureROSRobulabNodelet >> configure [
 PureROSRobulabNodelet >> consumeCommandVelocity [
 	| connector |
 	
+	
 	connector := self rosnode buildConnectionFor: '/command_velocity'.
 	connector 
 			typedAs: 'geometry_msgs/Twist';
