@@ -21,7 +21,7 @@ PhaROSBaseElement >> childs [
 { #category : #'as yet unclassified' }
 PhaROSBaseElement >> initialize [ 
 	super initialize.
-	childs := Set new.
+	childs := OrderedCollection  new.
 	
 ]
 

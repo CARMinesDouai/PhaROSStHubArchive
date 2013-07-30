@@ -270,12 +270,12 @@ PhaROSLaunchBuilder >> moveBase [
 		planner name: '        transform_tolerance' value: 0.4.
 
 		"Robot Configuration Parameters"
-		planner name: '        acc_lim_x' value: 0.10.
-		planner name: '        acc_lim_y' value: 0.10.
+		planner name: '        acc_lim_x' value: 0.20.
+		planner name: '        acc_lim_y' value: 0.20.
 		planner name: '        acc_lim_th' value: 0.5.
 
-		planner name: '        max_vel_x' value: 0.2.
-		planner name: '        min_vel_x' value: 0.15.
+		planner name: '        max_vel_x' value: 1.5.
+		planner name: '        min_vel_x' value: 0.20.
 
 		planner name: '        max_rotational_vel' value: 1.5.
 		planner name: '        min_in_place_rotational_vel' value: 1.0.
@@ -283,8 +283,8 @@ PhaROSLaunchBuilder >> moveBase [
 		planner name: '        holonomic_robot' value: false.
 
 		"Goal Tolerance Parameters"
-		planner name: '        xy_goal_tolerance' value: 0.3.
-		planner name: '        yaw_goal_tolerance' value:  1.3.
+		planner name: '        xy_goal_tolerance' value: 0.25.
+		planner name: '        yaw_goal_tolerance' value:  0.3.
 
 
 		"Trajectory Scoring Parameters"
@@ -450,20 +450,20 @@ PhaROSLaunchBuilder >> velocitySmoother [
 	self nodeletManager: 'move_nodelet_manager'.
 	conf := self nodelet: 'smoother' load: 'yocs_velocity_smoother/VelocitySmootherNodelet move_nodelet_manager'.
 	path := self yaml: [ : smooth |
-		smooth name: 'speed_lim_v' value: 0.8.
+		smooth name: 'speed_lim_v' value: 2.0.
 		smooth name: 'speed_lim_w' value: 5.4.
 		
-		smooth name: 'accel_lim_v' value: 0.6.
+		smooth name: 'accel_lim_v' value: 0.3.
 		smooth name: 'accel_lim_w' value: 5.4.
 		
 		smooth name: 'frequency' value: 20.0.
-		smooth name: 'decel_factor' value: 1.
+		smooth name: 'decel_factor' value: 0.7.
 	] named: 'smooth.yaml'.
 	conf rosparam file: path; command: 'load'.
 	
-	conf remap: 'move_action_server_velocity_smoother/odometry' to: '/odom'.
-	conf remap: 'move_action_server_velocity_smoother/raw_cmd_vel' to: '/raw_command_velocity'.
-	conf remap: 'move_action_server_velocity_smoother/smooth_cmd_vel' to: '/command_velocity'.
+	conf remap: '/smoother/odometry' to: '/odom'.
+	conf remap: '/smoother/raw_cmd_vel' to: '/raw_command_velocity'.
+	conf remap: '/smoother/smooth_cmd_vel' to: '/command_velocity'.
 	
 	
 	
