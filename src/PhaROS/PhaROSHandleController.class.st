@@ -111,10 +111,10 @@ PhaROSHandleController >> stop [
 
 { #category : #accessing }
 PhaROSHandleController >> tcpPort [
-	^9034
+	^9045
 ]
 
 { #category : #accessing }
 PhaROSHandleController >> xmlRpcPort [ 
-	^ 6634
+	^ 6458
 ]

@@ -202,22 +202,23 @@ PhaROSLaunchBuilder >> moveBase [
 	conf remap:'map' to: '/map'.
 	conf remap:'base_scan' to: '/scan'.
 	conf remap:'base_laser' to: '/laser'.
-	conf remap:'/cmd_vel' to: '/command_velocity'.
+	conf remap:'/cmd_vel' to: '/raw_command_velocity'.
 "	conf param:'controller_frequency' value:'10.0'."
 	
 	"common costmap configuration "
 	path := self yaml: [
 		: common |
-		common name:'obstacle_range' value: 6.0.
-		common name:'raytrace_range' value: 6.5.
-		common name:'footprint' value: '[[-0.25, 0.225], [0.25, 0.225], [0.25, -0.225], [-0.25, -0.225] ]'.
-		common name:'inflation_radius' value: 1.3.
+		common name:'obstacle_range' value: 6.5.
+		common name:'raytrace_range' value: 7.0.
+		"common name:'footprint' value: '[[-0.25, 0.225], [0.25, 0.225], [0.25, -0.225], [-0.25, -0.225] ]'."
+		common name: 'robot_radius' value: 0.40.
+		common name:'inflation_radius' value: 0.50.
 		common name:'unknown_cost_value' value: 255.
 		common name:'observation_sources' value: 'scan'.
 		common set:'scan' with: [ : scan | 
 			scan property name: 'sensor_frame' value: 'laser'.
 			scan property name: 'data_type' value:'LaserScan'.
-			scan property name: 'topic' value: 'scan'.
+			scan property name: 'topic' value: '/scan'.
 			scan property name: 'marking' value: 'true'.
 			scan property name: 'clearing' value: 'true'.
 		].
@@ -233,18 +234,16 @@ PhaROSLaunchBuilder >> moveBase [
 			:local | 
 			local property name:'global_frame' value: '/odom'.
 			local property name:'robot_base_frame' value: '/base_link'.
-			local property name:'update_frequency' value: 10.0.
-			local property name:'publish_frequency' value: 2.0.
+			local property name:'update_frequency' value: 5.0.
+			local property name:'publish_frequency' value: 5.0.
 			local property name:'static_map' value: false.
 			local property name:'rolling_window' value: true.
 			local property name:'width' value: 5.0.
 			local property name:'height' value: 5.0.
-			local property name:'resolution' value: 0.5.
+			local property name:'resolution' value: 0.05.
 			local property name:'transform_tolerance' value: 0.5.
-			local property name:'xy_goal_tolerance' value: 1.
-			local property name:'yaw_goal_tolerance' value: 3.14.
 		].
-	] named: 'local_costmap_params.yaml'.
+ 	] named: 'local_costmap_params.yaml'.
        conf rosparam file: path; command: 'load'.
 
 
@@ -254,7 +253,8 @@ PhaROSLaunchBuilder >> moveBase [
 		yaml set: 'global_costmap' with:[  :global |
 			global property name: 'global_frame' value: '/map'.
 			global property name: 'robot_base_frame' value: 'base_link'.
-			global property name: 'update_frequency' value: 2.0.
+			global property name: 'update_frequency' value: 3.0.
+			global property name: 'publish_frequency' value: 0.0.
 			global property name: 'static_map' value: true.
 			global property name: 'transform_tolerance' value: 0.5.
 		].
@@ -265,40 +265,45 @@ PhaROSLaunchBuilder >> moveBase [
 	"local planner configuration "
 	path := self yaml: [ 
 		: planner |
-		
+		planner name: 'controller_frequency' value:'10.0'.
 		planner name: 'TrajectoryPlannerROS' value:''.
 		planner name: '        transform_tolerance' value: 0.4.
 
 		"Robot Configuration Parameters"
-		planner name: '        acc_lim_x' value: 2.0.
-		planner name: '        acc_lim_y' value: 0.0.
-		planner name: '        acc_lim_th' value: 6.0.
+		planner name: '        acc_lim_x' value: 0.10.
+		planner name: '        acc_lim_y' value: 0.10.
+		planner name: '        acc_lim_th' value: 0.5.
 
-		planner name: '        max_vel_x' value: 0.3.
-		planner name: '        min_vel_x' value: 0.1.
+		planner name: '        max_vel_x' value: 0.2.
+		planner name: '        min_vel_x' value: 0.15.
 
-		planner name: '        y_vels' value:'[ 0.0 ]'.
-
-		planner name: '        max_rotational_vel' value: 0.8.
-		planner name: '        min_in_place_rotational_vel' value: 0.3.
+		planner name: '        max_rotational_vel' value: 1.5.
+		planner name: '        min_in_place_rotational_vel' value: 1.0.
+		
 		planner name: '        holonomic_robot' value: false.
 
 		"Goal Tolerance Parameters"
-		planner name: '        xy_goal_tolerance' value: 0.2.
-		planner name: '        yaw_goal_tolerance' value:  3.14.
+		planner name: '        xy_goal_tolerance' value: 0.3.
+		planner name: '        yaw_goal_tolerance' value:  1.3.
 
 
 		"Trajectory Scoring Parameters"
 		planner name: '        goal_distance_bias' value: 0.8.
 		planner name: '        path_distance_bias' value: 0.6.
-		planner name: '        occdist_scale' value: 0.04.
+		"planner name: '        sim_time' value: 1.5."
+		
+		"planner name: '        occdist_scale' value: 0.04."
+		
 		planner name: '        heading_lookahead' value: 0.325.
-		planner name: '        dwa' value: true.
+		planner name: '        dwa' value: false.
 		planner name: '        allow_unknown' value: false.
 
 		"Oscillation Prevention Parameters"
-		planner name: '        oscillation_reset_dist' value: 0.1.
-		planner name: '        controller_frequency' value: 0.5.
+   		planner name: '        oscillation_reset_dist' value: 0.05.
+  
+		planner name: '        vx_samples' value: 6.
+		planner name: '        vtheta_samples' value: 20.
+		
 		
 	] named: 'base_local_planner_params.yaml'.
 
@@ -306,7 +311,7 @@ PhaROSLaunchBuilder >> moveBase [
 	conf rosparam file: path ; command: 'load'.  
 
 
-
+	^ conf
 
 
 
@@ -315,6 +320,36 @@ PhaROSLaunchBuilder >> moveBase [
 { #category : #'as yet unclassified' }
 PhaROSLaunchBuilder >> nodeName [
 	^ 'launch'
+]
+
+{ #category : #slam }
+PhaROSLaunchBuilder >> nodelet: aName load: aString [
+	| conf  |
+
+
+	conf := self package: 'nodelet' type:'nodelet'  named: aName.
+	conf args: 'load ', aString.
+	^ conf.
+]
+
+{ #category : #slam }
+PhaROSLaunchBuilder >> nodelet: aName manager: aString [
+	| conf  |
+
+
+	conf := self package: 'nodelet' type:'nodelet'  named: aName.
+	conf args: 'load ', aString.
+	^ conf.
+]
+
+{ #category : #slam }
+PhaROSLaunchBuilder >> nodeletManager: aName [
+	| conf  |
+
+
+	conf := self package: 'nodelet' type:'nodelet'  named: aName.
+	conf args: ' manager __name:= ', aName.
+	^ conf.
 ]
 
 { #category : #'as yet unclassified' }
@@ -406,6 +441,32 @@ PhaROSLaunchBuilder >> tfaas: aFrameFrom to: aFrameTo rate: aRate [
 	conf param: 'rate' value: '30'.	
 		
 	^ conf.
+]
+
+{ #category : #slam }
+PhaROSLaunchBuilder >> velocitySmoother [
+	| conf path |
+	
+	self nodeletManager: 'move_nodelet_manager'.
+	conf := self nodelet: 'smoother' load: 'yocs_velocity_smoother/VelocitySmootherNodelet move_nodelet_manager'.
+	path := self yaml: [ : smooth |
+		smooth name: 'speed_lim_v' value: 0.8.
+		smooth name: 'speed_lim_w' value: 5.4.
+		
+		smooth name: 'accel_lim_v' value: 0.6.
+		smooth name: 'accel_lim_w' value: 5.4.
+		
+		smooth name: 'frequency' value: 20.0.
+		smooth name: 'decel_factor' value: 1.
+	] named: 'smooth.yaml'.
+	conf rosparam file: path; command: 'load'.
+	
+	conf remap: 'move_action_server_velocity_smoother/odometry' to: '/odom'.
+	conf remap: 'move_action_server_velocity_smoother/raw_cmd_vel' to: '/raw_command_velocity'.
+	conf remap: 'move_action_server_velocity_smoother/smooth_cmd_vel' to: '/command_velocity'.
+	
+	
+	
 ]
 
 { #category : #writing }

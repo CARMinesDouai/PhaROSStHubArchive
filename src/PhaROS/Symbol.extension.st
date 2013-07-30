@@ -13,3 +13,8 @@ Symbol >> adaptToAdapter [
 Symbol >> asDateAndTime [
 	^ self = #now ifTrue: [ DateAndTime now ] ifFalse: [ super asDateAndTime ].
 ]
+
+{ #category : #'*PhaROS' }
+Symbol >> asPhaROSController [ 
+	^ self value: PhaROSHandleController.
+]

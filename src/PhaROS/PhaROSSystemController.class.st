@@ -48,6 +48,11 @@ PhaROSSystemController class >> url: anUrl [
 ]
 
 { #category : #accessing }
+PhaROSSystemController >> asPhaROSController [
+	^ self
+]
+
+{ #category : #accessing }
 PhaROSSystemController >> finalize [ 
 	master stopAndUnregister.
 ]
