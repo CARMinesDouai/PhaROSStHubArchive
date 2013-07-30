@@ -1,5 +1,5 @@
 Class {
-	#name : #PNGDifferentiaVelocity,
+	#name : #PNGDifferentialVelocity,
 	#superclass : #Object,
 	#instVars : [
 		'linear',
@@ -9,21 +9,21 @@ Class {
 }
 
 { #category : #accessing }
-PNGDifferentiaVelocity >> angular [
+PNGDifferentialVelocity >> angular [
 	^ angular
 ]
 
 { #category : #accessing }
-PNGDifferentiaVelocity >> angular: anObject [
+PNGDifferentialVelocity >> angular: anObject [
 	angular := anObject
 ]
 
 { #category : #accessing }
-PNGDifferentiaVelocity >> linear [
+PNGDifferentialVelocity >> linear [
 	^ linear
 ]
 
 { #category : #accessing }
-PNGDifferentiaVelocity >> linear: anObject [
+PNGDifferentialVelocity >> linear: anObject [
 	linear := anObject
 ]
