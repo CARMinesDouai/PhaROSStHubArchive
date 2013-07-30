@@ -30,9 +30,8 @@ PureROSGmappings >> setup [
 		spec staticZeroTFFrom: '/base_footprint'  to: '/MT0'.
 	].
 	
-	" Output "
-	self configureLaser.
-	self configureTFIn: '/base_link' withParent: '/odom'.
+	
+	self robulab slam.
 
 	
 	

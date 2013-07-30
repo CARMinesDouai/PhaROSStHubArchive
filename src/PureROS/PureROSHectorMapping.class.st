@@ -12,7 +12,7 @@ Class {
 
 { #category : #commands }
 PureROSHectorMapping >> command: aCommand [
-	pureros node sendTo: '/syscommand' typedAs: 'std_msgs/String' a: [ : msg | msg data: aCommand ].
+	self controller rosnode sendTo: '/syscommand' typedAs: 'std_msgs/String' a: [ : msg | msg data: aCommand ].
 ]
 
 { #category : #'initialize-release' }
@@ -42,7 +42,7 @@ PureROSHectorMapping >> setup [
 	self launch: configuration.
 	
 	" Output "
-	self configureLaser.
+	self robulab broadcastSensors.
 ]
 
 { #category : #configuration }

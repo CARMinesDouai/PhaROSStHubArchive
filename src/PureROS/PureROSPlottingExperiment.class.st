@@ -9,7 +9,7 @@ Class {
 
 { #category : #'configure-system' }
 PureROSPlottingExperiment >> drawSquare [
-	pureros driveController drawSquare.
+	nil driveController drawSquare.
 ]
 
 { #category : #'configure-system' }

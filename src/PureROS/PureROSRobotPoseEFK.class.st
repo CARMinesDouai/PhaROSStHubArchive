@@ -60,11 +60,9 @@ PureROSRobotPoseEFK >> setup [
 		
 	].
 
-	self configureOdometry.
+	self robulab efk.
 	
-	self configureTFIn: '/robot' withParent: '/map'. " Watching the raw position in the map "
-	
-	self configurePoseStamped. "For plotting"
+	self robulab broadcastPoseStamped. "For plotting"
 	
 	self plot.
 ]

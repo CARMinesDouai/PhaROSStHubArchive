@@ -41,12 +41,9 @@ PureROSAMCL >> setup [
 		spec amcl.
 	].
 
-
-	self configureLaser.			"It will send laser scans to /scan topic"
-	self configureInitialPose.		"It will read /initialpose topic and change the robot pose"
-	self configureTFIn: '/base_link' withParent: '/odom'. "It will inform the position in terms of the robot in TF topic"
+	self robulab amcl.
 	
-	self configurePoseStamped.    "It will inform the pose in /kompai{Code}/pose topic"
+	self robulab broadcastPoseStamped.    "It will inform the pose in /kompai{Code}/pose topic"
 	
 	
 	

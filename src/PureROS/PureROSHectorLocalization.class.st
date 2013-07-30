@@ -54,10 +54,9 @@ PureROSHectorLocalization >> setup [
 		spec hectorLocalization.
 		
 	].
-
-	self configurePoseStampedWithCovarianceAs: '/poseupdate'.
-	self configurePoseStamped. "For plotting"
-	self configureInitialPose.
+	self robulab hectorLocalization.
+	self robulab broadcastPoseStamped.
+	
 	
 	self plot.
 ]

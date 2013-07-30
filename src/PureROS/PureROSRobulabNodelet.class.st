@@ -61,6 +61,20 @@ PureROSRobulabNodelet class >> scanTopic [
 	^ '/scan'
 ]
 
+{ #category : #experiments }
+PureROSRobulabNodelet >> amcl [
+	self broadcastLocalization.
+	self broadcastSensors.
+	self broadcastOdometry.
+	self consumeInitialPose.
+]
+
+{ #category : #experiments }
+PureROSRobulabNodelet >> amclNoOdometry [
+	self broadcastSensors.
+	self consumeInitialPose.
+]
+
 { #category : #broadcast }
 PureROSRobulabNodelet >> broadcastLandmarks [
 	self nodelets stargazer broadcastLandmarks.
@@ -86,6 +100,16 @@ PureROSRobulabNodelet >> broadcastPoseStamped [
 	
 ]
 
+{ #category : #experiments }
+PureROSRobulabNodelet >> broadcastPoseStampedWithCovarianceAs: aName [
+	self halt: 'port this'
+	"pureros movementBroadcasterAt: aTopicID typedAs: 'geometry_msgs/PoseWithCovarianceStamped'  transformedBy: [ : position : msg | 
+		 position intoGeometry_msgs_Pose: msg pose pose.
+		self setCovariance: msg pose.
+	]. "
+	
+]
+
 { #category : #broadcast }
 PureROSRobulabNodelet >> broadcastSensors [
 	notificationController notificateLaserTo: [ : laser | self scan: laser ].
@@ -104,6 +128,25 @@ PureROSRobulabNodelet >> configure [
 
 { #category : #'initialize-release' }
 PureROSRobulabNodelet >> consumeCommandVelocity [
+	| connector |
+	
+	connector := self rosnode buildConnectionFor: '/command_velocity'.
+	connector 
+			typedAs: 'geometry_msgs/Twist';
+			adapted: PNGDifferentialVelocity;
+			when: [ :msg | 
+				| holonomic |
+				holonomic :=  ' Ensure that  holonomic_robot: false in the planner configuration (commonly named base_local_planner_params.yaml)'.
+				self assert: msg value linear y = 0.0 description: holonomic.
+				self assert: msg value linear z = 0.0 description: holonomic.
+				self assert: msg value angular y = 0.0 description: holonomic.
+				self assert: msg value angular x = 0.0 description: holonomic.
+				true.
+			];
+			for: [ : aDifferentialVelocity |  robot differentialService moveAt: aDifferentialVelocity. ] .
+
+	connector connect.
+	
 ]
 
 { #category : #consume }
@@ -126,28 +169,38 @@ PureROSRobulabNodelet >> defaultPose [
 	^ self tfpose.
 ]
 
+{ #category : #experiments }
+PureROSRobulabNodelet >> efk [
+	self broadcastLocalization.
+	self broadcastOdometry.
+	
+	
+]
+
 { #category : #'private-out' }
 PureROSRobulabNodelet >> frameWritter [ 
-	self halt.
 	^frameWritter ifNil: [
 		frameWritter := self nodelets transformation writerFor: PureROSRobulabNodelet baseLinkFrame withParent:  PureROSRobulabNodelet baseLinkParentFrame. 
 	]
 	
 ]
 
+{ #category : #experiments }
+PureROSRobulabNodelet >> hectorLocalization [ 
+	self halt:' implemented in basicExperiment. but not ported yet'.
+	self broadcastPoseStampedWithCovarianceAs: '/poseupdate'.
+	self consumeInitialPose.
+]
+
 { #category : #'initialize-release' }
 PureROSRobulabNodelet >> initialize: aRobot [
-	robot := aRobot value: PNGRobulabHandcodedFactory.
-	
-	
+	robot := aRobot value: PNGRobulabDiscoveryFactory.
+		
 	notificationController := PurePhaROSNotificationController for: robot.
 	notificationController activateMovementNotifications.
 	notificationController activateLaserNotifications.
 
-	self broadcastLocalization.
-	self broadcastSensors.
-	self broadcastOdometry.
-	self consumeInitialPose.
+
 ]
 
 { #category : #accessing }
@@ -159,6 +212,11 @@ PureROSRobulabNodelet >> localizationController [
 PureROSRobulabNodelet >> localizeLandmarks [
 	self nodelets localizer learn:( self nodelets stargazer absoluteLandmarks ) .
 	self nodelets localizer map.
+]
+
+{ #category : #experiments }
+PureROSRobulabNodelet >> moveBase [
+	self consumeCommandVelocity.
 ]
 
 { #category : #broadcast }
@@ -221,6 +279,14 @@ PureROSRobulabNodelet >> scanOut [
 { #category : #accessing }
 PureROSRobulabNodelet >> setPose: aPNGRobotPose [ 
 	[ robot localizationService pose: aPNGRobotPose.  ] on: Error do:  [ :e | self halt. ].
+]
+
+{ #category : #experiments }
+PureROSRobulabNodelet >> slam [
+	self broadcastLocalization.
+	self broadcastSensors.
+	
+	
 ]
 
 { #category : #behavior }
