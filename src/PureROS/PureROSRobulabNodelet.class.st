@@ -61,6 +61,11 @@ PureROSRobulabNodelet class >> scanTopic [
 	^ '/scan'
 ]
 
+{ #category : #'as yet unclassified' }
+PureROSRobulabNodelet class >> stargazerFrame [ 
+	^ '/stargazer'
+]
+
 { #category : #experiments }
 PureROSRobulabNodelet >> amcl [
 	self broadcastLocalization.
@@ -121,7 +126,7 @@ PureROSRobulabNodelet >> broadcastSensors [
 PureROSRobulabNodelet >> configure [
 
 	self nodelets use: PhaROSTransformationNodelet as: #transformation.
-"	self nodelets use: SGROSStarGazerNodelet as: #stargazer."
+	self nodelets use: SGROSStarGazerNodelet as: #stargazer.
 	self nodelets use: PhaROSLocalizerNodelet as: #localizer.
 	self nodelets use: PhaROSMoveBaseNodelet as: #movebase.
 ]
@@ -184,6 +189,16 @@ PureROSRobulabNodelet >> frameWritter [
 		frameWritter := self nodelets transformation writerFor: PureROSRobulabNodelet baseLinkFrame withParent:  PureROSRobulabNodelet baseLinkParentFrame. 
 	]
 	
+]
+
+{ #category : #service }
+PureROSRobulabNodelet >> goTo: aPhaROSLocalizerEntity [ 
+	^ self nodelets movebase client goTo: aPhaROSLocalizerEntity asPose.
+]
+
+{ #category : #behavior }
+PureROSRobulabNodelet >> goToEntityID: anId [
+	^self goTo: (self nodelets localizer entity: anId).
 ]
 
 { #category : #experiments }
@@ -292,5 +307,5 @@ PureROSRobulabNodelet >> slam [
 
 { #category : #behavior }
 PureROSRobulabNodelet >> tfpose [
-	^ tfpose ifNil: [ tfpose := self nodelets transformation between: PureROSRobulabNodelet mapFrame and: PureROSRobulabNodelet baseLinkFrame ]
+	^ tfpose ifNil: [ tfpose := self nodelets transformation between: PureROSRobulabNodelet mapFrame and: PureROSRobulabNodelet baseLinkFrame  ]
 ]
