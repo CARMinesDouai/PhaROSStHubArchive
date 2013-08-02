@@ -37,7 +37,7 @@ SGGate class >> defaultBaudRate [
 
 { #category : #defaults }
 SGGate class >> defaultPortID [ 
-	^ '/dev/ttyUSB1'.
+	^ '/dev/ttyUSB0'.
 ]
 
 { #category : #announcing }

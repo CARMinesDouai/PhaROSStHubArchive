@@ -8,6 +8,47 @@ Class {
 	#category : #'StarGazer-Ros'
 }
 
+{ #category : #'topic-definition' }
+SGROSStarGazerNodelet class >> absoluteLandmarkTopic [
+	^ '/stargazer/absolute'
+]
+
+{ #category : #'topic-definition' }
+SGROSStarGazerNodelet class >> absoluteLandmarkTopicType [ 
+	^ 'pharos/SGLandMark'
+]
+
+{ #category : #dependencies }
+SGROSStarGazerNodelet class >> dependencies [ 
+	^ [ : launch | 
+		launch staticTFFrom: '/base_link' to: '/stargazer' of:' 0 0 20 0 0 0' rate: 50.	
+	]
+]
+
+{ #category : #dependencies }
+SGROSStarGazerNodelet class >> landMarkTypeDefinition [
+	^ PhaROSCompositeType named: 'pharos/SGLandMark' definedBy: {
+		#header -> (PhaROSTypeBrowser instance definition: 'std_msgs/Header'). 
+		#pose -> (PhaROSTypeBrowser instance definition: 'geometry_msgs/Pose') .
+		#landmark -> (PhaROSUInt16Type new)
+	}  withConstants: {}.
+]
+
+{ #category : #'topic-definition' }
+SGROSStarGazerNodelet class >> landmarkTopic [
+	^ '/stargazer/landmark'
+]
+
+{ #category : #'topic-definition' }
+SGROSStarGazerNodelet class >> landmarkTopicType [
+	^  'pharos/SGLandMark'
+]
+
+{ #category : #dependencies }
+SGROSStarGazerNodelet class >> types [
+	^ { #SGLandMark -> self landMarkTypeDefinition }.
+]
+
 { #category : #publish }
 SGROSStarGazerNodelet >> absoluteLandmark [ 
 	^ self rosnode topicPublisher: SGROSStarGazerNodelet absoluteLandmarkTopic typedAs: SGROSStarGazerNodelet absoluteLandmarkTopicType.
