@@ -69,6 +69,11 @@ PhaROSLocalizerNodelet >> entities [
 	^ entities values.
 ]
 
+{ #category : #accessing }
+PhaROSLocalizerNodelet >> entity: aSmallInteger [ 
+	^ self scannedEntities detect: [ : e | e id = aSmallInteger ]
+]
+
 { #category : #'as yet unclassified' }
 PhaROSLocalizerNodelet >> filein: aFileName [
 	| fl buffer |

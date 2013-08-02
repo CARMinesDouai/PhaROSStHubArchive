@@ -59,6 +59,14 @@ PhaROSPackageManager >> install: aPackage [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSPackageManager >> install: aPackage linkinVM: aVMBinaryPath [
+	^ self 	install: aPackage  
+			linkingVM: aVMBinaryPath 
+			copyingImage:  Smalltalk imageName asFileReference parent pathString
+	 
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSPackageManager >> install: aPackage linkingVM: aVMBinaryPath copyingImage: anImageFolderPath [  
 
 	 (FileSystem disk exists: aPackage path)  ifFalse: [	

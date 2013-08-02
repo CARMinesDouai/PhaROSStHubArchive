@@ -61,6 +61,11 @@ PhaROSLocalizerEntity >> asGeometry_msgsPointCollection [
 	^ points.
 ]
 
+{ #category : #converting }
+PhaROSLocalizerEntity >> asPose [
+	^self center  asPose
+]
+
 { #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> center [
 	self compact.

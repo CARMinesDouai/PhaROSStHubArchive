@@ -14,14 +14,20 @@ PhaROSFrameRelativePoseWriter class >> for: aFrame through: aNodelet [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSFrameRelativePoseWriter >> asString [
+	^ 'local-tf-writter'
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSFrameRelativePoseWriter >> frame: aFrame [
-	frame := aFrame
-		
+	frame := aFrame.
+	frame broadcaster: self.
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSFrameRelativePoseWriter >> pose: aPhaROSPose [
 	frame pose: aPhaROSPose. 
+	frame stamp: DateAndTime now.
 	
 	tfnodelet tf: [ : aTfMessage |
 
@@ -31,6 +37,11 @@ PhaROSFrameRelativePoseWriter >> pose: aPhaROSPose [
 	 ].
 
 
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSFrameRelativePoseWriter >> printOn: aStream [
+	aStream nextPutAll: self asString.
 ]
 
 { #category : #'as yet unclassified' }
