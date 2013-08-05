@@ -7,146 +7,168 @@ Class {
 	#category : #'PhaROS-PackageManager'
 }
 
-{ #category : #'as yet unclassified' }
-PhaROSPackage class >> instance [
-	self = PhaROSPackage ifTrue: [
-		self error: ' This class is abstract! '.
-	].
-	^ instance ifNil: [ 
-		
-		instance := super new.  
-	].
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSPackage class >> new [ 
-	self error: ' Use instance for creation! '
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSPackage class >> nodeletsDependencies [ 
-	^ {}
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSPackage class >> rosDependencies [ 
-	^ { #roscpp . #rospy . #std_msgs . #geometry_msgs }
-]
-
 { #category : #abstract }
-PhaROSPackage >> author [
+PhaROSPackage class >> author [
 	self subclassResponsibility 
 ]
 
 { #category : #path }
-PhaROSPackage >> bin [
+PhaROSPackage class >> bin [
 	^ self path ,'/bin'
 ]
 
 { #category : #path }
-PhaROSPackage >> build [
+PhaROSPackage class >> build [
 	^ self path ,'/build'
 ]
 
 { #category : #path }
-PhaROSPackage >> image [
+PhaROSPackage class >> cMakeList [
+
+	^ self path, '/CMakeLists.txt' 
+]
+
+{ #category : #abstract }
+PhaROSPackage class >> cmake [
+	self subclassResponsibility.
+]
+
+{ #category : #'initialize-release' }
+PhaROSPackage class >> create [
+	PhaROSPackageManager new create: self
+]
+
+{ #category : #abstract }
+PhaROSPackage class >> encodeFiles [
+	| file |
+	file := StandardFileStream readOnlyFileNamed: self cMakeList.
+
+	self class compile: ('cmake
+		^ ''{1} ''
+	' format: { (file upToEnd copyReplaceAll: '''' with: '"')} ).
+	
+	file close.
+	
+	
+	file := StandardFileStream readOnlyFileNamed: self packageXML.
+	
+	self class compile: (' xml
+		^ ''{1}''
+	' format: {(file upToEnd copyReplaceAll: '''' with: '"')}).
+	
+	file close.
+]
+
+{ #category : #path }
+PhaROSPackage class >> image [
 	^ self path ,'/image/Pharo.image'
 ]
 
 { #category : #path }
-PhaROSPackage >> imageFolder [
+PhaROSPackage class >> imageFolder [
 	^ self path ,'/image'
 ]
 
 { #category : #'initialize-release' }
-PhaROSPackage >> initialize [
-	
+PhaROSPackage class >> install [
+	PhaROSPackageManager new install: self
 ]
 
 { #category : #'initialize-release' }
-PhaROSPackage >> installScript: aScriptSelector [
+PhaROSPackage class >> installScript: aScriptSelector [
 	| script |
 		script := StandardFileStream forceNewFileNamed: (self scripts, '/',( aScriptSelector asString copyReplaceAll: 'script' with:''  ) asLowercase).
-		script  nextPutAll:  ('{1} new {2}. ' format: { self class name . aScriptSelector asString }), String crlf.
+		script  nextPutAll:  ('{1} new {2}. ' format: { self name . aScriptSelector asString }), String crlf.
 		script close. 
 	
 ]
 
 { #category : #'initialize-release' }
-PhaROSPackage >> installScripts [ 
-	self class allMethods select: [ :m | (m selector asString beginsWith: 'script' ) and: [ m selector isUnary ] ] thenDo: [
+PhaROSPackage class >> installScripts [ 
+	self allMethods select: [ :m | (m selector asString beginsWith: 'script' ) and: [ m selector isUnary ] ] thenDo: [
 		: scriptMethod |
 		self installScript: scriptMethod selector.
 	] 
 ]
 
 { #category : #abstract }
-PhaROSPackage >> location [
+PhaROSPackage class >> location [
 	^ self subclassResponsibility.
 ]
 
 { #category : #path }
-PhaROSPackage >> mainBinary [
+PhaROSPackage class >> mainBinary [
 	^ self bin, '/pharos'.
 ]
 
 { #category : #path }
-PhaROSPackage >> msg [
+PhaROSPackage class >> msg [
 	^ self path ,'/msg'
 ]
 
+{ #category : #path }
+PhaROSPackage class >> nodeletsDependencies [ 
+	^ self class nodeletsDependencies 
+]
+
 { #category : #abstract }
-PhaROSPackage >> name [
+PhaROSPackage class >> packageName [
 	self subclassResponsibility 
 ]
 
 { #category : #path }
-PhaROSPackage >> nodeletsDependencies [ 
-	^ self class nodeletsDependencies 
+PhaROSPackage class >> packageXML [ 
+
+	^ self path, '/package.xml' 
 ]
 
 { #category : #path }
-PhaROSPackage >> path [
-	^ self location, '/', self name
+PhaROSPackage class >> path [
+	^ self location, '/', self packageName 
 ]
 
 { #category : #'initialize-release' }
-PhaROSPackage >> removeScript: aScriptSelector [
+PhaROSPackage class >> removeScript: aScriptSelector [
 	FileSystem disk delete: (self scripts, '/',( aScriptSelector asString copyFrom: 'script' size) asLowercase).
 		
 ]
 
 { #category : #accessing }
-PhaROSPackage >> rosDependencies [
-	^ self class rosDependencies
+PhaROSPackage class >> rosDependencies [ 
+	^ { #roscpp . #rospy . #std_msgs . #geometry_msgs . #message_generation . #message_runtime }
 ]
 
 { #category : #accessing }
-PhaROSPackage >> rosDependenciesString [
+PhaROSPackage class >> rosDependenciesString [
 	^ self rosDependencies inject: '' into:  [: dep :acc | acc,' ', dep asString] .
+]
+
+{ #category : #path }
+PhaROSPackage class >> scripts [
+	^ self path ,'/image/scripts'
+]
+
+{ #category : #abstract }
+PhaROSPackage class >> version [ 
+	self subclassResponsibility.
+]
+
+{ #category : #path }
+PhaROSPackage class >> vm [
+	^ self path ,'/vm/pharo'
+]
+
+{ #category : #path }
+PhaROSPackage class >> vmFolder [
+	^ self path ,'/vm'
+]
+
+{ #category : #abstract }
+PhaROSPackage class >> xml [
+	self subclassResponsibility.
 ]
 
 { #category : #scripts }
 PhaROSPackage >> scriptTest [
 	Transcript open; show: (' {1} package has executed script test ' format: { self class name asString } ) cr.
-]
-
-{ #category : #path }
-PhaROSPackage >> scripts [
-	^ self path ,'/image/scripts'
-]
-
-{ #category : #abstract }
-PhaROSPackage >> version [ 
-	self subclassResponsibility.
-]
-
-{ #category : #path }
-PhaROSPackage >> vm [
-	^ self path ,'/vm/pharo'
-]
-
-{ #category : #path }
-PhaROSPackage >> vmFolder [
-	^ self path ,'/vm'
 ]
