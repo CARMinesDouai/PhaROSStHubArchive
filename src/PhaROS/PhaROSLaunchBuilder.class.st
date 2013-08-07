@@ -36,9 +36,8 @@ PhaROSLaunchBuilder >> amcl [
 
 	  conf param:'odom_model_type' value:'diff'.
 	  conf param:'odom_alpha5' value:'0.1'.
-	  conf param:'transform_tolerance' value:'0.2'.
 	  conf param:'gui_publish_rate' value:'10.0'.
-	  conf param:'laser_max_beams' value:'30'.
+	  conf param:'laser_max_beams' value:'100'.
 	  conf param:'min_particles' value:'500'.
 	  conf param:'max_particles' value:'5000'.
 	  conf param:'kld_err' value:'0.05'.
@@ -66,8 +65,8 @@ PhaROSLaunchBuilder >> amcl [
 	  conf param:'base_frame_id" type="str' value:'base_link'.
 	  conf param:'global_frame_id" type="str' value:'map'.
 
-	  conf param:'resample_interval' value:'1'.
-	  conf param:'transform_tolerance' value:'0.1'.
+	  conf param:'resample_interval' value:'2.0'.
+	  conf param:'transform_tolerance' value:'1.0'.
 	  conf param:'recovery_alpha_slow' value:'0.0'.
 	  conf param:'recovery_alpha_fast' value:'0.0'.
 	  conf param:'use_map_topic' value:'true'.
@@ -203,6 +202,9 @@ PhaROSLaunchBuilder >> moveBase [
 	conf remap:'base_scan' to: '/scan'.
 	conf remap:'base_laser' to: '/laser'.
 	conf remap:'/cmd_vel' to: '/raw_command_velocity'.
+	conf param: 'clearing_rotation_allowed' value: 'false'.
+	
+
 "	conf param:'controller_frequency' value:'10.0'."
 	
 	"common costmap configuration "
@@ -211,8 +213,8 @@ PhaROSLaunchBuilder >> moveBase [
 		common name:'obstacle_range' value: 6.5.
 		common name:'raytrace_range' value: 7.0.
 		"common name:'footprint' value: '[[-0.25, 0.225], [0.25, 0.225], [0.25, -0.225], [-0.25, -0.225] ]'."
-		common name: 'robot_radius' value: 0.40.
-		common name:'inflation_radius' value: 0.50.
+		common name: 'robot_radius' value: 0.35.
+		common name:'inflation_radius' value: 0.25.
 		common name:'unknown_cost_value' value: 255.
 		common name:'observation_sources' value: 'scan'.
 		common set:'scan' with: [ : scan | 
@@ -241,7 +243,7 @@ PhaROSLaunchBuilder >> moveBase [
 			local property name:'width' value: 5.0.
 			local property name:'height' value: 5.0.
 			local property name:'resolution' value: 0.05.
-			local property name:'transform_tolerance' value: 0.5.
+			local property name:'transform_tolerance' value: 1.0.
 		].
  	] named: 'local_costmap_params.yaml'.
        conf rosparam file: path; command: 'load'.
@@ -256,7 +258,7 @@ PhaROSLaunchBuilder >> moveBase [
 			global property name: 'update_frequency' value: 3.0.
 			global property name: 'publish_frequency' value: 0.0.
 			global property name: 'static_map' value: true.
-			global property name: 'transform_tolerance' value: 0.5.
+			global property name: 'transform_tolerance' value: 1.0.
 		].
 	 ] named: 'global_costmap_params.yaml'.
        conf rosparam file: path; command: 'load'.
@@ -267,11 +269,11 @@ PhaROSLaunchBuilder >> moveBase [
 		: planner |
 		planner name: 'controller_frequency' value:'10.0'.
 		planner name: 'TrajectoryPlannerROS' value:''.
-		planner name: '        transform_tolerance' value: 0.4.
+		planner name: '        transform_tolerance' value: 1.0.
 
 		"Robot Configuration Parameters"
 		planner name: '        acc_lim_x' value: 0.9.
-		planner name: '        acc_lim_y' value: 0.9.
+		planner name: '        acc_lim_y' value: 0.0.
 		planner name: '        acc_lim_th' value: 0.9.
 
 		planner name: '        max_vel_x' value: 0.9.
@@ -288,20 +290,23 @@ PhaROSLaunchBuilder >> moveBase [
 
 
 		"Trajectory Scoring Parameters"
-		planner name: '        goal_distance_bias' value: 0.8.
-		planner name: '        path_distance_bias' value: 0.6.
-		"planner name: '        sim_time' value: 1.5."
+		planner name: '        goal_distance_bias' value: 24.
+		planner name: '        path_distance_bias' value: 32.
+		planner name: '        sim_time' value: 1.5.
+		planner name: '        sim_granularity' value: 0.01.		
 		
-		"planner name: '        occdist_scale' value: 0.04."
+		planner name: '        occdist_scale' value: 0.04.
 		
 		planner name: '        heading_lookahead' value: 0.325.
 		planner name: '        dwa' value: false.
+		planner name: '        meter_scoring' value: true.
 		planner name: '        allow_unknown' value: false.
 
 		"Oscillation Prevention Parameters"
    		planner name: '        oscillation_reset_dist' value: 0.05.
   
-		planner name: '        vx_samples' value: 6.
+		planner name: '        vy_samples' value: 3.
+		planner name: '        vx_samples' value: 10.
 		planner name: '        vtheta_samples' value: 20.
 		
 		

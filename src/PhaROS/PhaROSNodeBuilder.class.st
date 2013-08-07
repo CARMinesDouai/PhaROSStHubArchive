@@ -34,6 +34,12 @@ PhaROSNodeBuilder >> findOrCreateParam: aName [
 ]
 
 { #category : #properties }
+PhaROSNodeBuilder >> initialize [ 
+	super initialize.
+	self respawn: true.
+]
+
+{ #category : #properties }
 PhaROSNodeBuilder >> name: aName [
 	^ self at: #name put: aName ofType: String.
 ]

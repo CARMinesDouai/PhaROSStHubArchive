@@ -4,7 +4,9 @@ Class {
 	#instVars : [
 		'node',
 		'handleName',
-		'nodelets'
+		'nodelets',
+		'tcpPort',
+		'xmlPort'
 	],
 	#category : #'PhaROS-Controllers'
 }
@@ -76,7 +78,8 @@ PhaROSHandleController >> handleName [
 PhaROSHandleController >> initialize [
 	super initialize .
 	nodelets := PhaROSNodeletContainer new  controller: self; yourself.
-	
+	tcpPort := (	(Random seed: DateAndTime now asUnixTime)  next; next; nextInt:1000) + 9000.
+	xmlPort  := ((Random seed: DateAndTime now asUnixTime)  next; next; nextInt:1000) + 6000.
 ]
 
 { #category : #package }
@@ -111,10 +114,10 @@ PhaROSHandleController >> stop [
 
 { #category : #accessing }
 PhaROSHandleController >> tcpPort [
-	^9087
+	^tcpPort
 ]
 
 { #category : #accessing }
 PhaROSHandleController >> xmlRpcPort [ 
-	^ 6549
+	^ xmlPort
 ]
