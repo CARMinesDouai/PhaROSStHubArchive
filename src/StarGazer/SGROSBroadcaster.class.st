@@ -11,7 +11,7 @@ Class {
 { #category : #broadcasting }
 SGROSBroadcaster >> broadcast: landmark [ 
 
-	({ 2 . 82 . 608 } includes: landmark id ) ifTrue: [
+	({ 2 . 82 . 608 . 18} includes: landmark id ) ifTrue: [
 		topicPublisher send: [ :msg | 
 			msg header frame_id: 'stargazer'.
 			landmark pose intoGeometry_msgs_Pose: msg pose.
