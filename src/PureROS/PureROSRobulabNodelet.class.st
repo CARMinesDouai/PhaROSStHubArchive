@@ -11,7 +11,8 @@ Class {
 		'localizationController',
 		'scan',
 		'odometer',
-		'odometryOut'
+		'odometryOut',
+		'keepMoving'
 	],
 	#classInstVars : [
 		'initialpose'
@@ -219,6 +220,28 @@ PureROSRobulabNodelet >> initialize: aRobot [
 
 ]
 
+{ #category : #service }
+PureROSRobulabNodelet >> keepMoving [
+	^keepMoving 
+]
+
+{ #category : #service }
+PureROSRobulabNodelet >> keepMoving: aBool [
+	keepMoving:= aBool 
+]
+
+{ #category : #service }
+PureROSRobulabNodelet >> landmarkNavigation [
+	self keepMoving: true.
+	self nodelets movebase goRandomOf: (self nodelets localizer entities collect:[ :e | e center asPose ]) asArray while: [ self keepMoving ].
+]
+
+{ #category : #service }
+PureROSRobulabNodelet >> loadLandmarks [
+	self nodelets localizer filein: 'map-landmarks-inner.st'.
+	self nodelets localizer map.
+]
+
 { #category : #accessing }
 PureROSRobulabNodelet >> localizationController [
 	^ localizationController
@@ -275,6 +298,12 @@ PureROSRobulabNodelet >> poseStampedOut [
 { #category : #'private-out' }
 PureROSRobulabNodelet >> poseStampedTopic [
 	^ '/kompai2/pose'
+]
+
+{ #category : #service }
+PureROSRobulabNodelet >> saveLandmarks [
+	self nodelets localizer fileout: 'map-landmarks-inner.st'.
+	
 ]
 
 { #category : #broadcast }
