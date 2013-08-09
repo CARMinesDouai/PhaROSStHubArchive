@@ -97,6 +97,23 @@ SGROSStarGazerNodelet >> landmarks [
 	]
 ]
 
+{ #category : #calculations }
+SGROSStarGazerNodelet >> merge: gpose  with:  landmark [ 
+		| lp pose th module |
+		
+		lp := PhaROSPose fromGeometry_msgsPose: landmark pose.	
+		pose := PhaROSPose fromGeometry_msgsPose: gpose.
+				
+		th := pose orientation as2DOrientation z.
+		module := lp position module2d.
+		pose position: pose position + (PhaROSPosition x: (th cos * module) y: (th sin * module)  z:  0.0).
+
+		"Now i need to transport the landmark 0 angel to the given coordinate system. Since the rotation is an amount of radians from 0, i just need to substract the landmark angle measure to the given pose angle.  "
+		pose orientation: th -  lp orientation as2DOrientation.
+		
+		^ pose.
+]
+
 { #category : #publish }
 SGROSStarGazerNodelet >> mergeWithPose: aPoseTopicReader [ 
 	
@@ -115,33 +132,10 @@ SGROSStarGazerNodelet >> name [
 { #category : #publish }
 SGROSStarGazerNodelet >> poseMerger [
 
-"HAY QUE CAMBIAR ESTO!  (TRANSFORMAR PUNTO DE LANDMARK COORDENADAS DE /map)"
-
-"		msg pose position x: pose position x + landmark pose position x. 
-		msg pose position y: pose position y + landmark pose position y. 
-		msg pose position z: pose position z + landmark pose position z. 
-		
-		msg pose orientation x: pose orientation x + landmark pose orientation x.
-		msg pose orientation y: pose orientation y + landmark pose orientation y.
-		msg pose orientation z: pose orientation z + landmark pose orientation z.
-		msg pose orientation w: pose orientation w + landmark pose orientation w.		
-"
-
 	^ [ :msg :gpose :landmark | 
-		| lp pose th module |
-		
-		lp := PhaROSPose fromGeometry_msgsPose: landmark pose.	
-		pose := PhaROSPose fromGeometry_msgsPose: gpose.
-				
-		th := pose orientation as2DOrientation z.
-		module := lp position module2d.
-		pose position: pose position + (PhaROSPosition x: (th cos * module) y: (th sin * module)  z:  0.0).
-		
+
 		msg header frame_id: '/map'.
-		msg pose: pose asGeometry_msgsPose.
-		 
-		"msg pose: (PhaROSPose 	position: (lp position + (lp orientation rotatePosition: pose position)) 
-									orientation: lp orientation) asGeometry_msgsPose ."
+		msg pose: (self merge: gpose with: landmark) asGeometry_msgsPose.
 		msg landmark: landmark landmark.
 	   ].
 
