@@ -120,6 +120,11 @@ PhaROSLocalizerEntity >> length [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSLocalizerEntity >> locate: aPose [
+	^ self center asPose + aPose.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> measures: aMeasureset [
 	measures := aMeasureset asSet
 ]

@@ -24,7 +24,8 @@ Class {
 	#superclass : #PhaROSStaticNodelet,
 	#instVars : [
 		'entities',
-		'mapping'
+		'mapping',
+		'pointing'
 	],
 	#category : #'PhaROS-Nodelets-Localizer'
 }
@@ -50,6 +51,16 @@ PhaROSLocalizerNodelet class >> measureThreshold [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSLocalizerNodelet class >> pointMapTopic [
+	^'/localizer/entities/points'
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLocalizerNodelet class >> pointMapTopicType [ 
+	^ 'geometry_msgs/PoseArray'
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSLocalizerNodelet >> broadcastEntities [
 	| points |
 	
@@ -59,6 +70,19 @@ PhaROSLocalizerNodelet >> broadcastEntities [
 			msg cell_width: 0.05.
 			msg cell_height: 0.05.
 			msg cells addAll:  points
+	].	
+
+	(Delay forMilliseconds: 1000) wait.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLocalizerNodelet >> broadcastPoints [
+	| points |
+	
+		
+	pointing send: [ : msg | 
+		 msg header frame_id: '/map'.
+		 entities values collect: [ : e | e asPose asGeometry_msgsPose ] thenDo: [ : p | msg addPose: p ].
 	].	
 
 	(Delay forMilliseconds: 1000) wait.
@@ -120,6 +144,16 @@ PhaROSLocalizerNodelet >> map [
 		mapping := self rosnode topicPublisher: PhaROSLocalizerNodelet mapTopic typedAs: PhaROSLocalizerNodelet mapTopicType.
 		
 		self paralellize looping broadcastEntities.
+		
+	].
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLocalizerNodelet >> mapPoints [
+	pointing  ifNil: [
+		pointing := self rosnode topicPublisher: PhaROSLocalizerNodelet pointMapTopic typedAs: PhaROSLocalizerNodelet pointMapTopicType.
+		
+		self paralellize looping broadcastPoints.
 		
 	].
 ]

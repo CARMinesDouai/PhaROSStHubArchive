@@ -12,6 +12,14 @@ Class {
 }
 
 { #category : #construction }
+PhaROSHandleController class >> rpcTest [
+	| ttb |
+	ttb :=  self localhost.
+	ttb nodelets use: PhaROSRPCNodelet as: #rpc.
+	^ ttb.
+]
+
+{ #category : #construction }
 PhaROSHandleController class >> turtlebot [
 	| ttb |
 	ttb :=  self url: 'http://10.1.161.20:11311/'.
