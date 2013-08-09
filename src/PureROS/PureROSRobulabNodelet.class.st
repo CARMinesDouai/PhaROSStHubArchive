@@ -12,7 +12,8 @@ Class {
 		'scan',
 		'odometer',
 		'odometryOut',
-		'keepMoving'
+		'keepMoving',
+		'navigator'
 	],
 	#classInstVars : [
 		'initialpose'
@@ -194,7 +195,7 @@ PureROSRobulabNodelet >> frameWritter [
 
 { #category : #service }
 PureROSRobulabNodelet >> goTo: aPhaROSLocalizerEntity [ 
-	^ self nodelets movebase client goTo: aPhaROSLocalizerEntity asPose.
+	^ self navigator goTo: aPhaROSLocalizerEntity.
 ]
 
 { #category : #behavior }
@@ -256,6 +257,14 @@ PureROSRobulabNodelet >> localizeLandmarks [
 { #category : #experiments }
 PureROSRobulabNodelet >> moveBase [
 	self consumeCommandVelocity.
+]
+
+{ #category : #service }
+PureROSRobulabNodelet >> navigator [
+	^ navigator ifNil:[
+			 navigator := PureROSLandmarkNavigator new. 
+			 navigator robulab: self.
+		]
 ]
 
 { #category : #broadcast }
