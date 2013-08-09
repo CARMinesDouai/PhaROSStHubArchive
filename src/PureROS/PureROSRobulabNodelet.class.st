@@ -96,7 +96,9 @@ PureROSRobulabNodelet >> amclNoOdometry [
 { #category : #broadcast }
 PureROSRobulabNodelet >> broadcastLandmarks [
 	self nodelets stargazer broadcastLandmarks.
+	2 seconds asDuration asDelay wait.
 	self nodelets stargazer mergeWithPose: self defaultPose.
+	2 seconds asDuration asDelay wait.
 ]
 
 { #category : #broadcast }
@@ -162,7 +164,7 @@ PureROSRobulabNodelet >> consumeCommandVelocity [
 				self assert: msg value angular x = 0.0 description: holonomic.
 				true.
 			];
-			for: [ : aDifferentialVelocity |  robot differentialService moveAt: aDifferentialVelocity. ] .
+			for: [ : aDifferentialVelocity |  robot differentialService moveAt: aDifferentialVelocity.  ] .
 
 	connector connect.
 	
@@ -284,12 +286,15 @@ PureROSRobulabNodelet >> localizationController [
 { #category : #behavior }
 PureROSRobulabNodelet >> localizeLandmarks [
 	self nodelets localizer learn:( self nodelets stargazer absoluteLandmarks ) .
+	2 seconds asDuration asDelay wait.
 	self nodelets localizer map.
+	self nodelets localizer mapPoints.
+	2 seconds asDuration asDelay wait.
 ]
 
 { #category : #experiments }
 PureROSRobulabNodelet >> moveBase [
-	self consumeCommandVelocity.
+	"self consumeCommandVelocity."
 ]
 
 { #category : #service }
