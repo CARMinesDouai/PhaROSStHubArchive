@@ -19,8 +19,8 @@ PhaROSLocalizerEntity class >> for: anId [
 PhaROSLocalizerEntity >> add: aMeasure [ 
 
 	adding ifTrue: [
-		(measures size = 0 or: [ (self center - aMeasure pose position ) module2d < 1.0 ] ) ifTrue: [
-			measures add: aMeasure pose position.
+		(measures size = 0 or: [ (self center position - aMeasure pose position ) module2d < 1.0 ] ) ifTrue: [
+			measures add: aMeasure pose.
 			self compact > 20 ifTrue: [
 				adding := false.
 			].
@@ -45,7 +45,7 @@ PhaROSLocalizerEntity >> asDump [
 { #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> asGeometry_msgsPointCollection [
 	| center a b  points |
-	center := self center.
+	center := self center position.
 	
 	a := (PhaROSPosition x: center x - (self length / 2) y: center y - (self length / 2) z: 0.0 ).
 	b := (PhaROSPosition x: center x + (self length / 2) y: center y + (self length / 2) z: 0.0).
@@ -63,13 +63,18 @@ PhaROSLocalizerEntity >> asGeometry_msgsPointCollection [
 
 { #category : #converting }
 PhaROSLocalizerEntity >> asPose [
-	^self center  asPose
+	^self center 
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> center [
+	| point angle |
 	self compact.
-	^ measures average. 
+	point := (measures collect: #position) average .
+	angle := (measures collect: [ :p | p orientation as2DOrientation z]) average.
+	point := point asPose.
+	point orientation: (PhaROS2DOrientation z: angle).
+	^ point. 
 	
 ]
 
@@ -80,7 +85,7 @@ PhaROSLocalizerEntity >> compact [
 	
 	measures do: [ : measure | 
 		new detect: [ : m2 | 
-			measure  approximated: m2  threshold: PhaROSLocalizerNodelet measureThreshold 
+			measure position approximated: m2 position  threshold: PhaROSLocalizerNodelet measureThreshold 
 		] ifNone: [new add: measure ].
 	].
 	measures := new.

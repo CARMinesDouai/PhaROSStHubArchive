@@ -71,6 +71,11 @@ PhaROSPose >> asGeometry_msgsPose [
 	^ gp.
 ]
 
+{ #category : #printing }
+PhaROSPose >> asPose [
+^ self.
+]
+
 { #category : #accessing }
 PhaROSPose >> orientation [
 	^ orientation
