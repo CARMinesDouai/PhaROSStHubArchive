@@ -13,7 +13,8 @@ Class {
 		'odometer',
 		'odometryOut',
 		'keepMoving',
-		'navigator'
+		'navigator',
+		'initialPoseOut'
 	],
 	#classInstVars : [
 		'initialpose'
@@ -36,6 +37,16 @@ PureROSRobulabNodelet class >> dependencies [
 	^ [ : spec |  
 		spec rviz. 
 	] 
+]
+
+{ #category : #'as yet unclassified' }
+PureROSRobulabNodelet class >> initialPoseTopic [
+	^  '/initialpose'
+]
+
+{ #category : #'as yet unclassified' }
+PureROSRobulabNodelet class >> initialPoseTopicType [
+	^  'geometry_msgs/PoseWithCovarianceStamped'
 ]
 
 { #category : #'as yet unclassified' }
@@ -162,9 +173,9 @@ PureROSRobulabNodelet >> consumeInitialPose [
 
 	initialpose ifNil: [
 		|connector|
-		connector := self rosnode buildConnectionFor: '/initialpose'.
+		connector := self rosnode buildConnectionFor: PureROSRobulabNodelet initialPoseTopic .
 
-		connector typedAs: 'geometry_msgs/PoseWithCovarianceStamped';
+		connector typedAs: PureROSRobulabNodelet initialPoseTopicType;
 				adapted: #pose \> #pose \> PNGRobotPose;
 				for: [ : aPNGRobotPose |  self setPose: aPNGRobotPose.	] .
 			
@@ -210,6 +221,26 @@ PureROSRobulabNodelet >> hectorLocalization [
 	self consumeInitialPose.
 ]
 
+{ #category : #consume }
+PureROSRobulabNodelet >> initialPose: aPose [
+	
+	self initialPoseOut send: [
+		: msg |
+		msg header frame_id: '/map'.
+		self setCovariance: msg pose.
+		msg pose pose: aPose asGeometry_msgsPose.
+	]. 
+
+]
+
+{ #category : #consume }
+PureROSRobulabNodelet >> initialPoseOut [
+	
+	^ initialPoseOut ifNil: [
+		initialPoseOut := self rosnode topicPublisher: PureROSRobulabNodelet initialPoseTopic  typedAs: PureROSRobulabNodelet initialPoseTopicType.
+	].
+]
+
 { #category : #'initialize-release' }
 PureROSRobulabNodelet >> initialize: aRobot [
 	robot := aRobot value: PNGRobulabDiscoveryFactory.
@@ -241,6 +272,8 @@ PureROSRobulabNodelet >> landmarkNavigation [
 PureROSRobulabNodelet >> loadLandmarks [
 	self nodelets localizer filein: 'map-landmarks-inner.st'.
 	self nodelets localizer map.
+	self nodelets localizer mapPoints. 
+	self nodelets stargazer broadcastLandmarks.
 ]
 
 { #category : #accessing }
@@ -310,6 +343,11 @@ PureROSRobulabNodelet >> poseStampedTopic [
 ]
 
 { #category : #service }
+PureROSRobulabNodelet >> rpc [
+	self nodelets use: PhaROSRPCNodelet as: #rpc.
+]
+
+{ #category : #service }
 PureROSRobulabNodelet >> saveLandmarks [
 	self nodelets localizer fileout: 'map-landmarks-inner.st'.
 	
@@ -328,6 +366,25 @@ PureROSRobulabNodelet >> scan: aLaserMeasure [
 PureROSRobulabNodelet >> scanOut [
 	^ scan ifNil: [ scan := self rosnode topicPublisher: PureROSRobulabNodelet scanTopic typedAs: 'sensor_msgs/LaserScan' ].
 	
+]
+
+{ #category : #'private-out' }
+PureROSRobulabNodelet >> setCovariance: aMessage [
+	| dValue |
+	(36 - (aMessage covariance size) ) timesRepeat: [ 
+		aMessage covariance add: 0.0. 
+	].
+	self flag: #lookAtComment.
+" This value is really arbitrar.. is based on turtlebot specs, it should be based on robulab, or even better, parametrized "
+	dValue := (0.017 * 0.017) roundUpTo: 0.0000001. 
+	
+	aMessage  covariance at:1 put: dValue.
+	aMessage covariance at:8 put: dValue.
+	aMessage  covariance at:15 put: dValue.
+	aMessage covariance at:22 put: dValue.
+	aMessage covariance at:29 put: dValue.	
+	aMessage covariance at:36 put: dValue.
+		
 ]
 
 { #category : #accessing }
