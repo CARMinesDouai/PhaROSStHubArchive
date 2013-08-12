@@ -83,10 +83,7 @@ PhaROSPosition >> printOn: aStream [
 
 { #category : #printing }
 PhaROSPosition >> rotate: th [
-	| module |
-	module := self module2d.
-	^ PhaROSPosition x: (th cos * module) y: (th sin * module)  z:  0.0. 
-		
+	^ (PhaROS2DOrientation z: th) asQuaternion rotatePosition: self.
 ]
 
 { #category : #accessing }

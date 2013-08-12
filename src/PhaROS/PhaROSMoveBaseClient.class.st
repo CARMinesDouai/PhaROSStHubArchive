@@ -54,7 +54,10 @@ PhaROSMoveBaseClient class >> statusTopicType [
 
 { #category : #'as yet unclassified' }
 PhaROSMoveBaseClient >> cancelGoal: aGoal [
-	
+	cancelGoal send: [ : msg |
+		msg id: aGoal id.
+		msg stamp: aGoal stamp.	
+	]
 ]
 
 { #category : #'as yet unclassified' }
