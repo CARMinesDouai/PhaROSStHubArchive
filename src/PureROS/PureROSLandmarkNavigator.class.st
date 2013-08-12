@@ -18,17 +18,22 @@ PureROSLandmarkNavigator >> checkGoal: landMark at: tstmp [
 	currentLandmark ifNotNil: [
 		(currentLandmark id = landMark landmark and:[ (DateAndTime now - tstmp ) asMilliSeconds < 300]) ifTrue: [
 			
-			|  th rotated |
+			|  th rotated entity |
 			
 			currentGoal cancel.	
-			th := robulab robot localizationService currentPosition orientation.
+			
+			entity := robulab nodelets localizer entity: currentLandmark id.
+			
+			
+			" The rotation of the robot minus the rotation in which the system is, give the ammount needed to rotate the position to go grom the rotation of ROS to the rotation of the robot and then transform the point "
+			th :=  robulab robot localizationService currentPosition orientation - (entity center orientation as2DOrientation + pose orientation as2DOrientation).
 			
 			rotated := pose position rotate: th.
 			
 			(PNGTrajectoryServiceBasedController for: robulab robot)  goToDelta: rotated x @ rotated y.
 		].
 	].
-
+	
 
 "	pose := PhaROSPose fromGeometry_msgsPose: landMark pose.
 	pose position  module2d < 1.0 ifTrue: [
