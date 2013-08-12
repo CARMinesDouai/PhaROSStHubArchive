@@ -95,7 +95,7 @@ ConfigurationOfPhaROS class >> loadBleedingEdge [
 
 { #category : #loading }
 ConfigurationOfPhaROS class >> loadBleedingEdgeWithPeripherics [
-	(self project version: #bleedingEdge) load.
+	(self project version: #bleedingEdge) load: 'PhaROS-Peripherics'.
 ]
 
 { #category : #'metacello tool support' }
