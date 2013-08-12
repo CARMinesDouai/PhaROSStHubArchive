@@ -11,20 +11,32 @@ Class {
 
 { #category : #'as yet unclassified' }
 PureROSLandmarkNavigator >> checkGoal: landMark at: tstmp [
-	| pose |
+	| pose  |
+	
+	pose := PhaROSPose fromGeometry_msgsPose: landMark pose.
+	
 	currentLandmark ifNotNil: [
-		currentLandmark id = landMark landmark ifTrue: [
+		(currentLandmark id = landMark landmark and:[ (DateAndTime now - tstmp ) asMilliSeconds < 300]) ifTrue: [
+			
+			|  th rotated |
+			
 			currentGoal cancel.	
-			(PNGTrajectoryServiceBasedController for: robulab robot)  goToDelta: landMark pose position x @ landMark pose position y.
+			th := robulab robot localizationService currentPosition orientation.
+			
+			rotated := pose position rotate: th.
+			
+			(PNGTrajectoryServiceBasedController for: robulab robot)  goToDelta: rotated x @ rotated y.
 		].
 	].
-	pose := PhaROSPose fromGeometry_msgsPose: landMark pose.
+
+
+"	pose := PhaROSPose fromGeometry_msgsPose: landMark pose.
 	pose position  module2d < 1.0 ifTrue: [
 		 self halt. 
 		robulab initialPose: (self computeCurrentPose: pose relatedTo: landMark landmark  ).
 	].
 	
-
+"
 ]
 
 { #category : #'as yet unclassified' }
@@ -42,6 +54,5 @@ PureROSLandmarkNavigator >> goTo: anEntity [
 { #category : #'as yet unclassified' }
 PureROSLandmarkNavigator >> robulab:  aRobulabNodelet [
 	robulab := aRobulabNodelet.
-	self halt.
 	robulab nodelets stargazer landmarks for: [ : landMark :chn :tstmp | self checkGoal: landMark at: tstmp ]
 ]
