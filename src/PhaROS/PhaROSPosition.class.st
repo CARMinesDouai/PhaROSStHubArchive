@@ -81,6 +81,14 @@ PhaROSPosition >> printOn: aStream [
 	('({1},{2},{3})' format: { x . y . z}) printOn: aStream.
 ]
 
+{ #category : #printing }
+PhaROSPosition >> rotate: th [
+	| module |
+	module := self module2d.
+	^ PhaROSPosition x: (th cos * module) y: (th sin * module)  z:  0.0. 
+		
+]
+
 { #category : #accessing }
 PhaROSPosition >> x [
 	^ x

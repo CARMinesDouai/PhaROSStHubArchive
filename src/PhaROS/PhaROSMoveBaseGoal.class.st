@@ -7,7 +7,8 @@ Class {
 		'status',
 		'callbacks',
 		'text',
-		'id'
+		'id',
+		'stamp'
 	],
 	#category : #'PhaROS-Nodelets-MoveBase'
 }
@@ -135,6 +136,16 @@ PhaROSMoveBaseGoal >> printOn: aStream [
 { #category : #manage }
 PhaROSMoveBaseGoal >> recall [ 
 	^ client goToGoal: self.
+]
+
+{ #category : #manage }
+PhaROSMoveBaseGoal >> stamp [ 	
+	^ stamp 
+]
+
+{ #category : #accessing }
+PhaROSMoveBaseGoal >> stamp: aStamp [ 
+	stamp := aStamp .
 ]
 
 { #category : #accessing }

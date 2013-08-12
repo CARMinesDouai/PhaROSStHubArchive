@@ -55,6 +55,11 @@ PhaROSPose >> / anScalar [
 ]
 
 { #category : #printing }
+PhaROSPose >> asDump [
+	^ 'PhaROSPose position: ({1}) orientation: ({2})' format: { position asDump . orientation asDump }.
+]
+
+{ #category : #printing }
 PhaROSPose >> asGeometry_msgsPose [
 	| gp |
 	gp := Geometry_msgsPose new.

@@ -6,10 +6,21 @@ Class {
 		'currentPosition',
 		'goals',
 		'movebaseGoal',
-		'reachedGoals'
+		'reachedGoals',
+		'cancelGoal'
 	],
 	#category : #'PhaROS-Nodelets-MoveBase'
 }
+
+{ #category : #'as yet unclassified' }
+PhaROSMoveBaseClient class >> cancelGoalTopic [ 
+	^ '/move_base/cancel'.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSMoveBaseClient class >> cancelGoalTopicType [ 
+	^ 'actionlib_msgs/GoalID'
+]
 
 { #category : #'as yet unclassified' }
 PhaROSMoveBaseClient class >> feedbackTopic [
@@ -42,6 +53,11 @@ PhaROSMoveBaseClient class >> statusTopicType [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSMoveBaseClient >> cancelGoal: aGoal [
+	
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSMoveBaseClient >> configure: aPackage [
 	
 	(aPackage rosnode buildConnectionFor: PhaROSMoveBaseClient feedbackTopic) 
@@ -55,6 +71,7 @@ PhaROSMoveBaseClient >> configure: aPackage [
 		connect.
 	
 	movebaseGoal := aPackage rosnode topicPublisher: PhaROSMoveBaseClient goalTopic  typedAs: PhaROSMoveBaseClient goalTopicType. 
+	cancelGoal := aPackage rosnode topicPublisher: PhaROSMoveBaseClient cancelGoalTopic  typedAs: PhaROSMoveBaseClient cancelGoalTopicType. 
 ]
 
 { #category : #'as yet unclassified' }
@@ -85,12 +102,15 @@ PhaROSMoveBaseClient >> goToGoal: aGoal [
 	aGoal client: self.
 	reachedGoals := reachedGoals +1.
 	movebaseGoal send: [ : msg | 
+		| stmp |
 		msg header frame_id: '/map'.
 		msg goal_id id: aGoal id.
-		msg goal_id stamp: #now.  
+		msg goal_id stamp: aGoal stamp.
+		  
 		msg goal target_pose header frame_id: '/map'.
 		msg goal target_pose pose: aGoal destination asGeometry_msgsPose.
 	].
+
 	^ aGoal.
 ]
 
