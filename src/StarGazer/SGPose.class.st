@@ -43,6 +43,15 @@ SGPose >> difference: aPose into: aReceptorPose [
 	aReceptorPose orientation: (self orientation - aPose orientation).
 ]
 
+{ #category : #acessing }
+SGPose >> ensureRotation [ 
+	| module |
+	module := (( position x * position x) + (position y * position y)) sqrt.
+	position x: module * orientation cos.
+	position y: module * orientation sin.
+	
+]
+
 { #category : #comparing }
 SGPose >> intoGeometry_msgs_Pose: aRosPose [
 

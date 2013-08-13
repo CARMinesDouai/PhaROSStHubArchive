@@ -104,10 +104,10 @@ SGROSStarGazerNodelet >> merge: gpose  with:  landmark [
 		lp := PhaROSPose fromGeometry_msgsPose: landmark pose.	
 		pose := PhaROSPose fromGeometry_msgsPose: gpose.
 		
-		th := pose orientation as2DOrientation z - lp orientation as2DOrientation.
-		pose position: pose position + (lp rotate: th).
+		th := pose orientation as2DOrientation z - lp orientation as2DOrientation z.
+		pose position: pose position + (lp position rotate: th).
 		"Now i need to transport the landmark 0 angel to the given coordinate system. Since the rotation is an amount of radians from 0, i just need to substract the landmark angle measure to the given pose angle.  "
-		pose orientation: th.
+		pose orientation: (PhaROS2DOrientation z: th).
 		
 		^ pose.
 ]
