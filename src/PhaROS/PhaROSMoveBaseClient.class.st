@@ -96,7 +96,7 @@ PhaROSMoveBaseClient >> get: aGoalID [
 
 { #category : #'as yet unclassified' }
 PhaROSMoveBaseClient >> goTo: aPose [
-	^ self goToGoal: (PhaROSMoveBaseGoal for: aPose) .
+	^ self goToGoal: ((PhaROSMoveBaseGoal for: aPose) stamp: PhaROSTimestamp now; yourself)  .
 ]
 
 { #category : #'as yet unclassified' }

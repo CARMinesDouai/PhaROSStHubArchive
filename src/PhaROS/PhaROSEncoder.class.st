@@ -134,6 +134,9 @@ PhaROSEncoder >> encodeTime: aTime [
 	aTime isSymbol  ifTrue: [
 		time := PhaROSTimestamp perform: aTime.
 	].
+	(aTime isKindOf: DateAndTime )ifTrue:[
+		time := PhaROSTimestamp new timestamp: aTime; yourself.
+	].
 
 	self encodeUint32: time  secondsUTC.
 	self encodeUint32: time  nanoSeconds.
