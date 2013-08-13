@@ -51,8 +51,7 @@ SGMessage >> asLandMark [
 		
 	].
 	
-	
-	^ SGLandMarkMeasure id: id pose: (SGPose position: position orientation: (orientation+180) degreesToRadians) ensureRotation.
+	^ SGLandMarkMeasure id: id pose: (SGPose position: position orientation: orientation degreesToRadians) ensureRotation.
 	
 
 ]

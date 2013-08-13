@@ -46,9 +46,11 @@ SGPose >> difference: aPose into: aReceptorPose [
 { #category : #acessing }
 SGPose >> ensureRotation [ 
 	| module |
-	module := (( position x * position x) + (position y * position y)) sqrt.
+	self flag:#care.
+	
+	"	module := (( position x * position x) + (position y * position y)) sqrt.
 	position x: module * orientation cos.
-	position y: module * orientation sin.
+	position y: module * orientation sin."
 	
 ]
 
@@ -59,7 +61,7 @@ SGPose >> intoGeometry_msgs_Pose: aRosPose [
 	aRosPose position y: self position y / 100.
 	aRosPose position z: self position z / 100.
 		
-	PhaROSGeometryTransformations rotationAsQuaternation: (self orientation * Float pi) / 180 into: aRosPose orientation.
+	PhaROSGeometryTransformations rotationAsQuaternation: self orientation into: aRosPose orientation.
 
 ]
 
