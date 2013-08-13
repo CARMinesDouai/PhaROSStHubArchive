@@ -69,6 +69,11 @@ PhaROSTransformationNodelet >> finalize [
 	container := nil.
 ]
 
+{ #category : #'topic-reading' }
+PhaROSTransformationNodelet >> frame: aFrameID [
+	^ container frame: aFrameID 
+]
+
 { #category : #'initialize-release' }
 PhaROSTransformationNodelet >> initialize [ 
 

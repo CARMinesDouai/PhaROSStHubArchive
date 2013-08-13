@@ -61,6 +61,16 @@ PhaROSTFFrame >> broadcaster: aBroadcaster [
 	broadcaster := aBroadcaster 
 ]
 
+{ #category : #'frame calculations' }
+PhaROSTFFrame >> convert: aPosition to: aFrame [
+	| pseudo |	
+	
+	pseudo := PhaROSTFFrame id: 'pseudo-frame' parent: self.
+	pseudo pose: (PhaROSPose position: aPosition orientation: PhaROSQuaternion zero).
+	^ pseudo poseRelativeTo: aFrame.		
+
+]
+
 { #category : #testing }
 PhaROSTFFrame >> isBeingBroadcasted [
 	^ self pose notNil.
