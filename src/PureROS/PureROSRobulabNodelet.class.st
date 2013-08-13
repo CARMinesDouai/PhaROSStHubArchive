@@ -208,7 +208,10 @@ PureROSRobulabNodelet >> frameWritter [
 
 { #category : #service }
 PureROSRobulabNodelet >> goTo: aPhaROSLocalizerEntity [ 
-	^ self navigator goTo: aPhaROSLocalizerEntity.
+
+	^ self nodelets movebase client goTo: aPhaROSLocalizerEntity center asPose.  
+"
+	^ self navigator goTo: aPhaROSLocalizerEntity."
 ]
 
 { #category : #behavior }
