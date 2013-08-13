@@ -17,31 +17,25 @@ PureROSLandmarkNavigator >> checkGoal: landMark at: tstmp [
 	
 	currentLandmark ifNotNil: [
 		(currentLandmark id = landMark landmark and:[ (DateAndTime now - tstmp ) asMilliSeconds < 300]) ifTrue: [
-			
-			|  th rotated entity |
-			
+			|  rotated  |
 			currentGoal cancel.	
-			
-			entity := robulab nodelets localizer entity: currentLandmark id.
-			
-			
-			" The rotation of the robot minus the rotation in which the system is, give the ammount needed to rotate the position to go grom the rotation of ROS to the rotation of the robot and then transform the point "
-			th :=  robulab robot localizationService currentPosition orientation - (entity center orientation as2DOrientation + pose orientation as2DOrientation).
-			
-			rotated := pose position rotate: th.
-			
+			rotated := pose position rotate: robulab robot localizationService currentPosition orientation.
 			(PNGTrajectoryServiceBasedController for: robulab robot)  goToDelta: rotated x @ rotated y.
 		].
 	].
 	
+"if we are less than 3 cm, we use the landmark position as position with the current orientation. Is a first approach, poor, but first.
 
-"	pose := PhaROSPose fromGeometry_msgsPose: landMark pose.
-	pose position  module2d < 1.0 ifTrue: [
-		 self halt. 
-		robulab initialPose: (self computeCurrentPose: pose relatedTo: landMark landmark  ).
-	].
+	i should check that we have error and do nothing if we dont have a big enough error. 
+	i should save a 0 orientation related to the landmark in order to know which is the orientation shift and check that error also, which is the most important.
+""
+	pose position module2d < 0.03 ifTrue: [
+		self halt. 
+		self initialPose: (PhaROSPose position: (robulab nodelets localizer entity: landMark landmark) orientation: (robulab nodelets transformation frame: '/base_link') pose orientation).
+		
+	]."
 	
-"
+
 ]
 
 { #category : #'as yet unclassified' }
