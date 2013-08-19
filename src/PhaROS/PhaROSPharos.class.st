@@ -257,13 +257,20 @@ PhaROSPharos class >> xml [
 PhaROSPharos >> scriptAmclLandmarks [
 
 	| bot |
-	experiment := PureROSAMCLBasedPathPlanning kompai2.
+	experiment := PureROSAMCLBasedPathPlanning robulab2.
 	experiment beginExperiment.	
 
 	bot := experiment robulab.
 	
 	bot loadLandmarks.
 	bot inspect.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPharos >> scriptKompai2 [
+	controller := PhaROSHandleController kompai2.
+	controller nodelets kompai inspect.	
+
 ]
 
 { #category : #'as yet unclassified' }
