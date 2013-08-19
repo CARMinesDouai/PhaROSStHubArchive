@@ -20,6 +20,17 @@ PhaROSHandleController class >> rpcTest [
 ]
 
 { #category : #construction }
+PhaROSHandleController class >> stargazer [
+	| rbl |
+	
+	rbl :=  self home.
+	rbl nodelets use: SGROSStarGazerNodelet  as: #stargazer.
+	rbl nodelets use: PhaROSTransformationNodelet  as: #transformation.
+	
+	^ rbl .
+]
+
+{ #category : #construction }
 PhaROSHandleController class >> turtlebot [
 	| ttb |
 	ttb :=  self url: 'http://10.1.161.20:11311/'.

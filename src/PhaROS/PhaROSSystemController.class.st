@@ -38,6 +38,11 @@ PhaROSSystemController class >> for: aMaster [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSSystemController class >> home [
+	^self url: 'http://10.1.160.45:11311/'.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSSystemController class >> localhost [
 	^self url: 'http://127.0.0.1:11311/'.
 ]

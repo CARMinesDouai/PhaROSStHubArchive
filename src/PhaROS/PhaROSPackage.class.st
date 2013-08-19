@@ -78,7 +78,7 @@ PhaROSPackage class >> install [
 PhaROSPackage class >> installScript: aScriptSelector [
 	| script |
 		script := StandardFileStream forceNewFileNamed: (self scripts, '/',( aScriptSelector asString copyReplaceAll: 'script' with:''  ) asLowercase).
-		script  nextPutAll:  ('{1} new {2}. ' format: { self name . aScriptSelector asString }), String crlf.
+		script  nextPutAll:  ('{1} instance {2}. ' format: { self name . aScriptSelector asString }), String crlf.
 		script close. 
 	
 ]
@@ -89,6 +89,11 @@ PhaROSPackage class >> installScripts [
 		: scriptMethod |
 		self installScript: scriptMethod selector.
 	] 
+]
+
+{ #category : #'initialize-release' }
+PhaROSPackage class >> instance [
+	^ instance ifNil: [ instance := super new. ]
 ]
 
 { #category : #abstract }
@@ -104,6 +109,11 @@ PhaROSPackage class >> mainBinary [
 { #category : #path }
 PhaROSPackage class >> msg [
 	^ self path ,'/msg'
+]
+
+{ #category : #'initialize-release' }
+PhaROSPackage class >> new [
+	self error: ' use instance'
 ]
 
 { #category : #path }

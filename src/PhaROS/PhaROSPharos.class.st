@@ -1,13 +1,17 @@
 Class {
 	#name : #PhaROSPharos,
 	#superclass : #PhaROSPackage,
+	#instVars : [
+		'experiment',
+		'controller'
+	],
 	#category : #'PhaROS-PackageManager'
 }
 
 { #category : #'as yet unclassified' }
 PhaROSPharos class >> author [
 	^ Author fullName
-	self encodeFiles 
+	
 ]
 
 { #category : #'as yet unclassified' }
@@ -247,4 +251,28 @@ PhaROSPharos class >> xml [
 </package>
  '
 	
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPharos >> scriptAmclLandmarks [
+
+	| bot |
+	experiment := PureROSAMCLBasedPathPlanning kompai2.
+	experiment beginExperiment.	
+
+	bot := experiment robulab.
+	
+	bot loadLandmarks.
+	bot inspect.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPharos >> scriptStargazer [
+
+
+	controller := PhaROSHandleController stargazer.
+	controller nodelets stargazer broadcastLandmarks.
+	controller nodelets stargazer mergeWithBaseLink.
+	
+
 ]

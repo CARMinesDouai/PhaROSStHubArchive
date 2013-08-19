@@ -21,6 +21,11 @@ PhaROSRPCNodelet class >> error [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSRPCNodelet class >> finished [ 
+	^ 5.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSRPCNodelet class >> moving [
 	^ 3
 ]
@@ -125,7 +130,11 @@ PhaROSRPCNodelet >> status [
 		].
 	
 		Actionlib_msgsGoalStatus succeeded = currentGoal status ifTrue: [
+			currentId = 82 ifTrue: [
+				^	PhaROSRPCNodelet finished.
+			].
 			^ PhaROSRPCNodelet arrived.
+			
 		].
 		Actionlib_msgsGoalStatus pending = currentGoal status ifTrue: [
 			^ PhaROSRPCNodelet waiting.

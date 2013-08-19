@@ -61,7 +61,7 @@ PhaROSSelfProcessedExternalNode >> spinOnceOver: aChannel [
 			]
 		] 
 	] on: Error do: [ :e | 
-		self halt 
+		"self halt "
 	].
 ]
 
