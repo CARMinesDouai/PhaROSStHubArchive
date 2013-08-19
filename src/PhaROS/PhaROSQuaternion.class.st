@@ -43,7 +43,8 @@ PhaROSQuaternion >> + anOtherQuaternion [
 
 { #category : #operators }
 PhaROSQuaternion >> - anOtherQuaternion [
-	^ PhaROSQuaternion x: (x - anOtherQuaternion x) y: (y - anOtherQuaternion y) z: (z - anOtherQuaternion z) w: ( x- anOtherQuaternion w).
+	self flag: #thisJustWorkWith2d.
+	^ (self as2DOrientation - anOtherQuaternion as2DOrientation) asQuaternion 
 ]
 
 { #category : #convertions }
