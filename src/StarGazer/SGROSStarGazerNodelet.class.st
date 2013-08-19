@@ -74,10 +74,12 @@ SGROSStarGazerNodelet >> broadcastLandmarks [
 SGROSStarGazerNodelet >> conditionMerger [
 	
 	^[ : aMeasure : aLandMark |
-		(DateAndTime now - landmarks lastTimeStamp) asMilliSeconds < 100 and: [ 
-			(((aLandMark pose   position x * aLandMark pose   position x) + (aLandMark pose   position y * aLandMark pose   position y)) sqrt < 0.5)
+		| r |
+		r := (DateAndTime now - landmarks lastTimeStamp) asMilliSeconds < 100 and: [ 
+			(((aLandMark pose   position x * aLandMark pose   position x) + (aLandMark pose   position y * aLandMark pose   position y)) sqrt < 0.1)
 		].
-			
+		r ifTrue: [ Transcript show:'merging-' ; show: r;cr ;cr .].
+		r.
 	]. 
 		
 	
@@ -101,11 +103,15 @@ SGROSStarGazerNodelet >> landmarks [
 SGROSStarGazerNodelet >> merge: gpose  with:  landmark [ 
 		| lp pose th val |
 
+		
+		"
 		lp := PhaROSPose fromGeometry_msgsPose: landmark pose.
+		
 		val := (self nodelets transformation frame: '/base_link') convert: lp position to: (self nodelets transformation frame: '/map').
 		 ^ val.
+		"
 		
-		
+		^ gpose.
 		"
 		lp := PhaROSPose fromGeometry_msgsPose: landmark pose.	
 		pose := PhaROSPose fromGeometry_msgsPose: gpose.
@@ -116,6 +122,17 @@ SGROSStarGazerNodelet >> merge: gpose  with:  landmark [
 		pose orientation: (PhaROS2DOrientation z: th).
 		
 		^ pose."
+]
+
+{ #category : #publish }
+SGROSStarGazerNodelet >> mergeWithBaseLink [
+	^ self mergeWithFrame: '/base_link'.
+]
+
+{ #category : #publish }
+SGROSStarGazerNodelet >> mergeWithFrame: aFrameID [
+
+	self mergeWithPose: (self nodelets transformation between: PureROSRobulabNodelet mapFrame and: aFrameID  ).
 ]
 
 { #category : #publish }
