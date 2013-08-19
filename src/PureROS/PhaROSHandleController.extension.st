@@ -14,7 +14,7 @@ PhaROSHandleController classSide >> kompai2 [
 PhaROSHandleController classSide >> robulab: aName [	
 	| rbl |
 	
-	rbl :=  self localhost.
+	rbl :=  self home.
 	rbl nodelets use: PureROSRobulabNodelet as: #robulab.
 	rbl nodelets robulab initialize: aName. 
 	

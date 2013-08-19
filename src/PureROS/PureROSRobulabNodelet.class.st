@@ -14,7 +14,8 @@ Class {
 		'odometryOut',
 		'keepMoving',
 		'navigator',
-		'initialPoseOut'
+		'initialPoseOut',
+		'locator'
 	],
 	#classInstVars : [
 		'initialpose'
@@ -278,7 +279,8 @@ PureROSRobulabNodelet >> loadLandmarks [
 	self nodelets localizer filein: 'map-landmarks-inner.st'.
 	self nodelets localizer map.
 	self nodelets localizer mapPoints. 
-	self nodelets stargazer broadcastLandmarks.
+	
+	
 ]
 
 { #category : #accessing }
@@ -295,9 +297,17 @@ PureROSRobulabNodelet >> localizeLandmarks [
 	2 seconds asDuration asDelay wait.
 ]
 
+{ #category : #service }
+PureROSRobulabNodelet >> locator [
+	^ locator ifNil:[
+			 locator := PureROSLandmarkLocator new. 
+			 locator robulab: self.
+		]
+]
+
 { #category : #experiments }
 PureROSRobulabNodelet >> moveBase [
-	"self consumeCommandVelocity."
+	self consumeCommandVelocity.
 ]
 
 { #category : #service }

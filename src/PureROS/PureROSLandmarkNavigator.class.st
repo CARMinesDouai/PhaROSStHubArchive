@@ -14,13 +14,14 @@ PureROSLandmarkNavigator >> checkGoal: landMark at: tstmp [
 	| pose  |
 	
 	pose := PhaROSPose fromGeometry_msgsPose: landMark pose.
+	Transcript show: pose position module2d; show: 'distance'; cr; cr.
 	
 	currentLandmark ifNotNil: [
-		(currentLandmark id = landMark landmark and:[ (DateAndTime now - tstmp ) asMilliSeconds < 300]) ifTrue: [
-			|  rotated  |
-			currentGoal cancel.	
-			rotated := pose position rotate: robulab robot localizationService currentPosition orientation.
-			(PNGTrajectoryServiceBasedController for: robulab robot)  goToDelta: rotated x @ rotated y.
+		(currentLandmark id = landMark landmark and:[ (DateAndTime now - tstmp ) asMilliSeconds < 300] and:[ currentGoal status = Actionlib_msgsGoalStatus active ]) ifTrue: [
+			pose position module2d < 0.5 ifTrue:[
+				currentGoal cancel.	
+				self manualDifferentialGoal: pose.
+			].	
 		].
 	].
 	
@@ -47,6 +48,15 @@ PureROSLandmarkNavigator >> computeCurrentPose: aPose relatedTo: aLandmarkID [
 PureROSLandmarkNavigator >> goTo: anEntity [
 	currentLandmark := anEntity.
 	currentGoal := robulab nodelets movebase client goTo: anEntity center asPose.
+	
+]
+
+{ #category : #'as yet unclassified' }
+PureROSLandmarkNavigator >> manualDifferentialGoal: aPose [ 
+	| rotated |			
+	"		
+			rotated := pose position rotate: robulab robot localizationService currentPosition orientation.
+			(PNGTrajectoryServiceBasedController for: robulab robot)  goToDelta: rotated x @ rotated y."
 	
 ]
 
