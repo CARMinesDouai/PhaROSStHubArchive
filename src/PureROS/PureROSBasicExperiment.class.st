@@ -9,13 +9,13 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PureROSBasicExperiment class >> kompai1 [
-	^ self new controller: #kompai1; yourself .
+PureROSBasicExperiment class >> robulab1 [
+	^ self new controller:  #robulab1; yourself .
 ]
 
 { #category : #'as yet unclassified' }
-PureROSBasicExperiment class >> kompai2 [
-	^ self new controller:  #kompai2; yourself .
+PureROSBasicExperiment class >> robulab2 [
+	^ self new controller:  #robulab2; yourself .
 ]
 
 { #category : #experiment }

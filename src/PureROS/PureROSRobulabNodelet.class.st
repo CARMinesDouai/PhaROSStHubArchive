@@ -156,7 +156,7 @@ PureROSRobulabNodelet >> makeLandmarkRandomNavigation [
 
 { #category : #consume }
 PureROSRobulabNodelet >> poseStamped [
-	poseStamped ifNil: [ poseStamped := self rosnode topicPublisher: PureROSRobulabNodelet poseStampedTopic typedAs: PureROSRobulabNodelet poseStampedTopicType ]
+	^ poseStamped ifNil: [ poseStamped := self rosnode topicPublisher: PureROSRobulabNodelet poseStampedTopic typedAs: PureROSRobulabNodelet poseStampedTopicType ]
 ]
 
 { #category : #accessing }

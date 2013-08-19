@@ -1,6 +1,6 @@
 Class {
 	#name : #PhaROSOdometryNodelet,
-	#superclass : #Object,
+	#superclass : #PhaROSStaticNodelet,
 	#instVars : [
 		'previousTime',
 		'previousPosition',
