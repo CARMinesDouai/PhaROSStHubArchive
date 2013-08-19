@@ -19,8 +19,10 @@ PureROSAMCLBasedPathPlanning >> setup [
 	].
 
 	self robulab amcl.
-	self robulab moveBase.
+"
 	
+	self robulab moveBase.
+"	
 	"Since we have a differential drive robot, we just want to compare the changing variables"
 	
 	

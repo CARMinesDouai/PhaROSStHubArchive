@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'robulab'
 	],
-	#category : #'PureROS-Nodelet'
+	#category : #'PureROS-Nodelets'
 }
 
 { #category : #'as yet unclassified' }

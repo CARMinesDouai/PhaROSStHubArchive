@@ -21,6 +21,11 @@ PNGRobotPose classSide >> fromGeometry_msgsPose: aROSPose [
 ]
 
 { #category : #'*PureROS' }
+PNGRobotPose classSide >> fromPhaROSPose: aPose [
+	^ self x: aPose position x y: aPose position y o: aPose orientation as2DOrientation.
+]
+
+{ #category : #'*PureROS' }
 PNGRobotPose >> intoGeometry_msgs_Pose: aRosPose [
 	aRosPose position x: self x .		
 	aRosPose position y: self y.

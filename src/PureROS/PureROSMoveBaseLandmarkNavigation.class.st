@@ -1,16 +1,16 @@
 Class {
-	#name : #PureROSLandmarkNavigator,
-	#superclass : #Object,
+	#name : #PureROSMoveBaseLandmarkNavigation,
+	#superclass : #PhaROSStaticNodelet,
 	#instVars : [
 		'currentGoal',
 		'currentLandmark',
 		'robulab'
 	],
-	#category : #'PureROS-Nodelet'
+	#category : #'PureROS-Nodelets'
 }
 
 { #category : #'as yet unclassified' }
-PureROSLandmarkNavigator >> checkGoal: landMark at: tstmp [
+PureROSMoveBaseLandmarkNavigation >> checkGoal: landMark at: tstmp [
 	| pose  |
 	
 	pose := PhaROSPose fromGeometry_msgsPose: landMark pose.
@@ -20,6 +20,7 @@ PureROSLandmarkNavigator >> checkGoal: landMark at: tstmp [
 		(currentLandmark id = landMark landmark and:[ (DateAndTime now - tstmp ) asMilliSeconds < 300] and:[ currentGoal status = Actionlib_msgsGoalStatus active ]) ifTrue: [
 			pose position module2d < 0.5 ifTrue:[
 				currentGoal cancel.	
+				self halt.
 				self manualDifferentialGoal: pose.
 			].	
 		].
@@ -40,19 +41,19 @@ PureROSLandmarkNavigator >> checkGoal: landMark at: tstmp [
 ]
 
 { #category : #'as yet unclassified' }
-PureROSLandmarkNavigator >> computeCurrentPose: aPose relatedTo: aLandmarkID [ 
+PureROSMoveBaseLandmarkNavigation >> computeCurrentPose: aPose relatedTo: aLandmarkID [ 
 	^ (robulab nodelets localizer entity: aLandmarkID) locate: aPose.
 ]
 
 { #category : #'as yet unclassified' }
-PureROSLandmarkNavigator >> goTo: anEntity [
+PureROSMoveBaseLandmarkNavigation >> goTo: anEntity [
 	currentLandmark := anEntity.
 	currentGoal := robulab nodelets movebase client goTo: anEntity center asPose.
 	
 ]
 
 { #category : #'as yet unclassified' }
-PureROSLandmarkNavigator >> manualDifferentialGoal: aPose [ 
+PureROSMoveBaseLandmarkNavigation >> manualDifferentialGoal: aPose [ 
 	| rotated |			
 	"		
 			rotated := pose position rotate: robulab robot localizationService currentPosition orientation.
@@ -61,7 +62,7 @@ PureROSLandmarkNavigator >> manualDifferentialGoal: aPose [
 ]
 
 { #category : #'as yet unclassified' }
-PureROSLandmarkNavigator >> robulab:  aRobulabNodelet [
+PureROSMoveBaseLandmarkNavigation >> robulab:  aRobulabNodelet [
 	robulab := aRobulabNodelet.
 	robulab nodelets stargazer landmarks for: [ : landMark :chn :tstmp | self checkGoal: landMark at: tstmp ]
 ]

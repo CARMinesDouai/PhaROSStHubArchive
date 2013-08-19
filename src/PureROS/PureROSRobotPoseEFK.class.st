@@ -62,7 +62,6 @@ PureROSRobotPoseEFK >> setup [
 
 	self robulab efk.
 	
-	self robulab broadcastPoseStamped. "For plotting"
 	
 	self plot.
 ]

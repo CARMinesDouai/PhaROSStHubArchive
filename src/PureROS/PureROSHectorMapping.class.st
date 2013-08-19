@@ -41,8 +41,6 @@ PureROSHectorMapping >> reset [
 PureROSHectorMapping >> setup [
 	self launch: configuration.
 	
-	" Output "
-	self robulab broadcastSensors.
 ]
 
 { #category : #configuration }

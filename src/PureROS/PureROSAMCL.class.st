@@ -43,7 +43,6 @@ PureROSAMCL >> setup [
 
 	self robulab amcl.
 	
-	self robulab broadcastPoseStamped.    "It will inform the pose in /kompai{Code}/pose topic"
 	
 	
 	

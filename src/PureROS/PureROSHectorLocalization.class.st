@@ -55,7 +55,7 @@ PureROSHectorLocalization >> setup [
 		
 	].
 	self robulab hectorLocalization.
-	self robulab broadcastPoseStamped.
+	
 	
 	
 	self plot.

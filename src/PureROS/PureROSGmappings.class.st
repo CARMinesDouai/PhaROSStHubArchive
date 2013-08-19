@@ -30,8 +30,6 @@ PureROSGmappings >> setup [
 		spec staticZeroTFFrom: '/base_footprint'  to: '/MT0'.
 	].
 	
-	
-	self robulab slam.
 
 	
 	

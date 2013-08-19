@@ -1,27 +1,33 @@
 Class {
-	#name : #PureROSOdometryDelegate,
+	#name : #PhaROSOdometryNodelet,
 	#superclass : #Object,
 	#instVars : [
 		'previousTime',
-		'previousPosition'
+		'previousPosition',
+		'odometry'
 	],
 	#category : #'PureROS-Util'
 }
 
 { #category : #'as yet unclassified' }
-PureROSOdometryDelegate >> callback [
-
-	^ [	: position :msg | 
-			self configure: msg with: position .
-		].
-
-	
+PhaROSOdometryNodelet class >> odomFrame [ 
+	^ '/odom'
 ]
 
 { #category : #'as yet unclassified' }
-PureROSOdometryDelegate >> configure: aMessage with: aPosition [
+PhaROSOdometryNodelet class >> odometryTopic [
+	^ '/odom'
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSOdometryNodelet class >> odometryTopicType [ 
+	^  'nav_msgs/Odometry' 
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSOdometryNodelet >> configure: aMessage with: aPosition [
 	self initializeMessage: aMessage.
-	aMessage header frame_id: 'odom'.
+	aMessage header frame_id: PhaROSOdometryNodelet odomFrame.
 	aMessage child_frame_id: ''.
 	
 	aPosition intoGeometry_msgs_Pose: aMessage pose pose.
@@ -29,7 +35,12 @@ PureROSOdometryDelegate >> configure: aMessage with: aPosition [
 ]
 
 { #category : #'as yet unclassified' }
-PureROSOdometryDelegate >> initializeMessage: aMessage [
+PhaROSOdometryNodelet >> informPositionAsOdometry: aPosition [
+	self odometry send: [ : msg | self configure: msg with: aPosition ].
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSOdometryNodelet >> initializeMessage: aMessage [
 	| dValue |
 	36 timesRepeat: [ 
 		aMessage pose covariance add: 0.0. 
@@ -56,7 +67,7 @@ PureROSOdometryDelegate >> initializeMessage: aMessage [
 ]
 
 { #category : #'as yet unclassified' }
-PureROSOdometryDelegate >> measurePoseDiference: aPosition [
+PhaROSOdometryNodelet >> measurePoseDiference: aPosition [
 
 | time a b deltaTime  poseDifference | 
 
@@ -80,4 +91,17 @@ PureROSOdometryDelegate >> measurePoseDiference: aPosition [
 	previousPosition := aPosition.
 	previousTime := time.
 	^ poseDifference.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSOdometryNodelet >> odometry [
+	^ odometry ifNil: [ odometry := self rosnode topicPublisher: PhaROSOdometryNodelet odometryTopic typedAs: PhaROSOdometryNodelet odometryTopicType ]
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSOdometryNodelet >> transformToOdometry: aTopicConnection [
+	aTopicConnection for: [
+		: position | 
+		self informPositionAsOdometry: position.
+	]
 ]
