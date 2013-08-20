@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'currentGoal',
 		'currentLandmark',
-		'robulab'
+		'robulab',
+		'currentEvent'
 	],
 	#category : #'PureROS-Nodelets'
 }
@@ -47,14 +48,18 @@ PureROSMoveBaseLandmarkNavigation >> computeCurrentPose: aPose relatedTo: aLandm
 
 { #category : #'as yet unclassified' }
 PureROSMoveBaseLandmarkNavigation >> goTo: anEntity [
+
+	currentEvent ifNil: [ currentEvent cancel. currentEvent := nil ].
 	currentLandmark := anEntity.
 	currentGoal := robulab nodelets movebase client goTo: anEntity center asPose.
-	
+	currentEvent := robulab nodelets sgevents whenLandmark: [ :lmk |  anEntity id = lmk landmark and: [ (PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d < 1.0 ] ] doOnce: [ : lmk | self onArrivalToLandmark: lmk ].
 ]
 
 { #category : #'as yet unclassified' }
 PureROSMoveBaseLandmarkNavigation >> manualDifferentialGoal: aPose [ 
 	| rotated |			
+				
+		self halt.
 	"		
 			rotated := pose position rotate: robulab robot localizationService currentPosition orientation.
 			(PNGTrajectoryServiceBasedController for: robulab robot)  goToDelta: rotated x @ rotated y."
@@ -62,7 +67,15 @@ PureROSMoveBaseLandmarkNavigation >> manualDifferentialGoal: aPose [
 ]
 
 { #category : #'as yet unclassified' }
+PureROSMoveBaseLandmarkNavigation >> onArrivalToLandmark: aLandmark [ 
+	currentEvent := nil.
+	currentGoal cancel. 
+	self manualDifferentialGoal: (PhaROSPose fromGeometry_msgsPose: aLandmark pose )
+]
+
+{ #category : #'as yet unclassified' }
 PureROSMoveBaseLandmarkNavigation >> robulab:  aRobulabNodelet [
 	robulab := aRobulabNodelet.
-	robulab nodelets stargazer landmarks for: [ : landMark :chn :tstmp | self checkGoal: landMark at: tstmp ]
+	robulab nodelets use: SGStargazerEventManager as: #sgevents.
+
 ]
