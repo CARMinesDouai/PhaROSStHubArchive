@@ -19,6 +19,8 @@ PureROSAMCLBasedPathPlanning >> setup [
 	].
 
 	self robulab amcl.
+	
+	
 "
 	
 	self robulab moveBase.

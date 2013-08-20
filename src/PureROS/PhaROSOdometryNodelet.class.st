@@ -3,8 +3,8 @@ Class {
 	#superclass : #PhaROSStaticNodelet,
 	#instVars : [
 		'previousTime',
-		'previousPosition',
-		'odometry'
+		'odometry',
+		'previousPose'
 	],
 	#category : #'PureROS-Util'
 }
@@ -67,28 +67,26 @@ PhaROSOdometryNodelet >> initializeMessage: aMessage [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSOdometryNodelet >> measurePoseDiference: aPosition [
+PhaROSOdometryNodelet >> measurePoseDiference: aPose [
 
 | time a b deltaTime  poseDifference | 
 
 
 	time := DateAndTime now.
 								
-	poseDifference := PNGRobotPose x:0 y:0 o:0.
+	poseDifference := PhaROSPose zero.
 	
-	previousPosition ifNotNil: [
+	previousPose ifNotNil: [
 		a := time asSeconds.
 		b := previousTime asSeconds.
 		deltaTime :=  (b - a) abs.
 		
 		deltaTime = 0 ifFalse:[
-			poseDifference  x: ( aPosition x - previousPosition  x ) / deltaTime.
-			poseDifference y: ( aPosition y - previousPosition  y ) / deltaTime  .
-			poseDifference orientation:  ((aPosition orientation  - previousPosition orientation) / deltaTime) / ( 2 * Float pi ).
-		
+			poseDifference := (aPose - previousPose) / deltaTime .		
 		]
 	].
-	previousPosition := aPosition.
+
+	previousPose := aPose.
 	previousTime := time.
 	^ poseDifference.
 ]

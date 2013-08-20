@@ -72,7 +72,7 @@ PureROSRobulabNodelet class >> stargazerFrame [
 { #category : #experiments }
 PureROSRobulabNodelet >> amcl [
 	self broadcastOdometry.
-
+	self broadcastTF.
 ]
 
 { #category : #broadcast }
@@ -141,6 +141,8 @@ PureROSRobulabNodelet >> loadLandmarks [
 
 { #category : #behavior }
 PureROSRobulabNodelet >> localizeLandmarks [
+	self  broadcastLandmarks.
+	2 seconds asDuration asDelay wait.
 	self nodelets localizer learn:( self nodelets stargazer absoluteLandmarks ) .
 	2 seconds asDuration asDelay wait.
 	self nodelets localizer map.
@@ -156,7 +158,7 @@ PureROSRobulabNodelet >> makeLandmarkRandomNavigation [
 
 { #category : #consume }
 PureROSRobulabNodelet >> poseStamped [
-	^ poseStamped ifNil: [ poseStamped := self rosnode topicPublisher: PureROSRobulabNodelet poseStampedTopic typedAs: PureROSRobulabNodelet poseStampedTopicType ]
+	^( self rosnode buildConnectionFor:  PureROSRobulabNodelet poseStampedTopic )typedAs: PureROSRobulabNodelet poseStampedTopicType;  adapted: #pose \> PhaROSPose  ; connect.
 ]
 
 { #category : #accessing }

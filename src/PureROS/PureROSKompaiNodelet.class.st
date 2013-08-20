@@ -19,8 +19,8 @@ Class {
 { #category : #'as yet unclassified' }
 PureROSKompaiNodelet >> broadcastSensors [
 	notificationController notificateLaserTo: [ : laser | self scan: laser ].
-	notificationController notificateMovementTo: [ 	: notification |  self poseStamped: notification position asPhaROSPose.	 ] .
-	self nodelets stargazer broadcastLandmarks .
+	notificationController notificateMovementTo: [ 	: notification |   self poseStamped: notification position asPhaROSPose.	 ] .
+	self nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 } .
 ]
 
 { #category : #'private-out' }
@@ -68,8 +68,9 @@ PureROSKompaiNodelet >> initialize: aRobot [
 	notificationController activateLaserNotifications.
 
 	self broadcastSensors.
+	"
 	self consumeInitialPose.
-	self consumeCommandVelocity.
+	self consumeCommandVelocity."
 ]
 
 { #category : #'private-out' }
