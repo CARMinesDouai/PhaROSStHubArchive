@@ -51,7 +51,7 @@ PhaROSPose >> - anOtherPose [
 
 { #category : #operators }
 PhaROSPose >> / anScalar [
-	^ PhaROSPose
+	^ PhaROSPose position: position / anScalar orientation: orientation / anScalar. 
 ]
 
 { #category : #printing }
@@ -63,15 +63,7 @@ PhaROSPose >> asDump [
 PhaROSPose >> asGeometry_msgsPose [
 	| gp |
 	gp := Geometry_msgsPose new.
-	gp position x: position x.
-	gp position y: position y.
-	gp position z: position z.
-	
-	gp orientation x: orientation x.
-	gp orientation y: orientation y.
-	gp orientation z: orientation z.
-	gp orientation w: orientation w.
-	
+	self intoGeometry_msgs_Pose: gp.
 
 	^ gp.
 ]
@@ -79,6 +71,37 @@ PhaROSPose >> asGeometry_msgsPose [
 { #category : #printing }
 PhaROSPose >> asPose [
 ^ self.
+]
+
+{ #category : #printing }
+PhaROSPose >> intoGeometry_msgs_Pose: aRosPose [
+
+	aRosPose position x: position x.
+	aRosPose position y: position y.
+	aRosPose position z: position z.
+	
+	aRosPose orientation x: orientation x.
+	aRosPose orientation y: orientation y.
+	aRosPose orientation z: orientation z.
+	aRosPose orientation w: orientation w.
+	
+
+	^ aRosPose.
+]
+
+{ #category : #operators }
+PhaROSPose >> intoGeometry_msgs_Twist: aTwist [
+
+	aTwist linear x: position x.
+	aTwist linear y: position y.
+	aTwist linear z: position z.
+	
+	aTwist angular x: 0.0. 
+	aTwist angular y: 0.0. 
+	aTwist angular z: orientation as2DOrientation z. 
+	
+
+
 ]
 
 { #category : #accessing }

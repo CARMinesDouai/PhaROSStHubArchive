@@ -47,6 +47,13 @@ PhaROSQuaternion >> - anOtherQuaternion [
 	^ (self as2DOrientation - anOtherQuaternion as2DOrientation) asQuaternion 
 ]
 
+{ #category : #operators }
+PhaROSQuaternion >> / anScalar [
+
+	self flag: #thisJustWorkWith2d.
+	^ (self as2DOrientation / anScalar ) asQuaternion.
+]
+
 { #category : #convertions }
 PhaROSQuaternion >> as2DOrientation [ 
 	^ self asRPY as2DOrientation .

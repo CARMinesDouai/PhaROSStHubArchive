@@ -22,6 +22,11 @@ PhaROS2DOrientation >> - anOther [
 	^ PhaROS2DOrientation z: (z - anOther z)
 ]
 
+{ #category : #operators }
+PhaROS2DOrientation >> / anScalar [
+	^ PhaROS2DOrientation z: z / anScalar.
+]
+
 { #category : #convertions }
 PhaROS2DOrientation >> as2DOrientation [
 	^ self.
