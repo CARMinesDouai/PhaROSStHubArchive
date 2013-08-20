@@ -23,12 +23,14 @@ PhaROSPackageManager class >> itsAPackage: aClass andItsAScript: aSelector [
 
 { #category : #events }
 PhaROSPackageManager class >> methodAdded: anEvent [
-	self scriptSyncronizer: 	anEvent item classBinding value selector: anEvent item selector.
+	self flag: #bla.
+	"self scriptSyncronizer: 	anEvent item classBinding value selector: anEvent item selector.̈"
 ]
 
 { #category : #events }
 PhaROSPackageManager class >> methodModified: anEvent [
-	self scriptSyncronizer: anEvent item classBinding value selector: anEvent item selector.
+	self flag:#bla.
+	"self scriptSyncronizer: anEvent item classBinding value selector: anEvent item selector."
 ]
 
 { #category : #events }
