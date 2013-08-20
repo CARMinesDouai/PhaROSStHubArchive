@@ -64,8 +64,15 @@ SGROSStarGazerNodelet >> absoluteLandmarks [
 
 { #category : #publish }
 SGROSStarGazerNodelet >> broadcastLandmarks [
+	self deprecated: 'Take in care that SG has a lot of errors in measures. You should select the landmarks that you want to measure in order to avoid phantom reads'.
+	^ self broadcastLandmarks: {}.
+]
+
+{ #category : #publish }
+SGROSStarGazerNodelet >> broadcastLandmarks: anArrayOfIDS [ 
 	broadcaster ifNil: [ 
 		broadcaster := SGROSBroadcaster new.
+		broadcaster acceptedLandmarks:  anArrayOfIDS .
 		broadcaster configure: controller.
 	].
 ]

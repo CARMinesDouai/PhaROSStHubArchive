@@ -3,15 +3,21 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'stargazer',
-		'topicPublisher'
+		'topicPublisher',
+		'acceptedLandmarks'
 	],
 	#category : #'StarGazer-Ros'
 }
 
+{ #category : #package }
+SGROSBroadcaster >> acceptedLandmarks: anArrayOfIDS [
+	acceptedLandmarks := anArrayOfIDS 
+]
+
 { #category : #broadcasting }
 SGROSBroadcaster >> broadcast: landmark [ 
 	
-	({ 2 . 82 . 608 . 18} includes: landmark id ) ifTrue: [
+	(self isAccepted: landmark ) ifTrue: [
 		topicPublisher send: [ :msg | 
 			msg header frame_id: 'stargazer'.
 			landmark pose intoGeometry_msgs_Pose: msg pose.
@@ -33,4 +39,9 @@ SGROSBroadcaster >> configure: aController [
 { #category : #package }
 SGROSBroadcaster >> finalize [ 
 	stargazer finalize.
+]
+
+{ #category : #broadcasting }
+SGROSBroadcaster >> isAccepted: aLandmark [
+	^ ((acceptedLandmarks includes: aLandmark id ) or: [ acceptedLandmarks size = 0 ])
 ]
