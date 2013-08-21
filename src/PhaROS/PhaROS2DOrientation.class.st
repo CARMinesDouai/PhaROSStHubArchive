@@ -28,6 +28,11 @@ PhaROS2DOrientation >> / anScalar [
 ]
 
 { #category : #convertions }
+PhaROS2DOrientation >> abs [
+	^ PhaROS2DOrientation z: z abs.
+]
+
+{ #category : #convertions }
 PhaROS2DOrientation >> as2DOrientation [
 	^ self.
 ]

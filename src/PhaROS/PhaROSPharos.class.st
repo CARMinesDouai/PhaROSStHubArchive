@@ -266,20 +266,6 @@ PhaROSPharos >> scriptAmcl [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPharos >> scriptAmclLandmarks [
-
-	| bot |
-	experiment := PureROSAMCLBasedPathPlanning robulab2.
-	experiment beginExperiment.	
-
-	bot := experiment robulab.
-	
-	bot loadLandmarks.
-	bot inspect.
-	
-]
-
-{ #category : #'as yet unclassified' }
 PhaROSPharos >> scriptKompai1 [
 	controller := PhaROSHandleController kompai1.
 		
@@ -295,12 +281,51 @@ PhaROSPharos >> scriptKompai2 [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPharos >> scriptStargazer [
+PhaROSPharos >> scriptLandmarkNavigation [
 
+	| bot |
+	experiment := PureROSAMCLBasedPathPlanning robulab2.
+	experiment beginExperiment.	
+
+	bot := experiment robulab.
+	
+	bot loadLandmarks.
+	bot landmarkNavigation .
+	bot inspect.
+	
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPharos >> scriptLandmarksRecognition [
+
+	| bot |
+	experiment := PureROSAMCLBasedPathPlanning robulab2.
+	experiment beginExperiment.	
+
+	bot := experiment robulab.
+	self halt.
+	bot localizeLandmarks.
+	bot inspect.
+	
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPharos >> scriptMapBuilding [
+
+	| bot |
+	experiment := PureROSGmappings robulab2.
+	experiment beginExperiment.	
+
+	bot := experiment robulab.
+	
+	bot inspect.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPharos >> scriptStargazer [
 
 	controller := PhaROSHandleController stargazer.
 	controller nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 }.
-	controller nodelets stargazer mergeWithBaseLink.
 	
 
 ]

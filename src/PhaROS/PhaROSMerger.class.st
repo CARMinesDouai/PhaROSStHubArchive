@@ -44,11 +44,13 @@ PhaROSMerger >> initialize [
 
 { #category : #'as yet unclassified' }
 PhaROSMerger >> merge [
+	
 	messages size = 2 ifFalse: [ 
 		Transcript show: 'waiting for have data from two topics to start merging'
 	] ifTrue:[
+	
 		self checkStamps ifTrue: [
-			
+
 			(condition cull: ((messages at: that ) at: 1) cull:((messages at:this) at:1)) ifTrue: [
 				outgoing send: [ :msg |
 					transformation cull: msg cull: ((messages at: that ) at: 1) cull:((messages at:this) at:1)
