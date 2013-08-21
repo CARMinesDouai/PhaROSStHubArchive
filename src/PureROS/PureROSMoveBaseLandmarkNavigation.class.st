@@ -49,7 +49,7 @@ PureROSMoveBaseLandmarkNavigation >> computeCurrentPose: aPose relatedTo: aLandm
 { #category : #'as yet unclassified' }
 PureROSMoveBaseLandmarkNavigation >> goTo: anEntity [
 
-	currentEvent ifNil: [ currentEvent cancel. currentEvent := nil ].
+	currentEvent ifNotNil: [ currentEvent cancel. currentEvent := nil ].
 	currentLandmark := anEntity.
 	currentGoal := robulab nodelets movebase client goTo: anEntity center asPose.
 	currentEvent := robulab nodelets sgevents whenLandmark: [ :lmk |  anEntity id = lmk landmark and: [ (PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d < 1.0 ] ] doOnce: [ : lmk | self onArrivalToLandmark: lmk ].

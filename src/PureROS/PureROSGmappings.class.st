@@ -31,6 +31,6 @@ PureROSGmappings >> setup [
 	].
 	
 
-	
+	self robulab slam.
 	
 ]

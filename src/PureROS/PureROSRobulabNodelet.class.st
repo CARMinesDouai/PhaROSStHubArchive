@@ -128,6 +128,7 @@ PureROSRobulabNodelet >> goToEntityID: anId [
 { #category : #navigation }
 PureROSRobulabNodelet >> landmarkNavigation [
 	self nodelets use: PureROSMoveBaseLandmarkNavigation as: #navigator.
+	self nodelets navigator robulab: self.
 ]
 
 { #category : #service }
@@ -144,6 +145,9 @@ PureROSRobulabNodelet >> localizeLandmarks [
 	self  broadcastLandmarks.
 	2 seconds asDuration asDelay wait.
 	self nodelets localizer learn:( self nodelets stargazer absoluteLandmarks ) .
+	
+	self nodelets localizer explore.
+	
 	2 seconds asDuration asDelay wait.
 	self nodelets localizer map.
 	self nodelets localizer mapPoints.
@@ -175,6 +179,11 @@ PureROSRobulabNodelet >> rpc [
 PureROSRobulabNodelet >> saveLandmarks [
 	self nodelets localizer fileout: 'map-landmarks-inner.st'.
 	
+]
+
+{ #category : #experiments }
+PureROSRobulabNodelet >> slam [
+	self broadcastTF.
 ]
 
 { #category : #behavior }
