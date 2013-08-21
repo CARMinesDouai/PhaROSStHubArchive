@@ -83,7 +83,7 @@ SGROSStarGazerNodelet >> conditionMerger [
 	^[ : aMeasure : aLandMark |
 		| r |
 		r := (DateAndTime now - landmarks lastTimeStamp) asMilliSeconds < 100 and: [ 
-			(((aLandMark pose   position x * aLandMark pose   position x) + (aLandMark pose   position y * aLandMark pose   position y)) sqrt < 0.1)
+			(((aLandMark pose   position x * aLandMark pose   position x) + (aLandMark pose   position y * aLandMark pose   position y)) sqrt < 0.8)
 		].
 		r ifTrue: [ Transcript show:'merging-' ; show: r;cr ;cr .].
 		r.
@@ -108,17 +108,17 @@ SGROSStarGazerNodelet >> landmarks [
 
 { #category : #calculations }
 SGROSStarGazerNodelet >> merge: gpose  with:  landmark [ 
-		| lp pose th val |
+		| lp |
 
 		
-		"
 		lp := PhaROSPose fromGeometry_msgsPose: landmark pose.
 		
-		val := (self nodelets transformation frame: '/base_link') convert: lp position to: (self nodelets transformation frame: '/map').
-		 ^ val.
-		"
+		 ^ PhaROSPose position: gpose position - lp position orientation: gpose orientation as2DOrientation - lp orientation as2DOrientation abs.
 		
-		^ gpose.
+		
+		
+		"val := (self nodelets transformation frame: '/base_link') convert: lp position to: (self nodelets transformation frame: '/map').
+		"
 		"
 		lp := PhaROSPose fromGeometry_msgsPose: landmark pose.	
 		pose := PhaROSPose fromGeometry_msgsPose: gpose.

@@ -9,6 +9,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 SGStargazerEventManager >> check: aLandmark [
+	self halt.
 	self events do: [ : e | e apply: aLandmark ].
 ]
 
