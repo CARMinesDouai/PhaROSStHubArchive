@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'poseStamped',
 		'robotName',
-		'tfpose'
+		'tfpose',
+		'trajectoryDifferentialOut'
 	],
 	#classInstVars : [
 		'initialpose'
@@ -72,7 +73,7 @@ PureROSRobulabNodelet class >> stargazerFrame [
 { #category : #experiments }
 PureROSRobulabNodelet >> amcl [
 	self broadcastOdometry.
-	self broadcastTF.
+	
 ]
 
 { #category : #broadcast }
@@ -84,12 +85,6 @@ PureROSRobulabNodelet >> broadcastLandmarks [
 PureROSRobulabNodelet >> broadcastOdometry [
 	self nodelets use: PhaROSOdometryNodelet as: #odometer.
 	self nodelets odometer transformToOdometry: self poseStamped.
-]
-
-{ #category : #broadcast }
-PureROSRobulabNodelet >> broadcastTF [
-	self nodelets use: PhaROSPoseToTFNodelet  as: #pose2tf.
-	self nodelets pose2tf express: self poseStamped as: PureROSRobulabNodelet baseLinkFrame childOf: PureROSRobulabNodelet baseLinkParentFrame.
 ]
 
 { #category : #navigation }
@@ -105,7 +100,7 @@ PureROSRobulabNodelet >> configure [
 	self nodelets use: SGROSStarGazerNodelet as: #stargazer.
 	self nodelets use: PhaROSLocalizerNodelet as: #localizer.
 	self nodelets use: PhaROSMoveBaseNodelet as: #movebase.
-
+	self trajectoryDifferentialOut.
 ]
 
 { #category : #behavior }
@@ -183,10 +178,26 @@ PureROSRobulabNodelet >> saveLandmarks [
 
 { #category : #experiments }
 PureROSRobulabNodelet >> slam [
-	self broadcastTF.
+	
 ]
 
 { #category : #behavior }
 PureROSRobulabNodelet >> tfpose [
 	^  tfpose ifNil: [ tfpose := self nodelets transformation between: PureROSRobulabNodelet mapFrame and: PureROSRobulabNodelet baseLinkFrame  ]
+]
+
+{ #category : #'private-out' }
+PureROSRobulabNodelet >> trajectoryDifferential: aPose [
+	self trajectoryDifferentialOut send: [ : msg | 
+		msg header frame_id: PureROSRobulabNodelet  baseLinkFrame.
+		aPose intoGeometry_msgs_Pose: msg pose 
+	]. 
+	
+]
+
+{ #category : #behavior }
+PureROSRobulabNodelet >> trajectoryDifferentialOut [
+	^ trajectoryDifferentialOut ifNil: [
+		trajectoryDifferentialOut := self rosnode topicPublisher: PureROSKompaiNodelet trajectoryDifferentialTopic typedAs: PureROSKompaiNodelet trajectoryDifferentialTopicType. 	
+	]
 ]

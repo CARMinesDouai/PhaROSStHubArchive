@@ -52,18 +52,17 @@ PureROSMoveBaseLandmarkNavigation >> goTo: anEntity [
 	currentEvent ifNotNil: [ currentEvent cancel. currentEvent := nil ].
 	currentLandmark := anEntity.
 	currentGoal := robulab nodelets movebase client goTo: anEntity center asPose.
-	currentEvent := robulab nodelets sgevents whenLandmark: [ :lmk |  anEntity id = lmk landmark and: [ (PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d < 1.0 ] ] doOnce: [ : lmk | self onArrivalToLandmark: lmk ].
+	currentEvent := robulab nodelets sgevents whenLandmark: [ :lmk | 
+		 anEntity id = lmk landmark and: [ (PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d < 0.8  ]
+		 ] doOnce: [ : lmk | self onArrivalToLandmark: lmk ].
 ]
 
 { #category : #'as yet unclassified' }
 PureROSMoveBaseLandmarkNavigation >> manualDifferentialGoal: aPose [ 
-	| rotated |			
-				
-		self halt.
-	"		
-			rotated := pose position rotate: robulab robot localizationService currentPosition orientation.
-			(PNGTrajectoryServiceBasedController for: robulab robot)  goToDelta: rotated x @ rotated y."
-	
+	| delta |			
+	delta := PhaROSPose position:( PhaROSPosition x: aPose position x* -1 y: aPose position y * -1 z: 0.0) 
+						   orientation: self nodelets movebase  client currentPosition orientation.
+	^ robulab trajectoryDifferential: delta.
 ]
 
 { #category : #'as yet unclassified' }

@@ -10,22 +10,42 @@ Class {
 		'robot',
 		'localizationController',
 		'scan',
-		'poseStamped',
-		'commandVelocity'
+		'commandVelocity',
+		'poseStampedOut',
+		'trajectoryDifferentialIn'
 	],
 	#category : #'PureROS-Nodelets'
 }
 
 { #category : #'as yet unclassified' }
+PureROSKompaiNodelet class >> trajectoryDifferentialTopic [ 
+	^ '/kompai2/trajectory/differential'
+]
+
+{ #category : #'as yet unclassified' }
+PureROSKompaiNodelet class >> trajectoryDifferentialTopicType [
+	^ 'geometry_msgs/PoseStamped'
+]
+
+{ #category : #'as yet unclassified' }
 PureROSKompaiNodelet >> broadcastSensors [
 	notificationController notificateLaserTo: [ : laser | self scan: laser ].
 	notificationController notificateMovementTo: [ 	: notification |   self poseStamped: notification position asPhaROSPose.	 ] .
-	self nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 } .
+	"self nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 } ."
+]
+
+{ #category : #'as yet unclassified' }
+PureROSKompaiNodelet >> broadcastTF [
+	
+	self nodelets pose2tf express: self poseStamped as: PureROSRobulabNodelet baseLinkFrame childOf: PureROSRobulabNodelet baseLinkParentFrame.
 ]
 
 { #category : #'private-out' }
 PureROSKompaiNodelet >> configure [
-	self nodelets use: SGROSStarGazerNodelet as: #stargazer
+	"This nodelet is for basic hardware broadcasting, avoid to consume topics, specially massive broadcaster"
+	self nodelets use: PhaROSTransformationNodelet as: #transformation.
+	self nodelets use: SGROSStarGazerNodelet as: #stargazer.
+	self nodelets use: PhaROSPoseToTFNodelet  as: #pose2tf.
 ]
 
 { #category : #'private-out' }
@@ -60,6 +80,21 @@ PureROSKompaiNodelet >> consumeInitialPose [
 ]
 
 { #category : #'private-out' }
+PureROSKompaiNodelet >> consumeTrajectoryDifferential [
+
+	
+	trajectoryDifferentialIn ifNil: [
+		trajectoryDifferentialIn := self rosnode buildConnectionFor: '/kompai2/trajectory/differential'.
+		trajectoryDifferentialIn 
+				typedAs: 'geometry_msgs/PoseStamped';
+				adapted: #pose \> PNGRobotPose;
+				for: [ : aPose |  (PNGTrajectoryServiceBasedController for:  robot)  goToDelta: aPose. ] .
+
+		trajectoryDifferentialIn connect.
+	]
+]
+
+{ #category : #'private-out' }
 PureROSKompaiNodelet >> initialize: aRobot [
 	robot := aRobot value: PNGRobulabDiscoveryFactory.
 		
@@ -68,9 +103,16 @@ PureROSKompaiNodelet >> initialize: aRobot [
 	notificationController activateLaserNotifications.
 
 	self broadcastSensors.
+	2 seconds asDelay wait.
+	self broadcastTF.
 	"
 	self consumeInitialPose.
 	self consumeCommandVelocity."
+]
+
+{ #category : #'private-out' }
+PureROSKompaiNodelet >> poseStamped [
+	^( self rosnode buildConnectionFor:  PureROSRobulabNodelet poseStampedTopic )typedAs: PureROSRobulabNodelet poseStampedTopicType;  adapted: #pose \> PhaROSPose  ; connect.
 ]
 
 { #category : #'private-out' }
@@ -85,7 +127,7 @@ PureROSKompaiNodelet >> poseStamped: aPose [
 
 { #category : #'private-out' }
 PureROSKompaiNodelet >> poseStampedOut [
-	^ poseStamped ifNil: [ poseStamped := self rosnode topicPublisher: PureROSRobulabNodelet poseStampedTopic typedAs: 'geometry_msgs/PoseStamped'].
+	^ poseStampedOut ifNil: [ poseStampedOut := self rosnode topicPublisher: PureROSRobulabNodelet poseStampedTopic typedAs: 'geometry_msgs/PoseStamped'].
 ]
 
 { #category : #broadcast }
