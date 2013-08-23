@@ -13,6 +13,7 @@ Class {
 { #category : #accessing }
 PhaROSSelfProcessedExternalNode >> attend: aChannel [
 		[ self spinOnceOver: aChannel ] on: Error do: [: e | self manageError: e ].
+		
 
 ]
 
@@ -80,6 +81,7 @@ PhaROSSelfProcessedExternalNode >> timeout [
 PhaROSSelfProcessedExternalNode >> workWith: aChannel [
 	self setup. 
 	processResult := (self paralellize looping attend: aChannel) asStickyReference. 
+	
 	
 
 ]

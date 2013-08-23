@@ -17,7 +17,8 @@ Class {
 	#instVars : [
 		'tfWriter',
 		'tfs',
-		'container'
+		'container',
+		'tfIn'
 	],
 	#category : #'PhaROS-Nodelets-TF'
 }
@@ -34,26 +35,19 @@ PhaROSTransformationNodelet class >> tfTopicType [
 
 { #category : #'topic-reading' }
 PhaROSTransformationNodelet >> between: aFrameID and: anOtherFrameID [
+	self configureTfCallback.
 	^ container pseudoTopicBetween: aFrameID  and: anOtherFrameID.
 ]
 
 { #category : #'topic-reading' }
 PhaROSTransformationNodelet >> between: aFrameID and: anOtherFrameID for: aCallback [
-	^ (container pseudoTopicBetween:  aFrameID and: anOtherFrameID) for: aCallback
+	^ (self between: aFrameID and: anOtherFrameID) for: aCallback
 ]
 
 { #category : #'topic-reading' }
 PhaROSTransformationNodelet >> betweenFixedFrameAnd: aFrameID [
 	^ self between: container currentFixedFrame name and: aFrameID
 
-]
-
-{ #category : #package }
-PhaROSTransformationNodelet >> configure [
-
-	self configureTfCallback.
-	tfWriter := self rosnode topicPublisher: PhaROSTransformationNodelet tfTopic 
-								  typedAs: PhaROSTransformationNodelet tfTopicType
 ]
 
 { #category : #package }
@@ -87,15 +81,27 @@ PhaROSTransformationNodelet >> process: aMessage from: aChn [
 
 { #category : #'topic-reading' }
 PhaROSTransformationNodelet >> tf [
-	^(self rosnode buildConnectionFor: '/tf')
-				typedAs: 'tf/tfMessage'; 
-				connect . 
+	^ tfIn ifNil: [
+		tfIn :=  (self rosnode buildConnectionFor: '/tf')
+		typedAs: 'tf/tfMessage'; 
+		connect 
+	]. 
 	
 ]
 
 { #category : #'topic-writing' }
 PhaROSTransformationNodelet >> tf: aMessageConfiguration [
-	^ tfWriter send: aMessageConfiguration.
+	^ self tfWriter send: aMessageConfiguration.
+]
+
+{ #category : #package }
+PhaROSTransformationNodelet >> tfWriter [
+	
+	^ tfWriter ifNil: [
+		tfWriter := self rosnode topicPublisher: PhaROSTransformationNodelet tfTopic 
+								  typedAs: PhaROSTransformationNodelet tfTopicType
+								
+	].
 ]
 
 { #category : #package }

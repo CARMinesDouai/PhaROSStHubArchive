@@ -203,6 +203,9 @@ PhaROSLaunchBuilder >> moveBase [
 	conf remap:'base_laser' to: '/laser'.
 	conf remap:'/cmd_vel' to: '/raw_command_velocity'.
 	conf param: 'clearing_rotation_allowed' value: 'false'.
+	conf param: 'controller_frequency' value: '10.0'.
+	conf param: 'planner_frequency' value: '5.0'.
+
 	"conf param:'base_global_planner' value:'carrot_planner/CarrotPlanner'."
 
 "	conf param:'controller_frequency' value:'10.0'."
