@@ -51,7 +51,6 @@ SGCalculatingState >> singlePoll [
 
 	[
 		self deployMessage: gate stream nextMessage.
-		(Delay forMilliseconds: 100) wait.
 	] on: Error do: [
 		:e | Transcript show: 'Warning: ', e messageText; cr.
 	].
@@ -72,6 +71,8 @@ SGCalculatingState >> startMapBuilding [
 SGCalculatingState >> startPolling [
 	polling ifNil: [
 		polling := self paralellize poll.
+		
+		
 	].
 	
 ]
