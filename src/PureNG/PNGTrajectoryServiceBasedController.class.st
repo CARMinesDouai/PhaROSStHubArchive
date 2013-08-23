@@ -62,8 +62,9 @@ PNGTrajectoryServiceBasedController >> goToAllDelta: deltaPoints [
 { #category : #controlling }
 PNGTrajectoryServiceBasedController >> goToDelta: deltaPoint [
 	| origin target |
+	
 	origin := self currentPosition.
-	target := origin + deltaPoint.
+	target := origin + deltaPoint asPoint.
 	self trajectoryService 
 		insertSegmentFrom:  origin to: target  speed: 0.25;
 		startMotion.
