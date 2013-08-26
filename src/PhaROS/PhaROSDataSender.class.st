@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'owner'
 	],
-	#category : #'PhaROS-Kernel'
+	#category : #'PhaROS-Kernel-ExternalNodes'
 }
 
 { #category : #'as yet unclassified' }

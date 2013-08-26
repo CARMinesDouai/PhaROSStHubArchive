@@ -50,15 +50,15 @@ PhaROSXMLRPCTest >> tearDown [
 PhaROSXMLRPCTest >> testGetPublishedTopics [	
 	| currentPublisherTopics |
 	currentPublisherTopics := controller master getPublishedTopics: self callerId.
-	self assert: currentPublisherTopics = expectedSystemState publishedTopics.
- 
+	self assert: currentPublisherTopics size > 0 .
+	self assert: (currentPublisherTopics allSatisfy: #isString). 
 ]
 
 { #category : #testing }
 PhaROSXMLRPCTest >> testGetSystemState [
 	| currentSystemState |
 	currentSystemState := controller master getSystemState: self callerId .	
-	self assert: currentSystemState = expectedSystemState
+	self assert: currentSystemState isValidState
 	
 	
 
@@ -70,7 +70,9 @@ PhaROSXMLRPCTest >> testGetTopicTypes [
 	| currentTopicTypes | 
 	
 	currentTopicTypes := controller master getTopicTypes: self callerId .
-	self assert: self expectedTopicTypes = currentTopicTypes.
+	self assert:  currentTopicTypes size > 0.
+	self assert:  (currentTopicTypes keys allSatisfy: #isString).
+	self assert:  (currentTopicTypes values allSatisfy: #isString).
 ]
 
 { #category : #testing }

@@ -16,7 +16,7 @@ This node represent a basic node in the ROS environment.
 "
 Class {
 	#name : #PhaROSNodeHandle,
-	#superclass : #PhaROSNode,
+	#superclass : #PhaROSDelegateNode,
 	#instVars : [
 		'topicHandle',
 		'subscribingHandle'
@@ -91,7 +91,7 @@ PhaROSNodeHandle >> register: aCallback for: aTopic [
 		: aCollectionOfCallbacks | aCollectionOfCallbacks add: aCallback.
 	]  ifAbsent:[
 		topicHandle at:aTopic put: (Set newFrom: { aCallback }).
-		self subscriber interestedIn: aTopic. 
+		super subscriber: aTopic name typedAs: aTopic type. 
 	] .  
 	
 	

@@ -1,6 +1,6 @@
 Class {
 	#name : #PhaROSTurtleLogger,
-	#superclass : #PhaROSNode,
+	#superclass : #PhaROSDelegateNode,
 	#category : #'PhaROS-Experiments-RoboShopDeliverable1'
 }
 
@@ -22,6 +22,6 @@ PhaROSTurtleLogger >> start [
 	super start.
 	self receiverDelegate:  [ :message :channel |
        							Transcript show: message value asString].
-	self interestedIn: '/turtle1/command_velocity' 
+	self subscriber:  '/turtle1/command_velocity'  typedAs: 'turtlesim/Velocity'.
 	
 ]

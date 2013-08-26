@@ -39,6 +39,7 @@ PhaROSBaseCase >> masterURL: aString [
 { #category : #'setup / teardown' }
 PhaROSBaseCase >> setUp [
 	masterUrl := self masterURL.
+	PhaROSMaster stopAndUnregisterUrl: self masterURL.
 	controller := PhaROSMasiveNodeController url: masterUrl
 ]
 
@@ -77,6 +78,7 @@ PhaROSBaseCase >> startUpTurtle [
 
 { #category : #'setup / teardown' }
 PhaROSBaseCase >> tearDown [ 
+
 	PhaROSMaster stopAndUnregisterUrl: self masterURL.
 	self shutdownMaster.
 	self shutdownTurtle.

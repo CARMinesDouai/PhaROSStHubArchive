@@ -84,6 +84,7 @@ PhaROSPacket >> loadStream: aStream [
 	value := type decode: aDecoder.
 
 
+
 ]
 
 { #category : #accessing }

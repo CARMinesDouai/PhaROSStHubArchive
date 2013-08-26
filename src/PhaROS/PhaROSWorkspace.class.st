@@ -32,10 +32,10 @@ PhaROSWorkspace >> shutdown [
 	
 	
 	Smalltalk garbageCollect.
-	self assert: PhaROSExternalNode allInstances size = 0.
+	self assert: PhaROSExternalSubscriberNode allInstances size = 0.
 	
 	Smalltalk garbageCollect.
-	self assert: PhaROSNode allInstances size = 0.
+	self assert: PhaROSDelegateNode allInstances size = 0.
 	
 	Smalltalk garbageCollect.
 	self assert: PhaROSTopic allInstances size = 0.
@@ -76,7 +76,7 @@ PhaROSWorkspace >> workspacePureMap [
 
 "	 (RoStMaster url: 'http://127.0.0.1:11311/') lookupNode: '/PureConnector'.  "
 		
-	node := master create: PhaROSPureKompaiWriterNode named: '/PureConnector' domain: '127.0.0.1' xmlRpcPort:  6123.	
+	node := master create: PhaROSPureKompaiWriterNode named: '/PureConnector' domain: '127.0.0.1' tcpPort: 9984 xmlRpcPort:  6123.	
 	node interestedIn: '/turtle1/command_velocity'.
 
 
@@ -92,6 +92,7 @@ PhaROSWorkspace >> workspaceTurtleAccess [
 	self new shutdown.
 "
 	
+	
 	self shutdown.
 	self startup.
 	
@@ -99,15 +100,15 @@ PhaROSWorkspace >> workspaceTurtleAccess [
 	node := master  createNodeNamed: '/anArbitraryId' domain: '127.0.0.1' tcpPort:  9999  xmlRpcPort:  6123 soul: [
 		: me |
 			1 to: 20 do: [ :i |
-				me sendTo: '/turtle1/command_velocity' a: [ :msg |
+				me sendTo: '/turtle1/command_velocity'  typedAs: 'turtlesim/Velocity' a: [ :msg |
 					msg angular: 1.0.
 					msg linear: 2.0.
 				].
-				me sendTo: '/turtle1/command_velocity' a: [ :msg |
+				me sendTo: '/turtle1/command_velocity'  typedAs: 'turtlesim/Velocity' a: [ :msg |
 					msg angular: 1.0.
 					msg linear: -2.0.
 				].
-				me sendTo: '/turtle1/command_velocity' a: [ :msg |
+				me sendTo: '/turtle1/command_velocity'  typedAs: 'turtlesim/Velocity' a: [ :msg |
 					msg angular: 10.0.
 					msg linear: 20.0.
 				].
@@ -116,7 +117,7 @@ PhaROSWorkspace >> workspaceTurtleAccess [
 	node execute.
 
 
-	node sendTo: '/turtle1/command_velocity' a: [ :msg |
+	node sendTo: '/turtle1/command_velocity'  typedAs: 'turtlesim/Velocity' a: [ :msg |
 		msg angular: 1.0.
 		msg linear: 2.0.
 	].
@@ -137,7 +138,7 @@ PhaROSWorkspace >> workspaceTurtleAndPureReading [
 
 "	 (RoStMaster url: 'http://127.0.0.1:11311/') lookupNode: '/PureConnector'.  "
 		
-	node := master  create: PhaROSPureKompaiWriterNode named: '/PureConnector' domain: '127.0.0.1' xmlRpcPort:  6123.	
+	node := master  create: PhaROSPureKompaiWriterNode named: '/PureConnector' domain: '127.0.0.1' tcpPort: 9985 xmlRpcPort:  6123.	
 	node interestedIn: '/turtle1/command_velocity'.
 
 
@@ -171,7 +172,7 @@ PhaROSWorkspace >> workspaceTurtleReading [
 	self shutdown.
 	self startup.
 	
-	node := master  create: PhaROSNode named: '/ReaderSample' domain: '127.0.0.1' xmlRpcPort:  6123.	
+	node := master  create: PhaROSDelegateNode named: '/ReaderSample' domain: '127.0.0.1' tcpPort: 9988 xmlRpcPort:  6123.	
 	node interestedIn: '/turtle1/pose'.
 	Transcript open.
 "     

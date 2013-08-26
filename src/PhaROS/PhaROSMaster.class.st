@@ -201,19 +201,20 @@ PhaROSMaster >> lookupService: serviceName with: aCallerId [
 { #category : #'API-Data-Accessors' }
 PhaROSMaster >> lookupTopic: aTopicName [
 
-	^ topics at: aTopicName ifAbsentPut:[
-		PhaROSTopic build: aTopicName asking: self.
-	  ].
+	^ topics at: aTopicName .
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSMaster >> lookupTopic: aTopicName typedAs: aTypeId [
 	| topic |
 	topic :=  topics at: aTopicName ifAbsentPut:[
-		PhaROSTopic build: aTopicName asking: self.
+		PhaROSTopic new name: aTopicName; type: aTypeId; typeFactory:( self typeFactory: aTypeId ) yourself.
 	  ].
 
-	topic type ifNil: [ topic type: aTypeId ].
+	topic type ifNil: [ 
+		topic type: aTypeId .
+		topic typeFactory:( self typeFactory: aTypeId )
+	].
 	self assert: topic type = aTypeId.
 	^ topic.
 ]
@@ -242,15 +243,16 @@ PhaROSMaster >> setParam: aCallerId named: aParameterName with: anObject [
 
 { #category : #service }
 PhaROSMaster >> stop [
-	topics valuesDo:#stop.
-	nodes valuesDo:#destroy.
+	topics valuesDo:#finalize.
+	nodes valuesDo:#finalize.
 	nodes removeAll.
 	topics removeAll.
-	
+	Smalltalk garbageCollectMost.
 ]
 
 { #category : #service }
 PhaROSMaster >> stopAndUnregister [
+
 	^ PhaROSMaster stopAndUnregisterUrl: masterXmlRpc url asString.
 ]
 
@@ -278,6 +280,7 @@ PhaROSMaster >> unregisterSubscriber: aCallerId from: aTopicName andCallerUri: a
 
 { #category : #accessing }
 PhaROSMaster >> url: anUrl [
+
 	masterXmlRpc := PhaROSMasterProxy url: anUrl.
 ]
 

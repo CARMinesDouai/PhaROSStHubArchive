@@ -49,6 +49,11 @@ PhaROSTcpServer class >> stop: aRoStTcpServer [
 	self removeService: aRoStTcpServer.
 ]
 
+{ #category : #server }
+PhaROSTcpServer >> finalize [ 
+	PhaROSTcpServer stop: self.
+]
+
 { #category : #accessing }
 PhaROSTcpServer >> owner [
 	^ owner
@@ -70,6 +75,7 @@ PhaROSTcpServer >> serve: aSocket [
 	bytesRead := aSocket receiveDataWithTimeoutInto: data.
 	
 	
+
 	
 	self flag:#makeUpToThisThing.
 	message := PhaROSHSMessageDecoder decodeSubscriberMessage: (data copyFrom: 1 to: bytesRead).

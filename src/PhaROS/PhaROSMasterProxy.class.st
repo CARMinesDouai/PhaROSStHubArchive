@@ -71,7 +71,7 @@ PhaROSMasterProxy >> getSystemState: aCallerId [
 { #category : #'API-Data-Accessors' }
 PhaROSMasterProxy >> getTopicTypes: aCallerId [
  | topics |
-	topics := self  invokeMethod: 'getTopicTypes' withArgs: {aCallerId}.
+	topics := (self  invokeMethod: 'getTopicTypes' withArgs: {aCallerId} )  .
 	^ topics 	inject: (Dictionary new) 
 			 	into: [ 
 					: dict : aTopicArray |  
@@ -112,6 +112,7 @@ PhaROSMasterProxy >> lookupService: serviceName with: aCallerId [
 
 { #category : #'API-Registration' }
 PhaROSMasterProxy >> registerPublisher: aCallerId to: aTopicName with: aTopicMessageType andCallerUri: anUri [
+	
 	^ self  invokeMethod: 'registerPublisher' withArgs: { aCallerId . aTopicName . aTopicMessageType . anUri}.
 
 ]

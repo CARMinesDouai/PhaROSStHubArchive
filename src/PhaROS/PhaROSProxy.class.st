@@ -26,8 +26,7 @@ PhaROSProxy >> invokeMethod: method withArgs: args [
 	| returnArray |
 	
 	returnArray := super invokeMethod: method withArgs: args.
-	^ (self responseClass elements: returnArray) value.
-	
+	^	(self responseClass elements: returnArray) value.
 	
 ]
 

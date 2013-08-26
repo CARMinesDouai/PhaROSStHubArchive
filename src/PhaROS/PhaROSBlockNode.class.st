@@ -1,6 +1,6 @@
 Class {
 	#name : #PhaROSBlockNode,
-	#superclass : #PhaROSNode,
+	#superclass : #PhaROSDelegateNode,
 	#instVars : [
 		'soul'
 	],
@@ -9,19 +9,13 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSBlockNode class >> name: aName domain: aDomain tcpPort: aTcpPort xmlRpcPort: aXmlRpcPort master: aMaster soul: aBlock [
-	^ self name: aName domain: aDomain tcpPort: aTcpPort xmlRpcPort: aXmlRpcPort master: aMaster soul: aBlock delegate:[].
+	 ^ (self name: aName domain: aDomain tcpPort: aTcpPort xmlRpcPort: aXmlRpcPort master: aMaster ) soul: aBlock ; yourself.
 	
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSBlockNode class >> name: aName domain: aDomain tcpPort: aTcpPort xmlRpcPort: aXmlRpcPort master: aMaster soul: aBlock delegate: aReceiverDelegateOrBlock [
-	^ (self name: aName domain: aDomain tcpPort: aTcpPort xmlRpcPort: aXmlRpcPort master: aMaster delegate: aReceiverDelegateOrBlock) soul: aBlock ; yourself.
 	
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSBlockNode >> destroy [
-	super destroy.
 	soul := nil. 
 ]
 

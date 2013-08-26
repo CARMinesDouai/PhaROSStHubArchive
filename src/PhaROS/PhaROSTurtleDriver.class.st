@@ -1,6 +1,6 @@
 Class {
 	#name : #PhaROSTurtleDriver,
-	#superclass : #PhaROSNode,
+	#superclass : #PhaROSDelegateNode,
 	#instVars : [
 		'process'
 	],
@@ -28,6 +28,7 @@ PhaROSTurtleDriver >> publishingLoop [
 		delay wait.
             self 
 			sendTo: '/turtle1/command_velocity' 
+			 typedAs: 'turtlesim/Velocity'
 			a: [ :message |
   		            	message angular: 1.0.
     		           		message linear: 2.0]

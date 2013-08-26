@@ -1,51 +1,25 @@
-"
-PhaROSExternalNode is the representation of a node that lives in ROS world, but not in this image. Even when is not subclass of PhaROSNode, is polymorphic with it objects for the topic management, allowing to use as receptor of a ROS message any kind of both nodes.
-
-For the case of reading message from it (what means to send messages into the system), we have PhaROSSelfProcessedExternalNode, which has a process attached to the related socket and let the messages go into our image side of ROS world.
-Is important to take in care that in this architecture, for each incoming conection, we have one process polling the messages.
-
-
-"
 Class {
 	#name : #PhaROSExternalNode,
 	#superclass : #Object,
 	#instVars : [
 		'name',
 		'topic',
-		'socket',
-		'message',
-		'nodeDataSender'
+		'socket'
 	],
 	#category : #'PhaROS-Kernel'
 }
 
-{ #category : #'as yet unclassified' }
-PhaROSExternalNode class >> named: aCallerId subscriberOf: aTopicName with: aSocket [
-	^self new 	name: aCallerId; 
-				topic: aTopicName; 
-				socket: aSocket; 
-				yourself.
-]
-
-{ #category : #'message handling' }
-PhaROSExternalNode >> addToMessagesQueue: aBinaryMessage [
-[
-	nodeDataSender addToMessagesQueue: aBinaryMessage.
-]	on: Error do: [
-	topic stop.	
-]
+{ #category : #accessing }
+PhaROSExternalNode >> checkConnection [
+	socket isConnected ifFalse:[
+		PhaROSError signal: 'Socket closed'.	
+	].
 
 ]
 
-{ #category : #service }
-PhaROSExternalNode >> destroy [
-	self stop.
-]
-
-{ #category : #'message handling' }
-PhaROSExternalNode >> initialize [ 
-	nodeDataSender := PhaROSDataSender for: self.
-	
+{ #category : #accessing }
+PhaROSExternalNode >> finalize [
+	socket close.
 ]
 
 { #category : #accessing }
@@ -59,27 +33,6 @@ PhaROSExternalNode >> name: aName [
 	
 ]
 
-{ #category : #bla }
-PhaROSExternalNode >> printOn: aStream [
-	aStream nextPutAll: 'ExternalNode-', self name. 
-]
-
-{ #category : #'message handling' }
-PhaROSExternalNode >> receive: aMessage from: aChannel [ 
-"	name = '/rviz' ifTrue: [ Transcript show: aMessage value asString. ]."
-	self addToMessagesQueue: aMessage dump.
-	
-
-
-]
-
-{ #category : #bla }
-PhaROSExternalNode >> receiveDataTimeout: aSmallInteger into: aByteString [ 
-	self flag:#putitInOrder.
-	
-	^ socket receiveDataTimeout: aSmallInteger into: aByteString .
-]
-
 { #category : #accessing }
 PhaROSExternalNode >> socket [ 
 	^ socket.
@@ -90,38 +43,13 @@ PhaROSExternalNode >> socket: aSocket [
 	socket := aSocket. 
 ]
 
-{ #category : #service }
-PhaROSExternalNode >> stop [
-	socket close.
-]
-
-{ #category : #'message handling' }
-PhaROSExternalNode >> subscribedTo: aChannel [	
-	
-	message := PhaROSHSMessage newPublisherWith: [ :msg |
-		msg callerId: aChannel owner name.
-		msg md5Sum: topic md5Sum.
-		msg type: topic type.
-		msg latching: aChannel isLatchedChannel.
-	].
-	message sendTo: socket.
-	
-]
-
 { #category : #accessing }
 PhaROSExternalNode >> topic [
 	^ topic
 ]
 
 { #category : #accessing }
-PhaROSExternalNode >> topic: aTopicName [ 
-	topic := aTopicName.
+PhaROSExternalNode >> topic: aTopic [ 
+	topic := aTopic.
 	
-]
-
-{ #category : #service }
-PhaROSExternalNode >> unregisterPublisher: aNode [
-	[socket close] on: Error do: [
-		Transcript show: 'error closing socket'.
-	].
 ]

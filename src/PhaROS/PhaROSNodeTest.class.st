@@ -15,7 +15,7 @@ PhaROSNodeTest >> setUp [
 	self startUpMaster.
 	self startUpTurtle.
 	
-	node := controller create: PhaROSTestNode  named: '/TestNode' domain: '127.0.0.1' xmlRpcPort:  6123.	
+	node := controller create: PhaROSTestNode  named: '/TestNode' domain: '127.0.0.1' tcpPort: 92837 xmlRpcPort:  634987.	
 ]
 
 { #category : #'as yet unclassified' }
@@ -37,7 +37,7 @@ PhaROSNodeTest >> testInterestedNode [
 		semaphore signal.
 	].
 
-	node interestedIn: '/turtle1/pose'.
+	node interestedIn: '/turtle1/pose' typedAs: 'turtlesim/Pose'.
 	semaphore waitTimeoutSeconds: 5.
 
 	asserts do: [ :b | self assert: b ].
@@ -52,9 +52,9 @@ PhaROSNodeTest >> testPublisherNode [
 	
 	semaphore := Semaphore new.
 	
-	publisherNode := controller  create: PhaROSBlockNode named: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:  9999  xmlRpcPort:  6127 soul: [
+	publisherNode := controller  create: PhaROSBlockNode named: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:  9456  xmlRpcPort:  6098 soul: [
 		: me |
-		me sendTo: '/turtle1/command_velocity' a: [ :msg |
+		me sendTo: '/turtle1/command_velocity' typedAs:'turtlesim/Velocity' a: [ :msg |
 			msg linear: 1.0. 
 			msg angular: 1.1. 
 		].
@@ -62,10 +62,9 @@ PhaROSNodeTest >> testPublisherNode [
 
 	node subscriberBehavior: [
 		:aMessage :aChannel  |
-		
 		asserts at:1 put: ( aChannel topic name = '/turtle1/command_velocity').
 		asserts at:2 put: ( aMessage value isKindOf: ( Smalltalk at:#TurtlesimVelocity ) ).
-		asserts at:3 put: ( aChannel isKindOf: PhaROSOutPutChannel ).
+		asserts at:3 put: ( aChannel isKindOf: PhaROSInPutChannel ).
 		asserts at:4 put: (
 			aMessage value linear = 1.0 and: [
 				aMessage value angular = 1.1	
@@ -77,10 +76,13 @@ PhaROSNodeTest >> testPublisherNode [
 
 	publisherNode execute.
 
-	
+	node subscriber: '/turtle1/command_velocity' typedAs: 'turtlesim/Velocity' .	
 
-	node interestedIn: '/turtle1/command_velocity'.
-	
+	1 second asDelay wait.	
+
+
+	publisherNode execute.
+	publisherNode execute.	
 	
 	semaphore waitTimeoutSeconds: 10.
 	

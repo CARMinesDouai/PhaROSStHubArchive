@@ -13,34 +13,12 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'name',
-		'master',
 		'type',
-		'inputChannels',
-		'outputChannels'
+		'typeFactory',
+		'channels'
 	],
 	#category : #'PhaROS-Kernel'
 }
-
-{ #category : #'as yet unclassified' }
-PhaROSTopic class >> build: aTopicName asking: aMaster [
-	^self new name: aTopicName; 
-			  master: aMaster; 
-			  type: (aMaster getTopicType: aTopicName);
-			  yourself.
-]
-
-{ #category : #service }
-PhaROSTopic >> allInputChannelsFor: aSubscriber  but: aSetOfChannelsToAvoid [
-	| externalNodesXMLRPCUrls newChannels |
-	
-	externalNodesXMLRPCUrls :=  (aSubscriber master registerSubscriber: aSubscriber  name to: self name  with: self type andCallerUri: aSubscriber  xmlRpcUrl) asSet .
-	
-	newChannels := externalNodesXMLRPCUrls reject:[ :url | aSetOfChannelsToAvoid anySatisfy: [ :ch | ch isRelatedWith: url ] ].
-	newChannels := newChannels collect: [: anXMLRPCUrl | self lookupInputChannelFor: aSubscriber with: anXMLRPCUrl  ].
-	
-	
-	^newChannels.
-]
 
 { #category : #'as yet unclassified' }
 PhaROSTopic >> busInfoFor: aNode [
@@ -51,34 +29,45 @@ PhaROSTopic >> busInfoFor: aNode [
 ]
 
 { #category : #accessing }
+PhaROSTopic >> channels [
+	^ channels 
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTopic >> finalize [ 
+	channels do: #finalize.
+	channels removeAll.
+]
+
+{ #category : #accessing }
 PhaROSTopic >> initialize [ 
-	inputChannels := Dictionary new.
-	outputChannels := Dictionary  new.
+	channels := Set new.
 ]
 
 { #category : #accessing }
-PhaROSTopic >> inputChannels [ 
-	^ inputChannels 
-]
-
-{ #category : #service }
-PhaROSTopic >> lookupInputChannelFor: aPhaROSNode with: anXMLRPCUrl [ 
-	^ outputChannels at: anXMLRPCUrl  ifAbsent:[ 
-		     inputChannels  at: anXMLRPCUrl  ifAbsentPut:[  
-				PhaROSChannel inputChannelfor: aPhaROSNode into: self  to: anXMLRPCUrl.
-		].
-	]
+PhaROSTopic >> inputchannels [
+	^ self channels select: #isInput. 
 ]
 
 { #category : #accessing }
-PhaROSTopic >> master [
-	^ master
+PhaROSTopic >> isAPublisher: aNode [
+	^ self outputchannels anySatisfy: [ : c | c owner = aNode ] 
 ]
 
-{ #category : #new }
-PhaROSTopic >> master: aMaster [
-	master := aMaster.
-	 
+{ #category : #accessing }
+PhaROSTopic >> isLatched [ 
+	^ true
+]
+
+{ #category : #accessing }
+PhaROSTopic >> isLocalPublisher:  anURL [
+	^ self outputchannels anySatisfy:  [ : c | c  xmlurl = anURL ].
+]
+
+{ #category : #accessing }
+PhaROSTopic >> isSubscribedTo: aNode [
+
+	self inputChannels 
 ]
 
 { #category : #accessing }
@@ -90,12 +79,12 @@ PhaROSTopic >> md5Sum [
 
 ]
 
-{ #category : #new }
+{ #category : #accessing }
 PhaROSTopic >> name [ 
 	^ name.
 ]
 
-{ #category : #new }
+{ #category : #accessing }
 PhaROSTopic >> name: aTopicName [
 	name := aTopicName.
 	
@@ -108,14 +97,14 @@ PhaROSTopic >> newMessage [
 	 
 ]
 
-{ #category : #'as yet unclassified' }
-PhaROSTopic >> outputChannelFor: aPublisher [
-	^ PhaROSChannel outPutChannelfor: aPublisher  into: self.
+{ #category : #accessing }
+PhaROSTopic >> outputchannel: anURL [
+	^ self outputchannels detect: [ : c | c  xmlurl = anURL ].
 ]
 
 { #category : #accessing }
-PhaROSTopic >> outputChannels [ 
-	^ outputChannels 
+PhaROSTopic >> outputchannels [ 
+	^ self channels select: #isOutput. 
 ]
 
 { #category : #construction }
@@ -124,22 +113,41 @@ PhaROSTopic >> printOn: aStream [
 ]
 
 { #category : #accessing }
-PhaROSTopic >> registerOutputChannel: aChannel at: aXmlRpcUrl [
-	outputChannels at: aXmlRpcUrl put: aChannel.
+PhaROSTopic >> publishingChannelFor: aNode [ 
+	^ self channels detect: [ : ch | ch owner = aNode ].
 ]
 
-{ #category : #new }
-PhaROSTopic >> stop [
-	
-	inputChannels do: #close.
-	outputChannels do: #close.
-	
-	inputChannels removeAll.
-	outputChannels removeAll.
-	"master := nil. "
+{ #category : #accessing }
+PhaROSTopic >> publishingChannelFor: aNode throught: aTransport [
+	^ self channels detect: [ : ch | ch owner = aNode ] ifNone: [ 
+		 aTransport createOutputChannelForTopic: self 
+	].
 ]
 
-{ #category : #new }
+{ #category : #accessing }
+PhaROSTopic >> registerChannel: aChannel [
+	(self channels anySatisfy: [ : ch | ch owner = aChannel owner] ) ifTrue: [
+		self error: ' There is already a channel for this owner '.	
+	].
+	channels add: aChannel. 
+	^ aChannel.
+]
+
+{ #category : #accessing }
+PhaROSTopic >> subscribingChannelFor: aNode [ 
+	^ self channels detect: [ : ch | ch isInput and: [ ch owner = aNode ]] .
+
+]
+
+{ #category : #accessing }
+PhaROSTopic >> subscribingChannelFor: aNode throught: aTransport [
+	^ self channels detect: [ : ch | ch isInput and: [ ch owner = aNode ]] ifNone: [ 
+		aTransport createInputChannelForTopic: self .
+	].
+
+]
+
+{ #category : #accessing }
 PhaROSTopic >> type [
 	^type.
 
@@ -147,7 +155,7 @@ PhaROSTopic >> type [
 	 
 ]
 
-{ #category : #new }
+{ #category : #accessing }
 PhaROSTopic >> type: aTopicType [
 	type := aTopicType.
 	
@@ -156,5 +164,10 @@ PhaROSTopic >> type: aTopicType [
 
 { #category : #construction }
 PhaROSTopic >> typeFactory [
-	^self master typeFactory: self type
+	^ typeFactory
+]
+
+{ #category : #construction }
+PhaROSTopic >> typeFactory: aTypeFactory [
+	typeFactory := aTypeFactory 
 ]

@@ -2,7 +2,9 @@ Class {
 	#name : #PhaROSOutPutChannel,
 	#superclass : #PhaROSChannel,
 	#instVars : [
-		'isFirstSubscriber'
+		'subscribers',
+		'mutex',
+		'xmlurl'
 	],
 	#category : #'PhaROS-Kernel-Channels'
 }
@@ -14,63 +16,27 @@ PhaROSOutPutChannel class >> for: aNode into: aTopic [
 ]
 
 { #category : #service }
-PhaROSOutPutChannel >> close [
-	self owner unregisterPublisherFrom: topic name.
-	subscribers do: [
-		: node |
-		node unregisterPublisher: self owner.
+PhaROSOutPutChannel >> finalize [
+	"self owner unregisterPublisherFrom: topic name.
+	"
+	subscribers select:[ : s | s isKindOf: PhaROSInternalNodeLink ] thenDo: [
+		: link | link close.	
 	].
+	
 	self initialize.
-	
-]
-
-{ #category : #private }
-PhaROSOutPutChannel >> createExternalNodeFor: aMessage with: aSocket [
-
-	
-	aSocket setOption: 'TCP_NODELAY' value: (aMessage  tcpNodelay).
-	self assert: aMessage topic = topic name.
-	
-	^ PhaROSExternalNode named: aMessage  callerId subscriberOf: topic with: aSocket. 
 	
 ]
 
 { #category : #service }
 PhaROSOutPutChannel >> initialize [ 
-	super initialize.
-	isFirstSubscriber := true.
-]
-
-{ #category : #private }
-PhaROSOutPutChannel >> isFirstSubscriber [ 
-	^ 	isFirstSubscriber.
-
+	super initialize .
+	subscribers := Set new.
+	mutex := Mutex new.
 ]
 
 { #category : #testing }
-PhaROSOutPutChannel >> isLatchedChannel [
-	self flag: #WhatWillDoWithLatches.
-	^ true.
-	
-]
-
-{ #category : #tcp }
-PhaROSOutPutChannel >> manageIncomingConnection: aMessage with: aSocket [
-
-	self flag: #TypeIsParsingBadSometimes.
-	Transcript show: 'Managing incoming conection!'; cr.
-"	self assert: topic md5Sum = aMessage md5Sum."
-"	self assert: topic type = aMessage type."
-
-	self subscribe: (self createExternalNodeFor: aMessage with: aSocket).
-	
-	
-
-]
-
-{ #category : #testing }
-PhaROSOutPutChannel >> mustSendPreviousMessagesTo: aNode [
-	^ self isFirstSubscriber or: [ self isLatchedChannel ].
+PhaROSOutPutChannel >> isInput [ 
+	^ false.
 ]
 
 { #category : #'message handling' }
@@ -83,10 +49,14 @@ PhaROSOutPutChannel >> printOn: aStream [
 	aStream nextPutAll: 'OutputChannel>> ',topic name. 
 ]
 
-{ #category : #testing }
-PhaROSOutPutChannel >> relatedWith: aByteString [ 
-	^ owner xmlRpcUrl = aByteString 
-	
+{ #category : #tcp }
+PhaROSOutPutChannel >> publisher [
+	^ PhaROSPublisher for: self.
+]
+
+{ #category : #service }
+PhaROSOutPutChannel >> send: aMessage [
+	self subscribers do: [ : aNode |  self send: aMessage to: aNode. ].
 ]
 
 { #category : #'message handling' }
@@ -110,36 +80,41 @@ PhaROSOutPutChannel >> sendAMessage: aMessageConfigurationBlock to: aNode [
 ]
 
 { #category : #service }
-PhaROSOutPutChannel >> startUp [ 
-	owner registerTo: topic name with: topic type.
-	
-	
-	
-	
+PhaROSOutPutChannel >> subscribe: aSubscriber [ 
+	mutex critical: [
+		subscribers add: aSubscriber.
+	]
 ]
 
-{ #category : #tcp }
-PhaROSOutPutChannel >> subscribe: aNode [
-	
-	| message |	
-	
-	super subscribe: aNode.
-	self owner onSubscribe: aNode to: self. 
-	
-	aNode subscribedTo: self. 
-	
-	(self mustSendPreviousMessagesTo: aNode) ifTrue:[  
-		sent do:  [ 	:msg | 
-				aNode receive: msg  from: self. 
-				
-		].
+{ #category : #service }
+PhaROSOutPutChannel >> subscribers [ 
+	| copy | 
+	mutex critical: [
+		copy := subscribers copy.
 	].
-
-	isFirstSubscriber := false.
+	^copy
 ]
 
 { #category : #tcp }
 PhaROSOutPutChannel >> topic: aTopic [
 	super topic: aTopic.
-	aTopic registerOutputChannel: self at: owner xmlRpcUrl.
+]
+
+{ #category : #service }
+PhaROSOutPutChannel >> unsubscribe: aNode [ 
+	mutex critical: [
+		subscribers remove: aNode ifAbsent: [].
+	].
+	
+
+]
+
+{ #category : #tcp }
+PhaROSOutPutChannel >> xmlurl [ 
+	^ xmlurl.
+]
+
+{ #category : #tcp }
+PhaROSOutPutChannel >> xmlurl: anURL [
+	xmlurl := anURL 
 ]

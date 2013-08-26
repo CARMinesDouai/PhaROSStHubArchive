@@ -1,6 +1,6 @@
 Class {
 	#name : #PhaROSPure,
-	#superclass : #PhaROSNode,
+	#superclass : #PhaROSDelegateNode,
 	#instVars : [
 		'access'
 	],

@@ -19,7 +19,7 @@ PhaROSTopicTests >> testMessageType [
 
 	publisherNode := controller  create: PhaROSBlockNode named: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:  9999  xmlRpcPort:  6127 soul: [
 		: me |
-		me sendTo: '/turtle1/command_velocity' a: [ : msg |
+		me sendTo: '/turtle1/command_velocity' typedAs: 'turtlesim/Velocity' a: [ : msg |
 			type := msg class. 
 		].
 	].
@@ -34,28 +34,34 @@ PhaROSTopicTests >> testTopicInOutputChannelConfiguration [
 
 	semaphore := Semaphore new.
 	
-	node := controller create: PhaROSTestNode  named: '/TestNode' domain: '127.0.0.1' xmlRpcPort:  6123.	
+	node := controller create: PhaROSTestNode  named: '/TestNode' domain: '127.0.0.1' tcpPort: 9930 xmlRpcPort:  6123.	
 	
 
 
 	publisherNode := controller  create: PhaROSBlockNode named: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:  9999  xmlRpcPort:  6127 soul: [
 		: me |
-		me sendTo: '/turtle1/pose' a: [ : msg |
-			otopic := me topics at: '/turtle1/pose'.
-			ochannel := otopic outputChannels at: me xmlRpcUrl.
+		me sendTo: '/turtle1/pose'  typedAs: 'turtlesim/Pose' a: [ : msg |
+			otopic := controller master lookupTopic: '/turtle1/pose'.
+			ochannel := otopic outputchannels detect: [ : o | o xmlurl = 'http://127.0.0.1:6127/' ].
 		].
 	].
 
 	publisherNode execute. 
+	
+	
 	node subscriberBehavior: [
 		:aMessage :aChannel  |
 		ichannel := aChannel.
-		itopic := node topics at: '/turtle1/pose'.
+		itopic := controller master lookupTopic: '/turtle1/pose'.
 		semaphore signal.
 	].
 
-	node interestedIn: '/turtle1/pose'.
+	node subscriber: '/turtle1/pose' typedAs: 'turtlesim/Pose' .
 
+	1 second asDelay wait. 
+	
+	publisherNode execute. 
+	
 	semaphore waitTimeoutSeconds: 5.
 
 	
@@ -64,13 +70,14 @@ PhaROSTopicTests >> testTopicInOutputChannelConfiguration [
 	self assert: itopic == otopic. 
 
 	self assert: ochannel subscribers size = 1.
-	self assert: ichannel subscribers size = 1.
+	self assert: ichannel publishers size = 2.
 	
-	self assert: ochannel owner = publisherNode publisher.
-	self assert: ochannel subscribers anyOne = node subscriber.
+	self assert: ochannel owner = publisherNode.
+	self assert: (ochannel subscribers anyOne isKindOf: PhaROSInternalNodeLink).
+	self assert: ( ochannel subscribers allSatisfy: [: s | s channel owner = node ]).
 	 
-	self assert: ichannel owner name =  '/turtlesim'.
-	self assert:( ichannel owner isKindOf: PhaROSExternalNode )
+	self assert: ichannel owner name =  '/TestNode'.
+	self assert:( ichannel owner isKindOf: PhaROSTestNode )
 	
 	
 ]
@@ -81,27 +88,26 @@ PhaROSTopicTests >> testTopicInputChannelConfiguration [
 
 	semaphore := Semaphore new.
 	
-	node := controller create: PhaROSTestNode  named: '/TestNode' domain: '127.0.0.1' xmlRpcPort:  6123.	
+	node := controller create: PhaROSTestNode  named: '/TestNode' domain: '127.0.0.1' tcpPort: 9983 xmlRpcPort:  6123.	
 	
 	node subscriberBehavior: [
 		:aMessage :aChannel  |
 		channel := aChannel.
-		topic := node topics at: '/turtle1/pose'.
+		topic := controller master lookupTopic: '/turtle1/pose'.
 		semaphore signal.
 	].
 
-	node interestedIn: '/turtle1/pose'.
+	node subscriber: '/turtle1/pose' typedAs: 'turtlesim/Pose' .
 	semaphore waitTimeoutSeconds: 5.
 
 
 	self assert: topic = channel topic.
-	self assert: channel owner  topic = topic.
-	self assert: (channel owner isKindOf: PhaROSExternalNode ).
+	self assert: (channel owner isKindOf: PhaROSTestNode ).
 	self assert: (channel isKindOf: PhaROSInPutChannel ).
-	self assert: topic inputChannels size = 1. 
-	self assert: channel subscribers size = 1.
-	self assert: channel owner  name = '/turtlesim'.
-	self assert: channel subscribers anyOne = node subscriber.
+	self assert: topic inputchannels size = 1. 
+	self assert: channel publishers size = 1.
+	self assert: channel owner  name = '/TestNode'.
+	
 
 ]
 
@@ -109,23 +115,29 @@ PhaROSTopicTests >> testTopicInputChannelConfiguration [
 PhaROSTopicTests >> testTopicOutputChannelConfiguration [
 	| publisherNode  topic channel |
 
-	publisherNode := controller  create: PhaROSBlockNode named: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:  9999  xmlRpcPort:  6127 soul: [
+	publisherNode := controller  create: PhaROSBlockNode named: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:98298  xmlRpcPort: 64465 soul: [
 		: me |
-		me sendTo: '/turtle1/command_velocity' a: [ : msg |
-			topic := me topics at: '/turtle1/command_velocity'.
-			channel := topic outputChannels at: me xmlRpcUrl.
+		
+		me sendTo: '/turtle1/command_velocity'  typedAs: 'turtlesim/Velocity' a: [ : msg |
+			topic := controller master lookupTopic: '/turtle1/command_velocity'.
+			channel := topic outputchannels detect: [ : o | o xmlurl = 'http://127.0.0.1:64465/' ].
 		].
 	].
 	publisherNode execute. 
 	
+	
+	
 	(Delay forMilliseconds: 1500) wait.
 	
+	publisherNode execute. 
+	
+	
 	self assert: topic notNil.
-	self assert: topic outputChannels size = 1.
+	self assert: topic outputchannels size = 1.
 	self assert: (channel isKindOf: PhaROSOutPutChannel) .
-	self assert: channel owner == publisherNode publisher.
-	self assert: channel subscribers size = 1.
-	self assert: (channel subscribers anyOne isKindOf: PhaROSExternalNode ).
+	self assert: channel owner == publisherNode .
+	self assert: channel subscribers  size = 1.
+	self assert: (channel subscribers anyOne isKindOf: PhaROSExternalSubscriberNode ).
 	self assert: channel subscribers anyOne topic == topic.
 	self assert: channel subscribers anyOne name = '/turtlesim'.
 	
