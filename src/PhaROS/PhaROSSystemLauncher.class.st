@@ -36,7 +36,7 @@ PhaROSSystemLauncher class >> new [
 
 { #category : #'as yet unclassified' }
 PhaROSSystemLauncher class >> path: aCommand [
-	^ self fuerte, '/', aCommand 
+	^ self groovy, '/', aCommand 
 ]
 
 { #category : #types }

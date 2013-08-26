@@ -42,18 +42,20 @@ PhaROSExternalPublisherNode >> setup [
 PhaROSExternalPublisherNode >> spinOnce [
 	| disconnect |
 
-	[[
-		socket isConnected ifTrue: [
-			stream peek ifNotNil: [
-				msg loadStream: stream.
-				channel send: msg value.
-			].	
-		] ifFalse: [
-			disconnect := true.
-		] 	
-	] on: ConnectionClosed  do: [ : ct | 
-		disconnect := true. 
-	]] on: Error do: [: err | self halt. ].
+	[
+		[
+			[
+				socket isConnected ifTrue: [
+					stream peek ifNotNil: [
+						msg loadStream: stream.
+						channel send: msg value.
+					].	
+				] ifFalse: [
+					disconnect := true.
+				] 
+			]  on: ConnectionClosed  do: [ : ct | disconnect := true. ].
+		] on: ConnectionTimedOut do: [ :e | Transcript show: 'Timeout---- '; cr. ].
+	] on: Error do: [: err | self halt. ].
 	
 	disconnect ifNotNil: [
 		channel unsubscribe: self.

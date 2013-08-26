@@ -36,7 +36,7 @@ PhaROSNodeHandle >> buildConnectionFor: aTopicID [
 
 { #category : #dispatching }
 PhaROSNodeHandle >> dispatch: aMessage for: aChannel [
-	topicHandle at: aChannel topic  ifPresent: [ : callbackSet | 
+	topicHandle at: aChannel  ifPresent: [ : callbackSet | 
 		callbackSet do: [ : callback | callback receive: aMessage value from: aChannel]. 
 	] ifAbsent: [
 		Transcript show: ' Receiving packets from ', aChannel topic name, ' with out packet handle'; cr.
@@ -70,7 +70,7 @@ PhaROSNodeHandle >> interestedIn: aTopicName typedAs: aTypeId [
 
 { #category : #'topic-consume' }
 PhaROSNodeHandle >> interestedIn: aTopicName typedAs: aTypeId for: aCallback [
-	self register: aCallback for:  (self lookupTopic: aTopicName typedAs: aTypeId). 
+	self register: aCallback for:  (self subscriber: aTopicName  typedAs:  aTypeId). 
 
 		
 ]
@@ -86,12 +86,11 @@ PhaROSNodeHandle >> receiverDelegate: aDelegate [
 ]
 
 { #category : #building }
-PhaROSNodeHandle >> register: aCallback for: aTopic [
-	topicHandle at: aTopic  ifPresent: [
+PhaROSNodeHandle >> register: aCallback for: aChannel [
+	topicHandle at: aChannel  ifPresent: [
 		: aCollectionOfCallbacks | aCollectionOfCallbacks add: aCallback.
 	]  ifAbsent:[
-		topicHandle at:aTopic put: (Set newFrom: { aCallback }).
-		super subscriber: aTopic name typedAs: aTopic type. 
+		topicHandle at: aChannel put: (Set newFrom: { aCallback }).
 	] .  
 	
 	
@@ -100,5 +99,6 @@ PhaROSNodeHandle >> register: aCallback for: aTopic [
 
 { #category : #building }
 PhaROSNodeHandle >> topicPublisher: aTopicName typedAs: aTypeId [
-	^ PhaROSTopicPublisher node: self topic: (self lookupTopic: aTopicName typedAs: aTypeId).
+	
+	^ self publisher: aTopicName typedAs: aTypeId.
 ]

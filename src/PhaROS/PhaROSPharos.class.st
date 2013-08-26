@@ -276,9 +276,7 @@ PhaROSPharos >> scriptKompai1 [
 { #category : #'as yet unclassified' }
 PhaROSPharos >> scriptKompai2 [
 	controller := PhaROSHandleController kompai2.
-	self halt.
-	controller nodelets kompai consumeCommandVelocity.	
-	controller nodelets kompai consumeTrajectoryDifferential.
+	controller nodelets kompai inspect.
 
 ]
 

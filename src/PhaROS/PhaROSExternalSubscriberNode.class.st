@@ -25,12 +25,9 @@ PhaROSExternalSubscriberNode class >> named: aCallerId subscriberOf: aTopic with
 
 { #category : #'message handling' }
 PhaROSExternalSubscriberNode >> addToMessagesQueue: aBinaryMessage [
-[
 	nodeDataSender addToMessagesQueue: aBinaryMessage.
-]	on: Error do: [
-	topic stop.	
-]
-
+	
+	
 ]
 
 { #category : #service }

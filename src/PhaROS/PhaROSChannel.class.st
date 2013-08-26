@@ -52,7 +52,11 @@ PhaROSChannel >> send: aMessage [
 
 { #category : #'as yet unclassified' }
 PhaROSChannel >> send: aMessage to: aNode [
-	aNode receive: aMessage from: self
+	[[
+		aNode receive: aMessage from: self
+	] on: ConnectionTimedOut do: [ 
+	 	self subscribers remove: aNode.
+	] ] on: Error do: [ :e | self halt ].
 ]
 
 { #category : #accessing }
