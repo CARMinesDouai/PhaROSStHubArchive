@@ -31,7 +31,7 @@ PureROSKompaiNodelet class >> trajectoryDifferentialTopicType [
 PureROSKompaiNodelet >> broadcastSensors [
 	notificationController notificateLaserTo: [ : laser | self scan: laser ].
 	notificationController notificateMovementTo: [ 	: notification |   self poseStamped: notification position asPhaROSPose.	 ] .
-	"self nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 } ."
+	
 ]
 
 { #category : #'as yet unclassified' }
@@ -105,9 +105,9 @@ PureROSKompaiNodelet >> initialize: aRobot [
 	self broadcastSensors.
 	2 seconds asDelay wait.
 	self broadcastTF.
-	"
-	self consumeInitialPose.
-	self consumeCommandVelocity."
+	
+	self consumeCommandVelocity.
+	self consumeTrajectoryDifferential .
 ]
 
 { #category : #'private-out' }
