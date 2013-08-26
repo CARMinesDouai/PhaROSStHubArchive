@@ -56,7 +56,7 @@ PureROSController >> broadcastTransformations [
 	transformations size = 0 ifTrue: [ ^ self ].
 	transformationsToSend := transformations shallowCopy.
 	
-	masterController node sendTo: '/tf' a: [: msg |		
+	masterController node sendTo: '/tf' typedAs: 'tf/tfMessage'a: [: msg |		
 			transformationsToSend do: [ : tf | 
 				msg addTransform: tf. 
 				transformations remove: tf 
