@@ -145,11 +145,17 @@ SGROSStarGazerNodelet >> mergeWithFrame: aFrameID [
 { #category : #publish }
 SGROSStarGazerNodelet >> mergeWithPose: aPoseTopicReader [ 
 	
+	^ self mergeWithPose: aPoseTopicReader  to: self absoluteLandmark. 
+]
+
+{ #category : #publish }
+SGROSStarGazerNodelet >> mergeWithPose: aPoseTopicReader to: aPublisher [
+	
 	self nodelets merger merge: self landmarks 
 								     with: aPoseTopicReader 
 								   using: self poseMerger
 								  when: self conditionMerger  
-						  redirectingTo: self absoluteLandmark. 
+						  redirectingTo: aPublisher. 
 ]
 
 { #category : #package }
