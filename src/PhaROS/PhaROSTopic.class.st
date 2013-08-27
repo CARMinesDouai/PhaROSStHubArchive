@@ -119,7 +119,7 @@ PhaROSTopic >> publishingChannelFor: aNode [
 
 { #category : #accessing }
 PhaROSTopic >> publishingChannelFor: aNode throught: aTransport [
-	^ self channels detect: [ : ch | ch owner = aNode ] ifNone: [ 
+	^ self channels detect: [ : ch | ch owner = aNode and:[ ch isOutput ] ] ifNone: [ 
 		 aTransport createOutputChannelForTopic: self 
 	].
 ]

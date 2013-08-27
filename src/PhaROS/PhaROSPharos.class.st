@@ -276,7 +276,7 @@ PhaROSPharos >> scriptKompai1 [
 { #category : #'as yet unclassified' }
 PhaROSPharos >> scriptKompai2 [
 	controller := PhaROSHandleController kompai2.
-	controller nodelets kompai inspect.
+	"controller nodelets kompai inspect."
 
 ]
 
