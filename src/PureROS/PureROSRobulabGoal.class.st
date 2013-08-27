@@ -5,7 +5,8 @@ Class {
 		'goal',
 		'entity',
 		'robulab',
-		'landmarkEvent'
+		'landmarkEvent',
+		'checks'
 	],
 	#category : #'PureROS-Nodelets'
 }
@@ -18,10 +19,13 @@ PureROSRobulabGoal >> cancel [
 
 { #category : #behavior }
 PureROSRobulabGoal >> differentialGoal: aPose [ 
-	| delta |			
-	delta := PhaROSPose position:( PhaROSPosition x: aPose position x* -1 y: aPose position y * -1 z: 0.0) 
-						   orientation: self nodelets movebase  client currentPosition orientation.
-	^ robulab trajectoryDifferential: delta.
+	"It just send one in 20 measures".
+	checks := checks + 1.
+	checks \\\ 20 = 0 ifTrue: [
+		self trajectoryDifferential: aPose. 	
+	].
+
+ 
 ]
 
 { #category : #accessing }
@@ -37,6 +41,12 @@ PureROSRobulabGoal >> goal: aGoal [
 { #category : #testing }
 PureROSRobulabGoal >> hasArrived: lmk [
  	^ entity id = lmk landmark and: [ (PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d < 0.8  ]
+]
+
+{ #category : #behavior }
+PureROSRobulabGoal >> initialize [ 
+	super initialize.
+	checks := 0.
 ]
 
 { #category : #behavior }
@@ -63,7 +73,7 @@ PureROSRobulabGoal >> onArrivalToLandmark: aLandmark [
 	goal cancel.
 	goal status: PureROSRobulabGoal active.
 	
-	landmarkEvent := robulab nodelets sgevents whenLandmark: [ :lmk | true ] do: [ : lmk |
+	landmarkEvent := robulab nodelets baseevent whenLandmark: [ :lmk | true ] do: [ : lmk |
 		self landmarkDriving: lmk.
 	 ].
 	
@@ -72,6 +82,7 @@ PureROSRobulabGoal >> onArrivalToLandmark: aLandmark [
 { #category : #accessing }
 PureROSRobulabGoal >> robulab: aRobulabNodelet [
 	robulab := aRobulabNodelet 
+	
 ]
 
 { #category : #accessing }
@@ -81,7 +92,17 @@ PureROSRobulabGoal >> status [
 
 { #category : #behavior }
 PureROSRobulabGoal >> stopmovingAs: aState [
-	robulab nodelets sgevents remove: landmarkEvent.
+	robulab nodelets baseevent remove: landmarkEvent.
+	goal cancel.
 	goal status: aState.
 	
+]
+
+{ #category : #behavior }
+PureROSRobulabGoal >> trajectoryDifferential: aPose [
+	| delta |		
+				
+	delta := PhaROSPose position:( PhaROSPosition x: aPose position x* -1 y: aPose position y * -1 z: 0.0) 
+						   orientation: self nodelets movebase  client currentPosition orientation.
+	^ robulab trajectoryDifferential: delta.
 ]

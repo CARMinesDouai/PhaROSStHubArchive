@@ -88,7 +88,7 @@ PureROSKompaiNodelet >> consumeTrajectoryDifferential [
 		trajectoryDifferentialIn 
 				typedAs: 'geometry_msgs/PoseStamped';
 				adapted: #pose \> PNGRobotPose;
-				for: [ : aPose |  (PNGTrajectoryServiceBasedController for:  robot)  goToDelta: aPose. ] .
+				for: [ : aPose |  (PNGTrajectoryServiceBasedController for:  robot)  goTo: aPose. ] .
 
 		trajectoryDifferentialIn connect.
 	]
