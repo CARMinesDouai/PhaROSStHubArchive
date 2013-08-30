@@ -3,7 +3,9 @@ Class {
 	#superclass : #PhaROSPackage,
 	#instVars : [
 		'experiment',
-		'controller'
+		'controller',
+		'tfpose',
+		'kompaiAbsolutePoseTopic'
 	],
 	#category : #'PhaROS-PackageManager'
 }
@@ -254,6 +256,18 @@ PhaROSPharos class >> xml [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSPharos >> kompaiAbsolutePose: aPose [
+	self kompaiAbsolutePoseTopic send: [ : msg | msg pose: aPose asGeometry_msgsPose ].
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPharos >> kompaiAbsolutePoseTopic [
+	^ kompaiAbsolutePoseTopic ifNil: [ 
+		kompaiAbsolutePoseTopic := controller node topicPublisher: '/kompai/map/pose' typedAs: 'geometry_msgs/PoseStamped'.	
+	]
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSPharos >> scriptAmcl [
 
 	| bot |
@@ -325,7 +339,9 @@ PhaROSPharos >> scriptMapBuilding [
 PhaROSPharos >> scriptStargazer [
 
 	controller := PhaROSHandleController stargazer.
-	controller nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 }.
-	
+	tfpose := controller nodelets transformation between: PureROSRobulabNodelet mapFrame and: PureROSRobulabNodelet baseLinkFrame.
 
+	controller nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 }.
+	controller nodelets stargazer mergeWithPose: tfpose.	
+	(controller nodelets transformation between: PureROSRobulabNodelet mapFrame and: PureROSRobulabNodelet baseLinkFrame) for: [: p | self kompaiAbsolutePose: p ]. 
 ]

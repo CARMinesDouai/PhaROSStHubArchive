@@ -74,6 +74,24 @@ PhaROSPose >> asPose [
 ]
 
 { #category : #printing }
+PhaROSPose >> asTransform [ 
+
+	| transform |
+	transform := Geometry_msgsTransform new .
+	
+	transform translation x: self  position x.
+	transform translation y: self  position y.
+	transform translation z: self  position z.
+	
+	transform rotation x: self  orientation x. 
+	transform rotation y: self  orientation y. 
+	transform rotation z: self  orientation z. 
+	transform rotation w: self  orientation w.
+	
+	^ transform 
+]
+
+{ #category : #printing }
 PhaROSPose >> intoGeometry_msgs_Pose: aRosPose [
 
 	aRosPose position x: position x.

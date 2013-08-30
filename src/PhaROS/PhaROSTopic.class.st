@@ -114,7 +114,7 @@ PhaROSTopic >> printOn: aStream [
 
 { #category : #accessing }
 PhaROSTopic >> publishingChannelFor: aNode [ 
-	^ self channels detect: [ : ch | ch owner = aNode ].
+	^ self channels detect: [ : ch | ch isOutput and: [ ch owner = aNode ] ].
 ]
 
 { #category : #accessing }

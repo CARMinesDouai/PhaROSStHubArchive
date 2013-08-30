@@ -18,14 +18,15 @@ PhaROSLocalizerEntity class >> for: anId [
 { #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> add: aMeasure [ 
 
+	
 	adding ifTrue: [
-		(measures size = 0 or: [ (self center position - aMeasure pose position ) module2d < 1.0 ] ) ifTrue: [
-			measures add: aMeasure pose.
-			self compact > 20 ifTrue: [
-				adding := false.
-			].
-			m := m +1.
-		] ifFalse: [ Transcript show: 'Rejecting measure'; show: aMeasure ;cr ].
+		measures add: aMeasure pose. 
+		measures removeAll: (measures select: [ : msr | (self center position - msr pose position) module2d > 0.3 ]).
+		self compact > 20 ifTrue: [
+			adding := false.
+		].
+		m := m +1.
+		
 	].
 ]
 
@@ -67,6 +68,25 @@ PhaROSLocalizerEntity >> asPose [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSLocalizerEntity >> asTransform [ 
+	^ self asPose asTransform.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLocalizerEntity >> asTransformStampedRelativeTo: aFrameParentID [
+
+	| transformStamped | 
+	
+		transformStamped := Geometry_msgsTransformStamped new.
+		
+		transformStamped child_frame_id:  self frameName.
+		transformStamped header frame_id:  aFrameParentID.
+		transformStamped transform: self asTransform.
+		
+	^ transformStamped.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> center [
 	| point angle |
 	self compact.
@@ -100,6 +120,11 @@ PhaROSLocalizerEntity >> complete [
 { #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> fix: aPose [
 	
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLocalizerEntity >> frameName [
+	^ '/landmark/', id asString
 ]
 
 { #category : #accessing }

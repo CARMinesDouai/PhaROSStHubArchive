@@ -25,7 +25,8 @@ Class {
 	#instVars : [
 		'entities',
 		'mapping',
-		'pointing'
+		'pointing',
+		'transformations'
 	],
 	#category : #'PhaROS-Nodelets-Localizer'
 }
@@ -47,7 +48,7 @@ PhaROSLocalizerNodelet class >> mapTopicType [
 
 { #category : #accessing }
 PhaROSLocalizerNodelet class >> measureThreshold [
-	^ 0.0000000000001
+	^ 0.0001
 ]
 
 { #category : #'as yet unclassified' }
@@ -76,8 +77,19 @@ PhaROSLocalizerNodelet >> broadcastEntities [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSLocalizerNodelet >> broadcastEntitiesAsTF [
+	
+	self nodelets transformation tf: [ : msg | 
+		
+		entities values collect: [ : e | e asTransformStampedRelativeTo:'/map'. ] thenDo: [ : t |  msg addTransform: t ].
+	].
+	
+	(Delay forMilliseconds: 500) wait.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSLocalizerNodelet >> broadcastPoints [
-	| points |
+	
 	pointing send: [ : msg | 
 		 msg header frame_id: '/map'.
 		 entities values collect: [ : e | e asPose asGeometry_msgsPose ] thenDo: [ : p | msg addPose: p ].
@@ -140,9 +152,7 @@ PhaROSLocalizerNodelet >> learn: aTopicFlux [
 PhaROSLocalizerNodelet >> map [
 	mapping ifNil: [
 		mapping := self rosnode topicPublisher: PhaROSLocalizerNodelet mapTopic typedAs: PhaROSLocalizerNodelet mapTopicType.
-		
 		self paralellize looping broadcastEntities.
-		
 	].
 ]
 
@@ -150,9 +160,7 @@ PhaROSLocalizerNodelet >> map [
 PhaROSLocalizerNodelet >> mapPoints [
 	pointing  ifNil: [
 		pointing := self rosnode topicPublisher: PhaROSLocalizerNodelet pointMapTopic typedAs: PhaROSLocalizerNodelet pointMapTopicType.
-		
 		self paralellize looping broadcastPoints.
-		
 	].
 ]
 
@@ -167,4 +175,11 @@ PhaROSLocalizerNodelet >> register: aMeasure [
 { #category : #'as yet unclassified' }
 PhaROSLocalizerNodelet >> scannedEntities [ 
 	^ self entities select: #complete
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLocalizerNodelet >> transformations [
+	transformations ifNil: [
+		transformations := 	self paralellize looping broadcastEntitiesAsTF.
+	].
 ]
