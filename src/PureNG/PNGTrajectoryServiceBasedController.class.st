@@ -26,7 +26,7 @@ PNGTrajectoryServiceBasedController >> goTo: aPoint [
 	| currentPosition |
 	currentPosition := self localizationService currentPosition.
 	self trajectoryService 
-		insertSegmentFrom:  currentPosition to: aPoint  speed: 0.25;
+		insertSegmentFrom:  currentPosition to: aPoint asPoint  speed: 0.25;
 		startMotion.
 
 ]
