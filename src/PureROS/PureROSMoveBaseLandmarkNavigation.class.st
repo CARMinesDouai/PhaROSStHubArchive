@@ -41,8 +41,8 @@ PureROSMoveBaseLandmarkNavigation >> goTo: anEntity [
 PureROSMoveBaseLandmarkNavigation >> robulab:  aRobulabNodelet [
 	robulab := aRobulabNodelet.
 	robulab nodelets use: SGStargazerEventManager as: #sgevents.
-	robulab nodelets use: PureROSBaseLandmarkEvent  as: #baseevents.
-	robulab nodelets stargazer mergeWithPose: robulab poseStamped  to: self baseLandmark.
+	
+	
 	
 	 
 ]

@@ -5,7 +5,8 @@ Class {
 		'poseStamped',
 		'robotName',
 		'tfpose',
-		'trajectoryDifferentialOut'
+		'trajectoryDifferentialOut',
+		'relocatorEvent'
 	],
 	#classInstVars : [
 		'initialpose'
@@ -100,6 +101,7 @@ PureROSRobulabNodelet >> configure [
 	self nodelets use: SGROSStarGazerNodelet as: #stargazer.
 	self nodelets use: PhaROSLocalizerNodelet as: #localizer.
 	self nodelets use: PhaROSMoveBaseNodelet as: #movebase.
+	self nodelets transformation configureTfCallback.
 	self trajectoryDifferentialOut.
 ]
 
@@ -123,7 +125,21 @@ PureROSRobulabNodelet >> goToEntityID: anId [
 { #category : #navigation }
 PureROSRobulabNodelet >> landmarkNavigation [
 	self nodelets use: PureROSMoveBaseLandmarkNavigation as: #navigator.
+	self nodelets use: PhaROSInitialPose as: #initialpose.
 	self nodelets navigator robulab: self.
+	
+	
+"
+	self nodelets use: PureROSBaseLandmarkEvent as: #localizationEvents.
+	relocatorEvent := 
+	self nodelets localizationEvents whenLandmark: [ : lmk |
+		((self nodelets localizer entity: lmk landmark) match: (PhaROSPose fromGeometry_msgsPose: lmk pose) ) not.
+	] doOnce: [ : lmk | 
+		self relocalize: lmk.
+		
+	]. "
+	
+
 ]
 
 { #category : #service }
@@ -141,11 +157,12 @@ PureROSRobulabNodelet >> localizeLandmarks [
 	2 seconds asDuration asDelay wait.
 	self nodelets localizer learn:( self nodelets stargazer absoluteLandmarks ) .
 	
-	self nodelets localizer explore.
+	"self nodelets localizer explore."
 	
 	2 seconds asDuration asDelay wait.
 	self nodelets localizer map.
 	self nodelets localizer mapPoints.
+	self nodelets localizer transformations.
 	2 seconds asDuration asDelay wait.
 ]
 
@@ -158,6 +175,28 @@ PureROSRobulabNodelet >> makeLandmarkRandomNavigation [
 { #category : #consume }
 PureROSRobulabNodelet >> poseStamped [
 	^( self rosnode buildConnectionFor:  PureROSRobulabNodelet poseStampedTopic )typedAs: PureROSRobulabNodelet poseStampedTopicType;  adapted: #pose \> PhaROSPose  ; connect.
+]
+
+{ #category : #'as yet unclassified' }
+PureROSRobulabNodelet >> relocalize: lmk [
+		| event abpose |
+		abpose := PhaROSPose fromGeometry_msgsPose: lmk pose.
+		
+		event := self nodelets sgevents whenLandmark: [ : dlmk | dlmk landmark = lmk landmark  ] doOnce: [ :dlmk |
+			| relpose  |
+			relpose := PhaROSPose fromGeometry_msgsPose: dlmk pose.	
+			self nodelets initialpose initialPose: (PhaROSPose position: abpose position + relpose position orientation: relpose orientation ).
+		]. 
+	
+		[ 2 seconds asDelay wait. relocatorEvent rescheddule ] doIt.
+]
+
+{ #category : #'as yet unclassified' }
+PureROSRobulabNodelet >> relocalize: abpose with: dlmk [
+| relpose  |
+	Transcript show: 'Relocalzioiondginakfnasfnas'; cr.
+			relpose := PhaROSPose fromGeometry_msgsPose: dlmk pose.	
+			self nodelets initialpose initialPose: (PhaROSPose position: abpose position + relpose position orientation: relpose orientation ).
 ]
 
 { #category : #accessing }

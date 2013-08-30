@@ -6,6 +6,6 @@ Class {
 
 { #category : #'as yet unclassified' }
 PureROSBaseLandmarkEvent >> configure [
-	self nodelets navigator baseLandmarks for: [ :lmk | self check: lmk ]
+	self nodelets stargazer absoluteLandmarks  for: [ :lmk | self check: lmk ]
 	
 ]

@@ -19,11 +19,18 @@ PureROSRobulabGoal >> cancel [
 
 { #category : #behavior }
 PureROSRobulabGoal >> differentialGoal: aPose [ 
+	
+	| pose |
 	"It just send one in 20 measures".
 	checks := checks + 1.
-	checks \\\ 20 = 0 ifTrue: [
-		self trajectoryDifferential: aPose. 	
-	].
+	pose := PhaROSPose fromGeometry_msgsPose: aPose pose.
+	pose position module2d < 0.3 ifTrue: [
+		landmarkEvent cancel. 	
+	] ifFalse: [
+		checks \\\ 20 = 0 ifTrue: [
+			self trajectoryDifferential: aPose. 	
+		].
+	]
 
  
 ]
@@ -51,30 +58,23 @@ PureROSRobulabGoal >> initialize [
 
 { #category : #behavior }
 PureROSRobulabGoal >> landmarkDriving: lmk [
- 	| distance |
-		distance := (PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d.
-		distance < 0.2  ifTrue: [
-			"if is near enough, we stop driving and we set the goal status as succeeded"	
+ 	| pose |
+	
+		Transcript show: 'second goal'; cr.
+	
+		pose := PhaROSPose fromGeometry_msgsPose: lmk pose.
+		goal:= robulab nodelets movebase client goTo: pose.
 		
-			self stopmovingAs: Actionlib_msgsGoalStatus succeeded . 
-		] ifFalse: [
-			(distance > 1.0 or: [ lmk id ~= entity id ]) ifTrue: [
-				"if is going away from the landmark we stop moving and set the status as aborted"
-				self stopmovingAs: Actionlib_msgsGoalStatus aborted. 
-			] ifFalse: [
-				"if we are in the interval of security we still going to the landmark"
-				self differentialGoal: lmk pose.
-			]
-		].	
+		
 ]
 
 { #category : #event }
 PureROSRobulabGoal >> onArrivalToLandmark: aLandmark [
 	goal cancel.
-	goal status: PureROSRobulabGoal active.
+	goal status: Actionlib_msgsGoalStatus  active.
 	
-	landmarkEvent := robulab nodelets baseevent whenLandmark: [ :lmk | true ] do: [ : lmk |
-		self landmarkDriving: lmk.
+	landmarkEvent := robulab nodelets sgevents whenLandmark: [ :lmk | true ] do: [ : lmk |
+		self differentialGoal:   lmk.
 	 ].
 	
 ]
@@ -100,9 +100,26 @@ PureROSRobulabGoal >> stopmovingAs: aState [
 
 { #category : #behavior }
 PureROSRobulabGoal >> trajectoryDifferential: aPose [
-	| delta |		
+	| delta tf odomo baseo position |		
 				
-	delta := PhaROSPose position:( PhaROSPosition x: aPose position x* -1 y: aPose position y * -1 z: 0.0) 
-						   orientation: self nodelets movebase  client currentPosition orientation.
+	"delta := PhaROSPose position:( PhaROSPosition x: aPose position x* -1 y: aPose position y * -1 z: 0.0) 
+						   orientation: self nodelets movebase  client currentPosition orientation."
+						
+	
+
+	"aPose poseRelativeTo: (robulab nodelets transformation frame: '/base_link')."
+	position := aPose position. 
+	
+	odomo := (robulab nodelets transformation frame: '/odom' ) pose orientation.
+	baseo := (robulab nodelets transformation frame: '/base_link' ) pose orientation.
+	
+	position := odomo rotatePosition:  position. 
+	position x: position x * -1.
+	"position :=  baseo rotatePosition: position."
+	delta := PhaROSPose position: position orientation: PhaROSQuaternion zero.
 	^ robulab trajectoryDifferential: delta.
+
+
+
+
 ]
