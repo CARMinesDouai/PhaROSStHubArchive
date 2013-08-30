@@ -280,6 +280,13 @@ PhaROSPharos >> scriptAmcl [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSPharos >> scriptBaselinkAbsolutePose [
+	controller := PhaROSHandleController transformation.
+	(controller nodelets transformation between: PureROSRobulabNodelet mapFrame and: PureROSRobulabNodelet baseLinkFrame) for: [: p | self kompaiAbsolutePose: p ]. 
+	
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSPharos >> scriptKompai1 [
 	controller := PhaROSHandleController kompai1.
 		
@@ -338,10 +345,10 @@ PhaROSPharos >> scriptMapBuilding [
 { #category : #'as yet unclassified' }
 PhaROSPharos >> scriptStargazer [
 
-	controller := PhaROSHandleController stargazer.
+	controller := PhaROSHandleController stargazer.	
 	tfpose := controller nodelets transformation between: PureROSRobulabNodelet mapFrame and: PureROSRobulabNodelet baseLinkFrame.
-
 	controller nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 }.
 	controller nodelets stargazer mergeWithPose: tfpose.	
-	(controller nodelets transformation between: PureROSRobulabNodelet mapFrame and: PureROSRobulabNodelet baseLinkFrame) for: [: p | self kompaiAbsolutePose: p ]. 
+	
+
 ]

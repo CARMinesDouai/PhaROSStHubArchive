@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'master',
 		'node',
-		'comm'
+		'comm',
+		'blacklist'
 	],
 	#category : #'PhaROS-Kernel-Nodes'
 }
@@ -64,6 +65,11 @@ PhaROSTransport >> finalize [
 	comm := nil.
 	node := nil.
 	master := nil.
+]
+
+{ #category : #publishing }
+PhaROSTransport >> initialize [ 
+	blacklist := Set new.
 ]
 
 { #category : #accessing }
@@ -139,6 +145,7 @@ PhaROSTransport >> resolvePublishersFor: aTopic [
 	channel := aTopic subscribingChannelFor: node.
 	
 	^ urls collect: [ :url |
+		(blacklist includes: url ) ifFalse: [
 		channel publishers detect: [ : p | p xmlurl = url ] ifNone: [ 
 			| publisherNode |
 			[
@@ -148,9 +155,11 @@ PhaROSTransport >> resolvePublishersFor: aTopic [
 				publisherNode setup.
 			] on: Error do: [: e | 
 				Transcript show: ' Error connecting to ', url; cr.
+				blacklist add: url.
 				publisherNode := nil.
 			]
 		]
+	]
 	] thenSelect: #notNil.
 	
 ]

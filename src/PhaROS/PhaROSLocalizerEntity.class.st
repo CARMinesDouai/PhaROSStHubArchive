@@ -154,6 +154,11 @@ PhaROSLocalizerEntity >> locate: aPose [
 	^ self center asPose + aPose.
 ]
 
+{ #category : #converting }
+PhaROSLocalizerEntity >> match: aPose [
+	^ adding not and: [ (self center position - aPose position ) module2d  <  0.1 ].
+]
+
 { #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> measures: aMeasureset [
 	measures := aMeasureset asSet
