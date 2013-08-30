@@ -83,7 +83,7 @@ SGROSStarGazerNodelet >> conditionMerger [
 	^[ : aMeasure : aLandMark |
 		| r |
 		r := (DateAndTime now - landmarks lastTimeStamp) asMilliSeconds < 100 and: [ 
-			(((aLandMark pose   position x * aLandMark pose   position x) + (aLandMark pose   position y * aLandMark pose   position y)) sqrt < 0.8)
+			(((aLandMark pose   position x * aLandMark pose   position x) + (aLandMark pose   position y * aLandMark pose   position y)) sqrt < 2 )
 		].
 		r ifTrue: [ Transcript show:'merging-' ; show: r;cr ;cr .].
 		r.
@@ -108,27 +108,26 @@ SGROSStarGazerNodelet >> landmarks [
 
 { #category : #calculations }
 SGROSStarGazerNodelet >> merge: gpose  with:  landmark [ 
-		| lp |
+		| lp rp shift zero |
 
 		
 		lp := PhaROSPose fromGeometry_msgsPose: landmark pose.
+"
+		shift := lp orientation as2DOrientation - gpose orientation as2DOrientation .
+		zero := gpose orientation as2DOrientation - lp orientation as2DOrientation.
 		
-		 ^ PhaROSPose position: gpose position - lp position orientation: gpose orientation as2DOrientation - lp orientation as2DOrientation abs.
+		rp := PhaROSPose position: lp position
+						    orientation:  shift .
+						
+		rp := rp + gpose.
+		rp orientation: zero. "
 		
 		
 		
-		"val := (self nodelets transformation frame: '/base_link') convert: lp position to: (self nodelets transformation frame: '/map').
+		^ PhaROSPose position: gpose position - lp position orientation: PhaROSQuaternion zero .
+		 "^ PhaROSPose position: gpose position - lp position orientation: gpose orientation as2DOrientation - lp orientation as2DOrientation abs.
 		"
-		"
-		lp := PhaROSPose fromGeometry_msgsPose: landmark pose.	
-		pose := PhaROSPose fromGeometry_msgsPose: gpose.
 		
-		th := pose orientation as2DOrientation z - lp orientation as2DOrientation z.
-		pose position: pose position + (lp position rotate: th).
-		Now i need to transport the landmark 0 angel to the given coordinate system. Since the rotation is an amount of radians from 0, i just need to substract the landmark angle measure to the given pose angle.  
-		pose orientation: (PhaROS2DOrientation z: th).
-		
-		^ pose."
 ]
 
 { #category : #publish }
@@ -150,12 +149,16 @@ SGROSStarGazerNodelet >> mergeWithPose: aPoseTopicReader [
 
 { #category : #publish }
 SGROSStarGazerNodelet >> mergeWithPose: aPoseTopicReader to: aPublisher [
+	| smoother |
+	smoother := PhaROSTransformedPoseSmoother new. 
 	
 	self nodelets merger merge: self landmarks 
-								     with: aPoseTopicReader 
+								     with: smoother  
 								   using: self poseMerger
 								  when: self conditionMerger  
 						  redirectingTo: aPublisher. 
+						
+	aPoseTopicReader for: smoother.
 ]
 
 { #category : #package }

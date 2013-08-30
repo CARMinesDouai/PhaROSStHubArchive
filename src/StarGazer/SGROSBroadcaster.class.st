@@ -19,7 +19,7 @@ SGROSBroadcaster >> broadcast: landmark [
 	
 	(self isAccepted: landmark ) ifTrue: [
 		topicPublisher send: [ :msg | 
-			msg header frame_id: 'stargazer'.
+			msg header frame_id: '/landmark/', landmark id asString.
 			landmark pose intoGeometry_msgs_Pose: msg pose.
 			msg landmark: landmark id.		
 		]

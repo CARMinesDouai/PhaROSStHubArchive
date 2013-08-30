@@ -51,7 +51,8 @@ SGCalculatingState >> singlePoll [
 
 	[
 		self deployMessage: gate stream nextMessage.
-	] on: Error do: [
+		(Delay forMilliseconds: 1) wait. 
+ 	] on: Error do: [
 		:e | Transcript show: 'Warning: ', e messageText; cr.
 	].
 
