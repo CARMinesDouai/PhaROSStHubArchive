@@ -43,3 +43,8 @@ SGStargazerEvent >> executeAction: aLandmark [
 SGStargazerEvent >> manager: aSGStargazerEventManager [
 	manager := aSGStargazerEventManager 
 ]
+
+{ #category : #'as yet unclassified' }
+SGStargazerEvent >> rescheddule [
+	manager rescheddule: self.
+]

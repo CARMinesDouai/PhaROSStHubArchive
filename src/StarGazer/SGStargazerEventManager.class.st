@@ -9,7 +9,6 @@ Class {
 
 { #category : #'as yet unclassified' }
 SGStargazerEventManager >> check: aLandmark [
-	self halt.
 	self events do: [ : e |[ e apply: aLandmark] on: Error do: [ : er |self halt.] ].
 ]
 
@@ -31,7 +30,12 @@ SGStargazerEventManager >> initialize [
 
 { #category : #'as yet unclassified' }
 SGStargazerEventManager >> remove: anEvent [
-	events remove: anEvent.
+	events remove: anEvent ifAbsent: [].
+]
+
+{ #category : #'as yet unclassified' }
+SGStargazerEventManager >> rescheddule: anEvent [
+	events add: anEvent.
 ]
 
 { #category : #'as yet unclassified' }
