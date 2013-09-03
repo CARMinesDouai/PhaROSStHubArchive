@@ -63,7 +63,7 @@ PureROSRobulabNodelet class >> poseStampedTopicType [
 
 { #category : #'as yet unclassified' }
 PureROSRobulabNodelet class >> scanTopic [
-	^ '/scan'
+	^ '/kompai/scan'
 ]
 
 { #category : #'as yet unclassified' }

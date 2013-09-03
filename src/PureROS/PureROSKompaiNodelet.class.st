@@ -66,7 +66,9 @@ PureROSKompaiNodelet >> consumeCommandVelocity [
 				self assert: msg value angular x = 0.0 description: holonomic.
 				true.
 			];
-			for: [ : aDifferentialVelocity |  robot differentialService moveAt: aDifferentialVelocity.  ] .
+			for: [ : aDifferentialVelocity |  
+				robot differentialService moveAt: aDifferentialVelocity. 
+			 ] .
 
 	commandVelocity connect.
 	]

@@ -12,6 +12,8 @@ PureROSAMCLBasedPathPlanning >> setup [
 		spec rviz. 
 		spec mapServer: '/home/kompai1/map/map.yaml'.
 		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
+		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
+		spec relay: '/kompai/tf' to: '/tf' named: 'tf_relay'.
 		"spec staticZeroTFFrom: '/map'  to: '/odom'. 
 		"spec amcl.
 		spec moveBase.

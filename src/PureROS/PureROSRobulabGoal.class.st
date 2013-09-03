@@ -6,7 +6,8 @@ Class {
 		'entity',
 		'robulab',
 		'landmarkEvent',
-		'checks'
+		'checks',
+		'moves'
 	],
 	#category : #'PureROS-Nodelets'
 }
@@ -22,16 +23,18 @@ PureROSRobulabGoal >> differentialGoal: aPose [
 	
 	| pose |
 	"It just send one in 20 measures".
-	checks := checks + 1.
+	
 	pose := PhaROSPose fromGeometry_msgsPose: aPose pose.
-	pose position module2d < 0.3 ifTrue: [
+	(pose position module2d < 0.25 or: [ moves > 2 ]) ifTrue: [
+		entity extraInfo: (robulab nodelets transformation frame: '/base_link') pose.
 		landmarkEvent cancel. 	
 	] ifFalse: [
-		checks \\\ 20 = 0 ifTrue: [
-			self trajectoryDifferential: aPose. 	
+		checks \\\ 10 = 0 ifTrue: [
+			self trajectoryDifferential: pose.  	
+			moves := moves + 1.
 		].
-	]
-
+	].
+	checks := checks + 1.
  
 ]
 
@@ -47,13 +50,15 @@ PureROSRobulabGoal >> goal: aGoal [
 
 { #category : #testing }
 PureROSRobulabGoal >> hasArrived: lmk [
- 	^ entity id = lmk landmark and: [ (PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d < 0.8  ]
+	checks := checks +1.
+ 	^ entity id = lmk landmark and: [ checks > 5 and: [ (PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d < 2  ] ]
 ]
 
 { #category : #behavior }
 PureROSRobulabGoal >> initialize [ 
 	super initialize.
 	checks := 0.
+	moves := 0.
 ]
 
 { #category : #behavior }
@@ -72,6 +77,7 @@ PureROSRobulabGoal >> landmarkDriving: lmk [
 PureROSRobulabGoal >> onArrivalToLandmark: aLandmark [
 	goal cancel.
 	goal status: Actionlib_msgsGoalStatus  active.
+	checks := 0. 
 	
 	landmarkEvent := robulab nodelets sgevents whenLandmark: [ :lmk | true ] do: [ : lmk |
 		self differentialGoal:   lmk.
@@ -108,18 +114,19 @@ PureROSRobulabGoal >> trajectoryDifferential: aPose [
 	
 
 	"aPose poseRelativeTo: (robulab nodelets transformation frame: '/base_link')."
+	
 	position := aPose position. 
 	
 	odomo := (robulab nodelets transformation frame: '/odom' ) pose orientation.
 	baseo := (robulab nodelets transformation frame: '/base_link' ) pose orientation.
 	
 	position := odomo rotatePosition:  position. 
-	position x: position x * -1.
+	
+	position := PhaROSPosition x: position y y: position x* -1 z: 0.0.
+	
+	
 	"position :=  baseo rotatePosition: position."
-	delta := PhaROSPose position: position orientation: PhaROSQuaternion zero.
+	delta := PhaROSPose position: position  orientation: PhaROSQuaternion zero.
 	^ robulab trajectoryDifferential: delta.
-
-
-
 
 ]

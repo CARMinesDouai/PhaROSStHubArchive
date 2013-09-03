@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'previousTime',
 		'odometry',
-		'previousPose'
+		'previousPose',
+		'poseDifference'
 	],
 	#category : #'PureROS-Util'
 }
@@ -40,6 +41,11 @@ PhaROSOdometryNodelet >> informPositionAsOdometry: aPosition [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSOdometryNodelet >> initialize [ 
+	poseDifference := PhaROSPose zero.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSOdometryNodelet >> initializeMessage: aMessage [
 	| dValue |
 	36 timesRepeat: [ 
@@ -69,25 +75,26 @@ PhaROSOdometryNodelet >> initializeMessage: aMessage [
 { #category : #'as yet unclassified' }
 PhaROSOdometryNodelet >> measurePoseDiference: aPose [
 
-| time a b deltaTime  poseDifference | 
+| time a b deltaTime  | 
 
 
 	time := DateAndTime now.
 								
-	poseDifference := PhaROSPose zero.
+	
 	
 	previousPose ifNotNil: [
-		a := time asSeconds.
-		b := previousTime asSeconds.
-		deltaTime :=  (b - a) abs.
+		deltaTime :=  (time - previousTime ) asMilliSeconds / 1000.0. 
 		
 		deltaTime = 0 ifFalse:[
-			poseDifference := (aPose - previousPose) / deltaTime .		
+			poseDifference := ((aPose - previousPose) / deltaTime) abs .		
+			previousPose := aPose.
+			previousTime := time.
 		]
-	].
+	] ifNil: [
 
-	previousPose := aPose.
-	previousTime := time.
+		previousPose := aPose.
+		previousTime := time.
+	].
 	^ poseDifference.
 ]
 
