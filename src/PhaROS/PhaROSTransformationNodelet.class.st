@@ -24,6 +24,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PhaROSTransformationNodelet class >> tfOutTopic [
+	^ '/kompai/tf'
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSTransformationNodelet class >> tfTopic [
 	^ '/tf'
 ]
@@ -82,7 +87,7 @@ PhaROSTransformationNodelet >> process: aMessage from: aChn [
 { #category : #'topic-reading' }
 PhaROSTransformationNodelet >> tf [
 	^ tfIn ifNil: [
-		tfIn :=  (self rosnode buildConnectionFor: '/tf')
+		tfIn :=  (self rosnode buildConnectionFor: PhaROSTransformationNodelet tfTopic)
 		typedAs: 'tf/tfMessage'; 
 		connect 
 	]. 
@@ -98,7 +103,7 @@ PhaROSTransformationNodelet >> tf: aMessageConfiguration [
 PhaROSTransformationNodelet >> tfWriter [
 	
 	^ tfWriter ifNil: [
-		tfWriter := self rosnode topicPublisher: PhaROSTransformationNodelet tfTopic 
+		tfWriter := self rosnode topicPublisher: PhaROSTransformationNodelet tfOutTopic 
 								  typedAs: PhaROSTransformationNodelet tfTopicType
 								
 	].

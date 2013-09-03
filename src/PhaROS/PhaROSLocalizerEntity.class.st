@@ -5,7 +5,8 @@ Class {
 		'id',
 		'measures',
 		'm',
-		'adding'
+		'adding',
+		'extraInfo'
 	],
 	#category : #'PhaROS-Nodelets-Localizer'
 }
@@ -115,6 +116,17 @@ PhaROSLocalizerEntity >> compact [
 { #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> complete [ 
 	^ adding not.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLocalizerEntity >> extraInfo [ 
+	^ extraInfo
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLocalizerEntity >> extraInfo: anObject [
+	extraInfo := anObject.
+
 ]
 
 { #category : #'as yet unclassified' }

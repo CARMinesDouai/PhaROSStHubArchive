@@ -54,6 +54,11 @@ PhaROSQuaternion >> / anScalar [
 	^ (self as2DOrientation / anScalar ) asQuaternion.
 ]
 
+{ #category : #operators }
+PhaROSQuaternion >> abs [
+	^ self as2DOrientation abs asQuaternion.
+]
+
 { #category : #convertions }
 PhaROSQuaternion >> as2DOrientation [ 
 	^ self asRPY as2DOrientation .

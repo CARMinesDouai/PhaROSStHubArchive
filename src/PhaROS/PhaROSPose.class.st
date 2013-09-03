@@ -55,6 +55,11 @@ PhaROSPose >> / anScalar [
 ]
 
 { #category : #printing }
+PhaROSPose >> abs [
+	^ PhaROSPose position: position abs orientation: orientation abs
+]
+
+{ #category : #printing }
 PhaROSPose >> asDump [
 	^ 'PhaROSPose position: ({1}) orientation: ({2})' format: { position asDump . orientation asDump }.
 ]

@@ -44,6 +44,11 @@ PhaROSPosition >> / anScalar [
 	^ PhaROSPosition x: (x / anScalar) y: (y / anScalar) z: (z  / anScalar) 
 ]
 
+{ #category : #'as yet unclassified' }
+PhaROSPosition >> abs [
+	^ PhaROSPosition x: x abs y: y abs  z: z abs. 
+]
+
 { #category : #operators }
 PhaROSPosition >> approximated: anOtherPosition threshold: anScalar [
 

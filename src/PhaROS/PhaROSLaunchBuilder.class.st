@@ -213,8 +213,10 @@ PhaROSLaunchBuilder >> moveBase [
 	"common costmap configuration "
 	path := self yaml: [
 		: common |
+		common name:'expected_update_rate' value: 10.0.
 		common name:'obstacle_range' value: 6.5.
 		common name:'raytrace_range' value: 7.0.
+		common name:'map_update_rate' value: 0.5.
 		"common name:'footprint' value: '[[-0.25, 0.225], [0.25, 0.225], [0.25, -0.225], [-0.25, -0.225] ]'."
 		common name: 'robot_radius' value: 0.35.
 		common name:'inflation_radius' value: 0.25.
@@ -240,13 +242,13 @@ PhaROSLaunchBuilder >> moveBase [
 			local property name:'global_frame' value: '/odom'.
 			local property name:'robot_base_frame' value: '/base_link'.
 			local property name:'update_frequency' value: 5.0.
-			local property name:'publish_frequency' value: 5.0.
+			local property name:'publish_frequency' value: 0.5.
 			local property name:'static_map' value: false.
 			local property name:'rolling_window' value: true.
-			local property name:'width' value: 5.0.
-			local property name:'height' value: 5.0.
-			local property name:'resolution' value: 0.05.
-			local property name:'transform_tolerance' value: 1.0.
+			local property name:'width' value: 10.0.
+			local property name:'height' value: 10.0.
+			local property name:'resolution' value: 0.1.
+			local property name:'transform_tolerance' value: 2.0.
 		].
  	] named: 'local_costmap_params.yaml'.
        conf rosparam file: path; command: 'load'.
@@ -275,15 +277,15 @@ PhaROSLaunchBuilder >> moveBase [
 		planner name: '        transform_tolerance' value: 1.0.
 
 		"Robot Configuration Parameters"
-		planner name: '        acc_lim_x' value: 0.9.
+		planner name: '        acc_lim_x' value: 1.9.
 		planner name: '        acc_lim_y' value: 0.0.
-		planner name: '        acc_lim_th' value: 0.9.
+		planner name: '        acc_lim_th' value: 1.9.
 
-		planner name: '        max_vel_x' value: 0.9.
+		planner name: '        max_vel_x' value: 1.9.
 		planner name: '        min_vel_x' value: 0.8.
 
-		planner name: '        max_rotational_vel' value: 0.9.
-		planner name: '        min_in_place_rotational_vel' value: 0.9.
+		planner name: '        max_rotational_vel' value: 1.9.
+		planner name: '        min_in_place_rotational_vel' value: 1.9.
 		
 		planner name: '        holonomic_robot' value: false.
 
@@ -295,8 +297,8 @@ PhaROSLaunchBuilder >> moveBase [
 		"Trajectory Scoring Parameters"
 		planner name: '        goal_distance_bias' value: 24.
 		planner name: '        path_distance_bias' value: 32.
-		planner name: '        sim_time' value: 1.5.
-		planner name: '        sim_granularity' value: 0.01.		
+		planner name: '        sim_time' value: 1.0.
+		planner name: '        sim_granularity' value: 0.1.		
 		
 		planner name: '        occdist_scale' value: 0.04.
 		
@@ -363,6 +365,15 @@ PhaROSLaunchBuilder >> nodeletManager: aName [
 { #category : #'as yet unclassified' }
 PhaROSLaunchBuilder >> package: aPackageName type:aType named: aName [ 
 	^ self addChild: (PhaROSNodeBuilder package: aPackageName type:aType named: aName) 
+]
+
+{ #category : #util }
+PhaROSLaunchBuilder >> relay: aTopicName to: otherTopicName named: aNodeName [
+	| conf |
+	
+	conf := self package: 'topic_tools' type:'relay'  named: aNodeName .
+	conf args: (' {1} {2} ' format: { aTopicName . otherTopicName}). 
+	^ conf.
 ]
 
 { #category : #util }
