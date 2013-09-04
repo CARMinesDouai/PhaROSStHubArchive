@@ -55,7 +55,7 @@ PhaROSRPCNodelet >> configure [
 { #category : #'as yet unclassified' }
 PhaROSRPCNodelet >> currentLandmarkId [
 	self flag: #pathNilInOtherPlace.
-	path ifNil: [ self error: 'There is no path configured '].
+	path ifNil: [ ^ 82 ].
 		
 	^ currentId > path size ifTrue: [
 		path := nil.	
@@ -100,8 +100,17 @@ PhaROSRPCNodelet >> initPathWithStargazerIds: aCollection [
 
 { #category : #'as yet unclassified' }
 PhaROSRPCNodelet >> makeAPath [
-	path := ids asOrderedCollection .
-	currentId := 0.
+        path := OrderedCollection new.
+        currentId := 0.
+
+        ((ids includes: 18 )and: [ (ids includes: 2) and: [ ids includes: 608 ] ] ) ifTrue: [ path add: 18.  path add: 2.  path add: 608. ^ self ].
+
+
+        ((ids includes: 18 )and: [ (ids includes: 2) ] ) ifTrue: [ path add: 18.  path add: 2. ^ self ].
+        ((ids includes: 608 )and: [ (ids includes: 2) ] ) ifTrue: [ path add: 608.  path add: 2. ^ self ].
+        ((ids includes: 18 )and: [ (ids includes: 608) ] ) ifTrue: [ path add: 608.  path add: 18. ^ self ].
+
+        path := ids asOrderedCollection.
 ]
 
 { #category : #'as yet unclassified' }

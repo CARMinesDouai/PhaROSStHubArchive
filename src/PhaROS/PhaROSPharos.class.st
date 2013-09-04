@@ -311,7 +311,7 @@ PhaROSPharos >> scriptLandmarkNavigation [
 	experiment beginExperiment.	
 
 	bot := experiment robulab.
-	
+	bot rpc.
 	bot loadLandmarks.
 	bot landmarkNavigation .
 	bot inspect.
