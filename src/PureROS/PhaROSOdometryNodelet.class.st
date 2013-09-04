@@ -85,8 +85,8 @@ PhaROSOdometryNodelet >> measurePoseDiference: aPose [
 	previousPose ifNotNil: [
 		deltaTime :=  (time - previousTime ) asMilliSeconds / 1000.0. 
 		
-		deltaTime = 0 ifFalse:[
-			poseDifference := ((aPose - previousPose) / deltaTime) abs .		
+		deltaTime < 0.15 ifFalse:[
+			poseDifference := (((aPose - previousPose) / deltaTime) abs ) limitedTo: 2.		
 			previousPose := aPose.
 			previousTime := time.
 		]

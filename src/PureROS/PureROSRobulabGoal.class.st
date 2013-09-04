@@ -75,14 +75,25 @@ PureROSRobulabGoal >> landmarkDriving: lmk [
 
 { #category : #event }
 PureROSRobulabGoal >> onArrivalToLandmark: aLandmark [
-	goal cancel.
-	goal status: Actionlib_msgsGoalStatus  active.
+	
 	checks := 0. 
 	
+	[
+	
+		Transcript show:'cutter';cr.
+		 2 seconds asDelay wait.
+		goal cancel.
+		0.5 seconds asDelay wait.
+		goal status: Actionlib_msgsGoalStatus  succeeded .
+	
+	 ] doIt.
+
+
+	"
 	landmarkEvent := robulab nodelets sgevents whenLandmark: [ :lmk | true ] do: [ : lmk |
 		self differentialGoal:   lmk.
 	 ].
-	
+	"
 ]
 
 { #category : #accessing }

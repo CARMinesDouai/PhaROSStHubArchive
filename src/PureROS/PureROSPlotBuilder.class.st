@@ -23,7 +23,7 @@ PureROSPlotBuilder >> addHectorPose [
 
 { #category : #'as yet unclassified' }
 PureROSPlotBuilder >> addPoseStamped [
-	^ self newLineFor: '/kompai2/pose'. 
+	^ self newLineFor: '/pose'. 
 ]
 
 { #category : #'as yet unclassified' }

@@ -57,6 +57,11 @@ PureROSRobulabNodelet class >> poseStampedTopic [
 ]
 
 { #category : #'as yet unclassified' }
+PureROSRobulabNodelet class >> poseStampedTopicForConsume [
+	^ '/pose'
+]
+
+{ #category : #'as yet unclassified' }
 PureROSRobulabNodelet class >> poseStampedTopicType [
 	^  'geometry_msgs/PoseStamped'
 ]
@@ -73,7 +78,7 @@ PureROSRobulabNodelet class >> stargazerFrame [
 
 { #category : #experiments }
 PureROSRobulabNodelet >> amcl [
-	self broadcastOdometry.
+	
 	
 ]
 
@@ -174,7 +179,7 @@ PureROSRobulabNodelet >> makeLandmarkRandomNavigation [
 
 { #category : #consume }
 PureROSRobulabNodelet >> poseStamped [
-	^( self rosnode buildConnectionFor:  PureROSRobulabNodelet poseStampedTopic )typedAs: PureROSRobulabNodelet poseStampedTopicType;  adapted: #pose \> PhaROSPose  ; connect.
+	^( self rosnode buildConnectionFor:  PureROSRobulabNodelet poseStampedTopicForConsume )typedAs: PureROSRobulabNodelet poseStampedTopicType;  adapted: #pose \> PhaROSPose  ; connect.
 ]
 
 { #category : #'as yet unclassified' }

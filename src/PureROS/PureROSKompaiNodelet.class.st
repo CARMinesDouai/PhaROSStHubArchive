@@ -45,7 +45,7 @@ PureROSKompaiNodelet >> configure [
 	"This nodelet is for basic hardware broadcasting, avoid to consume topics, specially massive broadcaster"
 	self nodelets use: PhaROSTransformationNodelet as: #transformation.
 	self nodelets use: SGROSStarGazerNodelet as: #stargazer.
-	self nodelets use: PhaROSPoseToTFNodelet  as: #pose2tf.
+	
 ]
 
 { #category : #'private-out' }
@@ -105,8 +105,6 @@ PureROSKompaiNodelet >> initialize: aRobot [
 	notificationController activateLaserNotifications.
 
 	self broadcastSensors.
-	2 seconds asDelay wait.
-	self broadcastTF.
 	
 	self consumeCommandVelocity.
 	self consumeTrajectoryDifferential .
@@ -115,7 +113,7 @@ PureROSKompaiNodelet >> initialize: aRobot [
 
 { #category : #'private-out' }
 PureROSKompaiNodelet >> poseStamped [
-	^( self rosnode buildConnectionFor:  PureROSRobulabNodelet poseStampedTopic )typedAs: PureROSRobulabNodelet poseStampedTopicType;  adapted: #pose \> PhaROSPose  ; connect.
+	^( self rosnode buildConnectionFor:  PureROSRobulabNodelet poseStampedTopicForConsume )typedAs: PureROSRobulabNodelet poseStampedTopicType;  adapted: #pose \> PhaROSPose  ; connect.
 ]
 
 { #category : #'private-out' }
