@@ -7,7 +7,8 @@ Class {
 		'robulab',
 		'landmarkEvent',
 		'checks',
-		'moves'
+		'moves',
+		'status'
 	],
 	#category : #'PureROS-Nodelets'
 }
@@ -82,9 +83,9 @@ PureROSRobulabGoal >> onArrivalToLandmark: aLandmark [
 	
 		Transcript show:'cutter';cr.
 		 2 seconds asDelay wait.
+		status:= Actionlib_msgsGoalStatus  succeeded .
 		goal cancel.
-		0.5 seconds asDelay wait.
-		goal status: Actionlib_msgsGoalStatus  succeeded .
+		
 	
 	 ] doIt.
 
@@ -104,7 +105,10 @@ PureROSRobulabGoal >> robulab: aRobulabNodelet [
 
 { #category : #accessing }
 PureROSRobulabGoal >> status [
-	goal status
+	^ status ifNil: [
+		goal status	
+	]
+	
 ]
 
 { #category : #behavior }

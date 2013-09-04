@@ -34,6 +34,7 @@ PureROSMoveBaseLandmarkNavigation >> goTo: anEntity [
 	
 	currentGoal := PureROSRobulabGoal new entity: anEntity; goal: (robulab nodelets movebase client goTo: anEntity center asPose); robulab: robulab ; yourself .
 	currentEvent := robulab nodelets sgevents whenLandmark: [ :lmk | currentGoal hasArrived: lmk. ] doOnce: [ : lmk | currentGoal onArrivalToLandmark: lmk ].
+	^ currentGoal
 ]
 
 { #category : #'as yet unclassified' }
