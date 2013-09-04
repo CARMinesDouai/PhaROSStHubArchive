@@ -47,6 +47,11 @@ PhaROS2DOrientation >> asRPY [
 	^ PhaROSRPYOrientation roll: 0.0 pitch: 0.0 yaw: z.
 ]
 
+{ #category : #operators }
+PhaROS2DOrientation >> limitedTo: aScalar [
+	^ PhaROS2DOrientation z: (z min: aScalar )
+]
+
 { #category : #printing }
 PhaROS2DOrientation >> printOn: aStream [ 
 	('O({1})' format: { z}) printOn: aStream.

@@ -217,9 +217,9 @@ PhaROSLaunchBuilder >> moveBase [
 		common name:'obstacle_range' value: 6.5.
 		common name:'raytrace_range' value: 7.0.
 		common name:'map_update_rate' value: 0.5.
-		"common name:'footprint' value: '[[-0.25, 0.225], [0.25, 0.225], [0.25, -0.225], [-0.25, -0.225] ]'."
-		common name: 'robot_radius' value: 0.35.
-		common name:'inflation_radius' value: 0.25.
+		common name:'footprint' value: '[[-0.25, 0.225], [0.25, 0.225], [0.25, -0.225], [-0.25, -0.225] ]'.
+		"common name: 'robot_radius' value: 0.25."
+		common name:'inflation_radius' value: 0.30.
 		common name:'unknown_cost_value' value: 255.
 		common name:'observation_sources' value: 'scan'.
 		common set:'scan' with: [ : scan | 
@@ -248,7 +248,7 @@ PhaROSLaunchBuilder >> moveBase [
 			local property name:'width' value: 10.0.
 			local property name:'height' value: 10.0.
 			local property name:'resolution' value: 0.1.
-			local property name:'transform_tolerance' value: 2.0.
+			local property name:'transform_tolerance' value: 1.0.
 		].
  	] named: 'local_costmap_params.yaml'.
        conf rosparam file: path; command: 'load'.
@@ -277,15 +277,15 @@ PhaROSLaunchBuilder >> moveBase [
 		planner name: '        transform_tolerance' value: 1.0.
 
 		"Robot Configuration Parameters"
-		planner name: '        acc_lim_x' value: 1.9.
+		planner name: '        acc_lim_x' value: 2.1.
 		planner name: '        acc_lim_y' value: 0.0.
-		planner name: '        acc_lim_th' value: 1.9.
+		planner name: '        acc_lim_th' value: 2.1.
 
-		planner name: '        max_vel_x' value: 1.9.
-		planner name: '        min_vel_x' value: 0.8.
+		planner name: '        max_vel_x' value: 2.8.
+		planner name: '        min_vel_x' value: 0.1.
 
-		planner name: '        max_rotational_vel' value: 1.9.
-		planner name: '        min_in_place_rotational_vel' value: 1.9.
+		planner name: '        max_rotational_vel' value: 3.3.
+		planner name: '        min_in_place_rotational_vel' value: 0.1.
 		
 		planner name: '        holonomic_robot' value: false.
 
@@ -297,7 +297,7 @@ PhaROSLaunchBuilder >> moveBase [
 		"Trajectory Scoring Parameters"
 		planner name: '        goal_distance_bias' value: 24.
 		planner name: '        path_distance_bias' value: 32.
-		planner name: '        sim_time' value: 1.0.
+		planner name: '        sim_time' value: 2.0.
 		planner name: '        sim_granularity' value: 0.1.		
 		
 		planner name: '        occdist_scale' value: 0.04.
@@ -471,10 +471,10 @@ PhaROSLaunchBuilder >> velocitySmoother [
 	path := self yaml: [ : smooth |
 		
 		smooth name: 'speed_lim_v' value: 10.0.
-		smooth name: 'speed_lim_w' value: 5.4.
+		smooth name: 'speed_lim_w' value: 10.0.
 		
-		smooth name: 'accel_lim_v' value: 10.0.
-		smooth name: 'accel_lim_w' value: 5.4.
+		smooth name: 'accel_lim_v' value: 5.5.
+		smooth name: 'accel_lim_w' value: 7.4.
 		
 		smooth name: 'frequency' value: 20.0.
 		smooth name: 'decel_factor' value: 1.0.

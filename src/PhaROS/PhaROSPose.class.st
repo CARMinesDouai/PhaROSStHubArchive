@@ -127,6 +127,11 @@ PhaROSPose >> intoGeometry_msgs_Twist: aTwist [
 
 ]
 
+{ #category : #printing }
+PhaROSPose >> limitedTo: aScalar [
+	^ PhaROSPose position: (position limitedTo: 2) orientation: (orientation limitedTo: aScalar )
+]
+
 { #category : #accessing }
 PhaROSPose >> orientation [
 	^ orientation

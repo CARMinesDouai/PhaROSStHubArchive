@@ -67,6 +67,11 @@ PhaROSPosition >> asPose [
 	^PhaROSPose position: self orientation: PhaROSQuaternion zero.
 ]
 
+{ #category : #printing }
+PhaROSPosition >> limitedTo: aScalar [
+	^ PhaROSPosition x: (x min: aScalar) y: (y min: aScalar) z: (z min: aScalar)
+]
+
 { #category : #operators }
 PhaROSPosition >> module2d [
 	^ ((x * x) + (y * y)) sqrt

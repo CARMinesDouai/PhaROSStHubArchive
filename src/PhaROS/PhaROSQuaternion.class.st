@@ -88,6 +88,11 @@ PhaROSQuaternion >> inverse [
 	^ PhaROSQuaternion x: (x * -1) y: (y * -1) z: (z * -1) w: w.
 ]
 
+{ #category : #accessing }
+PhaROSQuaternion >> limitedTo: aScalar [
+	^ (self as2DOrientation limitedTo: aScalar) asQuaternion
+]
+
 { #category : #operators }
 PhaROSQuaternion >> multiplyQuaternionByYou: aQuaternion [
 

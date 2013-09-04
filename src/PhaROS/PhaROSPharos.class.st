@@ -5,7 +5,8 @@ Class {
 		'experiment',
 		'controller',
 		'tfpose',
-		'kompaiAbsolutePoseTopic'
+		'kompaiAbsolutePoseTopic',
+		'process'
 	],
 	#category : #'PhaROS-PackageManager'
 }
@@ -291,12 +292,13 @@ PhaROSPharos >> scriptKompai1 [
 	controller := PhaROSHandleController kompai1.
 		
 
-
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSPharos >> scriptKompai2 [
 	controller := PhaROSHandleController kompai2.
+	
+	
 	"controller nodelets kompai inspect."
 
 ]
@@ -331,6 +333,26 @@ PhaROSPharos >> scriptLandmarksRecognition [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSPharos >> scriptLaunch [
+		
+	process:= PhaROSSystemLauncher  instance launch: [: spec | 
+		
+		 
+		spec mapServer: '/home/kompai1/map/map.yaml'.
+		spec amcl.
+		spec moveBase.
+		spec velocitySmoother.
+		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
+		spec relay: '/kompai2/pose' to: '/pose' named: 'pose_relay'.
+		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
+		spec relay: '/kompai/tf' to: '/tf' named: 'tf_relay'.
+		spec rviz.
+	].
+	
+
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSPharos >> scriptMapBuilding [
 
 	| bot |
@@ -343,6 +365,16 @@ PhaROSPharos >> scriptMapBuilding [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSPharos >> scriptOdometry [
+
+	| bot |
+	controller := PhaROSHandleController robulab2.
+	controller nodelets robulab broadcastOdometry.
+	
+
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSPharos >> scriptStargazer [
 
 	controller := PhaROSHandleController stargazer.	
@@ -350,5 +382,13 @@ PhaROSPharos >> scriptStargazer [
 	controller nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 }.
 	controller nodelets stargazer mergeWithPose: tfpose.	
 	
+
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPharos >> scriptTf [
+	controller := PhaROSHandleController robulab2.
+	controller nodelets use: PhaROSPoseToTFNodelet  as: #pose2tf.
+	controller nodelets pose2tf express: controller nodelets robulab poseStamped as: PureROSRobulabNodelet baseLinkFrame childOf: PureROSRobulabNodelet baseLinkParentFrame.
 
 ]
