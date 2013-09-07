@@ -39,7 +39,7 @@ PhaROSSystemController class >> for: aMaster [
 
 { #category : #'as yet unclassified' }
 PhaROSSystemController class >> home [
-	^self url: 'http://10.1.160.45:11311/'.
+	^self url: (OSProcessAccessor forThisOSProcess  environmentAt:'ROS_MASTER_URI').
 ]
 
 { #category : #'as yet unclassified' }

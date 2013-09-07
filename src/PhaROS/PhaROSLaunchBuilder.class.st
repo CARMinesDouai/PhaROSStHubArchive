@@ -462,6 +462,23 @@ PhaROSLaunchBuilder >> tfaas: aFrameFrom to: aFrameTo rate: aRate [
 	^ conf.
 ]
 
+{ #category : #util }
+PhaROSLaunchBuilder >> turtlesim [
+	| conf |
+	conf := self package: 'turtlesim' 
+				type:'turtlesim_node'  
+				named: 'turtlesim', DateAndTime now asUnixTime asString.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLaunchBuilder >> turtlesimTFFor:  aTurtleName [
+	| conf |
+	conf := self package: 'turtle_tf' 
+				type:'turtle_tf_broadcaster.py'  
+				named: 'turtlesim-tf-',aTurtleName, DateAndTime now asUnixTime asString.
+	conf param: 'turtle' value: aTurtleName.
+]
+
 { #category : #slam }
 PhaROSLaunchBuilder >> velocitySmoother [
 	| conf path |

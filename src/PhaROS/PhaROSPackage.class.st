@@ -107,6 +107,16 @@ PhaROSPackage class >> mainBinary [
 ]
 
 { #category : #path }
+PhaROSPackage class >> mainEdit [
+	^ self bin, '/edit'.
+]
+
+{ #category : #path }
+PhaROSPackage class >> mainHeadless [
+	^ self bin, '/headless'.
+]
+
+{ #category : #path }
 PhaROSPackage class >> msg [
 	^ self path ,'/msg'
 ]

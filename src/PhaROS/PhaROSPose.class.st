@@ -19,6 +19,11 @@ PhaROSPose class >> fromTransformation: aTransformation [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSPose class >> fromTurtlesimPose: aPose [
+	^ self position: (PhaROSPosition x: aPose x y: aPose y z: 0.0) orientation: (PhaROS2DOrientation z: aPose theta).
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSPose class >> position: aPosition orientation: anOrientation [
 	^ self new  position: aPosition; orientation: anOrientation; yourself .
 ]

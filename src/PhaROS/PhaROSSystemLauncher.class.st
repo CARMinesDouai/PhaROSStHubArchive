@@ -200,6 +200,23 @@ PhaROSSystemLauncher >> rosrun: anArrayOfArguments [
 	^ process. 
 ]
 
+{ #category : #launching }
+PhaROSSystemLauncher >> rosservice: anArrayOfArguments [
+	| process | 
+	process :=  ExternalUnixOSProcess 
+							forkAndExec:  (PhaROSSystemLauncher path:'rosservice')  
+							arguments: anArrayOfArguments
+							environment:  nil 
+							descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
+	process spin: 20.
+	^ process. 
+]
+
+{ #category : #launching }
+PhaROSSystemLauncher >> rosserviceCall: anArrayOfArguments [
+	^ self rosservice: {'call'}, anArrayOfArguments.
+]
+
 { #category : #deprecated }
 PhaROSSystemLauncher >> shutdownGMapping [
 	gmappingProcess  ifNotNil: [

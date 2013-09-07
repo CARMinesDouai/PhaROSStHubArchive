@@ -80,7 +80,9 @@ PhaROSPackageManager >> create: aPackage linkingVM: aVMBinaryPath copyingImage: 
 		OSProcess command: ('ln -s {1} {2}' format: { aVMBinaryPath . aPackage vm }).
 		OSProcess command: ('cp -r  {1} {2}' format: { anImageFolderPath ,'/*' . aPackage imageFolder } ).
 
-		(StandardFileStream forceNewFileNamed: aPackage mainBinary) nextPutAll: aPackage vm, ' ', aPackage image, ' scripts/$1', String crlf ; close.
+		(StandardFileStream forceNewFileNamed: aPackage mainBinary) nextPutAll: '#!/bin/bash',String lf, aPackage vm, ' ', aPackage image, ' scripts/$1', String lf ; close.
+		(StandardFileStream forceNewFileNamed: aPackage mainHeadless) nextPutAll: '#!/bin/bash',String lf,aPackage vm, ' -headless ', aPackage image, ' scripts/$1', String lf ; close.
+		(StandardFileStream forceNewFileNamed: aPackage mainEdit) nextPutAll: '#!/bin/bash',String lf,aPackage vm, ' ', aPackage image,  String lf ; close.
 
 		OSProcess command: ('chmod 777 {1}' format: { aPackage mainBinary }).
 		OSProcess command: ('cd {1}; cd .. ; catkin_make' format: { aPackage location }).
@@ -119,7 +121,9 @@ PhaROSPackageManager >> install: aPackage linkingVM: aVMBinaryPath copyingImage:
 		(StandardFileStream forceNewFileNamed: aPackage cMakeList ) nextPutAll: aPackage cmake ; close.
 		(StandardFileStream forceNewFileNamed: aPackage packageXML ) nextPutAll: aPackage xml ; close.
 		
-		(StandardFileStream forceNewFileNamed: aPackage mainBinary) nextPutAll: aPackage vm, ' ', aPackage image, ' scripts/$1', String crlf ; close.
+		(StandardFileStream forceNewFileNamed: aPackage mainBinary) nextPutAll: '#!/bin/bash',String crlf, aPackage vm, ' ', aPackage image, ' scripts/$1', String crlf ; close.
+		(StandardFileStream forceNewFileNamed: aPackage mainHeadless) nextPutAll: '#!/bin/bash',String crlf,aPackage vm, ' -headless ', aPackage image, ' scripts/$1', String crlf ; close.
+		(StandardFileStream forceNewFileNamed: aPackage mainEdit) nextPutAll: '#!/bin/bash',String crlf,aPackage vm, ' ', aPackage image,  String crlf ; close.
 
 		OSProcess command: ('chmod 777 {1}' format: { aPackage mainBinary }).
 

@@ -51,8 +51,8 @@ PhaROSHandleController class >> turtlebot [
 { #category : #construction }
 PhaROSHandleController class >> turtlesim [
 	| ttb |
-	ttb :=  self localhost.
-	ttb nodelets use: PhaROSTurtlebotNodelet as: #turtlesim.
+	ttb :=  self home.
+	ttb nodelets use: PhaROSTurtlesimNodelet as: #turtlesim.
 	^ ttb.
 ]
 

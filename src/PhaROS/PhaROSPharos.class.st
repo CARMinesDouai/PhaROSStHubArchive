@@ -8,6 +8,9 @@ Class {
 		'kompaiAbsolutePoseTopic',
 		'process'
 	],
+	#classInstVars : [
+		'location'
+	],
 	#category : #'PhaROS-PackageManager'
 }
 
@@ -160,6 +163,12 @@ include_directories(
 	
 ]
 
+{ #category : #'as yet unclassified' }
+PhaROSPharos class >> create: aLocation [
+	location := aLocation.
+	PhaROSPackageManager new create: self 
+]
+
 { #category : #accessing }
 PhaROSPharos class >> description [
 	^' pharos package'
@@ -167,12 +176,18 @@ PhaROSPharos class >> description [
 
 { #category : #'as yet unclassified' }
 PhaROSPharos class >> install [
-	PhaROSPackageManager new install: self  linkinVM: '~/VMS/CogVM'
+	self error: ' Use install: '.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPharos class >> install: aLocation [
+	location := aLocation.
+	PhaROSPackageManager new install: self
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSPharos class >> location [
-	^ '/home/kompai1/workspace/src'
+	^ location ifNil:[ self error: 'location is not setted' ].
 ]
 
 { #category : #'as yet unclassified' }
@@ -326,7 +341,6 @@ PhaROSPharos >> scriptLandmarksRecognition [
 	experiment beginExperiment.	
 
 	bot := experiment robulab.
-	self halt.
 	bot localizeLandmarks.
 	bot inspect.
 	
