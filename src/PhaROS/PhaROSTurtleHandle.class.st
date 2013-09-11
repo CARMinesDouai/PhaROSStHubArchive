@@ -13,6 +13,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PhaROSTurtleHandle class >> frameParent [
+	^ '/world'
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSTurtleHandle >> algorithm: aBlock [
 	 processHandler := [aBlock cull: self ] doIt asStickyReference.
 ]
@@ -40,6 +45,12 @@ PhaROSTurtleHandle >> finalize [
 { #category : #'as yet unclassified' }
 PhaROSTurtleHandle >> forwardAt: aSpeed [
 	self moveAt: aSpeed and: 0.0. 
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTurtleHandle >> frame [
+
+	^ '/', name normalizeFrame.
 ]
 
 { #category : #'as yet unclassified' }
@@ -75,6 +86,20 @@ PhaROSTurtleHandle >> pose [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSTurtleHandle >> poseStamped [
+		^(sim rosnode buildConnectionFor: '/',name,'/pose') 
+			typedAs: 'turtlesim/Pose'; 
+			adapted: PhaROSPose;
+			connect.
+	
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSTurtleHandle >> rotateAt: aSpeed [
 	self moveAt: 0.0 and: aSpeed. 
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTurtleHandle >> tf [
+	sim broadcastTFFor: self.
 ]

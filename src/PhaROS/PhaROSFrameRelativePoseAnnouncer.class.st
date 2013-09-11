@@ -40,7 +40,7 @@ PhaROSFrameRelativePoseAnnouncer >> checkStamp: aFrame [
 
 { #category : #'as yet unclassified' }
 PhaROSFrameRelativePoseAnnouncer >> fetchStamp: aPose [
-	^ fromFrame stamp max: toFrame stamp.
+	^ fromFrame stamp asDateAndTime max: toFrame stamp asDateAndTime.
 	
 	
 ]

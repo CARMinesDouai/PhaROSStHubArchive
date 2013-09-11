@@ -10,19 +10,26 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSPoseToTFNodelet >> express: aPoseTopic as: aFrame [
-	self writer: (self nodelets transformation writerFor: aFrame). 
+	writer at: aPoseTopic ifAbsentPut: [self nodelets transformation writerFor: aFrame].
 	
-	aPoseTopic for: [ : pose | self writer pose: pose ].
+	aPoseTopic for: [ : pose | (self writerAt: aPoseTopic ) pose: pose ].
 	
 	
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSPoseToTFNodelet >> express: aPoseTopic as: aFrameID childOf: aParentFrameID [
-	self writer: (self nodelets transformation writerFor: aFrameID  withParent:  aParentFrameID ). 
-	aPoseTopic for: [ : pose | self writer pose: pose ].
+	writer at: aPoseTopic ifAbsentPut: [ (self nodelets transformation writerFor: aFrameID  withParent:  aParentFrameID ) ].
+	
+	 
+	aPoseTopic for: [ : pose | (self writerAt: aPoseTopic) pose: pose ].
 	
 	
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPoseToTFNodelet >> initialize [
+	writer := Dictionary new. 
 ]
 
 { #category : #'as yet unclassified' }
@@ -31,6 +38,6 @@ PhaROSPoseToTFNodelet >> writer [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPoseToTFNodelet >> writer: aFrameWriter [
-	writer := aFrameWriter 
+PhaROSPoseToTFNodelet >> writerAt: aPoseTopic [ 
+	^ writer at: aPoseTopic. 
 ]

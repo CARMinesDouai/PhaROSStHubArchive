@@ -24,6 +24,11 @@ PhaROSPosition class >> x: anX y: anY z: aZ [
 	^ self new x: anX; y: anY; z: aZ; yourself.
 ]
 
+{ #category : #'as yet unclassified' }
+PhaROSPosition class >> zero [
+	^ PhaROSPosition x: 0.0 y: 0.0  z: 0.0 
+]
+
 { #category : #operators }
 PhaROSPosition >> * anScalar [
 	^ PhaROSPosition x: (x * anScalar) y: (y * anScalar) z: (z  * anScalar) 
@@ -79,10 +84,18 @@ PhaROSPosition >> module2d [
 
 { #category : #operators }
 PhaROSPosition >> multiplyQuaternionByYou: aQuaternion [
-	^ PhaROSQuaternion x: ((aQuaternion w * self x) + (aQuaternion y * self z) - (aQuaternion z * self y))
+"{
+    return Quaternion( 
+        q.w() * w.x() + q.y() * w.z() - q.z() * w.y(),
+        q.w() * w.y() + q.z() * w.x() - q.x() * w.z(),
+        q.w() * w.z() + q.x() * w.y() - q.y() * w.x(),
+        -q.x() * w.x() - q.y() * w.y() - q.z() * w.z());
+}"
+	^ PhaROSQuaternion 
+	         x: ((aQuaternion w * self x) + (aQuaternion y * self z) - (aQuaternion z * self y))
 		   y: ((aQuaternion w * self y) + (aQuaternion z * self x) - (aQuaternion x * self z))
 		   z: ((aQuaternion w * self z) + (aQuaternion x * self y) - (aQuaternion y * self x))
-		   w: ((aQuaternion x * self x * -1) - (aQuaternion y * self y) - (aQuaternion z * self z)).
+		   w: (((aQuaternion x* -1) * self x ) - (aQuaternion y * self y) - (aQuaternion z * self z)).
 
 ]
 

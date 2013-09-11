@@ -61,6 +61,17 @@ PhaROSTFFrame >> broadcaster: aBroadcaster [
 	broadcaster := aBroadcaster 
 ]
 
+{ #category : #accessing }
+PhaROSTFFrame >> commonParentWith: otherFrame [
+	| parents |
+	parents := self parents .
+	otherFrame withParentsDo: [ 
+		: aParent |
+		(parents includes: aParent ) ifTrue: [ ^ aParent ].
+	].
+	self error: 'There is not parent in common between frames'.
+]
+
 { #category : #'frame calculations' }
 PhaROSTFFrame >> convert: aPosition to: aFrame [
 	| pseudo |	
@@ -103,6 +114,19 @@ PhaROSTFFrame >> parent: aParentFrame [
 ]
 
 { #category : #accessing }
+PhaROSTFFrame >> parents [
+	| parents aux |
+	parents := OrderedCollection new.
+	aux := self. 
+	[ 
+		parents add: aux.
+		aux := aux parent. 
+	 ] doWhileTrue: [ aux notNil ].
+
+	 ^ parents.
+]
+
+{ #category : #accessing }
 PhaROSTFFrame >> pose [
 	(pose isNil and: [ parent isNil ]) ifTrue: [
 		" fixed "
@@ -118,42 +142,50 @@ PhaROSTFFrame >> pose: aPose [
 
 { #category : #'frame calculations' }
 PhaROSTFFrame >> poseRelativeTo: aFrame [
-	| selfParents aux  | 	
-	
-	self flag: #shouldUseABetterAlgorithm.
-	"This algorithm is O2 complexity ".
-	
-	selfParents := Set new.
+	| frame topParent depth calculator target MAX_DEPTH keepRolling |
 
-	aux := self. 
-	[ 
-		selfParents add: aux.
-		aux := aux parent. 
-	 ] doWhileTrue: [ aux notNil ].
-	
-	aux := aFrame. 
-	[ 
-		(selfParents includes: aux ) ifTrue: [
-			^ (aFrame poseRelativeToParent: aux) poseRelativeTo: (self poseRelativeToParent: aux) .
-		].
-		aux := aux parent. 
-	 ] doWhileTrue: [ aux notNil ].
+	frame := self .
+      topParent := frame.
+ 	depth := 0.
+	target := aFrame. 
+	MAX_DEPTH := 100. 
+	calculator := PhaROSTFFrameCalculator new .
 
-	PhaROSTFError signal: ' Theres no way to reach ', aFrame name, ' from ', self name. 
+	keepRolling := true. 
+	[ frame notNil and: [ keepRolling ]] whileTrue: [
+	    parent := frame parent.
+	    parent ifNil: [
+	        topParent := frame.
+	        keepRolling := false. 
+	    ] ifNotNil: [
+		    (frame == target) ifTrue: [
+		        ^ calculator targetParentOfSource.
+		    ].
 
+		    calculator accumulateToSource:frame .
 
+		    topParent := frame.
+		    frame := parent.
+		    depth := depth + 1.
+		    (depth > MAX_DEPTH) ifTrue: [ self error: 'possible recursion' ].
+	  ]
+	].
 
+	frame := target.
+	depth := 0.
 
+	[ frame ~= topParent ] whileTrue: [
+	    parent := frame parent.
+	    parent ifNil: [ self error:' unexpected '].
+	    (frame = self) ifTrue: [ ^ calculator sourceParentOfTarget ].
+	    calculator accumulateToTarget: frame.
+	   
+	    frame := parent.
+	    depth := depth + 1.
+	    (depth > MAX_DEPTH) ifTrue: [ self error: 'possible recursion' ].
+	].
 
-
-
-
-
-
-
-
-
-
+	^ calculator fullPath.
 
 ]
 
@@ -210,4 +242,17 @@ PhaROSTFFrame >> updateFrom: aTransformation using: db broadcaster: aNode [
 	].
 	
 	
+]
+
+{ #category : #accessing }
+PhaROSTFFrame >> withParentsDo: aBlock [ 
+	|  aux  |
+	
+	aux := self parent.
+	
+	[ aux notNil ] whileTrue: [ 
+		aBlock value: aux.
+		aux := aux parent. 
+	 ] .
+
 ]

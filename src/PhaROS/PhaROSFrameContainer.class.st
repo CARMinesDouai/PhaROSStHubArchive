@@ -27,7 +27,7 @@ PhaROSFrameContainer >> finalize [
 
 { #category : #'as yet unclassified' }
 PhaROSFrameContainer >> frame: aFrameID [
-	^ frames at: aFrameID.
+	^ frames at: aFrameID  ifAbsent: [ self error: aFrameID, ' is not being broadcasted'].
 ]
 
 { #category : #'as yet unclassified' }

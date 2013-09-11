@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PhaROSTurtlesimNodelet >> broadcastTFFor: aTurtleHandle [
+	self nodelets pose2tf express: aTurtleHandle poseStamped as: aTurtleHandle frame childOf: PhaROSTurtleHandle frameParent.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSTurtlesimNodelet >> callServiceFor: aName [
 	| x y |
 	x := (Random seed: DateAndTime now asUnixTime)  next; next; nextInt:9 + ((Random seed: DateAndTime now asUnixTime)  next; nextInt:9) / 10.
@@ -21,7 +26,8 @@ PhaROSTurtlesimNodelet >> callServiceFor: aName [
 { #category : #'as yet unclassified' }
 PhaROSTurtlesimNodelet >> configure [
 	self nodelets use: PhaROSTransformationNodelet as: #transformation.
-	
+	self nodelets use: PhaROSPoseToTFNodelet  as: #pose2tf.	
+
 ]
 
 { #category : #'as yet unclassified' }

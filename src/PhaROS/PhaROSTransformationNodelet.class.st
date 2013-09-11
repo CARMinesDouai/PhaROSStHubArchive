@@ -25,7 +25,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSTransformationNodelet class >> tfOutTopic [
-	^ '/kompai/tf'
+	^ '/tf'
 ]
 
 { #category : #'as yet unclassified' }
@@ -58,6 +58,12 @@ PhaROSTransformationNodelet >> betweenFixedFrameAnd: aFrameID [
 { #category : #package }
 PhaROSTransformationNodelet >> configureTfCallback. [
 	self tf for: self tfcallback.
+]
+
+{ #category : #'topic-reading' }
+PhaROSTransformationNodelet >> distanceBetween: aFrameID and: anOtherFrameID [
+	self configureTfCallback.
+	^ container pseudoTopicBetween: aFrameID  and: anOtherFrameID.
 ]
 
 { #category : #finalization }
@@ -112,6 +118,12 @@ PhaROSTransformationNodelet >> tfWriter [
 { #category : #package }
 PhaROSTransformationNodelet >> tfcallback [
 	^ [ : t :chn | self process: t from: chn].
+]
+
+{ #category : #'topic-reading' }
+PhaROSTransformationNodelet >> transformBetween: aFrameID and: anOtherFrameID [
+	self configureTfCallback.
+	^ (self frame: aFrameID ) poseRelativeTo:  (self frame: anOtherFrameID)
 ]
 
 { #category : #'topic-writing' }
