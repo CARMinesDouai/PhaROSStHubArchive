@@ -123,6 +123,7 @@ ConfigurationOfPureNG >> baseline10: spec [
 			spec package: 'PureNG' with: [ 
 				spec requires: 'Concurrency' 
 			].
+		
 	].
 
 
@@ -141,6 +142,21 @@ ConfigurationOfPureNG >> project [
 		project := constructor project.
 		project loadType: #linear. "change to #atomic if desired"
 		project 
+	].
+
+
+]
+
+{ #category : #'as yet unclassified' }
+ConfigurationOfPureNG >> version100Beta: spec [ 
+	<version: '1.0-Beta' imports: #('1.0-baseline') >
+	
+	spec for: #common do: [
+		spec blessing: #alpha.
+		spec author: 'SantiagoBragagnolo'.
+		spec timestamp: '12/09/2013 12:00'.
+		spec package: 'PureNG' with: 'PureNG-SantiagoBragagnolo.44'.
+
 	].
 
 
