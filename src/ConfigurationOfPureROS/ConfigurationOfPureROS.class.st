@@ -103,6 +103,11 @@ ConfigurationOfPureROS class >> loadBleedingEdge [
 	(self project version: #bleedingEdge) load.
 ]
 
+{ #category : #loading }
+ConfigurationOfPureROS class >> loadDemo [
+	(self project version: #'1.0-Beta1') load.
+]
+
 { #category : #'metacello tool support' }
 ConfigurationOfPureROS class >> metacelloVersion: versionString loads: anArrayOrString [
 	"Stash the last version loaded and the list of packages loaded for that version. The list
