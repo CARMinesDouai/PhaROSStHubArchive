@@ -94,8 +94,8 @@ ConfigurationOfPhaROS class >> loadBleedingEdge [
 ]
 
 { #category : #loading }
-ConfigurationOfPhaROS class >> loadBleedingEdgeWithPeripherics [
-	(self project version: #bleedingEdge) load: 'PhaROS-Peripherics'.
+ConfigurationOfPhaROS class >> loadESUG [
+	(self project version: #'1.0-Beta3') load.
 ]
 
 { #category : #'metacello tool support' }
@@ -158,18 +158,23 @@ ConfigurationOfPhaROS >> baseline10: spec [
 					versionString: #bleedingEdge;
 					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
 			].
-		      spec package: 'StarGazer' with: [
-				spec repository: 'http://car.mines-douai.fr/squeaksource/Peripherics'.
-			].
+		    
 			spec package: 'TaskIT' with: [
 				spec repository: 'http://smalltalkhub.com/mc/sbragagnolo/TaskIT/main'.
 			].
 		
-			spec package: 'PhaROS' with: [
-				spec requires: #('XMLRPC' 'CommonTraits' 'PaulLePoulpe' 'OSProcess' 'TaskIT').
+			spec project: 'Kom' with: [
+					spec	className: 'ConfigurationOfKomHttpServer';
+							versionString: '1.0.9';
+							file: 'ConfigurationOfKomHttpServer';
+							repository: 'http://www.squeaksource.com/MetacelloRepository' 
 			].
-		      spec group: 'PhaROS-Peripherics' with: #( 'PhaROS' 'StarGazer').
-			
+		
+		
+			spec package: 'PhaROS' with: [
+				spec requires: #('XMLRPC' 'CommonTraits' 'PaulLePoulpe' 'OSProcess' 'TaskIT' 'Kom').
+			].
+		   
 			spec group: 'default'  with: #( 'PhaROS' ).
 	].
 
@@ -268,6 +273,24 @@ ConfigurationOfPhaROS >> version100Beta2: spec [
 			 project: 'PaulLePoulpe' with: '1.0.1'.
 		spec
 			package: 'PhaROS' with: 'PhaROS-NouryBouraqadi.147'
+		].
+
+
+]
+
+{ #category : #versions }
+ConfigurationOfPhaROS >> version100Beta3: spec [ 
+	<version: '1.0-Beta3' imports: #('1.0-baseline') >
+	
+	spec for: #common do: [
+		spec blessing: #alpha.
+		spec author: 'SantiagoBragagnolo'.
+		spec timestamp: '12/09/2013 12:00'.
+		spec 
+			project: 'XMLRPC' with: '1.0-Beta6';
+			 project: 'PaulLePoulpe' with: '1.0.1'.
+		spec
+			package: 'PhaROS' with: 'PhaROS-SantiagoBragagnolo.202'
 		].
 
 
