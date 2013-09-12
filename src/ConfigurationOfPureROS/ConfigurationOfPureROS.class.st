@@ -155,9 +155,12 @@ ConfigurationOfPureROS >> baseline10: spec [
 			spec package: 'TaskIT' with: [
 				spec repository: 'http://smalltalkhub.com/mc/sbragagnolo/TaskIT/main'.
 			].
+		     spec package: 'StarGazer' with: [
+				spec repository: 'http://car.mines-douai.fr/squeaksource/Peripherics'.
+			].
 		
 			spec package: 'PureROS' with: [
-				spec requires: #('PhaROS' 'PureNG' 'TaskIT').
+				spec requires: #('PhaROS' 'PureNG' 'TaskIT' 'StarGazer' ).
 			].
 	].
 
@@ -179,6 +182,25 @@ ConfigurationOfPureROS >> project [
 		project loadType: #linear. "change to #atomic if desired"
 		project 
 	].
+
+
+]
+
+{ #category : #'as yet unclassified' }
+ConfigurationOfPureROS >> version100Beta: spec [ 
+	<version: '1.0-Beta1' imports: #('1.0-baseline') >
+	
+	spec for: #common do: [
+		spec blessing: #alpha.
+		spec author: 'SantiagoBragagnolo'.
+		spec timestamp: '12/09/2013 12:00'.
+		spec 
+			project: 'PhaROS' with: '1.0-Beta3';
+			project: 'PureNG' with: '1.0-Beta';
+			package: 'TaskIT' with: 'TaskIT-SantiagoBragagnolo.16';
+			package: 'StarGazer' with: 'StarGazer-SantiagoBragagnolo.53'.
+
+		].
 
 
 ]
