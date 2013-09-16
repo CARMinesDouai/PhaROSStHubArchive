@@ -155,9 +155,11 @@ PhaROSMoveBaseGoal >> status [
 
 { #category : #accessing }
 PhaROSMoveBaseGoal >> status: aStatus [
+	| previous |
+	previous := status.
 	status := aStatus.
 	callbacks at: status  ifPresent: [ : callsFor | 
-		callsFor do: [ : callbck | 	callbck cull: self ].
+		callsFor do: [ : callbck | 	callbck cull: self cull: previous ].
 	]
 ]
 
