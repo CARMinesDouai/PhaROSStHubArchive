@@ -152,7 +152,7 @@ PureROSRobulabNodelet >> loadLandmarks [
 	self nodelets localizer filein: 'map-landmarks-inner.st'.
 	self nodelets localizer map.
 	self nodelets localizer mapPoints. 
-	
+	self nodelets localizer transformations.
 	
 ]
 

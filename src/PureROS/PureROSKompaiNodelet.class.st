@@ -12,7 +12,8 @@ Class {
 		'scan',
 		'commandVelocity',
 		'poseStampedOut',
-		'trajectoryDifferentialIn'
+		'trajectoryDifferentialIn',
+		'state'
 	],
 	#category : #'PureROS-Nodelets'
 }
@@ -46,6 +47,7 @@ PureROSKompaiNodelet >> configure [
 	self nodelets use: PhaROSTransformationNodelet as: #transformation.
 	self nodelets use: SGROSStarGazerNodelet as: #stargazer.
 	
+	state := PureROSKompaiActionState for: self.
 ]
 
 { #category : #'private-out' }
@@ -67,7 +69,7 @@ PureROSKompaiNodelet >> consumeCommandVelocity [
 				true.
 			];
 			for: [ : aDifferentialVelocity |  
-				robot differentialService moveAt: aDifferentialVelocity. 
+				self moveAt: aDifferentialVelocity.
 			 ] .
 
 	commandVelocity connect.
@@ -90,10 +92,15 @@ PureROSKompaiNodelet >> consumeTrajectoryDifferential [
 		trajectoryDifferentialIn 
 				typedAs: 'geometry_msgs/PoseStamped';
 				adapted: #pose \> PNGRobotPose;
-				for: [ : aPose |  (PNGTrajectoryServiceBasedController for:  robot)  goToDelta: aPose. ] .
+				for: [ : aPose |  self goTo: aPose. ] .
 
 		trajectoryDifferentialIn connect.
 	]
+]
+
+{ #category : #'private-out' }
+PureROSKompaiNodelet >> goTo: aDeltaPose [ 
+	^ self state goTo: aDeltaPose.
 ]
 
 { #category : #'private-out' }
@@ -109,6 +116,11 @@ PureROSKompaiNodelet >> initialize: aRobot [
 	self consumeCommandVelocity.
 	self consumeTrajectoryDifferential .
 	
+]
+
+{ #category : #'private-out' }
+PureROSKompaiNodelet >> moveAt: aDifferentialVelocity [ 
+	^ self state moveAt: aDifferentialVelocity.
 ]
 
 { #category : #'private-out' }
@@ -149,4 +161,14 @@ PureROSKompaiNodelet >> scanOut [
 { #category : #'private-out' }
 PureROSKompaiNodelet >> setPose: aPNGRobotPose [ 
 	[ robot localizationService pose: aPNGRobotPose.  ] on: Error do:  [ :e | self halt. ].
+]
+
+{ #category : #'private-out' }
+PureROSKompaiNodelet >> state [
+	^ state.
+]
+
+{ #category : #'private-out' }
+PureROSKompaiNodelet >> state: aState [
+	state := aState
 ]
