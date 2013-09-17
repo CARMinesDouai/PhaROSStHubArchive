@@ -126,6 +126,12 @@ PhaROSTransformationNodelet >> transformBetween: aFrameID and: anOtherFrameID [
 	^ (self frame: aFrameID ) poseRelativeTo:  (self frame: anOtherFrameID)
 ]
 
+{ #category : #'topic-reading' }
+PhaROSTransformationNodelet >> transformBetween: aPosition of: aFrameID  to: anOtherFrameID [
+	self configureTfCallback.
+	^ (self frame: aFrameID ) convert: aPosition to: (self frame: anOtherFrameID).
+]
+
 { #category : #'topic-writing' }
 PhaROSTransformationNodelet >> writerFor: aFrame [ 
 	^ PhaROSFrameRelativePoseWriter for: aFrame through: self.

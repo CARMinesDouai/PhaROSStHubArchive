@@ -21,11 +21,6 @@ PhaROSTFFrame class >> id: aFrameID parent: aParent [
 	^ self new name: aFrameID ; parent: aParent; yourself.
 ]
 
-{ #category : #'frame calculations' }
-PhaROSTFFrame >> absolutePose [ 
-	^ self poseRelativeToParent: nil. " From here to the end of the tree "
-]
-
 { #category : #converting }
 PhaROSTFFrame >> asTransform [
 	| transform | 
