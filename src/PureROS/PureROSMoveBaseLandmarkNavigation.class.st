@@ -2,9 +2,8 @@ Class {
 	#name : #PureROSMoveBaseLandmarkNavigation,
 	#superclass : #PhaROSStaticNodelet,
 	#instVars : [
-		'currentGoal',
 		'robulab',
-		'currentEvent'
+		'currentGoal'
 	],
 	#category : #'PureROS-Nodelets'
 }
@@ -30,11 +29,14 @@ PureROSMoveBaseLandmarkNavigation >> baseLandmarks [
 
 { #category : #'as yet unclassified' }
 PureROSMoveBaseLandmarkNavigation >> goTo: anEntity [
-	currentEvent ifNotNil: [ currentEvent cancel. currentEvent := nil ].
+	| destinationPose |
 	
-	currentGoal := PureROSRobulabGoal new entity: anEntity; goal: (robulab nodelets movebase client goTo: anEntity center asPose); robulab: robulab ; yourself .
-	currentEvent := robulab nodelets sgevents whenLandmark: [ :lmk | currentGoal hasArrived: lmk. ] doOnce: [ : lmk | currentGoal onArrivalToLandmark: lmk ].
-	^ currentGoal
+	currentGoal ifNotNil: [ currentGoal cancel. currentGoal := nil ].
+	
+	
+	currentGoal := PureROSRobulabGoal new entity: anEntity; robulab: robulab ; configure; yourself .
+	
+	^ currentGoal.
 ]
 
 { #category : #'as yet unclassified' }

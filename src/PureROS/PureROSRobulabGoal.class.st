@@ -8,7 +8,8 @@ Class {
 		'landmarkEvent',
 		'checks',
 		'moves',
-		'status'
+		'status',
+		'event'
 	],
 	#category : #'PureROS-Nodelets'
 }
@@ -16,7 +17,25 @@ Class {
 { #category : #behavior }
 PureROSRobulabGoal >> cancel [ 
 	goal cancel. 
+	event cancel.
+	event := nil.
 	landmarkEvent ifNotNil: [ self stopmovingAs: Actionlib_msgsGoalStatus aborted ]
+]
+
+{ #category : #event }
+PureROSRobulabGoal >> configure [
+
+	self tryAchieveGoal.
+	
+	goal onAborted: [ self tryAchieveGoal.  ].
+	goal onPreempted:  [ self trajectoryDifferential:  entity center asPose . ].
+	goal onPreempting:  [ self trajectoryDifferential:  entity center asPose . ].
+	goal onRecalling:  [ self trajectoryDifferential:  entity center asPose . ].
+	goal onRecalled:  [ self trajectoryDifferential:  entity center asPose . ].
+	goal onRejected:  [ self tryAchieveGoal ].
+	goal onLost:  [ self tryAchieveGoal ].
+	
+	
 ]
 
 { #category : #behavior }
@@ -121,27 +140,24 @@ PureROSRobulabGoal >> stopmovingAs: aState [
 
 { #category : #behavior }
 PureROSRobulabGoal >> trajectoryDifferential: aPose [
-	| delta tf odomo baseo position |		
+	|position |		
 				
-	"delta := PhaROSPose position:( PhaROSPosition x: aPose position x* -1 y: aPose position y * -1 z: 0.0) 
-						   orientation: self nodelets movebase  client currentPosition orientation."
-						
-	
 
-	"aPose poseRelativeTo: (robulab nodelets transformation frame: '/base_link')."
+	position := robulab nodelets transformation transformBetween:  aPose position of: '/map'  to: '/base_link'.
+	 
 	
-	position := aPose position. 
-	
-	odomo := (robulab nodelets transformation frame: '/odom' ) pose orientation.
-	baseo := (robulab nodelets transformation frame: '/base_link' ) pose orientation.
-	
-	position := odomo rotatePosition:  position. 
-	
-	position := PhaROSPosition x: position y y: position x* -1 z: 0.0.
-	
-	
-	"position :=  baseo rotatePosition: position."
-	delta := PhaROSPose position: position  orientation: PhaROSQuaternion zero.
-	^ robulab trajectoryDifferential: delta.
+	^ robulab trajectoryDifferential: ( PhaROSPose position: position  orientation: PhaROSQuaternion zero).
 
+]
+
+{ #category : #event }
+PureROSRobulabGoal >> tryAchieveGoal [
+
+
+
+	event := robulab nodelets sgevents whenLandmark: [ :lmk | self hasArrived: lmk. ] doOnce: [ : lmk | self onArrivalToLandmark: lmk ].
+	self trajectoryDifferential:  entity center asPose .
+	goal := (robulab nodelets movebase client goTo: entity center asPose).
+	
+	
 ]
