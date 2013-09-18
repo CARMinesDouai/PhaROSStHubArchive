@@ -28,10 +28,10 @@ PureROSRobulabGoal >> configure [
 	self tryAchieveGoal.
 	
 	goal onAborted: [ self tryAchieveGoal.  ].
-	goal onPreempted:  [ self trajectoryDifferential:  entity center asPose . ].
-	goal onPreempting:  [ self trajectoryDifferential:  entity center asPose . ].
-	goal onRecalling:  [ self trajectoryDifferential:  entity center asPose . ].
-	goal onRecalled:  [ self trajectoryDifferential:  entity center asPose . ].
+	goal onPreempted:  [ self trajectoryDifferential:  entity extraInfo  . ].
+	goal onPreempting:  [ self trajectoryDifferential:  entity extraInfo . ].
+	goal onRecalling:  [ self trajectoryDifferential:  entity extraInfo . ].
+	goal onRecalled:  [ self trajectoryDifferential:  entity extraInfo . ].
 	goal onRejected:  [ self tryAchieveGoal ].
 	goal onLost:  [ self tryAchieveGoal ].
 	
@@ -140,14 +140,9 @@ PureROSRobulabGoal >> stopmovingAs: aState [
 
 { #category : #behavior }
 PureROSRobulabGoal >> trajectoryDifferential: aPose [
-	|position |		
-				
-
-	position := robulab nodelets transformation transformBetween:  aPose position of: '/map'  to: '/base_link'.
-	 
-	
-	^ robulab trajectoryDifferential: ( PhaROSPose position: position  orientation: PhaROSQuaternion zero).
-
+	 aPose ifNotNil: [
+		^ robulab trajectoryDifferential: aPose.
+	]
 ]
 
 { #category : #event }
@@ -156,7 +151,7 @@ PureROSRobulabGoal >> tryAchieveGoal [
 
 
 	event := robulab nodelets sgevents whenLandmark: [ :lmk | self hasArrived: lmk. ] doOnce: [ : lmk | self onArrivalToLandmark: lmk ].
-	self trajectoryDifferential:  entity center asPose .
+	self trajectoryDifferential:  entity extraInfo .
 	goal := (robulab nodelets movebase client goTo: entity center asPose).
 	
 	

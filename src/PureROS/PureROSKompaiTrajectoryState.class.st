@@ -14,7 +14,7 @@ PureROSKompaiTrajectoryState >> controller [
 
 { #category : #'as yet unclassified' }
 PureROSKompaiTrajectoryState >> goTo: aDeltaPose [
-	self controller goToDelta: aDeltaPose.
+	self controller goTo: aDeltaPose.
 ]
 
 { #category : #'as yet unclassified' }
@@ -26,5 +26,5 @@ PureROSKompaiTrajectoryState >> moveAt: aDifferentialVelocity [
 
 { #category : #'as yet unclassified' }
 PureROSKompaiTrajectoryState >> stopDriving [ 
-	tcontroller ifNotNil: [ tcontroller stopMotion].
+	tcontroller ifNotNil: [ tcontroller  clearTrajectory ].
 ]

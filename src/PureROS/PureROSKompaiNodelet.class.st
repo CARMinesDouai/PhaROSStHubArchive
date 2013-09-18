@@ -143,6 +143,11 @@ PureROSKompaiNodelet >> poseStampedOut [
 	^ poseStampedOut ifNil: [ poseStampedOut := self rosnode topicPublisher: PureROSRobulabNodelet poseStampedTopic typedAs: 'geometry_msgs/PoseStamped'].
 ]
 
+{ #category : #'private-out' }
+PureROSKompaiNodelet >> robot [
+	^ robot 
+]
+
 { #category : #broadcast }
 PureROSKompaiNodelet >> scan: aLaserMeasure [
 	self scanOut send: [ : msg | 

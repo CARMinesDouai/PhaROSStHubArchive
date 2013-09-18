@@ -133,6 +133,12 @@ PureROSRobulabNodelet >> landmarkNavigation [
 	self nodelets use: PhaROSInitialPose as: #initialpose.
 	self nodelets navigator robulab: self.
 	
+	self nodelets sgevents whenLandmark: [ : lmk |  
+		(PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d < 1 
+	] do: [ : lmk | 
+		(self nodelets localizer entity: lmk landmark) extraInfo: (self nodelets transformation frame:'/base_link' ) pose.
+	].
+	
 	
 "
 	self nodelets use: PureROSBaseLandmarkEvent as: #localizationEvents.
