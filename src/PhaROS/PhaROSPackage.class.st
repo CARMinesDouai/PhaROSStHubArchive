@@ -2,7 +2,8 @@ Class {
 	#name : #PhaROSPackage,
 	#superclass : #Object,
 	#classInstVars : [
-		'instance'
+		'instance',
+		'location'
 	],
 	#category : #'PhaROS-PackageManager'
 }
@@ -33,9 +34,10 @@ PhaROSPackage class >> cmake [
 	self subclassResponsibility.
 ]
 
-{ #category : #'initialize-release' }
-PhaROSPackage class >> create [
-	PhaROSPackageManager new create: self
+{ #category : #path }
+PhaROSPackage class >> create: aLocation [
+	location := aLocation.
+	PhaROSPackageManager new create: self 
 ]
 
 { #category : #abstract }
@@ -69,9 +71,10 @@ PhaROSPackage class >> imageFolder [
 	^ self path ,'/image'
 ]
 
-{ #category : #'initialize-release' }
-PhaROSPackage class >> install [
-	PhaROSPackageManager new install: self
+{ #category : #abstract }
+PhaROSPackage class >> install: aLocation [
+	location := aLocation.
+	PhaROSPackageManager new install: self  
 ]
 
 { #category : #'initialize-release' }
@@ -97,8 +100,13 @@ PhaROSPackage class >> instance [
 ]
 
 { #category : #abstract }
+PhaROSPackage class >> isInstalled [ 
+	^ location notNil
+]
+
+{ #category : #abstract }
 PhaROSPackage class >> location [
-	^ self subclassResponsibility.
+	^ location ifNil:[ self error: 'location is not setted' ].
 ]
 
 { #category : #path }

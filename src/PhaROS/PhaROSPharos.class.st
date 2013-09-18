@@ -8,9 +8,6 @@ Class {
 		'kompaiAbsolutePoseTopic',
 		'process'
 	],
-	#classInstVars : [
-		'location'
-	],
 	#category : #'PhaROS-PackageManager'
 }
 
@@ -163,31 +160,9 @@ include_directories(
 	
 ]
 
-{ #category : #'as yet unclassified' }
-PhaROSPharos class >> create: aLocation [
-	location := aLocation.
-	PhaROSPackageManager new create: self 
-]
-
 { #category : #accessing }
 PhaROSPharos class >> description [
 	^' pharos package'
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSPharos class >> install [
-	self error: ' Use install: '.
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSPharos class >> install: aLocation [
-	location := aLocation.
-	PhaROSPackageManager new install: self
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSPharos class >> location [
-	^ location ifNil:[ self error: 'location is not setted' ].
 ]
 
 { #category : #'as yet unclassified' }
@@ -351,7 +326,7 @@ PhaROSPharos >> scriptLaunch [
 		
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
 		
-		 
+		spec kompai2.
 		spec mapServer: '/home/kompai1/map/map.yaml'.
 		spec amcl.
 		spec moveBase.

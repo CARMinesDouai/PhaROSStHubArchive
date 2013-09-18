@@ -73,7 +73,7 @@ PhaROSTFFrame >> convert: aPosition to: aFrame [
 	
 	pseudo := PhaROSTFFrame id: 'pseudo-frame' parent: self.
 	pseudo pose: (PhaROSPose position: aPosition orientation: PhaROSQuaternion zero).
-	^ pseudo poseRelativeTo: aFrame.		
+	^ aFrame poseRelativeTo: pseudo.		
 
 ]
 
@@ -137,7 +137,7 @@ PhaROSTFFrame >> pose: aPose [
 
 { #category : #'frame calculations' }
 PhaROSTFFrame >> poseRelativeTo: aFrame [
-	| frame topParent depth calculator target MAX_DEPTH keepRolling |
+	| frame topParent depth calculator target MAX_DEPTH keepRolling  auxParent |
 
 	frame := self .
       topParent := frame.
@@ -148,8 +148,8 @@ PhaROSTFFrame >> poseRelativeTo: aFrame [
 
 	keepRolling := true. 
 	[ frame notNil and: [ keepRolling ]] whileTrue: [
-	    parent := frame parent.
-	    parent ifNil: [
+	    auxParent := frame parent.
+	    auxParent ifNil: [
 	        topParent := frame.
 	        keepRolling := false. 
 	    ] ifNotNil: [
@@ -160,7 +160,7 @@ PhaROSTFFrame >> poseRelativeTo: aFrame [
 		    calculator accumulateToSource:frame .
 
 		    topParent := frame.
-		    frame := parent.
+		    frame := auxParent.
 		    depth := depth + 1.
 		    (depth > MAX_DEPTH) ifTrue: [ self error: 'possible recursion' ].
 	  ]
@@ -170,38 +170,18 @@ PhaROSTFFrame >> poseRelativeTo: aFrame [
 	depth := 0.
 
 	[ frame ~= topParent ] whileTrue: [
-	    parent := frame parent.
-	    parent ifNil: [ self error:' unexpected '].
+	    auxParent := frame parent.
+	    auxParent ifNil: [ self error:' unexpected '].
 	    (frame = self) ifTrue: [ ^ calculator sourceParentOfTarget ].
 	    calculator accumulateToTarget: frame.
 	   
-	    frame := parent.
+	    frame := auxParent.
 	    depth := depth + 1.
 	    (depth > MAX_DEPTH) ifTrue: [ self error: 'possible recursion' ].
 	].
 
 	^ calculator fullPath.
 
-]
-
-{ #category : #'frame calculations' }
-PhaROSTFFrame >> poseRelativeToParent: aParent [
-	
-	| aux relative |
-	
-	aux :=  self.
-	relative := PhaROSPose zero.
-	
-	
-	[ aux ~= aParent and: [aux ~= nil ]] whileTrue: [
-		relative := relative + aux pose. 
-		aux := aux parent.
-	].
-	aParent ifNotNil: [
-		self assert: aux notNil description: 'the given parent is not a parent! '.
-	].
-
-	^ relative.
 ]
 
 { #category : #printing }

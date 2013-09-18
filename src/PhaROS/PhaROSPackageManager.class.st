@@ -18,7 +18,7 @@ PhaROSPackageManager class >> initialize [
 
 { #category : #sync }
 PhaROSPackageManager class >> itsAPackage: aClass andItsAScript: aSelector [
-	^ ((aClass inheritsFrom: PhaROSPackage ) and: [ aSelector beginsWith: 'script' ] )
+	^ ((aClass inheritsFrom: PhaROSPackage ) and: [ aClass isInstalled and: [ aSelector beginsWith: 'script'] ]  )
 ]
 
 { #category : #events }

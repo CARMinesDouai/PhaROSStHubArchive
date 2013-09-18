@@ -180,6 +180,25 @@ PhaROSLaunchBuilder >> hectorMapping [
 ]
 
 { #category : #util }
+PhaROSLaunchBuilder >> kompai2 [
+		| conf |
+	
+	"conf := self package: 'pharos' type:'headless' named:''.
+	conf args: 'kompai2'.
+	"
+	conf := self package: 'pharos' type:'headless' named:''.
+	conf args: 'tf'.
+	
+	conf := self package: 'pharos' type:'headless' named:''.
+	conf args: 'odometry'.
+	
+	
+	
+	 
+	^ conf.
+]
+
+{ #category : #util }
 PhaROSLaunchBuilder >> mapServer: aFile [
 	| conf |
 	
@@ -428,6 +447,17 @@ PhaROSLaunchBuilder >> rviz: aConfigFile [
 	| conf |
 
 	conf := self rviz.
+	
+	^ conf.
+]
+
+{ #category : #util }
+PhaROSLaunchBuilder >> stargazer [
+	
+		| conf |
+	
+	conf := self package: 'pharos' type:'sg' named:''.
+	conf args: 'stargazer'.
 	
 	^ conf.
 ]

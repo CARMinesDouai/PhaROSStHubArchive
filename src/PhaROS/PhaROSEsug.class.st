@@ -5,9 +5,6 @@ Class {
 		'controller',
 		'launch'
 	],
-	#classInstVars : [
-		'location'
-	],
 	#category : #'PhaROS-PackageManager'
 }
 
@@ -17,30 +14,8 @@ PhaROSEsug class >> author [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSEsug class >> create: aLocation [
-	location := aLocation .
-	PhaROSPackageManager  new create: self 
-]
-
-{ #category : #'as yet unclassified' }
 PhaROSEsug class >> description [
 	^' ESUG example package'
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSEsug class >> install [
-	self error: ' Use install: '.
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSEsug class >> install: aLocation [
-	location := aLocation.
-	PhaROSPackageManager new install: self  
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSEsug class >> location [
-	^ location ifNil:[ self error: 'location is not setted' ].
 ]
 
 { #category : #'as yet unclassified' }

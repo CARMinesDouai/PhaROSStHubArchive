@@ -23,7 +23,7 @@ PhaROSHandleController class >> rpcTest [
 PhaROSHandleController class >> stargazer [
 	| rbl |
 	
-	rbl :=  self home.
+	rbl :=  self url: 'http://10.1.160.45:11311'.
 	rbl nodelets use: SGROSStarGazerNodelet  as: #stargazer.
 	rbl nodelets use: PhaROSTransformationNodelet  as: #transformation.
 	
