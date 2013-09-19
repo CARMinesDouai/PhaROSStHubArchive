@@ -9,17 +9,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PhaROSActionNodelet >> clientFor: anAction [
-	^ clients at: anAction ifAbsentPut: [ PhaROSActionClient for: anAction ].
+PhaROSActionNodelet class >> actionTypeDefinition [
+	^ PhaROSCompositeType named: 'pharos/PhaROSAction' definedBy: {
+		#header -> (PhaROSTypeBrowser instance definition: 'std_msgs/Header'). 
+		#body -> (PhaROSArrayType ofType: PhaROSUInt8Type new)
+	}  withConstants: {}.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSActionNodelet class >> types [
+	^ { #PhaROSAction -> self actionTypeDefinition }.
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSActionNodelet >> initialize [ 
 	clients := Dictionary new.
 	servers := Dictionary new.
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSActionNodelet >> serverFor: anAction [
-	^ servers at: anAction ifAbsentPut: [ PhaROSActionServer for: anAction ].
 ]

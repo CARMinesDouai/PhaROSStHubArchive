@@ -246,19 +246,19 @@ PhaROSPharos class >> xml [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 PhaROSPharos >> kompaiAbsolutePose: aPose [
 	self kompaiAbsolutePoseTopic send: [ : msg | msg pose: aPose asGeometry_msgsPose ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 PhaROSPharos >> kompaiAbsolutePoseTopic [
 	^ kompaiAbsolutePoseTopic ifNil: [ 
 		kompaiAbsolutePoseTopic := controller node topicPublisher: '/kompai/map/pose' typedAs: 'geometry_msgs/PoseStamped'.	
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scripts }
 PhaROSPharos >> scriptAmcl [
 
 	| bot |
@@ -270,21 +270,21 @@ PhaROSPharos >> scriptAmcl [
 	bot inspect.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scripts }
 PhaROSPharos >> scriptBaselinkAbsolutePose [
 	controller := PhaROSHandleController transformation.
 	(controller nodelets transformation between: PureROSRobulabNodelet mapFrame and: PureROSRobulabNodelet baseLinkFrame) for: [: p | self kompaiAbsolutePose: p ]. 
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scripts }
 PhaROSPharos >> scriptKompai1 [
 	controller := PhaROSHandleController kompai1.
 		
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scripts }
 PhaROSPharos >> scriptKompai2 [
 	controller := PhaROSHandleController kompai2.
 	
@@ -293,7 +293,7 @@ PhaROSPharos >> scriptKompai2 [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scripts }
 PhaROSPharos >> scriptLandmarkNavigation [
 
 	| bot |
@@ -302,13 +302,21 @@ PhaROSPharos >> scriptLandmarkNavigation [
 
 	bot := experiment robulab.
 	bot rpc.
-	bot loadLandmarks.
-	bot landmarkNavigation .
+	
+	experiment controller nodelets localizer filein: 'map-landmarks-inner.st'.
+	experiment controller nodelets localizer transformations.
+	
+
+	self setupPoseTracker.
 	bot inspect.
 	
+
+
+
+
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scripts }
 PhaROSPharos >> scriptLandmarksRecognition [
 
 	| bot |
@@ -316,12 +324,26 @@ PhaROSPharos >> scriptLandmarksRecognition [
 	experiment beginExperiment.	
 
 	bot := experiment robulab.
-	bot localizeLandmarks.
+	
+	experiment controller nodelets stargazer mergeWithPose: bot defaultPose.
+	
+	2 seconds asDuration asDelay wait.
+	
+	experiment controller nodelets localizer learn:( experiment controller nodelets stargazer absoluteLandmarks ) .
+	
+	"self nodelets localizer explore."
+	
+	2 seconds asDuration asDelay wait.
+	experiment controller nodelets localizer map.
+	experiment controller nodelets localizer mapPoints.
+	experiment controller nodelets localizer transformations.
+	2 seconds asDuration asDelay wait.
+	
 	bot inspect.
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scripts }
 PhaROSPharos >> scriptLaunch [
 		
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
@@ -341,7 +363,7 @@ PhaROSPharos >> scriptLaunch [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scripts }
 PhaROSPharos >> scriptMapBuilding [
 
 	| bot |
@@ -353,17 +375,19 @@ PhaROSPharos >> scriptMapBuilding [
 	bot inspect.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scripts }
 PhaROSPharos >> scriptOdometry [
 
 	| bot |
 	controller := PhaROSHandleController robulab2.
-	controller nodelets robulab broadcastOdometry.
+	controller nodelets use: PhaROSOdometryNodelet as: #odometer.
+	self nodelets odometer transformToOdometry: controller nodelets robulab  poseStamped.
+	
 	
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scripts }
 PhaROSPharos >> scriptStargazer [
 
 	controller := PhaROSHandleController stargazer.	
@@ -374,10 +398,30 @@ PhaROSPharos >> scriptStargazer [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scripts }
 PhaROSPharos >> scriptTf [
 	controller := PhaROSHandleController robulab2.
 	controller nodelets use: PhaROSPoseToTFNodelet  as: #pose2tf.
 	controller nodelets pose2tf express: controller nodelets robulab poseStamped as: PureROSRobulabNodelet baseLinkFrame childOf: PureROSRobulabNodelet baseLinkParentFrame.
 
+]
+
+{ #category : #private }
+PhaROSPharos >> setupPoseTracker [
+	experiment controller  nodelets sgevents whenLandmark: [ : lmk |  
+		| entity |
+		entity := (experiment controller nodelets localizer entity: lmk landmark).
+		(entity annotation: #measureStamp) isNil or: [
+			( DateAndTime now - (entity annotation: #measureStamp)) asSeconds > 10 or: [ 
+				(entity annotation: #lastPose ) position module2d > (PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d 
+			]
+		].
+	] do: [ : lmk | 
+		| entity |
+		entity := (experiment controller nodelets localizer entity: lmk landmark).
+		entity annotate:#lastPose with: (experiment controller  nodelets transformation frame:'/base_link' ) pose.
+		entity annotate:#measureStamp with: DateAndTime now.
+	].
+	
+	
 ]

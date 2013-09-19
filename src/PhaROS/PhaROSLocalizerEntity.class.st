@@ -6,7 +6,7 @@ Class {
 		'measures',
 		'm',
 		'adding',
-		'extraInfo'
+		'annotations'
 	],
 	#category : #'PhaROS-Nodelets-Localizer'
 }
@@ -34,6 +34,16 @@ PhaROSLocalizerEntity >> add: aMeasure [
 { #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> adding: aBoolean [
 	adding := aBoolean 
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLocalizerEntity >> annotate: aSymbol with: aValue [
+	^ annotations at: aSymbol put: aValue.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLocalizerEntity >> annotation: aSymbol [
+	^ annotations at: aSymbol.
 ]
 
 { #category : #'as yet unclassified' }
@@ -119,11 +129,6 @@ PhaROSLocalizerEntity >> complete [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSLocalizerEntity >> extraInfo [ 
-	^ extraInfo
-]
-
-{ #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> extraInfo: anObject [
 	extraInfo := anObject.
 
@@ -154,6 +159,7 @@ PhaROSLocalizerEntity >> initialize [
 	measures := Set new.
 	m := 0.
 	adding := true.
+	annotations := Dictionary new.
 ]
 
 { #category : #'as yet unclassified' }

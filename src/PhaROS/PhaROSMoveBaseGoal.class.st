@@ -125,7 +125,7 @@ PhaROSMoveBaseGoal >> onRejected: aBlock [
 
 { #category : #events }
 PhaROSMoveBaseGoal >> onSucceeded: aBlock [
-	^ self on: Actionlib_msgsGoalStatus succeeded   do: aBlock .
+	^ self on: Actionlib_msgsGoalStatus succeeded  do: aBlock .
 ]
 
 { #category : #printing }
