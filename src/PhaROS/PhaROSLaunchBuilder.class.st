@@ -183,9 +183,7 @@ PhaROSLaunchBuilder >> hectorMapping [
 PhaROSLaunchBuilder >> kompai2 [
 		| conf |
 	
-	"conf := self package: 'pharos' type:'headless' named:''.
-	conf args: 'kompai2'.
-	"
+	
 	conf := self package: 'pharos' type:'headless' named:''.
 	conf args: 'tf'.
 	
@@ -193,7 +191,9 @@ PhaROSLaunchBuilder >> kompai2 [
 	conf args: 'odometry'.
 	
 	
-	
+	"conf := self package: 'pharos' type:'pharos' named:''.
+	conf args: 'kompai2'.
+	"
 	 
 	^ conf.
 ]
