@@ -11,7 +11,7 @@ Class {
 		'status',
 		'event'
 	],
-	#category : #'PureROS-Nodelets'
+	#category : #'PureROS-Nodelets-Robulab'
 }
 
 { #category : #behavior }
@@ -28,10 +28,10 @@ PureROSRobulabGoal >> configure [
 	self tryAchieveGoal.
 	
 	goal onAborted: [ self tryAchieveGoal.  ].
-	goal onPreempted:  [ self trajectoryDifferential:  entity extraInfo  . ].
-	goal onPreempting:  [ self trajectoryDifferential:  entity extraInfo . ].
-	goal onRecalling:  [ self trajectoryDifferential:  entity extraInfo . ].
-	goal onRecalled:  [ self trajectoryDifferential:  entity extraInfo . ].
+	goal onPreempted:  [ self trajectoryDifferential:  (entity annotation: #lastPose)  . ].
+	goal onPreempting:  [ self trajectoryDifferential:  (entity annotation: #lastPose) . ].
+	goal onRecalling:  [ self trajectoryDifferential:  (entity annotation: #lastPose) . ].
+	goal onRecalled:  [ self trajectoryDifferential:  (entity annotation: #lastPose) . ].
 	goal onRejected:  [ self tryAchieveGoal ].
 	goal onLost:  [ self tryAchieveGoal ].
 	
@@ -151,7 +151,9 @@ PureROSRobulabGoal >> tryAchieveGoal [
 
 
 	event := robulab nodelets sgevents whenLandmark: [ :lmk | self hasArrived: lmk. ] doOnce: [ : lmk | self onArrivalToLandmark: lmk ].
-	self trajectoryDifferential:  entity extraInfo .
+	
+	self trajectoryDifferential:  (entity annotation: #lastPose) .
+	1 second asDelay wait.
 	goal := (robulab nodelets movebase client goTo: entity center asPose).
 	
 	

@@ -1,5 +1,5 @@
 Class {
 	#name : #PureROSRobulabNavigator,
 	#superclass : #PhaROSStaticNodelet,
-	#category : #'PureROS-Nodelets'
+	#category : #'PureROS-Nodelets-Robulab'
 }

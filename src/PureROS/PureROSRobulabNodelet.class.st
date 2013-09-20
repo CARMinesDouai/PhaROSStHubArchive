@@ -11,7 +11,7 @@ Class {
 	#classInstVars : [
 		'initialpose'
 	],
-	#category : #'PureROS-Nodelets'
+	#category : #'PureROS-Nodelets-Robulab'
 }
 
 { #category : #'as yet unclassified' }
@@ -82,17 +82,6 @@ PureROSRobulabNodelet >> amcl [
 	
 ]
 
-{ #category : #broadcast }
-PureROSRobulabNodelet >> broadcastLandmarks [
-	self nodelets stargazer mergeWithPose: self defaultPose.
-]
-
-{ #category : #broadcast }
-PureROSRobulabNodelet >> broadcastOdometry [
-	self nodelets use: PhaROSOdometryNodelet as: #odometer.
-	self nodelets odometer transformToOdometry: self poseStamped.
-]
-
 { #category : #navigation }
 PureROSRobulabNodelet >> commonNavigation [
 	self nodelets use: PureROSMoveBaseCommonNavigation as: #navigator. 
@@ -106,6 +95,11 @@ PureROSRobulabNodelet >> configure [
 	self nodelets use: SGROSStarGazerNodelet as: #stargazer.
 	self nodelets use: PhaROSLocalizerNodelet as: #localizer.
 	self nodelets use: PhaROSMoveBaseNodelet as: #movebase.
+	self nodelets use: PureROSMoveBaseLandmarkNavigation as: #navigator.
+	self nodelets use: PhaROSInitialPose as: #initialpose.
+	self nodelets navigator robulab: self.
+	
+	
 	self nodelets transformation configureTfCallback.
 	self trajectoryDifferentialOut.
 ]
@@ -125,62 +119,6 @@ PureROSRobulabNodelet >> goTo: aPhaROSLocalizerEntity [
 { #category : #navigation }
 PureROSRobulabNodelet >> goToEntityID: anId [
 	^self goTo: (self nodelets localizer entity: anId).
-]
-
-{ #category : #navigation }
-PureROSRobulabNodelet >> landmarkNavigation [
-	self nodelets use: PureROSMoveBaseLandmarkNavigation as: #navigator.
-	self nodelets use: PhaROSInitialPose as: #initialpose.
-	self nodelets navigator robulab: self.
-	
-	self nodelets sgevents whenLandmark: [ : lmk |  
-		(PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d < 1 
-	] do: [ : lmk | 
-		(self nodelets localizer entity: lmk landmark) extraInfo: (self nodelets transformation frame:'/base_link' ) pose.
-	].
-	
-	
-"
-	self nodelets use: PureROSBaseLandmarkEvent as: #localizationEvents.
-	relocatorEvent := 
-	self nodelets localizationEvents whenLandmark: [ : lmk |
-		((self nodelets localizer entity: lmk landmark) match: (PhaROSPose fromGeometry_msgsPose: lmk pose) ) not.
-	] doOnce: [ : lmk | 
-		self relocalize: lmk.
-		
-	]. "
-	
-
-]
-
-{ #category : #service }
-PureROSRobulabNodelet >> loadLandmarks [
-	self nodelets localizer filein: 'map-landmarks-inner.st'.
-	self nodelets localizer map.
-	self nodelets localizer mapPoints. 
-	self nodelets localizer transformations.
-	
-]
-
-{ #category : #behavior }
-PureROSRobulabNodelet >> localizeLandmarks [
-	self  broadcastLandmarks.
-	2 seconds asDuration asDelay wait.
-	self nodelets localizer learn:( self nodelets stargazer absoluteLandmarks ) .
-	
-	"self nodelets localizer explore."
-	
-	2 seconds asDuration asDelay wait.
-	self nodelets localizer map.
-	self nodelets localizer mapPoints.
-	self nodelets localizer transformations.
-	2 seconds asDuration asDelay wait.
-]
-
-{ #category : #behavior }
-PureROSRobulabNodelet >> makeLandmarkRandomNavigation [
-	self keepMoving: true.
-	self nodelets movebase goRandomOf: (self nodelets localizer entities collect:[ :e | e center asPose ]) asArray while: [ self keepMoving ].
 ]
 
 { #category : #consume }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'kompai'
 	],
-	#category : #'PureROS-Nodelets'
+	#category : #'PureROS-Nodelets-Kompai'
 }
 
 { #category : #'as yet unclassified' }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'tcontroller'
 	],
-	#category : #'PureROS-Nodelets'
+	#category : #'PureROS-Nodelets-Kompai'
 }
 
 { #category : #'as yet unclassified' }

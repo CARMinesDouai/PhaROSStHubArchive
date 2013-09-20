@@ -11,7 +11,7 @@ Class {
 		'allLaserCallbacksCalled',
 		'lastMovementNotification'
 	],
-	#category : #'PureROS-Nodelets'
+	#category : #'PureROS-Nodelets-Robulab'
 }
 
 { #category : #'as yet unclassified' }
