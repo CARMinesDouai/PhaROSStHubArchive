@@ -148,9 +148,9 @@ PureROSRobulabGoal >> trajectoryDifferential: aPose [
 { #category : #event }
 PureROSRobulabGoal >> tryAchieveGoal [
 
-
-
-	event := robulab nodelets sgevents whenLandmark: [ :lmk | self hasArrived: lmk. ] doOnce: [ : lmk | self onArrivalToLandmark: lmk ].
+	event ifNotNil: [
+		event := robulab nodelets sgevents whenLandmark: [ :lmk | self hasArrived: lmk. ] doOnce: [ : lmk | self onArrivalToLandmark: lmk ].
+	].	
 	
 	self trajectoryDifferential:  (entity annotation: #lastPose) .
 	1 second asDelay wait.

@@ -95,6 +95,7 @@ PureROSRobulabNodelet >> configure [
 	self nodelets use: SGROSStarGazerNodelet as: #stargazer.
 	self nodelets use: PhaROSLocalizerNodelet as: #localizer.
 	self nodelets use: PhaROSMoveBaseNodelet as: #movebase.
+	self nodelets use: PhaROSOdometryNodelet as: #odometer.
 	self nodelets use: PureROSMoveBaseLandmarkNavigation as: #navigator.
 	self nodelets use: PhaROSInitialPose as: #initialpose.
 	self nodelets navigator robulab: self.
