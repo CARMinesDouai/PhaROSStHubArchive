@@ -76,7 +76,7 @@ PhaROSSystemLauncher >> makeTypes [
 
 { #category : #environment }
 PhaROSSystemLauncher >> pharosHome [
-	^ '/home/turtlebot/ros/pharos'.
+	^ '/home/viki/ros/workspace/src/pharos/'.
 ]
 
 { #category : #types }
