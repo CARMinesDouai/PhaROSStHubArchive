@@ -19,9 +19,11 @@ PureROSKompaiTrajectoryState >> goTo: aDeltaPose [
 
 { #category : #'as yet unclassified' }
 PureROSKompaiTrajectoryState >> moveAt: aDifferentialVelocity [
-	self stopDriving.
-	kompai state: self differentialState.
-	kompai moveAt: aDifferentialVelocity.
+	aDifferentialVelocity linear > 0 ifTrue: [
+		kompai state: self differentialState.
+		kompai moveAt: aDifferentialVelocity.
+		self stopDriving.
+	]
 ]
 
 { #category : #'as yet unclassified' }

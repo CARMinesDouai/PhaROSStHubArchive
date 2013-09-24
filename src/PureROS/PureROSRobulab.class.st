@@ -6,7 +6,10 @@ Class {
 		'controller',
 		'tfpose',
 		'kompaiAbsolutePoseTopic',
-		'process'
+		'process',
+		'lastPoseSettedStamp',
+		'checked',
+		'lastId'
 	],
 	#category : #PureROS
 }
@@ -309,6 +312,7 @@ PureROSRobulab >> scriptLandmarkNavigation [
 	
 
 	self setupPoseTracker.
+	"self setupPoseRecognizer."
 	bot inspect.
 	
 
@@ -404,6 +408,43 @@ PureROSRobulab >> scriptTf [
 	controller nodelets use: PhaROSPoseToTFNodelet  as: #pose2tf.
 	controller nodelets pose2tf express: controller nodelets robulab poseStamped as: PureROSRobulabNodelet baseLinkFrame childOf: PureROSRobulabNodelet baseLinkParentFrame.
 
+]
+
+{ #category : #private }
+PureROSRobulab >> setPoseWith: lmk [
+	| entity pose |
+		lastPoseSettedStamp := DateAndTime now.
+		entity := (experiment controller nodelets localizer entity: lmk landmark).
+		
+		self halt.
+		pose := entity center.
+		pose orientation: ( PhaROS2DOrientation z:(( PhaROSPose fromGeometry_msgsPose: lmk pose) orientation as2DOrientation z + (Float pi / 2))).
+		
+		
+		experiment controller nodelets initialpose initialPose:  pose.
+]
+
+{ #category : #private }
+PureROSRobulab >> setupPoseRecognizer [
+
+	lastPoseSettedStamp := DateAndTime now - 1 minute.
+	experiment controller  nodelets sgevents whenLandmark: [ : lmk |  
+		lastId = lmk landmark ifTrue: [
+			checked := checked + 1.	
+		] ifFalse: [
+			checked := 0.
+		].
+		lastId := lmk landmark.
+		(DateAndTime now - lastPoseSettedStamp ) asSeconds > 20 and: [ 
+			checked > 5 and: [
+				 (PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d < 0.3 
+			]	
+		]
+	] do: [ : lmk | 
+	self setPoseWith: lmk.
+	].
+	
+	
 ]
 
 { #category : #private }

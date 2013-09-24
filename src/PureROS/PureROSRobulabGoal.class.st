@@ -17,8 +17,9 @@ Class {
 { #category : #behavior }
 PureROSRobulabGoal >> cancel [ 
 	goal cancel. 
+	event ifNotNil:[
 	event cancel.
-	event := nil.
+	event := nil.].
 	landmarkEvent ifNotNil: [ self stopmovingAs: Actionlib_msgsGoalStatus aborted ]
 ]
 
@@ -98,15 +99,13 @@ PureROSRobulabGoal >> onArrivalToLandmark: aLandmark [
 	
 	checks := 0. 
 	
-	[
-	
-		Transcript show:'cutter';cr.
-		 2 seconds asDelay wait.
+	Transcript show:' arrivalll' ;cr.
+		goal status:Actionlib_msgsGoalStatus  succeeded . 
 		status:= Actionlib_msgsGoalStatus  succeeded .
 		goal cancel.
 		
 	
-	 ] doIt.
+	 
 
 
 	"
@@ -114,6 +113,11 @@ PureROSRobulabGoal >> onArrivalToLandmark: aLandmark [
 		self differentialGoal:   lmk.
 	 ].
 	"
+]
+
+{ #category : #accessing }
+PureROSRobulabGoal >> onSucceeded: aBlock [ 
+	goal onSucceeded: aBlock.
 ]
 
 { #category : #accessing }
