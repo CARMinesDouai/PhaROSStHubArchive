@@ -43,7 +43,7 @@ PhaROSLocalizerEntity >> annotate: aSymbol with: aValue [
 
 { #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> annotation: aSymbol [
-	^ annotations at: aSymbol.
+	^ annotations at: aSymbol ifAbsent: [ nil ].
 ]
 
 { #category : #'as yet unclassified' }
@@ -102,6 +102,7 @@ PhaROSLocalizerEntity >> center [
 	| point angle |
 	self compact.
 	point := (measures collect: #position) average .
+	point z: 0.0.
 	angle := (measures collect: [ :p | p orientation as2DOrientation z]) average.
 	point := point asPose.
 	point orientation: (PhaROS2DOrientation z: angle).

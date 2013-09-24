@@ -33,7 +33,7 @@ PhaROSInitialPose >> initialPose [
 
 { #category : #'as yet unclassified' }
 PhaROSInitialPose >> initialPose: aPose [
-	
+	Transcript show:' setting' ; cr. 
 	self initialPoseOut send: [
 		: msg |
 		msg header frame_id: '/map'.
