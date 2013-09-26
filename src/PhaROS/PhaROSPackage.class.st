@@ -197,6 +197,11 @@ PhaROSPackage class >> xml [
 ]
 
 { #category : #scripts }
+PhaROSPackage >> quit [
+	Smalltalk snapshot: false andQuit: true.
+]
+
+{ #category : #scripts }
 PhaROSPackage >> scriptTest [
 	Transcript open; show: (' {1} package has executed script test ' format: { self class name asString } ) cr.
 ]
