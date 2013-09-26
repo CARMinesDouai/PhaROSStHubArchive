@@ -16,6 +16,7 @@ Class {
 
 { #category : #behavior }
 PureROSRobulabGoal >> cancel [ 
+
 	goal cancel. 
 	event ifNotNil:[
 	event cancel.
@@ -71,6 +72,7 @@ PureROSRobulabGoal >> goal: aGoal [
 
 { #category : #testing }
 PureROSRobulabGoal >> hasArrived: lmk [
+	Transcript show: ' asking arrival '; cr.
 	checks := checks +1.
  	^ entity id = lmk landmark and: [ checks > 5 and: [ (PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d < 2  ] ]
 ]
@@ -152,7 +154,7 @@ PureROSRobulabGoal >> trajectoryDifferential: aPose [
 { #category : #event }
 PureROSRobulabGoal >> tryAchieveGoal [
 
-	event ifNotNil: [
+	event ifNil: [
 		event := robulab nodelets sgevents whenLandmark: [ :lmk | self hasArrived: lmk. ] doOnce: [ : lmk | self onArrivalToLandmark: lmk ].
 	].	
 	

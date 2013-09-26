@@ -100,7 +100,15 @@ PureROSKompaiNodelet >> consumeTrajectoryDifferential [
 
 { #category : #'private-out' }
 PureROSKompaiNodelet >> goTo: aDeltaPose [ 
-	^ self state goTo: aDeltaPose.
+	self flag: #Whatdowedohere.
+	
+	^[ self state goTo: aDeltaPose.] on: Error do: [ 
+		
+		[
+			1 second asDelay wait.
+			self state goTo: aDeltaPose 
+		]	on: Error do: [ :e | ].
+	]
 ]
 
 { #category : #'private-out' }
@@ -120,7 +128,10 @@ PureROSKompaiNodelet >> initialize: aRobot [
 
 { #category : #'private-out' }
 PureROSKompaiNodelet >> moveAt: aDifferentialVelocity [ 
-	^ self state moveAt: aDifferentialVelocity.
+	self flag: #whatDoweDo.
+
+[
+	^ self state moveAt: aDifferentialVelocity.] on: Error do: [ :e | ].
 ]
 
 { #category : #'private-out' }

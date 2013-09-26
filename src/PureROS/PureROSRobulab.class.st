@@ -316,6 +316,32 @@ PureROSRobulab >> scriptKompai2 [
 ]
 
 { #category : #scripts }
+PureROSRobulab >> scriptLandmarkAutoNavigation [
+
+	| bot goals |
+	experiment := PureROSAMCLBasedPathPlanning robulab2.
+	experiment beginExperiment.	
+
+	bot := experiment robulab.
+	
+	experiment controller nodelets localizer filein: 'map-landmarks-inner.st'.
+	experiment controller nodelets localizer transformations.
+	
+	self setupPoseTracker.
+	
+
+	goals := OrderedCollection new. 	
+	1 to: 20 do: [: i | 
+		goals add: 608; add: 82; add: 18; add: 2.
+	].
+	
+	bot goToArray: goals shuffle asArray.
+
+
+
+]
+
+{ #category : #scripts }
 PureROSRobulab >> scriptLandmarkNavigation [
 
 	| bot |
@@ -510,6 +536,40 @@ PureROSRobulab >> scriptStargazer [
 	controller nodelets stargazer mergeWithPose: tfpose.	
 	
 
+]
+
+{ #category : #scripts }
+PureROSRobulab >> scriptStargazerConfiguration [
+
+	| sg stream |
+	
+	
+	stream  := FileStream stdout.
+	stream nextPutAll: 'Getting starGazer', String lf.
+	
+	sg := StarGazer default.
+	stream nextPutAll: 'Stopping starGazer', String lf.
+	sg stopMeasurements.
+	
+	stream nextPutAll: String lf, String lf, ' --------------------------------- ', String lf. 
+	stream nextPutAll: ' Version=', sg version asString, String lf .
+	stream nextPutAll: ' BaudRate=', sg baudRate asString, String lf .
+	stream nextPutAll: ' --------------------------------- ', String lf. 
+	stream nextPutAll: ' HeightFix=', sg heightFix asString, String lf .
+	stream nextPutAll: ' MarkHeight=', sg markHeight asString, String lf .
+	stream nextPutAll: ' MarkType=', sg markType asString, String lf .
+	stream nextPutAll: ' --------------------------------- ', String lf. 
+	stream nextPutAll: ' MarkMode=', sg markMode asString, String lf .
+	stream nextPutAll: ' RefID=', sg refID asString, String lf .
+	stream nextPutAll: ' IdNum=', sg idNum asString, String lf .
+	stream nextPutAll: ' --------------------------------- ', String lf. 
+	
+
+	
+	stream nextPutAll: 'Starting', String lf.
+	sg startMeasurements .
+	
+	self quit.
 ]
 
 { #category : #scripts }

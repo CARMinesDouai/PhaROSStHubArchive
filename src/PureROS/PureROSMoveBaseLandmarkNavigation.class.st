@@ -33,6 +33,7 @@ PureROSMoveBaseLandmarkNavigation >> goTo: anEntity [
 	
 	currentGoal ifNotNil: [ currentGoal cancel. currentGoal := nil ].
 	currentGoal := PureROSRobulabGoal new entity: anEntity; robulab: robulab ; configure; yourself .
+	currentGoal onSucceeded: [ currentGoal := nil ].
 	^ currentGoal.
 ]
 
