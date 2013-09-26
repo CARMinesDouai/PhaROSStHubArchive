@@ -444,7 +444,8 @@ PureROSRobulab >> scriptSetUpMapBuildingStargazer [
 	stream  := FileStream stdout.
 	stream nextPutAll: 'Getting starGazer', String lf.
 	
-	sg := StarGazer default.
+	sg := StarGazer mapBuilding.
+	
 	stream nextPutAll: 'Stopping starGazer', String lf.
 	sg stopMeasurements.
 	
