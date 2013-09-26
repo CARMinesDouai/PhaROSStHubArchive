@@ -249,6 +249,24 @@ PureROSRobulab class >> xml [
 	
 ]
 
+{ #category : #scripts }
+PureROSRobulab >> configureEnvironment: aStarGazer [
+	| stream |
+	
+	
+	stream  := FileStream stdout.
+	stream nextPutAll: 'Setting HeightFix - yes ', String lf.
+
+	aStarGazer heightFix: 'yes'.
+	stream nextPutAll: 'Setting MarkHeight - 1200 ', String lf.
+	aStarGazer markHeight: '1200'.
+	stream nextPutAll: 'Setting MarkType- HLD1-S ', String lf.
+	aStarGazer markType: 'HLD1-S'.
+	
+
+
+]
+
 { #category : #private }
 PureROSRobulab >> kompaiAbsolutePose: aPose [
 	self kompaiAbsolutePoseTopic send: [ : msg | msg pose: aPose asGeometry_msgsPose ].
@@ -354,7 +372,7 @@ PureROSRobulab >> scriptLaunch [
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
 		
 		spec kompai2.
-		spec mapServer: '/home/kompai1/map/map.yaml'.
+		spec mapServer: '/home/viki/map/map.yaml'.
 		spec amcl.
 		spec moveBase.
 		spec velocitySmoother.
@@ -392,11 +410,103 @@ PureROSRobulab >> scriptOdometry [
 ]
 
 { #category : #scripts }
+PureROSRobulab >> scriptSetUpMapBuildingStargazer [
+
+	| sg stream |
+	
+	
+	stream  := FileStream stdout.
+	stream nextPutAll: 'Getting starGazer', String lf.
+	
+	sg := StarGazer default.
+	stream nextPutAll: 'Stopping starGazer', String lf.
+	sg stopMeasurements.
+	
+	self configureEnvironment: sg.
+	
+	stream nextPutAll: 'Setting markMode - Map', String lf.
+	sg markMode: 'Map'.
+	stream nextPutAll: 'Setting RefID - 82', String lf.
+	sg refID: '82'.
+	stream nextPutAll: 'Setting IdNum- 4', String lf.
+	sg idNum: 4.
+	stream nextPutAll: 'Starting map building', String lf.
+	
+	sg startMapBuilding.
+	
+	
+	stream nextPutAll: 'Please, move robot around, staying under each landmark and in between each pair for someseconds ', String lf.
+	sg whenMapIsDone: [
+		self quit.
+		
+	].	 
+	
+	
+
+
+
+
+
+]
+
+{ #category : #scripts }
+PureROSRobulab >> scriptSetUpMapStargazer [
+
+	| sg stream |
+	
+	
+	stream  := FileStream stdout.
+	stream nextPutAll: 'Getting starGazer', String lf.
+	
+	sg := StarGazer default.
+	stream nextPutAll: 'Stopping starGazer', String lf.
+	sg stopMeasurements.
+	
+	self configureEnvironment: sg.
+	
+	stream nextPutAll: 'Setting markMode - Map', String lf.
+	sg markMode: 'Map'.
+	stream nextPutAll: 'Setting RefID - 82', String lf.
+	sg refID: '82'.
+	stream nextPutAll: 'Setting IdNum- 4', String lf.
+	sg idNum: 4.
+	stream nextPutAll: 'Starting', String lf.
+	sg startMeasurements 
+	
+	self quit.
+]
+
+{ #category : #scripts }
+PureROSRobulab >> scriptSetUpStandAloneStargazer [
+
+	| sg  stream |
+	
+	
+	stream  := FileStream stdout.
+	stream nextPutAll: 'Getting starGazer', String lf.
+
+	sg := StarGazer default.
+	
+	stream nextPutAll: 'Stopping starGazer', String lf.
+	sg stopMeasurements.
+	
+	self configureEnvironment: sg.
+	
+	stream nextPutAll: 'Setting starGazer mark mode to Alone', String lf.
+	sg markMode: 'Alone'.
+	
+	stream nextPutAll: 'Starting starGazer', String lf.
+	sg startMeasurements .
+	
+	self quit.
+]
+
+{ #category : #scripts }
 PureROSRobulab >> scriptStargazer [
 
 	controller := PhaROSHandleController stargazer.	
 	tfpose := controller nodelets transformation between: PureROSRobulabNodelet mapFrame and: PureROSRobulabNodelet baseLinkFrame.
-	controller nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 }.
+	controller nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 . 8192 }.
 	controller nodelets stargazer mergeWithPose: tfpose.	
 	
 
@@ -408,6 +518,7 @@ PureROSRobulab >> scriptTf [
 	controller nodelets use: PhaROSPoseToTFNodelet  as: #pose2tf.
 	controller nodelets pose2tf express: controller nodelets robulab poseStamped as: PureROSRobulabNodelet baseLinkFrame childOf: PureROSRobulabNodelet baseLinkParentFrame.
 
+	
 ]
 
 { #category : #private }
