@@ -497,7 +497,7 @@ PureROSRobulab >> scriptSetUpStandAloneStargazer [
 	
 	stream nextPutAll: 'Starting starGazer', String lf.
 	sg startMeasurements .
-	
+ 	5 seconds asDelay wait.
 	self quit.
 ]
 
