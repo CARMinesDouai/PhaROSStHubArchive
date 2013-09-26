@@ -30,11 +30,13 @@ SGMessage class >> initialize [
 	NoMessage := self new content: nil; yourself.
 ]
 
-{ #category : #testing }
+{ #category : #converting }
 SGMessage >> asLandMark [
 	| pieces id position orientation |
 	
 	pieces := (content copyFrom:3  to: content size) findBetweenSubStrs: SGProtocol separator.
+ 
+
 	pieces size = 5 ifTrue: [	
 		id := pieces first asNumberSG.
 		orientation := pieces second asNumberSG.	
@@ -50,8 +52,10 @@ SGMessage >> asLandMark [
 						  z: pieces fourth asNumberSG.
 		
 	].
-	
-	^ SGLandMarkMeasure id: id pose: (SGPose position: position orientation: orientation degreesToRadians) ensureRotation.
+	orientation < 0 ifTrue: [
+		orientation := 360 + orientation.	
+	].
+	^ (SGLandMarkMeasure id: id pose: (SGPose position: position orientation: orientation degreesToRadians) ensureRotation) isMapMeasure: ((pieces at:1 ) = $F); yourself .
 	
 
 ]

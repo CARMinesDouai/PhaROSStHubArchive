@@ -2,7 +2,8 @@ Class {
 	#name : #SGStandAloneMode,
 	#superclass : #Object,
 	#instVars : [
-		'callback'
+		'callback',
+		'zero'
 	],
 	#category : #'StarGazer-Kernel'
 }

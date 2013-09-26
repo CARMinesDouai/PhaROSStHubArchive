@@ -54,6 +54,15 @@ StarGazer class >> default: aCallbackForMeasures [
 	
 ]
 
+{ #category : #'as yet unclassified' }
+StarGazer class >> mapBuilding [
+	" The default configuration open ttyUSB0, is already able to scan and in stand alone mode (each landmark give the data needed )"
+
+	^ self atPortId: SGGate defaultPortID
+		    withInitialState: SGCalculatingState 
+		    forMode: (SGMapMode new)
+]
+
 { #category : #position }
 StarGazer >> announceNewPose: aPose fromSystem: aLandMark [
 	onLandMarkRead cull: aPose cull: aLandMark.
@@ -172,6 +181,11 @@ StarGazer >> markType [
 { #category : #accessing }
 StarGazer >> markType: aBaudRate [
 	markType value: aBaudRate.
+]
+
+{ #category : #accessing }
+StarGazer >> mode [
+	^ mode
 ]
 
 { #category : #accessing }

@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'map',
-		'zeroLandmark'
+		'zeroLandmark',
+		'mapIsDone'
 	],
 	#category : #'StarGazer-Kernel'
 }
@@ -20,7 +21,14 @@ SGMapMode >> currentCoordinateSystem [
 
 { #category : #'as yet unclassified' }
 SGMapMode >> updateWorld: aLandMark [
-	
+	aLandMark isMapMeasure ifFalse: [
+		mapIsDone cull: self.	
+	]
+]
+
+{ #category : #event }
+SGMapMode >> whenMapIsDone: aBlockClosure [ 
+	mapIsDone := aBlockClosure 
 ]
 
 { #category : #'as yet unclassified' }

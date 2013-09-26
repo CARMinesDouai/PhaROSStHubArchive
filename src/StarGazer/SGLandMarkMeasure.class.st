@@ -6,7 +6,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'id',
-		'pose'
+		'pose',
+		'mapMeasure'
 	],
 	#category : #'StarGazer-Types'
 }
@@ -29,6 +30,16 @@ SGLandMarkMeasure >> id [
 { #category : #'as yet unclassified' }
 SGLandMarkMeasure >> id: anID [
 	id := anID.
+]
+
+{ #category : #'as yet unclassified' }
+SGLandMarkMeasure >> isMapMeasure [
+	^ mapMeasure
+]
+
+{ #category : #'as yet unclassified' }
+SGLandMarkMeasure >> isMapMeasure: aBoolean [
+	mapMeasure := aBoolean.
 ]
 
 { #category : #accessing }
