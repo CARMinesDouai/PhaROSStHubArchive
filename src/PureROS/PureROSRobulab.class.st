@@ -1,3 +1,19 @@
+"
+landmark recognition
+	
+	AMCL 
+	rosrun pharos headless amclbased.
+	rosrun pharos headless launchkompai2.
+	rosrun pharos headless launchstargazer.
+	rosrun pharos headless landmarkrecognition.
+	
+	Odometry+Stargazer
+	rosrun pharos headless stargazerodometrybased.
+	rosrun pharos headless launchkompai2.
+	rosrun pharos headless launchstargazer.
+	rosrun pharos headless standalonemapbuildingstargazer .
+	
+"
 Class {
 	#name : #PureROSRobulab,
 	#superclass : #PhaROSPackage,
@@ -373,11 +389,16 @@ PureROSRobulab >> scriptLandmarkNavigation [
 	bot rpc.
 	
 	experiment controller nodelets localizer filein: 'map-landmarks-inner.st'.
+	
+	"experiment controller nodelets localizer filein: 'odometry-landmarks-inner.st'.
+	"
 	experiment controller nodelets localizer transformations.
 	
 
 	self setupPoseTracker.
-	"self setupPoseRecognizer."
+	self setupPoseRecognizer.
+
+	
 	bot inspect.
 	
 
@@ -563,11 +584,13 @@ PureROSRobulab >> scriptSetUpStandAloneStargazer [
 PureROSRobulab >> scriptStagazerOdometryBased [
 		
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
+		spec mapServer: '/home/kompai1/map/map.yaml'.
 		spec kompaiTF .
 		spec kompaiOdometry .
 		spec moveBase.
 		spec velocitySmoother.
 		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
+		spec staticZeroTFFrom: '/map'  to: '/odom'.  
 		spec relay: '/kompai2/pose' to: '/pose' named: 'pose_relay'.
 		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
 		spec relay: '/kompai/tf' to: '/tf' named: 'tf_relay'.
@@ -584,49 +607,38 @@ PureROSRobulab >> scriptStandAloneMapBuildingStargazer [
 	| bot stream|
 	
 
-	process:= PhaROSSystemLauncher  instance launch: [: spec | 
-		spec staticZeroTFFrom: '/map'  to: '/odom'.  
-	].
-	
 
-
-	stream  := FileStream stdout.
-	
-	
+	stream  := FileStream stdout.	
 	controller := PhaROSHandleController robulab2.
-	
 	bot := controller nodelets robulab.
-	
-
-	
-	stream nextPutAll: 'Remember that the robot should start this process located under the landmark 82'.
-	
-	stream nextPutAll: 'Starting pose merge process with direct odometry'.
-	
-	controller nodelets stargazer mergeWithPose: bot poseStamped.
-	
+	lastPoseSettedStamp  := DateAndTime now - 10 minutes.
+	stream nextPutAll: 'Remember that the robot should start this process located under the landmark 82', String lf.	
+	stream nextPutAll: 'Starting pose merge process with direct odometry', String lf.
 	
 	2 seconds asDuration asDelay wait.
 	
-	stream nextPutAll: 'Starting landmark place recognition '.
-	controller nodelets localizer learn:( experiment controller nodelets stargazer absoluteLandmarks ) .
-	
+	stream nextPutAll: 'Starting landmark place recognition ', String lf.
+	controller nodelets localizer learn:(  controller nodelets stargazer absoluteLandmarks ) .
 	
 	controller nodelets sgevents whenLandmark: [ : lmk | controller nodelets localizer scannedEntities size >= 4 ] doOnce: [ : lmk | 
-		stream nextPutAll: 'Saving landmark map'.
-		controller nodelets localizer fileout: 'map-landmarks-inner.st'. 
+		stream nextPutAll: 'Saving landmark map', String lf.
+		controller nodelets localizer fileout: 'odometry-landmarks-inner.st'. 
 		self quit. 
 	]. 
 	
-	controller nodelets sgevents whenLandmark: [ : lmk | lmk landmark = 82 ] doOnce: [ : lmk | 
-		
-		controller nodelets initialpose initialPose:   lmk. 
+	controller nodelets sgevents whenLandmark: [ : lmk | lmk landmark = 82 ] do: [ : lmk | 
+		|now |
+		now := DateAndTime now .
+		(now - lastPoseSettedStamp ) asSeconds > 1 ifTrue: [
+			controller nodelets initialpose initialPose:  (PhaROSPose fromGeometry_msgsPose:  lmk pose). 
+			lastPoseSettedStamp := now.
+		]
 	]. 
 	
 	
 	2 seconds asDuration asDelay wait.
 
-	stream nextPutAll: 'Starting landmark TF broadcasting'.
+	stream nextPutAll: 'Starting landmark TF broadcasting', String lf.
 	controller nodelets localizer transformations.
 	
 	
@@ -689,16 +701,19 @@ PureROSRobulab >> scriptTf [
 
 { #category : #private }
 PureROSRobulab >> setPoseWith: lmk [
-	| entity pose |
+	| entity pose lp |
 		lastPoseSettedStamp := DateAndTime now.
 		entity := (experiment controller nodelets localizer entity: lmk landmark).
 		
-		self halt.
+		
 		pose := entity center.
-		pose orientation: ( PhaROS2DOrientation z:(( PhaROSPose fromGeometry_msgsPose: lmk pose) orientation as2DOrientation z + (Float pi / 2))).
 		
-		
-		experiment controller nodelets initialpose initialPose:  pose.
+		lp := PhaROSPose fromGeometry_msgsPose: lmk pose.
+		pose orientation: ( PhaROS2DOrientation z: lp orientation as2DOrientation z * -1).
+		pose position: pose position + lp position.
+		 "
+		experiment controller nodelets initialpose initialPose:  pose."
+		experiment controller nodelets initialpose orientation: lp orientation as2DOrientation z* -1.
 ]
 
 { #category : #private }
@@ -712,13 +727,13 @@ PureROSRobulab >> setupPoseRecognizer [
 			checked := 0.
 		].
 		lastId := lmk landmark.
-		(DateAndTime now - lastPoseSettedStamp ) asSeconds > 20 and: [ 
+		(DateAndTime now - lastPoseSettedStamp ) asSeconds > 1 and: [ 
 			checked > 5 and: [
 				 (PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d < 0.3 
 			]	
 		]
 	] do: [ : lmk | 
-	self setPoseWith: lmk.
+		self setPoseWith: lmk.
 	].
 	
 	

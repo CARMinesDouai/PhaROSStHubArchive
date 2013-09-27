@@ -31,8 +31,10 @@ PureROSKompaiNodelet class >> trajectoryDifferentialTopicType [
 { #category : #'as yet unclassified' }
 PureROSKompaiNodelet >> broadcastSensors [
 	notificationController notificateLaserTo: [ : laser | self scan: laser ].
-	notificationController notificateMovementTo: [ 	: notification |   self poseStamped: notification position asPhaROSPose.	 ] .
-	
+	notificationController notificateMovementTo: [ 	: notification |   
+		self poseStamped: notification position asPhaROSPose.	
+	 ] .
+		
 ]
 
 { #category : #'as yet unclassified' }
@@ -46,7 +48,7 @@ PureROSKompaiNodelet >> configure [
 	"This nodelet is for basic hardware broadcasting, avoid to consume topics, specially massive broadcaster"
 	self nodelets use: PhaROSTransformationNodelet as: #transformation.
 	self nodelets use: SGROSStarGazerNodelet as: #stargazer.
-	
+	self consumeInitialPose.
 	state := PureROSKompaiActionState for: self.
 ]
 
@@ -80,12 +82,12 @@ PureROSKompaiNodelet >> consumeCommandVelocity [
 PureROSKompaiNodelet >> consumeInitialPose [
 	self nodelets use: PhaROSInitialPose as:#initialpose.
 	self nodelets initialpose initialPose for: [ : aPhaROSPose | self setPose: (PNGRobotPose fromPhaROSPose: aPhaROSPose )].
+	self nodelets initialpose orientation for: [ : anOrientation  | self setOrientation:  anOrientation ].
 	
 ]
 
 { #category : #'private-out' }
 PureROSKompaiNodelet >> consumeTrajectoryDifferential [
-
 	
 	trajectoryDifferentialIn ifNil: [
 		trajectoryDifferentialIn := self rosnode buildConnectionFor: '/kompai2/trajectory/differential'.
@@ -175,8 +177,20 @@ PureROSKompaiNodelet >> scanOut [
 ]
 
 { #category : #'private-out' }
+PureROSKompaiNodelet >> setOrientation: anOrientation [
+	[
+		| position |
+		position := robot localizationService currentPose.
+		position orientation: anOrientation.
+		robot localizationService pose: position.  
+	] on: Error do:  [ :e | self halt. ].
+]
+
+{ #category : #'private-out' }
 PureROSKompaiNodelet >> setPose: aPNGRobotPose [ 
-	[ robot localizationService pose: aPNGRobotPose.  ] on: Error do:  [ :e | self halt. ].
+	[
+		robot localizationService pose: aPNGRobotPose.  
+	] on: Error do:  [ :e | self halt. ].
 ]
 
 { #category : #'private-out' }
