@@ -710,10 +710,14 @@ PureROSRobulab >> setPoseWith: lmk [
 		
 		lp := PhaROSPose fromGeometry_msgsPose: lmk pose.
 		pose orientation: ( PhaROS2DOrientation z: lp orientation as2DOrientation z * -1).
-		pose position: pose position + lp position.
-		 "
-		experiment controller nodelets initialpose initialPose:  pose."
-		experiment controller nodelets initialpose orientation: lp orientation as2DOrientation z* -1.
+		pose position: pose position - lp position.
+		
+		
+		lp position module2d < 0.25 ifTrue: [
+			experiment controller nodelets initialpose initialPose:  pose.
+		] ifFalse: [
+			experiment controller nodelets initialpose orientation: lp orientation as2DOrientation z* -1.
+		]
 ]
 
 { #category : #private }

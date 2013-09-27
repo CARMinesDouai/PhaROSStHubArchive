@@ -100,12 +100,13 @@ PureROSRobulabGoal >> landmarkDriving: lmk [
 PureROSRobulabGoal >> onArrivalToLandmark: aLandmark [
 	
 	checks := 0. 
-	
-	Transcript show:' arrivalll' ;cr.
+	[
+		2 seconds asDelay wait.
+		Transcript show:' arrivalll' ;cr.
 		goal status:Actionlib_msgsGoalStatus  succeeded . 
 		status:= Actionlib_msgsGoalStatus  succeeded .
 		goal cancel.
-		
+	] doIt .
 	
 	 
 
