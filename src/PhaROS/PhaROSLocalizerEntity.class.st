@@ -22,7 +22,7 @@ PhaROSLocalizerEntity >> add: aMeasure [
 	
 	adding ifTrue: [
 		measures add: aMeasure pose. 
-		measures removeAll: (measures select: [ : msr | (self center position - msr pose position) module2d > 0.3 ]).
+		measures removeAll: (measures select: [ : msr | (self center position - msr  position) module2d > 0.3 ]).
 		self compact > 20 ifTrue: [
 			adding := false.
 		].

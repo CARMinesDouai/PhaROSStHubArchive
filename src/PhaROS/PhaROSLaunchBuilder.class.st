@@ -196,7 +196,7 @@ PhaROSLaunchBuilder >> kompai2 [
 		| conf |
 	
 	
-	conf := self package: 'pharos' type:'pharos' named:''.
+	conf := self package: 'pharos' type:'headless' named:''.
 	conf args: 'kompai2'.
 	
 	 
@@ -259,6 +259,8 @@ PhaROSLaunchBuilder >> moveBase [
 	"common costmap configuration "
 	path := self yaml: [
 		: common |
+		
+		
 		common name:'expected_update_rate' value: 10.0.
 		common name:'obstacle_range' value: 6.5.
 		common name:'raytrace_range' value: 7.0.
@@ -294,6 +296,7 @@ PhaROSLaunchBuilder >> moveBase [
 			local property name:'width' value: 10.0.
 			local property name:'height' value: 10.0.
 			local property name:'resolution' value: 0.1.
+			local property name:'map_type' value: 'costmap'.
 			local property name:'transform_tolerance' value: 1.0.
 		].
  	] named: 'local_costmap_params.yaml'.
@@ -305,10 +308,11 @@ PhaROSLaunchBuilder >> moveBase [
 		:yaml |
 		yaml set: 'global_costmap' with:[  :global |
 			global property name: 'global_frame' value: '/map'.
-			global property name: 'robot_base_frame' value: 'base_link'.
+			global property name: 'robot_base_frame' value: '/base_link'.
 			global property name: 'update_frequency' value: 3.0.
 			global property name: 'publish_frequency' value: 0.0.
 			global property name: 'static_map' value: true.
+			global property name:'resolution' value: 0.1.
 			global property name: 'transform_tolerance' value: 1.0.
 		].
 	 ] named: 'global_costmap_params.yaml'.
@@ -351,7 +355,7 @@ PhaROSLaunchBuilder >> moveBase [
 		planner name: '        heading_lookahead' value: 0.325.
 		planner name: '        dwa' value: false.
 		planner name: '        meter_scoring' value: true.
-		planner name: '        allow_unknown' value: false.
+		planner name: '        allow_unknown' value: true.
 
 		"Oscillation Prevention Parameters"
    		planner name: '        oscillation_reset_dist' value: 0.05.
@@ -483,7 +487,7 @@ PhaROSLaunchBuilder >> stargazer [
 	
 		| conf |
 	
-	conf := self package: 'pharos' type:'sg' named:''.
+	conf := self package: 'pharos' type:'headless' named:''.
 	conf args: 'stargazer'.
 	
 	^ conf.
@@ -493,7 +497,7 @@ PhaROSLaunchBuilder >> stargazer [
 PhaROSLaunchBuilder >> staticTFFrom: aFrame to: anOtherFrame  of: aStringOfShift rate: aRate [
 	| conf |
 	
-	conf:= self package: 'tf' type: 'static_transform_publisher' named: aFrame normalizeFrame, '_to_', anOtherFrame normalizeFrame. 
+	conf:= self package: 'tf' type: 'static_transform_publisher' named: aFrame normalizeFrame,'s', '_to_', anOtherFrame normalizeFrame. 
 	conf args: ('{1} /{2} /{3} {4}' format: {aStringOfShift . aFrame normalizeFrame . anOtherFrame normalizeFrame . aRate asString }).
 	
 	^ conf.
