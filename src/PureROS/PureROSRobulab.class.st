@@ -249,7 +249,7 @@ PureROSRobulab class >> xml [
 	
 ]
 
-{ #category : #scripts }
+{ #category : #private }
 PureROSRobulab >> configureEnvironment: aStarGazer [
 	| stream |
 	
@@ -279,7 +279,7 @@ PureROSRobulab >> kompaiAbsolutePoseTopic [
 	]
 ]
 
-{ #category : #scripts }
+{ #category : #'scripts-navigation' }
 PureROSRobulab >> scriptAmcl [
 
 	| bot |
@@ -291,21 +291,21 @@ PureROSRobulab >> scriptAmcl [
 	bot inspect.
 ]
 
-{ #category : #scripts }
+{ #category : #'scripts-transformers' }
 PureROSRobulab >> scriptBaselinkAbsolutePose [
 	controller := PhaROSHandleController transformation.
 	(controller nodelets transformation between: PureROSRobulabNodelet mapFrame and: PureROSRobulabNodelet baseLinkFrame) for: [: p | self kompaiAbsolutePose: p ]. 
 	
 ]
 
-{ #category : #scripts }
+{ #category : #'scripts-kompai' }
 PureROSRobulab >> scriptKompai1 [
 	controller := PhaROSHandleController kompai1.
 		
 
 ]
 
-{ #category : #scripts }
+{ #category : #'scripts-kompai' }
 PureROSRobulab >> scriptKompai2 [
 
 	controller := PhaROSHandleController kompai2.
@@ -315,7 +315,7 @@ PureROSRobulab >> scriptKompai2 [
 "
 ]
 
-{ #category : #scripts }
+{ #category : #'scripts-navigation' }
 PureROSRobulab >> scriptLandmarkAutoNavigation [
 
 	| bot goals |
@@ -341,7 +341,7 @@ PureROSRobulab >> scriptLandmarkAutoNavigation [
 
 ]
 
-{ #category : #scripts }
+{ #category : #'scripts-navigation' }
 PureROSRobulab >> scriptLandmarkNavigation [
 
 	| bot |
@@ -365,7 +365,7 @@ PureROSRobulab >> scriptLandmarkNavigation [
 
 ]
 
-{ #category : #scripts }
+{ #category : #'scripts-navigation' }
 PureROSRobulab >> scriptLandmarksRecognition [
 
 	| bot |
@@ -392,7 +392,7 @@ PureROSRobulab >> scriptLandmarksRecognition [
 	
 ]
 
-{ #category : #scripts }
+{ #category : #'scripts-launchers' }
 PureROSRobulab >> scriptLaunch [
 		
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
@@ -412,7 +412,7 @@ PureROSRobulab >> scriptLaunch [
 
 ]
 
-{ #category : #scripts }
+{ #category : #'scripts-launchers' }
 PureROSRobulab >> scriptMapBuilding [
 
 	| bot |
@@ -424,7 +424,7 @@ PureROSRobulab >> scriptMapBuilding [
 	bot inspect.
 ]
 
-{ #category : #scripts }
+{ #category : #'scripts-transformers' }
 PureROSRobulab >> scriptOdometry [
 
 	| bot |
@@ -435,7 +435,7 @@ PureROSRobulab >> scriptOdometry [
 
 ]
 
-{ #category : #scripts }
+{ #category : #'scripts-stargazer' }
 PureROSRobulab >> scriptSetUpMapBuildingStargazer [
 
 	| sg stream |
@@ -476,7 +476,7 @@ PureROSRobulab >> scriptSetUpMapBuildingStargazer [
 
 ]
 
-{ #category : #scripts }
+{ #category : #'scripts-stargazer' }
 PureROSRobulab >> scriptSetUpMapStargazer [
 
 	| sg stream |
@@ -503,7 +503,7 @@ PureROSRobulab >> scriptSetUpMapStargazer [
 	self quit.
 ]
 
-{ #category : #scripts }
+{ #category : #'scripts-stargazer' }
 PureROSRobulab >> scriptSetUpStandAloneStargazer [
 
 	| sg  stream |
@@ -528,7 +528,48 @@ PureROSRobulab >> scriptSetUpStandAloneStargazer [
 	self quit.
 ]
 
-{ #category : #scripts }
+{ #category : #'scripts-stargazer' }
+PureROSRobulab >> scriptStandAloneMapBuildingStargazer [
+
+	| sg stream |
+	
+	
+	stream  := FileStream stdout.
+	stream nextPutAll: 'Getting starGazer', String lf.
+	
+	sg := StarGazer mapBuilding.
+	
+	stream nextPutAll: 'Stopping starGazer', String lf.
+	sg stopMeasurements.
+	
+	self configureEnvironment: sg.
+	
+	stream nextPutAll: 'Setting markMode - Map', String lf.
+	sg markMode: 'Map'.
+	stream nextPutAll: 'Setting RefID - 82', String lf.
+	sg refID: '82'.
+	stream nextPutAll: 'Setting IdNum- 4', String lf.
+	sg idNum: 4.
+	stream nextPutAll: 'Starting map building', String lf.
+	
+	sg startMapBuilding.
+	
+	
+	stream nextPutAll: 'Please, move robot around, staying under each landmark and in between each pair for someseconds ', String lf.
+	sg whenMapIsDone: [
+		self quit.
+		
+	].	 
+	
+	
+
+
+
+
+
+]
+
+{ #category : #'scripts-stargazer' }
 PureROSRobulab >> scriptStargazer [
 
 	controller := PhaROSHandleController stargazer.	
@@ -539,7 +580,7 @@ PureROSRobulab >> scriptStargazer [
 
 ]
 
-{ #category : #scripts }
+{ #category : #'scripts-stargazer' }
 PureROSRobulab >> scriptStargazerConfiguration [
 
 	| sg stream |
@@ -573,7 +614,7 @@ PureROSRobulab >> scriptStargazerConfiguration [
 	self quit.
 ]
 
-{ #category : #scripts }
+{ #category : #'scripts-transformers' }
 PureROSRobulab >> scriptTf [
 	controller := PhaROSHandleController robulab2.
 	controller nodelets use: PhaROSPoseToTFNodelet  as: #pose2tf.
