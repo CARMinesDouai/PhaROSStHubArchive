@@ -291,6 +291,27 @@ PureROSRobulab >> scriptAmcl [
 	bot inspect.
 ]
 
+{ #category : #'scripts-launchers' }
+PureROSRobulab >> scriptAmclBased [
+		
+	process:= PhaROSSystemLauncher  instance launch: [: spec | 
+		
+		spec kompaiTF .
+		spec kompaiOdometry .
+		spec mapServer: '/home/viki/map/map.yaml'.
+		spec amcl.
+		spec moveBase.
+		spec velocitySmoother.
+		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
+		spec relay: '/kompai2/pose' to: '/pose' named: 'pose_relay'.
+		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
+		spec relay: '/kompai/tf' to: '/tf' named: 'tf_relay'.
+		spec rviz.
+	].
+	
+
+]
+
 { #category : #'scripts-transformers' }
 PureROSRobulab >> scriptBaselinkAbsolutePose [
 	controller := PhaROSHandleController transformation.
@@ -393,20 +414,30 @@ PureROSRobulab >> scriptLandmarksRecognition [
 ]
 
 { #category : #'scripts-launchers' }
-PureROSRobulab >> scriptLaunch [
-		
+PureROSRobulab >> scriptLaunchKompai1 [
+	
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
-		
+		spec kompai1.
+	].
+	
+
+]
+
+{ #category : #'scripts-launchers' }
+PureROSRobulab >> scriptLaunchKompai2 [
+	
+	process:= PhaROSSystemLauncher  instance launch: [: spec | 
 		spec kompai2.
-		spec mapServer: '/home/viki/map/map.yaml'.
-		spec amcl.
-		spec moveBase.
-		spec velocitySmoother.
-		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
-		spec relay: '/kompai2/pose' to: '/pose' named: 'pose_relay'.
-		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
-		spec relay: '/kompai/tf' to: '/tf' named: 'tf_relay'.
-		spec rviz.
+	].
+	
+
+]
+
+{ #category : #'scripts-launchers' }
+PureROSRobulab >> scriptLaunchStargazer [
+	
+	process:= PhaROSSystemLauncher  instance launch: [: spec | 
+		spec stargazer.
 	].
 	
 
@@ -435,7 +466,7 @@ PureROSRobulab >> scriptOdometry [
 
 ]
 
-{ #category : #'scripts-stargazer' }
+{ #category : #'scripts-stargazer-conf' }
 PureROSRobulab >> scriptSetUpMapBuildingStargazer [
 
 	| sg stream |
@@ -476,7 +507,7 @@ PureROSRobulab >> scriptSetUpMapBuildingStargazer [
 
 ]
 
-{ #category : #'scripts-stargazer' }
+{ #category : #'scripts-stargazer-conf' }
 PureROSRobulab >> scriptSetUpMapStargazer [
 
 	| sg stream |
@@ -503,7 +534,7 @@ PureROSRobulab >> scriptSetUpMapStargazer [
 	self quit.
 ]
 
-{ #category : #'scripts-stargazer' }
+{ #category : #'scripts-stargazer-conf' }
 PureROSRobulab >> scriptSetUpStandAloneStargazer [
 
 	| sg  stream |
@@ -528,45 +559,78 @@ PureROSRobulab >> scriptSetUpStandAloneStargazer [
 	self quit.
 ]
 
+{ #category : #'scripts-launchers' }
+PureROSRobulab >> scriptStagazerOdometryBased [
+		
+	process:= PhaROSSystemLauncher  instance launch: [: spec | 
+		spec kompaiTF .
+		spec kompaiOdometry .
+		spec moveBase.
+		spec velocitySmoother.
+		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
+		spec relay: '/kompai2/pose' to: '/pose' named: 'pose_relay'.
+		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
+		spec relay: '/kompai/tf' to: '/tf' named: 'tf_relay'.
+		spec rviz.
+	].
+	
+
+]
+
 { #category : #'scripts-stargazer' }
 PureROSRobulab >> scriptStandAloneMapBuildingStargazer [
 
-	| sg stream |
+
+	| bot stream|
 	
+
+	process:= PhaROSSystemLauncher  instance launch: [: spec | 
+		spec staticZeroTFFrom: '/map'  to: '/odom'.  
+	].
 	
+
+
 	stream  := FileStream stdout.
-	stream nextPutAll: 'Getting starGazer', String lf.
-	
-	sg := StarGazer mapBuilding.
-	
-	stream nextPutAll: 'Stopping starGazer', String lf.
-	sg stopMeasurements.
-	
-	self configureEnvironment: sg.
-	
-	stream nextPutAll: 'Setting markMode - Map', String lf.
-	sg markMode: 'Map'.
-	stream nextPutAll: 'Setting RefID - 82', String lf.
-	sg refID: '82'.
-	stream nextPutAll: 'Setting IdNum- 4', String lf.
-	sg idNum: 4.
-	stream nextPutAll: 'Starting map building', String lf.
-	
-	sg startMapBuilding.
 	
 	
-	stream nextPutAll: 'Please, move robot around, staying under each landmark and in between each pair for someseconds ', String lf.
-	sg whenMapIsDone: [
-		self quit.
+	controller := PhaROSHandleController robulab2.
+	
+	bot := controller nodelets robulab.
+	
+
+	
+	stream nextPutAll: 'Remember that the robot should start this process located under the landmark 82'.
+	
+	stream nextPutAll: 'Starting pose merge process with direct odometry'.
+	
+	controller nodelets stargazer mergeWithPose: bot poseStamped.
+	
+	
+	2 seconds asDuration asDelay wait.
+	
+	stream nextPutAll: 'Starting landmark place recognition '.
+	controller nodelets localizer learn:( experiment controller nodelets stargazer absoluteLandmarks ) .
+	
+	
+	controller nodelets sgevents whenLandmark: [ : lmk | controller nodelets localizer scannedEntities size >= 4 ] doOnce: [ : lmk | 
+		stream nextPutAll: 'Saving landmark map'.
+		controller nodelets localizer fileout: 'map-landmarks-inner.st'. 
+		self quit. 
+	]. 
+	
+	controller nodelets sgevents whenLandmark: [ : lmk | lmk landmark = 82 ] doOnce: [ : lmk | 
 		
-	].	 
+		controller nodelets initialpose initialPose:   lmk. 
+	]. 
 	
 	
+	2 seconds asDuration asDelay wait.
 
-
-
-
-
+	stream nextPutAll: 'Starting landmark TF broadcasting'.
+	controller nodelets localizer transformations.
+	
+	
+	
 ]
 
 { #category : #'scripts-stargazer' }
@@ -580,7 +644,7 @@ PureROSRobulab >> scriptStargazer [
 
 ]
 
-{ #category : #'scripts-stargazer' }
+{ #category : #'scripts-stargazer-conf' }
 PureROSRobulab >> scriptStargazerConfiguration [
 
 	| sg stream |
