@@ -180,22 +180,49 @@ PhaROSLaunchBuilder >> hectorMapping [
 ]
 
 { #category : #util }
+PhaROSLaunchBuilder >> kompai1 [
+		| conf |
+	
+	
+	conf := self package: 'pharos' type:'pharos' named:''.
+	conf args: 'kompai1'.
+	
+	 
+	^ conf.
+]
+
+{ #category : #util }
 PhaROSLaunchBuilder >> kompai2 [
 		| conf |
 	
 	
-	conf := self package: 'pharos' type:'headless' named:''.
-	conf args: 'tf'.
+	conf := self package: 'pharos' type:'pharos' named:''.
+	conf args: 'kompai2'.
+	
+	 
+	^ conf.
+]
+
+{ #category : #util }
+PhaROSLaunchBuilder >> kompaiOdometry [
+		| conf |
+	
 	
 	conf := self package: 'pharos' type:'headless' named:''.
 	conf args: 'odometry'.
 	
 	
-	"conf := self package: 'pharos' type:'pharos' named:''.
-	conf args: 'kompai2'.
-	"
-	 
-	^ conf.
+	^ conf
+]
+
+{ #category : #util }
+PhaROSLaunchBuilder >> kompaiTF [
+		| conf |
+	
+	conf := self package: 'pharos' type:'headless' named:''.
+	conf args: 'tf'.
+	
+	^ conf
 ]
 
 { #category : #util }
