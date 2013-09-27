@@ -40,22 +40,23 @@ SGMessage >> asLandMark [
 	pieces size = 5 ifTrue: [	
 		id := pieces first asNumberSG.
 		orientation := pieces second asNumberSG.	
-		position := SGPoint x: pieces third asNumberSG
-						  y: pieces fourth asNumberSG
+		position := SGPoint x: pieces third asNumberSG 
+						  y: pieces fourth asNumberSG 
 						  z: pieces fifth asNumberSG.
 		
 	] ifFalse:[
 		id := 1.
 		orientation := pieces first asNumberSG.
-		position := SGPoint x: pieces second asNumberSG
-						  y: pieces third asNumberSG
+		position := SGPoint x: pieces second asNumberSG 
+						  y: pieces third asNumberSG 
 						  z: pieces fourth asNumberSG.
 		
 	].
-	orientation < 0 ifTrue: [
+	"orientation < 0 ifTrue: [
 		orientation := 360 + orientation.	
-	].
-	^ (SGLandMarkMeasure id: id pose: (SGPose position: position orientation: orientation degreesToRadians) ensureRotation) isMapMeasure: ((pieces at:1 ) = $F); yourself .
+	]."
+	
+	^ (SGLandMarkMeasure id: id pose: (SGPose position: position orientation: orientation degreesToRadians ) ensureRotation) isMapMeasure: ((pieces at:1 ) = $F); yourself .
 	
 
 ]

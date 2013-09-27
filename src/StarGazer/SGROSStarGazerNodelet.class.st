@@ -80,6 +80,9 @@ SGROSStarGazerNodelet >> broadcastLandmarks: anArrayOfIDS [
 { #category : #publish }
 SGROSStarGazerNodelet >> conditionMerger [
 	
+
+		
+	
 	^[ : aMeasure : aLandMark |
 		| r |
 		r := (DateAndTime now - landmarks lastTimeStamp) asMilliSeconds < 100 and: [ 
@@ -123,8 +126,11 @@ SGROSStarGazerNodelet >> merge: gpose  with:  landmark [
 		rp orientation: zero. "
 		
 		
+	
 		
 		^ PhaROSPose position: gpose position - lp position orientation: PhaROSQuaternion zero .
+		
+		
 		 "^ PhaROSPose position: gpose position - lp position orientation: gpose orientation as2DOrientation - lp orientation as2DOrientation abs.
 		"
 		
@@ -150,15 +156,15 @@ SGROSStarGazerNodelet >> mergeWithPose: aPoseTopicReader [
 { #category : #publish }
 SGROSStarGazerNodelet >> mergeWithPose: aPoseTopicReader to: aPublisher [
 	| smoother |
-	smoother := PhaROSTransformedPoseSmoother new. 
-	
+	"smoother := PhaROSTransformedPoseSmoother new. 
+	"
 	self nodelets merger merge: self landmarks 
-								     with: smoother  
+								     with: aPoseTopicReader  
 								   using: self poseMerger
 								  when: self conditionMerger  
 						  redirectingTo: aPublisher. 
 						
-	aPoseTopicReader for: smoother.
+	"aPoseTopicReader for: smoother."
 ]
 
 { #category : #package }

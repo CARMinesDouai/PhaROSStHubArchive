@@ -47,8 +47,12 @@ SGPose >> difference: aPose into: aReceptorPose [
 SGPose >> ensureRotation [ 
 	| module |
 	self flag:#care.
+	"module := (PhaROS2DOrientation z: orientation * -1) asQuaternion rotatePosition:(PhaROSPosition x: position x  y: position y  z: 0.0 ).
 	
-	"	module := (( position x * position x) + (position y * position y)) sqrt.
+	position x: module x.
+	position y: module y."
+	"
+	module := (( position x * position x) + (position y * position y)) sqrt.
 	position x: module * orientation cos.
 	position y: module * orientation sin."
 	
