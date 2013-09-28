@@ -18,7 +18,6 @@ Class {
 	#name : #ParameterizedTestCase,
 	#superclass : #TestCase,
 	#instVars : [
-		'parameterizedSelector',
 		'parameters'
 	],
 	#category : #ParameterizedTests
@@ -47,8 +46,7 @@ ParameterizedTestCase class >> parameterizedTestPrgramaKeyword [
 
 { #category : #'building suites' }
 ParameterizedTestCase class >> parametrizedTest: testSelector withValues: dataArray [
-	^(self selector: self parametrizedTestRunSelector) 
-		parameterizedSelector:  testSelector;
+	^(self selector: testSelector) 
 		parameters: dataArray;
 		yourself
 	
@@ -62,11 +60,6 @@ ParameterizedTestCase class >> parametrizedTestMethods [
 ]
 
 { #category : #'building suites' }
-ParameterizedTestCase class >> parametrizedTestRunSelector [
-	^#runWithParameters
-]
-
-{ #category : #'building suites' }
 ParameterizedTestCase class >> parametrizedTestsFrom: testMethod [
 	| testSelector pragma dataTable |
 	testSelector := testMethod selector.
@@ -77,14 +70,26 @@ ParameterizedTestCase class >> parametrizedTestsFrom: testMethod [
 	]
 ]
 
-{ #category : #accessing }
-ParameterizedTestCase >> parameterizedSelector [
-	^ parameterizedSelector
+{ #category : #private }
+ParameterizedTestCase >> cleanUpInstanceVariables [
+	self instVarsToCleanUp do: [ :name |
+		self instVarNamed: name put: nil ]
 ]
 
-{ #category : #accessing }
-ParameterizedTestCase >> parameterizedSelector: anObject [
-	parameterizedSelector := anObject
+{ #category : #running }
+ParameterizedTestCase >> debug [
+	[ (self class parametrizedTest: self selector withValues: self parameters) runCase ]
+		ensure: [ self classForTestResource resetResources: self resources ]
+]
+
+{ #category : #private }
+ParameterizedTestCase >> instVarsToCleanUp [
+	^self class allInstVarNames copyWithoutAll: self instVarsToKeepOnCleanUp
+]
+
+{ #category : #private }
+ParameterizedTestCase >> instVarsToKeepOnCleanUp [
+	^#(testSelector parameters)
 ]
 
 { #category : #accessing }
@@ -97,7 +102,19 @@ ParameterizedTestCase >> parameters: anObject [
 	parameters := anObject
 ]
 
-{ #category : #testing }
-ParameterizedTestCase >> runWithParameters [
-	self perform: self parameterizedSelector withArguments: self parameters
+{ #category : #private }
+ParameterizedTestCase >> performTest [
+	self perform: self selector withArguments: self parameters
+]
+
+{ #category : #printing }
+ParameterizedTestCase >> printOn: aStream [
+	super printOn: aStream.
+	aStream space.
+	(self parameters isKindOf: Array) ifFalse: [ ^aStream print: self parameters ].
+	aStream nextPut: ${.
+	self parameters 
+		do: [ :param | aStream print: param]
+		separatedBy: [ aStream nextPut: $. ; space ].
+	aStream nextPut: $}
 ]
