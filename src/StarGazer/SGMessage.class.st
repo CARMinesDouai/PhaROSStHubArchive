@@ -36,7 +36,6 @@ SGMessage >> asLandMark [
 	
 	pieces := (content copyFrom:3  to: content size) findBetweenSubStrs: SGProtocol separator.
  
-
 	pieces size = 5 ifTrue: [	
 		id := pieces first asNumberSG.
 		orientation := pieces second asNumberSG.	
@@ -56,7 +55,7 @@ SGMessage >> asLandMark [
 		orientation := 360 + orientation.	
 	]."
 	
-	^ (SGLandMarkMeasure id: id pose: (SGPose position: position orientation: orientation degreesToRadians ) ensureRotation) isMapMeasure: ((pieces at:1 ) = $F); yourself .
+	^ (SGLandMarkMeasure id: id pose: (SGPose position: position orientation: orientation degreesToRadians ) ensureRotation) isMapMeasure: ((content at:2 ) = $F); yourself .
 	
 
 ]
