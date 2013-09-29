@@ -25,7 +25,8 @@ Class {
 		'process',
 		'lastPoseSettedStamp',
 		'checked',
-		'lastId'
+		'lastId',
+		'poseStampedSgOut'
 	],
 	#category : #PureROS
 }
@@ -295,6 +296,34 @@ PureROSRobulab >> kompaiAbsolutePoseTopic [
 	]
 ]
 
+{ #category : #private }
+PureROSRobulab >> poseStampedSg [
+	
+	^(controller node buildConnectionFor: '/stargazer/pose') 
+		 typedAs: PureROSRobulabNodelet poseStampedTopicType ;
+		 adapted: #pose \> PhaROSPose  ;
+	  	 connect.
+]
+
+{ #category : #private }
+PureROSRobulab >> poseStampedSg: aPose withFrame: aFrameID [
+
+	self poseStampedSgOut send: [
+		: msg | 
+		aPose intoGeometry_msgs_Pose: msg pose.
+		msg header frame_id: aFrameID.
+	]
+]
+
+{ #category : #private }
+PureROSRobulab >> poseStampedSgOut [
+	
+	^ poseStampedSgOut ifNil: [
+		poseStampedSgOut := controller node topicPublisher: '/stargazer/pose'  typedAs: PureROSRobulabNodelet poseStampedTopicType 
+	].
+
+]
+
 { #category : #'scripts-navigation' }
 PureROSRobulab >> scriptAmcl [
 
@@ -506,23 +535,11 @@ PureROSRobulab >> scriptSetUpMapBuildingStargazer [
 	stream nextPutAll: 'Setting markMode - Map', String lf.
 	sg markMode: 'Map'.
 	stream nextPutAll: 'Setting RefID - 82', String lf.
-	sg refID: '82'.
+	sg refID: '80'.
 	stream nextPutAll: 'Setting IdNum- 4', String lf.
 	sg idNum: 4.
 	stream nextPutAll: 'Starting map building', String lf.
 	
-	sg startMapBuilding.
-	
-	
-	stream nextPutAll: 'Please, move robot around, staying under each landmark and in between each pair for someseconds ', String lf.
-	sg whenMapIsDone: [
-		self quit.
-		
-	].	 
-	
-	
-
-
 
 
 
@@ -550,7 +567,7 @@ PureROSRobulab >> scriptSetUpMapStargazer [
 	stream nextPutAll: 'Setting IdNum- 4', String lf.
 	sg idNum: 4.
 	stream nextPutAll: 'Starting', String lf.
-	sg startMeasurements 
+	sg startMeasurements .
 	
 	self quit.
 ]
@@ -690,11 +707,66 @@ PureROSRobulab >> scriptStargazerConfiguration [
 	self quit.
 ]
 
+{ #category : #'scripts-stargazer-conf' }
+PureROSRobulab >> scriptStargazerMapBuildingMode [
+
+	| sg stream |
+	
+	
+	stream  := FileStream stdout.
+	stream nextPutAll: 'Getting starGazer', String lf.
+	
+	sg := StarGazer mapBuilding.
+	
+	stream nextPutAll: 'Stopping starGazer', String lf.
+	sg stopMeasurements.
+	
+
+	sg startMapBuilding.
+	
+	
+	stream nextPutAll: 'Please, move robot around, staying under each landmark and in between each pair for someseconds ', String lf.
+	sg mode whenMapIsDone: [
+		stream nextPutAll: 'Map is builded! You can start map-mode-based localization', String lf.
+		self halt.
+		self quit.
+		
+	].	 
+	
+	
+
+
+]
+
+{ #category : #'scripts-transformers-sg' }
+PureROSRobulab >> scriptStargazerPose [
+
+	controller := PhaROSHandleController stargazer.	
+	
+	controller nodelets stargazer landmarks for: [
+		: lmk |
+		self poseStampedSg: (PhaROSPose fromGeometry_msgsPose: lmk pose) withFrame: '/landmark82'.
+	].
+
+	
+	
+
+]
+
 { #category : #'scripts-transformers' }
 PureROSRobulab >> scriptTf [
 	controller := PhaROSHandleController robulab2.
 	controller nodelets use: PhaROSPoseToTFNodelet  as: #pose2tf.
 	controller nodelets pose2tf express: controller nodelets robulab poseStamped as: PureROSRobulabNodelet baseLinkFrame childOf: PureROSRobulabNodelet baseLinkParentFrame.
+
+	
+]
+
+{ #category : #'scripts-transformers-sg' }
+PureROSRobulab >> scriptTfSG [
+	controller := PhaROSHandleController robulab2.
+	controller nodelets use: PhaROSPoseToTFNodelet  as: #pose2tf.
+	controller nodelets pose2tf express: self poseStampedSg as: PureROSRobulabNodelet baseLinkFrame childOf: '/landmark82'.
 
 	
 ]
