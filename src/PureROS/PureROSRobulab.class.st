@@ -535,7 +535,7 @@ PureROSRobulab >> scriptSetUpMapBuildingStargazer [
 	stream nextPutAll: 'Setting markMode - Map', String lf.
 	sg markMode: 'Map'.
 	stream nextPutAll: 'Setting RefID - 82', String lf.
-	sg refID: '80'.
+	sg refID: '82'.
 	stream nextPutAll: 'Setting IdNum- 4', String lf.
 	sg idNum: 4.
 	stream nextPutAll: 'Starting map building', String lf.
@@ -667,7 +667,7 @@ PureROSRobulab >> scriptStargazer [
 
 	controller := PhaROSHandleController stargazer.	
 	tfpose := controller nodelets transformation between: PureROSRobulabNodelet mapFrame and: PureROSRobulabNodelet baseLinkFrame.
-	controller nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 . 8192 }.
+	controller nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 . 8192 . 80 }.
 	controller nodelets stargazer mergeWithPose: tfpose.	
 	
 
@@ -769,6 +769,8 @@ PureROSRobulab >> scriptTfSG [
 	controller nodelets pose2tf express: self poseStampedSg as: PureROSRobulabNodelet baseLinkFrame childOf: '/landmark82'.
 
 	
+
+
 ]
 
 { #category : #private }
