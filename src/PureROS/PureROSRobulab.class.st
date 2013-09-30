@@ -805,10 +805,12 @@ PureROSRobulab >> setPoseWith: lmk [
 		
 		
 		((pose position - (experiment controller nodelets transformation frame: '/base_link') pose position ) module2d > 0.3  and: [(lp position module2d < 0.2) ]) ifTrue: [
+			Transcript show: 'setting pose'; cr.
 			experiment controller nodelets initialpose initialPose:  pose.
 		] ifFalse: [
 			((experiment controller nodelets transformation frame: '/base_link') pose orientation as2DOrientation z - 
 			pose orientation as2DOrientation z ) abs > 0.1 ifTrue:[
+				Transcript show: 'setting orientation'; cr.
 				experiment controller nodelets initialpose orientation: lp orientation as2DOrientation z* -1.
 			]
 		]
