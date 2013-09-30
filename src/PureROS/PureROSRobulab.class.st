@@ -1,18 +1,29 @@
 "
-landmark recognition
+landmark navigation
+
+	- all the cases need landmark recognition step based on laser.
+	- the stargazer case just need to recognize the 0 landmark (according to default configurations: 82)
 	
 	AMCL 
 	rosrun pharos headless amclbased.
 	rosrun pharos headless launchkompai2.
 	rosrun pharos headless launchstargazer.
-	rosrun pharos headless landmarkrecognition.
+	rosrun pharos headless landmarknavigation.
 	
 	Odometry+Stargazer
 	rosrun pharos headless stargazerodometrybased.
 	rosrun pharos headless launchkompai2.
 	rosrun pharos headless launchstargazer.
-	rosrun pharos headless standalonemapbuildingstargazer .
+	rosrun pharos headless landmarknavigation .
 	
+	
+	
+	StarGazer
+	rosrun pharos headless stargazerbased.
+	rosrun pharos headless launchkompai2. 
+	rosrun pharos headless launchstargazer.
+	rosrun pharos headless landmarknavigation .
+
 "
 Class {
 	#name : #PureROSRobulab,
@@ -296,6 +307,12 @@ PureROSRobulab >> kompaiAbsolutePoseTopic [
 	]
 ]
 
+{ #category : #'scripts-launchers' }
+PureROSRobulab >> mapFile [ 
+
+	^ '/home/kompai1/map/map.yaml'
+]
+
 { #category : #private }
 PureROSRobulab >> poseStampedSg [
 	
@@ -343,7 +360,7 @@ PureROSRobulab >> scriptAmclBased [
 		
 		spec kompaiTF .
 		spec kompaiOdometry .
-		spec mapServer: '/home/viki/map/map.yaml'.
+		spec mapServer: self mapFile.
 		spec amcl.
 		spec moveBase.
 		spec velocitySmoother.
@@ -601,7 +618,7 @@ PureROSRobulab >> scriptSetUpStandAloneStargazer [
 PureROSRobulab >> scriptStagazerOdometryBased [
 		
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
-		spec mapServer: '/home/kompai1/map/map.yaml'.
+		spec mapServer: self mapFile.
 		spec kompaiTF .
 		spec kompaiOdometry .
 		spec moveBase.
@@ -667,7 +684,7 @@ PureROSRobulab >> scriptStargazer [
 
 	controller := PhaROSHandleController stargazer.	
 	tfpose := controller nodelets transformation between: PureROSRobulabNodelet mapFrame and: PureROSRobulabNodelet baseLinkFrame.
-	controller nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 . 8192 . 80 }.
+	controller nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0" . 8192 . 80" }.
 	controller nodelets stargazer mergeWithPose: tfpose.	
 	
 
@@ -784,10 +801,10 @@ PureROSRobulab >> setPoseWith: lmk [
 		
 		lp := PhaROSPose fromGeometry_msgsPose: lmk pose.
 		pose orientation: ( PhaROS2DOrientation z: lp orientation as2DOrientation z * -1).
-		pose position: pose position - lp position.
+		pose position: pose position + lp position.
 		
 		
-		lp position module2d < 0.25 ifTrue: [
+		lp position module2d < 0.2 ifTrue: [
 			experiment controller nodelets initialpose initialPose:  pose.
 		] ifFalse: [
 			experiment controller nodelets initialpose orientation: lp orientation as2DOrientation z* -1.
@@ -805,9 +822,9 @@ PureROSRobulab >> setupPoseRecognizer [
 			checked := 0.
 		].
 		lastId := lmk landmark.
-		(DateAndTime now - lastPoseSettedStamp ) asSeconds > 1 and: [ 
+		(DateAndTime now - lastPoseSettedStamp ) asSeconds > 4 and: [ 
 			checked > 5 and: [
-				 (PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d < 0.3 
+				 (PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d < 1 
 			]	
 		]
 	] do: [ : lmk | 

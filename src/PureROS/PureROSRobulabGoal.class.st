@@ -74,7 +74,7 @@ PureROSRobulabGoal >> goal: aGoal [
 PureROSRobulabGoal >> hasArrived: lmk [
 	Transcript show: ' asking arrival '; cr.
 	checks := checks +1.
- 	^ entity id = lmk landmark and: [ checks > 5 and: [ (PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d < 2  ] ]
+ 	^ (entity id = lmk landmark and: [ checks > 5 and: [ (PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d < 0.7  ] ]) or: [ self status = Actionlib_msgsGoalStatus succeeded ].
 ]
 
 { #category : #behavior }
@@ -101,7 +101,6 @@ PureROSRobulabGoal >> onArrivalToLandmark: aLandmark [
 	
 	checks := 0. 
 	[
-		2 seconds asDelay wait.
 		Transcript show:' arrivalll' ;cr.
 		goal status:Actionlib_msgsGoalStatus  succeeded . 
 		status:= Actionlib_msgsGoalStatus  succeeded .
@@ -132,7 +131,8 @@ PureROSRobulabGoal >> robulab: aRobulabNodelet [
 { #category : #accessing }
 PureROSRobulabGoal >> status [
 	^ status ifNil: [
-		goal status	
+		goal ifNil:[ -1 ]
+			ifNotNil: [ goal status]
 	]
 	
 ]
