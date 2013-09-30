@@ -36,7 +36,7 @@ PhaROSTurtlebotNodelet >> defaultPose [
 
 { #category : #pose }
 PhaROSTurtlebotNodelet >> detectLandmarks [
-	self nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 . 8192 }.
+	self nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 }.
 	
 ]
 

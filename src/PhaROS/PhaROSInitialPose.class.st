@@ -2,8 +2,7 @@ Class {
 	#name : #PhaROSInitialPose,
 	#superclass : #PhaROSStaticNodelet,
 	#instVars : [
-		'initialPoseOut',
-		'orientationOut'
+		'initialPoseOut'
 	],
 	#category : #'PhaROS-Nodelets-Position'
 }
@@ -16,16 +15,6 @@ PhaROSInitialPose class >> initialPoseTopic [
 { #category : #'as yet unclassified' }
 PhaROSInitialPose class >> initialPoseTopicType [
 	^  'geometry_msgs/PoseWithCovarianceStamped'
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSInitialPose class >> orientationTopic [
-	^  '/orientation'
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSInitialPose class >> orientationTopicType [
-	^  'std_msgs/Float32'
 ]
 
 { #category : #'as yet unclassified' }
@@ -44,7 +33,7 @@ PhaROSInitialPose >> initialPose [
 
 { #category : #'as yet unclassified' }
 PhaROSInitialPose >> initialPose: aPose [
-	Transcript show:' setting' ; cr. 
+	
 	self initialPoseOut send: [
 		: msg |
 		msg header frame_id: '/map'.
@@ -59,38 +48,6 @@ PhaROSInitialPose >> initialPoseOut [
 	
 	^ initialPoseOut ifNil: [
 		initialPoseOut := self rosnode topicPublisher: PhaROSInitialPose  initialPoseTopic  typedAs: PhaROSInitialPose initialPoseTopicType.
-	].
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSInitialPose >> orientation [
-	|connector|
-		connector := self rosnode buildConnectionFor: PhaROSInitialPose  orientationTopic  .
-
-		connector typedAs: PhaROSInitialPose orientationTopicType ;
-					adapted: #data .
-				
-			
-		^  connector connect.
-
-
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSInitialPose >> orientation: anOrientation [
-	Transcript show:' setting' ; cr. 
-	self orientationOut send: [
-		: msg |
-		msg data: anOrientation.
-	]. 
-
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSInitialPose >> orientationOut [
-	
-	^ orientationOut ifNil: [
-		orientationOut := self rosnode topicPublisher: PhaROSInitialPose  orientationTopic  typedAs: PhaROSInitialPose orientationTopicType.
 	].
 ]
 

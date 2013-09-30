@@ -27,7 +27,6 @@ PhaROSTransformedPoseSmoother >> for: aCallback [
 { #category : #'as yet unclassified' }
 PhaROSTransformedPoseSmoother >> initialize [ 
 	posesStamps := Dictionary new.
-	lastTimeStamp := DateAndTime now - 10 minutes.
 ]
 
 { #category : #'as yet unclassified' }

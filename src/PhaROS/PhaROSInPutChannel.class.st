@@ -68,15 +68,11 @@ PhaROSInPutChannel >> send: aMessageBlock [
 
 { #category : #'as yet unclassified' }
 PhaROSInPutChannel >> spinOnce [
-[[
+[
 	publisherFetcher value.
 	2 second asDelay wait.
 	
-] on: ConnectionTimedOut do: [ :e | 
-	
-].]  on: Error do: [
-	: e | self halt.
-]
+] on: Error do: [ :e | self halt. ].
 ]
 
 { #category : #'as yet unclassified' }

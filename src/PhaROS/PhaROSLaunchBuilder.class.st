@@ -180,49 +180,22 @@ PhaROSLaunchBuilder >> hectorMapping [
 ]
 
 { #category : #util }
-PhaROSLaunchBuilder >> kompai1 [
-		| conf |
-	
-	
-	conf := self package: 'pharos' type:'pharos' named:''.
-	conf args: 'kompai1'.
-	
-	 
-	^ conf.
-]
-
-{ #category : #util }
 PhaROSLaunchBuilder >> kompai2 [
 		| conf |
 	
-	
-	conf := self package: 'pharos' type:'headless' named:''.
+	"conf := self package: 'pharos' type:'headless' named:''.
 	conf args: 'kompai2'.
-	
-	 
-	^ conf.
-]
-
-{ #category : #util }
-PhaROSLaunchBuilder >> kompaiOdometry [
-		| conf |
-	
+	"
+	conf := self package: 'pharos' type:'headless' named:''.
+	conf args: 'tf'.
 	
 	conf := self package: 'pharos' type:'headless' named:''.
 	conf args: 'odometry'.
 	
 	
-	^ conf
-]
-
-{ #category : #util }
-PhaROSLaunchBuilder >> kompaiTF [
-		| conf |
 	
-	conf := self package: 'pharos' type:'headless' named:''.
-	conf args: 'tf'.
-	
-	^ conf
+	 
+	^ conf.
 ]
 
 { #category : #util }
@@ -259,8 +232,6 @@ PhaROSLaunchBuilder >> moveBase [
 	"common costmap configuration "
 	path := self yaml: [
 		: common |
-		
-		
 		common name:'expected_update_rate' value: 10.0.
 		common name:'obstacle_range' value: 6.5.
 		common name:'raytrace_range' value: 7.0.
@@ -296,7 +267,6 @@ PhaROSLaunchBuilder >> moveBase [
 			local property name:'width' value: 10.0.
 			local property name:'height' value: 10.0.
 			local property name:'resolution' value: 0.1.
-			local property name:'map_type' value: 'costmap'.
 			local property name:'transform_tolerance' value: 1.0.
 		].
  	] named: 'local_costmap_params.yaml'.
@@ -308,11 +278,10 @@ PhaROSLaunchBuilder >> moveBase [
 		:yaml |
 		yaml set: 'global_costmap' with:[  :global |
 			global property name: 'global_frame' value: '/map'.
-			global property name: 'robot_base_frame' value: '/base_link'.
+			global property name: 'robot_base_frame' value: 'base_link'.
 			global property name: 'update_frequency' value: 3.0.
 			global property name: 'publish_frequency' value: 0.0.
 			global property name: 'static_map' value: true.
-			global property name:'resolution' value: 0.1.
 			global property name: 'transform_tolerance' value: 1.0.
 		].
 	 ] named: 'global_costmap_params.yaml'.
@@ -327,14 +296,14 @@ PhaROSLaunchBuilder >> moveBase [
 		planner name: '        transform_tolerance' value: 1.0.
 
 		"Robot Configuration Parameters"
-		planner name: '        acc_lim_x' value: 1.5.
+		planner name: '        acc_lim_x' value: 2.1.
 		planner name: '        acc_lim_y' value: 0.0.
 		planner name: '        acc_lim_th' value: 2.1.
 
-		planner name: '        max_vel_x' value: 2.1.
+		planner name: '        max_vel_x' value: 2.8.
 		planner name: '        min_vel_x' value: 0.1.
 
-		planner name: '        max_rotational_vel' value: 3.0.
+		planner name: '        max_rotational_vel' value: 3.3.
 		planner name: '        min_in_place_rotational_vel' value: 0.1.
 		
 		planner name: '        holonomic_robot' value: false.
@@ -355,7 +324,7 @@ PhaROSLaunchBuilder >> moveBase [
 		planner name: '        heading_lookahead' value: 0.325.
 		planner name: '        dwa' value: false.
 		planner name: '        meter_scoring' value: true.
-		planner name: '        allow_unknown' value: true.
+		planner name: '        allow_unknown' value: false.
 
 		"Oscillation Prevention Parameters"
    		planner name: '        oscillation_reset_dist' value: 0.05.
@@ -487,7 +456,7 @@ PhaROSLaunchBuilder >> stargazer [
 	
 		| conf |
 	
-	conf := self package: 'pharos' type:'headless' named:''.
+	conf := self package: 'pharos' type:'sg' named:''.
 	conf args: 'stargazer'.
 	
 	^ conf.
@@ -497,7 +466,7 @@ PhaROSLaunchBuilder >> stargazer [
 PhaROSLaunchBuilder >> staticTFFrom: aFrame to: anOtherFrame  of: aStringOfShift rate: aRate [
 	| conf |
 	
-	conf:= self package: 'tf' type: 'static_transform_publisher' named: aFrame normalizeFrame,'s', '_to_', anOtherFrame normalizeFrame. 
+	conf:= self package: 'tf' type: 'static_transform_publisher' named: aFrame normalizeFrame, '_to_', anOtherFrame normalizeFrame. 
 	conf args: ('{1} /{2} /{3} {4}' format: {aStringOfShift . aFrame normalizeFrame . anOtherFrame normalizeFrame . aRate asString }).
 	
 	^ conf.

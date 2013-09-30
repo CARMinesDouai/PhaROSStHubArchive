@@ -22,8 +22,8 @@ PhaROSLocalizerEntity >> add: aMeasure [
 	
 	adding ifTrue: [
 		measures add: aMeasure pose. 
-		measures removeAll: (measures select: [ : msr | (self center position - msr  position) module2d > 0.3 ]).
-		self compact > 10 ifTrue: [
+		measures removeAll: (measures select: [ : msr | (self center position - msr pose position) module2d > 0.3 ]).
+		self compact > 20 ifTrue: [
 			adding := false.
 		].
 		m := m +1.
@@ -43,7 +43,7 @@ PhaROSLocalizerEntity >> annotate: aSymbol with: aValue [
 
 { #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> annotation: aSymbol [
-	^ annotations at: aSymbol ifAbsent: [ nil ].
+	^ annotations at: aSymbol.
 ]
 
 { #category : #'as yet unclassified' }
@@ -102,7 +102,6 @@ PhaROSLocalizerEntity >> center [
 	| point angle |
 	self compact.
 	point := (measures collect: #position) average .
-	point z: 0.0.
 	angle := (measures collect: [ :p | p orientation as2DOrientation z]) average.
 	point := point asPose.
 	point orientation: (PhaROS2DOrientation z: angle).
