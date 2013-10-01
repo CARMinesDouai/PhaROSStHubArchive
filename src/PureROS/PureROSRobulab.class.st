@@ -745,6 +745,17 @@ PureROSRobulab >> scriptStargazer [
 "
 ]
 
+{ #category : #'scripts-stargazer' }
+PureROSRobulab >> scriptStargazerAbsoluteLandmark [
+
+	controller := PhaROSHandleController stargazer.	
+	tfpose := controller nodelets transformation between: PureROSRobulabNodelet mapFrame 
+														and: PureROSRobulabNodelet baseLinkFrame.
+	
+	controller nodelets stargazer mergeWithPose: tfpose.
+
+]
+
 { #category : #'scripts-launchers' }
 PureROSRobulab >> scriptStargazerBased [
 		
