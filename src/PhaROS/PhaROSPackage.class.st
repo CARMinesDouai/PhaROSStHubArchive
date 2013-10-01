@@ -100,6 +100,11 @@ PhaROSPackage class >> instance [
 ]
 
 { #category : #abstract }
+PhaROSPackage class >> instance: anObject [
+	instance := anObject .
+]
+
+{ #category : #abstract }
 PhaROSPackage class >> isInstalled [ 
 	^ location notNil
 ]
@@ -194,6 +199,16 @@ PhaROSPackage class >> vmFolder [
 { #category : #abstract }
 PhaROSPackage class >> xml [
 	self subclassResponsibility.
+]
+
+{ #category : #scripts }
+PhaROSPackage >> finalize [
+	self class instance: nil.
+]
+
+{ #category : #scripts }
+PhaROSPackage >> quit [
+	Smalltalk snapshot: false andQuit: true.
 ]
 
 { #category : #scripts }

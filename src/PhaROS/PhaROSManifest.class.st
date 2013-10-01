@@ -71,6 +71,13 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PhaROSManifest class >> cleanUp [
+	PhaROSHandleController allSubInstances do: #finalize.
+	PhaROSPackage allSubInstances do: #finalize.   
+	Smalltalk garbageCollectMost.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSManifest class >> tex [
 	| op converter |
 	op := StandardFileStream forceNewFileNamed: '/tmp/pharos-documentation.mkd'.

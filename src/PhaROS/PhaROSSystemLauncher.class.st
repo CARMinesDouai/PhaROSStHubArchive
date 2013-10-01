@@ -23,11 +23,6 @@ PhaROSSystemLauncher class >> groovy [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSSystemLauncher class >> hydro [
-	^'/opt/ros/hydro/bin/'
-]
-
-{ #category : #'as yet unclassified' }
 PhaROSSystemLauncher class >> instance [
 	^ instance ifNil: [
 		instance := super new.	
@@ -81,7 +76,7 @@ PhaROSSystemLauncher >> makeTypes [
 
 { #category : #environment }
 PhaROSSystemLauncher >> pharosHome [
-	^ '/home/turtlebot/ros/pharos'.
+	^ '/home/viki/ros/workspace/src/pharos/'.
 ]
 
 { #category : #types }

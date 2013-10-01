@@ -29,7 +29,7 @@ PhaROSInPutChannel >> finalize [
 		publishers do: #finalize.
 		publishers removeAll.
 	].
-	
+	publisherFetcher := nil.
 	owner := nil.
 ]
 
@@ -68,11 +68,15 @@ PhaROSInPutChannel >> send: aMessageBlock [
 
 { #category : #'as yet unclassified' }
 PhaROSInPutChannel >> spinOnce [
-[
+[[
 	publisherFetcher value.
 	2 second asDelay wait.
 	
-] on: Error do: [ :e | self halt. ].
+] on: ConnectionTimedOut do: [ :e | 
+	
+].]  on: Error do: [
+	: e | self halt.
+]
 ]
 
 { #category : #'as yet unclassified' }

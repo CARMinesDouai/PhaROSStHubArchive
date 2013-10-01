@@ -22,5 +22,6 @@ BasicCodeLoader classSide >> commandLineHandlerCondition: aCommandLine [
 
 { #category : #'*PhaROS' }
 BasicCodeLoader classSide >> parameterFrom: aCommandLine [
+
 	^ ((aCommandLine parameterAt: 1) copyReplaceAll: Character cr asString with: '') copyReplaceAll: Character lf asString with: ''. 
 ]

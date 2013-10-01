@@ -171,11 +171,11 @@ PhaROSTFFrame >> poseRelativeTo: aFrame [
 
 	[ frame ~= topParent ] whileTrue: [
 	    auxParent := frame parent.
-	    auxParent ifNil: [ self error:' unexpected '].
+	    auxParent ifNil: [ self error:( ' Unexpected nil parent calculating transformation from  {1} to {2}' format: { name . aFrame name }) ].
 	    (frame = self) ifTrue: [ ^ calculator sourceParentOfTarget ].
 	    calculator accumulateToTarget: frame.
 	   
-	    frame := auxParent.
+ 	    frame := auxParent.
 	    depth := depth + 1.
 	    (depth > MAX_DEPTH) ifTrue: [ self error: 'possible recursion' ].
 	].
