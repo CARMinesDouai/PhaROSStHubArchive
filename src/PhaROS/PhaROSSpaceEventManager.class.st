@@ -15,7 +15,6 @@ PhaROSSpaceEventManager >> check: aLocalizerMeasure [
 
 { #category : #'as yet unclassified' }
 PhaROSSpaceEventManager >> configure [
-	self nodelets stargazer landmarks for: [ :lmk | self check: lmk ]
 	
 ]
 
@@ -56,7 +55,7 @@ PhaROSSpaceEventManager >> rescheddule: anEvent [
 PhaROSSpaceEventManager >> useTfSensorTo: aRobotFrameID [
 	| tfSensor | 
 	tfSensor := PhaROSLocalizerTFSensor new.
-	tfSensor localizer: self.
+	tfSensor localizer: self nodelets localizer.
 	tfSensor robotFrame: aRobotFrameID.
 	self registerLocalizationSensor: tfSensor.
 ]

@@ -24,13 +24,14 @@ PhaROSLocalizerTFSensor >> localizer: aLocalizerNodelet [
 { #category : #'as yet unclassified' }
 PhaROSLocalizerTFSensor >> pollDistances [
 	| pose |
-	
+	self halt.
 	localizer scannedEntities do: [
 		: entity |
+		[
 		pose := localizer nodelets transformation transformBetween: entity frameName and: robotFrame.
 		pose position module2d < 2.0 ifTrue: [
 			callback cull: (PhaROSLocalizerMeasure id: entity id pose: pose) cull: self cull: DateAndTime now
-		].
+		].] on: Error do: [ :e | Transcript show:e messageText ; cr ].
 	].
 
 ]
