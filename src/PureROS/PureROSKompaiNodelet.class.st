@@ -19,6 +19,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PureROSKompaiNodelet class >> package [
+	^ PureROSKompai.
+]
+
+{ #category : #'as yet unclassified' }
 PureROSKompaiNodelet class >> trajectoryDifferentialTopic [ 
 	^ '/kompai2/trajectory/differential'
 ]
