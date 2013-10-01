@@ -17,7 +17,7 @@ SGSerialMock class >> content: aContent steppingBy: aStep [
 
 { #category : #converting }
 SGSerialMock >> asSGStream [
-	^ SGStream for: ( SerialStream for: self).
+	^ SGStream for: ( SerialStream monothread: self).
 ]
 
 { #category : #'as yet unclassified' }

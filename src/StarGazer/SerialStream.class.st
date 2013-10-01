@@ -2,22 +2,38 @@ Class {
 	#name : #SerialStream,
 	#superclass : #Object,
 	#instVars : [
-		'port',
 		'buffer',
-		'position'
+		'position',
+		'io'
 	],
 	#category : #'StarGazer-Stream'
 }
 
 { #category : #construction }
-SerialStream class >> for: aSerialPort [
-	^ self new port: aSerialPort; yourself.
+SerialStream class >> defaultFor: aSerialPort [
+	^ self threaded: aSerialPort.
+]
+
+{ #category : #construction }
+SerialStream class >> forIO: anIOStrategy [ 
+	^ self new io: anIOStrategy ; yourself.
+]
+
+{ #category : #construction }
+SerialStream class >> monothread: aSerialPort [
+	^ self forIO: (SSMonoThreadStrategy for: aSerialPort ).
+]
+
+{ #category : #construction }
+SerialStream class >> threaded: aSerialPort [
+	^ self forIO: (SSDedicatedThreadStrategy  for: aSerialPort ).
 ]
 
 { #category : #cleaup }
 SerialStream >> cleanUpBuffer [
 	buffer := ''.
 	position := 0.
+	io cleanUpBuffer.
 ]
 
 { #category : #cleanup }
@@ -36,6 +52,11 @@ SerialStream >> cleanup [
 SerialStream >> initialize [ 
 	buffer := String new.
 	position := 0.
+]
+
+{ #category : #accessing }
+SerialStream >> io: anIOStrategy [
+	io := anIOStrategy.
 ]
 
 { #category : #accessing }
@@ -61,22 +82,17 @@ SerialStream >> next: anAmount [
 
 { #category : #accessing }
 SerialStream >> nextPut: aCharacter [  
-	port nextPutAll: aCharacter asString; flush.
+	io nextPutAll: aCharacter asString; flush.
 ]
 
 { #category : #accessing }
 SerialStream >> nextPutAll: aStringOrByteArray [
-	port nextPutAll: aStringOrByteArray.
-]
-
-{ #category : #accessing }
-SerialStream >> port: aSerialPort [
-	port := aSerialPort 
+	io nextPutAll: aStringOrByteArray.
 ]
 
 { #category : #accessing }
 SerialStream >> readPort [
-	buffer := (buffer copyFrom: position + 1 to: buffer size), port readString.  
+	buffer := (buffer copyFrom: position + 1 to: buffer size), io read.  
 	position := 0.  
 	
 	

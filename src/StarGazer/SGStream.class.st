@@ -64,7 +64,7 @@ SGStream >> nextMessageOrNoMessage [
 		]
 	] ifTrue: [
 		" If its the expected token, then i just build a message with the content "
-		message := SGMessage for: (serialStream upTo: SGProtocol messageEnd).
+		message := SGMessage for: (serialStream upTo: SGProtocol messageEnd) at: DateAndTime now.
 	].
 
 	^ message.

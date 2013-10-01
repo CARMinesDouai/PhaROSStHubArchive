@@ -2,7 +2,8 @@ Class {
 	#name : #SGMessage,
 	#superclass : #Object,
 	#instVars : [
-		'content'
+		'content',
+		'stamp'
 	],
 	#classInstVars : [
 		'NoMessage'
@@ -21,6 +22,16 @@ SGMessage class >> for: aContentString [
 		self NoMessage.	
 	] ifFalse: [
 		self new content: aContentString; yourself.
+	].
+	
+]
+
+{ #category : #'as yet unclassified' }
+SGMessage class >> for: aContentString at: aStamp [
+	^ aContentString isEmpty ifTrue: [
+		self NoMessage.
+	] ifFalse: [
+		self new content: aContentString; stamp: aStamp ; yourself.
 	].
 	
 ]
@@ -99,6 +110,17 @@ SGMessage >> isAck [
 { #category : #'as yet unclassified' }
 SGMessage >> printOn: aStream [
 	aStream nextPutAll: (content ifNil: ['NoMessage']).
+]
+
+{ #category : #'as yet unclassified' }
+SGMessage >> stamp [ 
+	^stamp 
+]
+
+{ #category : #'as yet unclassified' }
+SGMessage >> stamp: aStamp [
+	stamp := aStamp
+	
 ]
 
 { #category : #'as yet unclassified' }

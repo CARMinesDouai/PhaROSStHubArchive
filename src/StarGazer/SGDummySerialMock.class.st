@@ -9,7 +9,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 SGDummySerialMock >> asSGStream [
-	^ SGStream for: ( SerialStream for: self).
+	^ SGStream for: ( SerialStream monothread: self).
 ]
 
 { #category : #'as yet unclassified' }

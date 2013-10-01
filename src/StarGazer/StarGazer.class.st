@@ -37,10 +37,7 @@ StarGazer class >> default [
 
 	" The default configuration open ttyUSB0, is already able to scan and in stand alone mode (each landmark give the data needed )"
 
-	^ self atPortId: SGGate defaultPortID
-		    withInitialState: SGCalculatingState 
-		    forMode: SGStandAloneMode new. 
-	
+	^ self default:[  self halt: ' you should define a callback ']. 
 ]
 
 { #category : #'as yet unclassified' }
