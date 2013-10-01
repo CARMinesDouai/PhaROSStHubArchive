@@ -43,6 +43,17 @@ TKTQueue >> peek [
 ]
 
 { #category : #'as yet unclassified' }
+TKTQueue >> peekAll [
+	| ord current |
+	
+	ord := OrderedCollection new.
+	
+	[ (current := self peek) notNil ] whileTrue: [ ord add: current ].
+
+	^ ord.
+]
+
+{ #category : #'as yet unclassified' }
 TKTQueue >> peekIfNothing: aBlock [
 	| work theresWork |
 	
