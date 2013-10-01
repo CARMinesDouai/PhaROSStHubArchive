@@ -109,6 +109,16 @@ SGROSStarGazerNodelet >> landmarks [
 	]
 ]
 
+{ #category : #subscribe }
+SGROSStarGazerNodelet >> landmarksAdaptedAs: anAdaption [
+	^
+		(self rosnode buildConnectionFor: SGROSStarGazerNodelet landmarkTopic ) 
+			typedAs: SGROSStarGazerNodelet landmarkTopicType; 
+			adapted: anAdaption ;
+			connect.
+	
+]
+
 { #category : #calculations }
 SGROSStarGazerNodelet >> merge: gpose  with:  landmark [ 
 		| lp rp shift zero |
