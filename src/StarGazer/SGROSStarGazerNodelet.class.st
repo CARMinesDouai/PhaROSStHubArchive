@@ -15,7 +15,7 @@ SGROSStarGazerNodelet class >> absoluteLandmarkTopic [
 
 { #category : #'topic-definition' }
 SGROSStarGazerNodelet class >> absoluteLandmarkTopicType [ 
-	^ 'pharos/SGLandMark'
+	^ 'stargazer/SGLandMark'
 ]
 
 { #category : #dependencies }
@@ -27,7 +27,7 @@ SGROSStarGazerNodelet class >> dependencies [
 
 { #category : #dependencies }
 SGROSStarGazerNodelet class >> landMarkTypeDefinition [
-	^ PhaROSCompositeType named: 'pharos/SGLandMark' definedBy: {
+	^ PhaROSCompositeType named: 'stargazer/SGLandMark' definedBy: {
 		#header -> (PhaROSTypeBrowser instance definition: 'std_msgs/Header'). 
 		#pose -> (PhaROSTypeBrowser instance definition: 'geometry_msgs/Pose') .
 		#landmark -> (PhaROSUInt16Type new)
@@ -41,7 +41,12 @@ SGROSStarGazerNodelet class >> landmarkTopic [
 
 { #category : #'topic-definition' }
 SGROSStarGazerNodelet class >> landmarkTopicType [
-	^  'pharos/SGLandMark'
+	^  'stargazer/SGLandMark'
+]
+
+{ #category : #dependencies }
+SGROSStarGazerNodelet class >> package [
+	^ SGPackage
 ]
 
 { #category : #dependencies }
@@ -137,7 +142,7 @@ SGROSStarGazerNodelet >> merge: gpose  with:  landmark [
 		
 	
 		
-		^ PhaROSPose position: (self nodelets transformation transformBetween: '/base_link' and: '/map') position orientation: PhaROSQuaternion zero .
+		^ PhaROSPose position: gpose position orientation: PhaROSQuaternion zero .
 			
 	
 	"	
