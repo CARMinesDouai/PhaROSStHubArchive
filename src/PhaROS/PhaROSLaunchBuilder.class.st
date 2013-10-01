@@ -487,8 +487,41 @@ PhaROSLaunchBuilder >> stargazer [
 	
 		| conf |
 	
-	conf := self package: 'pharos' type:'headless' named:''.
-	conf args: 'stargazer'.
+	conf := self package: 'stargazer' type:'headless' named:''.
+	conf args: 'startmeasures'.
+	
+	^ conf.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLaunchBuilder >> stargazerAbsoluteLandmarks [
+	
+		| conf |
+	
+	conf := self package: 'stargazer' type:'headless' named:''.
+	conf args: 'absolutelandmark'.
+	
+	^ conf.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLaunchBuilder >> stargazerBasedPose [
+	
+		| conf |
+	
+	conf := self package: 'stargazer' type:'headless' named:''.
+	conf args: 'pose'.
+	
+	^ conf.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLaunchBuilder >> stargazerPoseBasedTF [
+	
+		| conf |
+	
+	conf := self package: 'stargazer' type:'headless' named:''.
+	conf args: 'tf'.
 	
 	^ conf.
 ]

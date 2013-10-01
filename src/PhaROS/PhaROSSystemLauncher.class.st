@@ -40,10 +40,10 @@ PhaROSSystemLauncher class >> path: aCommand [
 ]
 
 { #category : #types }
-PhaROSSystemLauncher >> deployType: aTypeName definedAs: aCompositeType [
+PhaROSSystemLauncher >> deployType: aTypeName definedAs: aCompositeType at: aPackage [
 	
 	| outstream |
-	outstream := StandardFileStream forceNewFileNamed:( self typeFileName: aTypeName).
+	outstream := StandardFileStream forceNewFileNamed:( self typeFileName: aTypeName for: aPackage).
 	outstream ascii.
 	outstream nextPutAll: aCompositeType stringDefinition.
 	outstream flush.
@@ -51,7 +51,7 @@ PhaROSSystemLauncher >> deployType: aTypeName definedAs: aCompositeType [
 	
 	self makeTypes.
 	
-	PhaROSTypeBrowser instance definition: 'pharos/', aTypeName.
+	PhaROSTypeBrowser instance definition: aPackage packageName, '/', aTypeName.
 ]
 
 { #category : #launching }
@@ -72,11 +72,6 @@ PhaROSSystemLauncher >> launch: aConfigurationFileOrBlock [
 { #category : #types }
 PhaROSSystemLauncher >> makeTypes [
 	^ self rosmake: #pharos.
-]
-
-{ #category : #environment }
-PhaROSSystemLauncher >> pharosHome [
-	^ '/home/viki/ros/workspace/src/pharos/'.
 ]
 
 { #category : #types }
@@ -282,6 +277,6 @@ PhaROSSystemLauncher >> startUpTurtle [
 ]
 
 { #category : #environment }
-PhaROSSystemLauncher >> typeFileName: aTypeName [ 
-	^ self pharosHome, '/msg/', aTypeName ,'.msg'.
+PhaROSSystemLauncher >> typeFileName: aTypeName  for: aPackage [ 
+	^ aPackage msg, '/', aTypeName ,'.msg'.
 ]

@@ -57,6 +57,11 @@ PhaROSNodelet class >> hasConstructed: aNodeletInstance [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSNodelet class >> package [
+	self subclassResponsibility.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSNodelet >> configure [
 
 ]
@@ -85,6 +90,7 @@ PhaROSNodelet >> dependencies [
 
 { #category : #'as yet unclassified' }
 PhaROSNodelet >> finalize [
+
 	controller := nil.
 	launch := nil.
 ]
@@ -94,9 +100,9 @@ PhaROSNodelet >> install [
 	self types asDictionary keysAndValuesDo: [ : typeName : definition | 
 		
 		[
-			PhaROSTypeBrowser instance definition: 'pharos/', typeName. 
+			PhaROSTypeBrowser instance definition: self class package name, '/', typeName. 
 		] on: Error do: [
-			PhaROSSystemLauncher instance deployType: typeName definedAs: definition 
+			 self class package deployType: typeName definedAs: definition 
 		].
 	]
 ]

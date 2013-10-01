@@ -113,10 +113,10 @@ PhaROSHandleController >> initialize [
 ]
 
 { #category : #package }
-PhaROSHandleController >> install: aPackage [
-	aPackage install.
-	aPackage controller: self. 
-	aPackage configure
+PhaROSHandleController >> install: aNodelet [
+	aNodelet install.
+	aNodelet controller: self. 
+	aNodelet configure
 ]
 
 { #category : #accessing }

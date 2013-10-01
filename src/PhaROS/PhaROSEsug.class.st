@@ -2,7 +2,6 @@ Class {
 	#name : #PhaROSEsug,
 	#superclass : #PhaROSPackage,
 	#instVars : [
-		'controller',
 		'launch'
 	],
 	#category : #'PhaROS-PackageManager'
@@ -117,7 +116,7 @@ PhaROSEsug >> make: aHandler pursuit: anOtherHandler [
 		[
 		"(anOtherHandler pose notNil and: [ aHandler pose notNil ]) ifTrue:["
 			| trs linear angular |
-			trs :=  controller nodelets transformation transformBetween: anOtherHandler  frame and: aHandler  frame.
+			trs :=  self controller nodelets transformation transformBetween: anOtherHandler  frame and: aHandler  frame.
 			Transcript show: trs; cr.
 			linear := (trs position module2d) * 0.5.
 			angular :=4 * ( trs position y arcTan: trs position x).
@@ -179,7 +178,7 @@ PhaROSEsug >> scriptTurtlesimPharo [
 		A Controller is an object that build a base and unique node which represent the input and output of information between this image and ROS world
 	"
 	
-	controller := PhaROSHandleController turtlesim.
+	self controller.
 	
 	"
 		In order to add behavior to a node we have the concept of Nodelet, (which is  similar to the ROS nodelet, because it runs without communication cost in between inner nodelets, 
@@ -189,7 +188,7 @@ PhaROSEsug >> scriptTurtlesimPharo [
 	"
 	
 	
-	handler := controller nodelets turtlesim defaultTurtleHandler.
+	handler := self controller nodelets turtlesim defaultTurtleHandler.
 	handler algorithm: self drawPharo.
 	
 	"
@@ -218,9 +217,9 @@ PhaROSEsug >> scriptTurtlesimPursuitTurtles [
 		spec turtlesim.	
 	].
 
-	controller := PhaROSHandleController turtlesim.
+
 	
-	handler := controller nodelets turtlesim defaultTurtleHandler.
+	handler := self controller nodelets turtlesim defaultTurtleHandler.
 	
 	
 	
@@ -228,8 +227,8 @@ PhaROSEsug >> scriptTurtlesimPursuitTurtles [
 		This following method is based in a command, because services are not yet completely reificated. It spawns a turtle using rosservice command 
 	"
 	
-	controller nodelets turtlesim spawnTurtle: 'turtle2'.
-	handlerTurtle2 := controller nodelets turtlesim turtleHandleFor: 'turtle2'.
+	self controller nodelets turtlesim spawnTurtle: 'turtle2'.
+	handlerTurtle2 := self controller nodelets turtlesim turtleHandleFor: 'turtle2'.
 	
 	"
 		tf messages, one per each turtle-handler, rely on a PhaROSPoseToTFNodelet object, which is an excelent example to show how nice the nodelets are.  This nodelet, based on the Pose that the turtle inform, broadcast tf information in the proper frame. 

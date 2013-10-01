@@ -1,6 +1,9 @@
 Class {
 	#name : #PhaROSPackage,
 	#superclass : #Object,
+	#instVars : [
+		'controller'
+	],
 	#classInstVars : [
 		'instance',
 		'location'
@@ -38,6 +41,16 @@ PhaROSPackage class >> cmake [
 PhaROSPackage class >> create: aLocation [
 	location := aLocation.
 	PhaROSPackageManager new create: self 
+]
+
+{ #category : #accessing }
+PhaROSPackage class >> definedNodelets [
+	^ {}
+]
+
+{ #category : #abstract }
+PhaROSPackage class >> deployType: aType definedAs: aTypeDefinition [
+	^ PhaROSSystemLauncher instance deployType: aType definedAs: aTypeDefinition at: self.
 ]
 
 { #category : #abstract }
@@ -199,6 +212,21 @@ PhaROSPackage class >> vmFolder [
 { #category : #abstract }
 PhaROSPackage class >> xml [
 	self subclassResponsibility.
+]
+
+{ #category : #scripts }
+PhaROSPackage >> buildController [ 
+	self subclassResponsibility.
+]
+
+{ #category : #scripts }
+PhaROSPackage >> controller [
+	^ controller ifNil: [ controller := self buildController ].
+]
+
+{ #category : #scripts }
+PhaROSPackage >> definedNodelets [
+	^ {}
 ]
 
 { #category : #scripts }
