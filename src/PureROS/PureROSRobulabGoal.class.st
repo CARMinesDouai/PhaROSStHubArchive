@@ -71,10 +71,18 @@ PureROSRobulabGoal >> goal: aGoal [
 ]
 
 { #category : #testing }
-PureROSRobulabGoal >> hasArrived: lmk [
+PureROSRobulabGoal >> hasArrived: aLocalizerMeasure [ 
 	Transcript show: ' asking arrival '; cr.
 	checks := checks +1.
- 	^ (entity id = lmk landmark and: [ checks > 5 and: [ (PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d < 0.7  ] ]) or: [ self status = Actionlib_msgsGoalStatus succeeded ].
+  
+	^ (
+			entity id = aLocalizerMeasure id 
+			and: [ checks > 5 
+				and: [ aLocalizerMeasure pose position module2d < 0.7  ] 
+			]
+		) or: [ 
+			self status = Actionlib_msgsGoalStatus succeeded 
+		].
 ]
 
 { #category : #behavior }
@@ -97,7 +105,7 @@ PureROSRobulabGoal >> landmarkDriving: lmk [
 ]
 
 { #category : #event }
-PureROSRobulabGoal >> onArrivalToLandmark: aLandmark [
+PureROSRobulabGoal >> onArrivalToGoal: aLocalizerMeasure [ 
 	
 	checks := 0. 
 	[
@@ -107,14 +115,6 @@ PureROSRobulabGoal >> onArrivalToLandmark: aLandmark [
 		goal cancel.
 	] doIt .
 	
-	 
-
-
-	"
-	landmarkEvent := robulab nodelets sgevents whenLandmark: [ :lmk | true ] do: [ : lmk |
-		self differentialGoal:   lmk.
-	 ].
-	"
 ]
 
 { #category : #accessing }
@@ -156,7 +156,11 @@ PureROSRobulabGoal >> trajectoryDifferential: aPose [
 PureROSRobulabGoal >> tryAchieveGoal [
 
 	event ifNil: [
-		event := robulab nodelets sgevents whenLandmark: [ :lmk | self hasArrived: lmk. ] doOnce: [ : lmk | self onArrivalToLandmark: lmk ].
+		event := robulab nodelets spaceEvents whenLocalizerMeasure:  [ :lm | 
+			self hasArrived: lm. 
+		] doOnce: [ : lm | 
+			self onArrivalToGoal: lm 
+		].
 	].	
 	
 	self trajectoryDifferential:  (entity annotation: #lastPose) .

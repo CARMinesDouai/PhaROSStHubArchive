@@ -131,23 +131,14 @@ PureROSRobulabNodelet >> goToEntityID: anId [
 	^self goTo: (self nodelets localizer entity: anId).
 ]
 
+{ #category : #service }
+PureROSRobulabNodelet >> landmarksFile [
+	^ 'map-landmarks-inner.st'
+]
+
 { #category : #consume }
 PureROSRobulabNodelet >> poseStamped [
 	^( self rosnode buildConnectionFor:  PureROSRobulabNodelet poseStampedTopicForConsume )typedAs: PureROSRobulabNodelet poseStampedTopicType;  adapted: #pose \> PhaROSPose  ; connect.
-]
-
-{ #category : #'as yet unclassified' }
-PureROSRobulabNodelet >> relocalize: lmk [
-		| event abpose |
-		abpose := PhaROSPose fromGeometry_msgsPose: lmk pose.
-		
-		event := self nodelets sgevents whenLandmark: [ : dlmk | dlmk landmark = lmk landmark  ] doOnce: [ :dlmk |
-			| relpose  |
-			relpose := PhaROSPose fromGeometry_msgsPose: dlmk pose.	
-			self nodelets initialpose initialPose: (PhaROSPose position: abpose position + relpose position orientation: relpose orientation ).
-		]. 
-	
-		[ 2 seconds asDelay wait. relocatorEvent rescheddule ] doIt.
 ]
 
 { #category : #'as yet unclassified' }
@@ -170,7 +161,7 @@ PureROSRobulabNodelet >> rpc [
 
 { #category : #service }
 PureROSRobulabNodelet >> saveLandmarks [
-	self nodelets localizer fileout: 'map-landmarks-inner.st'.
+	self nodelets localizer fileout: self landmarksFile.
 	
 ]
 

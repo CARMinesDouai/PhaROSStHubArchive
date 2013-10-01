@@ -40,9 +40,7 @@ PureROSMoveBaseLandmarkNavigation >> goTo: anEntity [
 { #category : #'as yet unclassified' }
 PureROSMoveBaseLandmarkNavigation >> robulab:  aRobulabNodelet [
 	robulab := aRobulabNodelet.
-	robulab nodelets use: SGStargazerEventManager as: #sgevents.
-	
-	
-	
-	 
+	robulab nodelets use: PhaROSSpaceEventManager as: #spaceEvents.
+	self flag: #flag.
+	" REMEMBER TO CONFIGURE THE SPACE SENSOR "
 ]

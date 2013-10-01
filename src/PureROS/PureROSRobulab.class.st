@@ -421,7 +421,7 @@ PureROSRobulab >> scriptLandmarkAutoNavigation [
 
 	bot := experiment robulab.
 	
-	experiment controller nodelets localizer filein: 'map-landmarks-inner.st'.
+	experiment controller nodelets localizer filein: bot landmarksFile.
 	experiment controller nodelets localizer transformations.
 	
 	self setupPoseTracker.
@@ -448,7 +448,8 @@ PureROSRobulab >> scriptLandmarkNavigation [
 	bot := experiment robulab.
 	bot rpc.
 	
-	experiment controller nodelets localizer filein: 'map-landmarks-inner.st'.
+	experiment controller nodelets spaceEvents useTfSensorTo:'/base_link'.
+	experiment controller nodelets localizer filein: bot landmarksFile.
 	
 	"experiment controller nodelets localizer filein: 'odometry-landmarks-inner.st'.
 	"
@@ -545,6 +546,30 @@ PureROSRobulab >> scriptOdometry [
 	
 	
 
+]
+
+{ #category : #'scripts-navigation' }
+PureROSRobulab >> scriptPoseRecording [
+
+	| bot |
+	controller := PhaROSHandleController robulab2. 
+	bot := controller nodelets robulab.
+	
+	controller nodelets use: PhaROSPoseTrackerNodelet as: #poseTracker.
+	controller nodelets poseTracker transformations.
+	Transcript open.
+
+	self halt: 'Execute the next line each time that the robot is in the wanted pose. (Remember to care about where the robot is facing). In case of navigation points, mind the static obstacles in RViz!'.
+	
+	controller nodelets poseTracker recordCurrentPose.
+	
+	self halt: 'After you have recorded all the poses, you need to execute the next line in order to save the poses in a file. Take in care that this process will override all previous poses overriding the file! '.
+	
+	controller nodelets poseTracker save: bot landmarksFile.
+	
+	
+	self quit. 
+	
 ]
 
 { #category : #'scripts-stargazer-conf' }
@@ -650,21 +675,22 @@ PureROSRobulab >> scriptStandAloneMapBuildingStargazer [
 	stream nextPutAll: 'Starting landmark place recognition ', String lf.
 	controller nodelets localizer learn:(  controller nodelets stargazer absoluteLandmarks ) .
 	
-	controller nodelets sgevents whenLandmark: [ : lmk | controller nodelets localizer scannedEntities size >= 4 ] doOnce: [ : lmk | 
+	controller nodelets spaceEvents whenLocalizerMeasure:  [ : lm | 
+		controller nodelets localizer scannedEntities size >= 4 
+	] doOnce: [ : lm | 
 		stream nextPutAll: 'Saving landmark map', String lf.
 		controller nodelets localizer fileout: 'odometry-landmarks-inner.st'. 
 		self quit. 
-	]. 
+	].
 	
-	controller nodelets sgevents whenLandmark: [ : lmk | lmk landmark = 82 ] do: [ : lmk | 
+	controller nodelets spaceEvents whenLocalizerMeasure: [ : lm |  lm id = 82 ] do: [ : lm | 
 		|now |
 		now := DateAndTime now .
 		(now - lastPoseSettedStamp ) asSeconds > 1 ifTrue: [
-			controller nodelets initialpose initialPose:  (PhaROSPose fromGeometry_msgsPose:  lmk pose). 
+			controller nodelets initialpose initialPose:  lm pose . 
 			lastPoseSettedStamp := now.
 		]
-	]. 
-	
+	]. 	
 	
 	2 seconds asDuration asDelay wait.
 
@@ -836,15 +862,15 @@ PureROSRobulab >> scriptTfSG [
 ]
 
 { #category : #private }
-PureROSRobulab >> setPoseWith: lmk [
+PureROSRobulab >> setPoseWith: aLocalizerMeasure [ 
 	| entity pose lp |
 		lastPoseSettedStamp := DateAndTime now.
-		entity := (experiment controller nodelets localizer entity: lmk landmark).
+		entity := (experiment controller nodelets localizer entity: aLocalizerMeasure id).
 		
 		
 		pose := entity center.
 		
-		lp := PhaROSPose fromGeometry_msgsPose: lmk pose.
+		lp := aLocalizerMeasure pose.
 		pose orientation: ( PhaROS2DOrientation z: lp orientation as2DOrientation z * -1).
 		pose position: pose position + lp position.
 		
@@ -865,20 +891,20 @@ PureROSRobulab >> setPoseWith: lmk [
 PureROSRobulab >> setupPoseRecognizer [
 
 	lastPoseSettedStamp := DateAndTime now - 1 minute.
-	experiment controller  nodelets sgevents whenLandmark: [ : lmk |  
-		lastId = lmk landmark ifTrue: [
+	experiment controller  nodelets spaceEvents whenLocalizerMeasure:  [ : lm |  
+		lastId = lm id ifTrue: [
 			checked := checked + 1.	
 		] ifFalse: [
 			checked := 0.
 		].
-		lastId := lmk landmark.
+		lastId := lm id.
 		(DateAndTime now - lastPoseSettedStamp ) asSeconds > 4 and: [ 
 			checked > 5 and: [
-				 (PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d < 1 
+				lm pose position module2d < 1 
 			]	
 		]
-	] do: [ : lmk | 
-		self setPoseWith: lmk.
+	] do: [ : lm | 
+		self setPoseWith: lm.
 	].
 	
 	
@@ -886,18 +912,18 @@ PureROSRobulab >> setupPoseRecognizer [
 
 { #category : #private }
 PureROSRobulab >> setupPoseTracker [
-	experiment controller  nodelets sgevents whenLandmark: [ : lmk |  
+	experiment controller  nodelets spaceEvents whenLocalizerMeasure:  [ : lm |  
 		| entity |
-		entity := (experiment controller nodelets localizer entity: lmk landmark).
+		entity := (experiment controller nodelets localizer entity: lm id).
 		(entity annotation: #measureStamp) isNil or: [
 			( DateAndTime now - (entity annotation: #measureStamp)) asSeconds > 10 or: [ 
-				(entity annotation: #lastPose ) position module2d > (PhaROSPose fromGeometry_msgsPose: lmk pose) position module2d 
+				(entity annotation: #lastPose ) position module2d > lm pose position module2d 
 			]
 		].
-	] do: [ : lmk | 
+	] do: [ : lm | 
 		| entity |
-		entity := (experiment controller nodelets localizer entity: lmk landmark).
-		entity annotate:#lastPose with: (experiment controller  nodelets transformation frame:'/base_link' ) pose.
+		entity := (experiment controller nodelets localizer entity: lm id).
+		entity annotate:#lastPose with: (experiment controller nodelets transformation frame:'/base_link' ) pose.
 		entity annotate:#measureStamp with: DateAndTime now.
 	].
 	
