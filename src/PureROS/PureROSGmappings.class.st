@@ -25,7 +25,8 @@ PureROSGmappings >> setup [
 	self launch: [ : spec |
 		spec gmapping.
 		spec rviz.
-		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
+		spec staticZeroTFFrom: '/base_link'  to: '/laser'. 
+		spec staticZeroTFFrom: '/base_footprint'  to: '/base_link'. 
 		spec staticZeroTFFrom: '/map'  to: '/odom_combined'.
 		spec staticZeroTFFrom: '/base_footprint'  to: '/MT0'.
 	].

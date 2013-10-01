@@ -296,6 +296,19 @@ PureROSRobulab >> configureEnvironment: aStarGazer [
 ]
 
 { #category : #private }
+PureROSRobulab >> finalize [
+	super finalize .
+	controller ifNotNil: [ 
+		controller finalize.
+		controller := nil.
+		].
+	experiment ifNotNil:[ 
+		experiment finalize.
+		experiment := nil.	
+	]
+]
+
+{ #category : #private }
 PureROSRobulab >> kompaiAbsolutePose: aPose [
 	self kompaiAbsolutePoseTopic send: [ : msg | msg pose: aPose asGeometry_msgsPose ].
 ]
@@ -310,7 +323,7 @@ PureROSRobulab >> kompaiAbsolutePoseTopic [
 { #category : #'scripts-launchers' }
 PureROSRobulab >> mapFile [ 
 
-	^ '/home/kompai1/map/map.yaml'
+	^ '/home/viki/map/map.yaml'
 ]
 
 { #category : #private }
@@ -327,6 +340,7 @@ PureROSRobulab >> poseStampedSg: aPose withFrame: aFrameID [
 
 	self poseStampedSgOut send: [
 		: msg | 
+		aPose orientation: aPose orientation as2DOrientation / -1 .
 		aPose intoGeometry_msgs_Pose: msg pose.
 		msg header frame_id: aFrameID.
 	]
@@ -552,10 +566,12 @@ PureROSRobulab >> scriptSetUpMapBuildingStargazer [
 	stream nextPutAll: 'Setting markMode - Map', String lf.
 	sg markMode: 'Map'.
 	stream nextPutAll: 'Setting RefID - 82', String lf.
-	sg refID: '82'.
+	sg refID: '32'.
 	stream nextPutAll: 'Setting IdNum- 4', String lf.
 	sg idNum: 4.
-	stream nextPutAll: 'Starting map building', String lf.
+	
+	
+	self quit.
 	
 
 
@@ -614,26 +630,6 @@ PureROSRobulab >> scriptSetUpStandAloneStargazer [
 	self quit.
 ]
 
-{ #category : #'scripts-launchers' }
-PureROSRobulab >> scriptStagazerOdometryBased [
-		
-	process:= PhaROSSystemLauncher  instance launch: [: spec | 
-		spec mapServer: self mapFile.
-		spec kompaiTF .
-		spec kompaiOdometry .
-		spec moveBase.
-		spec velocitySmoother.
-		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
-		spec staticZeroTFFrom: '/map'  to: '/odom'.  
-		spec relay: '/kompai2/pose' to: '/pose' named: 'pose_relay'.
-		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
-		spec relay: '/kompai/tf' to: '/tf' named: 'tf_relay'.
-		spec rviz.
-	].
-	
-
-]
-
 { #category : #'scripts-stargazer' }
 PureROSRobulab >> scriptStandAloneMapBuildingStargazer [
 
@@ -683,9 +679,30 @@ PureROSRobulab >> scriptStandAloneMapBuildingStargazer [
 PureROSRobulab >> scriptStargazer [
 
 	controller := PhaROSHandleController stargazer.	
-	tfpose := controller nodelets transformation between: PureROSRobulabNodelet mapFrame and: PureROSRobulabNodelet baseLinkFrame.
-	controller nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0" . 8192 . 80" }.
-	controller nodelets stargazer mergeWithPose: tfpose.	
+	"tfpose := controller nodelets transformation between: PureROSRobulabNodelet mapFrame and: PureROSRobulabNodelet baseLinkFrame.
+	"
+	controller nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 . 8192 . 80 . 112 . 965 . 32 . 576 }.
+	"
+	controller nodelets stargazer mergeWithPose: tfpose.
+"
+]
+
+{ #category : #'scripts-launchers' }
+PureROSRobulab >> scriptStargazerBased [
+		
+	process:= PhaROSSystemLauncher  instance launch: [: spec | 
+		spec mapServer: self sgMapfile.
+		spec kompaiTF .
+		spec kompaiOdometry .
+		spec moveBase.
+		spec velocitySmoother.
+		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
+		spec staticZeroTFFrom: '/map'  to: '/odom'.  
+		spec relay: '/stargazer/pose' to: '/pose' named: 'pose_relay'.
+		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
+		spec relay: '/kompai/tf' to: '/tf' named: 'tf_relay'.
+		spec rviz.
+	].
 	
 
 ]
@@ -724,7 +741,7 @@ PureROSRobulab >> scriptStargazerConfiguration [
 	self quit.
 ]
 
-{ #category : #'scripts-stargazer-conf' }
+{ #category : #'scripts-stargazer' }
 PureROSRobulab >> scriptStargazerMapBuildingMode [
 
 	| sg stream |
@@ -755,6 +772,26 @@ PureROSRobulab >> scriptStargazerMapBuildingMode [
 
 ]
 
+{ #category : #'scripts-launchers' }
+PureROSRobulab >> scriptStargazerOdometryBased [
+		
+	process:= PhaROSSystemLauncher  instance launch: [: spec | 
+		spec mapServer: self mapFile.
+		spec kompaiTF .
+		spec kompaiOdometry .
+		spec moveBase.
+		spec velocitySmoother.
+		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
+		spec staticZeroTFFrom: '/map'  to: '/odom'.  
+		spec relay: '/kompai2/pose' to: '/pose' named: 'pose_relay'.
+		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
+		spec relay: '/kompai/tf' to: '/tf' named: 'tf_relay'.
+		spec rviz.
+	].
+	
+
+]
+
 { #category : #'scripts-transformers-sg' }
 PureROSRobulab >> scriptStargazerPose [
 
@@ -762,7 +799,14 @@ PureROSRobulab >> scriptStargazerPose [
 	
 	controller nodelets stargazer landmarks for: [
 		: lmk |
-		self poseStampedSg: (PhaROSPose fromGeometry_msgsPose: lmk pose) withFrame: '/landmark82'.
+		| x y | 
+		lmk pose position z: 0.0. 
+		x := lmk pose position y * -1.
+		y := lmk pose position x * 1.
+		lmk pose position x:  x. 
+		lmk pose position y:  y.
+		
+		self poseStampedSg: (PhaROSPose fromGeometry_msgsPose: lmk pose) withFrame: '/landmark/82'.
 	].
 
 	
@@ -783,7 +827,8 @@ PureROSRobulab >> scriptTf [
 PureROSRobulab >> scriptTfSG [
 	controller := PhaROSHandleController robulab2.
 	controller nodelets use: PhaROSPoseToTFNodelet  as: #pose2tf.
-	controller nodelets pose2tf express: self poseStampedSg as: PureROSRobulabNodelet baseLinkFrame childOf: '/landmark82'.
+	"/landmark/82"
+	controller nodelets pose2tf express: self poseStampedSg as: '/base_link'childOf: '/odom'.
 
 	
 
@@ -857,4 +902,9 @@ PureROSRobulab >> setupPoseTracker [
 	].
 	
 	
+]
+
+{ #category : #'scripts-launchers' }
+PureROSRobulab >> sgMapfile [ 
+	^ '/home/viki/ros/workspace/src/pharos/image/map.yaml'
 ]
