@@ -174,7 +174,12 @@ PhaROSLocalizerNodelet >> mapPoints [
 PhaROSLocalizerNodelet >> register: aMeasure [ 
 	| measure | 
 	self flag: #uncoupleLandmarkFromLocalizerPackage.
-	measure := PhaROSLocalizerMeasure fromPharosSGLandMark: aMeasure.
+	(aMeasure isKindOf: PharosSGLandMark) ifTrue: [
+		measure := PhaROSLocalizerMeasure fromPharosSGLandMark: aMeasure.	
+	] ifFalse:[
+		measure := aMeasure asLocalizerMeasure.
+	]. 
+	
 	(entities at: measure id ifAbsentPut: [ PhaROSLocalizerEntity for: measure id ]) add: measure .
 ]
 

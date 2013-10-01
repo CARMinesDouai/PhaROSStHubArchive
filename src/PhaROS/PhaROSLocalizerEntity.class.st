@@ -173,6 +173,11 @@ PhaROSLocalizerEntity >> locate: aPose [
 	^ self center asPose + aPose.
 ]
 
+{ #category : #'as yet unclassified' }
+PhaROSLocalizerEntity >> makeImmutable [
+	adding := false.
+]
+
 { #category : #converting }
 PhaROSLocalizerEntity >> match: aPose [
 	^ adding not and: [ (self center position - aPose position ) module2d  <  0.1 ].

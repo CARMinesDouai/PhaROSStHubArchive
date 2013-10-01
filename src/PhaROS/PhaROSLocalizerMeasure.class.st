@@ -14,6 +14,16 @@ PhaROSLocalizerMeasure class >> fromPharosSGLandMark: aLandmark [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSLocalizerMeasure class >> id: anId pose: aPose [
+	^ self new id: anId; pose: aPose; yourself.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLocalizerMeasure >> asLocalizerMeasure [
+	^ self.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSLocalizerMeasure >> id [
 	^ id
 ]
