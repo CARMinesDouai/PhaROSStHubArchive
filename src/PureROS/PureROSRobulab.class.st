@@ -448,7 +448,9 @@ PureROSRobulab >> scriptLandmarkNavigation [
 	bot := experiment robulab.
 	bot rpc.
 	
-	experiment controller nodelets spaceEvents useTfSensorTo:'/base_link'.
+	experiment controller nodelets spaceEvents registerLocalizationSensor: ( 
+			bot nodelets stargazer landmarksAdaptedAs: PhaROSLocalizerMeasure 
+	).
 	experiment controller nodelets localizer filein: bot landmarksFile.
 	
 	"experiment controller nodelets localizer filein: 'odometry-landmarks-inner.st'.
@@ -545,6 +547,36 @@ PureROSRobulab >> scriptOdometry [
 	controller nodelets odometer transformToOdometry: controller nodelets robulab  poseStamped.
 	
 	
+
+]
+
+{ #category : #'as yet unclassified' }
+PureROSRobulab >> scriptPointNavigation [
+
+	| bot |
+	experiment := PureROSAMCLBasedPathPlanning robulab2.
+	experiment beginExperiment.	
+
+	bot := experiment robulab.
+	bot rpc.
+	
+	experiment controller nodelets spaceEvents useTfSensorTo:'/base_link'.
+	experiment controller nodelets localizer filein: bot landmarksFile.
+	
+	"experiment controller nodelets localizer filein: 'odometry-landmarks-inner.st'.
+	"
+	experiment controller nodelets localizer transformations.
+	
+
+	self setupPoseTracker.
+	self setupPoseRecognizer.
+
+	
+	bot inspect.
+	
+
+
+
 
 ]
 
