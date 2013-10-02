@@ -293,20 +293,7 @@ PureROSRobulab >> finalize [
 
 { #category : #'scripts-launchers' }
 PureROSRobulab >> mapFile [ 
-
-	^ '/home/viki/map/map.yaml'
-]
-
-{ #category : #'scripts-navigation' }
-PureROSRobulab >> scriptAmcl [
-
-	| bot |
-	experiment := PureROSAMCLBasedPathPlanning robulab2.
-	experiment beginExperiment.	
-
-	bot := experiment robulab.
-	
-	bot inspect.
+	^ self class imageFolder  , '/map/map.yaml'
 ]
 
 { #category : #'scripts-launchers' }
@@ -596,7 +583,9 @@ PureROSRobulab >> scriptStargazerOdometryBased [
 PureROSRobulab >> scriptTf [
 	controller := PhaROSHandleController robulab2.
 	controller nodelets use: PhaROSPoseToTFNodelet  as: #pose2tf.
-	controller nodelets pose2tf express: controller nodelets robulab poseStamped as: PureROSRobulabNodelet baseLinkFrame childOf: PureROSRobulabNodelet baseLinkParentFrame.
+	controller nodelets pose2tf express: controller nodelets robulab poseStamped 
+									    as: PureROSRobulabNodelet baseLinkFrame 
+								   childOf: PureROSRobulabNodelet baseLinkParentFrame.
 
 	
 ]
@@ -672,5 +661,5 @@ PureROSRobulab >> setupPoseTracker [
 
 { #category : #'scripts-launchers' }
 PureROSRobulab >> sgMapfile [ 
-	^ '/home/viki/ros/workspace/src/pharos/image/map.yaml'
+	^ self class imageFolder , '/map/map.yaml'
 ]
