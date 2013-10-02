@@ -131,7 +131,7 @@ PhaROSPackageManager >> install: aPackage linkingVM: aVMBinaryPath copyingImage:
 		(StandardFileStream forceNewFileNamed: aPackage cMakeList ) nextPutAll: aPackage cmake withUnixLineEndings  ; close.
 		(StandardFileStream forceNewFileNamed: aPackage packageXML ) nextPutAll: aPackage xml withUnixLineEndings ; close.
 		
-		self inflatePackage: aPackage linkingVM: aVMBinaryPath copyingImage: anImagePath  changes: aChangesFilePath andSource: aSourceFile  
+		self inflatePackage: aPackage linkingVM: aVMBinaryPath copyingImage: anImagePath  changes: aChangesFilePath andSource: aSourceFile . 
 
 		aPackage installScripts.
 	
