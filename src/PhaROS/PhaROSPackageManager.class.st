@@ -85,7 +85,7 @@ PhaROSPackageManager >> create: aPackage linkingVM: aVMBinaryPath copyingImage: 
 { #category : #private }
 PhaROSPackageManager >> inflatePackage: aPackage  linkingVM: aVMBinaryPath copyingImage: anImagePath   changes: aChangesFilePath andSource: aSourceFile [
 
-		 { aPackage vmFolder . aPackage imageFolder . aPackage msg . aPackage build . aPackage bin . aPackage scripts } 
+		 { aPackage vmFolder . aPackage imageFolder . aPackage msg . aPackage build . aPackage bin . aPackage scripts . aPackage path, '/include' } 
 		do: [ :path | FileSystem disk createDirectory: path.].  
 	
 
@@ -137,4 +137,9 @@ PhaROSPackageManager >> install: aPackage linkingVM: aVMBinaryPath copyingImage:
 	
 
 	]
+]
+
+{ #category : #private }
+PhaROSPackageManager >> make: aPackage [
+	OSProcess command: ('cd {1}; cd .. ; catkin_make' format: { aPackage location }).
 ]

@@ -48,8 +48,8 @@ PhaROSSystemLauncher >> deployType: aTypeName definedAs: aCompositeType at: aPac
 	outstream nextPutAll: aCompositeType stringDefinition.
 	outstream flush.
 	outstream close.
-	
-	self makeTypes.
+	self halt: 'Ensure that the CMakeLists.txt and package.xml files are suited for the compilation of the type, then press proceed '.
+	aPackage make.
 	
 	PhaROSTypeBrowser instance definition: aPackage packageName, '/', aTypeName.
 ]
@@ -67,11 +67,6 @@ PhaROSSystemLauncher >> launch: aConfigurationFileOrBlock [
 	].
 
 	^ (self roslaunch: path) asStickyReference.
-]
-
-{ #category : #types }
-PhaROSSystemLauncher >> makeTypes [
-	^ self rosmake: #pharos.
 ]
 
 { #category : #types }
@@ -147,39 +142,6 @@ PhaROSSystemLauncher >> roslaunch: aConfigurationFile [
 	roslaunch spin: 50.
 	
 	^ roslaunch.
-
-]
-
-{ #category : #make }
-PhaROSSystemLauncher >> rosmake: aPackage [
-	| rosmake outstream errstream  return |
-	
-	
-	outstream := StandardFileStream forceNewFileNamed: '/tmp/',aPackage,'.tmp'.
-	errstream := StandardFileStream forceNewFileNamed: '/tmp/error_',aPackage,'.tmp'.
-	
-	rosmake  :=  ExternalUnixOSProcess 
-							forkAndExec:  (PhaROSSystemLauncher path:'rosmake' )  
-							arguments: {aPackage} 
-							environment:  nil 
-							descriptors: { FileStream stdin . outstream . errstream } .  
-		
-	[ rosmake isComplete not ] whileTrue: [
-		(Delay forMilliseconds: 100) wait.
-	].
-	
-	rosmake succeeded ifTrue: [
-		return := outstream reset; upToEnd.
-		outstream close.
-		errstream close.
-	] ifFalse: [
-		(outstream reset; upToEnd) inspect.
-		Error signal: 'Error making package. Is this process running in a ROS environment?'.
-		outstream close.
-		errstream close.
-	].
-
-	^ return.
 
 ]
 

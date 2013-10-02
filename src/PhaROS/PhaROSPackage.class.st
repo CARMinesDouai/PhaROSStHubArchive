@@ -147,6 +147,13 @@ PhaROSPackage class >> mainHeadless [
 	^ self bin, '/headless'.
 ]
 
+{ #category : #abstract }
+PhaROSPackage class >> make [
+	self isInstalled ifTrue: [
+		PhaROSPackageManager make: self.
+	].
+]
+
 { #category : #path }
 PhaROSPackage class >> msg [
 	^ self path ,'/msg'
