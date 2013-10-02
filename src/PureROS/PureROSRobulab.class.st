@@ -273,7 +273,7 @@ PureROSRobulab class >> xml [
 	
 ]
 
-{ #category : #'scripts-launchers' }
+{ #category : #private }
 PureROSRobulab >> buildController [ 
 	self halt: 'mmm this should not be called yet. Refactor first'.
 ]
@@ -291,17 +291,17 @@ PureROSRobulab >> finalize [
 	]
 ]
 
-{ #category : #'scripts-launchers' }
+{ #category : #private }
 PureROSRobulab >> mapFile [ 
 	^ self class imageFolder  , '/map/map.yaml'
 ]
 
-{ #category : #'scripts-launchers' }
+{ #category : #'scripts-launchers-base' }
 PureROSRobulab >> scriptAmclBased [
 		
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
 		
-		spec kompaiTF .
+		spec kompaiTF.
 		spec kompaiOdometry .
 		spec mapServer: self mapFile.
 		spec amcl.
@@ -310,7 +310,8 @@ PureROSRobulab >> scriptAmclBased [
 		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
 		spec relay: '/kompai2/pose' to: '/pose' named: 'pose_relay'.
 		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
-		spec relay: '/kompai/tf' to: '/tf' named: 'tf_relay'.
+		spec relay: '/pharos/out/tf' to: '/tf' named: 'tf_out_relay'.
+		spec relay: '/tf' to: '/pharos/in/tf' named: 'tf_in_relay'.
 		spec rviz.
 	].
 	
@@ -383,7 +384,7 @@ PureROSRobulab >> scriptLandmarkNavigation [
 
 ]
 
-{ #category : #'scripts-navigation' }
+{ #category : #'scripts-points' }
 PureROSRobulab >> scriptLandmarksRecognition [
 
 	| bot |
@@ -411,25 +412,12 @@ PureROSRobulab >> scriptLandmarksRecognition [
 ]
 
 { #category : #'scripts-launchers' }
-PureROSRobulab >> scriptLaunchStargazer [
-	
-	process:= PhaROSSystemLauncher  instance launch: [: spec | 
-		spec stargazer.
-	].
-	
-
-]
-
-{ #category : #'scripts-launchers' }
 PureROSRobulab >> scriptMapBuilding [
 
-	| bot |
-	experiment := PureROSGmappings robulab2.
-	experiment beginExperiment.	
-
-	bot := experiment robulab.
-	
-	bot inspect.
+	process:= PhaROSSystemLauncher  instance launch: [ : spec |
+		spec gmapping.
+		spec rviz.
+	].
 ]
 
 { #category : #'scripts-transformers' }
@@ -473,7 +461,7 @@ PureROSRobulab >> scriptPointNavigation [
 
 ]
 
-{ #category : #'scripts-navigation' }
+{ #category : #'scripts-points' }
 PureROSRobulab >> scriptPoseRecording [
 
 	| bot |
@@ -539,7 +527,7 @@ PureROSRobulab >> scriptStandAloneMapBuildingStargazer [
 	
 ]
 
-{ #category : #'scripts-launchers' }
+{ #category : #'scripts-launchers-base' }
 PureROSRobulab >> scriptStargazerBased [
 		
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
@@ -552,17 +540,18 @@ PureROSRobulab >> scriptStargazerBased [
 		spec staticZeroTFFrom: '/map'  to: '/odom'.  
 		spec relay: '/stargazer/pose' to: '/pose' named: 'pose_relay'.
 		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
-		spec relay: '/kompai/tf' to: '/tf' named: 'tf_relay'.
+		spec relay: '/pharos/out/tf' to: '/tf' named: 'tf_out_relay'.
+		spec relay: '/tf' to: '/pharos/in/tf' named: 'tf_in_relay'.
 		spec rviz.
 	].
 	
 
 ]
 
-{ #category : #'scripts-launchers' }
+{ #category : #'scripts-launchers-base' }
 PureROSRobulab >> scriptStargazerOdometryBased [
 		
-	process:= PhaROSSystemLauncher  instance launch: [: spec | 
+	process := PhaROSSystemLauncher  instance launch: [: spec | 
 		spec mapServer: self mapFile.
 		spec kompaiTF .
 		spec kompaiOdometry .
@@ -572,7 +561,8 @@ PureROSRobulab >> scriptStargazerOdometryBased [
 		spec staticZeroTFFrom: '/map'  to: '/odom'.  
 		spec relay: '/kompai2/pose' to: '/pose' named: 'pose_relay'.
 		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
-		spec relay: '/kompai/tf' to: '/tf' named: 'tf_relay'.
+		spec relay: '/pharos/out/tf' to: '/tf' named: 'tf_out_relay'.
+		spec relay: '/tf' to: '/pharos/in/tf' named: 'tf_in_relay'.
 		spec rviz.
 	].
 	
@@ -659,7 +649,7 @@ PureROSRobulab >> setupPoseTracker [
 	
 ]
 
-{ #category : #'scripts-launchers' }
+{ #category : #private }
 PureROSRobulab >> sgMapfile [ 
 	^ self class imageFolder , '/map/map.yaml'
 ]

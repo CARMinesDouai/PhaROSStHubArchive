@@ -76,12 +76,6 @@ PureROSRobulabNodelet class >> stargazerFrame [
 	^ '/stargazer'
 ]
 
-{ #category : #experiments }
-PureROSRobulabNodelet >> amcl [
-	
-	
-]
-
 { #category : #navigation }
 PureROSRobulabNodelet >> commonNavigation [
 	self nodelets use: PureROSMoveBaseCommonNavigation as: #navigator. 
@@ -162,11 +156,6 @@ PureROSRobulabNodelet >> rpc [
 { #category : #service }
 PureROSRobulabNodelet >> saveLandmarks [
 	self nodelets localizer fileout: self landmarksFile.
-	
-]
-
-{ #category : #experiments }
-PureROSRobulabNodelet >> slam [
 	
 ]
 
