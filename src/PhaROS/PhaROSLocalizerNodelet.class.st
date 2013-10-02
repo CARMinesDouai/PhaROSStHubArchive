@@ -174,7 +174,7 @@ PhaROSLocalizerNodelet >> mapPoints [
 PhaROSLocalizerNodelet >> register: aMeasure [ 
 	| measure | 
 	self flag: #uncoupleLandmarkFromLocalizerPackage.
-	(aMeasure isKindOf: PharosSGLandMark) ifTrue: [
+	(aMeasure isKindOf: StargazerSGLandMark) ifTrue: [
 		measure := PhaROSLocalizerMeasure fromPharosSGLandMark: aMeasure.	
 	] ifFalse:[
 		measure := aMeasure asLocalizerMeasure.
