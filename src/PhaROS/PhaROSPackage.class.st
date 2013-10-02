@@ -150,7 +150,7 @@ PhaROSPackage class >> mainHeadless [
 { #category : #abstract }
 PhaROSPackage class >> make [
 	self isInstalled ifTrue: [
-		PhaROSPackageManager make: self.
+		PhaROSPackageManager new make: self.
 	].
 ]
 
