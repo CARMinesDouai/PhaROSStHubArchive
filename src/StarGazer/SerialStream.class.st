@@ -30,6 +30,11 @@ SerialStream class >> threaded: aSerialPort [
 ]
 
 { #category : #cleaup }
+SerialStream >> becomeMonothread [ 
+	io := io becomeMonothread.
+]
+
+{ #category : #cleaup }
 SerialStream >> cleanUpBuffer [
 	buffer := ''.
 	position := 0.

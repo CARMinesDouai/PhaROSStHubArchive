@@ -13,6 +13,11 @@ SGStream class >> for: aSerialStream [
 ]
 
 { #category : #clean }
+SGStream >> becomeMonothread [ 
+	serialStream becomeMonothread.
+]
+
+{ #category : #clean }
 SGStream >> cleanUpBuffer [
 	serialStream cleanUpBuffer
 ]

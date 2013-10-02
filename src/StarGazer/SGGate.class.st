@@ -55,6 +55,11 @@ SGGate >> command: aParameterName with: aValue [
 	^ self state command: aParameterName with: aValue.
 ]
 
+{ #category : #'initialize-release' }
+SGGate >> configure [
+	stream := stream becomeMonothread.
+]
+
 { #category : #'high level protocol' }
 SGGate >> finalize [
 	state finalize.

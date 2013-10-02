@@ -13,6 +13,11 @@ SSIOStrategy class >> for: aPort [
 ]
 
 { #category : #'as yet unclassified' }
+SSIOStrategy >> becomeMonothread [ 
+	^ SSMonoThreadStrategy for: port.
+]
+
+{ #category : #'as yet unclassified' }
 SSIOStrategy >> cleanUpBuffer [
 	
 ]
@@ -23,12 +28,12 @@ SSIOStrategy >> configure [
 
 { #category : #'as yet unclassified' }
 SSIOStrategy >> nextPut: aCharacter [
-	^ port nextPut: aCharacter; flush.
+	^ port nextPut: aCharacter.
 ]
 
 { #category : #'as yet unclassified' }
 SSIOStrategy >> nextPutAll: anArrayOfCharacters [
-	^ port nextPut: anArrayOfCharacters; flush.
+	^ port nextPutAll: anArrayOfCharacters.
 ]
 
 { #category : #'as yet unclassified' }

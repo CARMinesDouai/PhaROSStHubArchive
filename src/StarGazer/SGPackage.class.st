@@ -306,11 +306,11 @@ SGPackage >> scriptConfiguration [
 
 	| sg stream |
 	
-	
+ 
 	stream  := FileStream stdout.
 	stream nextPutAll: 'Getting starGazer', String lf.
 	
-	sg := StarGazer default.
+	sg := StarGazer configureInstance.
 	stream nextPutAll: 'Stopping starGazer', String lf.
 	sg stopMeasurements.
 	
@@ -379,9 +379,7 @@ SGPackage >> scriptMapBuildingMode [
 { #category : #scripts }
 SGPackage >> scriptPose [
 
-	controller := PhaROSHandleController stargazer.	
-	
-	controller nodelets stargazer landmarks for: [
+	self controller nodelets stargazer landmarks for: [
 		: lmk |
 		| x y | 
 		lmk pose position z: 0.0. 
@@ -407,7 +405,7 @@ SGPackage >> scriptSetUpMap [
 	stream  := FileStream stdout.
 	stream nextPutAll: 'Getting starGazer', String lf.
 	
-	sg := StarGazer default.
+	sg := StarGazer configureInstance.
 	stream nextPutAll: 'Stopping starGazer', String lf.
 	sg stopMeasurements.
 	
@@ -434,7 +432,7 @@ SGPackage >> scriptSetUpMapBuilding [
 	stream  := FileStream stdout.
 	stream nextPutAll: 'Getting starGazer', String lf.
 	
-	sg := StarGazer mapBuilding.
+	sg := StarGazer configureInstance.
 	
 	stream nextPutAll: 'Stopping starGazer', String lf.
 	sg stopMeasurements.
@@ -465,7 +463,7 @@ SGPackage >> scriptSetUpStandAlone [
 	stream  := FileStream stdout.
 	stream nextPutAll: 'Getting starGazer', String lf.
 
-	sg := StarGazer default.
+	sg := StarGazer configureInstance.
 	
 	stream nextPutAll: 'Stopping starGazer', String lf.
 	sg stopMeasurements.
@@ -482,18 +480,15 @@ SGPackage >> scriptSetUpStandAlone [
 ]
 
 { #category : #scripts }
-SGPackage >> scriptStartMeasures [
-
-	controller := PhaROSHandleController stargazer.	
-	controller nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 . 8192 . 80 . 112 . 965 . 32 . 576 }.
+SGPackage >> scriptStartMeasures [		
+	self controller nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 . 8192 . 80 . 112 . 965 . 32 . 576 }.
 
 ]
 
 { #category : #scripts }
 SGPackage >> scriptTf [
-	controller := PhaROSHandleController robulab2.
-	controller nodelets use: PhaROSPoseToTFNodelet  as: #pose2tf.
-	controller nodelets pose2tf express: self poseStampedSg as: '/base_link'childOf: '/odom'.
+	self controller nodelets use: PhaROSPoseToTFNodelet  as: #pose2tf.
+	self controller nodelets pose2tf express: self poseStampedSg as: '/base_link'childOf: '/odom'.
 
 	
 

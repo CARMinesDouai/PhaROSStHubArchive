@@ -9,6 +9,12 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+SSDedicatedThreadStrategy >> becomeMonothread [ 
+	self stopReader.
+	^ super becomeMonothread.
+]
+
+{ #category : #'as yet unclassified' }
 SSDedicatedThreadStrategy >> cleanUpBuffer [ 
 	buffer peekAll.
 ]

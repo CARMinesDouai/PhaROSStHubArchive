@@ -33,6 +33,14 @@ StarGazer class >> atPortId: aPortId  withInitialState: aStateClass forMode: aMo
 ]
 
 { #category : #'as yet unclassified' }
+StarGazer class >> configureInstance [ 
+	| def |
+	def := self default:[:w| ].
+	def gate configure.
+	^ def.
+]
+
+{ #category : #'as yet unclassified' }
 StarGazer class >> default [
 
 	" The default configuration open ttyUSB0, is already able to scan and in stand alone mode (each landmark give the data needed )"
