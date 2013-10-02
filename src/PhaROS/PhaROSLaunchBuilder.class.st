@@ -184,7 +184,8 @@ PhaROSLaunchBuilder >> kompai1 [
 		| conf |
 	
 	
-	conf := self package: 'pharos' type:'pharos' named:''.
+	conf := self package: 'kompai' type:'headless' named:'kompai1'.
+	
 	conf args: 'kompai1'.
 	
 	 
@@ -196,7 +197,7 @@ PhaROSLaunchBuilder >> kompai2 [
 		| conf |
 	
 	
-	conf := self package: 'pharos' type:'headless' named:''.
+	conf := self package: 'kompai' type:'headless' named:'kompai2'.
 	conf args: 'kompai2'.
 	
 	 
@@ -208,7 +209,7 @@ PhaROSLaunchBuilder >> kompaiOdometry [
 		| conf |
 	
 	
-	conf := self package: 'pharos' type:'headless' named:''.
+	conf := self package: 'robulab' type:'headless' named:'odometer'.
 	conf args: 'odometry'.
 	
 	
@@ -219,7 +220,7 @@ PhaROSLaunchBuilder >> kompaiOdometry [
 PhaROSLaunchBuilder >> kompaiTF [
 		| conf |
 	
-	conf := self package: 'pharos' type:'headless' named:''.
+	conf := self package: 'robulab' type:'headless' named:'pose_tf'.
 	conf args: 'tf'.
 	
 	^ conf
@@ -487,7 +488,7 @@ PhaROSLaunchBuilder >> stargazer [
 	
 		| conf |
 	
-	conf := self package: 'stargazer' type:'headless' named:''.
+	conf := self package: 'stargazer' type:'headless' named:'stargazer'.
 	conf args: 'startmeasures'.
 	
 	^ conf.

@@ -97,10 +97,11 @@ PhaROSNodelet >> finalize [
 
 { #category : #'as yet unclassified' }
 PhaROSNodelet >> install [
+	self flag: #infraestructureAndDeployShouldBeSomewhereElse.
 	self types asDictionary keysAndValuesDo: [ : typeName : definition | 
 		
 		[
-			PhaROSTypeBrowser instance definition: self class package name, '/', typeName. 
+			PhaROSTypeBrowser instance definition: self class package packageName, '/', typeName. 
 		] on: Error do: [
 			 self class package deployType: typeName definedAs: definition 
 		].
