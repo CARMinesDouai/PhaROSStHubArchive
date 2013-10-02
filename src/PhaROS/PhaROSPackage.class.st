@@ -134,7 +134,8 @@ PhaROSPackage class >> location [
 
 { #category : #abstract }
 PhaROSPackage class >> location: aLocation [
-	^ location ifNotNil: [ self error: ' Location was already Setted! ' ].
+	location ifNotNil: [ self error: ' Location was already Setted! ' ].
+	location := aLocation.
 ]
 
 { #category : #path }
