@@ -32,6 +32,11 @@ PhaROSPackage class >> cMakeList [
 	^ self path, '/CMakeLists.txt' 
 ]
 
+{ #category : #path }
+PhaROSPackage class >> changes [
+	^ self path ,'/image/Pharo.changes'
+]
+
 { #category : #abstract }
 PhaROSPackage class >> cmake [
 	self subclassResponsibility.
