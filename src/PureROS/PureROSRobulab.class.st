@@ -273,6 +273,11 @@ PureROSRobulab class >> xml [
 	
 ]
 
+{ #category : #'scripts-launchers' }
+PureROSRobulab >> buildController [ 
+	self halt: 'mmm this should not be called yet. Refactor first'.
+]
+
 { #category : #private }
 PureROSRobulab >> finalize [
 	super finalize .
@@ -323,6 +328,14 @@ PureROSRobulab >> scriptAmclBased [
 	].
 	
 
+]
+
+{ #category : #scripts }
+PureROSRobulab >> scriptBaselinkAbsolutePose [
+	controller  := PhaROSHandleController home.
+	controller nodelets use: PhaROSTransformationNodelet as:#transformation.
+	(controller nodelets transformation between: '/map' and: '/base_link') for: [: p | self kompaiAbsolutePose: p ]. 
+	
 ]
 
 { #category : #'scripts-navigation' }

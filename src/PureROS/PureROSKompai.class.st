@@ -239,7 +239,7 @@ PureROSKompai class >> xml [
 PureROSKompai >> build: aRobotName [
 	| rbl |
 	
-	rbl :=  self home.
+	rbl :=  PhaROSHandleController home.
 	rbl nodelets use: PureROSKompaiNodelet as: #kompai.
 	rbl nodelets kompai initialize: aRobotName. 
 	
@@ -262,13 +262,6 @@ PureROSKompai >> kompaiAbsolutePoseTopic [
 	^ kompaiAbsolutePoseTopic ifNil: [
 		kompaiAbsolutePoseTopic := controller node topicPublisher: '/kompai/map/pose' typedAs: 'geometry_msgs/PoseStamped'.	
 	]
-]
-
-{ #category : #private }
-PureROSKompai >> scriptBaselinkAbsolutePose [
-	self controller nodelets use: PhaROSTransformationNodelet as:#transformation.
-	(controller nodelets transformation between: '/map' and: '/base_link') for: [: p | self kompaiAbsolutePose: p ]. 
-	
 ]
 
 { #category : #scripts }
@@ -295,7 +288,7 @@ PureROSKompai >> scriptLaunchKompai1 [
 
 ]
 
-{ #category : #private }
+{ #category : #scripts }
 PureROSKompai >> scriptLaunchKompai2 [
 	
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
