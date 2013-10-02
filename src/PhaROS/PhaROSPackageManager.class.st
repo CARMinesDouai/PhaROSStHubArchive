@@ -83,24 +83,6 @@ PhaROSPackageManager >> create: aPackage linkingVM: aVMBinaryPath copyingImage: 
 ]
 
 { #category : #private }
-PhaROSPackageManager >> inflatePackage: aPackage  linkingVM: aVMBinaryPath copyingImage: anImageFolderPath [ 
-
-		 { aPackage vmFolder . aPackage imageFolder . aPackage msg . aPackage build . aPackage bin . aPackage scripts } 
-		do: [ :path | FileSystem disk createDirectory: path.].  
-	
-
-		OSProcess command: ('ln -s {1} {2}' format: { aVMBinaryPath . aPackage vm }).
-		OSProcess command: ('cp -r  {1} {2}' format: { anImageFolderPath ,'/*' . aPackage imageFolder } ).
-
-		(StandardFileStream forceNewFileNamed: aPackage mainBinary) nextPutAll: '#!/bin/bash',String lf, aPackage vm, ' ', aPackage image, ' scripts/$1', String lf ; close.
-		(StandardFileStream forceNewFileNamed: aPackage mainHeadless) nextPutAll: '#!/bin/bash',String lf,aPackage vm, ' --nodisplay ', aPackage image, ' scripts/$1', String lf ; close.
-		(StandardFileStream forceNewFileNamed: aPackage mainEdit) nextPutAll: '#!/bin/bash',String lf,aPackage vm, ' ', aPackage image,  String lf ; close.
-
-		OSProcess command: ('chmod 777 {1}' format: { aPackage bin, '/*' }).
-		OSProcess command: ('cd {1}; cd .. ; catkin_make' format: { aPackage location }).
-]
-
-{ #category : #private }
 PhaROSPackageManager >> inflatePackage: aPackage  linkingVM: aVMBinaryPath copyingImage: anImagePath   changes: aChangesFilePath andSource: aSourceFile [
 
 		 { aPackage vmFolder . aPackage imageFolder . aPackage msg . aPackage build . aPackage bin . aPackage scripts } 
