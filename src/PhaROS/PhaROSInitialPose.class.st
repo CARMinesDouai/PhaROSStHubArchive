@@ -10,7 +10,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSInitialPose class >> initialPoseTopic [
-	^  '/initialpose'
+	^  '/initialpose2'
 ]
 
 { #category : #'as yet unclassified' }
