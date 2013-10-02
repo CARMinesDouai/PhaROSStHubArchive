@@ -393,10 +393,6 @@ PureROSRobulab >> scriptLandmarksRecognition [
 
 	bot := experiment robulab.
 	
-	experiment controller nodelets stargazer mergeWithPose: bot defaultPose.
-	
-	2 seconds asDuration asDelay wait.
-	
 	experiment controller nodelets localizer learn:( experiment controller nodelets stargazer absoluteLandmarks ) .
 	
 	"self nodelets localizer explore."
@@ -637,7 +633,7 @@ PureROSRobulab >> setOriginAs: aLocalizerMeasure [
 		y := aLocalizerMeasure pose position x * 1.
 		aLocalizerMeasure pose position x:  x. 
 		aLocalizerMeasure pose position y:  y.
-		
+		aLocalizerMeasure pose orientation: aLocalizerMeasure pose orientation as2DOrientation / -1.
 		controller nodelets initialpose initialPose:  aLocalizerMeasure pose.
 ]
 
