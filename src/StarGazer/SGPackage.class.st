@@ -293,11 +293,11 @@ SGPackage >> poseStampedSgOut [
 { #category : #scripts }
 SGPackage >> scriptAbsoluteLandmark [
 	| tfPseudoTopic |
-	controller := PhaROSHandleController stargazer.	
-	tfPseudoTopic := controller nodelets transformation between: '/base_link' 
+.	
+	tfPseudoTopic := self controller nodelets transformation between: '/base_link' 
 														   and: '/map'.
 	
-	controller nodelets stargazer mergeWithPose: tfPseudoTopic.
+	self controller nodelets stargazer mergeWithPose: tfPseudoTopic.
 
 ]
 

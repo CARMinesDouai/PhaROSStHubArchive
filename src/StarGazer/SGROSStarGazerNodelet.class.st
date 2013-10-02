@@ -127,7 +127,6 @@ SGROSStarGazerNodelet >> landmarksAdaptedAs: anAdaption [
 { #category : #calculations }
 SGROSStarGazerNodelet >> merge: gpose  with:  landmark [ 
 		| lp rp shift zero |
-
 		
 		lp := PhaROSPose fromGeometry_msgsPose: landmark pose.
 "
