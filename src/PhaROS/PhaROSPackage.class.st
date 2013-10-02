@@ -132,6 +132,11 @@ PhaROSPackage class >> location [
 	^ location ifNil:[ self error: 'location is not setted' ].
 ]
 
+{ #category : #abstract }
+PhaROSPackage class >> location: aLocation [
+	^ location ifNotNil: [ self error: ' Location was already Setted! ' ].
+]
+
 { #category : #path }
 PhaROSPackage class >> mainBinary [
 	^ self bin, '/pharos'.
