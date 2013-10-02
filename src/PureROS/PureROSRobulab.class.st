@@ -47,7 +47,7 @@ PureROSRobulab class >> author [
 { #category : #'as yet unclassified' }
 PureROSRobulab class >> cmake [
 		^ 'cmake_minimum_required(VERSION 2.8.3)
-project(pharos)
+project(robulab)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -68,10 +68,10 @@ find_package(catkin REQUIRED COMPONENTS geometry_msgs roscpp rospy std_msgs mess
 #######################################
 
 ## Generate messages in the "msg" folder
- add_message_files(
-   FILES
-   SGLandMark.msg
- )
+# add_message_files(
+#   FILES
+#   SGLandMark.msg
+# )
 
 ## Generate services in the "srv" folder
 # add_service_files(
@@ -81,11 +81,11 @@ find_package(catkin REQUIRED COMPONENTS geometry_msgs roscpp rospy std_msgs mess
 # )
 
 ## Generate added messages and services with any dependencies listed here
- generate_messages(
-   DEPENDENCIES
-   geometry_msgs
-   std_msgs
- )
+# generate_messages(
+#   DEPENDENCIES
+#   geometry_msgs
+#   std_msgs
+# )
 
 ###################################
 ## catkin specific configuration ##
@@ -98,7 +98,7 @@ find_package(catkin REQUIRED COMPONENTS geometry_msgs roscpp rospy std_msgs mess
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES pharos
+#  LIBRARIES robulab
 #  CATKIN_DEPENDS geometry_msgs roscpp rospy std_msgs
 #  DEPENDS system_lib
    CATKIN_DEPENDS message_runtime
@@ -116,19 +116,19 @@ include_directories(
 )
 
 ## Declare a cpp library
-# add_library(pharos
-#   src/${PROJECT_NAME}/pharos.cpp
+# add_library(robulab
+#   src/${PROJECT_NAME}/robulab.cpp
 # )
 
 ## Declare a cpp executable
-# add_executable(pharos_node src/pharos_node.cpp)
+# add_executable(robulab_node src/robulab_node.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
-# add_dependencies(pharos_node pharos_generate_messages_cpp)
+# add_dependencies(robulab_node robulab_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(pharos_node
+# target_link_libraries(robulab_node
 #   ${catkin_LIBRARIES}
 # )
 
@@ -147,7 +147,7 @@ include_directories(
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS pharos pharos_node
+# install(TARGETS robulab robulab_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -172,7 +172,7 @@ include_directories(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_pharos.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_robulab.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
@@ -206,9 +206,9 @@ PureROSRobulab class >> version [
 PureROSRobulab class >> xml [
 		^ '<?xml version="1.0"?>
 <package>
-  <name>pharos</name>
+  <name>robulab</name>
   <version>0.1.0</version>
-  <description> pharos package</description>
+  <description> robulab package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->
@@ -225,7 +225,7 @@ PureROSRobulab class >> xml [
   <!-- Url tags are optional, but mutiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://ros.org/wiki/pharos</url> -->
+  <!-- <url type="website">http://ros.org/wiki/robulab</url> -->
 
 
   <!-- Author tags are optional, mutiple are allowed, one per tag -->
