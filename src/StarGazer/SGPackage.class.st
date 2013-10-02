@@ -414,7 +414,7 @@ SGPackage >> scriptSetUpMap [
 	stream nextPutAll: 'Setting markMode - Map', String lf.
 	sg markMode: 'Map'.
 	stream nextPutAll: 'Setting RefID - 82', String lf.
-	sg refID: '82'.
+	sg refID: '96'.
 	stream nextPutAll: 'Setting IdNum- 4', String lf.
 	sg idNum: 4.
 	stream nextPutAll: 'Starting', String lf.
@@ -441,7 +441,7 @@ SGPackage >> scriptSetUpMapBuilding [
 	
 	stream nextPutAll: 'Setting markMode - Map', String lf.
 	sg markMode: 'Map'.
-	stream nextPutAll: 'Setting RefID - 82', String lf.
+	stream nextPutAll: 'Setting RefID - ', String lf.
 	sg refID: '32'.
 	stream nextPutAll: 'Setting IdNum- 4', String lf.
 	sg idNum: 4.
@@ -481,7 +481,7 @@ SGPackage >> scriptSetUpStandAlone [
 
 { #category : #scripts }
 SGPackage >> scriptStartMeasures [		
-	self controller nodelets stargazer broadcastLandmarks: { 2 . 82 . 608 . 18 . 0 . 8192 . 80 . 112 . 965 . 32 . 576 }.
+	self controller nodelets stargazer broadcastLandmarks: { 2 . 96 . 608 . 18 . 0 . 8192 . 80 . 112 . 965 . 32 . 576 }.
 
 ]
 
