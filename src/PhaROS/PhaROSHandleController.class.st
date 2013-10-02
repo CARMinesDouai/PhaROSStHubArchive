@@ -20,17 +20,6 @@ PhaROSHandleController class >> rpcTest [
 ]
 
 { #category : #construction }
-PhaROSHandleController class >> stargazer [
-	| rbl |
-	
-	rbl :=  self localhost.
-	rbl nodelets use: SGROSStarGazerNodelet  as: #stargazer.
-	rbl nodelets use: PhaROSTransformationNodelet  as: #transformation.
-	
-	^ rbl .
-]
-
-{ #category : #construction }
 PhaROSHandleController class >> transformation [
 	| rbl |
 	
