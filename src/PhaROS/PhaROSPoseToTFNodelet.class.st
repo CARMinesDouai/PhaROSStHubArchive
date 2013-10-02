@@ -19,10 +19,14 @@ PhaROSPoseToTFNodelet >> express: aPoseTopic as: aFrame [
 
 { #category : #'as yet unclassified' }
 PhaROSPoseToTFNodelet >> express: aPoseTopic as: aFrameID childOf: aParentFrameID [
-	writer at: aPoseTopic ifAbsentPut: [ (self nodelets transformation writerFor: aFrameID  withParent:  aParentFrameID ) ].
-	
-	 
-	aPoseTopic for: [ : pose | (self writerAt: aPoseTopic) pose: pose ].
+
+	writer at: aPoseTopic ifAbsentPut: [ 
+		(self nodelets transformation writerFor: aFrameID  withParent:  aParentFrameID ) 
+	].
+
+	aPoseTopic for: [ : pose | 
+		(self writerAt: aPoseTopic) pose: pose 
+	].
 	
 	
 ]

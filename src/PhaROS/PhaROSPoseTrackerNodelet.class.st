@@ -25,7 +25,7 @@ PhaROSPoseTrackerNodelet >> recordCurrentPose [
 	| measure currentPose | 
 	
 	lastEntityRecorded := lastEntityRecorded + 1.
-	currentPose := self nodelets transformations transformation transformBetween: '/base_link' and: '/map'.
+	currentPose := self nodelets  transformation transformBetween: '/base_link' and: '/map'.
 	measure := PhaROSLocalizerMeasure id: lastEntityRecorded pose: currentPose.
 	
 	self nodelets localizer register: measure.

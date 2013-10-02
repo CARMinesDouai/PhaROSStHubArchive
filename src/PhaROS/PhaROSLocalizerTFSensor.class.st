@@ -24,7 +24,7 @@ PhaROSLocalizerTFSensor >> localizer: aLocalizerNodelet [
 { #category : #'as yet unclassified' }
 PhaROSLocalizerTFSensor >> pollDistances [
 	| pose |
-	self halt.
+
 	localizer scannedEntities do: [
 		: entity |
 		[

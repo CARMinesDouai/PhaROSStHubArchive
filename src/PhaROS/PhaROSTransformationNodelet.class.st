@@ -25,12 +25,12 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSTransformationNodelet class >> tfOutTopic [
-	^ '/kompai/tf'
+	^ '/pharos/out/tf'
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSTransformationNodelet class >> tfTopic [
-	^ '/tf'
+	^ '/pharos/in/tf'
 ]
 
 { #category : #'as yet unclassified' }

@@ -95,6 +95,9 @@ PhaROSLaunchBuilder >> gmapping [
 
 	conf output: 'screen'.
 	
+	conf param: 'base_frame' value:'/base_link'.
+	conf param: 'map_frame' value:'/map'.
+	conf param: 'odom_frame' value:'/odom'.
 	conf param:'map_udpate_interval' value:'2.0'.
       conf param:'maxUrange' value:'30.0'.
       conf param:'sigma' value:'0.05'.
@@ -436,7 +439,7 @@ PhaROSLaunchBuilder >> relayTopic: aTopicID to: anOtherTopicID [
 				named: (aTopicID normalizeFrame, '_' ,anOtherTopicID normalizeFrame, '_relay').
 				
 	conf args: ('/{1} /{2}' format: {aTopicID normalizeFrame . anOtherTopicID normalizeFrame }).
-	
+	conf respawn: 'false'.
 	^ conf.
 ]
 
