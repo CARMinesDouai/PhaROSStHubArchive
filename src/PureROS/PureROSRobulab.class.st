@@ -361,7 +361,7 @@ PureROSRobulab >> scriptLandmarkNavigation [
 
 	bot := experiment robulab.
 	bot rpc.
-	
+	controller := experiment controller.	
 	experiment controller nodelets spaceEvents registerLocalizationSensor: ( 
 			bot nodelets stargazer landmarksAdaptedAs: PhaROSLocalizerMeasure 
 	).
@@ -416,8 +416,8 @@ PureROSRobulab >> scriptMapBuilding [
 
 	process:= PhaROSSystemLauncher  instance launch: [ : spec |
 		spec gmapping.
-		spec rviz.
 	].
+	
 ]
 
 { #category : #'scripts-transformers' }
@@ -429,6 +429,15 @@ PureROSRobulab >> scriptOdometry [
 	
 	
 
+]
+
+{ #category : #'scripts-launchers' }
+PureROSRobulab >> scriptOriginFixer [
+	controller := PhaROSHandleController robulab2.
+	controller nodelets spaceEvents registerLocalizationSensor: ( 
+			controller nodelets stargazer landmarksAdaptedAs: PhaROSLocalizerMeasure 
+	).
+	self setupOriginRecognizer.
 ]
 
 { #category : #'scripts-navigation' }
@@ -549,10 +558,50 @@ PureROSRobulab >> scriptStargazerBased [
 ]
 
 { #category : #'scripts-launchers-base' }
+PureROSRobulab >> scriptStargazerBasedNoMap [
+		
+	process:= PhaROSSystemLauncher  instance launch: [: spec | 
+		spec kompaiTF .
+		spec kompaiOdometry .
+		spec moveBase.
+		spec velocitySmoother.
+		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
+		spec staticZeroTFFrom: '/map'  to: '/odom'.  
+		spec relay: '/stargazer/pose' to: '/pose' named: 'pose_relay'.
+		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
+		spec relay: '/pharos/out/tf' to: '/tf' named: 'tf_out_relay'.
+		spec relay: '/tf' to: '/pharos/in/tf' named: 'tf_in_relay'.
+		spec rviz.
+	].
+	
+
+]
+
+{ #category : #'scripts-launchers-base' }
 PureROSRobulab >> scriptStargazerOdometryBased [
 		
 	process := PhaROSSystemLauncher  instance launch: [: spec | 
 		spec mapServer: self mapFile.
+		spec kompaiTF .
+		spec kompaiOdometry .
+		spec moveBase.
+		spec velocitySmoother.
+		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
+		spec staticZeroTFFrom: '/map'  to: '/odom'.  
+		spec relay: '/kompai2/pose' to: '/pose' named: 'pose_relay'.
+		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
+		spec relay: '/pharos/out/tf' to: '/tf' named: 'tf_out_relay'.
+		spec relay: '/tf' to: '/pharos/in/tf' named: 'tf_in_relay'.
+		spec rviz.
+	].
+	
+
+]
+
+{ #category : #'scripts-launchers-base' }
+PureROSRobulab >> scriptStargazerOdometryBasedNoMap [
+		
+	process := PhaROSSystemLauncher  instance launch: [: spec | 
 		spec kompaiTF .
 		spec kompaiOdometry .
 		spec moveBase.
@@ -578,6 +627,18 @@ PureROSRobulab >> scriptTf [
 								   childOf: PureROSRobulabNodelet baseLinkParentFrame.
 
 	
+]
+
+{ #category : #private }
+PureROSRobulab >> setOriginAs: aLocalizerMeasure [
+	| x y | 
+		aLocalizerMeasure pose position z: 0.0. 
+		x := aLocalizerMeasure pose position y * -1.
+		y := aLocalizerMeasure pose position x * 1.
+		aLocalizerMeasure pose position x:  x. 
+		aLocalizerMeasure pose position y:  y.
+		
+		controller nodelets initialpose initialPose:  aLocalizerMeasure pose.
 ]
 
 { #category : #private }
@@ -607,10 +668,32 @@ PureROSRobulab >> setPoseWith: aLocalizerMeasure [
 ]
 
 { #category : #private }
+PureROSRobulab >> setupOriginRecognizer [
+	checked := 0.
+	lastPoseSettedStamp := DateAndTime now - 1 minute.
+	controller  nodelets spaceEvents whenLocalizerMeasure:  [ : lm |  
+		96 = lm id ifTrue: [
+			checked := checked + 1.	
+		] ifFalse: [
+			checked := 0.
+		].
+		(DateAndTime now - lastPoseSettedStamp ) asSeconds > 4 and: [ 
+			checked > 5 and: [
+				lm pose position module2d < 2. 
+			]	
+		]
+	] do: [ : lm | 
+		self setOriginAs: lm.
+	].
+	
+	
+]
+
+{ #category : #private }
 PureROSRobulab >> setupPoseRecognizer [
 
 	lastPoseSettedStamp := DateAndTime now - 1 minute.
-	experiment controller  nodelets spaceEvents whenLocalizerMeasure:  [ : lm |  
+	controller  nodelets spaceEvents whenLocalizerMeasure:  [ : lm |  
 		lastId = lm id ifTrue: [
 			checked := checked + 1.	
 		] ifFalse: [
