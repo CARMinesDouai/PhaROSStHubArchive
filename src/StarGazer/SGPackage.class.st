@@ -275,7 +275,6 @@ SGPackage >> poseStampedSg: aPose withFrame: aFrameID [
 
 	self poseStampedSgOut send: [
 		: msg | 
-		aPose orientation: aPose orientation as2DOrientation / -1 .
 		aPose intoGeometry_msgs_Pose: msg pose.
 		msg header frame_id: aFrameID.
 	]
@@ -381,14 +380,9 @@ SGPackage >> scriptPose [
 
 	self controller nodelets stargazer landmarks for: [
 		: lmk |
-		| x y | 
-		lmk pose position z: 0.0. 
-		x := lmk pose position y * -1.
-		y := lmk pose position x * 1.
-		lmk pose position x:  x. 
-		lmk pose position y:  y.
-		
-		self poseStampedSg: (PhaROSPose fromGeometry_msgsPose: lmk pose) withFrame: '/base_link'.
+		| pose | 
+		pose := self controller nodelets stargazer  landmarkToPose: lmk.
+		self poseStampedSg: pose withFrame: '/base_link'.
 	].
 
 	
