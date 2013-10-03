@@ -296,6 +296,29 @@ PureROSRobulab >> mapFile [
 	^ self class imageFolder  , '/map/map.yaml'
 ]
 
+{ #category : #'scripts-navigation' }
+PureROSRobulab >> scriptAbsoluteLandmarkLocator [
+
+	| bot |
+	controller := PhaROSHandleController robulab2.
+	bot := controller nodelets robulab.
+	
+	controller nodelets spaceEvents registerLocalizationSensor: ( 
+			bot nodelets stargazer landmarksAdaptedAs: PhaROSLocalizerMeasure 
+	).
+	
+	controller nodelets localizer filein: bot landmarksFile.
+	controller nodelets localizer transformations.
+	
+	self setupAbsolutePoseRecognizer.
+
+	
+
+
+
+
+]
+
 { #category : #'scripts-launchers-base' }
 PureROSRobulab >> scriptAmclBased [
 		
@@ -463,9 +486,9 @@ PureROSRobulab >> scriptPointNavigation [
 	"
 	experiment controller nodelets localizer transformations.
 	
-
+"
 	self setupPoseTracker.
-	self setupPoseRecognizer.
+"
 
 	
 	bot inspect.
@@ -636,6 +659,17 @@ PureROSRobulab >> scriptTf [
 ]
 
 { #category : #private }
+PureROSRobulab >> setAbsolutePoseWith: aLocalizerMeasure [ 
+	| pose |
+
+	lastPoseSettedStamp := DateAndTime now.
+	pose := controller nodelets stargazer landmarkToPose: aLocalizerMeasure.
+	 controller nodelets initialpose initialPose:  pose.
+		
+		
+]
+
+{ #category : #private }
 PureROSRobulab >> setOriginAs: aLocalizerMeasure [
 	| x y | 
 		aLocalizerMeasure pose position z: 0.0. 
@@ -677,6 +711,20 @@ PureROSRobulab >> setPoseWith: aLocalizerMeasure [
 				experiment controller nodelets initialpose orientation: lp orientation as2DOrientation z* -1.
 			]
 		]
+]
+
+{ #category : #private }
+PureROSRobulab >> setupAbsolutePoseRecognizer [
+
+	lastPoseSettedStamp := DateAndTime now - 1 minute.
+	
+	controller  nodelets spaceEvents whenLocalizerMeasure:  [ : lm |  
+		(DateAndTime now - lastPoseSettedStamp ) asSeconds > 2
+	] do: [ : lm | 
+		self setAbsolutePoseWith: lm.
+	].
+	
+	
 ]
 
 { #category : #private }

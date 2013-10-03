@@ -115,10 +115,12 @@ PureROSRobulabNodelet >> goTo: aPhaROSLocalizerEntity [
 PureROSRobulabNodelet >> goToArray: anArray [
 	| recall goal | 
 	anArray size = 0 ifTrue: [ self halt: ' ended ' ].
+	
 	recall := [
 		1 second asDelay wait.
 		self goToArray: (anArray copyFrom: 2 to: anArray size). 	
 	].
+	Transcript show: ' heading to ', (anArray at: 1) asString ; cr. 
 	goal := self goToEntityID: (anArray at: 1) . 
 	goal onSucceeded: recall.
 	goal onAborted: recall.
@@ -150,6 +152,19 @@ PureROSRobulabNodelet >> randomGoals [
 	].
 	
 	self goToArray: goals shuffle asArray.
+
+]
+
+{ #category : #experiments }
+PureROSRobulabNodelet >> randomPoints [
+	
+	| goals |
+	goals := OrderedCollection new. 	
+	1 to: 20 do: [: i | 
+		goals add: 3; add: 1; add: 2; add: 1.
+	].
+	
+	self goToArray: goals  asArray.
 
 ]
 
