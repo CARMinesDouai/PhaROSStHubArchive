@@ -108,6 +108,11 @@ PureROSRobulabGoal >> landmarkDriving: lmk [
 		
 ]
 
+{ #category : #accessing }
+PureROSRobulabGoal >> onAborted: aBlock [ 
+	goal onAborted:  aBlock.
+]
+
 { #category : #event }
 PureROSRobulabGoal >> onArrivalToGoal: aLocalizerMeasure [ 
 	
@@ -119,6 +124,11 @@ PureROSRobulabGoal >> onArrivalToGoal: aLocalizerMeasure [
 		goal cancel.
 	] doIt .
 	
+]
+
+{ #category : #accessing }
+PureROSRobulabGoal >> onRejected: aBlock [ 
+	goal onRejected:  aBlock.
 ]
 
 { #category : #accessing }

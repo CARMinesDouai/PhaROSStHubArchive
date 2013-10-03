@@ -113,11 +113,15 @@ PureROSRobulabNodelet >> goTo: aPhaROSLocalizerEntity [
 
 { #category : #experiments }
 PureROSRobulabNodelet >> goToArray: anArray [
+	| recall | 
 	anArray size = 0 ifTrue: [ self halt: ' ended ' ].
-	(self goToEntityID: (anArray at: 1) ) onSucceeded: [
+	recall := [
 		1 second asDelay wait.
 		self goToArray: (anArray copyFrom: 2 to: anArray size). 	
 	].
+	(self goToEntityID: (anArray at: 1) ) onSucceeded: recall.
+	(self goToEntityID: (anArray at: 1) ) onAborted: recall.
+	(self goToEntityID: (anArray at: 1) ) onRejected: recall.
 ]
 
 { #category : #navigation }
