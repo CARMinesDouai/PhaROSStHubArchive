@@ -72,13 +72,17 @@ PureROSRobulabGoal >> goal: aGoal [
 
 { #category : #testing }
 PureROSRobulabGoal >> hasArrived: aLocalizerMeasure [ 
-	Transcript show: ' asking arrival '; cr.
-	checks := checks +1.
+	
+	entity id = aLocalizerMeasure id  ifTrue: [
+		checks := checks +1
+	] ifFalse: [
+		checks := 0.
+	] .
   
 	^ (
 			entity id = aLocalizerMeasure id 
 			and: [ checks > 5 
-				and: [ aLocalizerMeasure pose position module2d < 0.7  ] 
+				and: [ aLocalizerMeasure pose position module2d < 0.2  ] 
 			]
 		) or: [ 
 			self status = Actionlib_msgsGoalStatus succeeded 

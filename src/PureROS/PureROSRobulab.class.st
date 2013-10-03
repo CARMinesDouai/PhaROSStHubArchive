@@ -330,20 +330,14 @@ PureROSRobulab >> scriptBaselinkAbsolutePose [
 PureROSRobulab >> scriptLandmarkAutoNavigation [
 
 	| bot goals |
-	experiment := PureROSAMCLBasedPathPlanning robulab2.
-	experiment beginExperiment.	
-
+	
+	self scriptLandmarkNavigation.
+	
 	bot := experiment robulab.
 	
-	experiment controller nodelets localizer filein: bot landmarksFile.
-	experiment controller nodelets localizer transformations.
-	
-	self setupPoseTracker.
-	
-
 	goals := OrderedCollection new. 	
 	1 to: 20 do: [: i | 
-		goals add: 608; add: 82; add: 18; add: 2.
+		goals add: 608; add: 96; add: 18; add: 2.
 	].
 	
 	bot goToArray: goals shuffle asArray.
@@ -639,7 +633,7 @@ PureROSRobulab >> setOriginAs: aLocalizerMeasure [
 
 { #category : #private }
 PureROSRobulab >> setPoseWith: aLocalizerMeasure [ 
-	| entity pose lp |
+	| entity pose lp  x y |
 		lastPoseSettedStamp := DateAndTime now.
 		entity := (experiment controller nodelets localizer entity: aLocalizerMeasure id).
 		
@@ -647,11 +641,17 @@ PureROSRobulab >> setPoseWith: aLocalizerMeasure [
 		pose := entity center.
 		
 		lp := aLocalizerMeasure pose.
+		x := lp position y* -1.
+		y := lp position x.
+		lp position x: x.
+		lp position y: y.
+		
+		
 		pose orientation: ( PhaROS2DOrientation z: lp orientation as2DOrientation z * -1).
 		pose position: pose position + lp position.
 		
 		
-		((pose position - (experiment controller nodelets transformation frame: '/base_link') pose position ) module2d > 0.3  and: [(lp position module2d < 0.2) ]) ifTrue: [
+		((pose position - (experiment controller nodelets transformation frame: '/base_link') pose position ) module2d > 0.3  and: [(lp position module2d < 1) ]) ifTrue: [
 			Transcript show: 'setting pose'; cr.
 			experiment controller nodelets initialpose initialPose:  pose.
 		] ifFalse: [
