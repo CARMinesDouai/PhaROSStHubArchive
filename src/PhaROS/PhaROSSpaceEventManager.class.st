@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PhaROSSpaceEventManager >> check: aLocalizerMeasure [
+PhaROSSpaceEventManager >> check: aLocalizerMeasure [ 
 	self events do: [ : e | [ e apply: aLocalizerMeasure ] on: Error do: [ : er | Transcript show: er messageText ; cr ] ].
 ]
 

@@ -344,7 +344,7 @@ PhaROSLaunchBuilder >> moveBase [
 		planner name: '        holonomic_robot' value: false.
 
 		"Goal Tolerance Parameters"
-		planner name: '        xy_goal_tolerance' value: 0.20.
+		planner name: '        xy_goal_tolerance' value: 0.30.
 		planner name: '        yaw_goal_tolerance' value:  0.1.
 
 
