@@ -10,7 +10,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSSpaceEventManager >> check: aLocalizerMeasure [
-	self events do: [ : e | [ e apply: aLocalizerMeasure ] on: Error do: [ : er | self halt. ] ].
+	self events do: [ : e | [ e apply: aLocalizerMeasure ] on: Error do: [ : er | Transcript show: er messageText ; cr ] ].
 ]
 
 { #category : #'as yet unclassified' }

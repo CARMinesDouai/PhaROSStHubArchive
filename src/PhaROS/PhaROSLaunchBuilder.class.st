@@ -331,21 +331,21 @@ PhaROSLaunchBuilder >> moveBase [
 		planner name: '        transform_tolerance' value: 1.0.
 
 		"Robot Configuration Parameters"
-		planner name: '        acc_lim_x' value: 1.5.
+		planner name: '        acc_lim_x' value: 0.3.
 		planner name: '        acc_lim_y' value: 0.0.
-		planner name: '        acc_lim_th' value: 2.1.
+		planner name: '        acc_lim_th' value: 0.4.
 
-		planner name: '        max_vel_x' value: 2.1.
+		planner name: '        max_vel_x' value: 0.7.
 		planner name: '        min_vel_x' value: 0.1.
 
-		planner name: '        max_rotational_vel' value: 3.0.
-		planner name: '        min_in_place_rotational_vel' value: 0.1.
+		planner name: '        max_rotational_vel' value: 1.0.
+		planner name: '        min_in_place_rotational_vel' value: 1.0.
 		
 		planner name: '        holonomic_robot' value: false.
 
 		"Goal Tolerance Parameters"
-		planner name: '        xy_goal_tolerance' value: 0.35.
-		planner name: '        yaw_goal_tolerance' value:  0.3.
+		planner name: '        xy_goal_tolerance' value: 0.20.
+		planner name: '        yaw_goal_tolerance' value:  0.1.
 
 
 		"Trajectory Scoring Parameters"
@@ -588,8 +588,8 @@ PhaROSLaunchBuilder >> velocitySmoother [
 		smooth name: 'speed_lim_v' value: 10.0.
 		smooth name: 'speed_lim_w' value: 10.0.
 		
-		smooth name: 'accel_lim_v' value: 5.5.
-		smooth name: 'accel_lim_w' value: 7.4.
+		smooth name: 'accel_lim_v' value: 5.0.
+		smooth name: 'accel_lim_w' value: 5.0.
 		
 		smooth name: 'frequency' value: 20.0.
 		smooth name: 'decel_factor' value: 1.0.
