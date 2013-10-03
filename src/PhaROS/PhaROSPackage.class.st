@@ -261,3 +261,17 @@ PhaROSPackage >> quit [
 PhaROSPackage >> scriptTest [
 	Transcript open; show: (' {1} package has executed script test ' format: { self class name asString } ) cr.
 ]
+
+{ #category : #scripts }
+PhaROSPackage >> scriptUpdate [
+	self stdout nextPutAll: ' Executing PureROS load'.
+	(Smalltalk at: #ConfigurationOfPureROS) loadBleedingEdge.
+	self stdout nextPutAll: ' Done.'.
+	
+	self quit.
+]
+
+{ #category : #scripts }
+PhaROSPackage >> stdout [ 
+	^  FileStream stdout.
+]
