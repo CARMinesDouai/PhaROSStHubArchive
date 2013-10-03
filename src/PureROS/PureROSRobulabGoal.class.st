@@ -108,7 +108,7 @@ PureROSRobulabGoal >> landmarkDriving: lmk [
 		
 ]
 
-{ #category : #accessing }
+{ #category : #event }
 PureROSRobulabGoal >> onAborted: aBlock [ 
 	goal onAborted:  aBlock.
 ]
@@ -126,12 +126,12 @@ PureROSRobulabGoal >> onArrivalToGoal: aLocalizerMeasure [
 	
 ]
 
-{ #category : #accessing }
+{ #category : #event }
 PureROSRobulabGoal >> onRejected: aBlock [ 
 	goal onRejected:  aBlock.
 ]
 
-{ #category : #accessing }
+{ #category : #event }
 PureROSRobulabGoal >> onSucceeded: aBlock [ 
 	goal onSucceeded: aBlock.
 ]
@@ -166,7 +166,7 @@ PureROSRobulabGoal >> trajectoryDifferential: aPose [
 	]
 ]
 
-{ #category : #event }
+{ #category : #behavior }
 PureROSRobulabGoal >> tryAchieveGoal [
 
 	event ifNil: [

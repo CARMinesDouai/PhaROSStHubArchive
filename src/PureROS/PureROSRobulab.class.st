@@ -347,6 +347,27 @@ PureROSRobulab >> scriptLandmarkAutoNavigation [
 ]
 
 { #category : #'scripts-navigation' }
+PureROSRobulab >> scriptLandmarkLocator [
+
+	| bot |
+	controller := PhaROSHandleController robulab2.
+	controller := experiment controller.	
+	controller nodelets spaceEvents registerLocalizationSensor: ( 
+			bot nodelets stargazer landmarksAdaptedAs: PhaROSLocalizerMeasure 
+	).
+	controller nodelets localizer filein: bot landmarksFile.
+	controller nodelets localizer transformations.
+	
+	self setupPoseRecognizer.
+
+	
+
+
+
+
+]
+
+{ #category : #'scripts-navigation' }
 PureROSRobulab >> scriptLandmarkNavigation [
 
 	| bot |
@@ -355,7 +376,9 @@ PureROSRobulab >> scriptLandmarkNavigation [
 
 	bot := experiment robulab.
 	bot rpc.
-	controller := experiment controller.	
+	
+	controller := experiment controller.
+	
 	experiment controller nodelets spaceEvents registerLocalizationSensor: ( 
 			bot nodelets stargazer landmarksAdaptedAs: PhaROSLocalizerMeasure 
 	).
@@ -363,18 +386,10 @@ PureROSRobulab >> scriptLandmarkNavigation [
 	
 	"experiment controller nodelets localizer filein: 'odometry-landmarks-inner.st'.
 	"
-	experiment controller nodelets localizer transformations.
-	
-
 	self setupPoseTracker.
-	self setupPoseRecognizer.
 
-	
 	bot inspect.
 	
-
-
-
 
 ]
 
@@ -651,7 +666,7 @@ PureROSRobulab >> setPoseWith: aLocalizerMeasure [
 		pose position: pose position + lp position.
 		
 		
-		((pose position - (experiment controller nodelets transformation frame: '/base_link') pose position ) module2d > 0.3  and: [(lp position module2d < 1) ]) ifTrue: [
+		((pose position - (experiment controller nodelets transformation frame: '/base_link') pose position ) module2d > 0.3  and: [(lp position module2d < 0.5) ]) ifTrue: [
 			Transcript show: 'setting pose'; cr.
 			experiment controller nodelets initialpose initialPose:  pose.
 		] ifFalse: [
@@ -690,12 +705,14 @@ PureROSRobulab >> setupPoseRecognizer [
 
 	lastPoseSettedStamp := DateAndTime now - 1 minute.
 	controller  nodelets spaceEvents whenLocalizerMeasure:  [ : lm |  
-		lastId = lm id ifTrue: [
+
+		(lastId = lm id and: [ lm id ~= 96]) ifTrue: [
 			checked := checked + 1.	
 		] ifFalse: [
 			checked := 0.
 		].
 		lastId := lm id.
+
 		(DateAndTime now - lastPoseSettedStamp ) asSeconds > 4 and: [ 
 			checked > 5 and: [
 				lm pose position module2d < 1 

@@ -139,6 +139,19 @@ PureROSRobulabNodelet >> poseStamped [
 	^( self rosnode buildConnectionFor:  PureROSRobulabNodelet poseStampedTopicForConsume )typedAs: PureROSRobulabNodelet poseStampedTopicType;  adapted: #pose \> PhaROSPose  ; connect.
 ]
 
+{ #category : #experiments }
+PureROSRobulabNodelet >> randomGoals [
+	
+	| goals |
+	goals := OrderedCollection new. 	
+	1 to: 20 do: [: i | 
+		goals add: 608; add: 96; add: 18; add: 2.
+	].
+	
+	self goToArray: goals shuffle asArray.
+
+]
+
 { #category : #'as yet unclassified' }
 PureROSRobulabNodelet >> relocalize: abpose with: dlmk [
 | relpose  |
