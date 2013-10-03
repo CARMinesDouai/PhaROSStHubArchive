@@ -34,7 +34,7 @@ PhaROS2DOrientation >> abs [
 
 { #category : #convertions }
 PhaROS2DOrientation >> as2DOrientation [
-	^ self.
+	^ self. 
 ]
 
 { #category : #convertions }
