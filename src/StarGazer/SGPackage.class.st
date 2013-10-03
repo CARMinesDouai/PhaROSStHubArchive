@@ -441,10 +441,10 @@ SGPackage >> scriptSetUpMapBuilding [
 	
 	stream nextPutAll: 'Setting markMode - Map', String lf.
 	sg markMode: 'Map'.
-	stream nextPutAll: 'Setting RefID - ', String lf.
-	sg refID: '32'.
-	stream nextPutAll: 'Setting IdNum- 4', String lf.
-	sg idNum: 4.
+	stream nextPutAll: 'Setting RefID - 96', String lf.
+	sg refID: '96'.
+	stream nextPutAll: 'Setting IdNum- 6', String lf.
+	sg idNum: 6.
 	
 	
 	self quit.
