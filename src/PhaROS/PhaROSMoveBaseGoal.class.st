@@ -75,7 +75,7 @@ PhaROSMoveBaseGoal >> initialize [
 
 { #category : #events }
 PhaROSMoveBaseGoal >> on: aStatus do: aCallback [
-	(callbacks at: aStatus ifAbsentPut: [ Set new ]) add: aCallback.
+	(callbacks at: aStatus ifAbsentPut: [ OrderedCollection new ]) add: aCallback.
 ]
 
 { #category : #events }
@@ -156,10 +156,12 @@ PhaROSMoveBaseGoal >> status [
 { #category : #accessing }
 PhaROSMoveBaseGoal >> status: aStatus [
 	| previous |
-	previous := status.
-	status := aStatus.
-	callbacks at: status  ifPresent: [ : callsFor | 
-		callsFor do: [ : callbck | 	callbck cull: self cull: previous ].
+	status = aStatus ifFalse: [
+		previous := status.
+		status := aStatus.
+		callbacks at: status  ifPresent: [ : callsFor | 
+			callsFor do: [ : callbck | 	callbck cull: self cull: previous ].
+		]
 	]
 ]
 
