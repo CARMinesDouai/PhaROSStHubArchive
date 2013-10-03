@@ -351,9 +351,10 @@ PureROSRobulab >> scriptLandmarkLocator [
 
 	| bot |
 	controller := PhaROSHandleController robulab2.
-	controller := experiment controller.	
+	bot := controller nodelets robulab.
+	
 	controller nodelets spaceEvents registerLocalizationSensor: ( 
-			bot nodelets stargazer landmarksAdaptedAs: PhaROSLocalizerMeasure 
+			controller nodelets stargazer landmarksAdaptedAs: PhaROSLocalizerMeasure 
 	).
 	controller nodelets localizer filein: bot landmarksFile.
 	controller nodelets localizer transformations.
