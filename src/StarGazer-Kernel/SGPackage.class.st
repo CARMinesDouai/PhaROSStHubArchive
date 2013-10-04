@@ -489,3 +489,21 @@ SGPackage >> scriptTf [
 
 
 ]
+
+{ #category : #private }
+SGPackage >> updatePackages [ 
+	super updatePackages.
+	
+	(Gofer it url:  'http://car.mines-douai.fr/squeaksource/Peripherics'
+		username: 'SPB'
+		password: ''; package: 'StarGazer') update.
+		
+	(Gofer it url:  'http://car.mines-douai.fr/squeaksource/Pure'
+		username: 'SPB'
+		password: ''; package: 'PureROS') update.
+	
+	(Gofer it url:  'http://car.mines-douai.fr/squeaksource/Pure'
+		username: 'SPB'
+		password: ''; package: 'PureNG') update.
+
+]
