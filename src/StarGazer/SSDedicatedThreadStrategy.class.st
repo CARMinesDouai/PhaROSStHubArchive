@@ -55,7 +55,7 @@ SSDedicatedThreadStrategy >> read [
 	
 	next := buffer next. 
 	next ifNil: [ ^ ''].
-	read := '' join: ({ next }, buffer peekAll ).
+	read := '' join: ({ next }, (buffer peekAll select:[ : cnk | cnk notNil and:[ cnk isEmpty not ] ]) ).
 "	Transcript show:' READ ', read ; cr.
 	Transcript show:'~ : ' , (read indexOf: $~ ifAbsent:[ 'NO HAY ' ]) asString ;cr ."
 	^ read.
