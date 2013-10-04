@@ -72,8 +72,7 @@ SGCalculatingState >> startMapBuilding [
 SGCalculatingState >> startPolling [
 	polling ifNil: [
 		polling := self paralellize poll.
-		
-		
+"		polling process priority: Processor lowIOPriority."
 	].
 	
 ]

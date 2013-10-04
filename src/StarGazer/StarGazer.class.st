@@ -53,11 +53,12 @@ StarGazer class >> default [
 StarGazer class >> default: aCallbackForMeasures [
 
 	" The default configuration open ttyUSB0, is already able to scan and in stand alone mode (each landmark give the data needed )"
-
-	^( self atPortId: SGGate defaultPortID
+	| def |
+	def := ( self atPortId: SGGate defaultPortID
 		    withInitialState: SGCalculatingState 
 		    forMode: (SGStandAloneMode new callback: aCallbackForMeasures ;yourself)) startMeasurements; yourself  . 
-	
+	"def gate configure."
+	^ def .
 ]
 
 { #category : #thresholds }

@@ -27,7 +27,13 @@ SSDedicatedThreadStrategy >> configure [
 
 { #category : #'as yet unclassified' }
 SSDedicatedThreadStrategy >> consumePort [
-	buffer add: self readPort.
+	| read |
+	read := self readPort.
+	
+	(read isNil or: [ read isEmpty ]) ifFalse: [
+		buffer add: read. 
+	].
+ 	(Delay forMilliseconds: 10) wait.
 ]
 
 { #category : #'as yet unclassified' }
@@ -45,14 +51,21 @@ SSDedicatedThreadStrategy >> nextPutAll: anArrayOfCharacters [
 
 { #category : #'as yet unclassified' }
 SSDedicatedThreadStrategy >> read [
-	| next |
+	| next read |
+	
 	next := buffer next. 
-	^ '' join: ({ next }, buffer peekAll ).
+	next ifNil: [ ^ ''].
+	read := '' join: ({ next }, buffer peekAll ).
+"	Transcript show:' READ ', read ; cr.
+	Transcript show:'~ : ' , (read indexOf: $~ ifAbsent:[ 'NO HAY ' ]) asString ;cr ."
+	^ read.
 ]
 
 { #category : #'as yet unclassified' }
 SSDedicatedThreadStrategy >> startReader [ 
 	reader := self paralellize looping consumePort asStickyReference.
+	
+	
 ]
 
 { #category : #'as yet unclassified' }

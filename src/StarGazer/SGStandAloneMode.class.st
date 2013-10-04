@@ -31,7 +31,7 @@ SGStandAloneMode >> trustableMeasure: aLandmark [
 
 { #category : #'as yet unclassified' }
 SGStandAloneMode >> updateWorld: aLandmark [
-	self halt.
+	
 	" In order to reduce the error of measurements of phantom landmarks, we ask for at least two measures of the same id "
 	[
 		(self trustableMeasure: aLandmark ) ifTrue:[
@@ -39,5 +39,5 @@ SGStandAloneMode >> updateWorld: aLandmark [
 		].
 	] ensure: [
 		lastLandmarkMeasure := aLandmark.
-	]
+	].
 ]

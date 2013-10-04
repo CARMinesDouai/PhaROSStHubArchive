@@ -52,7 +52,7 @@ SGStream >> nextMessage: anAmmountOfTimes [
 
 { #category : #reading }
 SGStream >> nextMessageOrNoMessage [
-	| message start  |
+	| message start |
 	
 	" Find the begin of message mark "
 	serialStream upTo: SGProtocol messageStart.

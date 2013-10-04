@@ -78,7 +78,7 @@ SerialStream >> next: anAmount [
 	].
 	buffer isEmpty ifTrue: [  ^ '' ].
 	
-	start := position + 1.
+	start := position +1.
 	position :=( position + anAmount) min: buffer size.
 	
 	ret:= buffer copyFrom: start to: position. 
@@ -120,8 +120,7 @@ SerialStream >> upTo: anObject [
 	(end = 0 or: [end = (position + 1)]) ifTrue: [ ^ ''].
 
 	start := position + 1.
-	position := end.
-
+	position := end-1.
 	
 	^buffer copyFrom: start to: (end-1)
 	

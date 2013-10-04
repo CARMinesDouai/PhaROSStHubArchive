@@ -476,7 +476,7 @@ SGPackage >> scriptSetUpStandAlone [
 { #category : #scripts }
 SGPackage >> scriptStartMeasures [		
 		
-	self controller nodelets stargazer broadcastLandmarks: { 96 . 112 . 18 . 32 . 2 . 608 }.
+	self controller nodelets stargazer broadcastLandmarks: { 96 . 112 . 18 . 32 . 2 . 608 .0 }.
 
 ]
 
