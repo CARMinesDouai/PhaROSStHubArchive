@@ -105,20 +105,6 @@ SGROSStarGazerNodelet >> configure [
 	self nodelets use: PhaROSMergerNodelet as: #merger.
 ]
 
-{ #category : #calculations }
-SGROSStarGazerNodelet >> landmarkToPose: lmk [
-	| x y pose |
-	x := lmk pose position y * -1.
-		y := lmk pose position x * 1.
-
-		pose := (PhaROSPose fromGeometry_msgsPose: lmk pose).
-		pose position x:  x.  
-		pose position y:  y. 
-		pose position z: 0.0.
-		pose orientation: pose orientation as2DOrientation / -1. 
-		^ pose.
-]
-
 { #category : #subscribe }
 SGROSStarGazerNodelet >> landmarks [
 	^landmarks ifNil: [

@@ -27,10 +27,18 @@ SGPose class >> zero [
 
 { #category : #acessing }
 SGPose >> + aPose [
-	SGPose x: (position x + aPose position x)  
+	^ SGPose x: (position x + aPose position x)  
 			 y: (position y + aPose position y)
 			 z: (position z + aPose position z)  
 			 o: (orientation + aPose orientation). 
+]
+
+{ #category : #acessing }
+SGPose >> - aPose [
+	^ SGPose x: (position x - aPose position x)  
+			 y: (position y - aPose position y)
+			 z: (position z - aPose position z)  
+			 o: (orientation - aPose orientation). 
 ]
 
 { #category : #acessing }

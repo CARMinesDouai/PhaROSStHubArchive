@@ -18,13 +18,13 @@ Class {
 	#category : #'StarGazer-Kernel'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #constructors }
 StarGazer class >> atGate: aGate  forMode: aMode [
 
 	^ self new gate: aGate;  mode: aMode; yourself.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #constructors }
 StarGazer class >> atPortId: aPortId  withInitialState: aStateClass forMode: aMode [ 
 	| gate |
 	gate :=  (SGGate atPortId: aPortId).
@@ -32,15 +32,16 @@ StarGazer class >> atPortId: aPortId  withInitialState: aStateClass forMode: aMo
 	^ self atGate:  gate  forMode: aMode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #constructors }
 StarGazer class >> configureInstance [ 
 	| def |
+	" Instance for configuration use "
 	def := self default:[:w| ].
 	def gate configure.
 	^ def.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #constructors }
 StarGazer class >> default [
 
 	" The default configuration open ttyUSB0, is already able to scan and in stand alone mode (each landmark give the data needed )"
@@ -48,7 +49,7 @@ StarGazer class >> default [
 	^ self default:[  self halt: ' you should define a callback ']. 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #constructors }
 StarGazer class >> default: aCallbackForMeasures [
 
 	" The default configuration open ttyUSB0, is already able to scan and in stand alone mode (each landmark give the data needed )"
@@ -59,7 +60,17 @@ StarGazer class >> default: aCallbackForMeasures [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #thresholds }
+StarGazer class >> differentialPositionThreshold [
+	^ 0.5.
+]
+
+{ #category : #thresholds }
+StarGazer class >> differentialRotationThreshold [
+	^ 20 degreesToRadians.
+]
+
+{ #category : #constructors }
 StarGazer class >> mapBuilding [
 	|def |
 	" The default configuration open ttyUSB0, is already able to scan and in stand alone mode (each landmark give the data needed )"

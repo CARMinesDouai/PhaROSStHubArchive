@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'callback',
-		'zero'
+		'zero',
+		'lastLandmarkMeasure'
 	],
 	#category : #'StarGazer-Kernel'
 }
@@ -14,6 +15,29 @@ SGStandAloneMode >> callback: aCallbackForMeasures [
 ]
 
 { #category : #'as yet unclassified' }
+SGStandAloneMode >> trustableMeasure: aLandmark [
+	| diffPose |
+	
+	^lastLandmarkMeasure isNil or: [ 
+		lastLandmarkMeasure id = aLandmark id 
+		and: [
+			diffPose := lastLandmarkMeasure pose - aLandmark pose.
+			diffPose position module2d < StarGazer differentialPositionThreshold and: [
+				diffPose orientation abs < StarGazer differentialRotationThreshold.
+			].
+		].
+	].
+]
+
+{ #category : #'as yet unclassified' }
 SGStandAloneMode >> updateWorld: aLandmark [
-	callback value: aLandmark.
+	self halt.
+	" In order to reduce the error of measurements of phantom landmarks, we ask for at least two measures of the same id "
+	[
+		(self trustableMeasure: aLandmark ) ifTrue:[
+			callback value: aLandmark.
+		].
+	] ensure: [
+		lastLandmarkMeasure := aLandmark.
+	]
 ]
