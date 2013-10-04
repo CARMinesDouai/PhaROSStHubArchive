@@ -788,3 +788,21 @@ PureROSRobulab >> setupPoseTracker [
 PureROSRobulab >> sgMapfile [ 
 	^ self class imageFolder , '/map/map.yaml'
 ]
+
+{ #category : #private }
+PureROSRobulab >> updatePackages [ 
+	super updatePackages . 
+	
+	(Gofer it url:  'http://car.mines-douai.fr/squeaksource/Pure'
+		username: 'SPB'
+		password: ''; package: 'PureROS') update.
+	
+	(Gofer it url:  'http://car.mines-douai.fr/squeaksource/Pure'
+		username: 'SPB'
+		password: ''; package: 'PureNG') update.
+
+	" Stargazer PAckage "
+	(Gofer it url:  'http://car.mines-douai.fr/squeaksource/Peripherics'
+		username: 'SPB'
+		password: ''; package: 'StarGazer') update.
+]
