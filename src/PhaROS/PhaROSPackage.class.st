@@ -265,7 +265,7 @@ PhaROSPackage >> scriptTest [
 { #category : #scripts }
 PhaROSPackage >> scriptUpdate [
 	self stdout nextPutAll: ' Executing PureROS load'.
-	(Smalltalk at: #ConfigurationOfPureROS) loadBleedingEdge.
+	ConfigurationOfPureROS loadBleedingEdge.
 	self stdout nextPutAll: ' Done.'.
 	
 	self quit.
