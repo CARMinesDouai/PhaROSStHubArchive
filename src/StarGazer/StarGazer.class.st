@@ -63,7 +63,7 @@ StarGazer class >> default: aCallbackForMeasures [
 
 { #category : #thresholds }
 StarGazer class >> differentialPositionThreshold [
-	^ 0.5.
+	^ 20."CM"
 ]
 
 { #category : #thresholds }
