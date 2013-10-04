@@ -296,7 +296,7 @@ PureROSRobulab >> mapFile [
 	^ self class imageFolder  , '/map/map.yaml'
 ]
 
-{ #category : #'scripts-navigation' }
+{ #category : #'scripts-error' }
 PureROSRobulab >> scriptAbsoluteLandmarkLocator [
 
 	| bot |
@@ -460,7 +460,7 @@ PureROSRobulab >> scriptOdometry [
 
 ]
 
-{ #category : #'scripts-launchers' }
+{ #category : #'scripts-error' }
 PureROSRobulab >> scriptOriginFixer [
 	controller := PhaROSHandleController robulab2.
 	controller nodelets spaceEvents registerLocalizationSensor: ( 
@@ -586,7 +586,7 @@ PureROSRobulab >> scriptStargazerBased [
 
 ]
 
-{ #category : #'scripts-launchers-base' }
+{ #category : #'scripts-launchers-base-nomap' }
 PureROSRobulab >> scriptStargazerBasedNoMap [
 		
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
@@ -614,7 +614,10 @@ PureROSRobulab >> scriptStargazerOdometryBased [
 		spec kompaiTF .
 		spec kompaiOdometry .
 		spec moveBase.
-		spec velocitySmoother.
+		
+		"spec velocitySmoother.
+		"
+		spec relay: '/raw_command_velocity' to: '/command_velocity' named: 'smoother_by_pass'.
 		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
 		spec staticZeroTFFrom: '/map'  to: '/odom'.  
 		spec relay: '/kompai2/pose' to: '/pose' named: 'pose_relay'.
@@ -627,7 +630,7 @@ PureROSRobulab >> scriptStargazerOdometryBased [
 
 ]
 
-{ #category : #'scripts-launchers-base' }
+{ #category : #'scripts-launchers-base-nomap' }
 PureROSRobulab >> scriptStargazerOdometryBasedNoMap [
 		
 	process := PhaROSSystemLauncher  instance launch: [: spec | 
@@ -664,42 +667,29 @@ PureROSRobulab >> setAbsolutePoseWith: aLocalizerMeasure [
 
 	lastPoseSettedStamp := DateAndTime now.
 	pose := controller nodelets stargazer landmarkToPose: aLocalizerMeasure.
-	 controller nodelets initialpose initialPose:  pose.
-		
-		
+	controller nodelets initialpose initialPose:  pose.
+
 ]
 
 { #category : #private }
 PureROSRobulab >> setOriginAs: aLocalizerMeasure [
-	| x y | 
-		aLocalizerMeasure pose position z: 0.0. 
-		x := aLocalizerMeasure pose position y * -1.
-		y := aLocalizerMeasure pose position x * 1.
-		aLocalizerMeasure pose position x:  x. 
-		aLocalizerMeasure pose position y:  y.
-		aLocalizerMeasure pose orientation: aLocalizerMeasure pose orientation as2DOrientation / -1.
-		controller nodelets initialpose initialPose:  aLocalizerMeasure pose.
+	| pose | 
+		pose := controller nodelets stargazer landmarkToPose: aLocalizerMeasure.
+		
+		controller nodelets initialpose initialPose:  pose.
 ]
 
 { #category : #private }
 PureROSRobulab >> setPoseWith: aLocalizerMeasure [ 
 	| entity pose lp  x y |
 		lastPoseSettedStamp := DateAndTime now.
+
 		entity := (experiment controller nodelets localizer entity: aLocalizerMeasure id).
-		
-		
 		pose := entity center.
 		
-		lp := aLocalizerMeasure pose.
-		x := lp position y* -1.
-		y := lp position x.
-		lp position x: x.
-		lp position y: y.
+		lp := controller nodelets stargazer landmarkToPose: aLocalizerMeasure.		
 		
-		
-		pose orientation: ( PhaROS2DOrientation z: lp orientation as2DOrientation z * -1).
 		pose position: pose position + lp position.
-		
 		
 		((pose position - (experiment controller nodelets transformation frame: '/base_link') pose position ) module2d > 0.3  and: [(lp position module2d < 0.5) ]) ifTrue: [
 			Transcript show: 'setting pose'; cr.
