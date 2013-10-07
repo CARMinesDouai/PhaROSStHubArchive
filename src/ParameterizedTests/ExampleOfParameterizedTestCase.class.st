@@ -12,7 +12,7 @@ ExampleOfParameterizedTestCase >> givenValuesAndTheirExpectSum [
 ]
 
 { #category : #testing }
-ExampleOfParameterizedTestCase >> should: op1 plus: op2 equals: expectedSum [
+ExampleOfParameterizedTestCase >> should: value1 plus: value2 equals: expectedSum [
 	<testParametersSelector: #givenValuesAndTheirExpectSum>
-	self assert: op1 + op2 equals: expectedSum
+	self assert: value1 + value2 equals: expectedSum
 ]
