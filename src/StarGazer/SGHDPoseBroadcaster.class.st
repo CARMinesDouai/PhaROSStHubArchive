@@ -49,8 +49,9 @@ SGHDPoseBroadcaster >> initialize [
 SGHDPoseBroadcaster >> nextValue [
 	| accumulated cocient posesCache |
 	posesCache := poses shallowCopy.
-
-
+	
+	"	true ifTrue: [
+	^ poses last.]."
 	posesCache size > (SGHDPoseBroadcaster samplingSize - 2)  ifTrue: [
 		cocient := 0.
 		accumulated := PhaROSPoseAccumulator new.
@@ -68,7 +69,7 @@ SGHDPoseBroadcaster >> nextValue [
 { #category : #'as yet unclassified' }
 SGHDPoseBroadcaster >> pose: aPose [
 	stamp := DateAndTime now.
-	super pose: aPose.
+	super pose: (aPose roundUpTo: 0.001).
 	self registerPose: aPose.
 	
 ]
