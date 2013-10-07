@@ -265,7 +265,7 @@ PhaROSPackage >> scriptTest [
 { #category : #scripts }
 PhaROSPackage >> scriptUpdate [
 	self stdout nextPutAll: ' Executing PureROS load'.
-	ConfigurationOfPureROS loadBleedingEdge.
+	self updatePackages.
 	self stdout nextPutAll: ' Done.'.
 	
 	self quit.
@@ -274,4 +274,12 @@ PhaROSPackage >> scriptUpdate [
 { #category : #scripts }
 PhaROSPackage >> stdout [ 
 	^  FileStream stdout.
+]
+
+{ #category : #scripts }
+PhaROSPackage >> updatePackages [ 
+	(Gofer it url:  'http://car.mines-douai.fr/squeaksource/PhaROS'
+	username: ''
+	password: '' ; package: 'PhaROS') update.
+
 ]

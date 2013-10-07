@@ -333,9 +333,9 @@ PhaROSLaunchBuilder >> moveBase [
 		"Robot Configuration Parameters"
 		planner name: '        acc_lim_x' value: 0.3.
 		planner name: '        acc_lim_y' value: 0.0.
-		planner name: '        acc_lim_th' value: 0.4.
+		planner name: '        acc_lim_th' value: 1.0.
 
-		planner name: '        max_vel_x' value: 0.7.
+		planner name: '        max_vel_x' value: 0.3.
 		planner name: '        min_vel_x' value: 0.1.
 
 		planner name: '        max_rotational_vel' value: 1.0.

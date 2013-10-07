@@ -166,3 +166,9 @@ PhaROSPose >> position: aPosition [
 PhaROSPose >> printOn: aStream [ 
 	('[{1},{2}]' format: { position . orientation }) printOn: aStream.
 ]
+
+{ #category : #printing }
+PhaROSPose >> roundUpTo: aFloat [
+	position roundUpTo: aFloat.
+	orientation roundUpTo: aFloat.
+]
