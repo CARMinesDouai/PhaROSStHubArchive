@@ -160,8 +160,8 @@ PureROSRobulabNodelet >> randomPoints [
 	
 	| goals |
 	goals := OrderedCollection new. 	
-	1 to: 20 do: [: i | 
-		goals add: 3; add: 1; add: 2; add: 1.
+	1 to: 2 do: [: i | 
+		goals add: 3; add: 1; add: 2; add: 4.
 	].
 	
 	self goToArray: goals  asArray.

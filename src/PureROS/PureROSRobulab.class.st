@@ -573,14 +573,15 @@ PureROSRobulab >> scriptStargazerBased [
 		spec kompaiTF .
 		spec kompaiOdometry .
 		spec moveBase.
-		spec velocitySmoother.
+		"spec velocitySmoother.
+		"
+		spec relay: '/raw_command_velocity' to: '/command_velocity' named: 'smoother_by_pass'.
 		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
 		spec staticZeroTFFrom: '/map'  to: '/odom'.  
 		spec relay: '/stargazer/pose' to: '/pose' named: 'pose_relay'.
 		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
 		spec relay: '/pharos/out/tf' to: '/tf' named: 'tf_out_relay'.
 		spec relay: '/tf' to: '/pharos/in/tf' named: 'tf_in_relay'.
-		spec rviz.
 	].
 	
 
@@ -787,22 +788,4 @@ PureROSRobulab >> setupPoseTracker [
 { #category : #private }
 PureROSRobulab >> sgMapfile [ 
 	^ self class imageFolder , '/map/map.yaml'
-]
-
-{ #category : #private }
-PureROSRobulab >> updatePackages [ 
-	super updatePackages . 
-	
-	(Gofer it url:  'http://car.mines-douai.fr/squeaksource/Pure'
-		username: 'SPB'
-		password: ''; package: 'PureROS') update.
-	
-	(Gofer it url:  'http://car.mines-douai.fr/squeaksource/Pure'
-		username: 'SPB'
-		password: ''; package: 'PureNG') update.
-
-	" Stargazer PAckage "
-	(Gofer it url:  'http://car.mines-douai.fr/squeaksource/Peripherics'
-		username: 'SPB'
-		password: ''; package: 'StarGazer') update.
 ]

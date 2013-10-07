@@ -82,7 +82,7 @@ PureROSRobulabGoal >> hasArrived: aLocalizerMeasure [
 	^ (
 			entity id = aLocalizerMeasure id 
 			and: [ checks > 5 
-				and: [ aLocalizerMeasure pose position module2d < 0.2  ] 
+				and: [ aLocalizerMeasure pose position module2d < 0.26  ] 
 			]
 		) or: [ 
 			self status = Actionlib_msgsGoalStatus succeeded 
@@ -118,6 +118,7 @@ PureROSRobulabGoal >> onArrivalToGoal: aLocalizerMeasure [
 	
 	checks := 0. 
 	[
+		2 seconds asDelay wait.
 		Transcript show:' arrivalll' ;cr.
 		goal status:Actionlib_msgsGoalStatus  succeeded . 
 		status:= Actionlib_msgsGoalStatus  succeeded .
