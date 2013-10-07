@@ -109,14 +109,6 @@ PhaROSPosition >> rotate: th [
 	^ (PhaROS2DOrientation z: th) asQuaternion rotatePosition: self.
 ]
 
-{ #category : #operators }
-PhaROSPosition >> roundUpTo: aFloat [
-	x:= x roundUpTo: aFloat.
-	y:= y roundUpTo: aFloat.
-	z:= z roundUpTo: aFloat.
-	
-]
-
 { #category : #accessing }
 PhaROSPosition >> x [
 	^ x

@@ -38,7 +38,7 @@ PhaROSQuaternion >> * aQ2 [
 
 { #category : #operators }
 PhaROSQuaternion >> + anOtherQuaternion [
-	^ PhaROSQuaternion x: (x + anOtherQuaternion x) y: (y + anOtherQuaternion y) z: (z + anOtherQuaternion z) w: ( w+ anOtherQuaternion w).
+	^ PhaROSQuaternion x: (x + anOtherQuaternion x) y: (y + anOtherQuaternion y) z: (z + anOtherQuaternion z) w: ( x+ anOtherQuaternion w).
 ]
 
 { #category : #operators }
@@ -120,15 +120,6 @@ PhaROSQuaternion >> rotatePosition: aPosition [
 	inverse := self inverse. 
 	quaternion := quaternion * inverse.
 	^ (PhaROSPosition x: quaternion x y: quaternion y z: quaternion z).
-]
-
-{ #category : #accessing }
-PhaROSQuaternion >> roundUpTo: aFloat [
-	x:= x roundUpTo: aFloat.
-	y:= y roundUpTo: aFloat.
-	z:= z roundUpTo: aFloat.
-	w:= w roundUpTo: aFloat
-	
 ]
 
 { #category : #accessing }
