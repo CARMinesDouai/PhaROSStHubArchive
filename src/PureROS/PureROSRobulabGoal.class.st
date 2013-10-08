@@ -145,18 +145,19 @@ PureROSRobulabGoal >> recoveryFromAbort [
 
 	| vector target  next newGoal |
 
-	vector := target -  robulab currentPose position.
 	target := self target position. 
+	vector := target -  robulab currentPose position.
+	
 	
 	next := PhaROSPose zero. 
 	
 	next position:  target + (vector / 2).
 	next orientation: (PhaROS2DOrientation z: (vector y arcTan: vector x)).
-	
+	Transcript show:'trying middle goal' , next asString ;cr.
 	newGoal :=  (robulab nodelets movebase client goTo: next).
 	
-	newGoal onSucceeded: [ self tryAchieveGoal ].
-	newGoal onAborted: [ self halt: ' Error to reach goal'].
+	newGoal onSucceeded: [ Transcript show:'going back to main goal' ;cr. self tryAchieveGoal ].
+	newGoal onAborted: [ self halt: ' Error to reach goal'. self tryAchieveGoal].
 		
 
 

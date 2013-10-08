@@ -101,7 +101,7 @@ PureROSRobulabNodelet >> configure [
 
 { #category : #navigation }
 PureROSRobulabNodelet >> currentPose [ 
-	self nodelets transformation transformBetween: '/base_link' and: '/map'.
+	^self nodelets transformation transformBetween: '/base_link' and: '/map'.
 ]
 
 { #category : #behavior }
