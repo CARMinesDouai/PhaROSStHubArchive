@@ -588,8 +588,8 @@ PhaROSLaunchBuilder >> velocitySmoother [
 		smooth name: 'speed_lim_v' value: 0.4.
 		smooth name: 'speed_lim_w' value: 0.4.
 		
-		smooth name: 'accel_lim_v' value: 1.0.
-		smooth name: 'accel_lim_w' value: 1.0.
+		smooth name: 'accel_lim_v' value: 5.0.
+		smooth name: 'accel_lim_w' value: 5.0.
 		
 		smooth name: 'frequency' value: 20.0.
 		smooth name: 'decel_factor' value: 1.0.
