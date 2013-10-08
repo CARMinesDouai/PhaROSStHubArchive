@@ -103,7 +103,7 @@ PhaROSHandleController >> initialize [
 
 { #category : #package }
 PhaROSHandleController >> install: aNodelet [
-	aNodelet install.
+	self flag: # aNodeletInstallShouldBeExecuted.
 	aNodelet controller: self. 
 	aNodelet configure
 ]

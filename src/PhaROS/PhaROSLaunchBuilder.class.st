@@ -331,14 +331,14 @@ PhaROSLaunchBuilder >> moveBase [
 		planner name: '        transform_tolerance' value: 1.0.
 
 		"Robot Configuration Parameters"
-		planner name: '        acc_lim_x' value: 0.3.
+		planner name: '        acc_lim_x' value: 1.0.
 		planner name: '        acc_lim_y' value: 0.0.
 		planner name: '        acc_lim_th' value: 1.0.
 
-		planner name: '        max_vel_x' value: 0.3.
+		planner name: '        max_vel_x' value: 0.35.
 		planner name: '        min_vel_x' value: 0.1.
 
-		planner name: '        max_rotational_vel' value: 1.0.
+		planner name: '        max_rotational_vel' value: 0.25.
 		planner name: '        min_in_place_rotational_vel' value: 1.0.
 		
 		planner name: '        holonomic_robot' value: false.
@@ -585,11 +585,11 @@ PhaROSLaunchBuilder >> velocitySmoother [
 	conf := self nodelet: 'smoother' load: 'yocs_velocity_smoother/VelocitySmootherNodelet move_nodelet_manager'.
 	path := self yaml: [ : smooth |
 		
-		smooth name: 'speed_lim_v' value: 10.0.
-		smooth name: 'speed_lim_w' value: 10.0.
+		smooth name: 'speed_lim_v' value: 0.4.
+		smooth name: 'speed_lim_w' value: 0.4.
 		
-		smooth name: 'accel_lim_v' value: 5.0.
-		smooth name: 'accel_lim_w' value: 5.0.
+		smooth name: 'accel_lim_v' value: 1.0.
+		smooth name: 'accel_lim_w' value: 1.0.
 		
 		smooth name: 'frequency' value: 20.0.
 		smooth name: 'decel_factor' value: 1.0.
