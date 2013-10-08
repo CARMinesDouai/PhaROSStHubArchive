@@ -143,15 +143,16 @@ PureROSRobulabGoal >> onSucceeded: aBlock [
 { #category : #event }
 PureROSRobulabGoal >> recoveryFromAbort [
 
-	| vector target  next newGoal |
+	| vector currentPose  target  next newGoal |
 
 	target := self target position. 
-	vector := target -  robulab currentPose position.
+	currentPose := robulab currentPose position.
+	vector := target -  currentPose .
 	
 	
 	next := PhaROSPose zero. 
 	
-	next position:  target + (vector / 2).
+	next position:  currentPose + (vector / 2).
 	next orientation: (PhaROS2DOrientation z: (vector y arcTan: vector x)).
 	Transcript show:'trying middle goal' , next asString ;cr.
 	newGoal :=  (robulab nodelets movebase client goTo: next).
