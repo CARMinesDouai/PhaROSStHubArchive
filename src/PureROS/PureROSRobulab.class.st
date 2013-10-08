@@ -384,11 +384,6 @@ PureROSRobulab >> scriptLandmarkLocator [
 	
 	self setupPoseRecognizer.
 
-	
-
-
-
-
 ]
 
 { #category : #'scripts-navigation' }
@@ -510,6 +505,32 @@ PureROSRobulab >> scriptPoseRecording [
 	controller nodelets poseTracker transformations.
 	Transcript open.
 
+	self halt: 'Execute the next line each time that the robot is in the wanted pose. (Remember to care about where the robot is facing). In case of navigation points, mind the static obstacles in RViz!'.
+	
+	controller nodelets poseTracker recordCurrentPose.
+	
+	self halt: 'After you have recorded all the poses, you need to execute the next line in order to save the poses in a file. Take in care that this process will override all previous poses overriding the file! '.
+	
+	controller nodelets poseTracker save: bot landmarksFile.
+	
+	
+	self quit. 
+	
+]
+
+{ #category : #'scripts-points' }
+PureROSRobulab >> scriptPoseRecordingUpdate [
+
+	| bot |
+	controller := PhaROSHandleController robulab2. 
+	bot := controller nodelets robulab.
+	
+	controller nodelets use: PhaROSPoseTrackerNodelet as: #poseTracker.
+	controller nodelets poseTracker transformations.
+	controller nodelets poseTracker lastEntityRecorded: 10.
+	Transcript open.
+
+	controller nodelets poseTracker open: bot landmarksFile.
 	self halt: 'Execute the next line each time that the robot is in the wanted pose. (Remember to care about where the robot is facing). In case of navigation points, mind the static obstacles in RViz!'.
 	
 	controller nodelets poseTracker recordCurrentPose.
@@ -682,26 +703,31 @@ PureROSRobulab >> setOriginAs: aLocalizerMeasure [
 
 { #category : #private }
 PureROSRobulab >> setPoseWith: aLocalizerMeasure [ 
-	| entity pose lp  x y |
+	| entity pose lp  |
+
 		lastPoseSettedStamp := DateAndTime now.
 
-		entity := (experiment controller nodelets localizer entity: aLocalizerMeasure id).
+		entity := (controller nodelets localizer entity: aLocalizerMeasure id).
 		pose := entity center.
 		
 		lp := controller nodelets stargazer landmarkToPose: aLocalizerMeasure.		
 		
 		pose position: pose position + lp position.
 		
-		((pose position - (experiment controller nodelets transformation frame: '/base_link') pose position ) module2d > 0.3  and: [(lp position module2d < 0.5) ]) ifTrue: [
+		((pose position - (controller nodelets transformation frame: '/base_link') pose position ) module2d > 0.3  and: [(lp position module2d < 0.5) ]) ifTrue: [
+			
 			Transcript show: 'setting pose'; cr.
-			experiment controller nodelets initialpose initialPose:  pose.
+			controller nodelets initialpose initialPose:  pose.
+			
 		] ifFalse: [
-			((experiment controller nodelets transformation frame: '/base_link') pose orientation as2DOrientation z - 
-			pose orientation as2DOrientation z ) abs > 0.1 ifTrue:[
+			((controller nodelets transformation frame: '/base_link') pose orientation as2DOrientation z - pose orientation as2DOrientation z ) abs > 0.1 ifTrue:[
 				Transcript show: 'setting orientation'; cr.
-				experiment controller nodelets initialpose orientation: lp orientation as2DOrientation z* -1.
+				controller nodelets initialpose orientation: lp orientation as2DOrientation z.
 			]
 		]
+
+
+
 ]
 
 { #category : #private }
@@ -723,6 +749,7 @@ PureROSRobulab >> setupOriginRecognizer [
 	checked := 0.
 	lastPoseSettedStamp := DateAndTime now - 1 minute.
 	controller  nodelets spaceEvents whenLocalizerMeasure:  [ : lm |  
+		
 		96 = lm id ifTrue: [
 			checked := checked + 1.	
 		] ifFalse: [
