@@ -68,7 +68,8 @@ PureROSKompaiNodelet >> consumeCommandVelocity [
 			adapted: PNGDifferentialVelocity;
 			when: [ :msg | 
 				| holonomic |
-				holonomic :=  ' Ensure that  holonomic_robot: false in the planner configuration (commonly named base_local_planner_params.yaml)'.
+				holonomic :=  ' Ensure that  holonomic_robot: false in the planner configuration (commonly named base_local_planner_params.yaml)', msg value asString .
+				
 				self assert: msg value linear y = 0.0 description: holonomic.
 				self assert: msg value linear z = 0.0 description: holonomic.
 				self assert: msg value angular y = 0.0 description: holonomic.
