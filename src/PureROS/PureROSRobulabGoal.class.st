@@ -29,13 +29,16 @@ PureROSRobulabGoal >> configure [
 
 	self tryAchieveGoal.
 	
-	goal onAborted: [ self tryAchieveGoal.  ].
-	goal onPreempted:  [ self trajectoryDifferential:  (entity annotation: #lastPose)  . ].
-	goal onPreempting:  [ self trajectoryDifferential:  (entity annotation: #lastPose) . ].
-	goal onRecalling:  [ self trajectoryDifferential:  (entity annotation: #lastPose) . ].
-	goal onRecalled:  [ self trajectoryDifferential:  (entity annotation: #lastPose) . ].
-	goal onRejected:  [ self tryAchieveGoal ].
-	goal onLost:  [ self tryAchieveGoal ].
+	goal onAborted: [ 
+		self halt: 'goal was aborted!' .
+		self recoveryFromAbort.
+	].
+	
+	goal onPreempted:  [ self halt: 'The goal was canceled by a cancel statement or a new goal' ].
+	goal onRecalled:  [ self halt: 'The goal was canceled by a cancel statement or a new goal' ].
+	
+	goal onRejected:  [ self halt: 'Goal was rejected' ].
+	
 	
 	
 ]
@@ -137,6 +140,28 @@ PureROSRobulabGoal >> onSucceeded: aBlock [
 	goal onSucceeded: aBlock.
 ]
 
+{ #category : #event }
+PureROSRobulabGoal >> recoveryFromAbort [
+
+	| vector target  next newGoal |
+
+	vector := target -  robulab currentPose position.
+	target := self target position. 
+	
+	next := PhaROSPose zero. 
+	
+	next position:  target + (vector / 2).
+	next orientation: (PhaROS2DOrientation z: (vector y arcTan: vector x)).
+	
+	newGoal :=  (robulab nodelets movebase client goTo: next).
+	
+	newGoal onSucceeded: [ self tryAchieveGoal ].
+	newGoal onAborted: [ self halt: ' Error to reach goal'].
+		
+
+
+]
+
 { #category : #accessing }
 PureROSRobulabGoal >> robulab: aRobulabNodelet [
 	robulab := aRobulabNodelet 
@@ -161,6 +186,11 @@ PureROSRobulabGoal >> stopmovingAs: aState [
 ]
 
 { #category : #behavior }
+PureROSRobulabGoal >> target [
+	^  entity center asPose.
+]
+
+{ #category : #behavior }
 PureROSRobulabGoal >> trajectoryDifferential: aPose [
 	 aPose ifNotNil: [
 		^ robulab trajectoryDifferential: aPose.
@@ -177,10 +207,7 @@ PureROSRobulabGoal >> tryAchieveGoal [
 			self onArrivalToGoal: lm 
 		].
 	].	
-	
-	self trajectoryDifferential:  (entity annotation: #lastPose) .
-	1 second asDelay wait.
-	goal := (robulab nodelets movebase client goTo: entity center asPose).
+	goal := (robulab nodelets movebase client goTo: self target).
 	
 	
 ]

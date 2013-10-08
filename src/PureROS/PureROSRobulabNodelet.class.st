@@ -99,6 +99,11 @@ PureROSRobulabNodelet >> configure [
 	self trajectoryDifferentialOut.
 ]
 
+{ #category : #navigation }
+PureROSRobulabNodelet >> currentPose [ 
+	self nodelets transformation transformBetween: '/base_link' and: '/map'.
+]
+
 { #category : #behavior }
 PureROSRobulabNodelet >> defaultPose [
 	^ self tfpose.
