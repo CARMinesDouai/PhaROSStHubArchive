@@ -616,16 +616,16 @@ PureROSRobulab >> scriptStargazerOdometryBased [
 		spec kompaiOdometry .
 		spec moveBase.
 		
-		"spec velocitySmoother.
-		"
-		spec relay: '/raw_command_velocity' to: '/command_velocity' named: 'smoother_by_pass'.
+		spec velocitySmoother.
+		
+	"	spec relay: '/raw_command_velocity' to: '/command_velocity' named: 'smoother_by_pass'."
 		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
 		spec staticZeroTFFrom: '/map'  to: '/odom'.  
 		spec relay: '/kompai2/pose' to: '/pose' named: 'pose_relay'.
 		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
 		spec relay: '/pharos/out/tf' to: '/tf' named: 'tf_out_relay'.
 		spec relay: '/tf' to: '/pharos/in/tf' named: 'tf_in_relay'.
-		spec rviz.
+
 	].
 	
 
