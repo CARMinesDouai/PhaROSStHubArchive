@@ -21,6 +21,17 @@ PhaROSPoseTrackerNodelet >> initialize [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSPoseTrackerNodelet >> lastEntityRecorded: anInt [
+	lastEntityRecorded := anInt.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPoseTrackerNodelet >> open: aFilePath [
+	self nodelets localizer filein: aFilePath.
+	
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSPoseTrackerNodelet >> recordCurrentPose [
 	| measure currentPose | 
 	
