@@ -30,7 +30,7 @@ PureROSRobulabGoal >> configure [
 	self tryAchieveGoal.
 	
 	goal onAborted: [ 
-		self halt: 'goal was aborted!' .
+		Transcript show: 'goal was aborted!' ;cr.
 		self recoveryFromAbort.
 	].
 	
@@ -145,7 +145,7 @@ PureROSRobulabGoal >> recoveryFromAbort [
 
 	| vector currentPose  target  next newGoal process |
 
-	process := self paralellize recoveryRotation asStickyReference.
+	process := self  recoveryRotation .
 
 
 	target := self target position. 
@@ -160,8 +160,15 @@ PureROSRobulabGoal >> recoveryFromAbort [
 	Transcript show:'trying middle goal' , next asString ;cr.
 	newGoal :=  (robulab nodelets movebase client goTo: next).
 	
-	newGoal onSucceeded: [ Transcript show:'going back to main goal' ;cr. self tryAchieveGoal ].
-	newGoal onAborted: [ self halt: ' Error to reach goal'. self tryAchieveGoal].
+	newGoal onSucceeded: [ 
+			Transcript show:'going back to main goal' ;cr. 	
+			1 second asDelay wait.	
+			self tryAchieveGoal 
+	].
+	newGoal onAborted: [ 
+		Transcript show: ' Error to reach goal';cr.
+		 self tryAchieveGoal.
+	].
 		
 
 
@@ -175,16 +182,12 @@ PureROSRobulabGoal >> recoveryRotation [
 	
 	rotation z: 1.0.
 	robulab differentialMove: PhaROSPosition zero  and: rotation.
-	(Delay forMilliseconds: 500) wait.
+	(Delay forMilliseconds: 1500) wait.
 	
-	rotation z: -1.0.
+	"rotation z: -1.0.
 	robulab differentialMove: PhaROSPosition zero  and: rotation.
-	(Delay forMilliseconds: 500) wait.
-	
-	rotation z: -1.0.
-	robulab differentialMove: PhaROSPosition zero  and: rotation.
-	(Delay forMilliseconds: 500) wait.
-	
+	(Delay forMilliseconds: 400) wait.
+	"
 	rotation z: 0.0.
 	robulab differentialMove: PhaROSPosition zero  and: rotation.
 		
