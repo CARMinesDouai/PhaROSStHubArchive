@@ -13,7 +13,7 @@ Class {
 PureROSRobulabRecoveryGoal class >> recoverFrom: aPoseTarget depthLimit: aNestedGoalLimit pointReachedAt: aMinDistanceToTarget 
 onSuccess: onSuccess onFailure: onFailure with: robulab [
 
-	| vector currentPose  target  next newGoal |
+	| vector currentPose  target  next newGoal recovery  |
 		
 
 	self flag: #refactorNeeded.
@@ -68,15 +68,27 @@ onSuccess: onSuccess onFailure: onFailure with: robulab [
 
 	Transcript show: 'Recovering with ', next asString; cr.
 	newGoal :=  (robulab nodelets movebase client goTo: next).
-	newGoal onSucceeded: onSuccess .
-	newGoal onAborted: [
+	
+	
+	
+	recovery := [
+		newGoal cancel.
 		self recoverFrom: next depthLimit: aNestedGoalLimit -1 
 								pointReachedAt: aMinDistanceToTarget 
 								onSuccess: onSuccess 
 								onFailure: onFailure 
-								with: robulab
+								with: robulab.
 	].
 
+	newGoal onSucceeded: [onSuccess value].
+	
+	newGoal onAborted: recovery.
+	newGoal onRejected:  recovery.
+	
+	newGoal onPreempted:  [ Transcript show:  'The RECOVERY goal was canceled by a cancel statement or a new goal' ;cr. ].
+	newGoal onRecalled:  [Transcript show:  'The RECOVERY goal was canceled by a cancel statement or a new goal' ;cr].
+	
+	
 	
 ]
 

@@ -23,18 +23,24 @@ PureROSRobulabGoal >> cancel [
 ]
 
 { #category : #event }
+PureROSRobulabGoal >> cleanup [ 
+	event cancel. 
+	event := nil.
+]
+
+{ #category : #event }
 PureROSRobulabGoal >> configure [
 
 	self tryAchieveGoal.
 	
 	goal onAborted: [ 
-		Transcript show: 'goal was aborted!' ;cr.
+		Transcript show: 'goal was aborted! Starting recovery behaviors... ' ;cr.
 		self recoveryFromAbort.
 	].
 	
-	goal onPreempted:  [ self halt: 'The goal was canceled by a cancel statement or a new goal' ].
-	goal onRecalled:  [ self halt: 'The goal was canceled by a cancel statement or a new goal' ].
-	goal onRejected:  [ self halt: 'Goal was rejected' ].
+	goal onPreempted:  [ Transcript show: 'The goal was canceled by a cancel statement or a new goal';cr ].
+	goal onRecalled:  [ Transcript show: 'The goal was canceled by a cancel statement or a new goal';cr ].
+	goal onRejected:  [ Transcript show: 'Goal was rejected' ;cr].
 	
 	
 	
@@ -50,9 +56,15 @@ PureROSRobulabGoal >> configureNonRecoverable [
 		self error: 'Error achiving goal!'.
 	].
 	
-	goal onPreempted:  [ self halt: 'The goal was canceled by a cancel statement or a new goal' ].
-	goal onRecalled:  [ self halt: 'The goal was canceled by a cancel statement or a new goal' ].
-	goal onRejected:  [ self halt: 'Goal was rejected' ].
+	goal onPreempted:  [ 
+		Transcript show: 'The  NON RECOVER goal was canceled by a cancel statement or a new goal';cr 
+	].
+	goal onRecalled:  [ 
+		Transcript show: 'The NON RECOVER goal was canceled by a cancel statement or a new goal' ; cr
+	].
+	goal onRejected:  [ 
+		Transcript show: 'NON RECOVER Goal was rejected' ;cr
+	].
 	
 	
 	
@@ -77,14 +89,27 @@ PureROSRobulabGoal >> hasArrived: aLocalizerMeasure [
 		checks := 0.
 	] .
   
-	^ (
+	 ((
 			entity id = aLocalizerMeasure id 
 			and: [ checks > 5 
 				and: [ aLocalizerMeasure pose position module2d < 0.26  ] 
 			]
 		) or: [ 
 			self status = Actionlib_msgsGoalStatus succeeded 
+		] ) ifTrue:[ 
+			self halt.
+			^ true
+		
 		].
+		^ false.
+]
+
+{ #category : #event }
+PureROSRobulabGoal >> hasReallyArrived [ 
+	|pose|
+
+	robulab nodelets transformation transformBetween: entity frameName and: '/base_link'.
+	^ pose position module2d < 1.0 
 ]
 
 { #category : #behavior }
@@ -101,15 +126,21 @@ PureROSRobulabGoal >> onAborted: aBlock [
 
 { #category : #event }
 PureROSRobulabGoal >> onArrivalToGoal: aLocalizerMeasure [ 
-	
 	checks := 0. 
-	[
-		2 seconds asDelay wait.
-		Transcript show:' arrivalll' ;cr.
-		goal status:Actionlib_msgsGoalStatus  succeeded . 
-		status:= Actionlib_msgsGoalStatus  succeeded .
-		goal cancel.
-	] doIt .
+	
+	
+	self hasReallyArrived ifTrue: [
+		[
+			2 seconds asDelay wait.
+			Transcript show:' arrivalll' ;cr.
+			goal status:Actionlib_msgsGoalStatus  succeeded . 
+			status:= Actionlib_msgsGoalStatus  succeeded .
+			goal cancel.
+		] doIt .
+	] ifFalse: [
+		self configure.
+	].
+	
 	
 ]
 
@@ -125,15 +156,11 @@ PureROSRobulabGoal >> onSucceeded: aBlock [
 
 { #category : #event }
 PureROSRobulabGoal >> recoveryFromAbort [
-
 	
-
+	self cleanup.
 	
-	
-	event cancel. 
-	event := nil.
-	
-	PureROSRobulabRecoveryGoal recoverFrom: self target depthLimit: 3 pointReachedAt: 0.30 onSuccess: [
+	PureROSRobulabRecoveryGoal recoverFrom: self target depthLimit: 3 pointReachedAt: 0.25 onSuccess: [
+		Transcript show: 'Recovery process successful. Retrying main goal'.
 		self configure.	
 	] onFailure: [
 		Transcript show: ' Recovery process has failed. Trying last intent for full goal'; cr.
