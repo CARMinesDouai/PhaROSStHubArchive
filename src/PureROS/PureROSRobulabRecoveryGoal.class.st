@@ -29,7 +29,7 @@ onSuccess: onSuccess onFailure: onFailure with: robulab [
 	].	
 	
 	
-	target := self target position. 
+	target := aPoseTarget position. 
 	currentPose := robulab currentPose position.
 	vector := target -  currentPose .
 	
