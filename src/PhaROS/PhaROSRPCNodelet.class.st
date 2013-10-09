@@ -55,13 +55,13 @@ PhaROSRPCNodelet >> configure [
 { #category : #'as yet unclassified' }
 PhaROSRPCNodelet >> currentLandmarkId [
 	self flag: #pathNilInOtherPlace.
-	path ifNil: [ ^ 82 ].
+	path ifNil: [ ^ 1 ].
 		
 	^ currentId > path size ifTrue: [
 		path := nil.	
-		82
+		1
 	] ifFalse: [
-		currentId = 0 ifTrue: [ 82 ] ifFalse: [ path at: currentId .]
+		currentId = 0 ifTrue: [ 1 ] ifFalse: [ path at: currentId .]
 	].
 	
 ]
@@ -101,16 +101,18 @@ PhaROSRPCNodelet >> initPathWithStargazerIds: aCollection [
 { #category : #'as yet unclassified' }
 PhaROSRPCNodelet >> makeAPath [
         path := OrderedCollection new.
-        currentId := 0.
 
-        ((ids includes: 18 )and: [ (ids includes: 2) and: [ ids includes: 608 ] ] ) ifTrue: [ path add: 18.  path add: 2.  path add: 608. ^ self ].
+	currentId := 0.        
+
+        ((ids includes: 3 )and: [ (ids includes: 4) and: [ ids includes: 4 ] ] ) ifTrue: [ path add: 3.  path add: 4.  path add: 4. ^ self ].
+
+        ((ids includes: 3 )and: [ (ids includes: 4) ] ) ifTrue: [ path add: 3.  path add: 4. ^ self ].
+        ((ids includes: 2 )and: [ (ids includes: 4) ] ) ifTrue: [ path add: 2.  path add: 4. ^ self ].
+        ((ids includes: 3 )and: [ (ids includes: 2) ] ) ifTrue: [ path add: 2.  path add: 3. ^ self ].
 
 
-        ((ids includes: 18 )and: [ (ids includes: 2) ] ) ifTrue: [ path add: 18.  path add: 2. ^ self ].
-        ((ids includes: 608 )and: [ (ids includes: 2) ] ) ifTrue: [ path add: 608.  path add: 2. ^ self ].
-        ((ids includes: 18 )and: [ (ids includes: 608) ] ) ifTrue: [ path add: 608.  path add: 18. ^ self ].
-
-        path := ids asOrderedCollection.
+	  
+        path := ids asSet asOrderedCollection.
 ]
 
 { #category : #'as yet unclassified' }

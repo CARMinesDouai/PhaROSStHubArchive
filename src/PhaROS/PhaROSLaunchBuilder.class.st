@@ -255,7 +255,7 @@ PhaROSLaunchBuilder >> moveBase [
 	conf param: 'clearing_rotation_allowed' value: 'false'.
 	conf param: 'controller_frequency' value: '10.0'.
 	conf param: 'planner_frequency' value: '5.0'.
-	conf param: 'recovery_behavior_enabled' value: 'false'.
+	"conf param: 'recovery_behavior_enabled' value: 'false'."
 
 
 	"conf param:'base_global_planner' value:'carrot_planner/CarrotPlanner'."
