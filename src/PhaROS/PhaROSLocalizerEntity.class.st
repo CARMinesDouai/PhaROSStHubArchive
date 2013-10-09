@@ -130,12 +130,6 @@ PhaROSLocalizerEntity >> complete [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSLocalizerEntity >> extraInfo: anObject [
-	extraInfo := anObject.
-
-]
-
-{ #category : #'as yet unclassified' }
 PhaROSLocalizerEntity >> fix: aPose [
 	
 ]
