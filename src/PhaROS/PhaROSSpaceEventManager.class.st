@@ -27,7 +27,7 @@ PhaROSSpaceEventManager >> events [
 { #category : #'as yet unclassified' }
 PhaROSSpaceEventManager >> initialize [
 	events := Set new.
-	measurers := Set new.
+	
 ]
 
 { #category : #'as yet unclassified' }
@@ -58,6 +58,9 @@ PhaROSSpaceEventManager >> useTfSensorTo: aRobotFrameID [
 	tfSensor := PhaROSLocalizerTFSensor new.
 	tfSensor localizer: self nodelets localizer.
 	tfSensor robotFrame: aRobotFrameID.
+	
+	tfSensor rate: 2 hz.
+	
 	self registerLocalizationSensor: tfSensor.
 ]
 

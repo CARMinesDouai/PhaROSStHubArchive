@@ -5,7 +5,8 @@ Class {
 		'callback',
 		'process',
 		'localizer',
-		'robotFrame'
+		'robotFrame',
+		'rate'
 	],
 	#category : #'PhaROS-Nodelets-Localizer'
 }
@@ -14,6 +15,12 @@ Class {
 PhaROSLocalizerTFSensor >> for: aCallback [	
 	callback := aCallback.
 	process := self paralellize looping pollDistances asStickyReference.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSLocalizerTFSensor >> initialize [ 
+	rate := 2 hz.
+	
 ]
 
 { #category : #'as yet unclassified' }
@@ -33,7 +40,12 @@ PhaROSLocalizerTFSensor >> pollDistances [
 			callback cull: (PhaROSLocalizerMeasure id: entity id pose: pose) cull: self cull: DateAndTime now
 		].] on: Error do: [ :e | Transcript show:e messageText ; cr ].
 	].
+	self rate wait. 
+]
 
+{ #category : #'as yet unclassified' }
+PhaROSLocalizerTFSensor >> rate: aRate [
+	rate := aRate.
 ]
 
 { #category : #'as yet unclassified' }
