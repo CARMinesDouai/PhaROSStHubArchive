@@ -256,6 +256,7 @@ PhaROSLaunchBuilder >> moveBase [
 	conf param: 'controller_frequency' value: '10.0'.
 	conf param: 'planner_frequency' value: '5.0'.
 
+
 	"conf param:'base_global_planner' value:'carrot_planner/CarrotPlanner'."
 
 "	conf param:'controller_frequency' value:'10.0'."
