@@ -109,6 +109,20 @@ PureROSRobulabNodelet >> defaultPose [
 	^ self tfpose.
 ]
 
+{ #category : #'private-out' }
+PureROSRobulabNodelet >> differentialMove: aLinearVelocity and:  anAngularVelocity [
+	self trajectoryDifferentialOut send: [ : msg | 
+		msg linear x: aLinearVelocity x.
+		msg linear y: aLinearVelocity y.
+		msg linear z: aLinearVelocity z.
+		
+		msg angular x: anAngularVelocity x.
+		msg angular y: anAngularVelocity y.
+		msg angular z: anAngularVelocity z.
+	]. 
+	
+]
+
 { #category : #navigation }
 PureROSRobulabNodelet >> goTo: aPhaROSLocalizerEntity [ 
 

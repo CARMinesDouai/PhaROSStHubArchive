@@ -25,12 +25,12 @@ PureROSKompaiNodelet class >> package [
 
 { #category : #'as yet unclassified' }
 PureROSKompaiNodelet class >> trajectoryDifferentialTopic [ 
-	^ '/kompai2/trajectory/differential'
+	^ '/command_velocity'
 ]
 
 { #category : #'as yet unclassified' }
 PureROSKompaiNodelet class >> trajectoryDifferentialTopicType [
-	^ 'geometry_msgs/PoseStamped'
+	^ 'geometry_msgs/Twist'
 ]
 
 { #category : #'as yet unclassified' }

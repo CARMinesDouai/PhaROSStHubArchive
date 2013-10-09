@@ -143,7 +143,10 @@ PureROSRobulabGoal >> onSucceeded: aBlock [
 { #category : #event }
 PureROSRobulabGoal >> recoveryFromAbort [
 
-	| vector currentPose  target  next newGoal |
+	| vector currentPose  target  next newGoal process |
+
+	process := self paralellize recoveryRotation asStickyReference.
+
 
 	target := self target position. 
 	currentPose := robulab currentPose position.
@@ -159,6 +162,31 @@ PureROSRobulabGoal >> recoveryFromAbort [
 	
 	newGoal onSucceeded: [ Transcript show:'going back to main goal' ;cr. self tryAchieveGoal ].
 	newGoal onAborted: [ self halt: ' Error to reach goal'. self tryAchieveGoal].
+		
+
+
+]
+
+{ #category : #event }
+PureROSRobulabGoal >> recoveryRotation [
+	| rotation |
+	
+	rotation := PhaROSPosition zero.
+	
+	rotation z: 1.0.
+	robulab differentialMove: PhaROSPosition zero  and: rotation.
+	(Delay forMilliseconds: 500) wait.
+	
+	rotation z: -1.0.
+	robulab differentialMove: PhaROSPosition zero  and: rotation.
+	(Delay forMilliseconds: 500) wait.
+	
+	rotation z: -1.0.
+	robulab differentialMove: PhaROSPosition zero  and: rotation.
+	(Delay forMilliseconds: 500) wait.
+	
+	rotation z: 0.0.
+	robulab differentialMove: PhaROSPosition zero  and: rotation.
 		
 
 
