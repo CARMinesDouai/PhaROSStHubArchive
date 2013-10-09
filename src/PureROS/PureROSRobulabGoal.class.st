@@ -106,10 +106,14 @@ PureROSRobulabGoal >> hasArrived: aLocalizerMeasure [
 
 { #category : #event }
 PureROSRobulabGoal >> hasReallyArrived [ 
-	|pose|
+	| pose |
 
 	robulab nodelets transformation transformBetween: entity frameName and: '/base_link'.
-	^ pose position module2d < 1.0 
+	
+	
+(	 pose position module2d > 1.0 goal and: [status = Actionlib_msgsGoalStatus succeeded ] ) ifTrue: [ self halt.]. 
+	
+	^ pose position module2d < 1.0 goal or: [status = Actionlib_msgsGoalStatus succeeded ]
 ]
 
 { #category : #behavior }
@@ -130,6 +134,7 @@ PureROSRobulabGoal >> onArrivalToGoal: aLocalizerMeasure [
 	
 	
 	self hasReallyArrived ifTrue: [
+		Transcript show: ' REALLY ARRIVED ';cr.
 		[
 			2 seconds asDelay wait.
 			Transcript show:' arrivalll' ;cr.
@@ -138,6 +143,7 @@ PureROSRobulabGoal >> onArrivalToGoal: aLocalizerMeasure [
 			goal cancel.
 		] doIt .
 	] ifFalse: [
+		Transcript show: ' RECONFIGURING! '; cr.
 		self configure.
 	].
 	

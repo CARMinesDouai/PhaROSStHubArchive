@@ -474,7 +474,7 @@ PureROSRobulab >> scriptPointNavigation [
 	bot := experiment robulab.
 	bot rpc.
 	
-	experiment controller nodelets spaceEvents useTfSensorTo:'/base_link'.
+	"experiment controller nodelets spaceEvents useTfSensorTo:'/base_link'."
 	experiment controller nodelets localizer filein: bot landmarksFile.
 	
 	"experiment controller nodelets localizer filein: 'odometry-landmarks-inner.st'.
@@ -485,7 +485,7 @@ PureROSRobulab >> scriptPointNavigation [
 	self setupPoseTracker.
 "
 
-	
+	bot goToEntityID: 1.	
 	bot inspect.
 	
 
@@ -604,7 +604,7 @@ PureROSRobulab >> scriptStargazerBased [
 		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
 		spec relay: '/pharos/out/tf' to: '/tf' named: 'tf_out_relay'.
 		spec relay: '/tf' to: '/pharos/in/tf' named: 'tf_in_relay'.
-		spec rviz.
+
 	].
 	
 
