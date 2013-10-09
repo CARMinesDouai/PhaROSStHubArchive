@@ -5,9 +5,7 @@ Class {
 		'goal',
 		'entity',
 		'robulab',
-		'landmarkEvent',
 		'checks',
-		'moves',
 		'status',
 		'event'
 	],
@@ -21,7 +19,7 @@ PureROSRobulabGoal >> cancel [
 	event ifNotNil:[
 	event cancel.
 	event := nil.].
-	landmarkEvent ifNotNil: [ self stopmovingAs: Actionlib_msgsGoalStatus aborted ]
+	
 ]
 
 { #category : #event }
@@ -36,31 +34,28 @@ PureROSRobulabGoal >> configure [
 	
 	goal onPreempted:  [ self halt: 'The goal was canceled by a cancel statement or a new goal' ].
 	goal onRecalled:  [ self halt: 'The goal was canceled by a cancel statement or a new goal' ].
-	
 	goal onRejected:  [ self halt: 'Goal was rejected' ].
 	
 	
 	
 ]
 
-{ #category : #behavior }
-PureROSRobulabGoal >> differentialGoal: aPose [ 
+{ #category : #event }
+PureROSRobulabGoal >> configureNonRecoverable [
+
+	self tryAchieveGoal.
 	
-	| pose |
-	"It just send one in 20 measures".
-	
-	pose := PhaROSPose fromGeometry_msgsPose: aPose pose.
-	(pose position module2d < 0.25 or: [ moves > 2 ]) ifTrue: [
-		entity extraInfo: (robulab nodelets transformation frame: '/base_link') pose.
-		landmarkEvent cancel. 	
-	] ifFalse: [
-		checks \\\ 10 = 0 ifTrue: [
-			self trajectoryDifferential: pose.  	
-			moves := moves + 1.
-		].
+	goal onAborted: [ 
+		self halt: 'Error achiving goal!'.
+		self error: 'Error achiving goal!'.
 	].
-	checks := checks + 1.
- 
+	
+	goal onPreempted:  [ self halt: 'The goal was canceled by a cancel statement or a new goal' ].
+	goal onRecalled:  [ self halt: 'The goal was canceled by a cancel statement or a new goal' ].
+	goal onRejected:  [ self halt: 'Goal was rejected' ].
+	
+	
+	
 ]
 
 { #category : #accessing }
@@ -96,19 +91,7 @@ PureROSRobulabGoal >> hasArrived: aLocalizerMeasure [
 PureROSRobulabGoal >> initialize [ 
 	super initialize.
 	checks := 0.
-	moves := 0.
-]
 
-{ #category : #behavior }
-PureROSRobulabGoal >> landmarkDriving: lmk [
- 	| pose |
-	
-		Transcript show: 'second goal'; cr.
-	
-		pose := PhaROSPose fromGeometry_msgsPose: lmk pose.
-		goal:= robulab nodelets movebase client goTo: pose.
-		
-		
 ]
 
 { #category : #event }
@@ -143,33 +126,24 @@ PureROSRobulabGoal >> onSucceeded: aBlock [
 { #category : #event }
 PureROSRobulabGoal >> recoveryFromAbort [
 
-	| vector currentPose  target  next newGoal process |
+	
 
-	process := self  recoveryRotation .
-
-
-	target := self target position. 
-	currentPose := robulab currentPose position.
-	vector := target -  currentPose .
 	
 	
-	next := PhaROSPose zero. 
+	event cancel. 
+	event := nil.
 	
-	next position:  currentPose + (vector / 2).
-	next orientation: (PhaROS2DOrientation z: (vector y arcTan: vector x)).
-	Transcript show:'trying middle goal' , next asString ;cr.
-	newGoal :=  (robulab nodelets movebase client goTo: next).
+	PureROSRobulabRecoveryGoal recoverFrom: self target depthLimit: 3 pointReachedAt: 0.30 onSuccess: [
+		self configure.	
+	] onFailure: [
+		Transcript show: ' Recovery process has failed. Trying last intent for full goal'; cr.
+		self  recoveryRotation.	
+		self configureNonRecoverable.
+	] with: robulab.
 	
-	newGoal onSucceeded: [ 
-			Transcript show:'going back to main goal' ;cr. 	
-			1 second asDelay wait.	
-			self tryAchieveGoal 
-	].
-	newGoal onAborted: [ 
-		Transcript show: ' Error to reach goal';cr.
-		 self tryAchieveGoal.
-	].
-		
+	
+	
+	
 
 
 ]
@@ -184,10 +158,6 @@ PureROSRobulabGoal >> recoveryRotation [
 	robulab differentialMove: PhaROSPosition zero  and: rotation.
 	(Delay forMilliseconds: 1500) wait.
 	
-	"rotation z: -1.0.
-	robulab differentialMove: PhaROSPosition zero  and: rotation.
-	(Delay forMilliseconds: 400) wait.
-	"
 	rotation z: 0.0.
 	robulab differentialMove: PhaROSPosition zero  and: rotation.
 		
@@ -207,14 +177,6 @@ PureROSRobulabGoal >> status [
 		goal ifNil:[ -1 ]
 			ifNotNil: [ goal status]
 	]
-	
-]
-
-{ #category : #behavior }
-PureROSRobulabGoal >> stopmovingAs: aState [
-	robulab nodelets baseevent remove: landmarkEvent.
-	goal cancel.
-	goal status: aState.
 	
 ]
 

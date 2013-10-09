@@ -19,18 +19,28 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PureROSKompaiNodelet class >> commandVelocityTopic [ 
+	^ '/command_velocity'
+]
+
+{ #category : #'as yet unclassified' }
+PureROSKompaiNodelet class >> commandVelocityTopicType [
+	^ 'geometry_msgs/Twist'
+]
+
+{ #category : #'as yet unclassified' }
 PureROSKompaiNodelet class >> package [
 	^ PureROSKompai.
 ]
 
 { #category : #'as yet unclassified' }
 PureROSKompaiNodelet class >> trajectoryDifferentialTopic [ 
-	^ '/command_velocity'
+	^ '/kompai2/trajectory/differential'
 ]
 
 { #category : #'as yet unclassified' }
 PureROSKompaiNodelet class >> trajectoryDifferentialTopicType [
-	^ 'geometry_msgs/Twist'
+	^ 'geometry_msgs/PoseStamped'
 ]
 
 { #category : #'as yet unclassified' }

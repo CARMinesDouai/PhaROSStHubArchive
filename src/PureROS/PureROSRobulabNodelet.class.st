@@ -6,7 +6,8 @@ Class {
 		'robotName',
 		'tfpose',
 		'trajectoryDifferentialOut',
-		'relocatorEvent'
+		'relocatorEvent',
+		'commandVelocityOut'
 	],
 	#classInstVars : [
 		'initialpose'
@@ -76,6 +77,13 @@ PureROSRobulabNodelet class >> stargazerFrame [
 	^ '/stargazer'
 ]
 
+{ #category : #behavior }
+PureROSRobulabNodelet >> commandVelocityOut [
+	^ commandVelocityOut ifNil: [
+		commandVelocityOut := self rosnode topicPublisher: PureROSKompaiNodelet commandVelocityTopic  typedAs: PureROSKompaiNodelet commandVelocityTopicType. 	
+	]
+]
+
 { #category : #navigation }
 PureROSRobulabNodelet >> commonNavigation [
 	self nodelets use: PureROSMoveBaseCommonNavigation as: #navigator. 
@@ -111,7 +119,7 @@ PureROSRobulabNodelet >> defaultPose [
 
 { #category : #'private-out' }
 PureROSRobulabNodelet >> differentialMove: aLinearVelocity and:  anAngularVelocity [
-	self trajectoryDifferentialOut send: [ : msg | 
+	self commandVelocityOut send: [ : msg | 
 		msg linear x: aLinearVelocity x.
 		msg linear y: aLinearVelocity y.
 		msg linear z: aLinearVelocity z.
