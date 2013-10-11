@@ -325,11 +325,13 @@ PureROSRobulab >> scriptAmclBased [
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
 		
 		spec kompaiTF.
-		spec kompaiOdometry .
+		spec odometry .
 		spec mapServer: self mapFile.
 		spec amcl.
 		spec moveBase.
-		spec velocitySmoother.
+		spec compressor.
+		"spec velocitySmoother."
+		spec relay: '/raw_command_velocity' to: '/command_velocity' named: 'smoother_by_pass'.
 		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
 		spec relay: '/kompai2/pose' to: '/pose' named: 'pose_relay'.
 		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
@@ -347,6 +349,28 @@ PureROSRobulab >> scriptBaselinkAbsolutePose [
 	controller nodelets use: PhaROSTransformationNodelet as:#transformation.
 	(controller nodelets transformation between: '/map' and: '/base_link') for: [: p | self kompaiAbsolutePose: p ]. 
 	
+]
+
+{ #category : #'scripts-navigation' }
+PureROSRobulab >> scriptFeedbackCompressor [
+
+	controller := PhaROSHandleController home.
+	controller nodelets use: PhaROSMoveBaseFeedbackCompressor as:#compressor.
+		
+]
+
+{ #category : #'scripts-launchers' }
+PureROSRobulab >> scriptHardwareUp [
+
+	process:= PhaROSSystemLauncher  instance launch: [: spec | 
+		spec kompai2.
+		spec stargazer.
+		spec stargazerHDPose.
+		spec stargazerTF.
+
+		spec odometry.
+
+	]
 ]
 
 { #category : #'scripts-navigation' }
@@ -468,18 +492,21 @@ PureROSRobulab >> scriptOriginFixer [
 PureROSRobulab >> scriptPointNavigation [
 
 	| bot |
-	experiment := PureROSAMCLBasedPathPlanning robulab2.
-	experiment beginExperiment.	
+	controller := PhaROSHandleController robulab2.
+	
 
-	bot := experiment robulab.
+	bot := controller nodelets robulab.
 	bot rpc.
 	
-	"experiment controller nodelets spaceEvents useTfSensorTo:'/base_link'."
-	experiment controller nodelets localizer filein: bot landmarksFile.
 	
-	"experiment controller nodelets localizer filein: 'odometry-landmarks-inner.st'.
+	controller nodelets spaceEvents useTfSensorTo:'/base_link'.
+	
+	controller nodelets localizer filein: bot landmarksFile.
+	
+	"controller nodelets localizer filein: 'odometry-landmarks-inner.st'.
 	"
-	experiment controller nodelets localizer transformations.
+	
+	controller nodelets localizer transformations.
 	
 "
 	self setupPoseTracker.
@@ -591,19 +618,23 @@ PureROSRobulab >> scriptStargazerBased [
 		
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
 		spec mapServer: self sgMapfile.
-		spec kompaiTF .
-		spec kompaiOdometry .
+
 		spec moveBase.
+		spec compressor.
 		
-		"spec velocitySmoother.
+		"spec velocitySmoother."
 		
-		"spec relay: '/raw_command_velocity' to: '/command_velocity' named: 'smoother_by_pass'.
+		spec relay: '/raw_command_velocity' to: '/command_velocity' named: 'smoother_by_pass'.
 		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
 		spec staticZeroTFFrom: '/map'  to: '/odom'.  
 		spec relay: '/stargazer/pose' to: '/pose' named: 'pose_relay'.
 		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
 		spec relay: '/pharos/out/tf' to: '/tf' named: 'tf_out_relay'.
 		spec relay: '/tf' to: '/pharos/in/tf' named: 'tf_in_relay'.
+		
+		
+		
+		
 
 	].
 	
@@ -614,16 +645,23 @@ PureROSRobulab >> scriptStargazerBased [
 PureROSRobulab >> scriptStargazerBasedNoMap [
 		
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
-		spec kompaiTF .
-		spec kompaiOdometry .
+
+		spec stargazerHDPose.
+		spec stargazerTF.
+
+		spec odometry.
 		spec moveBase.
-		spec velocitySmoother.
+		
+		"spec velocitySmoother."
+		
+		spec relay: '/raw_command_velocity' to: '/command_velocity' named: 'smoother_by_pass'.
 		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
 		spec staticZeroTFFrom: '/map'  to: '/odom'.  
 		spec relay: '/stargazer/pose' to: '/pose' named: 'pose_relay'.
 		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
 		spec relay: '/pharos/out/tf' to: '/tf' named: 'tf_out_relay'.
 		spec relay: '/tf' to: '/pharos/in/tf' named: 'tf_in_relay'.
+		
 		spec rviz.
 	].
 	
@@ -636,12 +674,13 @@ PureROSRobulab >> scriptStargazerOdometryBased [
 	process := PhaROSSystemLauncher  instance launch: [: spec | 
 		spec mapServer: self mapFile.
 		spec kompaiTF .
-		spec kompaiOdometry .
+		spec odometry .
 		spec moveBase.
-		
+		spec compressor.
+		"
 		spec velocitySmoother.
-		
-	"	spec relay: '/raw_command_velocity' to: '/command_velocity' named: 'smoother_by_pass'."
+		"
+		spec relay: '/raw_command_velocity' to: '/command_velocity' named: 'smoother_by_pass'.
 		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
 		spec staticZeroTFFrom: '/map'  to: '/odom'.  
 		spec relay: '/kompai2/pose' to: '/pose' named: 'pose_relay'.
@@ -659,7 +698,7 @@ PureROSRobulab >> scriptStargazerOdometryBasedNoMap [
 		
 	process := PhaROSSystemLauncher  instance launch: [: spec | 
 		spec kompaiTF .
-		spec kompaiOdometry .
+		spec odometry .
 		spec moveBase.
 		spec velocitySmoother.
 		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  

@@ -97,7 +97,7 @@ PureROSRobulabGoal >> hasArrived: aLocalizerMeasure [
 		) or: [ 
 			self status = Actionlib_msgsGoalStatus succeeded 
 		] ) ifTrue:[ 
-			self halt.
+			
 			^ true
 		
 		].
@@ -108,12 +108,15 @@ PureROSRobulabGoal >> hasArrived: aLocalizerMeasure [
 PureROSRobulabGoal >> hasReallyArrived [ 
 	| pose |
 
-	robulab nodelets transformation transformBetween: entity frameName and: '/base_link'.
+	pose := robulab nodelets transformation transformBetween: entity frameName and: '/base_link'.
 	
 	
-(	 pose position module2d > 1.0 goal and: [status = Actionlib_msgsGoalStatus succeeded ] ) ifTrue: [ self halt.]. 
+	(pose position module2d > 1.0  and: [ goal status = Actionlib_msgsGoalStatus succeeded ] ) ifTrue: [ 
+		1 second asDelay wait.
+		pose position module2d > 1.0 ifTrue:[ Transcript show: 'Error localizing! - hasReallyArrived method' ].
+	]. 
 	
-	^ pose position module2d < 1.0 goal or: [status = Actionlib_msgsGoalStatus succeeded ]
+	^ pose position module2d < 1.0 or: [goal status = Actionlib_msgsGoalStatus succeeded ]
 ]
 
 { #category : #behavior }
@@ -136,7 +139,7 @@ PureROSRobulabGoal >> onArrivalToGoal: aLocalizerMeasure [
 	self hasReallyArrived ifTrue: [
 		Transcript show: ' REALLY ARRIVED ';cr.
 		[
-			2 seconds asDelay wait.
+			4 seconds asDelay wait.
 			Transcript show:' arrivalll' ;cr.
 			goal status:Actionlib_msgsGoalStatus  succeeded . 
 			status:= Actionlib_msgsGoalStatus  succeeded .
@@ -164,6 +167,17 @@ PureROSRobulabGoal >> onSucceeded: aBlock [
 PureROSRobulabGoal >> recoveryFromAbort [
 	
 	self cleanup.
+	
+	(self target  position - robulab currentPose position) module2d < 0.3 ifTrue: [
+		goal status: Actionlib_msgsGoalStatus  succeeded . 
+		^ self.
+	].
+	self recoveryRotation.
+	
+	(self target  position - robulab currentPose position) module2d < 1.0 ifTrue: [
+		"Plain retry"
+		^ self configure.
+	].
 	
 	PureROSRobulabRecoveryGoal recoverFrom: self target depthLimit: 3 pointReachedAt: 0.25 onSuccess: [
 		Transcript show: 'Recovery process successful. Retrying main goal'.
