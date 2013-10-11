@@ -74,6 +74,18 @@ PhaROSLaunchBuilder >> amcl [
 	^ conf.
 ]
 
+{ #category : #util }
+PhaROSLaunchBuilder >> compressor [
+		| conf |
+	
+	
+	conf := self package: 'robulab' type:'headless' named:'feedbackcompressor'.
+	conf args: 'feedbackcompressor'.
+	
+	 
+	^ conf.
+]
+
 { #category : #writing }
 PhaROSLaunchBuilder >> fileName [
 	^ fileName ifNil: [ ^ '/tmp/generated-launch' ] .
@@ -208,18 +220,6 @@ PhaROSLaunchBuilder >> kompai2 [
 ]
 
 { #category : #util }
-PhaROSLaunchBuilder >> kompaiOdometry [
-		| conf |
-	
-	
-	conf := self package: 'robulab' type:'headless' named:'odometer'.
-	conf args: 'odometry'.
-	
-	
-	^ conf
-]
-
-{ #category : #util }
 PhaROSLaunchBuilder >> kompaiTF [
 		| conf |
 	
@@ -340,7 +340,7 @@ PhaROSLaunchBuilder >> moveBase [
 		planner name: '        max_vel_x' value: 0.35.
 		planner name: '        min_vel_x' value: 0.1.
 
-		planner name: '        max_rotational_vel' value: 0.25.
+		planner name: '        max_rotational_vel' value: 0.45.
 		planner name: '        min_in_place_rotational_vel' value: 1.0.
 		
 		planner name: '        holonomic_robot' value: false.
@@ -416,6 +416,18 @@ PhaROSLaunchBuilder >> nodeletManager: aName [
 	conf := self package: 'nodelet' type:'nodelet'  named: aName.
 	conf args: ' manager __name:= ', aName.
 	^ conf.
+]
+
+{ #category : #util }
+PhaROSLaunchBuilder >> odometry [
+		| conf |
+	
+	
+	conf := self package: 'robulab' type:'headless' named:'odometer'.
+	conf args: 'odometry'.
+	
+	
+	^ conf
 ]
 
 { #category : #'as yet unclassified' }
@@ -521,12 +533,34 @@ PhaROSLaunchBuilder >> stargazerBasedPose [
 	^ conf.
 ]
 
+{ #category : #util }
+PhaROSLaunchBuilder >> stargazerHDPose [
+	
+		| conf |
+	
+	conf := self package: 'stargazer' type:'headless' named:'stargazer_hd_pose'.
+	conf args: 'hdpose'.
+	
+	^ conf.
+]
+
 { #category : #'as yet unclassified' }
 PhaROSLaunchBuilder >> stargazerPoseBasedTF [
 	
 		| conf |
 	
 	conf := self package: 'stargazer' type:'headless' named:''.
+	conf args: 'tf'.
+	
+	^ conf.
+]
+
+{ #category : #util }
+PhaROSLaunchBuilder >> stargazerTF [
+	
+		| conf |
+	
+	conf := self package: 'stargazer' type:'headless' named:'stargazer_tf'.
 	conf args: 'tf'.
 	
 	^ conf.
@@ -545,7 +579,7 @@ PhaROSLaunchBuilder >> staticTFFrom: aFrame to: anOtherFrame  of: aStringOfShift
 { #category : #tf }
 PhaROSLaunchBuilder >> staticZeroTFFrom: aFrame to: anOtherFrame [  
 
-		^ self staticTFFrom: aFrame to: anOtherFrame  of: ' 0 0 0  0 0 0' rate: 100.
+		^ self staticTFFrom: aFrame to: anOtherFrame  of: ' 0 0 0  0 0 0' rate: 10.
 ]
 
 { #category : #tf }

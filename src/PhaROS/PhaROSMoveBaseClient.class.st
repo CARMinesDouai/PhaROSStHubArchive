@@ -24,7 +24,7 @@ PhaROSMoveBaseClient class >> cancelGoalTopicType [
 
 { #category : #'as yet unclassified' }
 PhaROSMoveBaseClient class >> feedbackTopic [
-	^ '/move_base/feedback'
+	^ '/compressed/feedback'
 ]
 
 { #category : #'as yet unclassified' }
@@ -40,6 +40,11 @@ PhaROSMoveBaseClient class >> goalTopic [
 { #category : #'as yet unclassified' }
 PhaROSMoveBaseClient class >> goalTopicType [
 	^ 'move_base_msgs/MoveBaseActionGoal'.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSMoveBaseClient class >> realFeedbackTopic [
+	^ '/move_base/feedback'
 ]
 
 { #category : #'as yet unclassified' }

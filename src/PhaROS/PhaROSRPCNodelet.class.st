@@ -45,6 +45,7 @@ PhaROSRPCNodelet >> configure [
 						#status -> { self -> #status } .
 						#currentLandmarkId -> { self -> #currentLandmarkId } .  
 						#currentPosition -> { self -> #currentPosition } .  
+						#parking -> { self -> #parking }.
 					} asXMLRPCHttpModule 
 					at:'/rpc' .
 	
@@ -59,7 +60,7 @@ PhaROSRPCNodelet >> currentLandmarkId [
 		
 	^ currentId > path size ifTrue: [
 		path := nil.	
-		1
+		5.
 	] ifFalse: [
 		currentId = 0 ifTrue: [ 1 ] ifFalse: [ path at: currentId .]
 	].
@@ -75,14 +76,19 @@ PhaROSRPCNodelet >> currentPosition [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSRPCNodelet >> goToNextId [ 	
+PhaROSRPCNodelet >> go [
 	| landmark |
-	currentId := currentId + 1.
 	landmark := self currentLandmarkId.
 	self flag: #uncomment.
 	currentGoal := self nodelets robulab goToEntityID: landmark.
 	
 	^ landmark.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSRPCNodelet >> goToNextId [ 	
+	currentId := currentId + 1.
+	^ self go.
 	
 
 
@@ -93,26 +99,28 @@ PhaROSRPCNodelet >> goToNextId [
 { #category : #'as yet unclassified' }
 PhaROSRPCNodelet >> initPathWithStargazerIds: aCollection [
 	ids := aCollection.
-	self assert: aCollection size > 1 description: 'collection should not be empty'.
+	self assert: aCollection size > 0 description: 'collection should not be empty'.
 	self makeAPath.
 	^ true.
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSRPCNodelet >> makeAPath [
-        path := OrderedCollection new.
 
 	currentId := 0.        
+      path := ids asSet asOrderedCollection.
+]
 
-        ((ids includes: 3 )and: [ (ids includes: 4) and: [ ids includes: 4 ] ] ) ifTrue: [ path add: 3.  path add: 4.  path add: 4. ^ self ].
+{ #category : #'as yet unclassified' }
+PhaROSRPCNodelet >> parking [ 	
+	currentGoal := self nodelets robulab goToEntityID: self parkingMark.
+	^ self parkingMark .
+	
+]
 
-        ((ids includes: 3 )and: [ (ids includes: 4) ] ) ifTrue: [ path add: 3.  path add: 4. ^ self ].
-        ((ids includes: 2 )and: [ (ids includes: 4) ] ) ifTrue: [ path add: 2.  path add: 4. ^ self ].
-        ((ids includes: 3 )and: [ (ids includes: 2) ] ) ifTrue: [ path add: 2.  path add: 3. ^ self ].
-
-
-	  
-        path := ids asSet asOrderedCollection.
+{ #category : #'as yet unclassified' }
+PhaROSRPCNodelet >> parkingMark [
+	^ 1.
 ]
 
 { #category : #'as yet unclassified' }
@@ -127,13 +135,36 @@ PhaROSRPCNodelet >> restart [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSRPCNodelet >> retry [ 	
+	self go.
+	^ true.
+	
+
+
+
+
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSRPCNodelet >> status [
+	| stat | 
+	stat :=   self statusReal .
+	
+	stat = PhaROSRPCNodelet error ifTrue:[ Transcript show: 'Error?', currentGoal status asString ; cr ].
+	^ stat.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSRPCNodelet >> statusReal [
 	
 	 self flag: #cleanThisMess.
+	
 		
 	 currentGoal  ifNotNil: [ 
 	
-		({ Actionlib_msgsGoalStatus recalled . 
+		({ 
+		  Actionlib_msgsGoalStatus active.
+		  Actionlib_msgsGoalStatus recalled . 
 		   Actionlib_msgsGoalStatus recalling .  
 		   Actionlib_msgsGoalStatus preempted . 
 		   Actionlib_msgsGoalStatus preempting  } includes: currentGoal status) ifTrue: [
@@ -141,9 +172,7 @@ PhaROSRPCNodelet >> status [
 		].
 	
 		Actionlib_msgsGoalStatus succeeded = currentGoal status ifTrue: [
-			currentId = 82 ifTrue: [
-				^	PhaROSRPCNodelet finished.
-			].
+			currentGoal := nil.
 			^ PhaROSRPCNodelet arrived.
 			
 		].
@@ -154,8 +183,11 @@ PhaROSRPCNodelet >> status [
 	       ^ PhaROSRPCNodelet error.	
 	
 	].
-	^PhaROSRPCNodelet waiting 
-	
+	path ifNil: [
+		^PhaROSRPCNodelet finished. 
+	] ifNotNil:[ 
+		^ PhaROSRPCNodelet waiting.
+	]
 	
 ]
 
@@ -166,5 +198,5 @@ PhaROSRPCNodelet >> stop [
 
 { #category : #'as yet unclassified' }
 PhaROSRPCNodelet >> test [
-	^ 1.
+		^ 1.
 ]

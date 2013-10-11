@@ -40,8 +40,8 @@ PhaROSLocalizerTFSensor >> pollDistances [
 			callback cull: (PhaROSLocalizerMeasure id: entity id pose: pose) cull: self cull: DateAndTime now
 		].] on: Error do: [ :e | Transcript show:e messageText ; cr ].
 	].
-	self halt.
-	self rate wait. 
+	
+	rate wait. 
 ]
 
 { #category : #'as yet unclassified' }

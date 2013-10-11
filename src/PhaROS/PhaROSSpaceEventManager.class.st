@@ -59,7 +59,7 @@ PhaROSSpaceEventManager >> useTfSensorTo: aRobotFrameID [
 	tfSensor localizer: self nodelets localizer.
 	tfSensor robotFrame: aRobotFrameID.
 	
-	tfSensor rate: 2 hz.
+	tfSensor rate: 0.35 hz.
 	
 	self registerLocalizationSensor: tfSensor.
 ]
