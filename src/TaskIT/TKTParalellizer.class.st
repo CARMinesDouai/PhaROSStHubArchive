@@ -19,14 +19,20 @@ TKTParalellizer >> looping [
 ]
 
 { #category : #'as yet unclassified' }
+TKTParalellizer >> loopingClass [
+	^ TKTLoopingTask
+]
+
+{ #category : #'as yet unclassified' }
 TKTParalellizer >> paralellize [
 	 ^ self.
 ]
 
 { #category : #'as yet unclassified' }
 TKTParalellizer >> spawn: aBlock [ 
-	^ looping ifTrue: [
-		(TKTLoopingTask for: aBlock) doIt.
+	^ looping ifTrue: 
+	[
+		(self loopingClass for: aBlock) doIt.
 	] ifFalse: [
 		aBlock doIt.
 	].
