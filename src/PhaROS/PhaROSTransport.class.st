@@ -154,7 +154,7 @@ PhaROSTransport >> resolvePublishersFor: aTopic [
 				channel subscribe:  publisherNode.
 				publisherNode setup.
 			] on: Error do: [: e | 
-				Transcript show: ' Error connecting to ', url; cr.
+				self log: ' Error connecting to ', url.
 				blacklist add: url.
 				publisherNode := nil.
 			]

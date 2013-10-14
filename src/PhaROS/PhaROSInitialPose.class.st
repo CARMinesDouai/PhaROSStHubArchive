@@ -44,7 +44,7 @@ PhaROSInitialPose >> initialPose [
 
 { #category : #'as yet unclassified' }
 PhaROSInitialPose >> initialPose: aPose [
-	Transcript show:' setting' ; cr. 
+	self debug:' setting' . 
 	self initialPoseOut send: [
 		: msg |
 		msg header frame_id: '/map'.
@@ -78,7 +78,7 @@ PhaROSInitialPose >> orientation [
 
 { #category : #'as yet unclassified' }
 PhaROSInitialPose >> orientation: anOrientation [
-	Transcript show:' setting' ; cr. 
+	self debug: ' setting' . 
 	self orientationOut send: [
 		: msg |
 		msg data: anOrientation.

@@ -38,7 +38,7 @@ PhaROSLocalizerTFSensor >> pollDistances [
 		pose := localizer nodelets transformation transformBetween: entity frameName and: robotFrame.
 		pose position module2d < 1.0 ifTrue: [
 			callback cull: (PhaROSLocalizerMeasure id: entity id pose: pose) cull: self cull: DateAndTime now
-		].] on: Error do: [ :e | Transcript show:e messageText ; cr ].
+		].] on: Error do: [ :e | self debug: e messageText ].
 	].
 	
 	rate wait. 

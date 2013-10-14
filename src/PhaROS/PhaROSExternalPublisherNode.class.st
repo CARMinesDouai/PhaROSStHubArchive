@@ -59,8 +59,8 @@ PhaROSExternalPublisherNode >> spinOnce [
 					disconnect := true.
 				] 
 			]  on: ConnectionClosed  do: [ : ct | disconnect := true. ].
-		] on: ConnectionTimedOut do: [ :e | Transcript show: 'Timeout---- '; cr. ].
-	] on: Error do: [: err | Transcript show:  err messageText ; cr.  ].
+		] on: ConnectionTimedOut do: [ :e | self debug: 'Timeout- '].
+	] on: Error do: [: err | self log: err messageText].
 	
 	disconnect ifNotNil: [
 		channel unsubscribe: self.

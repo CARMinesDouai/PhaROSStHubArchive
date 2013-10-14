@@ -145,6 +145,5 @@ PhaROSTransformationNodelet >> writerFor: aFrameID withParent: aParentFrameID [
 	
 	frame parent ifNil: [ frame parent: parent ].
 	
-	self assert: frame parent = parent description: 'The frame is already being broadcasted with other parent!'. 
 	^ self writerFor: frame. 
 ]

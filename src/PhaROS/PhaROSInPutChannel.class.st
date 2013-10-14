@@ -75,7 +75,7 @@ PhaROSInPutChannel >> spinOnce [
 ] on: ConnectionTimedOut do: [ :e | 
 	
 ].]  on: Error do: [
-	: e | Transcript show: e messageText ;cr.
+	: e | self log: e messageText.
 ]
 ]
 

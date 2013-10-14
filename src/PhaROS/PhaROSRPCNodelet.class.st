@@ -99,7 +99,10 @@ PhaROSRPCNodelet >> goToNextId [
 { #category : #'as yet unclassified' }
 PhaROSRPCNodelet >> initPathWithStargazerIds: aCollection [
 	ids := aCollection.
-	self assert: aCollection size > 0 description: 'collection should not be empty'.
+	aCollection size  = 0 ifTrue:[
+		self log: 'ERROR: PhaROSRPCNodelet >> initPathWithStargazerIds:: Collection of IDS should not be empty'.
+		self error: 'ERROR: PhaROSRPCNodelet >> initPathWithStargazerIds:: Collection of IDS should not be empty'.
+	].
 	self makeAPath.
 	^ true.
 ]
@@ -150,7 +153,7 @@ PhaROSRPCNodelet >> status [
 	| stat | 
 	stat :=   self statusReal .
 	
-	stat = PhaROSRPCNodelet error ifTrue:[ Transcript show: 'Error?', currentGoal status asString ; cr ].
+	stat = PhaROSRPCNodelet error ifTrue:[ self log: 'Error - ', currentGoal status asString ].
 	^ stat.
 ]
 

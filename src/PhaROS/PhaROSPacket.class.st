@@ -79,7 +79,7 @@ PhaROSPacket >> loadStream: aStream [
 	size > 100000 ifTrue: [
 		"too long, maybe is a problem in buffer. "	
 		aStream resetBuffers.
-		self error: 'Warning. trying to load ', size asString, ' bytes' ; cr.
+		self error: 'Warning. trying to load ', size asString, ' bytes'.
 	].
 	value := type decode: aDecoder.
 

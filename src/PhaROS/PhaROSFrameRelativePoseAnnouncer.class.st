@@ -61,7 +61,7 @@ PhaROSFrameRelativePoseAnnouncer >> inform [
 	self checkFrame: fromFrame.
 	self checkFrame: toFrame.
 	[
-	self receive: (fromFrame poseRelativeTo: toFrame) from: self. ] on:Error do: [ :e | Transcript show: e messageText; cr. ]
+	self receive: (fromFrame poseRelativeTo: toFrame) from: self. ] on:Error do: [ :e | self log: e messageText ]
 ]
 
 { #category : #'as yet unclassified' }

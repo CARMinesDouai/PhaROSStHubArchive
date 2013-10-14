@@ -73,7 +73,7 @@ PhaROSLocalizerNodelet >> broadcastEntities [
 			msg cells addAll:  points
 	].	
 
-	(Delay forMilliseconds: 1000) wait.
+	1 hz wait.
 ]
 
 { #category : #'as yet unclassified' }
@@ -94,7 +94,7 @@ PhaROSLocalizerNodelet >> broadcastPoints [
 		 entities values collect: [ : e | e asPose asGeometry_msgsPose ] thenDo: [ : p | msg addPose: p ].
 	].	
 
-	(Delay forMilliseconds: 1000) wait.
+	1 hz wait.
 ]
 
 { #category : #'as yet unclassified' }

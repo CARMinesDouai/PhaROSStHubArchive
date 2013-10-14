@@ -45,7 +45,7 @@ PhaROSFrameContainer >> process: aTFMessage from: aChn [
 	].
 	
 	interested valuesDo: [ : announcer | 
-		[announcer inform.] on: PhaROSTFError do: [: e | Transcript show: e messageText; cr. ].	
+		[announcer inform.] on: PhaROSTFError do: [: e | self log: e messageText.].	
 	].
 ]
 

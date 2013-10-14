@@ -89,7 +89,7 @@ PhaROSTopicConectionBuilder >> initialize [
 	when := PhaROSTopicFlux defaultConditional.
 	adapter := PhaROSTopicFlux defaultAdapter.
 	forDebug := false.
-	callback := [ :msg :chn | Transcript show: 'Warning! This topic conection it has no callback configured! '; cr.].
+	callback := [ :msg :chn | self debug: 'Warning! This topic conection it has no callback configured! '].
 ]
 
 { #category : #accessing }

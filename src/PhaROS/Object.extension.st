@@ -16,6 +16,20 @@ Object >> asRoStByteArray [
 ]
 
 { #category : #'*PhaROS' }
+Object >> debug: aLog [
+	PhaROSManifest debug ifTrue: [
+		StandardFileStream stdout nextPutAll: aLog.
+		StandardFileStream stdout nextPutAll: String crlf.
+	]
+]
+
+{ #category : #'*PhaROS' }
 Object >> isBasic [
 	^ true.
+]
+
+{ #category : #'*PhaROS' }
+Object >> log: aLog [
+	StandardFileStream stdout nextPutAll: aLog.
+	StandardFileStream stdout nextPutAll: String crlf.
 ]

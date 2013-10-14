@@ -46,7 +46,7 @@ PhaROSMerger >> initialize [
 PhaROSMerger >> merge [
 	
 	messages size = 2 ifFalse: [ 
-		Transcript show: 'waiting for have data from two topics to start merging'
+		self debug: 'waiting for have data from two topics to start merging'
 	] ifTrue:[
 	
 		self checkStamps ifTrue: [
@@ -56,7 +56,7 @@ PhaROSMerger >> merge [
 					transformation cull: msg cull: ((messages at: that ) at: 1) cull:((messages at:this) at:1)
 				].
 			]	.
-		] ifFalse: [Transcript show: 'data out of syncro or too old'; cr.]
+		] ifFalse: [self log: 'data out of syncro or too old']
 	].
 ]
 

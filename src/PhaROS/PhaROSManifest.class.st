@@ -78,6 +78,11 @@ PhaROSManifest class >> cleanUp [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSManifest class >> debug [
+	^ false. 
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSManifest class >> tex [
 	| op converter |
 	op := StandardFileStream forceNewFileNamed: '/tmp/pharos-documentation.mkd'.
