@@ -132,10 +132,10 @@ PhaROSTransport >> publisherNode: anURL to: aTopic [
 PhaROSTransport >> remotePublisherNode: anURL to: aTopic [
 	| socket  message connectionMessage|
 	
-	self log: 'a'.
+	
 	socket := self comm resolveSocketTo: aTopic of: anURL for: node.
 		
-	self log: 'b'.
+	
 	message := PhaROSHSMessage newSubscriberWith:[
 		:msg |
 		msg callerId: node name	;
@@ -144,11 +144,11 @@ PhaROSTransport >> remotePublisherNode: anURL to: aTopic [
 				type: aTopic type.
 				
 	].
-	self log: 'c'.
+	
 	message sendTo: socket .
 	
 	connectionMessage := PhaROSHSMessage newSubscriberMessageFrom: socket receiveDataWithTimeout.
-	self log: 'd'.
+	
 	
 	^ PhaROSExternalPublisherNode new xmlurl:anURL;  socket: socket; topic: aTopic; yourself.
 ]
@@ -168,16 +168,10 @@ PhaROSTransport >> resolvePublishersFor: aTopic [
 			| publisherNode |
 			
 			[
-				self log:' a '.
 				publisherNode := self publisherNode: url to: aTopic .
-				self log:' b '.
-				
 				publisherNode channel: channel.
-				self log:' c '.
 				channel subscribe:  publisherNode.
-				self log:' d '.
 				publisherNode setup.
-				self log:' e '.
 			] on: Error do: [: e | 
 				self log: ' Error connecting to ', url.
 				self log: e messageText.
