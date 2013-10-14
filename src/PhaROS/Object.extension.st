@@ -29,6 +29,6 @@ Object >> isBasic [
 
 { #category : #'*PhaROS' }
 Object >> log: aLog [
-	SGPackage logger nextPutAll: aLog.
-	SGPackage logger  nextPutAll: String crlf.
+	StandardFileStream stdout nextPutAll: aLog.
+	StandardFileStream stdout nextPutAll: String crlf.
 ]
