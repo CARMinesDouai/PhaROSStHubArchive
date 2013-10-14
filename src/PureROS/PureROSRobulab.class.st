@@ -365,10 +365,7 @@ PureROSRobulab >> scriptHardwareUp [
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
 		spec kompai2.
 		spec stargazer.
-		spec stargazerHDPose.
-		spec stargazerTF.
-
-		spec odometry.
+		
 
 	]
 ]
@@ -617,11 +614,20 @@ PureROSRobulab >> scriptStandAloneMapBuildingStargazer [
 PureROSRobulab >> scriptStargazerBased [
 		
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
+		
 		spec mapServer: self sgMapfile.
 
 		spec moveBase.
 		spec compressor.
+		spec odometry. 
+		"
 		
+		spec stargazerHDPose.
+		spec stargazerTF.
+
+		
+		
+		spec odometry."
 		"spec velocitySmoother."
 		
 		spec relay: '/raw_command_velocity' to: '/command_velocity' named: 'smoother_by_pass'.
@@ -646,8 +652,6 @@ PureROSRobulab >> scriptStargazerBasedNoMap [
 		
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
 
-		spec stargazerHDPose.
-		spec stargazerTF.
 
 		spec odometry.
 		spec moveBase.
@@ -693,12 +697,12 @@ PureROSRobulab >> scriptStargazerOdometryBased [
 
 ]
 
-{ #category : #'scripts-launchers-base-nomap' }
+{ #category : #'scripts-launchers-base' }
 PureROSRobulab >> scriptStargazerOdometryBasedNoMap [
 		
 	process := PhaROSSystemLauncher  instance launch: [: spec | 
 		spec kompaiTF .
-		spec odometry .
+		spec kompaiOdometry .
 		spec moveBase.
 		spec velocitySmoother.
 		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  

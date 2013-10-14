@@ -7,7 +7,8 @@ Class {
 		'robulab',
 		'checks',
 		'status',
-		'event'
+		'event',
+		'isRecoverable'
 	],
 	#category : #'PureROS-Nodelets-Robulab'
 }
@@ -32,7 +33,7 @@ PureROSRobulabGoal >> cleanup [
 PureROSRobulabGoal >> configure [
 
 	self tryAchieveGoal.
-	
+	isRecoverable := true.
 	goal onAborted: [ 
 		self log: 'goal was aborted! Starting recovery behaviors... ' .
 		self recoveryFromAbort.
@@ -50,7 +51,7 @@ PureROSRobulabGoal >> configure [
 PureROSRobulabGoal >> configureNonRecoverable [
 
 	self tryAchieveGoal.
-	
+	isRecoverable := false. 
 	goal onAborted: [ 
 		status := Actionlib_msgsGoalStatus aborted.
 		self log: 'Error achiving goal!'.
@@ -113,10 +114,12 @@ PureROSRobulabGoal >> hasReallyArrived [
 	
 	(pose position module2d > 1.0  and: [ goal status = Actionlib_msgsGoalStatus succeeded ] ) ifTrue: [ 
 		1 second asDelay wait.
-		pose position module2d > 1.0 ifTrue:[ self log: 'Error localizing! - hasReallyArrived method' ].
+		pose position module2d > 1.0 ifTrue:[ 
+			^ false
+		 ].
 	]. 
 	
-	^ pose position module2d < 1.0 or: [goal status = Actionlib_msgsGoalStatus succeeded ]
+	^ pose position module2d < 0.4 or: [goal status = Actionlib_msgsGoalStatus succeeded ]
 ]
 
 { #category : #behavior }
@@ -135,14 +138,14 @@ PureROSRobulabGoal >> onAborted: aBlock [
 PureROSRobulabGoal >> onArrivalToGoal: aLocalizerMeasure [ 
 	checks := 0. 
 	
-	
 	self hasReallyArrived ifTrue: [
+		goal status: Actionlib_msgsGoalStatus  succeeded.
+		status := Actionlib_msgsGoalStatus  succeeded .
+		
 		self debug:' REALLY ARRIVED '.
 		[
 			4 seconds asDelay wait.
-			self debug: ' arrivalll'.
-			goal status:Actionlib_msgsGoalStatus  succeeded . 
-			status:= Actionlib_msgsGoalStatus  succeeded .
+			self debug: ' ARRIVAL EXECUTION'. 
 			goal cancel.
 		] doIt .
 	] ifFalse: [
@@ -165,6 +168,8 @@ PureROSRobulabGoal >> onSucceeded: aBlock [
 
 { #category : #event }
 PureROSRobulabGoal >> recoveryFromAbort [
+	
+	goal status: Actionlib_msgsGoalStatus active.
 	
 	self cleanup.
 	
@@ -222,7 +227,13 @@ PureROSRobulabGoal >> robulab: aRobulabNodelet [
 PureROSRobulabGoal >> status [
 	^ status ifNil: [
 		goal ifNil:[ -1 ]
-			ifNotNil: [ goal status]
+			ifNotNil: [
+				(isRecoverable and: [ goal status = Actionlib_msgsGoalStatus aborted]) ifTrue: [
+					Actionlib_msgsGoalStatus active.	
+				] ifFalse:[
+					 goal status
+				]
+			]
 	]
 	
 ]
