@@ -5,7 +5,8 @@ Class {
 		'ids',
 		'path',
 		'currentId',
-		'currentGoal'
+		'currentGoal',
+		'isError'
 	],
 	#category : #'PhaROS-Nodelets-RPC'
 }
@@ -37,6 +38,8 @@ PhaROSRPCNodelet class >> waiting [
 
 { #category : #'as yet unclassified' }
 PhaROSRPCNodelet >> configure [
+	isError := 0.
+
 		XMLRPCService atPort: self port  
 					serve: {
 						#test -> {self -> #test } .
@@ -151,9 +154,30 @@ PhaROSRPCNodelet >> retry [
 { #category : #'as yet unclassified' }
 PhaROSRPCNodelet >> status [
 	| stat | 
+	
+	
 	stat :=   self statusReal .
 	
-	stat = PhaROSRPCNodelet error ifTrue:[ self log: 'Error - ', currentGoal status asString ].
+	
+	stat = PhaROSRPCNodelet error ifTrue:[ 
+		isError := isError + 1.
+		isError > 5 ifTrue: [
+			^ stat 	
+		] ifFalse: [
+			^ PhaROSRPCNodelet moving.
+		]
+	 ] ifFalse: [
+		isError := 0. 
+	].
+	
+	stat = PhaROSRPCNodelet arrived ifTrue: [ 
+		currentGoal hasReallyArrived ifTrue: [
+			currentGoal := nil.
+			^ stat.	
+		].
+		^ PhaROSRPCNodelet moving.
+	].
+	
 	^ stat.
 ]
 
@@ -175,7 +199,7 @@ PhaROSRPCNodelet >> statusReal [
 		].
 	
 		Actionlib_msgsGoalStatus succeeded = currentGoal status ifTrue: [
-			currentGoal := nil.
+			
 			^ PhaROSRPCNodelet arrived.
 			
 		].
