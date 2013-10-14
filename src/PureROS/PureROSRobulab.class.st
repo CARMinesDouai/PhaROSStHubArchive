@@ -757,12 +757,12 @@ PureROSRobulab >> setPoseWith: aLocalizerMeasure [
 		
 		((pose position - (controller nodelets transformation frame: '/base_link') pose position ) module2d > 0.3  and: [(lp position module2d < 0.5) ]) ifTrue: [
 			
-			Transcript show: 'setting pose'; cr.
+			self debug: 'setting pose'.
 			controller nodelets initialpose initialPose:  pose.
 			
 		] ifFalse: [
 			((controller nodelets transformation frame: '/base_link') pose orientation as2DOrientation z - pose orientation as2DOrientation z ) abs > 0.1 ifTrue:[
-				Transcript show: 'setting orientation'; cr.
+				self debug: 'setting orientation'.
 				controller nodelets initialpose orientation: lp orientation as2DOrientation z.
 			]
 		]

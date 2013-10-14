@@ -24,7 +24,7 @@ onSuccess: onSuccess onFailure: onFailure with: robulab [
 	"
 		
 	aNestedGoalLimit <= 0 ifTrue: [
-		Transcript show: 'Nested target limit reached. Aborting goal'; cr.
+		self log: 'Nested target limit reached. Aborting goal'.
 		onFailure value.
 	].	
 	
@@ -39,7 +39,7 @@ onSuccess: onSuccess onFailure: onFailure with: robulab [
 		
 	"
 	vector module2d <= aMinDistanceToTarget ifTrue: [
-		Transcript show: 'Failed goal was to near to try to save'; cr.
+		self log: 'Failed goal was to near to try to save'.
 		onSuccess value.	
 	].
 	
@@ -52,7 +52,7 @@ onSuccess: onSuccess onFailure: onFailure with: robulab [
 		
 	"
 	(vector / 2) module2d  <= aMinDistanceToTarget ifTrue: [
-		Transcript show: 'Recovery goal was to near to try to save'; cr.
+		self log: 'Recovery goal was to near to try to save'.
 		onSuccess value.	
 	].
 	
@@ -66,7 +66,7 @@ onSuccess: onSuccess onFailure: onFailure with: robulab [
 	next position:  currentPose + (vector / 2).
 	next orientation: (PhaROS2DOrientation z: (vector y arcTan: vector x)).
 
-	Transcript show: 'Recovering with ', next asString; cr.
+	self log: 'Recovering with ', next asString.
 	newGoal :=  (robulab nodelets movebase client goTo: next).
 	
 	
@@ -85,8 +85,8 @@ onSuccess: onSuccess onFailure: onFailure with: robulab [
 	newGoal onAborted: recovery.
 	newGoal onRejected:  recovery.
 	
-	newGoal onPreempted:  [ Transcript show:  'The RECOVERY goal was canceled by a cancel statement or a new goal' ;cr. ].
-	newGoal onRecalled:  [Transcript show:  'The RECOVERY goal was canceled by a cancel statement or a new goal' ;cr].
+	newGoal onPreempted:  [ self log:  'The RECOVERY goal was canceled by a cancel statement or a new goal'. ].
+	newGoal onRecalled:  [self log:  'The RECOVERY goal was canceled by a cancel statement or a new goal' ].
 	
 	
 	

@@ -147,7 +147,7 @@ PureROSRobulabNodelet >> goToArray: anArray [
 		1 second asDelay wait.
 		self goToArray: (anArray copyFrom: 2 to: anArray size). 	
 	].
-	Transcript show: ' heading to ', (anArray at: 1) asString ; cr. 
+	self log: ' heading to ', (anArray at: 1) asString. 
 	goal := self goToEntityID: (anArray at: 1) . 
 	goal onSucceeded: recall.
 	goal onAborted: recall.
@@ -198,7 +198,7 @@ PureROSRobulabNodelet >> randomPoints [
 { #category : #'as yet unclassified' }
 PureROSRobulabNodelet >> relocalize: abpose with: dlmk [
 | relpose  |
-	Transcript show: 'Relocalzioiondginakfnasfnas'; cr.
+	
 			relpose := PhaROSPose fromGeometry_msgsPose: dlmk pose.	
 			self nodelets initialpose initialPose: (PhaROSPose position: abpose position + relpose position orientation: relpose orientation ).
 ]

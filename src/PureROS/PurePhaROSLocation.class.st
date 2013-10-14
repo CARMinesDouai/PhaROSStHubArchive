@@ -39,7 +39,7 @@ PurePhaROSLocation >> merge: anIMUOrientation with: lastLocalization received: a
 { #category : #'as yet unclassified' }
 PurePhaROSLocation >> setPose: aPNGRobotPose [
 	[
-	robot localizationService pose: aPNGRobotPose.  Transcript show: ':)'; cr.] on: Error do:  [ :e | self halt. Transcript show: ':('; cr. ].
+	robot localizationService pose: aPNGRobotPose.  ] on: Error do:  [ :e | self halt. ].
 ]
 
 { #category : #'as yet unclassified' }

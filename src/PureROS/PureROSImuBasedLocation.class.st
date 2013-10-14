@@ -48,11 +48,11 @@ PureROSImuBasedLocation >> pose [
 	((orientationTime - previousPositionTime) asMilliSeconds abs < 100 ) ifTrue: [
 "		put all together here. "
 		(now - orientationTime ) asMilliSeconds abs > 400 ifTrue: [
-			Transcript show: 'Warn- Information about orientation and localization is old ' ; cr.
+			self log: 'Warn- Information about orientation and localization is old '
 		].
 		currentPose := PNGRobotPose x:(ammount * orientation cos) y: (ammount * orientation sin) o: orientation.
 	] ifFalse: [
-		Transcript show: 'Error- Orientation and localization are desincronized' ; cr.
+		self log: 'Error- Orientation and localization are desincronized'.
 	].
 
 	^ currentPose.
