@@ -4,6 +4,9 @@ Class {
 	#instVars : [
 		'process'
 	],
+	#classInstVars : [
+		'logger'
+	],
 	#category : #'StarGazer-Ros'
 }
 
@@ -155,6 +158,20 @@ SGPackage class >> description [
 ]
 
 { #category : #'as yet unclassified' }
+SGPackage class >> logger [
+	^ logger ifNil:[ self logger: ('sg', DateAndTime now asUnixTime asString, '.log')].
+		
+		
+]
+
+{ #category : #'as yet unclassified' }
+SGPackage class >> logger: aPath [
+	logger := FileStream fileNamed: aPath.
+	logger setToEnd. 
+		 
+]
+
+{ #category : #'as yet unclassified' }
 SGPackage class >> packageName [ 
 	^ 'stargazer'
 ]
@@ -263,8 +280,8 @@ SGPackage >> configureEnvironment: aStarGazer [
 	stream nextPutAll: 'Setting HeightFix - yes ', String lf.
 
 	aStarGazer heightFix: 'yes'.
-	stream nextPutAll: 'Setting MarkHeight - 1200 ', String lf.
-	aStarGazer markHeight: '1200'.
+	stream nextPutAll: 'Setting MarkHeight - 1900 ', String lf.
+	aStarGazer markHeight: '1000'.
 	stream nextPutAll: 'Setting MarkType- HLD1-S ', String lf.
 	aStarGazer markType: 'HLD1-S'.
 	
@@ -275,7 +292,7 @@ SGPackage >> configureEnvironment: aStarGazer [
 { #category : #private }
 SGPackage >> poseStampedSg [
 	
-	^(controller node buildConnectionFor: '/stargazer/pose') 
+	^(controller node buildConnectionFor: '/pose') 
 		 typedAs: PureROSRobulabNodelet poseStampedTopicType ;
 		 adapted: #pose \> PhaROSPose  ;
 	  	 connect.
@@ -330,6 +347,8 @@ SGPackage >> scriptConfiguration [
 SGPackage >> scriptHDPose [
 
 	| c |
+	
+	SGPackage logger: 'hdpose.log'.
 	c := 	SGHDPoseBroadcaster for: self controller at: '/base_link'.
 	self broadcastPoseWith: c .
 
@@ -400,10 +419,10 @@ SGPackage >> scriptSetUpMap [
 	
 	stream nextPutAll: 'Setting markMode - Map', String lf.
 	sg markMode: 'Map'.
-	stream nextPutAll: 'Setting RefID - 82', String lf.
+	stream nextPutAll: 'Setting RefID - 96', String lf.
 	sg refID: '96'.
-	stream nextPutAll: 'Setting IdNum- 4', String lf.
-	sg idNum: 4.
+	stream nextPutAll: 'Setting IdNum- 5', String lf.
+	sg idNum: 5.
 	stream nextPutAll: 'Starting', String lf.
 	sg startMeasurements .
 	
@@ -428,10 +447,10 @@ SGPackage >> scriptSetUpMapBuilding [
 	
 	stream nextPutAll: 'Setting markMode - Map', String lf.
 	sg markMode: 'Map'.
-	stream nextPutAll: 'Setting RefID - 96', String lf.
-	sg refID: '96'.
+	stream nextPutAll: 'Setting RefID - 32', String lf.
+	sg refID: '2'.
 	stream nextPutAll: 'Setting IdNum- 6', String lf.
-	sg idNum: 6.
+	sg idNum: 4.
 	
 	
 	self quit.
@@ -469,12 +488,14 @@ SGPackage >> scriptSetUpStandAlone [
 { #category : #scripts }
 SGPackage >> scriptStartMeasures [		
 		
+	SGPackage logger: 'meaures.log'.
 	self controller nodelets stargazer broadcastLandmarks: { 96 . 112 . 18 . 32 . 2 . 608 .0 }.
 
 ]
 
 { #category : #scripts }
 SGPackage >> scriptTf [
+	SGPackage logger: 'tf.log'.
 	self controller nodelets use: PhaROSPoseToTFNodelet  as: #pose2tf.
 	self controller nodelets pose2tf express: self poseStampedSg as: '/base_link'childOf: '/odom'.
 

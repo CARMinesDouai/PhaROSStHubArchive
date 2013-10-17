@@ -43,7 +43,7 @@ StarGazerMeasures >> configure [
 { #category : #'as yet unclassified' }
 StarGazerMeasures >> initialize [ 
 	super initialize.
-	sg := StarGazer default: [: lm | Transcript show: lm ].
+	sg := StarGazer default: [: lm | self log: lm ].
 	
 ]
 

@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'stargazer',
 		'topicPublisher',
-		'acceptedLandmarks'
+		'acceptedLandmarks',
+		'controller'
 	],
 	#category : #'StarGazer-Ros'
 }
@@ -16,24 +17,30 @@ SGROSBroadcaster >> acceptedLandmarks: anArrayOfIDS [
 
 { #category : #broadcasting }
 SGROSBroadcaster >> broadcast: landmark [ 
-	
+	[
 	(self isAccepted: landmark ) ifTrue: [
-		topicPublisher send: [ :msg | 
+		self topicPublisher send: [ :msg | 
 			msg header frame_id: '/landmark/', landmark id asString.
 			landmark pose intoGeometry_msgs_Pose: msg pose.
 			msg landmark: landmark id.		
 		]
 	] ifFalse: [
-		Transcript show: 'LandmarkID:', landmark id asString, ' Detected'; cr.
+		self log: 'LandmarkID:', landmark id asString, ' Detected'.
+	]
+	] on: Error do: [
+		:e | self log: e messageText.
 	]
 ]
 
 { #category : #package }
 SGROSBroadcaster >> configure: aController [
-	topicPublisher := aController node topicPublisher: SGROSStarGazerNodelet landmarkTopic  typedAs: SGROSStarGazerNodelet landmarkTopicType.
 	
+	controller := aController.
 	
-	stargazer := StarGazer default: [  : landmark | self broadcast: landmark ].
+	stargazer := StarGazer default: [  : landmark | 
+	
+		[self broadcast: landmark ] on:Error do: [ :e | self log: e messageText ].
+	].
 	
 	self broadcast: SGLandMarkMeasure zero. "opening the channel to the world"
 ]
@@ -46,4 +53,13 @@ SGROSBroadcaster >> finalize [
 { #category : #broadcasting }
 SGROSBroadcaster >> isAccepted: aLandmark [
 	^ ((acceptedLandmarks includes: aLandmark id ) or: [ acceptedLandmarks size = 0 ])
+]
+
+{ #category : #broadcasting }
+SGROSBroadcaster >> topicPublisher [ 
+	^ topicPublisher ifNil:[	
+		topicPublisher := controller node 
+					topicPublisher: SGROSStarGazerNodelet landmarkTopic  
+					typedAs: SGROSStarGazerNodelet landmarkTopicType.
+		]
 ]

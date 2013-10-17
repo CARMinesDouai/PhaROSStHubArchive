@@ -93,7 +93,7 @@ SGROSStarGazerNodelet >> conditionMerger [
 		r := (DateAndTime now - landmarks lastTimeStamp) asMilliSeconds < 100 and: [ 
 			(((aLandMark pose   position x * aLandMark pose   position x) + (aLandMark pose   position y * aLandMark pose   position y)) sqrt < 0.15 )
 		].
-		r ifTrue: [ Transcript show:'merging-' ; show: r;cr ;cr .].
+		r ifTrue: [ self log:'merging-' ; log: r.].
 		r.
 	]. 
 		
