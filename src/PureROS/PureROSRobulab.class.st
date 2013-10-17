@@ -292,6 +292,33 @@ PureROSRobulab >> finalize [
 ]
 
 { #category : #private }
+PureROSRobulab >> locationRotation [
+	| rotation |
+	
+	rotation := PhaROSPosition zero.
+	
+	
+	rotation z: 0.0.
+	controller nodelets robulab differentialMove: PhaROSPosition zero  and: rotation.
+	1 hz wait.
+		
+	rotation z: 1.0.
+	controller nodelets robulab differentialMove: PhaROSPosition zero  and: rotation.
+	(Delay forMilliseconds: 2000) wait.
+	
+	rotation z: 0.0.
+	controller nodelets robulab differentialMove: PhaROSPosition zero  and: rotation.
+		
+	rotation z: -1.0.
+	controller nodelets robulab differentialMove: PhaROSPosition zero  and: rotation.
+	(Delay forMilliseconds: 2000) wait.
+	
+	rotation z: 0.0.
+	controller nodelets robulab differentialMove: PhaROSPosition zero  and: rotation.
+
+]
+
+{ #category : #private }
 PureROSRobulab >> mapFile [ 
 	^ self class imageFolder  , '/map/map.yaml'
 ]
@@ -325,8 +352,35 @@ PureROSRobulab >> scriptAmclBased [
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
 		
 		spec kompaiTF.
+		
 		spec odometry .
 		spec mapServer: self mapFile.
+		spec amcl.
+		spec moveBase.
+		spec compressor.
+		"spec velocitySmoother."
+		spec relay: '/raw_command_velocity' to: '/command_velocity' named: 'smoother_by_pass'.
+		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
+		spec relay: '/kompai2/pose' to: '/pose' named: 'pose_relay'.
+		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
+		spec relay: '/pharos/out/tf' to: '/tf' named: 'tf_out_relay'.
+		spec relay: '/tf' to: '/pharos/in/tf' named: 'tf_in_relay'.
+	
+		
+"		spec rviz."
+	].
+	
+
+]
+
+{ #category : #'scripts-launchers-base-nomap' }
+PureROSRobulab >> scriptAmclBasedNoMap [
+		
+	process:= PhaROSSystemLauncher  instance launch: [: spec | 
+		
+		spec kompaiTF.
+		spec odometry .
+		
 		spec amcl.
 		spec moveBase.
 		spec compressor.
@@ -500,8 +554,9 @@ PureROSRobulab >> scriptPointNavigation [
 	
 	controller nodelets localizer filein: bot landmarksFile.
 	
-	"controller nodelets localizer filein: 'odometry-landmarks-inner.st'.
-	"
+	controller nodelets initialpose initialPose: (controller nodelets localizer entity:1) center .
+	
+	
 	
 	controller nodelets localizer transformations.
 	

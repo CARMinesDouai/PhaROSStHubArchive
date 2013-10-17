@@ -8,18 +8,27 @@ Class {
 		'checks',
 		'status',
 		'event',
-		'isRecoverable'
+		'isRecoverable',
+		'relatedGoals',
+		'starting',
+		'xRecovery'
 	],
 	#category : #'PureROS-Nodelets-Robulab'
 }
 
+{ #category : #environment }
+PureROSRobulabGoal >> arrivingThreshold [
+	^ 0.30. " Meters "
+]
+
 { #category : #behavior }
 PureROSRobulabGoal >> cancel [ 
-
+	relatedGoals do: #cancel.
 	goal cancel. 
 	event ifNotNil:[
-	event cancel.
-	event := nil.].
+		event cancel.
+		event := nil.
+	].
 	
 ]
 
@@ -54,6 +63,7 @@ PureROSRobulabGoal >> configureNonRecoverable [
 	isRecoverable := false. 
 	goal onAborted: [ 
 		status := Actionlib_msgsGoalStatus aborted.
+		self cancel.
 		self log: 'Error achiving goal!'.
 	].
 	
@@ -71,9 +81,19 @@ PureROSRobulabGoal >> configureNonRecoverable [
 	
 ]
 
+{ #category : #environment }
+PureROSRobulabGoal >> enlapsedTime [
+	^ DateAndTime now - starting
+]
+
 { #category : #accessing }
 PureROSRobulabGoal >> entity: anObject [
 	entity := anObject
+]
+
+{ #category : #environment }
+PureROSRobulabGoal >> expectedTime [
+	 ^ 3 seconds.
 ]
 
 { #category : #accessing }
@@ -89,20 +109,10 @@ PureROSRobulabGoal >> hasArrived: aLocalizerMeasure [
 	] ifFalse: [
 		checks := 0.
 	] .
-  
-	 ((
-			entity id = aLocalizerMeasure id 
-			and: [ checks > 5 
-				and: [ aLocalizerMeasure pose position module2d < 0.26  ] 
-			]
-		) or: [ 
+  	^ [(checks > 1 and:[ entity id = aLocalizerMeasure id and: [ self isCloseEnough: aLocalizerMeasure pose ]]) or: [ 
 			self status = Actionlib_msgsGoalStatus succeeded 
-		] ) ifTrue:[ 
-			
-			^ true
-		
-		].
-		^ false.
+	].] on:Error do: [ self halt. ].
+	
 ]
 
 { #category : #event }
@@ -111,21 +121,45 @@ PureROSRobulabGoal >> hasReallyArrived [
 
 	pose := robulab nodelets transformation transformBetween: entity frameName and: '/base_link'.
 	
-	
-	(pose position module2d > 1.0  and: [ goal status = Actionlib_msgsGoalStatus succeeded ] ) ifTrue: [ 
+	((self isCloseEnough: pose) not and: [goal status = Actionlib_msgsGoalStatus succeeded ]) ifTrue:[
 		1 second asDelay wait.
-		pose position module2d > 1.0 ifTrue:[ 
-			^ false
-		 ].
-	]. 
+		pose := robulab nodelets transformation transformBetween: entity frameName and: '/base_link'.
+		(self isCloseEnough: pose) ifFalse: [
+			^ false.
+		].
+	] .
 	
-	^ pose position module2d < 0.4 or: [goal status = Actionlib_msgsGoalStatus succeeded ]
+	^ true.
 ]
 
 { #category : #behavior }
 PureROSRobulabGoal >> initialize [ 
 	super initialize.
 	checks := 0.
+	relatedGoals := Set new.
+	xRecovery :=  -0.05.
+]
+
+{ #category : #testing }
+PureROSRobulabGoal >> isCloseEnough: aDistanceAsPose [
+	
+	" This criteria is related with the environment and domain needs. This case is related with shopping mall DEMO (small place, not high accuracy needed, high density of people )"
+	
+	^ 
+	
+	(self enlapsedTime > self expectedTime and: [ aDistanceAsPose position module2d < self arrivingThreshold ])
+	or: [
+		(self enlapsedTime > (self expectedTime * 1.5) and: [ aDistanceAsPose position module2d < (self arrivingThreshold * 1.7)])
+		or:[
+			(self enlapsedTime > (self expectedTime * 2) and: [ aDistanceAsPose position module2d < (self arrivingThreshold * 2.5)])	
+			or: [
+				(self enlapsedTime > (self expectedTime * 2.5) and: [ aDistanceAsPose position module2d < (self arrivingThreshold * 3)])	
+				or:[ 
+					self enlapsedTime > (self expectedTime  * 3).
+				]
+			]
+		]
+	]
 
 ]
 
@@ -144,7 +178,7 @@ PureROSRobulabGoal >> onArrivalToGoal: aLocalizerMeasure [
 		
 		self debug:' REALLY ARRIVED '.
 		[
-			4 seconds asDelay wait.
+			1 seconds asDelay wait.
 			self debug: ' ARRIVAL EXECUTION'. 
 			goal cancel.
 		] doIt .
@@ -172,11 +206,12 @@ PureROSRobulabGoal >> recoveryFromAbort [
 	goal status: Actionlib_msgsGoalStatus active.
 	
 	self cleanup.
-	
-	(self target  position - robulab currentPose position) module2d < 0.3 ifTrue: [
+
+	(self target  position - robulab currentPose position) module2d < self arrivingThreshold ifTrue: [
 		goal status: Actionlib_msgsGoalStatus  succeeded . 
 		^ self.
 	].
+
 	self recoveryRotation.
 	
 	(self target  position - robulab currentPose position) module2d < 1.0 ifTrue: [
@@ -184,15 +219,16 @@ PureROSRobulabGoal >> recoveryFromAbort [
 		^ self configure.
 	].
 	
-	PureROSRobulabRecoveryGoal recoverFrom: self target depthLimit: 3 pointReachedAt: 0.25 onSuccess: [
-		self log: 'Recovery process successful. Retrying main goal'.
-		self configure.	
-	] onFailure: [
-		self log: ' Recovery process has failed. Trying last intent for full goal'.
-		self  recoveryRotation.	
-		self configureNonRecoverable.
-	] with: robulab.
-	
+	self related:(
+		PureROSRobulabRecoveryGoal recoverFrom: self target depthLimit: 2 pointReachedAt: 0.25 onSuccess: [
+			self log: 'Recovery process successful. Retrying main goal'.
+			self configure.	
+		] onFailure: [
+			self log: ' Recovery process has failed. Trying last intent for full goal'.
+			self recoveryRotation.	
+			self configureNonRecoverable.
+		] with: robulab
+	).
 	
 	
 	
@@ -202,19 +238,27 @@ PureROSRobulabGoal >> recoveryFromAbort [
 
 { #category : #event }
 PureROSRobulabGoal >> recoveryRotation [
-	| rotation |
+	| rotation position |
 	
 	rotation := PhaROSPosition zero.
+	position := PhaROSPosition zero.
 	
-	rotation z: 1.0.
-	robulab differentialMove: PhaROSPosition zero  and: rotation.
-	(Delay forMilliseconds: 1500) wait.
+  	position x: xRecovery.
+	rotation z: -0.2.
+	robulab differentialMove: position  and: rotation.
+	(Delay forMilliseconds: 1000) wait.
 	
 	rotation z: 0.0.
 	robulab differentialMove: PhaROSPosition zero  and: rotation.
-		
+	
+	xRecovery := 0.0.	
 
 
+]
+
+{ #category : #testing }
+PureROSRobulabGoal >> related: aGoal [
+	relatedGoals add: aGoal.
 ]
 
 { #category : #accessing }
@@ -253,6 +297,7 @@ PureROSRobulabGoal >> trajectoryDifferential: aPose [
 { #category : #behavior }
 PureROSRobulabGoal >> tryAchieveGoal [
 
+	starting := DateAndTime now. 
 	event ifNil: [
 		event := robulab nodelets spaceEvents whenLocalizerMeasure:  [ :lm | 
 			self hasArrived: lm. 

@@ -164,6 +164,33 @@ PureROSRobulabNodelet >> landmarksFile [
 	^ 'map-landmarks-inner.st'
 ]
 
+{ #category : #'private-out' }
+PureROSRobulabNodelet >> locationRotation [
+	| rotation |
+	
+	rotation := PhaROSPosition zero.
+	
+	
+	rotation z: 0.0.
+	controller nodelets robulab differentialMove: PhaROSPosition zero  and: rotation.
+	1 hz wait.
+		
+	rotation z: 1.0.
+	self differentialMove: PhaROSPosition zero  and: rotation.
+	(Delay forMilliseconds: 1000) wait.
+	
+	rotation z: 0.0.
+	self differentialMove: PhaROSPosition zero  and: rotation.
+		
+	rotation z: -1.0.
+	self differentialMove: PhaROSPosition zero  and: rotation.
+	(Delay forMilliseconds: 1000) wait.
+	
+	rotation z: 0.0.
+	self differentialMove: PhaROSPosition zero  and: rotation.
+
+]
+
 { #category : #consume }
 PureROSRobulabNodelet >> poseStamped [
 	^( self rosnode buildConnectionFor:  PureROSRobulabNodelet poseStampedTopicForConsume )typedAs: PureROSRobulabNodelet poseStampedTopicType;  adapted: #pose \> PhaROSPose  ; connect.
@@ -193,6 +220,13 @@ PureROSRobulabNodelet >> randomPoints [
 	
 	self goToArray: goals  asArray.
 
+]
+
+{ #category : #'private-out' }
+PureROSRobulabNodelet >> relocalize [
+
+	controller nodelets initialpose initialPose: (controller nodelets localizer entity:1) center .
+	self locationRotation.
 ]
 
 { #category : #'as yet unclassified' }

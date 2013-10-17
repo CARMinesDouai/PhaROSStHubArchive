@@ -63,7 +63,8 @@ onSuccess: onSuccess onFailure: onFailure with: robulab [
 	
 	next := PhaROSPose zero. 
 	
-	next position:  currentPose + (vector / 2).
+	next position:  currentPose + (vector / (3/2)).
+	
 	next orientation: (PhaROS2DOrientation z: (vector y arcTan: vector x)).
 
 	self log: 'Recovering with ', next asString.
@@ -73,11 +74,12 @@ onSuccess: onSuccess onFailure: onFailure with: robulab [
 	
 	recovery := [
 		newGoal cancel.
-		self recoverFrom: next depthLimit: aNestedGoalLimit -1 
-								pointReachedAt: aMinDistanceToTarget 
-								onSuccess: onSuccess 
-								onFailure: onFailure 
-								with: robulab.
+			self recoverFrom: next depthLimit: aNestedGoalLimit -1 
+									pointReachedAt: aMinDistanceToTarget 
+									onSuccess: onSuccess 
+									onFailure: onFailure 
+									with: robulab
+
 	].
 
 	newGoal onSucceeded: [onSuccess value].
@@ -89,7 +91,7 @@ onSuccess: onSuccess onFailure: onFailure with: robulab [
 	newGoal onRecalled:  [self log:  'The RECOVERY goal was canceled by a cancel statement or a new goal' ].
 	
 	
-	
+	 ^ newGoal.
 ]
 
 { #category : #'as yet unclassified' }
@@ -98,7 +100,7 @@ PureROSRobulabRecoveryGoal class >> recoveryRotation: robulab [
 	
 	rotation := PhaROSPosition zero.
 	
-	rotation z: 1.0.
+	rotation z: -0.3.
 	robulab differentialMove: PhaROSPosition zero  and: rotation.
 	(Delay forMilliseconds: 1500) wait.
 	
