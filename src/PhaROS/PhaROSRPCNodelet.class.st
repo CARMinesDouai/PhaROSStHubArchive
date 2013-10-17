@@ -6,7 +6,8 @@ Class {
 		'path',
 		'currentId',
 		'currentGoal',
-		'isError'
+		'isError',
+		'status'
 	],
 	#category : #'PhaROS-Nodelets-RPC'
 }
@@ -37,9 +38,24 @@ PhaROSRPCNodelet class >> waiting [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSRPCNodelet >> cancel [
+	currentGoal ifNotNil: [
+		currentGoal cancel.	
+	].
+
+	PureROSRobulabGoal allInstances do: #cancel.
+	status := PhaROSRPCNodelet finished.
+	currentGoal := nil.
+	path := nil.
+	
+	
+	^ true.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSRPCNodelet >> configure [
 	isError := 0.
-
+	status := nil.
 		XMLRPCService atPort: self port  
 					serve: {
 						#test -> {self -> #test } .
@@ -49,7 +65,8 @@ PhaROSRPCNodelet >> configure [
 						#currentLandmarkId -> { self -> #currentLandmarkId } .  
 						#currentPosition -> { self -> #currentPosition } .  
 						#parking -> { self -> #parking }.
-					} asXMLRPCHttpModule 
+						#cancel -> { self -> #cancel }.
+ 					} asXMLRPCHttpModule 
 					at:'/rpc' .
 	
 
@@ -106,6 +123,7 @@ PhaROSRPCNodelet >> initPathWithStargazerIds: aCollection [
 		self log: 'ERROR: PhaROSRPCNodelet >> initPathWithStargazerIds:: Collection of IDS should not be empty'.
 		self error: 'ERROR: PhaROSRPCNodelet >> initPathWithStargazerIds:: Collection of IDS should not be empty'.
 	].
+	self nodelets robulab relocalize.
 	self makeAPath.
 	^ true.
 ]
@@ -155,13 +173,15 @@ PhaROSRPCNodelet >> retry [
 PhaROSRPCNodelet >> status [
 	| stat | 
 	
+	status ifNotNil:[ ^ status ].
+	
 	
 	stat :=   self statusReal .
 	
 	
 	stat = PhaROSRPCNodelet error ifTrue:[ 
 		isError := isError + 1.
-		isError > 5 ifTrue: [
+		isError > 2 ifTrue: [
 			^ stat 	
 		] ifFalse: [
 			^ PhaROSRPCNodelet moving.
@@ -171,11 +191,8 @@ PhaROSRPCNodelet >> status [
 	].
 	
 	stat = PhaROSRPCNodelet arrived ifTrue: [ 
-		currentGoal hasReallyArrived ifTrue: [
-			currentGoal := nil.
-			^ stat.	
-		].
-		^ PhaROSRPCNodelet moving.
+		currentGoal := nil.
+		^ stat.	
 	].
 	
 	^ stat.
@@ -207,7 +224,7 @@ PhaROSRPCNodelet >> statusReal [
 			^ PhaROSRPCNodelet waiting.
 		].
 	
-	       ^ PhaROSRPCNodelet error.	
+	       ^ PhaROSRPCNodelet arrived .	
 	
 	].
 	path ifNil: [

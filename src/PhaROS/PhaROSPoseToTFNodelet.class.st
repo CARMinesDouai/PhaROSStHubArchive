@@ -12,7 +12,7 @@ Class {
 PhaROSPoseToTFNodelet >> express: aPoseTopic as: aFrame [
 	writer at: aPoseTopic ifAbsentPut: [self nodelets transformation writerFor: aFrame].
 	
-	aPoseTopic for: [ : pose |  self log: 'receiving pose'. (self writerAt: aPoseTopic ) pose: pose ].
+	aPoseTopic for: [ : pose | (self writerAt: aPoseTopic ) pose: pose ].
 	
 	
 ]
@@ -21,10 +21,7 @@ PhaROSPoseToTFNodelet >> express: aPoseTopic as: aFrame [
 PhaROSPoseToTFNodelet >> express: aPoseTopic as: aFrameID childOf: aParentFrameID [
 
 	writer at: aPoseTopic ifAbsentPut: [ 
-		| newWriter  |
-		newWriter := (self nodelets transformation writerFor: aFrameID  withParent:  aParentFrameID ) .
-		newWriter pose: PhaROSPose zero.
-		newWriter.
+		(self nodelets transformation writerFor: aFrameID  withParent:  aParentFrameID ) 
 	].
 
 	aPoseTopic for: [ : pose | 

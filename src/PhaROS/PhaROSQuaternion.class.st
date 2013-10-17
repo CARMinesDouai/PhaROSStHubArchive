@@ -66,7 +66,7 @@ PhaROSQuaternion >> as2DOrientation [
 
 { #category : #operators }
 PhaROSQuaternion >> asDump [ 
-	^ 'PhaROSQuaternion x: {1} y:{2}  z:{3} w:{4}' format: { x . y . w . z} 
+	^ 'PhaROSQuaternion x: {1} y:{2}  z:{3} w:{4}' format: { x . y . z. w} 
 	
 
 ]
