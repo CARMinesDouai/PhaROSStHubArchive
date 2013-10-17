@@ -306,7 +306,7 @@ ConfigurationOfPhaROS >> versionDemo2: spec [
 		spec timestamp: '17/10/2013 15:15'.
 		spec project: 'XMLRPC' with: '1.0-Beta6'.
 		spec project: 'PaulLePoulpe' with: '1.0.1'.
-		spec project: 'PhaROS' with: 'Demo-2'
+		spec package: 'PhaROS' with: 'PhaROS-SantiagoBragagnolo.267'
 	].
 
 
