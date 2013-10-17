@@ -209,3 +209,22 @@ ConfigurationOfPureROS >> version100Beta: spec [
 
 
 ]
+
+{ #category : #'as yet unclassified' }
+ConfigurationOfPureROS >> versionDemo2: spec [ 
+	<version: 'Demo-2' imports: #('1.0-baseline') >
+	
+	spec for: #common do: [
+		spec blessing: #demoCon.
+		spec author: 'SantiagoBragagnolo'.
+		spec timestamp: '17/10/2013 15:15'.
+		spec 
+			project: 'PhaROS' with: 'Demo-2';
+			project: 'PureNG' with: '1.0-Beta';
+			package: 'TaskIT' with: 'TaskIT-SantiagoBragagnolo.20';
+			package: 'StarGazer' with: 'StarGazer-SantiagoBragagnolo.79'.
+
+		].
+
+
+]
