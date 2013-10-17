@@ -295,3 +295,19 @@ ConfigurationOfPhaROS >> version100Beta3: spec [
 
 
 ]
+
+{ #category : #versions }
+ConfigurationOfPhaROS >> versionDemo2: spec [ 
+	<version: 'Demo-2' imports: #('1.0-baseline') >
+	
+	spec for: #common do: [
+		spec blessing: #demo.
+		spec author: 'SantiagoBragagnolo'.
+		spec timestamp: '17/10/2013 15:15'.
+		spec project: 'XMLRPC' with: '1.0-Beta6'.
+		spec project: 'PaulLePoulpe' with: '1.0.1'.
+		spec project: 'PhaROS' with: 'Demo-2'
+	].
+
+
+]
