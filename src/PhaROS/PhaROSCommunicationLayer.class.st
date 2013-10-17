@@ -73,8 +73,13 @@ PhaROSCommunicationLayer >> manageIncomingConnection: aMessage with: aSocket [
 
 { #category : #'as yet unclassified' }
 PhaROSCommunicationLayer >> requestTopic: aCallerId for:aTopic availableFor: anArrayOfProtocols [
-	(transport isPublisherOf: aTopic) ifTrue: [
-		^ { 1 .  'Protocols' . {  'TCPROS'  .  ip .  tcp }  }	
+
+	^ (transport isPublisherOf: aTopic) ifTrue: [
+		
+		{ 1 .  'Protocols' . {  'TCPROS'  .  ip .  tcp }  }	
+	] ifFalse: [
+		
+		{} 
 	].
 	
 ]

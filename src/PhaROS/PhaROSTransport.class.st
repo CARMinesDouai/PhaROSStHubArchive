@@ -20,6 +20,12 @@ PhaROSTransport class >> domain: anIP xml: aPort tcp: otherPort master: aMaster 
 ]
 
 { #category : #publishing }
+PhaROSTransport >> blacklist: anUrl [
+
+	blacklist at: anUrl ifPresent: [ : val | blacklist at:anUrl put: val +1 ] ifAbsent:[ blacklist at: anUrl put: 1].
+]
+
+{ #category : #publishing }
 PhaROSTransport >> comm [
 	^ comm ref.
 ]
@@ -69,13 +75,19 @@ PhaROSTransport >> finalize [
 
 { #category : #publishing }
 PhaROSTransport >> initialize [ 
-	blacklist := Set new.
+	blacklist := Dictionary new.
+]
+
+{ #category : #publishing }
+PhaROSTransport >> isBlackListed: anUrl [
+	^ blacklist at: anUrl ifPresent: [ : val | val > 3 ] ifAbsent: [ false ].
 ]
 
 { #category : #accessing }
 PhaROSTransport >> isPublisherOf:  aTopic [
+[
  	^ (master lookupTopic: aTopic) isAPublisher: node. 
-	
+] on:Error do: [ ^ false ].	
 ]
 
 { #category : #publishing }
@@ -108,8 +120,10 @@ PhaROSTransport >> publisher: aTopicID typedAs: aTypeID [
 PhaROSTransport >> publisherNode: anURL to: aTopic [
 	
 	^ (aTopic isLocalPublisher: anURL) ifTrue: [
+		
 			self localPublisherNode: anURL to: aTopic. 
 		] ifFalse: [
+		
 			self remotePublisherNode: anURL to: aTopic. 
 	   ].
 ]
@@ -118,8 +132,10 @@ PhaROSTransport >> publisherNode: anURL to: aTopic [
 PhaROSTransport >> remotePublisherNode: anURL to: aTopic [
 	| socket  message connectionMessage|
 	
+	
 	socket := self comm resolveSocketTo: aTopic of: anURL for: node.
 		
+	
 	message := PhaROSHSMessage newSubscriberWith:[
 		:msg |
 		msg callerId: node name	;
@@ -128,6 +144,7 @@ PhaROSTransport >> remotePublisherNode: anURL to: aTopic [
 				type: aTopic type.
 				
 	].
+	
 	message sendTo: socket .
 	
 	connectionMessage := PhaROSHSMessage newSubscriberMessageFrom: socket receiveDataWithTimeout.
@@ -142,12 +159,14 @@ PhaROSTransport >> resolvePublishersFor: aTopic [
 	
 	
 	urls := (master registerSubscriber: node name to: aTopic name with: aTopic type andCallerUri: self comm url) asSet.
+	
 	channel := aTopic subscribingChannelFor: node.
 	
 	^ urls collect: [ :url |
-		(blacklist includes: url ) ifFalse: [
+		(self isBlackListed: url ) ifFalse: [
 		channel publishers detect: [ : p | p xmlurl = url ] ifNone: [ 
 			| publisherNode |
+			
 			[
 				publisherNode := self publisherNode: url to: aTopic .
 				publisherNode channel: channel.
@@ -155,7 +174,8 @@ PhaROSTransport >> resolvePublishersFor: aTopic [
 				publisherNode setup.
 			] on: Error do: [: e | 
 				self log: ' Error connecting to ', url.
-				blacklist add: url.
+				self log: e messageText.
+				self blacklist: url.
 				publisherNode := nil.
 			]
 		]
