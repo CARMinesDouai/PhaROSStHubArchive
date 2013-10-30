@@ -573,6 +573,39 @@ PureROSRobulab >> scriptPointNavigation [
 
 ]
 
+{ #category : #'scripts-navigation' }
+PureROSRobulab >> scriptPointTrajectoryNavigation [
+
+	| bot |
+	controller := PhaROSHandleController robulab2.
+	
+
+	bot := controller nodelets robulab.
+	bot rpc.
+	
+	
+	controller nodelets spaceEvents useTfSensorTo:'/base_link'.
+	
+	controller nodelets localizer filein: bot landmarksFile.
+	
+	"controller nodelets localizer filein: 'odometry-landmarks-inner.st'.
+	"
+	
+	controller nodelets localizer transformations.
+	
+"
+	self setupPoseTracker.
+"
+
+	bot goToEntityID: 1.	
+	bot inspect.
+	
+
+
+
+
+]
+
 { #category : #'scripts-points' }
 PureROSRobulab >> scriptPoseRecording [
 
