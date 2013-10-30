@@ -32,12 +32,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSMaster class >> initialize [ 
-	MasterInstances := Dictionary new. 
-]
-
-{ #category : #construction }
-PhaROSMaster class >> instances [
-	^ MasterInstances.
+	MasterInstances := WeakArray new
 ]
 
 { #category : #service }
@@ -45,35 +40,9 @@ PhaROSMaster class >> localhost [
 	^ self url: 'http://127.0.0.1:11311/'.
 ]
 
-{ #category : #service }
-PhaROSMaster class >> stopAndUnregisterUrl: anUrlString [
-	MasterInstances at: anUrlString ifPresent: [
-		: master | 
-		master stop.
-		MasterInstances removeKey: anUrlString.
-	].
-	Smalltalk garbageCollect.
-
-]
-
-{ #category : #service }
-PhaROSMaster class >> stopLocalhost [
-	^ self stopAndUnregisterUrl: 'http://127.0.0.1:11311/'.
-]
-
-{ #category : #construction }
-PhaROSMaster class >> unregisterUrl: anUrlString [ 
-	MasterInstances at: anUrlString ifPresent: [
-		MasterInstances removeKey: anUrlString .
-	]
-]
-
 { #category : #'as yet unclassified' }
 PhaROSMaster class >> url: anUrl [ 
-	^MasterInstances at: anUrl ifAbsentPut:[
-		self new url: anUrl; yourself.
-	]
-	
+	^ self new url: anUrl; yourself 
 
 ]
 
@@ -82,6 +51,12 @@ PhaROSMaster >> deleteParam: aCallerId named: aParameterName [
 	^ masterXmlRpc deleteParam: aCallerId named: aParameterName.
 	
 	
+]
+
+{ #category : #registration }
+PhaROSMaster >> finalize [
+	super finalize.
+	self stop.
 ]
 
 { #category : #'API-Data-Accessors' }
@@ -248,12 +223,6 @@ PhaROSMaster >> stop [
 	nodes removeAll.
 	topics removeAll.
 	Smalltalk garbageCollectMost.
-]
-
-{ #category : #service }
-PhaROSMaster >> stopAndUnregister [
-
-	^ PhaROSMaster stopAndUnregisterUrl: masterXmlRpc url asString.
 ]
 
 { #category : #accessing }

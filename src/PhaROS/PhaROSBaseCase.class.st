@@ -18,7 +18,7 @@ PhaROSBaseCase >> callerId [
 
 { #category : #'default parameters' }
 PhaROSBaseCase >> defaultMasterIp [
-	^ '127.0.0.1'
+	^ 'localhost'
 ]
 
 { #category : #'default parameters' }
@@ -39,7 +39,7 @@ PhaROSBaseCase >> masterURL: aString [
 { #category : #'setup / teardown' }
 PhaROSBaseCase >> setUp [
 	masterUrl := self masterURL.
-	PhaROSMaster stopAndUnregisterUrl: self masterURL.
+	PhaROSManifest cleanUp.
 	controller := PhaROSMasiveNodeController url: masterUrl
 ]
 
@@ -79,7 +79,7 @@ PhaROSBaseCase >> startUpTurtle [
 { #category : #'setup / teardown' }
 PhaROSBaseCase >> tearDown [ 
 
-	PhaROSMaster stopAndUnregisterUrl: self masterURL.
+	PhaROSManifest cleanUp.
 	self shutdownMaster.
 	self shutdownTurtle.
 ]

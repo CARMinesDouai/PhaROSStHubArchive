@@ -60,7 +60,8 @@ PhaROSSystemController >> asPhaROSController [
 
 { #category : #accessing }
 PhaROSSystemController >> finalize [ 
-	master stopAndUnregister.
+	master stop.
+	master := nil.
 ]
 
 { #category : #accessing }

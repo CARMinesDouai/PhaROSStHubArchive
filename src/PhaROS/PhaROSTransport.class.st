@@ -27,7 +27,7 @@ PhaROSTransport >> blacklist: anUrl [
 
 { #category : #publishing }
 PhaROSTransport >> comm [
-	^ comm ref.
+	^ comm ifNotNil: [ comm ref] ifNil: [ nil ]
 ]
 
 { #category : #accessing }

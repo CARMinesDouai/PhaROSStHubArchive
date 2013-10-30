@@ -3,9 +3,10 @@ This class manage a tcp server related with a node. Here there is just the Hands
 "
 Class {
 	#name : #PhaROSTcpServer,
-	#superclass : #TcpService,
+	#superclass : #Object,
 	#instVars : [
-		'owner'
+		'owner',
+		'server'
 	],
 	#classInstVars : [
 		'RoStTcpServers'
@@ -20,38 +21,31 @@ PhaROSTcpServer class >> initialize [
 ]
 
 { #category : #constructors }
-PhaROSTcpServer class >> listenAt: anAddress port: aPort for: aNode [
-	^RoStTcpServers at: anAddress, aPort asString ifAbsentPut: [
-		self new address: anAddress port: aPort ; owner: aNode; yourself.
-	]
-
-]
-
-{ #category : #constructors }
 PhaROSTcpServer class >> startOn: aPort named: aName for: aNode [
+	
+
 	^RoStTcpServers at: aPort ifAbsentPut: [
-		(self startOn: aPort named: aName)  
-					owner: aNode; 
-					start;
-					yourself.
+		| instance |
+		
+		instance := self new .
+		instance owner: aNode.
+		instance server: (PhaROSServer startOn: aPort delegate: [: socket | instance serve: socket ]).
 	].
 
 ]
 
 { #category : #service }
 PhaROSTcpServer class >> stop: aRoStTcpServer [ 
-
-	RoStTcpServers removeKey: aRoStTcpServer portNumber.
-	
-	aRoStTcpServer stop.
-	aRoStTcpServer kill.
-	
-	self removeService: aRoStTcpServer.
+[
+	RoStTcpServers removeKey: aRoStTcpServer portNumber ifAbsent:[].
+	 ] on: Error do: []
 ]
 
 { #category : #server }
 PhaROSTcpServer >> finalize [ 
 	PhaROSTcpServer stop: self.
+	server ifNotNil: [server  stop].
+	server := nil.
 ]
 
 { #category : #accessing }
@@ -62,6 +56,11 @@ PhaROSTcpServer >> owner [
 { #category : #server }
 PhaROSTcpServer >> owner: aNode [
 	owner := aNode.
+]
+
+{ #category : #accessing }
+PhaROSTcpServer >> portNumber [
+	^ server port.
 ]
 
 { #category : #server }
@@ -84,4 +83,9 @@ PhaROSTcpServer >> serve: aSocket [
 	self owner manageIncomingConnection: message with: aSocket.
 	
 	
+]
+
+{ #category : #server }
+PhaROSTcpServer >> server:aServer [ 
+ server := aServer 
 ]

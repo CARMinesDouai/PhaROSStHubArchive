@@ -128,7 +128,7 @@ PhaROSHandleController >> nodelets [
 
 { #category : #service }
 PhaROSHandleController >> stop [
-	master stopAndUnregister.
+	master stop.
 ]
 
 { #category : #accessing }
