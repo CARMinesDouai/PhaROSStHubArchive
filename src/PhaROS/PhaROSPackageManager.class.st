@@ -9,7 +9,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSPackageManager class >> initialize [
-	SystemAnnouncer announcer weak
+	SystemAnnouncer uniqueInstance weak
 		on: MethodModified send: #methodModified: to: self;
 		on: MethodRemoved send: #methodRemoved: to: self;
 		on: MethodAdded send: #methodAdded: to: self.
@@ -23,12 +23,12 @@ PhaROSPackageManager class >> itsAPackage: aClass andItsAScript: aSelector [
 
 { #category : #events }
 PhaROSPackageManager class >> methodAdded: anEvent [
-	self scriptSyncronizer: 	anEvent item classBinding value selector: anEvent item selector.
+	self scriptSyncronizer: 	anEvent methodClass  selector: anEvent  selector.
 ]
 
 { #category : #events }
 PhaROSPackageManager class >> methodModified: anEvent [
-	self scriptSyncronizer: anEvent item classBinding value selector: anEvent item selector.
+	self scriptSyncronizer: anEvent methodClass value selector: anEvent  selector.
 ]
 
 { #category : #events }
