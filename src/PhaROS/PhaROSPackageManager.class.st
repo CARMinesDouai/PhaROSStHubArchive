@@ -33,8 +33,8 @@ PhaROSPackageManager class >> methodModified: anEvent [
 
 { #category : #events }
 PhaROSPackageManager class >> methodRemoved: anEvent [
-	(self itsAPackage: anEvent item classBinding value andItsAScript: anEvent item selector) ifTrue: [
-		anEvent item classBinding value removeScript:  anEvent item selector
+	(self itsAPackage: anEvent methodClass andItsAScript: anEvent  selector) ifTrue: [
+		anEvent methodClass removeScript:  anEvent selector
 	]
 ]
 
