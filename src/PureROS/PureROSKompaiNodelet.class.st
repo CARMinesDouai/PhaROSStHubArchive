@@ -29,7 +29,7 @@ PureROSKompaiNodelet class >> commandVelocityTopicType [
 ]
 
 { #category : #'as yet unclassified' }
-PureROSKompaiNodelet class >> package [
+PureROSKompaiNodelet class >> pharosPackage [
 	^ PureROSKompai.
 ]
 
