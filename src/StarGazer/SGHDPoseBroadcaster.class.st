@@ -27,16 +27,14 @@ SGHDPoseBroadcaster class >> samplingSize [
 SGHDPoseBroadcaster >> highDensity [ 
 	
 	(DateAndTime now - stamp) asMilliSeconds > (SGHDPoseBroadcaster samplingMilliseconds * 0.9) ifTrue: [
-	
 		[
 			self pose: self nextValue.	
 		] on: Error do: [
 			:e | 
-			self log: e messageText. 
+			Transcript show: e messageText; cr. 
 		]
 	].
 	(Delay forMilliseconds: SGHDPoseBroadcaster samplingMilliseconds * 0.5) wait.
-	
 ]
 
 { #category : #'as yet unclassified' }
@@ -54,12 +52,9 @@ SGHDPoseBroadcaster >> nextValue [
 	
 	"	true ifTrue: [
 	^ poses last.]."
-
 	posesCache size > (SGHDPoseBroadcaster samplingSize - 2)  ifTrue: [
-
 		cocient := 0.
 		accumulated := PhaROSPoseAccumulator new.
-
 		1 to: posesCache size - 1 do: [ :i |
 			accumulated accumulate: ((posesCache at:i ) - (posesCache at: i+1)) pondered: i.
 		].
@@ -91,6 +86,5 @@ SGHDPoseBroadcaster >> registerPose: aPose [
 
 { #category : #'as yet unclassified' }
 SGHDPoseBroadcaster >> start [
-	super pose: PhaROSPose zero.
 	process := self paralellize looping highDensity asStickyReference.
 ]

@@ -34,7 +34,6 @@ SGPoseBroadcaster >> poseStampedSg: aPose withFrame: aFrameID [
 
 	self poseStampedSgOut send: [
 		: msg | 
-		self log: 'sending pose'.
 		aPose intoGeometry_msgs_Pose: msg pose.
 		msg header frame_id: aFrameID.
 	]
