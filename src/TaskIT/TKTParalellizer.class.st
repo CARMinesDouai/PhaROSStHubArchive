@@ -1,40 +1,19 @@
 Class {
 	#name : #TKTParalellizer,
-	#superclass : #TKTProxy,
+	#superclass : #GHTargetBasedProxy,
 	#instVars : [
 		'looping'
 	],
-	#category : #'TaskIT-Worker'
+	#category : #'TaskIT-Util'
 }
 
 { #category : #'as yet unclassified' }
-TKTParalellizer >> initialize [ 
-	looping := false.
-]
-
-{ #category : #'as yet unclassified' }
 TKTParalellizer >> looping [
-	looping := true .
-	^ self.
-]
+	handler looping.
 
-{ #category : #'as yet unclassified' }
-TKTParalellizer >> loopingClass [
-	^ TKTLoopingTask
 ]
 
 { #category : #'as yet unclassified' }
 TKTParalellizer >> paralellize [
 	 ^ self.
-]
-
-{ #category : #'as yet unclassified' }
-TKTParalellizer >> spawn: aBlock [ 
-	^ looping ifTrue: 
-	[
-		(self loopingClass for: aBlock) doIt.
-	] ifFalse: [
-		aBlock doIt.
-	].
-	
 ]

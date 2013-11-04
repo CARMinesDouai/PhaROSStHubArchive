@@ -5,7 +5,7 @@ Class {
 		'future',
 		'cancelled'
 	],
-	#category : #'TaskIT-Worker'
+	#category : #'TaskIT-Tasks-Worker'
 }
 
 { #category : #'as yet unclassified' }
@@ -22,8 +22,9 @@ TKTResult >> cancel [
 { #category : #'as yet unclassified' }
 TKTResult >> deployValue:  aValue [
 	| realValue |
-	
+
 	realValue := (aValue class = SmallInteger) ifTrue: [ aValue asFloat ] ifFalse: [ aValue ]. 	
+	
 	self becomeForward: realValue.
 
 ]

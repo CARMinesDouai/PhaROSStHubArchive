@@ -22,8 +22,8 @@ TKTStickyFuture >> deployError: anError [
 
 { #category : #'as yet unclassified' }
 TKTStickyFuture >> deployValue: aValue [
-	self stop.
 	super deployValue: aValue.
+	self stop.
 	
 ]
 

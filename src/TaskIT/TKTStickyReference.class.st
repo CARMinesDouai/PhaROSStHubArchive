@@ -1,15 +1,12 @@
 Class {
 	#name : #TKTStickyReference,
-	#superclass : #Object,
-	#instVars : [
-		'ref'
-	],
+	#superclass : #GHTargetBasedProxy,
 	#category : #'TaskIT-Util'
 }
 
 { #category : #'as yet unclassified' }
 TKTStickyReference class >> for: anObject [
-	^ self new ref: anObject; yourself.
+	^ self createProxyFor:anObject handler: GHSimpleForwarderProxyHandler new.
 ]
 
 { #category : #'as yet unclassified' }
@@ -19,17 +16,13 @@ TKTStickyReference >> asStickyReference [
 
 { #category : #'as yet unclassified' }
 TKTStickyReference >> finalize [ 
-	ref finalize.
-	ref := nil. 
+	self proxyTarget finalize.
+	self proxyTarget: nil.
 ]
 
 { #category : #'as yet unclassified' }
-TKTStickyReference >> ref [
-	^ ref.
-]
-
-{ #category : #'as yet unclassified' }
-TKTStickyReference >> ref: anObject [
-	ref := anObject.
+TKTStickyReference >> proxyTarget: aTarget [
 	self finalizationRegistry add: self.
+	^ super proxyTarget: aTarget.
+	
 ]

@@ -61,21 +61,6 @@ TKTTaskTests >> testExecuteTask [
 ]
 
 { #category : #'as yet unclassified' }
-TKTTaskTests >> testExecuteTaskAlsoReturnsResult [
-	| task shouldBeTrue |
-	
-	shouldBeTrue := false.
-	task := [  TKTTaskTests  ] asTask.
-	self assert: task value = TKTTaskTests.
-
-	
-	
-	
-
-
-]
-
-{ #category : #'as yet unclassified' }
 TKTTaskTests >> testNewConsumableEventualTask [
 	| task booleanExpression flag |
 	

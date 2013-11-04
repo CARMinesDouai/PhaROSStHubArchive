@@ -10,7 +10,7 @@ Class {
 		'future',
 		'doneTasks'
 	],
-	#category : #'TaskIT-Worker'
+	#category : #'TaskIT-Tasks-Worker'
 }
 
 { #category : #'as yet unclassified' }

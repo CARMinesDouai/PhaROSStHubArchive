@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'realBlock'
 	],
-	#category : #'TaskIT-Worker'
+	#category : #'TaskIT-Tasks'
 }
 
 { #category : #'as yet unclassified' }

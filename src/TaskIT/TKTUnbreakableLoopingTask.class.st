@@ -1,7 +1,7 @@
 Class {
 	#name : #TKTUnbreakableLoopingTask,
 	#superclass : #TKTLoopingTask,
-	#category : #'TaskIT-Worker'
+	#category : #'TaskIT-Tasks'
 }
 
 { #category : #'as yet unclassified' }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'instances'
 	],
-	#category : #'TaskIT-Kernel'
+	#category : #'TaskIT-Tasks'
 }
 
 { #category : #'as yet unclassified' }

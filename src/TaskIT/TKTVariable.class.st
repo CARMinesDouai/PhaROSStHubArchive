@@ -5,7 +5,7 @@ Class {
 		'value',
 		'mutex'
 	],
-	#category : #'TaskIT-Kernel'
+	#category : #'TaskIT-Util'
 }
 
 { #category : #'as yet unclassified' }

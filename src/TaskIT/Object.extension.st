@@ -12,10 +12,11 @@ Object >> asThreadsafeReference [
 
 { #category : #'*TaskIT' }
 Object >> paralellize [
-	^ TKTParalellizer for: self.
+	^ TKTParalellizer createProxyFor: self handler: TKTParalellizerHandler  new.
 ]
 
 { #category : #'*TaskIT' }
 Object >> scheddule [ 
-	^ TKTTasker for: self.
+	^ TKTTasker createProxyFor: self handler: TKTTaskerHandler  new.
+	
 ]

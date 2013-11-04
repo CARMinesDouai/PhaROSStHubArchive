@@ -44,21 +44,19 @@ TKTTask >> cleanup [
 
 { #category : #sorting }
 TKTTask >> doIt [
-
 	| future |
 	future := TKTStickyFuture new.
 	
 	future process:( [
 		self value: future.
-		
 	] forkAt: self priority named: 'Task').
 
 	^ future.
 ]
 
 { #category : #'as yet unclassified' }
-TKTTask >> fallback: anError [
-	
+TKTTask >> fallback: anError into: aFuture [
+	aFuture deployError: anError.
 ]
 
 { #category : #'as yet unclassified' }
@@ -99,13 +97,13 @@ TKTTask >> value: aFuture [
 			value :=  ( block cull: self cull: aFuture ). 
 		] on: Error do: [ 
 			: exception |
-			self fallback: exception.
-			aFuture deployError: exception.
+			self fallback: exception into:aFuture.
 		]
 	] ensure: [
 		self tearDown.
 	].
+	
 	aFuture deployValue: value.
 	
-	^ value.
+	
 ]
