@@ -98,13 +98,13 @@ ROBElementRenderer >> renderFacility: aFacility [
 		| facility | 
 		html div class:'row' ; with:[
 		facility := html div.
-		facility class: 'span10'.
+		
 		facility with: [  
 			self goButtonFacility: aFacility.
 			html image
 				class: 'img-rounded span3';
 				url: aFacility image.
-			html span style:'font-size:13px'; with: aFacility name.
+			html span style:'font-size:13px';  with: ' ' ,aFacility name.
 			
 		].
 	].
@@ -147,8 +147,10 @@ ROBElementRenderer >> renderMap: aMap [
 ROBElementRenderer >> renderOffice: anOffice [
 	
 		| office | 
+		
+		html div class:'row' ; with:[
 		office := html div.
-		office class: 'office-pill'.
+
 		office with: [  
 			html image
 				class: 'pill-image';
@@ -156,7 +158,7 @@ ROBElementRenderer >> renderOffice: anOffice [
 			html span  style: 'font-size:11px' ; with:' ', anOffice name.
 			self goButton: anOffice.
 		].
-	 
+	 	].
 ]
 
 { #category : #'as yet unclassified' }

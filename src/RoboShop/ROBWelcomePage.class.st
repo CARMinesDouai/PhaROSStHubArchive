@@ -6,8 +6,23 @@ Class {
 
 { #category : #'as yet unclassified' }
 ROBWelcomePage >> renderContentOn: html [
+	
+	| map |
+	map := ROBLabMap map526909358: ROBApp robotProxyClass new.
 	html div class: 'container-fluid' ; with: [
-			(ROBElementRenderer for: html) renderMap: (ROBLabMap map526909358: ROBApp robotProxyClass new  ) .
+			html break.
+			html div class: 'row-fuild'; with: [  
+				
+					html label for: (html nextId); with: ' '.
+					html textInput id: html lastId; script: 
+							(html jQuery this autocomplete 
+								search: [ :term| map matchesFor: term   ] 
+								callback: [:term : ob | map navigatesToBestMatcher: term. ]).
+								
+								
+				
+			].
+			(ROBElementRenderer for: html) renderMap: map .
 	]
 	
 	"

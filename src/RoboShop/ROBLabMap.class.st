@@ -150,6 +150,20 @@ ROBLabMap >> mapHash: aHash [
 ]
 
 { #category : #accessing }
+ROBLabMap >> matchesFor:  aString [
+	| filtered |
+	filtered := 
+		(self employees select: [ :each | each name includesSubstring: aString caseSensitive: false ]) asOrderedCollection ,
+		(places
+		select: [ :each | each name includesSubstring: aString caseSensitive: false ]) asOrderedCollection.
+		
+	filtered size > 10
+		ifTrue: [ filtered := filtered first: 10 ].
+	^ filtered collect: [ :each | each name ]
+
+]
+
+{ #category : #accessing }
 ROBLabMap >> office: aSmallInteger [ 
 	^ (places select:[ :e | e isKindOf: ROBOffice ]) detect: [ :e | e number = aSmallInteger  ].
 ]
