@@ -119,7 +119,7 @@ ROBElementRenderer >> renderKitchen: aKitchen [
 ROBElementRenderer >> renderMap: aMap [
 	
 	
-		html div class: 'row-fluid' ; with: [
+		
 			html div class: 'span4' ;with: [
 				html div class: 'row' ;
 				id: 'accordion1';
@@ -138,8 +138,7 @@ ROBElementRenderer >> renderMap: aMap [
 					html div: [ html paragraph: 'Comming soon'].
 				]
 			] .
-			html div class: 'span8' ;with: [ html paragraph: 'blablabla'].
-		].
+		
 
 ]
 

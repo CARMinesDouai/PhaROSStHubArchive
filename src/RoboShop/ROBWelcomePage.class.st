@@ -22,7 +22,27 @@ ROBWelcomePage >> renderContentOn: html [
 								
 				
 			].
+		html div class: 'row-fluid' ; with: [
 			(ROBElementRenderer for: html) renderMap: map .
+			
+			
+			
+			
+			" with: [ 
+				html image style: 'height:100px; width:100px; -webkit-transform:scale(3.5)';
+						url: ROBFileLibrary / #mapPng .
+			 ]"
+		].
+	html div class:'row-fluid'; with: [
+		html div class:'span14' ; style:( '
+				height: 1000px;
+				width: 600px;
+				background-image:url(''{1}'');
+				background-repeat:no-repeat;
+				background-attachment:scroll;
+				
+				-webkit-transform:rotate(270deg)
+			' format: { ROBFileLibrary / #map2Png  })]
 	]
 	
 	"

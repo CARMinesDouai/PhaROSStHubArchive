@@ -174,6 +174,12 @@ margin-bottom: 1em;
 }
 
 .red { border: 5px solid red; }
+
+
+img.rotated { 
+	transform: rotate(90deg);
+ }
+
 '
 ]
 
