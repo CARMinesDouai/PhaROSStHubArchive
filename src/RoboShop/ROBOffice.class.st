@@ -96,7 +96,7 @@ ROBOffice class >> office3125 [
 
 { #category : #offices }
 ROBOffice class >> office3126 [ 
-^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point8); number: 3126;description:''; employees: { ROBEmployee NouryBOURAQUADI .})
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point8); number: 3126;description:''; employees: { ROBEmployee NouryBOURAQADI .})
 ]
 
 { #category : #offices }

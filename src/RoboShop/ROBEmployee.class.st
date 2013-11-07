@@ -23,12 +23,12 @@ ROBEmployee class >> AnthonyFLEURY [
 
 { #category : #employees }
 ROBEmployee class >> AntoineCHAMMAS [ 
-	^  ROBEmployee new charge: 'PhD Student'; name: 'Antoine CHAMMAS' ; titles: 'Antoine CHAMMAS ; Antoine ; CHAMMAS '; work: '' 
+	^  ROBEmployee new charge: 'PhD. Student'; name: 'Antoine CHAMMAS' ; titles: 'Antoine CHAMMAS ; Antoine ; CHAMMAS '; work: '' 
 ]
 
 { #category : #employees }
 ROBEmployee class >> AntoineSYLVAIN [ 
-	^  ROBEmployee new charge: 'PhD Student'; name: 'Antoine SYLVAIN' ; titles: 'Antoine SYLVAIN ; Antoine ; SYLVAIN'; work: '' 
+	^  ROBEmployee new charge: 'PhD. Student'; name: 'Antoine SYLVAIN' ; titles: 'Antoine SYLVAIN ; Antoine ; SYLVAIN'; work: '' 
 ]
 
 { #category : #employees }
@@ -88,17 +88,17 @@ ROBEmployee class >> GabrielHOUSSAYE [
 
 { #category : #employees }
 ROBEmployee class >> GuillermoPOLITO [ 
-	^  ROBEmployee new charge: 'PhD Student '; name: 'Guillermo POLITO' ; titles: 'Guillermo POLITO; Guillermo ; POLITO'; work: '' 
+	^  ROBEmployee new charge: 'PhD. Student'; name: 'Guillermo POLITO' ; titles: 'Guillermo POLITO; Guillermo ; POLITO'; work: '' 
 ]
 
 { #category : #'as yet unclassified' }
 ROBEmployee class >> HenriDELEPLANQUE [ 
-	^  ROBEmployee new charge: 'Enseignant - chercheur '; name: 'Henri DELEPLANQUE' ; titles: 'Henri DELEPLANQUE ; Henri  ; DELEPLANQUE  '; work: '' 
+	^  ROBEmployee new charge: 'Enseignant - chercheur'; name: 'Henri DELEPLANQUE' ; titles: 'Henri DELEPLANQUE ; Henri  ; DELEPLANQUE  '; work: '' 
 ]
 
 { #category : #employees }
 ROBEmployee class >> HouariTOUBAKH [ 
-	^  ROBEmployee new charge: 'PhD Student'; name: 'Houari TOUBAKH' ; titles: 'Houari TOUBAKH; Houari ; TOUBAKH '; work: '' 
+	^  ROBEmployee new charge: 'PhD. Student'; name: 'Houari TOUBAKH' ; titles: 'Houari TOUBAKH; Houari ; TOUBAKH '; work: '' 
 ]
 
 { #category : #employees }
@@ -113,7 +113,7 @@ ROBEmployee class >> JacquesBOONAERT [
 
 { #category : #'as yet unclassified' }
 ROBEmployee class >> JannikLAVAL [ 
-	^  ROBEmployee new charge: 'Enseignant - chercheur '; name: 'Jannik LAVAL' ; titles: 'Jannik Laval ; Jannik ; Laval  '; work: '' 
+	^  ROBEmployee new charge: 'Enseignant - chercheur'; name: 'Jannik LAVAL' ; titles: 'Jannik Laval ; Jannik ; Laval  '; work: '' 
 ]
 
 { #category : #employees }
@@ -128,7 +128,7 @@ ROBEmployee class >> LalaRAJAOARISOA [
 
 { #category : #'as yet unclassified' }
 ROBEmployee class >> LucFABRESSE [ 
-	^  ROBEmployee new charge: 'Enseignant - chercheur '; name: 'Luc FABRESSE' ; titles: 'Luc FABRESSE ;   '; work: '' 
+	^  ROBEmployee new charge: 'Enseignant - chercheur'; name: 'Luc FABRESSE' ; titles: 'Luc FABRESSE ;   '; work: '' 
 ]
 
 { #category : #'as yet unclassified' }
@@ -138,7 +138,7 @@ ROBEmployee class >> MariePierLEROY [
 
 { #category : #'as yet unclassified' }
 ROBEmployee class >> MihalyPETRECZKY [ 
-	^  ROBEmployee new charge: 'Enseignant-Chercheur'; name: 'Mihaly PETRECZKY' ; titles: ''; work: '' 
+	^  ROBEmployee new charge: 'Enseignant - chercheur'; name: 'Mihaly PETRECZKY' ; titles: ''; work: '' 
 ]
 
 { #category : #employees }
@@ -153,12 +153,12 @@ ROBEmployee class >> MurielMORGAN [
 
 { #category : #employees }
 ROBEmployee class >> NickolaosPAPOULIAS [ 
-	^  ROBEmployee new charge: 'PhD Student'; name: 'Nickolaos PAPOULIAS' ; titles: 'Nickolaos PAPOULIAS; Nickolaos ; PAPOULIAS'; work: '' 
+	^  ROBEmployee new charge: 'PhD. Student'; name: 'Nickolaos PAPOULIAS' ; titles: 'Nickolaos PAPOULIAS; Nickolaos ; PAPOULIAS'; work: '' 
 ]
 
 { #category : #employees }
-ROBEmployee class >> NouryBOURAQUADI [ 
-	^  ROBEmployee new charge: 'Enseignant - chercheur'; name: 'Noury BOURAQUADI' ; titles: 'Noury BOURAQUADI ; Nourradine ; Noury ; BOURAQUADI'; work: '' 
+ROBEmployee class >> NouryBOURAQADI [ 
+	^  ROBEmployee new charge: 'Enseignant - chercheur'; name: 'Noury BOURAQADI' ; titles: 'Noury BOURAQUADI ; Nourradine ; Noury ; BOURAQUADI'; work: '' 
 ]
 
 { #category : #employees }
@@ -173,7 +173,7 @@ ROBEmployee class >> SandrineREIGUEZ [
 
 { #category : #employees }
 ROBEmployee class >> SantiagoBRAGAGNOLO [ 
-	^  ROBEmployee new charge: 'Ingenier'; name: 'Santiago BRAGAGNOLO' ; titles: 'Santiago BRAGAGNOLO ; Santiago ; BRAGAGNOLO'; work: '' 
+	^  ROBEmployee new charge: 'Ingenieur'; name: 'Santiago BRAGAGNOLO' ; titles: 'Santiago BRAGAGNOLO ; Santiago ; BRAGAGNOLO'; work: '' 
 ]
 
 { #category : #'as yet unclassified' }
@@ -223,6 +223,11 @@ ROBEmployee >> charge [
 ROBEmployee >> charge: aString [
 	
 	charge := aString
+]
+
+{ #category : #accessing }
+ROBEmployee >> image [
+	^ ROBFileLibrary / self name copyReplaceAll: ' ' with: ''.
 ]
 
 { #category : #accessing }
