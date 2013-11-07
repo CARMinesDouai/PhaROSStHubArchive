@@ -164,14 +164,109 @@ ROBUniquePose class >> point37 [
 	^  ROBUniquePose point: ((-6.496@18.9706)) orientation: -3.1105 id: 37
 ]
 
+{ #category : #'as yet unclassified' }
+ROBUniquePose class >> point38 [ 
+	^  ROBUniquePose point: ((4.8500000000000005@2.6162)) orientation: 1.6733 id: 38
+]
+
+{ #category : #'as yet unclassified' }
+ROBUniquePose class >> point39 [ 
+	^  ROBUniquePose point: ((4.828@6.397)) orientation: 2.1741 id: 39
+]
+
 { #category : #points }
 ROBUniquePose class >> point4 [ 
 	^  ROBUniquePose point: ((-1.613@ -0.0019)) orientation: -1.631 id: 4
 ]
 
+{ #category : #'as yet unclassified' }
+ROBUniquePose class >> point40 [ 
+	^  ROBUniquePose point: ((4.657@5.4175)) orientation: -3.1366 id: 40
+]
+
+{ #category : #'as yet unclassified' }
+ROBUniquePose class >> point41 [ 
+	^  ROBUniquePose point: ((5.0760000000000005@6.58)) orientation: -0.0039000000000000003 id: 41
+]
+
+{ #category : #'as yet unclassified' }
+ROBUniquePose class >> point42 [ 
+	^  ROBUniquePose point: ((5.165@7.9054)) orientation: -0.0451 id: 42
+]
+
+{ #category : #'as yet unclassified' }
+ROBUniquePose class >> point43 [ 
+	^  ROBUniquePose point: ((5.102@12.5725)) orientation: -0.1315 id: 43
+]
+
+{ #category : #'as yet unclassified' }
+ROBUniquePose class >> point44 [ 
+	^  ROBUniquePose point: ((5.192@13.9222)) orientation: -0.040400000000000005 id: 44
+]
+
+{ #category : #'as yet unclassified' }
+ROBUniquePose class >> point45 [ 
+	^  ROBUniquePose point: ((5.543@18.7511)) orientation: 0.0274 id: 45
+]
+
+{ #category : #'as yet unclassified' }
+ROBUniquePose class >> point46 [ 
+	^  ROBUniquePose point: ((5.6080000000000005@19.621100000000002)) orientation: -0.0649 id: 46
+]
+
+{ #category : #'as yet unclassified' }
+ROBUniquePose class >> point47 [ 
+	^  ROBUniquePose point: ((4.359@20.500600000000002)) orientation: -2.4244000000000003 id: 47
+]
+
+{ #category : #'as yet unclassified' }
+ROBUniquePose class >> point48 [ 
+	^  ROBUniquePose point: ((6.569@22.2479)) orientation: 0.4958 id: 48
+]
+
+{ #category : #'as yet unclassified' }
+ROBUniquePose class >> point49 [ 
+	^  ROBUniquePose point: ((5.925@22.4072)) orientation: 1.8507 id: 49
+]
+
 { #category : #points }
 ROBUniquePose class >> point5 [ 
 	^  ROBUniquePose point: ((-0.065@0.1854)) orientation: 1.48 id: 5
+]
+
+{ #category : #'as yet unclassified' }
+ROBUniquePose class >> point50 [ 
+	^  ROBUniquePose point: ((4.098@21.6221)) orientation: 1.7286000000000001 id: 50
+]
+
+{ #category : #'as yet unclassified' }
+ROBUniquePose class >> point51 [ 
+	^  ROBUniquePose point: ((-1.868@21.264300000000002)) orientation: 1.5070000000000001 id: 51
+]
+
+{ #category : #'as yet unclassified' }
+ROBUniquePose class >> point52 [ 
+	^  ROBUniquePose point: ((-3.168@21.5412)) orientation: 1.3081 id: 52
+]
+
+{ #category : #'as yet unclassified' }
+ROBUniquePose class >> point53 [ 
+	^  ROBUniquePose point: ((-6.206@25.9026)) orientation: -3.1251 id: 53
+]
+
+{ #category : #'as yet unclassified' }
+ROBUniquePose class >> point54 [ 
+	^  ROBUniquePose point: ((-6.426@25.0131)) orientation: 3.1043000000000003 id: 54
+]
+
+{ #category : #'as yet unclassified' }
+ROBUniquePose class >> point55 [ 
+	^  ROBUniquePose point: ((-6.558@20.4111)) orientation: -3.0943 id: 55
+]
+
+{ #category : #'as yet unclassified' }
+ROBUniquePose class >> point56 [ 
+	^  ROBUniquePose point: ((4.413@ -11.3667)) orientation: 0.0001 id: 56
 ]
 
 { #category : #points }

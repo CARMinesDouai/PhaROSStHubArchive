@@ -116,7 +116,7 @@ ROBOffice class >> office3130 [
 
 { #category : #offices }
 ROBOffice class >> office3131 [ 
-^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point2); number: 3131;description:''; employees: { ROBEmployee KlaudiaHORVATH . ROBEmployee SantiagoBRAGAGNOLO })
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point2); number: 3131;description:''; employees: { ROBEmployee KlaudiaHORVATH . ROBEmployee SantiagoBRAGAGNOLO .})
 ]
 
 { #category : #offices }
@@ -161,7 +161,87 @@ ROBOffice class >> office3144 [
 
 { #category : #offices }
 ROBOffice class >> office3145 [ 
-^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point37); number: 3145;description:''; employees: { ROBEmployee JannikLaval .})
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point37); number: 3145;description:''; employees: { ROBEmployee JannikLAVAL .})
+]
+
+{ #category : #'as yet unclassified' }
+ROBOffice class >> office3146 [ 
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point55); number: 3146;description:''; employees: { ROBEmployee SebastienAMBELLOUIS .})
+]
+
+{ #category : #'as yet unclassified' }
+ROBOffice class >> office3147 [ 
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point54); number: 3147;description:''; employees: { ROBEmployee MihalyPETRECZKY .})
+]
+
+{ #category : #'as yet unclassified' }
+ROBOffice class >> office3148 [ 
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point53); number: 3148;description:''; employees: { ROBEmployee VincentLECOCQ .})
+]
+
+{ #category : #'as yet unclassified' }
+ROBOffice class >> office3149 [ 
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point52); number: 3149;description:''; employees: { ROBEmployee VuTuanHieuLE .})
+]
+
+{ #category : #'as yet unclassified' }
+ROBOffice class >> office3150 [ 
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point51); number: 3150;description:''; employees: { ROBEmployee AlbanGUINARD .})
+]
+
+{ #category : #'as yet unclassified' }
+ROBOffice class >> office3152 [ 
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point50); number: 3152;description:''; employees: { ROBEmployee ChristinePETIIT .})
+]
+
+{ #category : #'as yet unclassified' }
+ROBOffice class >> office3153 [ 
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point49); number: 3153;description:''; employees: {})
+]
+
+{ #category : #'as yet unclassified' }
+ROBOffice class >> office3154 [ 
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point47); number: 3154;description:''; employees: {})
+]
+
+{ #category : #'as yet unclassified' }
+ROBOffice class >> office3156 [ 
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point40); number: 3156;description:''; employees: {})
+]
+
+{ #category : #'as yet unclassified' }
+ROBOffice class >> office3157 [ 
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point48); number: 3157;description:''; employees: {})
+]
+
+{ #category : #'as yet unclassified' }
+ROBOffice class >> office3158 [ 
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point46); number: 3158;description:''; employees: { ROBEmployee FrankTEMPET .})
+]
+
+{ #category : #'as yet unclassified' }
+ROBOffice class >> office3159 [ 
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point45); number: 3159;description:''; employees: { ROBEmployee DidierRYCKBOSH .})
+]
+
+{ #category : #'as yet unclassified' }
+ROBOffice class >> office3160 [ 
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point44); number: 3160;description:''; employees: { ROBEmployee SandrineREIGUEZ .})
+]
+
+{ #category : #'as yet unclassified' }
+ROBOffice class >> office3161 [ 
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point43); number: 3161;description:''; employees: { ROBEmployee MariePierLEROY .})
+]
+
+{ #category : #'as yet unclassified' }
+ROBOffice class >> office3162 [ 
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point42); number: 3162;description:''; employees: { ROBEmployee HenriDELEPLANQUE .})
+]
+
+{ #category : #'as yet unclassified' }
+ROBOffice class >> office3163 [ 
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point41); number: 3163;description:''; employees: { ROBEmployee LucFABRESSE .})
 ]
 
 { #category : #dump }
