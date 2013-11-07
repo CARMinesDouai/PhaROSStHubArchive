@@ -6,7 +6,11 @@ Class {
 
 { #category : #'as yet unclassified' }
 ROBWelcomePage >> renderContentOn: html [
+	html div class: 'container-fluid' ; with: [
+			(ROBElementRenderer for: html) renderMap: (ROBLabMap map526909358: ROBApp robotProxyClass new  ) .
+	]
 	
+	"
 	html div 	
 		class: 'container';
 		with: [  
@@ -22,5 +26,5 @@ ROBWelcomePage >> renderContentOn: html [
 		type: 'button';
       	callback: [ self answer ];
       	with: 'Show me a demo »'.
-	] ]
+	] ]"
 ]

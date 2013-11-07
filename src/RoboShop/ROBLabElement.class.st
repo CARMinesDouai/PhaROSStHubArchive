@@ -22,8 +22,33 @@ ROBLabElement >> icon: anIconURl [
 ]
 
 { #category : #accessing }
+ROBLabElement >> id [
+	^ location id
+]
+
+{ #category : #accessing }
+ROBLabElement >> image [
+	^ image 
+]
+
+{ #category : #accessing }
 ROBLabElement >> image: anImageURL [
 	image:= anImageURL 
+]
+
+{ #category : #accessing }
+ROBLabElement >> isFacility [
+	^ false.
+]
+
+{ #category : #accessing }
+ROBLabElement >> isOffice [
+	^ false.
+]
+
+{ #category : #accessing }
+ROBLabElement >> location [
+	^ location
 ]
 
 { #category : #accessing }
@@ -34,4 +59,9 @@ ROBLabElement >> location: anUniquePose [
 { #category : #accessing }
 ROBLabElement >> position [
 	^ location point.
+]
+
+{ #category : #accessing }
+ROBLabElement >> renderWith: aRenderer [	
+	self subclassResponsibility 
 ]

@@ -19,6 +19,11 @@ ROBRobot >> asDump [
 ]
 
 { #category : #accessing }
+ROBRobot >> image [
+	^ ROBFileLibrary / #kcronPng
+]
+
+{ #category : #accessing }
 ROBRobot >> name: aName [
 	name := aName
 ]
@@ -31,4 +36,9 @@ ROBRobot >> position [
 { #category : #accessing }
 ROBRobot >> position: aPositionFetchBlock [
 	positionFetcher := aPositionFetchBlock 
+]
+
+{ #category : #accessing }
+ROBRobot >> renderWith: aRenderer [
+	aRenderer renderRobot: self.
 ]

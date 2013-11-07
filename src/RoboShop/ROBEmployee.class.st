@@ -143,7 +143,7 @@ ROBEmployee class >> MihalyPETRECZKY [
 
 { #category : #employees }
 ROBEmployee class >> MoamarSAYEDMOUCHAWEH [ 
-	^  ROBEmployee new charge: 'Enseignant - chercheur'; name: 'Moamar SAYED MOUCHAWEH' ; titles: 'Moamar SAYED MOUCHAWEH ; Moamar ; SAYED ; MOUCHAWEH'; work: '' 
+	^  ROBEmployee new charge: 'Enseignant - chercheur'; name: 'Moamar MOUCHAWEH' ; titles: 'Moamar SAYED MOUCHAWEH ; Moamar ; SAYED ; MOUCHAWEH'; work: '' 
 ]
 
 { #category : #employees }
@@ -226,11 +226,21 @@ ROBEmployee >> charge: aString [
 ]
 
 { #category : #accessing }
+ROBEmployee >> id [ 	
+	^ self name copyReplaceAll: ' ' with: ''
+]
+
+{ #category : #accessing }
 ROBEmployee >> image [
 	| fileName |
 	fileName :=  name copyReplaceAll: ' ' with: ''.
 	fileName := fileName, 'Jpg'.
 	^ ROBFileLibrary /fileName asSymbol.
+]
+
+{ #category : #accessing }
+ROBEmployee >> name [
+	^ name
 ]
 
 { #category : #accessing }
@@ -253,6 +263,11 @@ ROBEmployee >> office: anOffice [
 { #category : #accessing }
 ROBEmployee >> printOn: aStream [
 	name printOn: aStream
+]
+
+{ #category : #accessing }
+ROBEmployee >> renderWith: aRenderer [
+	aRenderer renderEmployee: self
 ]
 
 { #category : #accessing }

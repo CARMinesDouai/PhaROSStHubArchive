@@ -63,7 +63,7 @@ ROBApp class >> useRobotMock [
 ROBApp >> go [
 	[  | stargazerIds shoppingCart robotProxy  |
 	
-		"self call: ROBWelcomePage new."
+		self call: ROBWelcomePage new.
 		
 		
 		

@@ -286,6 +286,24 @@ ROBOffice >> initialize [
 ]
 
 { #category : #accessing }
+ROBOffice >> isOffice [ 
+	^ true.
+]
+
+{ #category : #accessing }
+ROBOffice >> name [
+	^ description isEmpty ifTrue: [ 
+		employees size = 1 ifTrue: [ 
+			((' ' split: employees anyOne name) at:2 ), '''s Office'	.
+		 ] ifFalse: [ 
+			'Office ', number asString
+		 ]
+	 ] ifFalse: [
+		description
+	].
+]
+
+{ #category : #accessing }
 ROBOffice >> number [
 	
 	^ number
@@ -305,4 +323,10 @@ ROBOffice >> printOn: aStream [
 ROBOffice >> register: anEmployee [
 	employees add: anEmployee.
 	anEmployee office: self .
+]
+
+{ #category : #accessing }
+ROBOffice >> renderWith: aRenderer [
+	aRenderer renderOffice: self.
+"	employees do: [ :e  | e renderWith: aRenderer]."
 ]

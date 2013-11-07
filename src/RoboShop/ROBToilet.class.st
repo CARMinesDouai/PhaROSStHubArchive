@@ -31,3 +31,27 @@ ROBToilet >> genre [
 ROBToilet >> genre: aGenre [
 	genre := aGenre
 ]
+
+{ #category : #'as yet unclassified' }
+ROBToilet >> image [
+	^ genre = #male ifTrue: [
+		 ROBFileLibrary / #ToiletManIco
+	] ifFalse: [ 
+		 ROBFileLibrary / #ToiletWomanPng
+	]
+]
+
+{ #category : #'as yet unclassified' }
+ROBToilet >> isFacility [ 
+	^true 
+]
+
+{ #category : #'as yet unclassified' }
+ROBToilet >> name [
+	^ 'Toilet' ,( genre = #male ifTrue:[ ' Men ' ] ifFalse: [ ' Women ' ]).
+]
+
+{ #category : #'as yet unclassified' }
+ROBToilet >> renderWith: aRenderer [
+	aRenderer renderToilet: self.
+]
