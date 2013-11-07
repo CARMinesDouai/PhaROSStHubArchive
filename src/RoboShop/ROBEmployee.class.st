@@ -205,7 +205,7 @@ ROBEmployee class >> ZhiYAN [
 ROBEmployee >> asDump [
 	| emp |
 
-	emp :=  ' {1} new charge: ''{2}''; name: ''{3}'' ; titles: ''{4}''; work: ''{5}'' ' format:  {self class name.  charge . name . titles . work }.
+	emp :=  ' {1} new charge: ''{2}''; name: ''{3}''; titles: ''{4}''; work: ''{5}'' ' format:  {self class name.  charge . name . titles . work }.
 	
 	ROBEmployee class compile:( ' {1} 
 	^ {2}' format: {name copyReplaceAll: ' ' with: '' . emp}).
@@ -227,7 +227,10 @@ ROBEmployee >> charge: aString [
 
 { #category : #accessing }
 ROBEmployee >> image [
-	^ ROBFileLibrary / self name copyReplaceAll: ' ' with: ''.
+	| fileName |
+	fileName :=  name copyReplaceAll: ' ' with: ''.
+	fileName := fileName, 'Jpg'.
+	^ ROBFileLibrary /fileName asSymbol.
 ]
 
 { #category : #accessing }
