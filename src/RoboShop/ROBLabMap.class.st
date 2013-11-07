@@ -15,8 +15,74 @@ ROBLabMap class >> ma9358: aRobot [
 ]
 
 { #category : #'as yet unclassified' }
-ROBLabMap class >> map526909358: aRobot [ 
-	ROBLabMap new mapHash: #526909358; places: {ROBToilet new icon: (nil); image: (nil); location:( ROBUniquePose point: ((-1.53@0.1836)) orientation: 1.5188000000000001 id: 3); genre: #male .ROBOffice office3111.ROBOffice office3126.ROBToilet new icon: (nil); image: (nil); location:( ROBUniquePose point: ((-7.3500000000000005@ -29.2821)) orientation: -1.1793 id: 12); genre: #female .ROBOffice office3145.ROBOffice office3143.ROBOffice office3112.ROBOffice office3127.ROBOffice office3114.ROBOffice office3139.ROBOffice office3122.ROBOffice office3119.ROBOffice office3113.ROBOffice office3130.ROBOffice office3117.ROBOffice office3118.ROBOffice office3110.ROBStairs new icon: (nil); image: (nil); location:( ROBUniquePose point: ((-1.54@ -49.2066)) orientation: 0.0238 id: 22).ROBOffice office3102.ROBStairs new icon: (nil); image: (nil); location:( ROBUniquePose point: ((-6.916@ -15.4106)) orientation: -2.4292000000000002 id: 28).ROBOffice office3137.ROBOffice office3134.ROBElevator new icon: (nil); image: (nil); location:( ROBUniquePose point: ((-0.065@0.1854)) orientation: 1.48 id: 5).ROBOffice office3128.ROBToilet new icon: (nil); image: (nil); location:( ROBUniquePose point: ((-5.535@0.37570000000000003)) orientation: 1.5401 id: 1); genre: #female .ROBOffice office3103.ROBOffice office3101.ROBOffice office3105.ROBOffice office3142.ROBOffice office3131 .ROBOffice office3144.ROBOffice office3108.ROBToilet new icon: (nil); image: (nil); location:( ROBUniquePose point: ((-2.787@ -25.1441)) orientation: -0.8189000000000001 id: 11); genre: #male .ROBOffice office3125.ROBOffice office3109.ROBOffice office3140.ROBOffice office3136.}; robot: aRobot; yourself. 
+ROBLabMap class >> map526909358: aRobot [
+	ROBLabMap new
+		mapHash: 526909358;
+		places:
+				{(ROBToilet new
+						icon: nil;
+						image: nil;
+						location: ROBUniquePose point3;
+						genre: #male).
+					(ROBOffice office3111).
+					(ROBOffice office3126).
+					(ROBToilet new
+						icon: nil;
+						image: nil;
+						location: ROBUniquePose point12;
+						genre: #female).
+					(ROBOffice office3145).
+					(ROBOffice office3143).
+					(ROBOffice office3112).
+					(ROBOffice office3127).
+					(ROBOffice office3114).
+					(ROBOffice office3139).
+					(ROBOffice office3122).
+					(ROBOffice office3119).
+					(ROBOffice office3113).
+					(ROBOffice office3130).
+					(ROBOffice office3117).
+					(ROBOffice office3118).
+					(ROBOffice office3110).
+					(ROBStairs new
+						icon: nil;
+						image: nil;
+						location: ROBUniquePose point22).
+					(ROBOffice office3102).
+					(ROBStairs new
+						icon: nil;
+						image: nil;
+						location: ROBUniquePose point28).
+					(ROBOffice office3137).
+					(ROBOffice office3134).
+					(ROBElevator new
+						icon: nil;
+						image: nil;
+						location: ROBUniquePose point5).
+					(ROBOffice office3128).
+					(ROBToilet new
+						icon: nil;
+						image: nil;
+						location: ROBUniquePose point1;
+						genre: #female).
+					(ROBOffice office3103).
+					(ROBOffice office3101).
+					(ROBOffice office3105).
+					(ROBOffice office3142).
+					(ROBOffice office3131).
+					(ROBOffice office3144).
+					(ROBOffice office3108).
+					(ROBToilet new
+						icon: nil;
+						image: nil;
+						location: ROBUniquePose point11;
+						genre: #male).
+					(ROBOffice office3125).
+					(ROBOffice office3109).
+					(ROBOffice office3140).
+					(ROBOffice office3136)};
+		robot: aRobot;
+		yourself
 ]
 
 { #category : #'as yet unclassified' }
