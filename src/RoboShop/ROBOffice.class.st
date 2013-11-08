@@ -303,7 +303,7 @@ ROBOffice >> name [
 		employees size = 1 ifTrue: [ 
 			((' ' split: employees anyOne name) at:2 ), '''s Office'	.
 		 ] ifFalse: [ 
-			'Office ', number asString
+			self shortName.
 		 ]
 	 ] ifFalse: [
 		description
@@ -336,4 +336,9 @@ ROBOffice >> register: anEmployee [
 ROBOffice >> renderWith: aRenderer [
 	aRenderer renderOffice: self.
 "	employees do: [ :e  | e renderWith: aRenderer]."
+]
+
+{ #category : #accessing }
+ROBOffice >> shortName [ 	
+	^ 'Office ', number asString.
 ]

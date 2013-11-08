@@ -55,3 +55,8 @@ ROBToilet >> name [
 ROBToilet >> renderWith: aRenderer [
 	aRenderer renderToilet: self.
 ]
+
+{ #category : #'as yet unclassified' }
+ROBToilet >> shortName [
+	^ 'Toilet'
+]

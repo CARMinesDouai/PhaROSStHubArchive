@@ -239,6 +239,11 @@ ROBEmployee >> image [
 ]
 
 { #category : #accessing }
+ROBEmployee >> locationID [
+	^ office locationID
+]
+
+{ #category : #accessing }
 ROBEmployee >> name [
 	^ name
 ]
@@ -268,6 +273,11 @@ ROBEmployee >> printOn: aStream [
 { #category : #accessing }
 ROBEmployee >> renderWith: aRenderer [
 	aRenderer renderEmployee: self
+]
+
+{ #category : #accessing }
+ROBEmployee >> shortName [
+	^ (' ' split: name) at:2
 ]
 
 { #category : #accessing }

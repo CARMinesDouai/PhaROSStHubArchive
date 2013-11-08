@@ -3,19 +3,19 @@ Class {
 	#superclass : #ROBPage,
 	#instVars : [
 		'selectedTab',
-		'events'
+		'events',
+		'map'
 	],
 	#category : #RoboShop
 }
 
 { #category : #'as yet unclassified' }
 ROBWelcomePage >> renderContentOn: html [
-	
-	| map |
+
+
 	selectedTab := 0.
 	
 	
-	 
 	map := ROBLabMap map526909358: ROBApp robotProxyClass new.
 	html div class: 'container-fluid' ; with: [
 		html break.
@@ -54,20 +54,31 @@ ROBWelcomePage >> renderContentOn: html [
 				html unorderedList: [
 					html listItem: [ 	html anchor url: '#tabs-1'; with: 'Selection'. ].
 					html listItem: [ 	html anchor url: '#tabs-2'; with: 'Map'. ].
+					html listItem: [ html anchor  class:'', (map moving ifTrue:[''] ifFalse:['']); 
+										
+										onClick: (html jQuery ajax callback: [  : value | 
+													map moving ifFalse: [map goHome ]
+												] value: true value ;  
+										script: [ : s | ]); with: 'Send me home'. ].
 				].
 				html div id: 'tabs-1'; with: [
 						html div  class: 'row-fuild'; with: [  
-				
+							
 							html label for: (html nextId); with: ' '.
-							html textInput id: html lastId; script: 
-							(html jQuery this autocomplete 
-								search: [ :term| map matchesFor: term   ] 
-								callback: [:term : ob | map navigatesToBestMatcher: term. ]).
+							html textInput  
+										    id: html lastId; 
+										    script: (html jQuery this autocomplete 
+													search: [ :term| map matchesFor: term   ] 
+													callback: [:term : ob |  map navigatesToBestMatcher: term. ]
+											).
+							
 
 						].
 						html div class: 'row-fluid' ; with: [
 							(ROBElementRenderer for: html) renderMap: map .
-						].	
+							html div id: 'queue'; class:'span6 queueport' ; with: ''.
+						].
+
 				].
 				html div id: 'tabs-2'; with: [
 					html div class:'row-fluid'; style:'height: 250px;'; with: [
@@ -83,9 +94,14 @@ ROBWelcomePage >> renderContentOn: html [
 				].
 			
 			].
-		
-		html document addLoadScript:	(((html jQuery ajax callback: [ events:= map eventsToShow ]  ;
-						  script: [ : s  | s alert: 'GoingTO ' , events asString ])) interval: 5) .
+
+		html document addLoadScript: (((html jQuery id: 'queue' ) load html:[ :r | 
+
+			map mantainment.
+			ROBGoalRenderer new renderEventsFrom: map on: r.
+			
+		]) interval: 1000).
+	
 		
 	]
 	

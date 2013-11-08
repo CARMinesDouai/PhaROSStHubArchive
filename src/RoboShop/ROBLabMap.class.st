@@ -4,7 +4,11 @@ Class {
 	#instVars : [
 		'hash',
 		'places',
-		'robot'
+		'robot',
+		'goals',
+		'asking',
+		'guiding',
+		'arrived'
 	],
 	#category : #'RoboShop-Lab-Places'
 }
@@ -130,7 +134,7 @@ ROBLabMap >> encode [
 
 { #category : #'as yet unclassified' }
 ROBLabMap >> eventsToShow [
-	^ { { #a -> 1 } asDictionary } asOrderedCollection.
+	^ { { #a -> 1 } asDictionary } .
 ]
 
 { #category : #'as yet unclassified' }
@@ -138,15 +142,58 @@ ROBLabMap >> facilities [
 	^ (places select: #isFacility) asSortedCollection:[: a : b | a name < b name ].
 ]
 
+{ #category : #service }
+ROBLabMap >> goHome [
+	self goal: (places detect: [ : d | d isKindOf:ROBElevator ])
+]
+
+{ #category : #service }
+ROBLabMap >> goal: aPlace [
+
+	goals size < 10 ifTrue:[
+		(goals includes: aPlace) ifFalse: [
+			goals add: aPlace.
+		].
+	]
+
+]
+
+{ #category : #service }
+ROBLabMap >> guiding [
+	^ guiding
+]
+
 { #category : #'as yet unclassified' }
 ROBLabMap >> initialize [
 	places := Set new.
-	
+	goals := OrderedCollection new. 
+	asking := 0.
+	guiding := false.
+	arrived := true.
 ]
 
 { #category : #'as yet unclassified' }
 ROBLabMap >> isValid [
 	^ robot mapHash = hash
+]
+
+{ #category : #service }
+ROBLabMap >> mantainment [
+	goals ifNotEmpty: [
+		guiding ifTrue: [
+			asking := asking + 1. 
+			asking > 4 ifTrue: [ 
+				asking := 0.
+				robot isRobotArrived ifTrue: [ 
+					goals remove: (goals at:1).
+					arrived := true.
+				].
+				(robot hasFinished and: [ goals isEmpty]) ifTrue: [ 
+					guiding := false.	
+				 ]
+			 ].
+		]
+	].
 ]
 
 { #category : #'as yet unclassified' }
@@ -183,13 +230,42 @@ ROBLabMap >> matchesObjectsFor:  aString [
 ]
 
 { #category : #service }
-ROBLabMap >> navigatesTo: anOrderedCollection [ 
-	self halt.
+ROBLabMap >> moving [
+	^ arrived not.
+
+]
+
+{ #category : #service }
+ROBLabMap >> navigateTo: aPlaceId [
+	|place| 
+	place := self searchForId: aPlaceId.
+	place size = 1 ifFalse: [ self error:'Repeated ID' , aPlaceId ].
+	self goal: (place anyOne).
+]
+
+{ #category : #service }
+ROBLabMap >> navigateToFacility: aFacilityID [
+	| facilities robotPosition |
+	facilities := self searchFacilitiesByName: aFacilityID. 
+	robotPosition := robot currentPosition.
+	
+	self goal:
+	(facilities inject: facilities anyOne into: [:min :each | 
+		(min location point dist: robotPosition) < (each location point dist: robotPosition) ifTrue:[min] ifFalse:[each]		
+	]).
+	
+	
 ]
 
 { #category : #service }
 ROBLabMap >> navigatesToBestMatcher: aByteString [ 
-	self navigatesTo: ((self matchesObjectsFor:  aByteString ) at:1).
+	self goal: ((self matchesObjectsFor:  aByteString ) at:1).
+]
+
+{ #category : #service }
+ROBLabMap >> navigationGoals [
+	
+	^ goals.
 ]
 
 { #category : #accessing }
@@ -203,6 +279,11 @@ ROBLabMap >> offices [
 ]
 
 { #category : #'as yet unclassified' }
+ROBLabMap >> places [
+	^ places 
+]
+
+{ #category : #'as yet unclassified' }
 ROBLabMap >> places: aSet [
 	places := aSet asSet
 ]
@@ -211,6 +292,16 @@ ROBLabMap >> places: aSet [
 ROBLabMap >> register: aPlace [
 	places add: aPlace.
 	self checkHash.
+]
+
+{ #category : #service }
+ROBLabMap >> removeGoal: aPlaceId [
+
+	|place compare | 
+	compare := aPlaceId asInteger ifNil:[ aPlaceId ] .
+	place := goals detect: [ :p |  p id = compare ] ifNone: [ ^ self ].
+	
+	goals remove: place.
 ]
 
 { #category : #'as yet unclassified' }
@@ -223,4 +314,39 @@ ROBLabMap >> renderWith: aRenderer [
 ROBLabMap >> robot: aRobot [
 	robot := aRobot.
 	self register: (ROBRobot name: robot robotName pose: [ robot currentPosition ] ).
+]
+
+{ #category : #'as yet unclassified' }
+ROBLabMap >> searchFacilitiesByName: anId [
+	^ (self searchForId: anId ) ifNotNil: [ :sample | 
+		self facilities select: [ : p | p name = (sample anyOne) name ].
+	] .
+
+	
+]
+
+{ #category : #'as yet unclassified' }
+ROBLabMap >> searchForId: anId [
+	| compare |
+	compare := anId asInteger ifNil:[ anId ] .
+	^ (places , self employees) select: [ : p | p id = compare ].
+]
+
+{ #category : #service }
+ROBLabMap >> startGuidance [
+	goals ifNotEmpty:[
+		guiding := true.
+		arrived := false.
+		Transcript show:'GUIDING '; cr.
+		robot initializeRobotPathWithStargazerIds: { goals first locationID }.
+		robot goToNextId.
+	].
+
+
+]
+
+{ #category : #service }
+ROBLabMap >> waitingForNext [
+	^ guiding.
+
 ]

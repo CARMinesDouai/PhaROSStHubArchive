@@ -57,6 +57,11 @@ ROBLabElement >> location: anUniquePose [
 ]
 
 { #category : #accessing }
+ROBLabElement >> locationID [
+	^ location id
+]
+
+{ #category : #accessing }
 ROBLabElement >> position [
 	^ location point.
 ]
@@ -64,4 +69,9 @@ ROBLabElement >> position [
 { #category : #accessing }
 ROBLabElement >> renderWith: aRenderer [	
 	self subclassResponsibility 
+]
+
+{ #category : #accessing }
+ROBLabElement >> shortName [
+	^ self name.
 ]

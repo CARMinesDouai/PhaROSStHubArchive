@@ -19,6 +19,11 @@ ROBRobot >> asDump [
 ]
 
 { #category : #accessing }
+ROBRobot >> id [
+	^ -1
+]
+
+{ #category : #accessing }
 ROBRobot >> image [
 	^ ROBFileLibrary / #kcronPng
 ]

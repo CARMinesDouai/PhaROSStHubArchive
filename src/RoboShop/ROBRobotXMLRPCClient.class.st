@@ -32,8 +32,10 @@ ROBRobotXMLRPCClient >> currentLandmarkId [
 
 { #category : #'public api' }
 ROBRobotXMLRPCClient >> currentPosition [
+	|dic |
 	"return the currentPosition of the robot as a dictionary containing x and y"
-	^self robotProxy  invokeMethod: #currentPosition 
+	dic := self robotProxy  invokeMethod: #currentPosition.
+	^ (dic at:#x ) @ (dic at:#y)
 
 ]
 

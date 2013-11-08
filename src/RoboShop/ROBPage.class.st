@@ -186,9 +186,41 @@ margin-bottom: 1em;
 	-webkit-box-shadow:3px 3px 6px #A9A9A9;
 	height:70px;
 }
-.robo-item.span { 
+.robo-item span { 
 	font-size: 14px;
 	vertical-align: middle;
+ }
+
+.queueport { 
+	height: 500px; 
+	background: white;
+	border: 4px double white;
+	padding: 0 10px;
+	margin: 0px 0 10px 0;
+	border-radius:10px;
+	-webkit-border-radius:10px;
+	-webkit-box-shadow:3px 3px 6px #A9A9A9;
+	
+ }
+.robot-goal { 
+	height: 100px; 
+	width: 100px;
+	background: #F3F2ED;
+	border: 4px double white;
+	padding: 0 10px;
+	margin: 5px 0 5px 0;
+	border-radius:10px;
+	font-size: 10px;
+	-webkit-border-radius:10px;
+	-webkit-box-shadow:3px 3px 6px #A9A9A9;
+ }
+.robot-goal img{
+	height: 60px; 
+	width: 50px;
+}
+.robot-goal.active { 
+	width: 120px; 
+	background: #999967;
  }
 '
 ]
