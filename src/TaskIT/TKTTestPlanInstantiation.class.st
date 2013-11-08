@@ -1,12 +1,36 @@
 Class {
 	#name : #TKTTestPlanInstantiation,
 	#superclass : #TestCase,
+	#instVars : [
+		'logHasBeenCalled'
+	],
 	#category : #'TaskIT-Tasks-Plan-Test'
 }
+
+{ #category : #tests }
+TKTTestPlanInstantiation >> log: anLog [
+	logHasBeenCalled := logHasBeenCalled + 1. 
+]
+
+{ #category : #tests }
+TKTTestPlanInstantiation >> logHasBeenCalled [
+	^ logHasBeenCalled
+]
+
+{ #category : #accessing }
+TKTTestPlanInstantiation >> logHasBeingCalled [
+	^ logHasBeenCalled 
+]
 
 { #category : #private }
 TKTTestPlanInstantiation >> plan [
 	^ TKTPlan new.
+]
+
+{ #category : #tests }
+TKTTestPlanInstantiation >> setUp [ 	
+	super setUp.
+	logHasBeenCalled := 0.
 ]
 
 { #category : #tests }

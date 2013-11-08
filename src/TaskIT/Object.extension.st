@@ -1,6 +1,11 @@
 Extension { #name : #Object }
 
 { #category : #'*TaskIT' }
+Object >> asResult [ 
+	^ self.
+]
+
+{ #category : #'*TaskIT' }
 Object >> asStickyReference [ 
 	^ TKTStickyReference for: self.
 ]

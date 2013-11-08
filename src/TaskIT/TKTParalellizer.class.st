@@ -1,9 +1,6 @@
 Class {
 	#name : #TKTParalellizer,
 	#superclass : #GHTargetBasedProxy,
-	#instVars : [
-		'looping'
-	],
 	#category : #'TaskIT-Util'
 }
 

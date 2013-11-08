@@ -46,5 +46,5 @@ TKTPlanSequencer >> reset [
 
 { #category : #'as yet unclassified' }
 TKTPlanSequencer >> run [
-	^ units allButFirst paralellize inject: units first reduce asResult into: [ :acc : next | next reduce: acc  ].
+	^ units allButFirst paralellize inject: units first reduce asResult into: [ :acc : next |  next reduce: {acc } ].
 ]

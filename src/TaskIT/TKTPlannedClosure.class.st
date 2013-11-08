@@ -17,7 +17,12 @@ TKTPlannedClosure >> arguments [
 
 { #category : #reflection }
 TKTPlannedClosure >> reduce [ 
-	
+	^ unit value.
+]
+
+{ #category : #reflection }
+TKTPlannedClosure >> reduce: anArray [
+	^ unit  valueWithEnoughArguments: anArray. 
 ]
 
 { #category : #accessing }

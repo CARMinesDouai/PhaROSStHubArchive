@@ -14,6 +14,11 @@ TKTResult class >> for: aFuture [
 ]
 
 { #category : #'as yet unclassified' }
+TKTResult >> = other [ 	
+	^ self perform: #= withArguments: {other}.
+]
+
+{ #category : #'as yet unclassified' }
 TKTResult >> cancel [
 	cancelled := true.
 	^ future cancel.
@@ -31,17 +36,13 @@ TKTResult >> deployValue:  aValue [
 
 { #category : #'as yet unclassified' }
 TKTResult >> doesNotUnderstand: aMessage [
-	| rslt | 
 	
 	cancelled ifTrue: [
 		Error signal: 'The process was cancelled'.
 	].
-	future apply: [
-		: aFuture | 
-		rslt := aFuture value perform: aMessage selector withArguments: aMessage arguments.
-	].
+
+	^ self  perform: aMessage selector withArguments: aMessage arguments.
 	
-	^ rslt.
 ]
 
 { #category : #'as yet unclassified' }
@@ -61,4 +62,29 @@ TKTResult >> future: aFuture [
 TKTResult >> initialize [ 
 	cancelled := false.
 	future := TKTVariable for: nil.
+]
+
+{ #category : #'as yet unclassified' }
+TKTResult >> perform: aSelector [ 
+		| rslt | 
+		future apply: [
+			: aFuture | 
+			rslt := aFuture value perform: aSelector 
+		].
+		^ rslt
+]
+
+{ #category : #'as yet unclassified' }
+TKTResult >> perform: aSelector withArguments: anArray [
+		| rslt | 
+		future apply: [
+			: aFuture | 
+			rslt := aFuture value perform: aSelector withArguments: anArray
+		].
+		^ rslt
+]
+
+{ #category : #'as yet unclassified' }
+TKTResult >> value [ 	
+	^ self perform: #value.
 ]
