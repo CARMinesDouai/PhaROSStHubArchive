@@ -281,6 +281,13 @@ ROBOffice >> employees: aSet [
 ]
 
 { #category : #accessing }
+ROBOffice >> image [
+	^ image ifNil: [ 
+		employees size = 1 ifTrue: [ employees anyOne image ] ifFalse: [ nil ]
+	 ]
+]
+
+{ #category : #accessing }
 ROBOffice >> initialize [ 	
 	employees := Set new.
 ]

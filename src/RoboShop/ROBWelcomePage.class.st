@@ -1,6 +1,10 @@
 Class {
 	#name : #ROBWelcomePage,
 	#superclass : #ROBPage,
+	#instVars : [
+		'selectedTab',
+		'events'
+	],
 	#category : #RoboShop
 }
 
@@ -8,58 +12,82 @@ Class {
 ROBWelcomePage >> renderContentOn: html [
 	
 	| map |
+	selectedTab := 0.
+	
+	
+	 
 	map := ROBLabMap map526909358: ROBApp robotProxyClass new.
 	html div class: 'container-fluid' ; with: [
-			html break.
-			html div class: 'row-fuild'; with: [  
+		html break.
+		
+		html heading level1 with: [
+			html div class:'row-fluid'; with:[
+				html anchor target:'_new'; url: 'http://www2.mines-douai.fr/'; with:[
+					html image
+						class: 'img-rounded span1';
+						url: ROBFileLibrary/ #ecolePng.
+				].
+				html anchor target:'_new'; url: 'http://car.mines-douai.fr/'; with:[
+					html span class:'span7'; with:'The RoboShop Project'.
+				].
+				html anchor target:'_new'; url: 'http://www.pharo.org/'; with:[
+					html image
+						class: 'img-rounded span1';
+						url: ROBFileLibrary/ #pharoPng.
+				].
+				html span style:'width:10px';class:'span1'; with:''.
+				html anchor target:'_new'; url: 'http://www.ros.org/'; with:[
+					html image
+							style: 'margin-top:15px';
+						class: 'img-rounded span2';
+						url: ROBFileLibrary/ #ROSPng.
+				].
+			]
+		].
+		html break.
+		
+		html div
+			script: (html jQuery new tabs
+			selected: selectedTab;
+			onSelect: (html jQuery ajax callbackTabs: [ :event | selectedTab:= event at: #index ]));
+			with: [
+				html unorderedList: [
+					html listItem: [ 	html anchor url: '#tabs-1'; with: 'Selection'. ].
+					html listItem: [ 	html anchor url: '#tabs-2'; with: 'Map'. ].
+				].
+				html div id: 'tabs-1'; with: [
+						html div  class: 'row-fuild'; with: [  
 				
-					html label for: (html nextId); with: ' '.
-					html textInput id: html lastId; script: 
+							html label for: (html nextId); with: ' '.
+							html textInput id: html lastId; script: 
 							(html jQuery this autocomplete 
 								search: [ :term| map matchesFor: term   ] 
 								callback: [:term : ob | map navigatesToBestMatcher: term. ]).
-								
-								
-				
+
+						].
+						html div class: 'row-fluid' ; with: [
+							(ROBElementRenderer for: html) renderMap: map .
+						].	
+				].
+				html div id: 'tabs-2'; with: [
+					html div class:'row-fluid'; style:'height: 250px;'; with: [
+						html div class:'span14' ; style:( '
+							height: 250px;
+							width: 850px;
+							position: absolute;
+							background-image:url(''{1}'');
+							background-repeat:no-repeat;
+							background-attachment:scroll;
+						' format: { ROBFileLibrary / #map2Png  })
+					] .
+				].
+			
 			].
-		html div class: 'row-fluid' ; with: [
-			(ROBElementRenderer for: html) renderMap: map .
-			
-			
-			
-			
-			" with: [ 
-				html image style: 'height:100px; width:100px; -webkit-transform:scale(3.5)';
-						url: ROBFileLibrary / #mapPng .
-			 ]"
-		].
-	html div class:'row-fluid'; with: [
-		html div class:'span14' ; style:( '
-				height: 1000px;
-				width: 600px;
-				background-image:url(''{1}'');
-				background-repeat:no-repeat;
-				background-attachment:scroll;
-				
-				-webkit-transform:rotate(270deg)
-			' format: { ROBFileLibrary / #map2Png  })]
+		
+		html document addLoadScript:	(((html jQuery ajax callback: [ events:= map eventsToShow ]  ;
+						  script: [ : s  | s alert: 'GoingTO ' , events asString ])) interval: 5) .
+		
 	]
 	
-	"
-	html div 	
-		class: 'container';
-		with: [  
-			
-			html div 	
-		class: 'hero-unit';
-		with: [  
-			html
-				heading: 'Hello, World!';
-				paragraph: 'I am a robot assistant to ease product picking in a shopping mall. '.
-		html anchor
-		class: 'btn btn-large btn-primary';
-		type: 'button';
-      	callback: [ self answer ];
-      	with: 'Show me a demo »'.
-	] ]"
+	
 ]

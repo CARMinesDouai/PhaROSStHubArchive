@@ -23,7 +23,7 @@ ROBElementRenderer class >> for: html [
 { #category : #'as yet unclassified' }
 ROBElementRenderer >> goButton: anElement [
 	html anchor 
-	class: 'btn btn-success span3';
+	class: 'btn btn-success span2';
 	onClick: 
 		(html jQuery ajax callback: [  : value | self navigateTo: value ] value: anElement id ;
 						  script: [ : s | s alert: 'GoingTO ' , anElement  name ])
@@ -36,7 +36,7 @@ ROBElementRenderer >> goButton: anElement [
 { #category : #'as yet unclassified' }
 ROBElementRenderer >> goButtonFacility: anElement [
 	html anchor 
-	class: 'btn btn-success span3';
+	class: 'btn btn-success span2';
 	onClick: 
 		(html jQuery ajax callback: [  : value | self navigateToFacility: value ] value: anElement id;
 						  script: [ : s | s alert: 'GoingTO ' , anElement  name ])
@@ -77,37 +77,48 @@ ROBElementRenderer >> renderEmployee: anEmployee [
 	
 	
 		| person | 
-		html div class:'row' ; with:[
-		person := html div.
 		
-		person with: [  
-			self goButton: anEmployee.
-			html image
-				class: 'img-rounded span3';
-				url: anEmployee image.
-			html span  style: 'font-size:10px' ; with: anEmployee name.
-			
-		].
-	]
+		
+		html div class:'row' ; with:[
+			html anchor url:'#'; onClick: (html jQuery ajax callback: [  : value | self navigateTo: value ] value: anEmployee id ;
+						  script: [ : s | s alert: 'GoingTO ' , anEmployee  name ]); with:[
+				person := html div.
+				person class: 'robo-item'.
+				person with: [  
+					html image
+						class: 'img-rounded span2';
+						style: 'margin-top:5px;';
+						url: anEmployee image.
+					html div style: 'font-size:14px; display: inline-block; margin-left:40px;margin-top:25px;vertical-align:middle' ; 
+							  with: anEmployee name.
+
+				].
+			]
+		]
 ]
 
 { #category : #'as yet unclassified' }
 ROBElementRenderer >> renderFacility: aFacility [ 
 		
-	
-		| facility | 
+	| facility | 
 		html div class:'row' ; with:[
-		facility := html div.
-		
-		facility with: [  
-			self goButtonFacility: aFacility.
-			html image
-				class: 'img-rounded span3';
-				url: aFacility image.
-			html span style:'font-size:13px';  with: ' ' ,aFacility name.
-			
+			html anchor url:'#'; onClick: (html jQuery ajax callback: [  : value | self navigateToFacility: value ] value: aFacility id ;
+						  script: [ : s | s alert: 'GoingTO ' , aFacility  name ]); with:[
+				facility := html div.
+				facility class: 'robo-item'.
+				facility with: [  
+					html image
+						class: 'img-rounded span2';
+						style:'margin-top:10px;';
+						url: aFacility image.
+					html div style: 'font-size:14px; display: inline-block; margin-left:40px;margin-top:25px;vertical-align:middle' ; 
+							  with: aFacility name.
+
+				].
+			]
 		].
-	].
+	
+	
 ]
 
 { #category : #'as yet unclassified' }
@@ -120,7 +131,7 @@ ROBElementRenderer >> renderMap: aMap [
 	
 	
 		
-			html div class: 'span4' ;with: [
+			html div class: 'span7' ;with: [
 				html div class: 'row' ;
 				id: 'accordion1';
 				script: (html jQuery new accordion collapsible: true; autoHeight: false; yourself);
@@ -147,17 +158,25 @@ ROBElementRenderer >> renderOffice: anOffice [
 	
 		| office | 
 		
+		
 		html div class:'row' ; with:[
-		office := html div.
+			html anchor url:'#'; onClick: (html jQuery ajax callback: [  : value | self navigateTo: value ] value: anOffice id ;
+						  script: [ : s | s alert: 'GoingTO ' , anOffice  name ]); with:[
+				office := html div.
+				office class: 'robo-item'.
+				office with: [  
+					html image
+						class: 'img-rounded span2';
+						style: 'margin-top:5px;';
+						url: anOffice image.
+					html div style: 'font-size:14px; display: inline-block; margin-left:40px;margin-top:25px;vertical-align:middle' ; 
+							  with: anOffice name.
 
-		office with: [  
-			html image
-				class: 'pill-image';
-				url: anOffice image.
-			html span  style: 'font-size:11px' ; with:' ', anOffice name.
-			self goButton: anOffice.
+				].
+			]
 		].
-	 	].
+		
+		
 ]
 
 { #category : #'as yet unclassified' }

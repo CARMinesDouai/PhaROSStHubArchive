@@ -176,10 +176,20 @@ margin-bottom: 1em;
 .red { border: 5px solid red; }
 
 
-img.rotated { 
-	transform: rotate(90deg);
+.robo-item { 
+	background: #F3F2ED;
+	border: 4px double white;
+	padding: 0 10px;
+	margin: 10px 0 10px 0;
+	border-radius:10px;
+	-webkit-border-radius:10px;
+	-webkit-box-shadow:3px 3px 6px #A9A9A9;
+	height:70px;
+}
+.robo-item.span { 
+	font-size: 14px;
+	vertical-align: middle;
  }
-
 '
 ]
 

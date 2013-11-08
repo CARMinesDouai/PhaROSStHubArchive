@@ -129,6 +129,11 @@ ROBLabMap >> encode [
 ]
 
 { #category : #'as yet unclassified' }
+ROBLabMap >> eventsToShow [
+	^ { { #a -> 1 } asDictionary } asOrderedCollection.
+]
+
+{ #category : #'as yet unclassified' }
 ROBLabMap >> facilities [
 	^ (places select: #isFacility) asSortedCollection:[: a : b | a name < b name ].
 ]
@@ -161,6 +166,30 @@ ROBLabMap >> matchesFor:  aString [
 		ifTrue: [ filtered := filtered first: 10 ].
 	^ filtered collect: [ :each | each name ]
 
+]
+
+{ #category : #accessing }
+ROBLabMap >> matchesObjectsFor:  aString [
+	| filtered |
+	filtered := 
+		(self employees select: [ :each | each name includesSubstring: aString caseSensitive: false ]) asOrderedCollection ,
+		(places
+		select: [ :each | each name includesSubstring: aString caseSensitive: false ]) asOrderedCollection.
+		
+	filtered size > 10
+		ifTrue: [ filtered := filtered first: 10 ].
+	^ filtered 
+
+]
+
+{ #category : #service }
+ROBLabMap >> navigatesTo: anOrderedCollection [ 
+	self halt.
+]
+
+{ #category : #service }
+ROBLabMap >> navigatesToBestMatcher: aByteString [ 
+	self navigatesTo: ((self matchesObjectsFor:  aByteString ) at:1).
 ]
 
 { #category : #accessing }
