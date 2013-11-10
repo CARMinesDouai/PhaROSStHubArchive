@@ -1,6 +1,16 @@
 Extension { #name : #BlockClosure }
 
 { #category : #'*TaskIT' }
+BlockClosure >> & otherPlannable [ 
+	^ self asPlanned & otherPlannable
+]
+
+{ #category : #'*TaskIT' }
+BlockClosure >> => otherPlannable [ 
+	^ self asPlanned => otherPlannable
+]
+
+{ #category : #'*TaskIT' }
 BlockClosure >> asPlanned [
 	^ TKTPlannedClosure of: self 
 ]

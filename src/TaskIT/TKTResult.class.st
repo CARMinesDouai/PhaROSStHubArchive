@@ -19,6 +19,16 @@ TKTResult >> = other [
 ]
 
 { #category : #'as yet unclassified' }
+TKTResult >> asString [ 	
+	^ self perform: #asString.
+]
+
+{ #category : #'as yet unclassified' }
+TKTResult >> at: anId [
+	^ self perform: #at: withArguments: { anId }.
+]
+
+{ #category : #'as yet unclassified' }
 TKTResult >> cancel [
 	cancelled := true.
 	^ future cancel.
@@ -82,6 +92,11 @@ TKTResult >> perform: aSelector withArguments: anArray [
 			rslt := aFuture value perform: aSelector withArguments: anArray
 		].
 		^ rslt
+]
+
+{ #category : #'as yet unclassified' }
+TKTResult >> size [ 	
+	^ self perform: #size.
 ]
 
 { #category : #'as yet unclassified' }

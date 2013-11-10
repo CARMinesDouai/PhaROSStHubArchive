@@ -42,23 +42,34 @@ A = consequent
 
 "
 Class {
-	#name : #TKTSequence,
-	#superclass : #TKTPlannedUnitImplication,
+	#name : #TKTDependance,
+	#superclass : #TKTPlannedUnitRelation,
 	#category : #'TaskIT-Tasks-Plan'
 }
 
 { #category : #'as yet unclassified' }
-TKTSequence class >> of: aNextStep with: aFirstStep [
+TKTDependance class >> of: aNextStep [ 
 	" 
 		Check comments for understanding
 		aNextStep : B
 		aFirstStep : A
 	"
 	
-	^ self new antecedent: aNextStep; consequent: aFirstStep; yourself .
+	^ self new object: aNextStep; yourself .
 ]
 
 { #category : #'as yet unclassified' }
-TKTSequence >> accept: aPlanVisitor [
+TKTDependance >> accept: aPlanVisitor [
 	aPlanVisitor acceptImplicationSequence: self.
+]
+
+{ #category : #'as yet unclassified' }
+TKTDependance >> isSequenceable [
+	^true.
+]
+
+{ #category : #'as yet unclassified' }
+TKTDependance >> printOn: aStream [
+	'=>' printOn: aStream.
+	object printOn: aStream.
 ]

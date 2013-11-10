@@ -9,16 +9,37 @@ Class {
 
 { #category : #operators }
 TKTPlan >> => aPlannable [ 
-	startingTask := aPlannable asPlanned.
-	^ startingTask.
+
+	^ startingTask ifNil:[
+		startingTask := aPlannable asPlanned.
+		startingTask parent: self. 
+		startingTask
+	] ifNotNil: [ 
+		startingTask => aPlannable.
+	 ].
+	
+]
+
+{ #category : #operators }
+TKTPlan >> addParalellizable: aPlanned [
+	startingTask addParalellizable: aPlanned
+]
+
+{ #category : #'as yet unclassified' }
+TKTPlan >> also [
+	^ self sequence lastUnit.
+]
+
+{ #category : #'as yet unclassified' }
+TKTPlan >> replace: aPlanned by: otherPlanned [
+	startingTask = aPlanned ifTrue:[
+		startingTask := otherPlanned.	
+	] ifFalse:[ self error: 'there is not related task!' ].
 ]
 
 { #category : #accessing }
 TKTPlan >> sequence [
-	| sequencer |
-	sequencer := TKTPlanSequencer new.
-	startingTask accept: sequencer.
-	^ sequencer.
+	^ TKTPlanSequencer sequence: startingTask
 ]
 
 { #category : #operators }

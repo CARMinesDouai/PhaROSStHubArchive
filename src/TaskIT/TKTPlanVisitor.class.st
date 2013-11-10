@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #visiting }
+TKTPlanVisitor >> acceptCollection: aPlannedCollection [
+	self acceptUnit: aPlannedCollection.
+]
+
+{ #category : #visiting }
 TKTPlanVisitor >> acceptElement: aPlanElement [
 	
 ]
@@ -23,4 +28,9 @@ TKTPlanVisitor >> acceptImplicationSequence: aTKTSequence [
 { #category : #visiting }
 TKTPlanVisitor >> acceptUnit: aTKTPlannedUnit [
 	self acceptElement: aTKTPlannedUnit.
+]
+
+{ #category : #visiting }
+TKTPlanVisitor >> asPlanned [
+	
 ]

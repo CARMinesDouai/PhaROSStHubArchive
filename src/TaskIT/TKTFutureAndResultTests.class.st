@@ -102,7 +102,7 @@ TKTFutureAndResultTests >> testFutureResultLazyInstantiation [
 	| future |
 	future := TKTFuture new.
 	
-	self assert: future asResult = future asResult.
+	self assert: future asResult  hash= future asResult hash.
 	
 ]
 
@@ -142,6 +142,6 @@ TKTFutureAndResultTests >> testStickyFutureResultLazyInstantiation [
 	| future |
 	future := TKTStickyFuture new.
 	
-	self assert: future asResult = future asResult.
+	self assert: future asResult hash = future asResult hash.
 	
 ]

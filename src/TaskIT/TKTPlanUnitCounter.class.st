@@ -9,7 +9,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 TKTPlanUnitCounter >> acceptImplication: anImplication [
-	anImplication antecedent accept: self.
+	anImplication object accept: self.
 "We come from the consequent."
 ]
 
