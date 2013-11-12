@@ -94,7 +94,7 @@ ParameterizedTestCase >> instVarsToKeepOnCleanUp [
 
 { #category : #accessing }
 ParameterizedTestCase >> parameters [
-	^ parameters
+	^ parameters ifNil: [ #() ]
 ]
 
 { #category : #accessing }
@@ -117,4 +117,12 @@ ParameterizedTestCase >> printOn: aStream [
 		do: [ :param | aStream print: param]
 		separatedBy: [ aStream nextPut: $. ; space ].
 	aStream nextPut: $}
+]
+
+{ #category : #running }
+ParameterizedTestCase >> run [
+	| suite |
+	suite := self class suiteClass named: self selector.
+	self class addParametrizedTestsTo: suite.
+	^suite run
 ]

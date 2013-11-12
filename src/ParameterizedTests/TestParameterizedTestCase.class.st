@@ -15,9 +15,24 @@ TestParameterizedTestCase >> buggySumOf: arg1 and: arg2 shouldBe: arg3 [
 ]
 
 { #category : #testing }
+TestParameterizedTestCase >> copyAndRenameToTestCaseClassAllMethods: selectorsDict [
+	|method|
+	selectorsDict keysAndValuesDo: [ :originalSelector :newSelector|
+		testCaseClass compile: (self class sourceCodeAt: originalSelector).
+		method := testCaseClass compiledMethodAt: originalSelector.
+		testCaseClass removeSelector: originalSelector.
+		testCaseClass addSelectorSilently: newSelector withMethod: method]
+]
+
+{ #category : #testing }
 TestParameterizedTestCase >> copyToTestCaseClassAllMethods: selectors [
 	selectors do: [ :selector|
 		testCaseClass compile: (self class sourceCodeAt: selector)]
+]
+
+{ #category : #'injected methods' }
+TestParameterizedTestCase >> failingTestWithNoParameters [
+	self assert: false
 ]
 
 { #category : #'injected methods' }
@@ -44,6 +59,11 @@ TestParameterizedTestCase >> malFormedParametersArray [
 TestParameterizedTestCase >> passAllTheTimeWith: arg1 with: arg2 with: arg3 [ 
 	<testParametersSelector: #malFormedParametersArray>
 
+]
+
+{ #category : #'injected methods' }
+TestParameterizedTestCase >> passingTestWithNoParameters [
+	self assert: true
 ]
 
 { #category : #testing }
@@ -104,6 +124,20 @@ TestParameterizedTestCase >> testShouldFailWithBuggyTest [
 ]
 
 { #category : #testing }
+TestParameterizedTestCase >> testShouldFailWithFalingPlainOldTestThatHasNoParameters [
+	| testResult |
+	self copyAndRenameToTestCaseClassAllMethods: {#failingTestWithNoParameters -> #testShouldFail} asDictionary.
+	testResult := testCaseClass buildSuite run.
+	self assert: testResult runCount = 1. 
+	self assert: testResult expectedPassCount = 0.
+	self assert: testResult skippedCount = 0.
+	self assert: testResult expectedDefectCount = 0.
+	self assert: testResult unexpectedFailureCount = 1.
+	self assert: testResult unexpectedErrorCount = 0.
+	self assert: testResult unexpectedPassCount = 0
+]
+
+{ #category : #testing }
 TestParameterizedTestCase >> testShouldFailWithInvalidNumberOfParameters [
 	| testResult |
 	self copyToTestCaseClassAllMethods: #(#passAllTheTimeWith:with:with:  #malFormedParametersArray).
@@ -132,10 +166,38 @@ TestParameterizedTestCase >> testShouldFailWithInvalidParametersValues [
 ]
 
 { #category : #testing }
+TestParameterizedTestCase >> testShouldPassWithValidPlainOldTestThatHasNoParameters [
+	| testResult |
+	self copyAndRenameToTestCaseClassAllMethods: {#passingTestWithNoParameters -> #testShouldPass} asDictionary.
+	testResult := testCaseClass buildSuite run.
+	self assert: testResult runCount = 1. 
+	self assert: testResult expectedPassCount = 1.
+	self assert: testResult skippedCount = 0.
+	self assert: testResult expectedDefectCount = 0.
+	self assert: testResult unexpectedFailureCount = 0.
+	self assert: testResult unexpectedErrorCount = 0.
+	self assert: testResult unexpectedPassCount = 0
+]
+
+{ #category : #testing }
 TestParameterizedTestCase >> testShouldPassWithValidTestAndValidParametersValues [
 	| testResult |
 	self copyToTestCaseClassAllMethods: #(#sumOf:and:shouldBe:  #sumParameterValues).
 	testResult := testCaseClass buildSuite run.
+	self assert: testResult runCount = 3. "There should be one test case for each group of parameters"
+	self assert: testResult expectedPassCount = 3.
+	self assert: testResult skippedCount = 0.
+	self assert: testResult expectedDefectCount = 0.
+	self assert: testResult unexpectedFailureCount = 0.
+	self assert: testResult unexpectedErrorCount = 0.
+	self assert: testResult unexpectedPassCount = 0
+]
+
+{ #category : #testing }
+TestParameterizedTestCase >> testrunSelectorShouldPassWithValidTestAndValidParametersValues [
+	| testResult |
+	self copyToTestCaseClassAllMethods: #(#sumOf:and:shouldBe:  #sumParameterValues).
+	testResult := testCaseClass run: #sumOf:and:shouldBe:.
 	self assert: testResult runCount = 3. "There should be one test case for each group of parameters"
 	self assert: testResult expectedPassCount = 3.
 	self assert: testResult skippedCount = 0.
