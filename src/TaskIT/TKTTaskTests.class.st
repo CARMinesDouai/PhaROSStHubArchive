@@ -157,7 +157,7 @@ TKTTaskTests >> testNewTaskDispatcherDestroyWorkers [
 	self assert: TKTWorker allInstances size = 2.
 	
 	TKTTaskDispatcher reset.
-	Smalltalk garbageCollect.
+	Smalltalk garbageCollectMost.
 	
 	self assert: TKTWorker allInstances size = 0.
 	

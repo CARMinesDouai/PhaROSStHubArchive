@@ -75,6 +75,16 @@ TKTResult >> initialize [
 ]
 
 { #category : #'as yet unclassified' }
+TKTResult >> isKindOf: aClass [
+	^ self perform: #isKindOf:   withArguments: { aClass }
+]
+
+{ #category : #'as yet unclassified' }
+TKTResult >> isResult [
+	^ true
+]
+
+{ #category : #'as yet unclassified' }
 TKTResult >> perform: aSelector [ 
 		| rslt | 
 		future apply: [
