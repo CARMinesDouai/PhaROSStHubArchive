@@ -2,10 +2,10 @@ Extension { #name : #Array }
 
 { #category : #'*TaskIT' }
 Array >> asArguments [
-		^ (self size = 1 and: [( self at: 1 ) isKindOf:TKTPlanResult]) ifTrue: [ 
-			(self at:1 ) arguments.
-		 ] ifFalse: [ 
-			self.
-		 ]
-		
+| converting |
+	converting := self .
+	[ (converting isArray and: [converting size = 1 and: [( converting at: 1 ) isKindOf:TKTPlanResult]])] whileTrue:[  
+		converting := (converting at:1 ) arguments .	
+	].
+	^ converting
 ]

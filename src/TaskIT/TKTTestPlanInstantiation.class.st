@@ -42,6 +42,25 @@ TKTTestPlanInstantiation >> testProcessChainedReentrantProcess3Levels [
 ]
 
 { #category : #tests }
+TKTTestPlanInstantiation >> testProcessCollection [
+" => dependency "
+	| plan result collection |
+	plan := self plan. 
+	
+	collection := ( 1 to: 99) asOrderedCollection.
+	plan => 
+		[  {  collection copyFrom: 1 to: 33 .  collection copyFrom: 34 to: 66 .  collection copyFrom: 67 to: 99 .  } ] => 
+		( [ : a : b : c |  a sum ] & [ : a : b : c |  b sum ] & [ : a : b : c |  c sum ])  =>
+		[ :aSum :bSum :cSum | aSum + bSum + cSum ].
+				
+
+	result := plan run  result. 
+	
+	self assert: result  = collection sum. 
+	
+]
+
+{ #category : #tests }
 TKTTestPlanInstantiation >> testProcessCombinationsAppendDependency [
 " & task append
  => dependency  "

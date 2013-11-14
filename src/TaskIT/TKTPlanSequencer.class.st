@@ -27,7 +27,7 @@ TKTPlanSequencer class >> for: aResult [
 
 { #category : #'as yet unclassified' }
 TKTPlanSequencer class >> runner [
-	^ TKTPlannedUnitParalellizer  new.
+	^ TKTPlannedUnitParalellizer    new.
 ]
 
 { #category : #'as yet unclassified' }
