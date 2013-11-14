@@ -4,16 +4,15 @@ Class {
 	#category : #'TaskIT-Tasks-Plan'
 }
 
-{ #category : #reducer }
-TKTPlannedCollection >> & aPlannableUnit [ 
-	self addPlanned:  aPlannableUnit asPlanned.
-	
+{ #category : #'as yet unclassified' }
+TKTPlannedCollection class >> of: aPlanned [
+	^ self new addPlanned: aPlanned; yourself.
 ]
 
 { #category : #reducer }
 TKTPlannedCollection >> accept: aPlanVisitor [
 	aPlanVisitor acceptCollection: self.
-	relations do: [  : r| r accept: aPlanVisitor ].
+	
 ]
 
 { #category : #'as yet unclassified' }
@@ -23,11 +22,6 @@ TKTPlannedCollection >> addPlanned: aPlanned [
 	^ aPlanned.
 ]
 
-{ #category : #reducer }
-TKTPlannedCollection >> asPlannedCollection [
-	^ self. 
-]
-
 { #category : #'as yet unclassified' }
 TKTPlannedCollection >> initialize [ 	
 	super initialize.
@@ -35,15 +29,9 @@ TKTPlannedCollection >> initialize [
 ]
 
 { #category : #reducer }
-TKTPlannedCollection >> reduce [
-	^ unit collect:[ : p |  p  paralellize reduce ].
-]
+TKTPlannedCollection >> replace: aPlanned by: otherPlanned [
+	unit at: (unit indexOf: aPlanned) put: otherPlanned.
 
-{ #category : #reducer }
-TKTPlannedCollection >> reduce: anArray [
- | args |
-	args := anArray isString ifTrue: [ {anArray} ] ifFalse: [ anArray asArray ]. 
-	^ unit collect:[ : p | p  paralellize reduce: args  ].
 ]
 
 { #category : #reducer }

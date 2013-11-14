@@ -23,7 +23,9 @@ TKTPlannedClosure >> reduce [
 { #category : #reflection }
 TKTPlannedClosure >> reduce: anArray [
  | args |
-	args := anArray isString ifTrue: [ {anArray} ] ifFalse: [ anArray asArray ]. 
+	args := anArray isString ifTrue: [ {anArray} ] ifFalse: [ 
+		anArray asArguments.
+	]. 
 	^ unit  valueWithEnoughArguments: args . 
 ]
 

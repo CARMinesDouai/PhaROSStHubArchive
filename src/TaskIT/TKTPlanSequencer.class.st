@@ -1,84 +1,72 @@
+"
+A plan sequencer is an object that transform the visitor 'visits' into an executable sequence. Since we are in a sequenced-execution environment, we need to transform our Plan into a sequence of execution. This give us the power to define howto execute this sequence: as a schedduled task, as a fully paralellized task, in the same thread, and also when it should run: just now? when is needed? etc.
+
+The design of the sequencer is based on the idea of decorator. We have to main flavors of sequencer, the one that executes an unit of execution when it is sequenced (TKTPlanUnitSequencer), and the TKTPlanSequencerLayer, which is the decorator version. 
+
+Al the decorators are stackable and add different behaviors in the shape of the task, making nested tasks. (For performance we should check how to inline all the behavior instead of having several blocks) .
+
+In the end, all the decorators rely on the TKTPlanUnitSequencer one, which is the only one that has proper capability of execution. 
+
+Actually, if we change the TKTPlanUnitSequencer for a sequencer that instead of execution it has an executable, we could have an object that can execute without making a new analysis over the plan tree. (Of course it will be kind of static.).
+
+
+"
 Class {
 	#name : #TKTPlanSequencer,
-	#superclass : #TKTRunnableVisitor,
+	#superclass : #Object,
 	#instVars : [
-		'units',
-		'cursor'
+		'justBeginning'
 	],
 	#category : #'TaskIT-Tasks-Plan'
 }
 
 { #category : #'as yet unclassified' }
-TKTPlanSequencer class >> sequence: aPlanned [ 	
-	| sequencer |
-	sequencer := self new.
-	aPlanned accept: sequencer.
-	^ sequencer.
+TKTPlanSequencer class >> for: aResult [
+	^ self new result: aResult; yourself
 ]
 
 { #category : #'as yet unclassified' }
-TKTPlanSequencer >> acceptCollection: aPlannedCollection [
-
-	| expandedPlannedCollection |
-	expandedPlannedCollection := TKTPlannedCollection new.
-	
-	aPlannedCollection units collect: [ :u | TKTPlanSequencer sequence: u ] thenDo: [ : sequenced | expandedPlannedCollection & sequenced ].
-	
-	self acceptUnit: expandedPlannedCollection .
+TKTPlanSequencer class >> runner [
+	^ TKTPlannedUnitReducer  new.
 ]
 
 { #category : #'as yet unclassified' }
-TKTPlanSequencer >> acceptImplication: anImplication [
-	self error:'Should implement relation' .
+TKTPlanSequencer >> begin [
+	justBeginning := true.
 ]
 
 { #category : #'as yet unclassified' }
-TKTPlanSequencer >> acceptImplicationSequence: aTKTSequence [
-	aTKTSequence object accept: self.
+TKTPlanSequencer >> end [	
+	^ self result.
 ]
 
 { #category : #'as yet unclassified' }
-TKTPlanSequencer >> acceptUnit: aPlannedUnit [
-	units add:aPlannedUnit.
+TKTPlanSequencer >> justBeginning [
+	^ justBeginning
 ]
 
 { #category : #'as yet unclassified' }
-TKTPlanSequencer >> initialize [
-	super initialize.
-	units := OrderedCollection new. 
-	cursor := 1.
+TKTPlanSequencer >> result [
+	^ self resultObject result.
 ]
 
 { #category : #'as yet unclassified' }
-TKTPlanSequencer >> lastUnit [
-	^ units last.
+TKTPlanSequencer >> resultAsArguments [
+	^ self resultObject arguments
+
+]
+
+{ #category : #abstract }
+TKTPlanSequencer >> resultObject [
+	self subclassResponsibility .
+]
+
+{ #category : #abstract }
+TKTPlanSequencer >> sequence: aPlanned [
+	self subclassResponsibility 
 ]
 
 { #category : #'as yet unclassified' }
-TKTPlanSequencer >> next [
-	| unit |
-	
-	unit := units at: cursor.
-	cursor := cursor +1.
-	^ unit.
-]
-
-{ #category : #'as yet unclassified' }
-TKTPlanSequencer >> reset [
-	cursor := 1.
-]
-
-{ #category : #'as yet unclassified' }
-TKTPlanSequencer >> run [
-	^ units  paralellize allButFirst  inject: (units first reduce) into: [ :acc : next |  next reduce: acc  ].
-]
-
-{ #category : #'as yet unclassified' }
-TKTPlanSequencer >> run: arrayOfArgs [
-	^ units allButFirst paralellize inject: (units first reduce: arrayOfArgs) into: [ :acc : next |  next reduce: acc  ].
-]
-
-{ #category : #'as yet unclassified' }
-TKTPlanSequencer >> size [ 
-	^ units size.
+TKTPlanSequencer >> thereIsResult [
+	^ self resultObject isSetted
 ]

@@ -6,31 +6,20 @@ Class {
 
 { #category : #visiting }
 TKTPlanVisitor >> acceptCollection: aPlannedCollection [
-	self acceptUnit: aPlannedCollection.
+	aPlannedCollection units do:[ : u | u accept: self ].
 ]
 
 { #category : #visiting }
-TKTPlanVisitor >> acceptElement: aPlanElement [
-	
+TKTPlanVisitor >> acceptIndependantUnits: aPlannedCollection [
+	self acceptCollection: aPlannedCollection.
 ]
 
 { #category : #visiting }
-TKTPlanVisitor >> acceptImplication: aTKTPlannedImplication [
-	self acceptElement: aTKTPlannedImplication.
-	
-]
-
-{ #category : #visiting }
-TKTPlanVisitor >> acceptImplicationSequence: aTKTSequence [
-	self acceptImplication: aTKTSequence 
+TKTPlanVisitor >> acceptSequencedUnits: aPlannedCollection [
+	self acceptCollection: aPlannedCollection.
 ]
 
 { #category : #visiting }
 TKTPlanVisitor >> acceptUnit: aTKTPlannedUnit [
-	self acceptElement: aTKTPlannedUnit.
-]
-
-{ #category : #visiting }
-TKTPlanVisitor >> asPlanned [
 	
 ]

@@ -8,9 +8,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-TKTPlanUnitCounter >> acceptImplication: anImplication [
-	anImplication object accept: self.
-"We come from the consequent."
+TKTPlanUnitCounter class >> count: aPlanned [ 	
+	| counter  |
+	counter := self new.
+	aPlanned accept: counter.
+	^ counter units.
 ]
 
 { #category : #'as yet unclassified' }

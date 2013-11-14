@@ -89,11 +89,6 @@ TKTPlan >> addParalellizable: aPlanned [
 ]
 
 { #category : #'as yet unclassified' }
-TKTPlan >> also [
-	^ self sequence lastUnit.
-]
-
-{ #category : #'as yet unclassified' }
 TKTPlan >> replace: aPlanned by: otherPlanned [
 	startingTask = aPlanned ifTrue:[
 		startingTask := otherPlanned.	
@@ -101,8 +96,8 @@ TKTPlan >> replace: aPlanned by: otherPlanned [
 ]
 
 { #category : #accessing }
-TKTPlan >> sequence [
-	^ TKTPlanSequencer sequence: startingTask
+TKTPlan >> run [
+	^ TKTPlanRunner sequence: startingTask
 ]
 
 { #category : #operators }

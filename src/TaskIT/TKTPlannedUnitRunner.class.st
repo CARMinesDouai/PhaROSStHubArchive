@@ -1,23 +1,15 @@
 Class {
 	#name : #TKTPlannedUnitRunner,
 	#superclass : #Object,
-	#instVars : [
-		'plannedUnit'
-	],
 	#category : #'TaskIT-Tasks-Plan'
 }
 
-{ #category : #accessing }
-TKTPlannedUnitRunner >> plannedUnit: aPlannedUnit [
-	plannedUnit := aPlannedUnit 
-]
-
 { #category : #executing }
-TKTPlannedUnitRunner >> reduce [
+TKTPlannedUnitRunner >> reduce: aUnit [
 	self subclassResponsibility .
 ]
 
 { #category : #executing }
-TKTPlannedUnitRunner >> reduceWithArguments: anArray [
+TKTPlannedUnitRunner >> reduce: aUnit with: anArray [
 	self subclassResponsibility .
 ]

@@ -5,12 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-TKTPlannedUnitSchedduler >> reduce [
-	^ plannedUnit task taskIt.
+TKTPlannedUnitSchedduler >> reduce: aUnit [
+	^ aUnit scheddule reduce.
 ]
 
 { #category : #'as yet unclassified' }
-TKTPlannedUnitSchedduler >> reduceWithArguments: anArray [
-	^ plannedUnit task taskItWithArguments: anArray.
-
+TKTPlannedUnitSchedduler >> reduce: aUnit with: anArray [
+	^ aUnit scheddule reduce: anArray.
 ]

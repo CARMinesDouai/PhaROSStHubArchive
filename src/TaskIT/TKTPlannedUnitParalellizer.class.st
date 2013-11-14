@@ -5,11 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-TKTPlannedUnitParalellizer >> reduce [
-	plannedUnit task doIt.
+TKTPlannedUnitParalellizer >> reduce: aUnit [
+	^ aUnit paralellize reduce.
 ]
 
 { #category : #'as yet unclassified' }
-TKTPlannedUnitParalellizer >> reduceWithArguments: anArray [
-	plannedUnit task doItWithArguments: anArray.
+TKTPlannedUnitParalellizer >> reduce: aUnit with: anArray [
+	^ aUnit paralellize reduce: anArray.
 ]
