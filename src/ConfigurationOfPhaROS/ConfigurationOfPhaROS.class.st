@@ -162,10 +162,7 @@ ConfigurationOfPhaROS >> baseline10: spec [
 			spec package: 'TaskIT' with: [
 				spec repository: 'http://smalltalkhub.com/mc/sbragagnolo/TaskIT/main'.
 			].
-		
-			
-		
-		
+				
 			spec package: 'PhaROS' with: [
 				spec requires: #('XMLRPC' 'CommonTraits' 'PaulLePoulpe' 'OSProcess' 'TaskIT' ).
 			].
@@ -288,7 +285,8 @@ ConfigurationOfPhaROS >> version100Beta11: spec [
 			project: 'XMLRPC' with: '1.0-Beta6';
 			 project: 'PaulLePoulpe' with: '1.0.1'.
 		spec
-			package: 'PhaROS' with: 'PhaROS-SantiagoBragagnolo.131'
+			package: 'PhaROS' with: 'PhaROS-SantiagoBragagnolo.131'.
+spec package:'TaskIT' with: 'TaskIT-SantiagoBragagnolo.20'			
 		].
 
 
@@ -306,7 +304,8 @@ ConfigurationOfPhaROS >> version100Beta1: spec [
 			project: 'XMLRPC' with: '1.0-Beta6';
 			 project: 'PaulLePoulpe' with: '1.0.1'.
 		spec
-			package: 'PhaROS' with: 'PhaROS-NouryBouraqadi.86'
+			package: 'PhaROS' with: 'PhaROS-NouryBouraqadi.86'.
+			spec package:'TaskIT' with: 'TaskIT-SantiagoBragagnolo.20'.
 		].
 
 
@@ -324,7 +323,8 @@ ConfigurationOfPhaROS >> version100Beta2: spec [
 			project: 'XMLRPC' with: '1.0-Beta6';
 			 project: 'PaulLePoulpe' with: '1.0.1'.
 		spec
-			package: 'PhaROS' with: 'PhaROS-NouryBouraqadi.147'
+			package: 'PhaROS' with: 'PhaROS-NouryBouraqadi.147'.
+			spec package:'TaskIT' with: 'TaskIT-SantiagoBragagnolo.20'.
 		].
 
 
@@ -342,7 +342,8 @@ ConfigurationOfPhaROS >> version100Beta3: spec [
 			project: 'XMLRPC' with: '1.0-Beta6';
 			 project: 'PaulLePoulpe' with: '1.0.1'.
 		spec
-			package: 'PhaROS' with: 'PhaROS-SantiagoBragagnolo.202'
+			package: 'PhaROS' with: 'PhaROS-SantiagoBragagnolo.202'.
+			spec package:'TaskIT' with: 'TaskIT-SantiagoBragagnolo.20'
 		].
 
 
@@ -358,7 +359,8 @@ ConfigurationOfPhaROS >> versionDemo2: spec [
 		spec timestamp: '17/10/2013 15:15'.
 		spec project: 'XMLRPC' with: '1.0-Beta6'.
 		spec project: 'PaulLePoulpe' with: '1.0.1'.
-		spec package: 'PhaROS' with: 'PhaROS-SantiagoBragagnolo.267'
+		spec package: 'PhaROS' with: 'PhaROS-SantiagoBragagnolo.267'.
+		spec package:'TaskIT' with: 'TaskIT-SantiagoBragagnolo.20'
 	].
 
 
