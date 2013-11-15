@@ -127,6 +127,7 @@ ConfigurationOfPhaROS class >> unloadMetacello [
 { #category : #baselines }
 ConfigurationOfPhaROS >> baseline10: spec [
 	<version:'1.0-baseline'>
+	"BASE LINE WITHOUT KOM"
 	spec for: #common do: [
 			spec blessing: #baseline.
 			spec repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
@@ -175,7 +176,9 @@ ConfigurationOfPhaROS >> baseline10: spec [
 
 { #category : #baselines }
 ConfigurationOfPhaROS >> baseline10b: spec [
+
 	<version:'1.0b-baseline'>
+	" BASELINE WITH KOM SERVER "
 	spec for: #common do: [
 			spec blessing: #baseline.
 			spec repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
@@ -225,6 +228,71 @@ ConfigurationOfPhaROS >> baseline10b: spec [
 			].
 		   
 			spec group: 'default'  with: #( 'PhaROS' ).
+	].
+
+
+]
+
+{ #category : #baselines }
+ConfigurationOfPhaROS >> baseline11: spec [
+	<version:'1.1-baseline'>
+	"BASELINE WITH ConfigurationOfTaskIT - it requieres Ghost proxies "
+	
+
+
+	spec for: #common do: [
+			spec blessing: #baseline.
+			spec repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
+			spec project: 'XMLRPC' with: [
+				spec 
+					className: 'ConfigurationOfXMLRPC';
+					file: 'ConfigurationOfXMLRPC' ;
+					repository: 'http://ss3.gemstone.com/ss/XMLRPC'; 
+					versionString: #bleedingEdge;
+					loads: #('XMLRPC-Client-Core' 'XMLRPC-Client-Tests' 'XMLRPC-Server-Core' 'XMLRPC-Server-Tests')
+			].
+			spec project: 'PaulLePoulpe' with: [ 
+				spec 	className: 'ConfigurationOfPaulLePoulpe'; 
+						loads: #('default' );
+						file: 'ConfigurationOfPaulLePoulpe';
+						repository: 'http://ss3.gemstone.com/ss/PaulLePoulpe'. 
+			]	.
+			spec project: 'OSProcess' with: [
+				spec 
+					className: 'ConfigurationOfOSProcess';
+					file: 'ConfigurationOfOSProcess' ;
+					repository: 'http://www.squeaksource.com/MetacelloRepository'; 
+					versionString: #stable.
+			].
+			spec project: 'CommonTraits' with: [
+				spec 
+					className: 'ConfigurationOfCommonTraits';
+					file: 'ConfigurationOfCommonTraits' ;
+					versionString: #bleedingEdge;
+					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
+			].
+		
+			spec project: 'TaskIT' with: [
+				spec 
+					className: 'ConfigurationOfTaskIT';
+					file: 'ConfigurationOfTaskIT' ;
+					versionString: #bleedingEdge;
+					repository: 'http://smalltalkhub.com/mc/sbragagnolo/TaskIT/main'.
+			].
+		
+	
+			
+			spec package: 'PhaROS' with: [
+				spec requires: #('XMLRPC' 'CommonTraits' 'PaulLePoulpe' 'OSProcess' 'TaskIT').
+			].
+		   
+	
+	].
+	spec for: #'pharo1.4.x' do:[
+		spec package: 'PhaROSPackageManager14'.
+	].
+	spec for: #'pharo2.x' do: [  
+		spec package: 'PhaROSPackageManager20'.
 	].
 
 
@@ -294,7 +362,7 @@ spec package:'TaskIT' with: 'TaskIT-SantiagoBragagnolo.20'
 
 { #category : #versions }
 ConfigurationOfPhaROS >> version100Beta1: spec [ 
-	<version: '1.0-Beta1' imports: #('1.0-baseline') >
+	<version: '1.0-Beta1' imports: #('1.0b-baseline') >
 	
 	spec for: #common do: [
 		spec blessing: #alpha.
@@ -313,7 +381,7 @@ ConfigurationOfPhaROS >> version100Beta1: spec [
 
 { #category : #versions }
 ConfigurationOfPhaROS >> version100Beta2: spec [ 
-	<version: '1.0-Beta2' imports: #('1.0-baseline') >
+	<version: '1.0-Beta2' imports: #('1.0b-baseline') >
 	
 	spec for: #common do: [
 		spec blessing: #alpha.
@@ -332,7 +400,7 @@ ConfigurationOfPhaROS >> version100Beta2: spec [
 
 { #category : #versions }
 ConfigurationOfPhaROS >> version100Beta3: spec [ 
-	<version: '1.0-Beta3' imports: #('1.0-baseline') >
+	<version: '1.0-Beta3' imports: #('1.0b-baseline') >
 	
 	spec for: #common do: [
 		spec blessing: #alpha.
@@ -351,7 +419,7 @@ ConfigurationOfPhaROS >> version100Beta3: spec [
 
 { #category : #versions }
 ConfigurationOfPhaROS >> versionDemo2: spec [ 
-	<version: 'Demo-2' imports: #('1.0-baseline') >
+	<version: 'Demo-2' imports: #('1.0b-baseline') >
 	
 	spec for: #common do: [
 		spec blessing: #demo.
