@@ -60,9 +60,8 @@ PhaROSSystemController >> asPhaROSController [
 
 { #category : #accessing }
 PhaROSSystemController >> finalize [ 
-	master ifNotNil: 
-	[master stop.
-	master := nil.]
+	master stop.
+	master := nil.
 ]
 
 { #category : #accessing }

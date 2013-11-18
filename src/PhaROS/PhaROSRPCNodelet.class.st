@@ -237,7 +237,16 @@ PhaROSRPCNodelet >> statusReal [
 
 { #category : #service }
 PhaROSRPCNodelet >> stop [
-	XMLRPCService stop: self port.
+	status := PhaROSRPCNodelet finished.
+	currentGoal ifNotNil: [
+		currentGoal cancel.
+		PureROSRobulabGoal allInstances do:#cancel.
+	].
+	path := nil.
+	
+	currentGoal := nil.
+	^ true.
+	
 ]
 
 { #category : #'as yet unclassified' }
