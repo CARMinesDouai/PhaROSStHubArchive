@@ -530,6 +530,29 @@ PureROSRobulab >> scriptOdometry [
 
 ]
 
+{ #category : #'scripts-launchers-base-nomap' }
+PureROSRobulab >> scriptOdometryBasedNoMap [
+		
+	process:= PhaROSSystemLauncher  instance launch: [: spec | 
+		
+		spec kompaiTF.
+		spec odometry .
+		
+		spec moveBase.
+		spec compressor.
+		"spec velocitySmoother."
+		spec relay: '/raw_command_velocity' to: '/command_velocity' named: 'smoother_by_pass'.
+		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
+		spec relay: '/kompai2/pose' to: '/pose' named: 'pose_relay'.
+		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
+		spec relay: '/pharos/out/tf' to: '/tf' named: 'tf_out_relay'.
+		spec relay: '/tf' to: '/pharos/in/tf' named: 'tf_in_relay'.
+		spec rviz.
+	].
+	
+
+]
+
 { #category : #'scripts-error' }
 PureROSRobulab >> scriptOriginFixer [
 	controller := PhaROSHandleController robulab2.
