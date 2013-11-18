@@ -114,8 +114,18 @@ ConfigurationOfPhaROS class >> project [
 
 { #category : #'unloading metacello' }
 ConfigurationOfPhaROS class >> testCategoriesForJenkins [
-	self flag: #weMustInstallARosInJenkinsServer. 
-	^ #( 'RoSt-Kernel-Tcp-Test' 'RoSt-Kernel-Types-Test').
+	^ #( 
+		 'PhaROS-Encoding-Test' 
+		 'PhaROS-Kernel-Test' 
+		 'PhaROS-Network-Tcp-Test'
+		 'PhaROS-Nodelets-Merger-Test'
+		 'PhaROS-Nodelets-RPC-Test'
+		 'PhaROS-TopicHandlers-Test'
+		 'PhaROS-Types-Test' 
+		 'PhaROS-Util-Test' 
+		
+		 
+	 ).
 ]
 
 { #category : #'unloading metacello' }
