@@ -5,7 +5,7 @@ Class {
 		'node',
 		'commandVelocity'
 	],
-	#category : #'PhaROS-Kernel-Test'
+	#category : #'PhaROS-Kernel-Test-Graph'
 }
 
 { #category : #'as yet unclassified' }

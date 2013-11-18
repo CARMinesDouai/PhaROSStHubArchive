@@ -1,7 +1,7 @@
 Class {
 	#name : #PhaROSTopicTests,
 	#superclass : #PhaROSBaseCase,
-	#category : #'PhaROS-Kernel-Test'
+	#category : #'PhaROS-Kernel-Test-Graph'
 }
 
 { #category : #'as yet unclassified' }

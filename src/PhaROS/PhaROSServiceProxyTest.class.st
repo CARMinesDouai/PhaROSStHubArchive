@@ -18,25 +18,6 @@ PhaROSServiceProxyTest >> setUp [
 ]
 
 { #category : #testing }
-PhaROSServiceProxyTest >> testAnswerToServiceCall [
-	| answerMessage |
-	
-	self startUpTurtle.
-	
-	service := controller master lookupService: '/reset' with: self callerId .
-	
-	answerMessage := service call.
-	answerMessage withHeader: [ 
-		: header | 
-		self assert: header callerId =  '/turtlesim'.
-		self assert: header md5Sum = 'd41d8cd98f00b204e9800998ecf8427e'.
-		self assert: header requestType = 'std_srvs/EmptyRequest'.
-		self assert: header responseType = 'std_srvs/EmptyResponse'.
-		self assert: header type = 'std_srvs/Empty'.
-	]
-]
-
-{ #category : #testing }
 PhaROSServiceProxyTest >> testCallForLoggers [
 
 	service := controller master lookupService: '/rosout/get_loggers' with: '/andID' .
@@ -47,11 +28,4 @@ self assert: (loggers loggers  anySatisfy: [: logger | logger name = 'ros.roscpp
 self assert: (loggers loggers  anySatisfy: [: logger | logger name = 'ros.roscpp.roscpp_internal' ]).
 self assert: (loggers loggers  anySatisfy: [: logger | logger name = 'ros.roscpp.superdebug' ]).
 
-]
-
-{ #category : #testing }
-PhaROSServiceProxyTest >> testCallingAServiceWithNoArgs [
-	self startUpTurtle.
-	service := controller master lookupService: '/reset' with: self callerId.
-	self shouldnt: [service call] raise:  Error
 ]

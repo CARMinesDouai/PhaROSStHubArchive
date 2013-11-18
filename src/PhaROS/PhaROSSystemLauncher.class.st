@@ -7,10 +7,16 @@ Class {
 		'gmappingProcess'
 	],
 	#classInstVars : [
-		'instance'
+		'instance',
+		'distro'
 	],
 	#category : #'PhaROS-Util'
 }
+
+{ #category : #'as yet unclassified' }
+PhaROSSystemLauncher class >> distro: aDistroSymbol [
+	distro := aDistroSymbol
+]
 
 { #category : #'as yet unclassified' }
 PhaROSSystemLauncher class >> fuerte [
@@ -20,6 +26,12 @@ PhaROSSystemLauncher class >> fuerte [
 { #category : #'as yet unclassified' }
 PhaROSSystemLauncher class >> groovy [
 	^'/opt/ros/groovy/bin/'
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSSystemLauncher class >> initialize [
+	super initialize.
+	distro := #groovy.
 ]
 
 { #category : #'as yet unclassified' }
@@ -36,7 +48,7 @@ PhaROSSystemLauncher class >> new [
 
 { #category : #'as yet unclassified' }
 PhaROSSystemLauncher class >> path: aCommand [
-	^ self groovy, '/', aCommand 
+	^ (distro value: self) , '/', aCommand 
 ]
 
 { #category : #types }
