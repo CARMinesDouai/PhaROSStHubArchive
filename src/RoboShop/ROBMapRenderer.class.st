@@ -68,3 +68,8 @@ ROBMapRenderer >> renderStair: aStair [
 ROBMapRenderer >> renderToilet: aToilet [
 	self renderRendereable: aToilet
 ]
+
+{ #category : #'as yet unclassified' }
+ROBMapRenderer >> renderTour: aTour [
+	^ self renderRendereable: aTour.
+]

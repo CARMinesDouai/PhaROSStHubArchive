@@ -244,6 +244,11 @@ ROBEmployee >> locationID [
 ]
 
 { #category : #accessing }
+ROBEmployee >> locationIDFor: aMap [
+	^ self locationID.
+]
+
+{ #category : #accessing }
 ROBEmployee >> name [
 	^ name
 ]

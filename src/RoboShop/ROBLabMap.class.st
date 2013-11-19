@@ -10,12 +10,17 @@ Class {
 		'guiding',
 		'arrived'
 	],
+	#classInstVars : [
+		'map'
+	],
 	#category : #'RoboShop-Lab-Places'
 }
 
 { #category : #'as yet unclassified' }
 ROBLabMap class >> map526909358: aRobot [
-	^ ROBLabMap new
+
+	map ifNil: [ 
+		map :=	 ROBLabMap new
 		mapHash: 526909358;
 		places:
 				{(ROBToilet new
@@ -23,10 +28,6 @@ ROBLabMap class >> map526909358: aRobot [
 						image: nil;
 						location: ROBUniquePose point3;
 						genre: #male).
-					(ROBStairs new
-						icon: nil;
-						image: nil;
-						location: ROBUniquePose point38).
 					(ROBOffice office3111).
 					(ROBOffice office3126).
 					(ROBOffice office3154).
@@ -48,13 +49,10 @@ ROBLabMap class >> map526909358: aRobot [
 					(ROBOffice office3119).
 					(ROBOffice office3113).
 					(ROBOffice office3130).
+					(ROBOffice office3130B).
 					(ROBOffice office3117).
 					(ROBOffice office3118).
 					(ROBOffice office3110).
-					(ROBStairs new
-						icon: nil;
-						image: nil;
-						location: ROBUniquePose point22).
 					(ROBKitchen new
 						icon: nil;
 						image: nil;
@@ -63,10 +61,7 @@ ROBLabMap class >> map526909358: aRobot [
 					(ROBOffice office3157).
 					(ROBOffice office3102).
 					(ROBOffice office3149).
-					(ROBStairs new
-						icon: nil;
-						image: nil;
-						location: ROBUniquePose point28).
+					(ROBStairs centralStairs).
 					(ROBOffice office3159).
 					(ROBOffice office3137).
 					(ROBOffice office3158).
@@ -103,9 +98,33 @@ ROBLabMap class >> map526909358: aRobot [
 					(ROBOffice office3161).
 					(ROBOffice office3109).
 					(ROBOffice office3140).
-					(ROBOffice office3136)};
-		robot: aRobot;
+					(ROBOffice office3136).
+					(ROBOffice office3124).
+					};
 		yourself.
+		map register: (ROBTour roboticTeamTour: map ).
+		map register: (ROBTour pharoTeamTour: map) .
+		map register: (ROBTour evaluationTourA: map) .
+
+		].
+		map robot: aRobot.
+		^ map
+]
+
+{ #category : #'as yet unclassified' }
+ROBLabMap class >> reset [
+	map :=  nil
+]
+
+{ #category : #service }
+ROBLabMap >> addNavigateTour: aTourId [
+	|place| 
+
+	place := self searchForId: aTourId.
+	place size = 1 ifFalse: [ self error:'Repeated ID' , aTourId ].
+	place anyOne isTour ifFalse: [  self error:'ID doesnot belongs to a tour!'].
+	
+	(place anyOne places asSortedCollection: [: a : b | a shortName < b shortName ]) do: [ :p | self goal:p ].
 ]
 
 { #category : #'as yet unclassified' }
@@ -118,7 +137,7 @@ ROBLabMap >> checkHash [
 
 { #category : #'as yet unclassified' }
 ROBLabMap >> employees [
-	^ ((places select: #isOffice thenCollect: #employees) inject: Set new into: [ :acc :st | acc addAll: st. acc ]) asSortedCollection: [: a : b | a name < b name ].
+	^ ((places select: #isOffice thenCollect: #employees) inject: Set new into: [ :acc :st | acc addAll: st. acc ]) asSortedCollection: [: a : b | a shortName < b shortName ].
 ]
 
 { #category : #'as yet unclassified' }
@@ -175,6 +194,31 @@ ROBLabMap >> initialize [
 { #category : #'as yet unclassified' }
 ROBLabMap >> isValid [
 	^ robot mapHash = hash
+]
+
+{ #category : #service }
+ROBLabMap >> locateClosestElementNamed: aName [
+	| facilities robotPosition |
+	
+	 facilities := self searchFacilitiesByName: aName. 
+	 robotPosition := robot currentPosition.
+	
+	^ (facilities inject: facilities anyOne into: [:min :each | 
+		(min location point dist: robotPosition) < (each location point dist: robotPosition) ifTrue:[min] ifFalse:[each]		
+	 ])
+	
+
+]
+
+{ #category : #service }
+ROBLabMap >> locationIDFor: anElement [
+	| |
+	
+	^ anElement isFacility ifTrue: [ 
+		(self locateClosestElementNamed: anElement name) locationID.
+	] ifFalse: [ 
+		anElement locationID.
+	]
 ]
 
 { #category : #service }
@@ -244,22 +288,17 @@ ROBLabMap >> navigateTo: aPlaceId [
 ]
 
 { #category : #service }
-ROBLabMap >> navigateToFacility: aFacilityID [
-	| facilities robotPosition |
-	facilities := self searchFacilitiesByName: aFacilityID. 
-	robotPosition := robot currentPosition.
-	
-	self goal:
-	(facilities inject: facilities anyOne into: [:min :each | 
-		(min location point dist: robotPosition) < (each location point dist: robotPosition) ifTrue:[min] ifFalse:[each]		
-	]).
-	
-	
-]
-
-{ #category : #service }
 ROBLabMap >> navigatesToBestMatcher: aByteString [ 
-	self goal: ((self matchesObjectsFor:  aByteString ) at:1).
+	| bestMatcher |
+	bestMatcher := (self matchesObjectsFor:  aByteString ) at:1 .
+
+
+	bestMatcher isTour ifTrue: [  
+		^ self addNavigateTour:  bestMatcher id.	
+	].
+	
+	
+	self goal: bestMatcher.
 ]
 
 { #category : #service }
@@ -275,7 +314,7 @@ ROBLabMap >> office: aSmallInteger [
 
 { #category : #'as yet unclassified' }
 ROBLabMap >> offices [
-	^ (places select: #isOffice) asSortedCollection: [: a : b | a name < b name ].
+	^ (places select: [ : p| p isOffice and: [ p hasEmployees not and: [ p description size>0 ] ]])  asSortedCollection: [: a : b | a name < b name ].
 ]
 
 { #category : #'as yet unclassified' }
@@ -295,11 +334,29 @@ ROBLabMap >> register: aPlace [
 ]
 
 { #category : #service }
+ROBLabMap >> removeAllGoals [
+	| currentGoal |
+	(self moving and:[ goals isEmpty not ]) ifTrue:[
+		currentGoal  := goals at:1.
+		goals removeAll.
+		goals add: currentGoal.
+	] ifFalse: [ 
+		goals removeAll.
+	]
+	
+]
+
+{ #category : #service }
 ROBLabMap >> removeGoal: aPlaceId [
 
 	|place compare | 
+
 	compare := aPlaceId asInteger ifNil:[ aPlaceId ] .
 	place := goals detect: [ :p |  p id = compare ] ifNone: [ ^ self ].
+	
+	(self moving and:[ place = (goals at:1)]) ifTrue: [ 
+		^ self.
+	 ].
 	
 	goals remove: place.
 ]
@@ -317,10 +374,8 @@ ROBLabMap >> robot: aRobot [
 ]
 
 { #category : #'as yet unclassified' }
-ROBLabMap >> searchFacilitiesByName: anId [
-	^ (self searchForId: anId ) ifNotNil: [ :sample | 
-		self facilities select: [ : p | p name = (sample anyOne) name ].
-	] .
+ROBLabMap >> searchFacilitiesByName: aName [
+	^ self facilities select: [ : p | p name = aName ].
 
 	
 ]
@@ -332,17 +387,42 @@ ROBLabMap >> searchForId: anId [
 	^ (places , self employees) select: [ : p | p id = compare ].
 ]
 
+{ #category : #'as yet unclassified' }
+ROBLabMap >> searchOneForId: anId [
+	^ (self searchForId: anId) anyOne.
+]
+
+{ #category : #service }
+ROBLabMap >> setAsInHome [
+	robot setIn: ROBUniquePose point5.
+	
+
+]
+
 { #category : #service }
 ROBLabMap >> startGuidance [
+
 	goals ifNotEmpty:[
 		guiding := true.
 		arrived := false.
-		Transcript show:'GUIDING '; cr.
-		robot initializeRobotPathWithStargazerIds: { goals first locationID }.
+		robot initializeRobotPathWithStargazerIds: { self locationIDFor: (goals first )}.
 		robot goToNextId.
 	].
 
 
+]
+
+{ #category : #'as yet unclassified' }
+ROBLabMap >> stop [ 
+	
+	guiding := false.
+	arrived := true.
+	robot stop.
+]
+
+{ #category : #'as yet unclassified' }
+ROBLabMap >> tours [
+	^( places select: #isTour) asSortedCollection: [: a : b | a name < b name ].
 ]
 
 { #category : #service }

@@ -26,12 +26,12 @@ ROBOffice class >> office3102 [
 
 { #category : #offices }
 ROBOffice class >> office3103 [ 
-^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point25); number: 3103;description:''; employees: {})
+^(ROBOffice new icon: (nil); image: (ROBFileLibrary / #LaboratoryPng ); location:( ROBUniquePose point25); number: 3103;description:'Local Developpement'; employees: {})
 ]
 
 { #category : #offices }
 ROBOffice class >> office3105 [ 
-^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point24); number: 3105;description:''; employees: {})
+^(ROBOffice new icon: (nil); image: (ROBFileLibrary / #GearPng); location:( ROBUniquePose point24); number: 3105;description:'Reseaux informatiques'; employees: {})
 ]
 
 { #category : #offices }
@@ -41,7 +41,7 @@ ROBOffice class >> office3108 [
 
 { #category : #offices }
 ROBOffice class >> office3109 [ 
-^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point13); number: 3109;description:''; employees: { ROBEmployee InesYanyunLU .})
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point13); number: 3109;description:'Atelier'; employees: { ROBEmployee InesYanyunLU .})
 ]
 
 { #category : #offices }
@@ -71,12 +71,12 @@ ROBOffice class >> office3114 [
 
 { #category : #offices }
 ROBOffice class >> office3117 [ 
-^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point20); number: 3117;description:''; employees: {})
+^(ROBOffice new icon: (nil); image: (ROBFileLibrary / #ArchivePng); location:( ROBUniquePose point20); number: 3117;description:'Archives - 3117'; employees: {})
 ]
 
 { #category : #offices }
 ROBOffice class >> office3118 [ 
-^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point19); number: 3118;description:''; employees: {})
+^(ROBOffice new icon: (nil); image: (ROBFileLibrary / #LaboratoryPng ); location:( ROBUniquePose point19); number: 3118;description:'TP Automatisme'; employees: {})
 ]
 
 { #category : #offices }
@@ -86,12 +86,17 @@ ROBOffice class >> office3119 [
 
 { #category : #offices }
 ROBOffice class >> office3122 [ 
-^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point10); number: 3122;description:''; employees: {})
+^(ROBOffice new icon: (nil); image: (ROBFileLibrary / # ClassRoomPng ); location:( ROBUniquePose point10); number: 3122;description:'Salle de cours - 3122'; employees: {})
+]
+
+{ #category : #offices }
+ROBOffice class >> office3124 [ 
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point9); number: 3125;description:''; employees: { ROBEmployee GuillermoPOLITO . ROBEmployee ZhiYAN . ROBEmployee NickolaosPAPOULIAS .})
 ]
 
 { #category : #offices }
 ROBOffice class >> office3125 [ 
-^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point9); number: 3125;description:''; employees: { ROBEmployee GuillermoPOLITO . ROBEmployee ZhiYAN . ROBEmployee NickolaosPAPOULIAS .})
+^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point9); number: 3125;description:''; employees: { ROBEmployee StephaneLECOEUCHE  })
 ]
 
 { #category : #offices }
@@ -111,7 +116,13 @@ ROBOffice class >> office3128 [
 
 { #category : #offices }
 ROBOffice class >> office3130 [ 
-^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point4); number: 3130;description:''; employees: {})
+^(ROBOffice new icon: (nil); image: ROBFileLibrary / #LaboratoryPng; location:( ROBUniquePose point4); number: 3130;description:'Robot Laboratory - door A'; employees: {})
+]
+
+{ #category : #offices }
+ROBOffice class >> office3130B [ 
+^(ROBOffice new icon: (nil); image: ROBFileLibrary / #LaboratoryPng; location:( ROBUniquePose point57); number: 3130;description:'Robot Laboratory - door B'; employees: {})
+
 ]
 
 { #category : #offices }
@@ -136,12 +147,12 @@ ROBOffice class >> office3137 [
 
 { #category : #offices }
 ROBOffice class >> office3139 [ 
-^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point33); number: 3139;description:''; employees: {})
+^(ROBOffice new icon: (nil); image: (ROBFileLibrary / #MeetingRoomJpg); location:( ROBUniquePose point33); number: 3139; description:'Salle de reunion - 3139'; employees: {})
 ]
 
 { #category : #offices }
 ROBOffice class >> office3140 [ 
-^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point36); number: 3140;description:''; employees: {})
+^(ROBOffice new icon: (nil); image: (ROBFileLibrary / #ArchivePng); location:( ROBUniquePose point36); number: 3140;description:'Archives - 3140'; employees: {})
 ]
 
 { #category : #offices }
@@ -206,12 +217,12 @@ ROBOffice class >> office3154 [
 
 { #category : #'as yet unclassified' }
 ROBOffice class >> office3156 [ 
-^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point40); number: 3156;description:''; employees: {})
+^(ROBOffice new icon: (nil); image: (ROBFileLibrary / #GearPng); location:( ROBUniquePose point40); number: 3156;description:'Local ventilation'; employees: {})
 ]
 
 { #category : #'as yet unclassified' }
 ROBOffice class >> office3157 [ 
-^(ROBOffice new icon: (nil); image: (nil); location:( ROBUniquePose point48); number: 3157;description:''; employees: {})
+^(ROBOffice new icon: (nil); image: (ROBFileLibrary /# MeetingRoomJpg); location:( ROBUniquePose point48); number: 3157;description:'Salle de reunion - 3157'; employees: {})
 ]
 
 { #category : #'as yet unclassified' }
@@ -281,6 +292,11 @@ ROBOffice >> employees: aSet [
 ]
 
 { #category : #accessing }
+ROBOffice >> hasEmployees [
+	^ employees size > 0
+]
+
+{ #category : #accessing }
 ROBOffice >> image [
 	^ image ifNil: [ 
 		employees size = 1 ifTrue: [ employees anyOne image ] ifFalse: [ nil ]
@@ -306,7 +322,7 @@ ROBOffice >> name [
 			self shortName.
 		 ]
 	 ] ifFalse: [
-		description
+		 description
 	].
 ]
 
@@ -335,10 +351,10 @@ ROBOffice >> register: anEmployee [
 { #category : #accessing }
 ROBOffice >> renderWith: aRenderer [
 	aRenderer renderOffice: self.
-"	employees do: [ :e  | e renderWith: aRenderer]."
+
 ]
 
 { #category : #accessing }
 ROBOffice >> shortName [ 	
-	^ 'Office ', number asString.
+	^ self name
 ]

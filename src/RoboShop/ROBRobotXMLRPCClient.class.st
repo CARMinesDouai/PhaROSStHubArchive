@@ -34,9 +34,11 @@ ROBRobotXMLRPCClient >> currentLandmarkId [
 ROBRobotXMLRPCClient >> currentPosition [
 	|dic |
 	"return the currentPosition of the robot as a dictionary containing x and y"
-	dic := self robotProxy  invokeMethod: #currentPosition.
-	^ (dic at:#x ) @ (dic at:#y)
-
+	[dic := self robotProxy  invokeMethod: #currentPosition.
+		^ (dic at:#x ) @ (dic at:#y)
+	] on: Error do: [ 
+		^ 0.0@0.0 
+	]
 ]
 
 { #category : #constants }
@@ -147,6 +149,22 @@ ROBRobotXMLRPCClient >> robotStatus [
 	"return a constant code (cf. constants protocol) that describes the robot status"
 	"use convenient methods instead"
 	^self robotProxy  invokeMethod: #status
+	
+
+]
+
+{ #category : #'public api' }
+ROBRobotXMLRPCClient >> setIn: aLocation [
+	"return the id to which the robot is going"
+	^self robotProxy  invokeMethod: #setIn: withArgs: {aLocation id}
+	
+
+]
+
+{ #category : #'public api' }
+ROBRobotXMLRPCClient >> setInZero [
+	"return the id to which the robot is going"
+	^self robotProxy  invokeMethod: #setInZero
 	
 
 ]

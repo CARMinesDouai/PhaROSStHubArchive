@@ -30,7 +30,7 @@ ROBElementRenderer >> renderEmployee: anEmployee [
 				person with: [  
 					html image
 						class: 'img-rounded span2';
-						style: 'margin-top:5px;';
+						style: 'margin-top:5px; ';
 						url: anEmployee image.
 					html div style: 'font-size:14px; display: inline-block; margin-left:40px;margin-top:25px;vertical-align:middle' ; 
 							  with: anEmployee name.
@@ -45,7 +45,7 @@ ROBElementRenderer >> renderFacility: aFacility [
 		
 	| facility | 
 		html div class:'row' ; with:[
-			html anchor url:'#'; onClick: (html jQuery ajax callback: [  : value |  map navigateToFacility: value.  ] value: aFacility id ;
+			html anchor url:'#'; onClick: (html jQuery ajax callback: [  : value |  map navigateTo: value.  ] value: aFacility id ;
 						  script: [ : s | ]); with:[
 				facility := html div.
 				facility class: 'robo-item'.
@@ -78,14 +78,14 @@ ROBElementRenderer >> renderMap: aMap [
 			html div: [ html anchor: 'Facilities' ]	.
 			html div: [ html paragraph: [aMap facilities do: [ :f | f renderWith: self].]].
 			
-			html div: [ html anchor: 'Offices' ] .
+			html div: [ html anchor: 'Rooms' ] .
 			html div: [ html paragraph: [aMap offices do: [ :f | self renderOffice: f ]. ]].
 			
 			html div: [ html anchor: 'Persons' ] .
-			html div: [ html paragraph: [aMap employees do: [ :p | self renderEmployee: p  ] ]].
+			html div: [ html paragraph: [ aMap employees do: [ :p | self renderEmployee: p  ].	]].
 			
 			html div: [ html anchor: 'Tours' ] .
-			html div: [ html paragraph: 'Comming soon'].
+			html div: [ html paragraph: [aMap tours do: [ :p | self renderTour: p  ] ]].
 		]
 	] .
 
@@ -105,8 +105,8 @@ ROBElementRenderer >> renderOffice: anOffice [
 				office class: 'robo-item'.
 				office with: [  
 					html image
+						style: 'margin-top: 10px;';
 						class: 'img-rounded span2';
-						style: 'margin-top:5px;';
 						url: anOffice image.
 					html div style: 'font-size:14px; display: inline-block; margin-left:40px;margin-top:25px;vertical-align:middle' ; 
 							  with: anOffice name.
@@ -137,5 +137,29 @@ ROBElementRenderer >> renderToilet: aToilet [
 		self renderFacility: aToilet.
 		true.	
 	]
+	
+]
+
+{ #category : #'as yet unclassified' }
+ROBElementRenderer >> renderTour: aFacility [ 
+		
+	| facility | 
+		html div class:'row' ; with:[
+			html anchor url:'#'; onClick: (html jQuery ajax callback: [  : value |  map addNavigateTour: value.  ] value: aFacility id ;
+						  script: [ : s | ]); with:[
+				facility := html div.
+				facility class: 'robo-item'.
+				facility with: [  
+					html image
+						class: 'img-rounded span2';
+						style:'margin-top:10px;';
+						url: aFacility image.
+					html div style: 'font-size:14px; display: inline-block; margin-left:40px;margin-top:25px;vertical-align:middle' ; 
+							  with: aFacility name.
+
+				].
+			]
+		].
+	
 	
 ]

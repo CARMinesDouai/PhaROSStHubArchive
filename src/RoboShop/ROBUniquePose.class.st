@@ -270,6 +270,11 @@ ROBUniquePose class >> point56 [
 ]
 
 { #category : #points }
+ROBUniquePose class >> point57 [ 
+	^  ROBUniquePose point: ((4.011@ -8.2592000000000003)) orientation: -0.1198 id: 57
+]
+
+{ #category : #points }
 ROBUniquePose class >> point6 [ 
 	^  ROBUniquePose point: ((4.726@ -1.1745)) orientation: -0.0442 id: 6
 ]
@@ -281,7 +286,7 @@ ROBUniquePose class >> point7 [
 
 { #category : #points }
 ROBUniquePose class >> point8 [ 
-	^  ROBUniquePose point: ((5.011@ -2.2592000000000003)) orientation: -0.1198 id: 8
+	^  ROBUniquePose point: ((5.011@ -2.2592)) orientation: -0.1198 id: 8
 ]
 
 { #category : #points }

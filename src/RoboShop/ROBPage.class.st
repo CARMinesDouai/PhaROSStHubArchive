@@ -186,10 +186,15 @@ margin-bottom: 1em;
 	-webkit-box-shadow:3px 3px 6px #A9A9A9;
 	height:70px;
 }
+
 .robo-item span { 
 	font-size: 14px;
 	vertical-align: middle;
  }
+
+.robo-item img{
+	height: 60px;
+}
 
 .queueport { 
 	height: 500px; 
@@ -204,7 +209,7 @@ margin-bottom: 1em;
  }
 .robot-goal { 
 	height: 100px; 
-	width: 100px;
+	
 	background: #F3F2ED;
 	border: 4px double white;
 	padding: 0 10px;
@@ -216,12 +221,20 @@ margin-bottom: 1em;
  }
 .robot-goal img{
 	height: 60px; 
-	width: 50px;
+	width: 45px;
+	
+}
+.robot-goal.waiting{
+	width: 115px;
 }
 .robot-goal.active { 
-	width: 120px; 
+	width: 130px; 
+	margin: 5px 0 0px 20px;
 	background: #999967;
  }
+.robot-goal.active img{
+	margin-left:50px;
+}
 '
 ]
 

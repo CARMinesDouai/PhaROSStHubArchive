@@ -47,6 +47,11 @@ ROBLabElement >> isOffice [
 ]
 
 { #category : #accessing }
+ROBLabElement >> isTour [
+	^false
+]
+
+{ #category : #accessing }
 ROBLabElement >> location [
 	^ location
 ]

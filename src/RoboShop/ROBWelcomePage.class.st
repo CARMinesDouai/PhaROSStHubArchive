@@ -28,7 +28,7 @@ ROBWelcomePage >> renderContentOn: html [
 						url: ROBFileLibrary/ #ecolePng.
 				].
 				html anchor target:'_new'; url: 'http://car.mines-douai.fr/'; with:[
-					html span class:'span7'; with:'The RoboShop Project'.
+					html span class:'span7'; with:'The RoboShop Project (DAN)'.
 				].
 				html anchor target:'_new'; url: 'http://www.pharo.org/'; with:[
 					html image
@@ -55,14 +55,29 @@ ROBWelcomePage >> renderContentOn: html [
 					html listItem: [ 	html anchor url: '#tabs-1'; with: 'Selection'. ].
 					html listItem: [ 	html anchor url: '#tabs-2'; with: 'Map'. ].
 					html listItem: [ html anchor  class:'', (map moving ifTrue:[''] ifFalse:['']); 
-										
-										onClick: (html jQuery ajax callback: [  : value | 
-													map moving ifFalse: [map goHome ]
-												] value: true value ;  
-										script: [ : s | ]); with: 'Send me home'. ].
+												 onClick: (html jQuery ajax 
+														callback: [ : value |  map moving ifFalse: [map goHome ]] value: true value ;  
+														script: [ : s | ]); 
+														with: [ html image 
+																	style:'height: 30px; width: 30px'; 
+																	title:'go home' ; 
+																	url: ROBFileLibrary /#homePng 
+														]. 
+								].
+					html listItem: [ html anchor  class:'', (map moving ifTrue:[''] ifFalse:['']); 
+												 onClick: (html jQuery ajax 
+														callback: [ : value |  map moving ifFalse: [map setAsInHome ]] value: true value ;  
+														script: [ : s | ]); 
+														with: [ html image 
+																	style:'height: 30px; width: 30px'; 
+																	title:'Set as In home (front elevator facing the elevator''s door)' ; 
+																	url: ROBFileLibrary /#pointMapPng 
+														]. 
+								].
 				].
 				html div id: 'tabs-1'; with: [
 						html div  class: 'row-fuild'; with: [  
+							
 							
 							html label for: (html nextId); with: ' '.
 							html textInput  
@@ -72,7 +87,6 @@ ROBWelcomePage >> renderContentOn: html [
 													callback: [:term : ob |  map navigatesToBestMatcher: term. ]
 											).
 							
-
 						].
 						html div class: 'row-fluid' ; with: [
 							(ROBElementRenderer for: html) renderMap: map .
