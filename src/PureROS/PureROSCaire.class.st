@@ -247,9 +247,11 @@ PureROSCaire >> rvizFile [
 ]
 
 { #category : #'as yet unclassified' }
-PureROSCaire >> scriptFrontierBasedExploration [
+PureROSCaire >> scriptExplorationMaster [
 
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
+		spec gmapping.
+		spec moveBase.
 		spec exploreNode.
 		spec rviz.
 	].
@@ -301,8 +303,6 @@ PureROSCaire >> scriptMappingForExploration [
 		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
 		spec relay: '/pharos/out/tf' to: '/tf' named: 'tf_out_relay'.
 		spec relay: '/tf' to: '/pharos/in/tf' named: 'tf_in_relay'.
-		
-		"spec rviz. Unmatched comment quote ->"
 	].
 
 ]
