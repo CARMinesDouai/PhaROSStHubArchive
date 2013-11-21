@@ -5,7 +5,7 @@ Class {
 		'service',
 		'loggers'
 	],
-	#category : #'PhaROS-Kernel-Test-Graph'
+	#category : #'PhaROS-Kernel-Graphical-Test'
 }
 
 { #category : #testing }
