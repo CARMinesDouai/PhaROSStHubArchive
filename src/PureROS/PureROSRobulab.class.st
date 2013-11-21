@@ -679,6 +679,16 @@ PureROSRobulab >> scriptPoseRecordingUpdate [
 	
 ]
 
+{ #category : #'scripts-launchers-base-nomap' }
+PureROSRobulab >> scriptSandbox [
+	controller := PhaROSHandleController home.
+	(controller node buildConnectionFor: '/map') typedAs: 'nav_msgs/OccupancyGrid'; for: [ :grid | self halt ]; connect.
+	process := PhaROSSystemLauncher instance launch: [ :spec |
+		spec mapServer: self sgMapfile.
+	].
+	self halt.
+]
+
 { #category : #'scripts-stargazer' }
 PureROSRobulab >> scriptStandAloneMapBuildingStargazer [
 	| bot stream |

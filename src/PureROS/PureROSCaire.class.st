@@ -235,21 +235,51 @@ PureROSCaire class >> xml [
 ]
 
 { #category : #'as yet unclassified' }
+PureROSCaire >> buildController [ 
+	^ PhaROSHandleController home.
+	
+]
+
+{ #category : #'as yet unclassified' }
 PureROSCaire >> rvizFile [
 	^ self path, '/src/single_robot.rviz'
 
 ]
 
 { #category : #'as yet unclassified' }
-PureROSCaire >> scriptExplorationMaster [
+PureROSCaire >> scriptFrontierBasedExploration [
 
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
-		spec gmapping.
-		spec moveBase.
 		spec exploreNode.
 		spec rviz.
 	].
 
+]
+
+{ #category : #'as yet unclassified' }
+PureROSCaire >> scriptMapFusion [
+	| mapFusor out |  
+	
+	
+	mapFusor := CaireMapFuser new.
+	
+	out := self controller node topicPublisher: '/zmapmerger/map' typedAs:  'nav_msgs/OccupancyGrid'.
+	
+	mapFusor on: #FusedMapUpdate do: [: updatedMap | 
+		out send: [ :m | updatedMap intoOccupancyGrid: m ].
+	].
+
+		" Sensor processor "
+	self clock tickAt: 1 hz on: ({
+		 ((self controller node buildConnectionFor: '/p3dx0/map') typedAs: 'nav_msgs/OccupancyGrid'; adapted: CaireMap ).
+		 ((self controller node buildConnectionFor: '/p3dx1/map') typedAs: 'nav_msgs/OccupancyGrid'; adapted: CaireMap ).
+	} asSensors infinityTolerance;
+	  for: [
+		: maps |
+		" Model feeding "
+		 mapFusor registerMaps: maps. 
+	 ]; yourself
+	 ).
 ]
 
 { #category : #'as yet unclassified' }
@@ -271,6 +301,8 @@ PureROSCaire >> scriptMappingForExploration [
 		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
 		spec relay: '/pharos/out/tf' to: '/tf' named: 'tf_out_relay'.
 		spec relay: '/tf' to: '/pharos/in/tf' named: 'tf_in_relay'.
+		
+		"spec rviz. Unmatched comment quote ->"
 	].
 
 ]
