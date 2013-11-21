@@ -62,7 +62,7 @@ PhaROSExternalPublisherNode >> spinOnce [
 	
 	disconnect ifNotNil: [
 		channel unsubscribe: self.
-		process ref cancel.	
+		process cancel.	
 		process := nil.
 	]
 ]
