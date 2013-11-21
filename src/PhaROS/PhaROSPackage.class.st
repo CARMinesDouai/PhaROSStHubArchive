@@ -237,6 +237,11 @@ PhaROSPackage >> buildController [
 	self subclassResponsibility.
 ]
 
+{ #category : #'helper thread' }
+PhaROSPackage >> clock [
+	^ PhaROSTickingClock new
+]
+
 { #category : #scripts }
 PhaROSPackage >> controller [
 	^ controller ifNil: [ controller := self buildController ].

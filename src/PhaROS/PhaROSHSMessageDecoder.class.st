@@ -65,7 +65,6 @@ PhaROSHSMessageDecoder >> decode: byteStream [
 	
 	[" Header parsing "
 		
-		
 		headerSize := self dataSizeFrom: byteStream.
 		self initHeaderFrom: (byteStream next: headerSize).
 		

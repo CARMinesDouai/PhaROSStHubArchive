@@ -76,7 +76,7 @@ PhaROSPacket >> loadStream: aStream [
  	(type isAPossibleSize: size ) ifFalse: [
 		PhaROSUnexpextedValue signal:' Unexpected Value'.	
 	].
-	size > 100000 ifTrue: [
+	size > 20000000 ifTrue: [
 		"too long, maybe is a problem in buffer. "	
 		aStream resetBuffers.
 		self error: 'Warning. trying to load ', size asString, ' bytes'.
