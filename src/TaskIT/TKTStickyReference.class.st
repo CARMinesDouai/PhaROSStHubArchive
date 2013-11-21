@@ -17,7 +17,7 @@ TKTStickyReference >> asStickyReference [
 { #category : #'as yet unclassified' }
 TKTStickyReference >> finalize [ 
 	self proxyTarget finalize.
-	self proxyTarget: nil.
+	target := nil. 
 ]
 
 { #category : #'as yet unclassified' }
