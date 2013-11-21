@@ -125,8 +125,7 @@ ConfigurationOfTaskIT >> baseline10: spec [
 				spec 
 					className: 'ConfigurationOfGhost';
 					file: 'ConfigurationOfGhost' ;
-					repository: 'http://ss3.gemstone.com/ss/Ghost'; 
-					versionString: #stable
+					repository: 'http://ss3.gemstone.com/ss/Ghost'
 			].
 			spec package: 'TaskIT' with: [
 				spec requires: #('Ghost').
