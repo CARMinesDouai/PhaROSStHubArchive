@@ -130,7 +130,7 @@ PhaROSTransport >> publisherNode: anURL to: aTopic [
 
 { #category : #publishing }
 PhaROSTransport >> remotePublisherNode: anURL to: aTopic [
-	| socket  message connectionMessage|
+	| socket  message connectionMessage stream |
 	
 	
 	socket := self comm resolveSocketTo: aTopic of: anURL for: node.
@@ -147,10 +147,13 @@ PhaROSTransport >> remotePublisherNode: anURL to: aTopic [
 	
 	message sendTo: socket .
 	
-	connectionMessage := PhaROSHSMessage newSubscriberMessageFrom: socket receiveDataWithTimeout.
+	
+	stream := SocketStream on: socket.
+	stream binary. 
+	connectionMessage := PhaROSHSMessage newSubscriberMessageFrom:stream.
 	
 	
-	^ PhaROSExternalPublisherNode new xmlurl:anURL;  socket: socket; topic: aTopic; yourself.
+	^ PhaROSExternalPublisherNode new xmlurl:anURL;  socket: socket; stream: stream; topic: aTopic; yourself.
 ]
 
 { #category : #publishing }

@@ -33,8 +33,6 @@ PhaROSExternalPublisherNode >> finalize [
 PhaROSExternalPublisherNode >> setup [
 	
 	msg := topic newMessage.	
-	stream := SocketStream on: self socket. 
-	stream binary.
 	stream timeout: self timeout.
 	tries := 0.
 	
@@ -67,6 +65,11 @@ PhaROSExternalPublisherNode >> spinOnce [
 		process ref cancel.	
 		process := nil.
 	]
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSExternalPublisherNode >> stream: aStream [
+	stream := aStream.
 ]
 
 { #category : #'as yet unclassified' }

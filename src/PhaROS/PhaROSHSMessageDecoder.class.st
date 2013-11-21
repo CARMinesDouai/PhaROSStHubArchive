@@ -15,9 +15,9 @@ PhaROSHSMessageDecoder class >> decode: aByteArray [
 ]
 
 { #category : #decoding }
-PhaROSHSMessageDecoder class >> decode: aByteArray using: aMessage [
+PhaROSHSMessageDecoder class >> decode: aStream using: aMessage [
 	^ self new 	tcpmessage: aMessage; 
-				decode: aByteArray.
+				decode: aStream.
 
 
 ]
@@ -29,19 +29,19 @@ PhaROSHSMessageDecoder class >> decodePublisherMessage: aByteArray [
 ]
 
 { #category : #decoding }
-PhaROSHSMessageDecoder class >> decodeServiceClientMessage: aByteArray [ 
-	^ self decode: aByteArray using: RoStHandShakeMessage newServiceClient.
+PhaROSHSMessageDecoder class >> decodeServiceClientMessage: aStream [ 
+	^ self decode: aStream using: PhaROSHSMessage newServiceClient.
 ]
 
 { #category : #decoding }
-PhaROSHSMessageDecoder class >> decodeServiceMessage: aByteArray [ 
-	^ self decode: aByteArray using: PhaROSHSMessage newService.
+PhaROSHSMessageDecoder class >> decodeServiceMessage: aStream [
+	^ self decode: aStream using: PhaROSHSMessage newService.
 ]
 
 { #category : #decoding }
-PhaROSHSMessageDecoder class >> decodeSubscriberMessage: aByteArray [ 
+PhaROSHSMessageDecoder class >> decodeSubscriberMessage: aStream [ 
 
-	^ self decode: (aByteArray asByteArray)using: PhaROSHSMessage newSubscriber.
+	^ self decode: aStream using: PhaROSHSMessage newSubscriber.
 ]
 
 { #category : #decoding }
@@ -60,12 +60,12 @@ PhaROSHSMessageDecoder >> dataSizeFrom: byteStream [
 ]
 
 { #category : #decoding }
-PhaROSHSMessageDecoder >> decode: aByteArray [
-	| byteStream headerSize bodySize |
+PhaROSHSMessageDecoder >> decode: byteStream [
+	|  headerSize bodySize |
 	
 	[" Header parsing "
 		
-		byteStream := aByteArray readStream.
+		
 		headerSize := self dataSizeFrom: byteStream.
 		self initHeaderFrom: (byteStream next: headerSize).
 		
@@ -78,7 +78,7 @@ PhaROSHSMessageDecoder >> decode: aByteArray [
 					#loggers -> (PhaROSArrayType of: (PhaROSTypeBrowser instance definition: 'roscpp/Logger') ).
 				} named: 'roscpp/GetLoggersResponse' withConstants:{}. 
 				
-				body := type decode: (PhaROSDecoder on: (ReadStream on: (aByteArray copyFrom: headerSize +10  to: aByteArray size)) ).
+				body := type decode: (PhaROSDecoder on: (ReadStream on: byteStream upToEnd) ).
 				tcpmessage response: body.
 				
 			] ifFalse: [

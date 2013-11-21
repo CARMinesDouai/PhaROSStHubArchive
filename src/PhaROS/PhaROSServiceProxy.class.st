@@ -42,7 +42,7 @@ PhaROSServiceProxy >> callWithArgs: args [
 	socketStr sendCommand: messageBytes, #[0 0 0 0].
 	response := socketStr upToEnd.
 	socketStr close.
-	^PhaROSHSMessage newServiceMessageFrom: response asByteArray
+	^PhaROSHSMessage newServiceMessageFrom: response asByteArray readStream
 ]
 
 { #category : #accessing }

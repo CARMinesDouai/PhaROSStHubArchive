@@ -53,8 +53,8 @@ PhaROSHSMessage class >> newServiceClient [
 ]
 
 { #category : #'instance creation decoding' }
-PhaROSHSMessage class >> newServiceClientMessageFrom: byteArray [
-	^PhaROSHSMessageDecoder decodeServiceClientMessage: byteArray.
+PhaROSHSMessage class >> newServiceClientMessageFrom: aStream [
+	^PhaROSHSMessageDecoder decodeServiceClientMessage: aStream.
 ]
 
 { #category : #'instance creation' }
@@ -63,8 +63,8 @@ PhaROSHSMessage class >> newServiceClientWith: aMessageConfigurationBlock [
 ]
 
 { #category : #'instance creation decoding' }
-PhaROSHSMessage class >> newServiceMessageFrom: byteArray [
-	^PhaROSHSMessageDecoder decodeServiceMessage: byteArray.
+PhaROSHSMessage class >> newServiceMessageFrom: aStream [
+	^PhaROSHSMessageDecoder decodeServiceMessage: aStream.
 ]
 
 { #category : #'instance creation' }
@@ -78,8 +78,8 @@ PhaROSHSMessage class >> newSubscriber [
 ]
 
 { #category : #'instance creation decoding' }
-PhaROSHSMessage class >> newSubscriberMessageFrom: byteArray [
-	^PhaROSHSMessageDecoder decodeSubscriberMessage: byteArray.
+PhaROSHSMessage class >> newSubscriberMessageFrom: aStream [
+	^PhaROSHSMessageDecoder decodeSubscriberMessage: aStream.
 ]
 
 { #category : #'instance creation' }

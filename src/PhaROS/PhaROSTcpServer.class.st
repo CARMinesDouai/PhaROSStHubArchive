@@ -65,19 +65,13 @@ PhaROSTcpServer >> portNumber [
 
 { #category : #server }
 PhaROSTcpServer >> serve: aSocket [
-	| data message response topic bytesRead|
+	| stream message |
 	
-
-	
-	data := String new: 3072.
-	
-	bytesRead := aSocket receiveDataWithTimeoutInto: data.
-	
-	
-
+	stream := SocketStream on: aSocket.
+	stream binary.
 	
 	self flag:#makeUpToThisThing.
-	message := PhaROSHSMessageDecoder decodeSubscriberMessage: (data copyFrom: 1 to: bytesRead).
+	message := PhaROSHSMessageDecoder decodeSubscriberMessage: stream.
 	
 	PhaROSHeaderVerifier new verify: message. 
 	self owner manageIncomingConnection: message with: aSocket.
