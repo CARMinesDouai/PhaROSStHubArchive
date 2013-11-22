@@ -90,7 +90,12 @@ ConfigurationOfPhaROS class >> load [
 
 { #category : #loading }
 ConfigurationOfPhaROS class >> loadBleedingEdge [
-	(self project version: #bleedingEdge) load.
+	(self project version: #bleedingEdge) load:'default+tests'.
+]
+
+{ #category : #loading }
+ConfigurationOfPhaROS class >> loadBleedingEdgeForTest [
+	(self project version: #bleedingEdge) load:'default+tests'.
 ]
 
 { #category : #loading }
@@ -304,6 +309,19 @@ ConfigurationOfPhaROS >> baseline11: spec [
 			spec package: 'PhaROS' with: [
 				spec requires: #('XMLRPC' 'CommonTraits' 'PaulLePoulpe' 'OSProcess' 'TaskIT').
 			].
+		
+		
+		spec  
+		      group: 'default' with: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure');
+ 			group: 'default+tests' with: #( 'PhaROS' 'PhaROSTest' 'PhaROSTestROS' 'PhaROSControllers' 'PhaROSInfrastructure');
+			
+			group: 'core' with: #('PhaROS' );
+			group: 'core+tests' with: #('PhaROS' 'PhaROSTest' 'PhaROSTestROS' );
+			
+			group: 'nodelets-ros-controllers' with: #( 'PhaROSNodeletsAction' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition' 'PhaROSNodeletsTurtlesim' 'PhaROSNodeletsTurtlebot');
+			group: 'nodelets-behavior' with: #( 'PhaROSNodeletsLocalizer' 'PhaROSNodeletsMerger' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsRPC');
+			group: 'nodelets' with: #('nodelets-ros-controllers' 'nodelets-behavior');
+			group: 'all' with: #('default-tests' 'nodelets').
 	
 	].
 	spec for: #'pharo1.4.x' do:[
@@ -313,13 +331,7 @@ ConfigurationOfPhaROS >> baseline11: spec [
 		spec package: 'PhaROSPackageManager20'.
 	].
 
-	spec     group: 'default' with: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure');
- 			group: 'default-tests' with: #( 'PhaROS' 'PhaROSTest' 'PhaROSTestROS' 'PhaROSControllers' 'PhaROSInfrastructure');
-			group: 'Core' with: #('PhaROS' );
-			group: 'nodelets-ros-controllers' with: #( 'PhaROSNodeletsAction' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition' 'PhaROSNodeletsTurtlesim' 'PhaROSNodeletsTurtlebot');
-			group: 'nodelets-behavior' with: #( 'PhaROSNodeletsLocalizer' 'PhaROSNodeletsMerger' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsRPC');
-			group: 'nodelets' with: #('nodelets-ros-controllers' 'nodelets-behavior');
-			group: 'all' with: #('default-tests' 'nodelets').
+	
 			
 		
 	
