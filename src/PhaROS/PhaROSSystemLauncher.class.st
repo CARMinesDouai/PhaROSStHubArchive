@@ -66,21 +66,6 @@ PhaROSSystemLauncher >> deployType: aTypeName definedAs: aCompositeType at: aPac
 	PhaROSTypeBrowser instance definition: aPackage packageName, '/', aTypeName.
 ]
 
-{ #category : #launching }
-PhaROSSystemLauncher >> launch: aConfigurationFileOrBlock [
-	| configuration path |
-	
-	path := (aConfigurationFileOrBlock isKindOf: String) ifTrue: [
-		aConfigurationFileOrBlock.
-	] ifFalse: [
-		configuration := PhaROSLaunchBuilder new .
-		aConfigurationFileOrBlock value: configuration.
-		configuration writeFile.
-	].
-
-	^ (self roslaunch: path) asStickyReference.
-]
-
 { #category : #types }
 PhaROSSystemLauncher >> rosMsg: aCommand [ 
 	
