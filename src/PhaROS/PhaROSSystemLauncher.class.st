@@ -158,18 +158,6 @@ PhaROSSystemLauncher >> roslaunch: aConfigurationFile [
 ]
 
 { #category : #launching }
-PhaROSSystemLauncher >> roslaunchForTests: aContent [
-
-	| file |
-	file := StandardFileStream forceNewFileNamed: '/tmp/content-empty-test.launch'.
-	file nextPutAll: aContent.
-	file flush.
-	file close.
-	
-	^ (self roslaunch: '/tmp/content-empty-test.launch') asStickyReference.
-]
-
-{ #category : #launching }
 PhaROSSystemLauncher >> rosrun: anArrayOfArguments [
 	| process | 
 	process :=  ExternalUnixOSProcess 
@@ -196,6 +184,70 @@ PhaROSSystemLauncher >> rosservice: anArrayOfArguments [
 { #category : #launching }
 PhaROSSystemLauncher >> rosserviceCall: anArrayOfArguments [
 	^ self rosservice: {'call'}, anArrayOfArguments.
+]
+
+{ #category : #deprecated }
+PhaROSSystemLauncher >> shutdownGMapping [
+	gmappingProcess  ifNotNil: [
+		gmappingProcess finalize.
+		gmappingProcess  := nil.
+	].
+
+]
+
+{ #category : #deprecated }
+PhaROSSystemLauncher >> shutdownMaster [
+	masterProcess ifNotNil: [
+		gmappingProcess finalize.
+		masterProcess := nil.
+	].
+
+]
+
+{ #category : #deprecated }
+PhaROSSystemLauncher >> shutdownTurtle [
+	turtleProcess ifNotNil: [
+		turtleProcess finalize.
+		turtleProcess := nil.
+	].
+
+]
+
+{ #category : #deprecated }
+PhaROSSystemLauncher >> startUpGMapping [
+	gmappingProcess ifNil: [
+		gmappingProcess :=  ExternalUnixOSProcess 
+							forkAndExec:  (PhaROSSystemLauncher path:'rosrun')   
+							arguments: { 'gmapping' . 'slam_gmapping' } 
+							environment:  nil 
+							descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
+		gmappingProcess spin: 4.
+	].
+]
+
+{ #category : #deprecated }
+PhaROSSystemLauncher >> startUpMaster [
+	" Remember that the environment variables must be setted before run this! "
+	masterProcess ifNil: [
+		masterProcess := ExternalUnixOSProcess 
+					forkAndExec:  (PhaROSSystemLauncher path:'roscore' )  
+					arguments: {  } 
+					environment:  nil 
+					descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
+		masterProcess spin: 20.
+	].
+]
+
+{ #category : #deprecated }
+PhaROSSystemLauncher >> startUpTurtle [
+	turtleProcess ifNil: [
+		turtleProcess :=  ExternalUnixOSProcess 
+							forkAndExec:  (PhaROSSystemLauncher path:'rosrun'   )
+							arguments: { 'turtlesim' . 'turtlesim_node' } 
+							environment:  nil 
+							descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
+		turtleProcess spin: 20.
+	].
 ]
 
 { #category : #environment }

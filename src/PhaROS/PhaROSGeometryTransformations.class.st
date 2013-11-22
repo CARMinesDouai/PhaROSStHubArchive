@@ -1,7 +1,7 @@
 Class {
 	#name : #PhaROSGeometryTransformations,
 	#superclass : #Object,
-	#category : #'PhaROS-Util'
+	#category : #'PhaROS-Util-Geometry'
 }
 
 { #category : #'as yet unclassified' }
