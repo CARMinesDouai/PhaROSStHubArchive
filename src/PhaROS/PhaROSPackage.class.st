@@ -97,8 +97,10 @@ PhaROSPackage class >> install: aLocation [
 
 { #category : #'initialize-release' }
 PhaROSPackage class >> installScript: aScriptSelector [
-	| script |
-		script := StandardFileStream forceNewFileNamed: (self scripts, '/',( aScriptSelector asString copyReplaceAll: 'script' with:''  ) asLowercase).
+	| script  |
+		
+		
+		script := StandardFileStream forceNewFileNamed: (self scripts, '/',( aScriptSelector asString copyReplaceAll: 'script' with:''  ) asLowercase, PhaROSPackageManager extension ).
 		script  nextPutAll:  ('Author fullName: ''PhaROS''. {1} instance {2}.  ' format: { self name . aScriptSelector asString }), String crlf.
 		script close. 
 	
