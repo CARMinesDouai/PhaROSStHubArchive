@@ -72,6 +72,27 @@ ROBGoalRenderer >> renderEventsFrom: aMap on: aHtml [
 ]
 
 { #category : #'as yet unclassified' }
+ROBGoalRenderer >> renderGoalIfReached: aGoal [
+	
+	aGoal ifNotNil: [ 
+
+		html  div script: (html jQuery new dialog 
+			height: 	'auto';		
+			width: 	'auto';
+			html: ([ :hb | aGoal  renderWith:  (ROBGoalReachedRenderer for: hb)]);
+			title: 'We have arrived';
+			resizable: true;
+			modal: true;
+			autoOpen: true
+			)
+		
+	
+	]
+		
+	
+]
+
+{ #category : #'as yet unclassified' }
 ROBGoalRenderer >> renderRendereable: aRenderable [
 
 	^ self renderRendereable: aRenderable isActive: false.

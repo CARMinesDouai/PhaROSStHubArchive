@@ -223,12 +223,14 @@ ROBLabMap >> locationIDFor: anElement [
 
 { #category : #service }
 ROBLabMap >> mantainment [
+	| removed | 
 	goals ifNotEmpty: [
 		guiding ifTrue: [
 			asking := asking + 1. 
 			asking > 4 ifTrue: [ 
 				asking := 0.
 				robot isRobotArrived ifTrue: [ 
+					removed := (goals at: 1).
 					goals remove: (goals at:1).
 					arrived := true.
 				].
@@ -238,6 +240,8 @@ ROBLabMap >> mantainment [
 			 ].
 		]
 	].
+
+	^ removed.
 ]
 
 { #category : #'as yet unclassified' }

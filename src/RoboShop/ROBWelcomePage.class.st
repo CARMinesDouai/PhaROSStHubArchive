@@ -110,9 +110,13 @@ ROBWelcomePage >> renderContentOn: html [
 			].
 
 		html document addLoadScript: (((html jQuery id: 'queue' ) load html:[ :r | 
+			| renderer |
 
-			map mantainment.
-			ROBGoalRenderer new renderEventsFrom: map on: r.
+			renderer := ROBGoalRenderer new.
+			renderer renderEventsFrom: map on: r.
+			renderer renderGoalIfReached: map mantainment
+			
+			
 			
 		]) interval: 1000).
 	

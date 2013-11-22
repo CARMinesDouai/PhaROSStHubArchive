@@ -36,7 +36,7 @@ ROBElementRenderer >> renderEmployee: anEmployee [
 							  with: anEmployee name.
 
 				].
-			]
+			].
 		]
 ]
 
