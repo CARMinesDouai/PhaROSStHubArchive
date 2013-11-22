@@ -12,8 +12,6 @@ Class {
 PhaROSServiceProxyTestGraph >> setUp [ 
 
 	super setUp.
-	"self startUpMaster.
-	"
 	
 ]
 
@@ -23,7 +21,7 @@ PhaROSServiceProxyTestGraph >> testAnswerToServiceCall [
 	
 	self startUpTurtle.
 	
-	service := controller master lookupService: '/reset' with: self callerId .
+	service :=  master lookupService: '/reset' with: self callerId .
 	
 	answerMessage := service call.
 	answerMessage withHeader: [ 
@@ -39,6 +37,6 @@ PhaROSServiceProxyTestGraph >> testAnswerToServiceCall [
 { #category : #testing }
 PhaROSServiceProxyTestGraph >> testCallingAServiceWithNoArgs [
 	self startUpTurtle.
-	service := controller master lookupService: '/reset' with: self callerId.
+	service :=  master lookupService: '/reset' with: self callerId.
 	self shouldnt: [service call] raise:  Error
 ]

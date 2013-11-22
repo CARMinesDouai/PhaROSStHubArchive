@@ -8,7 +8,6 @@ Class {
 PhaROSTopicTests >> setUp [ 
 
 	super setUp.	
-	self startUpMaster.
 	self startUpTurtle.
 	
 ]
@@ -17,13 +16,16 @@ PhaROSTopicTests >> setUp [
 PhaROSTopicTests >> testMessageType [
 	| publisherNode  type |
 
-	publisherNode := controller  create: PhaROSBlockNode named: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:  9999  xmlRpcPort:  6127 soul: [
+	publisherNode := PhaROSBlockNode name: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:  9999  xmlRpcPort:  6127 master: master soul: [
 		: me |
 		me sendTo: '/turtle1/command_velocity' typedAs: 'turtlesim/Velocity' a: [ : msg |
 			type := msg class. 
 		].
 	].
+	
+	master registerNode: publisherNode.
 	publisherNode execute. 
+	
 	
 	self assert: type = TurtlesimVelocity.
 ]
@@ -34,25 +36,26 @@ PhaROSTopicTests >> testTopicInOutputChannelConfiguration [
 
 	semaphore := Semaphore new.
 	
-	node := controller create: PhaROSTestNode  named: '/TestNode' domain: '127.0.0.1' tcpPort: 9930 xmlRpcPort:  6123.	
-	
+	node :=  PhaROSTestNode  name: '/TestNode' domain: '127.0.0.1' tcpPort: 9930 xmlRpcPort:  6123 master: master. 	
+	master registerNode: node.
 
 
-	publisherNode := controller  create: PhaROSBlockNode named: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:  9999  xmlRpcPort:  6127 soul: [
+	publisherNode :=PhaROSBlockNode name: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:  9999  xmlRpcPort:  6127 master: master soul: [
 		: me |
 		me sendTo: '/turtle1/pose'  typedAs: 'turtlesim/Pose' a: [ : msg |
-			otopic := controller master lookupTopic: '/turtle1/pose'.
+			otopic :=  master lookupTopic: '/turtle1/pose'.
 			ochannel := otopic outputchannels detect: [ : o | o xmlurl = 'http://127.0.0.1:6127/' ].
 		].
 	].
 
+	master registerNode: publisherNode.
 	publisherNode execute. 
 	
 	
 	node subscriberBehavior: [
 		:aMessage :aChannel  |
 		ichannel := aChannel.
-		itopic := controller master lookupTopic: '/turtle1/pose'.
+		itopic :=  master lookupTopic: '/turtle1/pose'.
 		semaphore signal.
 	].
 
@@ -88,12 +91,12 @@ PhaROSTopicTests >> testTopicInputChannelConfiguration [
 
 	semaphore := Semaphore new.
 	
-	node := controller create: PhaROSTestNode  named: '/TestNode' domain: '127.0.0.1' tcpPort: 9983 xmlRpcPort:  6123.	
-	
+	node := PhaROSTestNode  name: '/TestNode' domain: '127.0.0.1' tcpPort: 9983 xmlRpcPort:  6123 master: master.	
+	master registerNode: node.
 	node subscriberBehavior: [
 		:aMessage :aChannel  |
 		channel := aChannel.
-		topic := controller master lookupTopic: '/turtle1/pose'.
+		topic :=  master lookupTopic: '/turtle1/pose'.
 		semaphore signal.
 	].
 
@@ -115,14 +118,15 @@ PhaROSTopicTests >> testTopicInputChannelConfiguration [
 PhaROSTopicTests >> testTopicOutputChannelConfiguration [
 	| publisherNode  topic channel |
 
-	publisherNode := controller  create: PhaROSBlockNode named: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:98298  xmlRpcPort: 64465 soul: [
+	publisherNode := PhaROSBlockNode name: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:98298  xmlRpcPort: 64465 master:master soul: [
 		: me |
 		
 		me sendTo: '/turtle1/command_velocity'  typedAs: 'turtlesim/Velocity' a: [ : msg |
-			topic := controller master lookupTopic: '/turtle1/command_velocity'.
+			topic :=  master lookupTopic: '/turtle1/command_velocity'.
 			channel := topic outputchannels detect: [ : o | o xmlurl = 'http://127.0.0.1:64465/' ].
 		].
 	].
+	master registerNode: publisherNode .
 	publisherNode execute. 
 	
 	

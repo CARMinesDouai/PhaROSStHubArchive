@@ -12,10 +12,10 @@ Class {
 PhaROSNodeTest >> setUp [ 
 
 	super setUp.	
-	self startUpMaster.
 	self startUpTurtle.
 	
-	node := controller create: PhaROSTestNode  named: '/TestNode' domain: '127.0.0.1' tcpPort: 92837 xmlRpcPort:  634987.	
+	node := PhaROSTestNode  name: '/TestNode' domain: '127.0.0.1' tcpPort: 92837 xmlRpcPort:  634987 master: master.
+	master registerNode: node.
 ]
 
 { #category : #'as yet unclassified' }
@@ -52,14 +52,16 @@ PhaROSNodeTest >> testPublisherNode [
 	
 	semaphore := Semaphore new.
 	
-	publisherNode := controller  create: PhaROSBlockNode named: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:  9456  xmlRpcPort:  6098 soul: [
+	publisherNode := PhaROSBlockNode name: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:  9456  xmlRpcPort:  6098 master: master soul: [
 		: me |
 		me sendTo: '/turtle1/command_velocity' typedAs:'turtlesim/Velocity' a: [ :msg |
 			msg linear: 1.0. 
 			msg angular: 1.1. 
 		].
 	].
-
+	
+	master registerNode: publisherNode.
+	
 	node subscriberBehavior: [
 		:aMessage :aChannel  |
 		asserts at:1 put: ( aChannel topic name = '/turtle1/command_velocity').

@@ -49,7 +49,7 @@ PhaROSXMLRPCTest >> tearDown [
 { #category : #testing }
 PhaROSXMLRPCTest >> testGetPublishedTopics [	
 	| currentPublisherTopics |
-	currentPublisherTopics := controller master getPublishedTopics: self callerId.
+	currentPublisherTopics :=  master getPublishedTopics: self callerId.
 	self assert: currentPublisherTopics size > 0 .
 	self assert: (currentPublisherTopics allSatisfy: #isString). 
 ]
@@ -57,7 +57,7 @@ PhaROSXMLRPCTest >> testGetPublishedTopics [
 { #category : #testing }
 PhaROSXMLRPCTest >> testGetSystemState [
 	| currentSystemState |
-	currentSystemState := controller master getSystemState: self callerId .	
+	currentSystemState :=  master getSystemState: self callerId .	
 	self assert: currentSystemState isValidState
 	
 	
@@ -69,7 +69,7 @@ PhaROSXMLRPCTest >> testGetSystemState [
 PhaROSXMLRPCTest >> testGetTopicTypes [
 	| currentTopicTypes | 
 	
-	currentTopicTypes := controller master getTopicTypes: self callerId .
+	currentTopicTypes :=  master getTopicTypes: self callerId .
 	self assert:  currentTopicTypes size > 0.
 	self assert:  (currentTopicTypes keys allSatisfy: #isString).
 	self assert:  (currentTopicTypes values allSatisfy: #isString).
@@ -77,13 +77,13 @@ PhaROSXMLRPCTest >> testGetTopicTypes [
 
 { #category : #testing }
 PhaROSXMLRPCTest >> testGetUri [
-	self assert: (controller master getUri: self callerId) =  (masterUrl, '/')
+	self assert: ( master getUri: self callerId) =  (masterUrl, '/')
 ]
 
 { #category : #testing }
 PhaROSXMLRPCTest >> testLookupNode [
 	|node|
-	node := controller master lookupNode: '/rosout' with: self callerId.
+	node :=  master lookupNode: '/rosout' with: self callerId.
 	self assert: (node url  authority  = masterUrl asUrl authority )
 ]
 
@@ -91,7 +91,7 @@ PhaROSXMLRPCTest >> testLookupNode [
 PhaROSXMLRPCTest >> testLookupService [
 	|service expectedServiceName|
 	expectedServiceName := '/rosout/get_loggers'.
-	service := controller master lookupService: expectedServiceName with: self callerId.
+	service :=  master lookupService: expectedServiceName with: self callerId.
 	self assert: service hostName = masterUrl asUrl authority.
 	self assert: service serviceName = expectedServiceName 
 ]
@@ -101,7 +101,7 @@ PhaROSXMLRPCTest >> testRegisterPublisher [
 	| currentData callerURI |
 
 	callerURI := 'http://127.0.0.1:9090/'.
-	currentData := controller master registerPublisher: self callerId  to: 'rosout' with: 'rosgraph_msgs/Log'  andCallerUri: callerURI .
+	currentData :=  master registerPublisher: self callerId  to: 'rosout' with: 'rosgraph_msgs/Log'  andCallerUri: callerURI .
 	
 	self assert: currentData size > 0.
 	self assert: (currentData anySatisfy: [ :each | (each indexOfSubCollection: self defaultMasterIp) > 0]) 
@@ -142,7 +142,7 @@ PhaROSXMLRPCTest >> testRegisterSubscriber [
 	| currentData callerURI |
 	
 	callerURI := 'http://127.0.0.1:9090/'.
-	currentData := controller master registerSubscriber: self callerId  to: 'rosout' with: 'rosgraph_msgs/Log'  andCallerUri: callerURI.
+	currentData :=  master registerSubscriber: self callerId  to: 'rosout' with: 'rosgraph_msgs/Log'  andCallerUri: callerURI.
 	self deny: currentData isNil
 	
 ]
@@ -154,10 +154,10 @@ PhaROSXMLRPCTest >> testUnregisterPublisher [
 	self testRegisterPublisher.
 	
 	callerURI :=  'http://127.0.0.1:9090/'.
-	currentData := controller master unregisterPublisher: self callerId  from: 'rosout'  andCallerUri: callerURI.
+	currentData :=  master unregisterPublisher: self callerId  from: 'rosout'  andCallerUri: callerURI.
 	self assert: currentData = 1.
 	
-	currentData := controller master unregisterPublisher: self callerId  from: 'rosout'  andCallerUri: callerURI.
+	currentData :=  master unregisterPublisher: self callerId  from: 'rosout'  andCallerUri: callerURI.
 	self assert: currentData = 0.
 	
 	
@@ -193,9 +193,9 @@ PhaROSXMLRPCTest >> testUnregisterService [
 PhaROSXMLRPCTest >> testUnregisterSubscriber [
 	| currentData |
 	self testRegisterSubscriber.
-	currentData := controller master  unregisterSubscriber: self callerId  from: 'rosout'  andCallerUri: 'http://127.0.0.1:9090/'.
+	currentData :=  master  unregisterSubscriber: self callerId  from: 'rosout'  andCallerUri: 'http://127.0.0.1:9090/'.
 	self assert: currentData = 1.
-	currentData := controller master unregisterSubscriber: self callerId  from: 'rosout'  andCallerUri: 'http://127.0.0.1:9090/'.
+	currentData :=  master unregisterSubscriber: self callerId  from: 'rosout'  andCallerUri: 'http://127.0.0.1:9090/'.
 	self assert: currentData = 0.
 	
 

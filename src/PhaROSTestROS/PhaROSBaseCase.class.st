@@ -2,11 +2,10 @@ Class {
 	#name : #PhaROSBaseCase,
 	#superclass : #TestCase,
 	#instVars : [
-		'masterProcess',
-		'turtleProcess',
 		'masterUrl',
 		'masterURL',
-		'controller'
+		'master',
+		'process'
 	],
 	#category : #'PhaROSTestROS-Kernel'
 }
@@ -40,18 +39,7 @@ PhaROSBaseCase >> masterURL: aString [
 PhaROSBaseCase >> setUp [
 	masterUrl := self masterURL.
 	PhaROSManifest cleanUp.
-	controller := PhaROSMasiveNodeController url: masterUrl
-]
-
-{ #category : #actions }
-PhaROSBaseCase >> shutdownMaster [
-	PhaROSSystemLauncher instance shutdownMaster
-]
-
-{ #category : #actions }
-PhaROSBaseCase >> shutdownTurtle [
-	PhaROSSystemLauncher instance shutdownTurtle.
-
+	master := PhaROSMaster url: masterUrl
 ]
 
 { #category : #accessing }
@@ -66,20 +54,24 @@ PhaROSBaseCase >> spin: times [
 
 { #category : #actions }
 PhaROSBaseCase >> startUpMaster [
-	PhaROSSystemLauncher instance startUpMaster.
+	process := PhaROSSystemLauncher instance roslaunchForTests: '<launch></launch>'.
 	
 
 ]
 
 { #category : #actions }
 PhaROSBaseCase >> startUpTurtle [
-	PhaROSSystemLauncher instance startUpTurtle.
+	process := PhaROSSystemLauncher instance roslaunchForTests: 
+	'
+	<launch>
+		<node name="turtlesim" pkg="turtlesim" type="turtlesim_node" />
+	</launch>'.
 ]
 
 { #category : #'setup / teardown' }
 PhaROSBaseCase >> tearDown [ 
 
 	PhaROSManifest cleanUp.
-	self shutdownMaster.
-	self shutdownTurtle.
+	process finalize.
+	process := nil.
 ]
