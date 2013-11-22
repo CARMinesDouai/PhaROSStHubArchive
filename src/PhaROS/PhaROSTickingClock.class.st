@@ -21,6 +21,7 @@ PhaROSTickingClock >> stop [
 PhaROSTickingClock >> tick: aTickable andSleep: aRate [
 	aRate wait.
 	aTickable tick.
+	
 ]
 
 { #category : #'as yet unclassified' }

@@ -5,10 +5,16 @@ Class {
 		'sensors',
 		'tolerance',
 		'callback',
-		'reuseValues'
+		'reuseValues',
+		'ticked'
 	],
 	#category : #'PhaROS-Util-Sensor'
 }
+
+{ #category : #'as yet unclassified' }
+PhaROSSensorMultiplexor class >> with: anArray [
+	^ self new sensors: anArray; yourself .
+]
 
 { #category : #'as yet unclassified' }
 PhaROSSensorMultiplexor >> callback [ 
@@ -28,6 +34,17 @@ PhaROSSensorMultiplexor >> for: aCallback [
 { #category : #'as yet unclassified' }
 PhaROSSensorMultiplexor >> infinityTolerance [ 
 	self tolerance: Float infinity
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSSensorMultiplexor >> initialize [ 
+	ticked := 0.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSSensorMultiplexor >> log: aString [
+	ticked := ticked + 1.
+	(ticked \\ 5 ) = 0 ifTrue:[ super log: aString. ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -57,10 +74,13 @@ PhaROSSensorMultiplexor >> sensors: anArrayOfTopicBuilder [
 { #category : #'as yet unclassified' }
 PhaROSSensorMultiplexor >> tick [
 	| sync |
-	sync := sensors collect: [ : s | (s isValidFor: tolerance ) not ].
+	
+	sync := sensors select: [ : s | s isValidFor: tolerance  ].
 	(sync size = sensors size ) ifTrue: [
 		self callback cull: (sync collect: #value).
 		self mainteinance.
+	] ifFalse: [
+			self log: ' Waiting data from sensors  '.	
 	].
 ]
 
