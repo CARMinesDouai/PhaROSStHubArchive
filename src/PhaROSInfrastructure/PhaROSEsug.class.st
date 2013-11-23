@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'launch'
 	],
-	#category : #'PhaROSInfrastructure-CatkinPackage'
+	#category : #'PhaROSInfrastructure-Package'
 }
 
 { #category : #'as yet unclassified' }

@@ -1,7 +1,7 @@
 Class {
 	#name : #PhaROSTestPackage,
 	#superclass : #PhaROSPackage,
-	#category : #'PhaROSInfrastructure-CatkinPackage'
+	#category : #'PhaROSInfrastructure-Package'
 }
 
 { #category : #abstract }
