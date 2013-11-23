@@ -72,8 +72,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSManifest class >> cleanUp [
-	PhaROSSystemController allSubInstances do: #finalize.
-	PhaROSPackage allSubInstances do: #finalize.   
+
 	PhaROSMaster allInstances do: #finalize.
 	PhaROSTransport allInstances do: #finalize.
 	Smalltalk garbageCollectMost.
