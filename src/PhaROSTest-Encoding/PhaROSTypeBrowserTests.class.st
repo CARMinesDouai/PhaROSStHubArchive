@@ -1476,24 +1476,6 @@ PhaROSTypeBrowserTests >> testvisualization_msgs_ImageMarker [
 ]
 
 { #category : #'test-visualization_msgs/' }
-PhaROSTypeBrowserTests >> testvisualization_msgs_InteractiveMarker [
-		| definition | 
-			definition :=  browser definition: 'visualization_msgs/InteractiveMarker'. 
-			self assert: definition typeName = 'visualization_msgs/InteractiveMarker'.
-			self assert: definition md5Sum = '311bd5f6cd6a20820ac0ba84315f4e22'.
-		
-]
-
-{ #category : #'test-visualization_msgs/' }
-PhaROSTypeBrowserTests >> testvisualization_msgs_InteractiveMarkerControl [
-		| definition | 
-			definition :=  browser definition: 'visualization_msgs/InteractiveMarkerControl'. 
-			self assert: definition typeName = 'visualization_msgs/InteractiveMarkerControl'.
-			self assert: definition md5Sum = 'e3a939c98cdd4f709d8e1dec2a9c3f37'.
-		
-]
-
-{ #category : #'test-visualization_msgs/' }
 PhaROSTypeBrowserTests >> testvisualization_msgs_InteractiveMarkerFeedback [
 		| definition | 
 			definition :=  browser definition: 'visualization_msgs/InteractiveMarkerFeedback'. 
@@ -1503,29 +1485,11 @@ PhaROSTypeBrowserTests >> testvisualization_msgs_InteractiveMarkerFeedback [
 ]
 
 { #category : #'test-visualization_msgs/' }
-PhaROSTypeBrowserTests >> testvisualization_msgs_InteractiveMarkerInit [
-		| definition | 
-			definition :=  browser definition: 'visualization_msgs/InteractiveMarkerInit'. 
-			self assert: definition typeName = 'visualization_msgs/InteractiveMarkerInit'.
-			self assert: definition md5Sum = 'aa2f1dcea79533d1710675195653028d'.
-		
-]
-
-{ #category : #'test-visualization_msgs/' }
 PhaROSTypeBrowserTests >> testvisualization_msgs_InteractiveMarkerPose [
 		| definition | 
 			definition :=  browser definition: 'visualization_msgs/InteractiveMarkerPose'. 
 			self assert: definition typeName = 'visualization_msgs/InteractiveMarkerPose'.
 			self assert: definition md5Sum = 'a6e6833209a196a38d798dadb02c81f8'.
-		
-]
-
-{ #category : #'test-visualization_msgs/' }
-PhaROSTypeBrowserTests >> testvisualization_msgs_InteractiveMarkerUpdate [
-		| definition | 
-			definition :=  browser definition: 'visualization_msgs/InteractiveMarkerUpdate'. 
-			self assert: definition typeName = 'visualization_msgs/InteractiveMarkerUpdate'.
-			self assert: definition md5Sum = '83e22f99d3b31fde725e0a338200e036'.
 		
 ]
 
