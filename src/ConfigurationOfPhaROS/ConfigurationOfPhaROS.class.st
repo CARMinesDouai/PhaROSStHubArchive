@@ -321,7 +321,7 @@ ConfigurationOfPhaROS >> baseline11: spec [
 			group: 'nodelets-ros-controllers' with: #( 'PhaROSNodeletsAction' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition' 'PhaROSNodeletsTurtlesim' 'PhaROSNodeletsTurtlebot');
 			group: 'nodelets-behavior' with: #( 'PhaROSNodeletsLocalizer' 'PhaROSNodeletsMerger' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsRPC');
 			group: 'nodelets' with: #('nodelets-ros-controllers' 'nodelets-behavior');
-			group: 'all' with: #('default-tests' 'nodelets').
+			group: 'all' with: #('default+tests' 'nodelets').
 	
 	].
 	spec for: #'pharo1.4.x' do:[
