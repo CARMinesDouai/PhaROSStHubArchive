@@ -10,7 +10,7 @@ PhaROSPackageDeployer >> deploy: aPackage on: anImagePath startedWith: aVmPath [
 
 	deployFileReference := anImagePath asFileReference parent / 'deploy.st'.
 	
-	self write: (self generateDeployScriptFor: aPackage ) in: deployFileReference  pathString.
+	self write: (self generateDeployScriptFor: aPackage  ) in: deployFileReference  pathString.
 	
 
 	self execute: anImagePath with: aVmPath and: deployFileReference pathString.
@@ -22,25 +22,45 @@ PhaROSPackageDeployer >> deploy: aPackage on: anImagePath startedWith: aVmPath [
 PhaROSPackageDeployer >> execute: anImagePath with: aVmPath and: deployFileReference. [
 		^ ExternalUnixOSProcess 
 					forkAndExec:  (aVmPath)  
-					arguments: { anImagePath . deployFileReference }
+					arguments: {  anImagePath . deployFileReference }
 					environment:  nil 
 					descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPackageDeployer >> generateDeployScriptFor: aPackage [
+PhaROSPackageDeployer >> generateDeployScriptFor: aPackage [ 
+
 	^ ' 
+		StandardFileStream stdout nextPutAll: ''(1/4)- Setting author'', String crlf.
 		Author fullName: ''{1}''.
+		StandardFileStream stdout nextPutAll: ''(2/4) Setting network'', String crlf.
 		{2}.
+		StandardFileStream stdout nextPutAll: ''(3/4) Downloading dependencies'', String crlf.
 		{3}.
-		"Smalltalk snapshot: true andQuit: true."
+		StandardFileStream stdout nextPutAll: ''(4/4) Downloading code'', String crlf.
+		{4}.
+		StandardFileStream stdout nextPutAll: ''Done :)''.
+		Smalltalk snapshot: true andQuit: true.
 	' format: {
 		aPackage author .
+		self proxySettings.
 		aPackage dependencies inject: '' into: [ :acc :dp | acc, dp loadingScript ].
 		aPackage configuration loadingScript. 
 	}.
 	 
 	
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSPackageDeployer >> proxySettings [
+	^ NetworkSystemSettings useHTTPProxy ifTrue: [
+		'
+		NetworkSystemSettings useHTTPProxy: true.
+		NetworkSystemSettings httpProxyServer: ''{1}''.
+		NetworkSystemSettings httpProxyPort: {2}.
+		' format: { NetworkSystemSettings httpProxyServer . NetworkSystemSettings httpProxyPort }
+		
+	] ifFalse: [ '' ].
 ]
 
 { #category : #writer }

@@ -145,7 +145,7 @@ catkin_package(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-     '
+         '
 	
 ]
 
@@ -276,6 +276,13 @@ PhaROSCatkinPackage >> cmake [
 { #category : #abstract }
 PhaROSCatkinPackage >> cmake: aCMakeDefinition [
 	cmake := aCMakeDefinition.
+]
+
+{ #category : #abstract }
+PhaROSCatkinPackage >> deploy [
+	self halt.
+	PhaROSPackageDeployer new deploy: package on: self image startedWith: self vm.
+	
 ]
 
 { #category : #abstract }

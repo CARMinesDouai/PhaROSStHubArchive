@@ -81,8 +81,10 @@ PhaROSAbstractPackageManager >> create: aPackage linkingVM: aVMBinaryPath copyin
 		self inflatePackage: aPackage  linkingVM: aVMBinaryPath copyingImage: anImagePath  changes: aChangesFilePath andSource: aSourceFilePath .
 		self installScripts: aPackage.
 		
-		 self class register: aPackage
-	]
+		 self class register: aPackage.
+		 aPackage deploy.
+	].
+  
 ]
 
 { #category : #create }
@@ -108,6 +110,11 @@ PhaROSAbstractPackageManager >> inflatePackage: aPackage  linkingVM: aVMBinaryPa
 
 		OSProcess command: ('chmod 777 {1}' format: { aPackage bin, '/*' }).
 		OSProcess command: ('cd {1}; cd .. ; catkin_make' format: { aPackage location }).
+		
+	
+		
+
+
 ]
 
 { #category : #install }
@@ -140,7 +147,8 @@ PhaROSAbstractPackageManager >> install: aPackage linkingVM: aVMBinaryPath copyi
 		self inflatePackage: aPackage linkingVM: aVMBinaryPath copyingImage: anImagePath  changes: aChangesFilePath andSource: aSourceFile . 
 
 		self installScripts: aPackage.
-		 self class register: aPackage
+		self class register: aPackage.
+		aPackage deploy.
 
 	]
 ]

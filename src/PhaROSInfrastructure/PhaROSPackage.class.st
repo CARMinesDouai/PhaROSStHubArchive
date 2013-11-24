@@ -31,6 +31,11 @@ PhaROSPackage class >> dependencies [
 ]
 
 { #category : #abstract }
+PhaROSPackage class >> install: aLocation [
+	PhaROSCatkinPackage install: self in: aLocation 
+]
+
+{ #category : #abstract }
 PhaROSPackage class >> packageName [
 	self subclassResponsibility 
 ]
