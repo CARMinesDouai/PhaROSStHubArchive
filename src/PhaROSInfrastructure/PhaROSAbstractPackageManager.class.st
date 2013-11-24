@@ -151,7 +151,7 @@ PhaROSAbstractPackageManager >> installScript: aScriptSelector of: aPackage [
 		
 		
 		script := StandardFileStream forceNewFileNamed: (aPackage scripts, '/',( aScriptSelector asString copyReplaceAll: 'script' with:''  ) asLowercase, self extension ).
-		script  nextPutAll:  ('Author fullName: ''PhaROS''. {1} new {2}.  ' format: { aPackage packageName . aScriptSelector asString }), String crlf.
+		script  nextPutAll:  ('Author fullName: ''PhaROS''. {1} new {2}.  ' format: { aPackage pharosPackage name  . aScriptSelector asString }), String crlf.
 		script close. 
 	
 ]

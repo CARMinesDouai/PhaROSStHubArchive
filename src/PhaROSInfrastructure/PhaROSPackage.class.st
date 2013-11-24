@@ -2,7 +2,7 @@ Class {
 	#name : #PhaROSPackage,
 	#superclass : #Object,
 	#instVars : [
-		'controller'
+		'__ctrl'
 	],
 	#classInstVars : [
 		'instance'
@@ -15,14 +15,19 @@ PhaROSPackage class >> author [
 	self subclassResponsibility 
 ]
 
+{ #category : #abstract }
+PhaROSPackage class >> configuration [
+	^ PhaROSPackageDependency phaROSPackage: self package packageName.
+]
+
 { #category : #accessing }
 PhaROSPackage class >> definedNodelets [
 	^ {}
 ]
 
-{ #category : #path }
-PhaROSPackage class >> nodeletsDependencies [ 
-	^ self class nodeletsDependencies 
+{ #category : #abstract }
+PhaROSPackage class >> dependencies [
+	^ { PhaROSPackageDependency pharos}
 ]
 
 { #category : #abstract }
@@ -47,7 +52,7 @@ PhaROSPackage >> clock [
 
 { #category : #scripts }
 PhaROSPackage >> controller [
-	^ controller ifNil: [ controller := self buildController ].
+	^ __ctrl ifNil: [ __ctrl := self buildController ].
 ]
 
 { #category : #scripts }

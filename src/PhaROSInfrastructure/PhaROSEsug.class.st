@@ -13,6 +13,15 @@ PhaROSEsug class >> author [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSEsug class >> dependencies [
+	^ super dependencies,  {
+		PhaROSPackageDependency controller .
+		PhaROSPackageDependency turtlesim .
+		PhaROSPackageDependency tf 
+	}
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSEsug class >> description [
 	^' ESUG example package'
 ]
