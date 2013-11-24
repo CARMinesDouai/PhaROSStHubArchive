@@ -56,24 +56,19 @@ PhaROSAbstractPackageManager >> catkinCreateCommandFor: aPackage [
 
 { #category : #create }
 PhaROSAbstractPackageManager >> create: aPackage [
+	 | baseImage changes sources |
+	
+	baseImage := (CommandLineUIManager default chooseFullFileNameMatching: { '*.image'} label: 'Choose the base image for installing / deploying the package') asFileReference.
+	changes := baseImage parent / baseImage base,'changes'.
+	sources := baseImage parent / 'PharoV10.sources'.
+	
 	 self 	create: aPackage  
 			linkingVM: Smalltalk vm vmFileName 
-			copyingImage:  Smalltalk imageName asFileReference pathString
-			changes: Smalltalk changesName asFileReference pathString
-			andSource: Smalltalk sourcesName asFileReference pathString.
+			copyingImage: baseImage  pathString
+			changes: changes  pathString
+			andSource: sources pathString.
 			
-	self class register: aPackage.
 	
-]
-
-{ #category : #create }
-PhaROSAbstractPackageManager >> create: aPackage linkinVM: aVMBinaryPath [
-	^ self 	create: aPackage  
-			linkingVM: aVMBinaryPath 
-			copyingImage:  Smalltalk imageName asFileReference pathString
-			changes: Smalltalk changesName asFileReference pathString
-			andSource: Smalltalk sourcesName asFileReference pathString
-	 
 ]
 
 { #category : #create }
@@ -84,7 +79,9 @@ PhaROSAbstractPackageManager >> create: aPackage linkingVM: aVMBinaryPath copyin
 		(Delay forMilliseconds: 2000 ) wait.
 
 		self inflatePackage: aPackage  linkingVM: aVMBinaryPath copyingImage: anImagePath  changes: aChangesFilePath andSource: aSourceFilePath .
-		self installScripts: aPackage
+		self installScripts: aPackage.
+		
+		 self class register: aPackage
 	]
 ]
 
@@ -115,29 +112,25 @@ PhaROSAbstractPackageManager >> inflatePackage: aPackage  linkingVM: aVMBinaryPa
 
 { #category : #install }
 PhaROSAbstractPackageManager >> install: aPackage [
+| baseImage changes sources |
+
+	baseImage := (CommandLineUIManager default chooseFullFileNameMatching: { '*.image'} label: 'Choose the base image for installing / deploying the package') asFileReference.
+	changes := baseImage parent / baseImage base,'changes'.
+	sources := baseImage parent / 'PharoV10.sources'.
+
+
 	 self install: aPackage  
 			linkingVM: Smalltalk vm vmFileName 
-			copyingImage:  Smalltalk imageName asFileReference pathString
-			changes: Smalltalk changesName asFileReference pathString
-			andSource: Smalltalk sourcesName asFileReference pathString.
-			
+			copyingImage: baseImage  pathString
+			changes: changes  pathString
+			andSource: sources pathString.
 	
-	 self class register: aPackage
-]
-
-{ #category : #install }
-PhaROSAbstractPackageManager >> install: aPackage linkinVM: aVMBinaryPath [
-	^ self 	install: aPackage  
-			linkingVM: aVMBinaryPath 
-			copyingImage:  Smalltalk imageName asFileReference pathString
-			changes: Smalltalk changesName asFileReference pathString
-			andSource: Smalltalk sourcesName asFileReference pathString
-	 
+	
 ]
 
 { #category : #install }
 PhaROSAbstractPackageManager >> install: aPackage linkingVM: aVMBinaryPath copyingImage: anImagePath  changes: aChangesFilePath andSource: aSourceFile [
-
+	
 	 (FileSystem disk exists: aPackage path)  ifFalse: [	
 		
 		FileSystem disk createDirectory: aPackage path.
@@ -146,8 +139,8 @@ PhaROSAbstractPackageManager >> install: aPackage linkingVM: aVMBinaryPath copyi
 		
 		self inflatePackage: aPackage linkingVM: aVMBinaryPath copyingImage: anImagePath  changes: aChangesFilePath andSource: aSourceFile . 
 
-		self installScripts: aPackage..
-	
+		self installScripts: aPackage.
+		 self class register: aPackage
 
 	]
 ]
@@ -157,7 +150,7 @@ PhaROSAbstractPackageManager >> installScript: aScriptSelector of: aPackage [
 	| script  |
 		
 		
-		script := StandardFileStream forceNewFileNamed: (self scripts, '/',( aScriptSelector asString copyReplaceAll: 'script' with:''  ) asLowercase, self extension ).
+		script := StandardFileStream forceNewFileNamed: (aPackage scripts, '/',( aScriptSelector asString copyReplaceAll: 'script' with:''  ) asLowercase, self extension ).
 		script  nextPutAll:  ('Author fullName: ''PhaROS''. {1} new {2}.  ' format: { aPackage packageName . aScriptSelector asString }), String crlf.
 		script close. 
 	

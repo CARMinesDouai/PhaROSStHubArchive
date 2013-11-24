@@ -14,6 +14,147 @@ Class {
 	#category : #'PhaROSInfrastructure-CatkinPackage'
 }
 
+{ #category : #'constructor-PhaROSEsug' }
+PhaROSCatkinPackage class >> cmakePhaROSEsug [
+		^ 'cmake_minimum_required(VERSION 2.8.3)
+project(esug)
+
+## Find catkin macros and libraries
+## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
+## is used, also find other catkin packages
+find_package(catkin REQUIRED)
+
+## System dependencies are found with CMake"s conventions
+# find_package(Boost REQUIRED COMPONENTS system)
+
+
+## Uncomment this if the package has a setup.py. This macro ensures
+## modules and global scripts declared therein get installed
+## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
+# catkin_python_setup()
+
+#######################################
+## Declare ROS messages and services ##
+#######################################
+
+## Generate messages in the "msg" folder
+# add_message_files(
+#   FILES
+#   Message1.msg
+#   Message2.msg
+# )
+
+## Generate services in the "srv" folder
+# add_service_files(
+#   FILES
+#   Service1.srv
+#   Service2.srv
+# )
+
+## Generate added messages and services with any dependencies listed here
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs  # Or other packages containing msgs
+# )
+
+###################################
+## catkin specific configuration ##
+###################################
+## The catkin_package macro generates cmake config files for your package
+## Declare things to be passed to dependent projects
+## INCLUDE_DIRS: uncomment this if you package contains header files
+## LIBRARIES: libraries you create in this project that dependent projects also need
+## CATKIN_DEPENDS: catkin_packages dependent projects also need
+## DEPENDS: system dependencies of this project that dependent projects also need
+catkin_package(
+#  INCLUDE_DIRS include
+#  LIBRARIES esug
+#  CATKIN_DEPENDS other_catkin_pkg
+#  DEPENDS system_lib
+)
+
+###########
+## Build ##
+###########
+
+## Specify additional locations of header files
+## Your package locations should be listed before other locations
+# include_directories(include)
+
+## Declare a cpp library
+# add_library(esug
+#   src/${PROJECT_NAME}/esug.cpp
+# )
+
+## Declare a cpp executable
+# add_executable(esug_node src/esug_node.cpp)
+
+## Add cmake target dependencies of the executable/library
+## as an example, message headers may need to be generated before nodes
+# add_dependencies(esug_node esug_generate_messages_cpp)
+
+## Specify libraries to link a library or executable target against
+# target_link_libraries(esug_node
+#   ${catkin_LIBRARIES}
+# )
+
+#############
+## Install ##
+#############
+
+# all install targets should use catkin DESTINATION variables
+# See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
+
+## Mark executable scripts (Python etc.) for installation
+## in contrast to setup.py, you can choose the destination
+# install(PROGRAMS
+#   scripts/my_python_script
+#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
+
+## Mark executables and/or libraries for installation
+# install(TARGETS esug esug_node
+#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
+
+## Mark cpp header files for installation
+# install(DIRECTORY include/${PROJECT_NAME}/
+#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+#   FILES_MATCHING PATTERN "*.h"
+#   PATTERN ".svn" EXCLUDE
+# )
+
+## Mark other files for installation (e.g. launch and bag files, etc.)
+# install(FILES
+#   # myfile1
+#   # myfile2
+#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+# )
+
+#############
+## Testing ##
+#############
+
+## Add gtest based cpp test target and link libraries
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_esug.cpp)
+# if(TARGET ${PROJECT_NAME}-test)
+#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
+# endif()
+
+## Add folders to be run by python nosetests
+# catkin_add_nosetests(test)
+    '
+	
+]
+
+{ #category : #'constructor-PhaROSEsug' }
+PhaROSCatkinPackage class >> createPhaROSEsug [ 
+		^ PhaROSCatkinPackage new pharosPackage: PhaROSEsug; cmake: PhaROSCatkinPackage cmakePhaROSEsug; xml: PhaROSCatkinPackage xmlPhaROSEsug; rosDependencies: #(); yourself. 
+	
+]
+
 { #category : #'as yet unclassified' }
 PhaROSCatkinPackage class >> generatesMessagesDependancies [
 	^{ #roscpp . #rospy . #std_msgs . #geometry_msgs . #message_generation . #message_runtime }
@@ -32,13 +173,78 @@ PhaROSCatkinPackage class >> install: aPackage in: aLocation [
 { #category : #'as yet unclassified' }
 PhaROSCatkinPackage class >> install: aPackage in: aLocation dependingOn: aCollectionOfROSDependancies [
 	| instance |
-	(self respondsTo: ('create{1} ' format: { aPackage name }) )ifTrue: [ 
-		instance := self perform: ('create{1} ' format: { aPackage name }) asSymbol.
+
+	(self respondsTo: ('create{1}' format: { aPackage name }) asSymbol )ifTrue: [ 
+		instance := self perform: ('create{1}' format: { aPackage name }) asSymbol.
 	 ] ifFalse: [ 
 		instance := self new pharosPackage: aPackage; rosDependencies: aCollectionOfROSDependancies; yourself.
 	 ].
 
 	^instance location: aLocation;  install; yourself.
+]
+
+{ #category : #'constructor-PhaROSEsug' }
+PhaROSCatkinPackage class >> xmlPhaROSEsug [
+		^ '<?xml version="1.0"?>
+<package>
+  <name>esug</name>
+  <version>0.1.0</version>
+  <description> ESUG example package</description>
+
+  <!-- One maintainer tag required, multiple allowed, one person per tag --> 
+  <!-- Example:  -->
+  <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
+  <maintainer email="SantiagoBragagnolo@todo.todo">SantiagoBragagnolo</maintainer>
+
+
+  <!-- One license tag required, multiple allowed, one license per tag -->
+  <!-- Commonly used license strings: -->
+  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
+  <license>TODO</license>
+
+
+  <!-- Url tags are optional, but mutiple are allowed, one per tag -->
+  <!-- Optional attribute type can be: website, bugtracker, or repository -->
+  <!-- Example: -->
+  <!-- <url type="website">http://ros.org/wiki/esug</url> -->
+
+
+  <!-- Author tags are optional, mutiple are allowed, one per tag -->
+  <!-- Authors do not have to be maintianers, but could be -->
+  <!-- Example: -->
+  <!-- <author email="jane.doe@example.com">Jane Doe</author> -->
+  <author >SantiagoBragagnolo</author>
+
+
+  <!-- The *_depend tags are used to specify dependencies -->
+  <!-- Dependencies can be catkin packages or system dependencies -->
+  <!-- Examples: -->
+  <!-- Use build_depend for packages you need at compile time: -->
+  <!--   <build_depend>message_generation</build_depend> -->
+  <!-- Use buildtool_depend for build tool packages: -->
+  <!--   <buildtool_depend>catkin</buildtool_depend> -->
+  <!-- Use run_depend for packages you need at runtime: -->
+  <!--   <run_depend>message_runtime</run_depend> -->
+  <!-- Use test_depend for packages you need only for testing: -->
+  <!--   <test_depend>gtest</test_depend> -->
+  <buildtool_depend>catkin</buildtool_depend>
+
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- You can specify that this package is a metapackage here: -->
+    <!-- <metapackage/> -->
+
+    <!-- Other tools can request additional information be placed here -->
+
+  </export>
+</package>'
+	
+]
+
+{ #category : #accessing }
+PhaROSCatkinPackage >> author [
+	^ package author
 ]
 
 { #category : #path }
@@ -77,14 +283,19 @@ PhaROSCatkinPackage >> deployType: aType definedAs: aTypeDefinition [
 	^ PhaROSSystemLauncher instance deployType: aType definedAs: aTypeDefinition at: self.
 ]
 
+{ #category : #accessing }
+PhaROSCatkinPackage >> description [
+	^ package description.
+]
+
 { #category : #abstract }
 PhaROSCatkinPackage >> encodeCMAKE [
 	| file |
 	file := StandardFileStream readOnlyFileNamed: self cMakeList.
 	
-	self class compile: ('cmake{1}
+	self class class compile: ('cmake{1}
 		^ ''{2} ''
-	' format: { package name . (file upToEnd copyReplaceAll: '''' with: '"')} ).
+	' format: { package name . (file upToEnd copyReplaceAll: '''' with: '"')} ) classified:  ('constructor-{1}'format: { package name }).
 	
 	file close.
 	^ 'cmake{1}' format: { package name }.
@@ -104,9 +315,9 @@ PhaROSCatkinPackage >> encodeXML [
 
 	file := StandardFileStream readOnlyFileNamed: self packageXML.
 	
-	self class compile: (' xml{1}
+	self class class compile: (' xml{1}
 		^ ''{2}''
-	' format: {package name . (file upToEnd copyReplaceAll: '''' with: '"')}).
+	' format: {package name . (file upToEnd copyReplaceAll: '''' with: '"')})  classified: ('constructor-{1}'format: { package name }).
 	
 	file close.
 	^ 'xml{1}' format: { package name }.
@@ -116,8 +327,8 @@ PhaROSCatkinPackage >> encodeXML [
 
 { #category : #abstract }
 PhaROSCatkinPackage >> generateConstructor [
-	self class compile: ('create{1} 
-		^ PhaROSCatkinPackage new pharosPackage: { 1 }; cmake:{ 2}; xml: { 3 }; rosDependancies: { 4 }; yourself. 
+	self class class compile: ('create{1} 
+		^ PhaROSCatkinPackage new pharosPackage: { 1 }; cmake: PhaROSCatkinPackage { 2}; xml: PhaROSCatkinPackage { 3 }; rosDependencies: { 4 }; yourself. 
 	' format: { package name . self encodeCMAKE . self encodeXML . rosDependancies asString }
 	
 	 ) classified: ('constructor-{1}'format: { package name })
@@ -137,9 +348,9 @@ PhaROSCatkinPackage >> imageFolder [
 PhaROSCatkinPackage >> install [
 
 	self cmake ifNil: [ 
-		PhaROSPackageManager new install: self  
-	] ifNotNil: [
 		PhaROSPackageManager new create: self  
+	] ifNotNil: [
+		PhaROSPackageManager new install: self  
 	] .
 
 
@@ -185,7 +396,7 @@ PhaROSCatkinPackage >> msg [
 
 { #category : #path }
 PhaROSCatkinPackage >> packageName [
-	^ package name
+	^ package packageName
 ]
 
 { #category : #path }
@@ -236,6 +447,11 @@ PhaROSCatkinPackage >> scripts [
 	^ self path ,'/image/scripts'
 ]
 
+{ #category : #accessing }
+PhaROSCatkinPackage >> version [
+	^ package version
+]
+
 { #category : #path }
 PhaROSCatkinPackage >> vm [
 	^ self path ,'/vm/pharo'
@@ -253,5 +469,5 @@ PhaROSCatkinPackage >> xml [
 
 { #category : #abstract }
 PhaROSCatkinPackage >> xml: aPackageXMLDef [
-	cmake := aPackageXMLDef .
+	xml := aPackageXMLDef .
 ]
