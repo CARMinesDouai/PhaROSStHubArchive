@@ -89,6 +89,11 @@ ConfigurationOfPhaROS class >> load [
 ]
 
 { #category : #loading }
+ConfigurationOfPhaROS class >> load: aPackage [
+	(self project version: #bleedingEdge) load: aPackage.
+]
+
+{ #category : #loading }
 ConfigurationOfPhaROS class >> loadBleedingEdge [
 	(self project version: #bleedingEdge) load:'default+tests'.
 ]
