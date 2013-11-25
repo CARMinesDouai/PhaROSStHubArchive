@@ -151,6 +151,14 @@ include_directories(
 ]
 
 { #category : #'as yet unclassified' }
+PureROSCaire class >> dependencies [ 
+	^ super dependencies , { 
+		PhaROSPackageDependency pureros.
+		PhaROSPackageDependency mapFuser .
+	}
+]
+
+{ #category : #'as yet unclassified' }
 PureROSCaire class >> description [
 	^' Caire - Exploration - Multirobots '
 ]
@@ -236,7 +244,9 @@ PureROSCaire class >> xml [
 
 { #category : #'as yet unclassified' }
 PureROSCaire >> buildController [ 
-	^ PhaROSHandleController home.
+	| ctroler |
+	ctroler :=  PhaROSHandleController home.
+	ctroler nodelets use: CaireNodelet as: #caire.
 	
 ]
 
@@ -263,9 +273,8 @@ PureROSCaire >> scriptMapFusion [
 	| mapFusor out |  
 	
 	
-	mapFusor := CaireMapFuser new.
-	
-	out := self controller node topicPublisher: '/zmapmerger/map' typedAs:  'nav_msgs/OccupancyGrid'.
+	mapFusor := self controller nodelets caire mapFuser.
+	out := self controller nodelets caire defaultOutput. 
 	
 	mapFusor on: #FusedMapUpdate do: [: updatedMap | 
 		out send: [ :m | updatedMap intoOccupancyGrid: m ].
@@ -282,6 +291,10 @@ PureROSCaire >> scriptMapFusion [
 		 mapFusor registerMaps: maps. 
 	 ]; yourself
 	 ).
+	
+
+
+
 ]
 
 { #category : #'as yet unclassified' }

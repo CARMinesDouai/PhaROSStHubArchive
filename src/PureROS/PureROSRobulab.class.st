@@ -187,6 +187,15 @@ include_directories(
 	
 ]
 
+{ #category : #'as yet unclassified' }
+PureROSRobulab class >> dependencies [ 
+	^ super dependencies, { 
+		PhaROSPackageDependency pureros.
+		PhaROSPackageDependency movement . 
+		
+	}
+]
+
 { #category : #accessing }
 PureROSRobulab class >> description [
 	^' pharos package'

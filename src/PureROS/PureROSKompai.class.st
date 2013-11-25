@@ -152,6 +152,15 @@ include_directories(include
 ]
 
 { #category : #'as yet unclassified' }
+PureROSKompai class >> dependencies [ 
+	^ super dependencies, { 
+		PhaROSPackageDependency pureros.
+		PhaROSPackageDependency kompai . 
+		
+	}
+]
+
+{ #category : #'as yet unclassified' }
 PureROSKompai class >> description [
 	^'Kompai package. PureNG wrapper for ROS'
 ]
@@ -260,7 +269,7 @@ PureROSKompai >> kompaiAbsolutePose: aPose [
 { #category : #private }
 PureROSKompai >> kompaiAbsolutePoseTopic [
 	^ kompaiAbsolutePoseTopic ifNil: [
-		kompaiAbsolutePoseTopic := controller node topicPublisher: '/kompai/map/pose' typedAs: 'geometry_msgs/PoseStamped'.	
+		kompaiAbsolutePoseTopic := self controller node topicPublisher: '/kompai/map/pose' typedAs: 'geometry_msgs/PoseStamped'.	
 	]
 ]
 
