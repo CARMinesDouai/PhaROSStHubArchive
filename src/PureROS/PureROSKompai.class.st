@@ -152,6 +152,11 @@ include_directories(include
 ]
 
 { #category : #'as yet unclassified' }
+PureROSKompai class >> configuration [
+	^ PhaROSPackageDependency pureROSPackage: self package packageName.
+]
+
+{ #category : #'as yet unclassified' }
 PureROSKompai class >> dependencies [ 
 	^ super dependencies, { 
 		PhaROSPackageDependency pureros.

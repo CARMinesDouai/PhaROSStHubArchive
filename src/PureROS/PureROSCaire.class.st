@@ -151,6 +151,11 @@ include_directories(
 ]
 
 { #category : #'as yet unclassified' }
+PureROSCaire class >> configuration [
+	^ PhaROSPackageDependency pureROSPackage: self package packageName.
+]
+
+{ #category : #'as yet unclassified' }
 PureROSCaire class >> dependencies [ 
 	^ super dependencies , { 
 		PhaROSPackageDependency pureros.

@@ -19,8 +19,8 @@ PhaROSPackageDependency classSide >> movement [
 PhaROSPackageDependency classSide >> pureROSPackage: aPackageName [
 	^ self new 
 			    packageName: aPackageName;
-			     configurationOfName: #ConfigurationOfPure ; 
-			     url: 'http://car.mines-douai.fr/squeaksource/PhaROS'; 
+			     configurationOfName: #ConfigurationOfPureROS ; 
+			     url: 'http://car.mines-douai.fr/squeaksource/Pure'; 
 			     needsCredentials;
 			     yourself.
 ]
