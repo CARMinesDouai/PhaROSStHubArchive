@@ -167,6 +167,12 @@ ConfigurationOfPureROS >> baseline10: spec [
 			spec package: 'PureROS' with: [
 				spec requires: #('PhaROS' 'PureNG' 'TaskIT' 'StarGazer' ).
 			].
+		
+			spec package: 'PureROSExperiments'.
+			spec package: 'PureROSNodeletsMovement'.
+			spec package: 'PureROSNodeletsKompai'.
+			
+			
 	].
 
 
