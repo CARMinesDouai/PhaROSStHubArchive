@@ -340,7 +340,7 @@ PureROSRobulab >> locationRotation [
 
 { #category : #private }
 PureROSRobulab >> mapFile [ 
-	^ self class imageFolder  , '/map/map.yaml'
+	^ self class catkin imageFolder  , '/map/map.yaml'
 ]
 
 { #category : #'scripts-error' }
@@ -1000,7 +1000,7 @@ PureROSRobulab >> setupPoseTracker [
 
 { #category : #private }
 PureROSRobulab >> sgMapfile [ 
-	^ self class imageFolder , '/map/map.yaml'
+	^ self class catkin imageFolder , '/map/map.yaml'
 ]
 
 { #category : #private }
