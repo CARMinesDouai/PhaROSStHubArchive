@@ -195,6 +195,10 @@ PureROSRobulab class >> configuration [
 { #category : #'as yet unclassified' }
 PureROSRobulab class >> dependencies [ 
 	^ super dependencies, { 
+		PhaROSPackageDependency tf . 
+		PhaROSPackageDependency localizer.
+		PhaROSPackageDependency merger. 
+		PhaROSPackageDependency poseTracker.
 		PhaROSPackageDependency pureros.
 		PhaROSPackageDependency movement . 
 		
