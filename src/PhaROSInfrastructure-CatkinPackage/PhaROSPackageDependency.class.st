@@ -63,7 +63,7 @@ PhaROSPackageDependency class >> phaROSPackage: aPackageName [
 
 { #category : #dependencies }
 PhaROSPackageDependency class >> pharos [
-	^ self phaROSPackage: #core
+	^ self phaROSPackage: #default
 ]
 
 { #category : #dependencies }
@@ -133,8 +133,8 @@ PhaROSPackageDependency >> loadingScript [
 			(Smalltalk at: #{4} ) load: ''{5}''.
 			' format: { 
 					self url . 
-					(UIManager request: 'Please, enter a username for', self packageName) .  
-					(UIManager requestPassword: 'Please, enter a password for', self packageName)   . 
+					(UIManager default request: 'Please, enter a username for', self packageName) .  
+					(UIManager default requestPassword: 'Please, enter a password for', self packageName)   . 
 					self configurationOfName . 
 					self packageName 
 				}.
