@@ -191,7 +191,7 @@ PhaROSAbstractPackageManager >> makeUpFolder: aPackage  linkingVM: aVMBinaryPath
 		OSProcess command: ('cp  {1} {2}' format: { aChangesFilePath  . aPackage changes } ).
 		OSProcess command: ('cp  {1} {2}' format: { aSourceFile  . aPackage imageFolder } ).
 		copy := OSProcess command: ('cp  {1} {2}' format: { anImagePath  . aPackage image } ).
-
+		
 
 		[ copy isComplete  ] whileFalse: [ 1 hz wait ].
 	
