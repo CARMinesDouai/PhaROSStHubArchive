@@ -45,7 +45,7 @@ SGROSStarGazerNodelet class >> landmarkTopicType [
 ]
 
 { #category : #dependencies }
-SGROSStarGazerNodelet class >> package [
+SGROSStarGazerNodelet class >> pharosPackage [
 	^ SGPackage
 ]
 

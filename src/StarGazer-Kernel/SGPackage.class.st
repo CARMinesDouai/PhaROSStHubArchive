@@ -2,7 +2,6 @@ Class {
 	#name : #SGPackage,
 	#superclass : #PhaROSPackage,
 	#instVars : [
-		'poseStampedSgOut',
 		'process'
 	],
 	#category : #'StarGazer-Ros'
@@ -151,6 +150,11 @@ include_directories(include
 ]
 
 { #category : #'as yet unclassified' }
+SGPackage class >> dependencies [ 
+	super dependencies , { PhaROSPackageDependency stargazer}.
+]
+
+{ #category : #'as yet unclassified' }
 SGPackage class >> description [
 	^ 'Stargazer ROS package'
 ]
@@ -235,6 +239,18 @@ SGPackage class >> xml [
 ]
 
 { #category : #private }
+SGPackage >> broadcastPoseWith: aBroadcaster [
+	self controller nodelets stargazer landmarks for: [
+		: lmk |
+		| pose | 
+		pose := self controller nodelets stargazer  landmarkToPose: lmk.
+		aBroadcaster pose: pose.
+	].
+
+	
+]
+
+{ #category : #private }
 SGPackage >> buildController [ 
 	| ctrl | 
 	ctrl :=  PhaROSHandleController  home.
@@ -268,25 +284,6 @@ SGPackage >> poseStampedSg [
 		 typedAs: PureROSRobulabNodelet poseStampedTopicType ;
 		 adapted: #pose \> PhaROSPose  ;
 	  	 connect.
-]
-
-{ #category : #private }
-SGPackage >> poseStampedSg: aPose withFrame: aFrameID [
-
-	self poseStampedSgOut send: [
-		: msg | 
-		aPose intoGeometry_msgs_Pose: msg pose.
-		msg header frame_id: aFrameID.
-	]
-]
-
-{ #category : #private }
-SGPackage >> poseStampedSgOut [
-	
-	^ poseStampedSgOut ifNil: [
-		poseStampedSgOut := controller node topicPublisher: '/stargazer/pose'  typedAs: PureROSRobulabNodelet poseStampedTopicType 
-	].
-
 ]
 
 { #category : #scripts }
@@ -335,6 +332,16 @@ SGPackage >> scriptConfiguration [
 ]
 
 { #category : #scripts }
+SGPackage >> scriptHDPose [
+
+	| c |
+	c := 	SGHDPoseBroadcaster for: self controller at: '/base_link'.
+	self broadcastPoseWith: c .
+
+	c start.
+]
+
+{ #category : #scripts }
 SGPackage >> scriptLaunchStargazer [
 	
 	process := PhaROSSystemLauncher  instance launch: [: spec | 
@@ -378,16 +385,7 @@ SGPackage >> scriptMapBuildingMode [
 { #category : #scripts }
 SGPackage >> scriptPose [
 
-	self controller nodelets stargazer landmarks for: [
-		: lmk |
-		| pose | 
-		pose := self controller nodelets stargazer  landmarkToPose: lmk.
-		self poseStampedSg: pose withFrame: '/base_link'.
-	].
-
-	
-	
-
+	self broadcastPoseWith: (SGPoseBroadcaster for: self controller at: '/base_link') .
 ]
 
 { #category : #'scripts-configuration' }
