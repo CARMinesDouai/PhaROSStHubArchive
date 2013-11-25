@@ -62,7 +62,6 @@ PureROSKompaiNodelet >> broadcastTF [
 PureROSKompaiNodelet >> configure [
 	"This nodelet is for basic hardware broadcasting, avoid to consume topics, specially massive broadcaster"
 	self nodelets use: PhaROSTransformationNodelet as: #transformation.
-	self nodelets use: SGROSStarGazerNodelet as: #stargazer.
 	self consumeInitialPose.
 	state := PureROSKompaiActionState for: self.
 ]
