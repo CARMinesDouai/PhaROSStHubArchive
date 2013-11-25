@@ -159,6 +159,8 @@ PureROSKompai class >> configuration [
 { #category : #'as yet unclassified' }
 PureROSKompai class >> dependencies [ 
 	^ super dependencies, { 
+		PhaROSPackageDependency tf.
+		PhaROSPackageDependency position.
 		PhaROSPackageDependency pureros.
 		PhaROSPackageDependency kompai . 
 		
