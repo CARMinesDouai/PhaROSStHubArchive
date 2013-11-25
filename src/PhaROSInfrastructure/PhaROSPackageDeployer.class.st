@@ -7,7 +7,7 @@ Class {
 { #category : #'as yet unclassified' }
 PhaROSPackageDeployer >> deploy: aPackage on: anImagePath startedWith: aVmPath [
 	| deployFileReference deployer  |
-	UIManager inform:  'Starting code deploy!'.
+	UIManager inform:  'Starting code deploy! Remember that the deploy is based on monticello/metacello tecnology. You need to commit first the things to deploy!'.
 	deployFileReference := anImagePath asFileReference parent / 'deploy.st'.
 	
 	self write: (self generateDeployScriptFor: aPackage  ) in: deployFileReference  pathString.
