@@ -19,7 +19,7 @@ PhaROSPackage class >> author [
 PhaROSPackage class >> catkin [
 	| installed |
 	installed :=  (PhaROSPackageManager  registeredCatckinPackagesFor: self ) .
-	installed = 1 ifFalse: [ self error: ' Several location registered in a deploy! '].
+	installed size = 1 ifFalse: [ self error: ' Several location registered in a deploy! '].
 	^ installed anyOne 
 ]
 
