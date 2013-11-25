@@ -33,7 +33,8 @@ Class {
 		'process',
 		'lastPoseSettedStamp',
 		'checked',
-		'lastId'
+		'lastId',
+		'controller'
 	],
 	#category : #'PureROS-Package'
 }
@@ -190,6 +191,10 @@ include_directories(
 { #category : #'as yet unclassified' }
 PureROSRobulab class >> dependencies [ 
 	^ super dependencies, { 
+		PhaROSPackageDependency localizer. 
+		PhaROSPackageDependency tf. 
+		PhaROSPackageDependency poseTracker .
+		PhaROSPackageDependency moveBase.
 		PhaROSPackageDependency pureros.
 		PhaROSPackageDependency movement . 
 		
@@ -329,7 +334,7 @@ PureROSRobulab >> locationRotation [
 
 { #category : #private }
 PureROSRobulab >> mapFile [ 
-	^ self class imageFolder  , '/map/map.yaml'
+	^ self class catkin imageFolder  , '/map/map.yaml'
 ]
 
 { #category : #'scripts-error' }
@@ -989,7 +994,7 @@ PureROSRobulab >> setupPoseTracker [
 
 { #category : #private }
 PureROSRobulab >> sgMapfile [ 
-	^ self class imageFolder , '/map/map.yaml'
+	^ self class catkin imageFolder , '/map/map.yaml'
 ]
 
 { #category : #private }
