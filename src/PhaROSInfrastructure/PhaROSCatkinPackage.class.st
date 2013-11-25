@@ -145,7 +145,7 @@ catkin_package(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-               '
+                '
 	
 ]
 
@@ -356,7 +356,7 @@ PhaROSCatkinPackage >> generateRosPackageInflationScript [
 		PhaROSPackageManager new inflatePackage: (
 			PhaROSCatkinPackage new location: ''{1}'';
 										pharosPackage: {2}; 
-										rosDependancies: {3}; 
+										rosDependencies: {3}; 
 										encodeFiles;
 										yourself			
 		).
@@ -403,7 +403,7 @@ PhaROSCatkinPackage >> installPackageInDeploy [
 	
 	"Catking ending installation"
 	
-	PhaROSPackageManager execute: self image  with: self vm  and: self generateRosPackageInflationScript.  
+	PhaROSPackageDeployer new execute: self image  with: self vm  and: self generateRosPackageInflationScript.  
 	
 
 ]

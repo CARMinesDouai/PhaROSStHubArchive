@@ -87,6 +87,7 @@ PhaROSAbstractPackageManager >> create: aPackage linkingVM: aVMBinaryPath copyin
 		
 		 self class register: aPackage.
 		 aPackage deploy.
+		aPackage installPackageInDeploy.
 	].
   
 ]
@@ -149,6 +150,7 @@ PhaROSAbstractPackageManager >> install: aPackage linkingVM: aVMBinaryPath copyi
 		
 		self class register: aPackage.
 		aPackage deploy.
+		aPackage installPackageInDeploy.
 
 	]
 ]
