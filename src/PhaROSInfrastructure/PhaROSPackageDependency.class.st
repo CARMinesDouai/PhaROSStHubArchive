@@ -63,7 +63,7 @@ PhaROSPackageDependency class >> phaROSPackage: aPackageName [
 
 { #category : #dependencies }
 PhaROSPackageDependency class >> pharos [
-	^ self phaROSPackage: #core
+	^ self phaROSPackage: #default
 ]
 
 { #category : #dependencies }
@@ -113,7 +113,7 @@ PhaROSPackageDependency >> initialize [
 
 { #category : #dep }
 PhaROSPackageDependency >> installOn: aPhaROSCatkinPackage [ 
-	PhaROSNodelet allSubclasses select: [ :c | c packageName = packageName ]thenDo: [ :c| c installOn: aPhaROSCatkinPackage  ]
+	PhaROSNodelet allSubclasses select: [ :c | c package packageName = packageName ]thenDo: [ :c| c installOn: aPhaROSCatkinPackage  ]
 ]
 
 { #category : #accessing }
