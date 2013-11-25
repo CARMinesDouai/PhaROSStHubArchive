@@ -15,6 +15,16 @@ PhaROSPackage class >> author [
 	self subclassResponsibility 
 ]
 
+{ #category : #convenience }
+PhaROSPackage class >> catkin [
+	| installation | 
+	installation := PhaROSPackageManager registeredCatckinPackagesFor: self.
+	(installation size = 1) ifFalse: [ 
+		self error: 'Unexpected multiple deployments in deploy'.
+	 ].
+	^ installation anyOne
+]
+
 { #category : #abstract }
 PhaROSPackage class >> configuration [
 	^ PhaROSPackageDependency phaROSPackage: self package packageName.
@@ -30,7 +40,7 @@ PhaROSPackage class >> dependencies [
 	^ { PhaROSPackageDependency pharos}
 ]
 
-{ #category : #abstract }
+{ #category : #convenience }
 PhaROSPackage class >> install: aLocation [
 	PhaROSCatkinPackage install: self in: aLocation 
 ]
