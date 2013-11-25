@@ -37,6 +37,7 @@ PhaROSPackageDeployer >> execute: anImagePath with: aVmPath and: aContent [
 PhaROSPackageDeployer >> generateDeployScriptFor: aPackage [ 
 
 	^ ' 
+		
 		StandardFileStream stdout nextPutAll: ''(1/4)- Setting author'', String crlf.
 		Author fullName: ''{1}''.
 		StandardFileStream stdout nextPutAll: ''(2/4) Setting network'', String crlf.

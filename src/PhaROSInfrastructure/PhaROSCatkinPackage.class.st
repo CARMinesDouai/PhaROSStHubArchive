@@ -351,6 +351,8 @@ PhaROSCatkinPackage >> generateConstructor [
 { #category : #abstract }
 PhaROSCatkinPackage >> generateRosPackageInflationScript [
 	^ '
+	
+		StandardFileStream stdout nextPutAll: ''(1/1)- Catkin remote installation.. inflating package '', String crlf.
 		PhaROSPackageManager new inflatePackage: (
 			PhaROSCatkinPackage new location: ''{1}'';
 										pharosPackage: {2}; 
@@ -358,6 +360,7 @@ PhaROSCatkinPackage >> generateRosPackageInflationScript [
 										encodeFiles;
 										yourself			
 		).
+		StandardFileStream stdout nextPutAll: '' Done :)  '', String crlf.
 		Smalltalk snapshot: true andQuit: true.
 	' format: {
 		location .
