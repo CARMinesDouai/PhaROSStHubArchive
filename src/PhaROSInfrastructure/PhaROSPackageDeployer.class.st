@@ -6,23 +6,27 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSPackageDeployer >> deploy: aPackage on: anImagePath startedWith: aVmPath [
-	| deployFileReference |
-
+	| deployFileReference deployer  |
+	UIManager inform:  'Starting code deploy!'.
 	deployFileReference := anImagePath asFileReference parent / 'deploy.st'.
 	
 	self write: (self generateDeployScriptFor: aPackage  ) in: deployFileReference  pathString.
 	
 
-	self execute: anImagePath with: aVmPath and: deployFileReference pathString.
-	"
-	deployFileReference delete."
+	deployer := self execute: anImagePath with: aVmPath and: deployFileReference pathString.
+	
+	[deployer isComplete ] whileFalse: [ 10 seconds asDelay wait ].
+	deployFileReference delete.
+	
+	
+	UIManager inform:  'Deployment complete!'.
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSPackageDeployer >> execute: anImagePath with: aVmPath and: deployFileReference. [
 		^ ExternalUnixOSProcess 
 					forkAndExec:  (aVmPath)  
-					arguments: {  anImagePath . deployFileReference }
+					arguments: {  '-headless' . anImagePath . deployFileReference }
 					environment:  nil 
 					descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
 ]

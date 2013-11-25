@@ -14,7 +14,7 @@ PhaROSAbstractPackageManager class >> catkinPackageFor: aClass [
 
 { #category : #'as yet unclassified' }
 PhaROSAbstractPackageManager class >> installedPackages [
-	^ installedPackages ifNil: [ installedPackages := Dictionary new  ].
+	^ installedPackages ifNil: [ installedPackages := Set new  ].
 ]
 
 { #category : #sync }
@@ -29,7 +29,12 @@ PhaROSAbstractPackageManager class >> itsAPackage: aClass andItsAScript: aSelect
 
 { #category : #'as yet unclassified' }
 PhaROSAbstractPackageManager class >> register: aPackage [
-	(self installedPackages at: aPackage location ifAbsentPut: [ Set new ]) add: aPackage.
+	self installedPackages add: aPackage.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSAbstractPackageManager class >> registeredCatckinPackagesFor: aPhaROSPackage [
+	^ self installedPackages select:[ : catkn | catkn pharosPackage = aPhaROSPackage ] 
 ]
 
 { #category : #sync }
@@ -94,14 +99,20 @@ PhaROSAbstractPackageManager >> extension [
 
 { #category : #private }
 PhaROSAbstractPackageManager >> inflatePackage: aPackage  linkingVM: aVMBinaryPath copyingImage: anImagePath   changes: aChangesFilePath andSource: aSourceFile [
+	| make |
+
 
 		 { aPackage vmFolder . aPackage imageFolder . aPackage msg . aPackage build . aPackage bin . aPackage scripts . aPackage path, '/include' } 
 		do: [ :path | [FileSystem disk createDirectory: path.] on: Error do: [ ]] .  
 	
 
 		OSProcess command: ('ln -s {1} {2}' format: { aVMBinaryPath . aPackage vm }).
+	
+		
 		OSProcess command: ('cp  {1} {2}' format: { anImagePath  . aPackage image } ).
 		OSProcess command: ('cp  {1} {2}' format: { aChangesFilePath  . aPackage changes } ).
+
+		
 		OSProcess command: ('cp  {1} {2}' format: { aSourceFile  . aPackage imageFolder } ).
 
 		(StandardFileStream forceNewFileNamed: aPackage mainBinary) nextPutAll: '#!/bin/bash',String lf, aPackage vm, ' ', aPackage image, ' st scripts/$1.st', String lf ; close.
@@ -109,8 +120,10 @@ PhaROSAbstractPackageManager >> inflatePackage: aPackage  linkingVM: aVMBinaryPa
 		(StandardFileStream forceNewFileNamed: aPackage mainEdit) nextPutAll: '#!/bin/bash',String lf,aPackage vm, ' ', aPackage image,  String lf ; close.
 
 		OSProcess command: ('chmod 777 {1}' format: { aPackage bin, '/*' }).
-		OSProcess command: ('cd {1}; cd .. ; catkin_make' format: { aPackage location }).
+		make := OSProcess command: ('cd {1}; cd .. ; catkin_make' format: { aPackage location }).
 		
+		
+		[ make isComplete  ] whileFalse: [ 1 hz wait ].
 	
 		
 

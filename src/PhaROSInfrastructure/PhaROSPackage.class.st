@@ -41,6 +41,11 @@ PhaROSPackage class >> packageName [
 ]
 
 { #category : #abstract }
+PhaROSPackage class >> updateInstallations [
+	^ (PhaROSAbstractPackageManager registeredCatckinPackagesFor: self ) do: #deploy.
+]
+
+{ #category : #abstract }
 PhaROSPackage class >> version [ 
 	self subclassResponsibility.
 ]
