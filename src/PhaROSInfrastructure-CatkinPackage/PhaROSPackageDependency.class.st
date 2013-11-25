@@ -82,16 +82,6 @@ PhaROSPackageDependency class >> rpc [
 ]
 
 { #category : #dependencies }
-PhaROSPackageDependency class >> stargazer [
-	^ self new 
-			    packageName: 'StarGazer';
-			     configurationOfName: #ConfigurationOfStargazer ; 
-			     url: 'http://car.mines-douai.fr/squeaksource/Peripherics'; 
-			     yourself.
-	 
-]
-
-{ #category : #dependencies }
 PhaROSPackageDependency class >> tf [
 	^ self phaROSPackage: #PhaROSNodeletsTF
 ]
@@ -131,22 +121,40 @@ PhaROSPackageDependency >> load [
 { #category : #accessing }
 PhaROSPackageDependency >> loadingScript [
 	^
-	needsCredentials ifFalse: [	
-		'
-		(Gofer it url: ''{1}''; package: ''{2}'') load.
-		(Smalltalk at: #{2} ) load: ''{3}''.
-		' format: { self url . self configurationOfName . self packageName }.
-	] ifTrue: [
-		'
-		(Gofer it url: ''{1}'' username: ''{2}'' password:''{3}'' ; package: ''{4}'') load.
-		(Smalltalk at: #{4} ) load: ''{5}''.
-		' format: { 
-				self url . 
-				(UIManager request: 'Please, enter a username for', self packageName) .  
-				(UIManager requestPassword: 'Please, enter a password for', self packageName)   . 
-				self configurationOfName . 
-				self packageName 
-			}.
+	configurationOfName ifNotNil: [
+		needsCredentials ifFalse: [	
+			'
+			(Gofer it url: ''{1}''; package: ''{2}'') load.
+			(Smalltalk at: #{2} ) load: ''{3}''.
+			' format: { self url . self configurationOfName . self packageName }.
+		] ifTrue: [
+			'
+			(Gofer it url: ''{1}'' username: ''{2}'' password:''{3}'' ; package: ''{4}'') load.
+			(Smalltalk at: #{4} ) load: ''{5}''.
+			' format: { 
+					self url . 
+					(UIManager request: 'Please, enter a username for', self packageName) .  
+					(UIManager requestPassword: 'Please, enter a password for', self packageName)   . 
+					self configurationOfName . 
+					self packageName 
+				}.
+		]
+	] ifNil: [
+		needsCredentials ifFalse: [	
+			'
+			(Gofer it url: ''{1}''; package: ''{2}'') load.
+			' format: { self url . self packageName }.
+		] ifTrue: [
+			'
+			(Gofer it url: ''{1}'' username: ''{2}'' password:''{3}'' ; package: ''{4}'') load.
+			' format: { 
+					self url . 
+					(UIManager request: 'Please, enter a username for', self packageName) .  
+					(UIManager requestPassword: 'Please, enter a password for', self packageName)   . 
+					self packageName 
+				}.
+		]
+	
 	]
 ]
 
