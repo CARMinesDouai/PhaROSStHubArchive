@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'packageName',
 		'configurationOfName',
-		'url'
+		'url',
+		'needsCredentials'
 	],
 	#category : #'PhaROSInfrastructure-PackageDeployer'
 }
@@ -116,6 +117,11 @@ PhaROSPackageDependency >> configurationOfName: anObject [
 ]
 
 { #category : #accessing }
+PhaROSPackageDependency >> initialize [ 
+	needsCredentials := false.
+]
+
+{ #category : #accessing }
 PhaROSPackageDependency >> load [
 	(Gofer it url: self url; package: configurationOfName) load.
 	(Smalltalk at: configurationOfName asSymbol) load: packageName.
@@ -125,11 +131,29 @@ PhaROSPackageDependency >> load [
 { #category : #accessing }
 PhaROSPackageDependency >> loadingScript [
 	^
-	'
-	(Gofer it url: ''{1}''; package: ''{2}'') load.
-	(Smalltalk at: #{2} ) load: ''{3}''.
-	' format: { self url . self configurationOfName . self packageName }.
+	needsCredentials ifFalse: [	
+		'
+		(Gofer it url: ''{1}''; package: ''{2}'') load.
+		(Smalltalk at: #{2} ) load: ''{3}''.
+		' format: { self url . self configurationOfName . self packageName }.
+	] ifTrue: [
+		'
+		(Gofer it url: ''{1}'' username: ''{2}'' password:''{3}'' ; package: ''{4}'') load.
+		(Smalltalk at: #{4} ) load: ''{5}''.
+		' format: { 
+				self url . 
+				(UIManager request: 'Please, enter a username for', self packageName) .  
+				(UIManager requestPassword: 'Please, enter a password for', self packageName)   . 
+				self configurationOfName . 
+				self packageName 
+			}.
+	]
+]
 
+{ #category : #accessing }
+PhaROSPackageDependency >> needsCredentials [
+	needsCredentials := true 
+	
 ]
 
 { #category : #accessing }
