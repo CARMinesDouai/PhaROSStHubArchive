@@ -16,6 +16,14 @@ PhaROSPackage class >> author [
 ]
 
 { #category : #abstract }
+PhaROSPackage class >> catkin [
+	| installed |
+	installed :=  (PhaROSPackageManager  registeredCatckinPackagesFor: self ) .
+	installed = 1 ifFalse: [ self error: ' Several location registered in a deploy! '].
+	^ installed anyOne 
+]
+
+{ #category : #abstract }
 PhaROSPackage class >> configuration [
 	^ PhaROSPackageDependency phaROSPackage: self package packageName.
 ]
