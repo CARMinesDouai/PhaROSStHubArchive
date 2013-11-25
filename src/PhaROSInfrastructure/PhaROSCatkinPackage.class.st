@@ -243,6 +243,11 @@ PhaROSCatkinPackage class >> xmlPhaROSEsug [
 ]
 
 { #category : #accessing }
+PhaROSCatkinPackage >> = otherPackage [
+	^ package = otherPackage pharosPackage and: [ location = otherPackage location ]
+]
+
+{ #category : #accessing }
 PhaROSCatkinPackage >> author [
 	^ package author
 ]
@@ -280,8 +285,11 @@ PhaROSCatkinPackage >> cmake: aCMakeDefinition [
 
 { #category : #abstract }
 PhaROSCatkinPackage >> deploy [
-	^ PhaROSPackageDeployer new deploy: package on: self image startedWith: self vm.
+	"Source code deployment"
+	PhaROSPackageDeployer new deploy: package on: self image startedWith: self vm.
 	
+	
+
 ]
 
 { #category : #abstract }
@@ -340,6 +348,30 @@ PhaROSCatkinPackage >> generateConstructor [
 	 ) classified: ('constructor-{1}'format: { package name })
 ]
 
+{ #category : #abstract }
+PhaROSCatkinPackage >> generateRosPackageInflationScript [
+	^ '
+		PhaROSPackageManager new inflatePackage: (
+			PhaROSCatkinPackage new location: ''{1}'';
+										pharosPackage: {2}; 
+										rosDependancies: {3}; 
+										encodeFiles;
+										yourself			
+		).
+		Smalltalk snapshot: true andQuit: true.
+	' format: {
+		location .
+		package name. 
+		rosDependancies asString
+	}.
+	
+]
+
+{ #category : #accessing }
+PhaROSCatkinPackage >> hash [
+	^ (package hash asString, location) hash.
+]
+
 { #category : #path }
 PhaROSCatkinPackage >> image [
 	^ self path ,'/image/Pharo.image'
@@ -361,6 +393,16 @@ PhaROSCatkinPackage >> install [
 
 
 	self generateConstructor.
+]
+
+{ #category : #abstract }
+PhaROSCatkinPackage >> installPackageInDeploy [
+	
+	"Catking ending installation"
+	
+	PhaROSPackageManager execute: self image  with: self vm  and: self generateRosPackageInflationScript.  
+	
+
 ]
 
 { #category : #path }

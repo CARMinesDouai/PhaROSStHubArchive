@@ -83,8 +83,7 @@ PhaROSAbstractPackageManager >> create: aPackage linkingVM: aVMBinaryPath copyin
 		OSProcess command: (self catkinCreateCommandFor: aPackage) .
 		(Delay forMilliseconds: 2000 ) wait.
 
-		self inflatePackage: aPackage  linkingVM: aVMBinaryPath copyingImage: anImagePath  changes: aChangesFilePath andSource: aSourceFilePath .
-		self installScripts: aPackage.
+		self makeUpFolder: aPackage  linkingVM: aVMBinaryPath copyingImage: anImagePath  changes: aChangesFilePath andSource: aSourceFilePath .
 		
 		 self class register: aPackage.
 		 aPackage deploy.
@@ -98,36 +97,24 @@ PhaROSAbstractPackageManager >> extension [
 ]
 
 { #category : #private }
-PhaROSAbstractPackageManager >> inflatePackage: aPackage  linkingVM: aVMBinaryPath copyingImage: anImagePath   changes: aChangesFilePath andSource: aSourceFile [
-	| make |
-
-
-		 { aPackage vmFolder . aPackage imageFolder . aPackage msg . aPackage build . aPackage bin . aPackage scripts . aPackage path, '/include' } 
-		do: [ :path | [FileSystem disk createDirectory: path.] on: Error do: [ ]] .  
-	
-
-		OSProcess command: ('ln -s {1} {2}' format: { aVMBinaryPath . aPackage vm }).
+PhaROSAbstractPackageManager >> inflatePackage: aPackage [  
+	| make | 
 	
 		
-		OSProcess command: ('cp  {1} {2}' format: { anImagePath  . aPackage image } ).
-		OSProcess command: ('cp  {1} {2}' format: { aChangesFilePath  . aPackage changes } ).
-
-		
-		OSProcess command: ('cp  {1} {2}' format: { aSourceFile  . aPackage imageFolder } ).
-
 		(StandardFileStream forceNewFileNamed: aPackage mainBinary) nextPutAll: '#!/bin/bash',String lf, aPackage vm, ' ', aPackage image, ' st scripts/$1.st', String lf ; close.
 		(StandardFileStream forceNewFileNamed: aPackage mainHeadless) nextPutAll: '#!/bin/bash',String lf,aPackage vm, ' -vm-display-X11 -headless ', aPackage image, ' st scripts/$1.st', String lf ; close.
 		(StandardFileStream forceNewFileNamed: aPackage mainEdit) nextPutAll: '#!/bin/bash',String lf,aPackage vm, ' ', aPackage image,  String lf ; close.
-
-		OSProcess command: ('chmod 777 {1}' format: { aPackage bin, '/*' }).
-		make := OSProcess command: ('cd {1}; cd .. ; catkin_make' format: { aPackage location }).
 		
+		OSProcess command: ('chmod 777 {1}' format: { aPackage bin, '/*' }).
+		
+		aPackage pharosPackage dependencies do: [ : dep | dep installOn: aPackage ].
+		
+		make := OSProcess command: ('cd {1}; cd .. ; catkin_make' format: { aPackage location }).
+		self class register: aPackage.
+		self installScripts: aPackage.
 		
 		[ make isComplete  ] whileFalse: [ 1 hz wait ].
-	
 		
-
-
 ]
 
 { #category : #install }
@@ -157,9 +144,9 @@ PhaROSAbstractPackageManager >> install: aPackage linkingVM: aVMBinaryPath copyi
 		(StandardFileStream forceNewFileNamed: aPackage cMakeList ) nextPutAll: aPackage cmake withUnixLineEndings  ; close.
 		(StandardFileStream forceNewFileNamed: aPackage packageXML ) nextPutAll: aPackage xml withUnixLineEndings ; close.
 		
-		self inflatePackage: aPackage linkingVM: aVMBinaryPath copyingImage: anImagePath  changes: aChangesFilePath andSource: aSourceFile . 
+		self makeUpFolder: aPackage linkingVM: aVMBinaryPath copyingImage: anImagePath  changes: aChangesFilePath andSource: aSourceFile . 
 
-		self installScripts: aPackage.
+		
 		self class register: aPackage.
 		aPackage deploy.
 
@@ -185,4 +172,26 @@ PhaROSAbstractPackageManager >> installScripts: aPackage [
 { #category : #private }
 PhaROSAbstractPackageManager >> make: aPackage [
 	OSProcess command: ('cd {1}; cd .. ; catkin_make' format: { aPackage location }).
+]
+
+{ #category : #private }
+PhaROSAbstractPackageManager >> makeUpFolder: aPackage  linkingVM: aVMBinaryPath copyingImage: anImagePath   changes: aChangesFilePath andSource: aSourceFile [
+	| copy |
+
+
+		 { aPackage vmFolder . aPackage imageFolder . aPackage msg . aPackage build . aPackage bin . aPackage scripts . aPackage path, '/include' } 
+		do: [ :path | [FileSystem disk createDirectory: path.] on: Error do: [ ]] .  
+	
+
+		OSProcess command: ('ln -s {1} {2}' format: { aVMBinaryPath . aPackage vm }).
+		OSProcess command: ('cp  {1} {2}' format: { aChangesFilePath  . aPackage changes } ).
+		OSProcess command: ('cp  {1} {2}' format: { aSourceFile  . aPackage imageFolder } ).
+		copy := OSProcess command: ('cp  {1} {2}' format: { anImagePath  . aPackage image } ).
+
+
+		[ copy isComplete  ] whileFalse: [ 1 hz wait ].
+	
+		
+
+
 ]

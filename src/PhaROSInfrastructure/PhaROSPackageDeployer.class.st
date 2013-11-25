@@ -8,12 +8,8 @@ Class {
 PhaROSPackageDeployer >> deploy: aPackage on: anImagePath startedWith: aVmPath [
 	| deployFileReference deployer  |
 	UIManager inform:  'Starting code deploy! Remember that the deploy is based on monticello/metacello tecnology. You need to commit first the things to deploy!'.
-	deployFileReference := anImagePath asFileReference parent / 'deploy.st'.
-	
-	self write: (self generateDeployScriptFor: aPackage  ) in: deployFileReference  pathString.
-	
 
-	deployer := self execute: anImagePath with: aVmPath and: deployFileReference pathString.
+	deployer := self execute: anImagePath with: aVmPath and: (self generateDeployScriptFor: aPackage).
 	
 	[deployer isComplete ] whileFalse: [ 10 seconds asDelay wait ].
 	deployFileReference delete.
@@ -23,7 +19,13 @@ PhaROSPackageDeployer >> deploy: aPackage on: anImagePath startedWith: aVmPath [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSPackageDeployer >> execute: anImagePath with: aVmPath and: deployFileReference. [
+PhaROSPackageDeployer >> execute: anImagePath with: aVmPath and: aContent [
+	| deployFileReference |
+
+	deployFileReference := anImagePath asFileReference parent / 'deploy.st'.
+	
+	self write: aContent in: deployFileReference  pathString.
+
 		^ ExternalUnixOSProcess 
 					forkAndExec:  (aVmPath)  
 					arguments: {  '-headless' . anImagePath . deployFileReference }
