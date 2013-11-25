@@ -50,7 +50,7 @@ PhaROSAbstractPackageManager class >> removeScript: aSelector of: aClass [
 { #category : #sync }
 PhaROSAbstractPackageManager class >> scriptSyncronizer: aClass selector: aSelector [
 	(self itsAPackage: aClass andItsAScript: aSelector ) ifTrue: [
-		aClass  installScript: aSelector.	
+		(PhaROSPackageManager registeredCatckinPackagesFor: aClass)  do: [ :p | p installScript: aSelector.]	
 	]
 ]
 

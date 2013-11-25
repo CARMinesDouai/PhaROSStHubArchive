@@ -42,7 +42,7 @@ PhaROSPackage class >> packageName [
 
 { #category : #abstract }
 PhaROSPackage class >> updateInstallations [
-	^ (PhaROSAbstractPackageManager registeredCatckinPackagesFor: self ) do: #deploy.
+	^ (PhaROSPackageManager  registeredCatckinPackagesFor: self ) do: #deploy.
 ]
 
 { #category : #abstract }

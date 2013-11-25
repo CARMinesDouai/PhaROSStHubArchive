@@ -363,6 +363,11 @@ PhaROSCatkinPackage >> install [
 	self generateConstructor.
 ]
 
+{ #category : #path }
+PhaROSCatkinPackage >> installScript: aScriptSelector [
+	PhaROSPackageManager new installScript: aScriptSelector of: self.
+]
+
 { #category : #abstract }
 PhaROSCatkinPackage >> location [
 	^ location ifNil:[ self error: 'location is not setted' ].

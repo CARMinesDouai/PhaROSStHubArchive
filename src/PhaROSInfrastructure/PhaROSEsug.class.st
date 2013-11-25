@@ -161,6 +161,13 @@ PhaROSEsug >> moveAround: handle [
 ]
 
 { #category : #scripts }
+PhaROSEsug >> scriptReDeployTest [
+	self bla.
+
+
+]
+
+{ #category : #scripts }
 PhaROSEsug >> scriptTurtlesimPharo [
 	|handler|
 	
