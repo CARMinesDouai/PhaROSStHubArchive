@@ -98,6 +98,11 @@ ConfigurationOfPureROS class >> load [
 	^self project latestVersion load
 ]
 
+{ #category : #load }
+ConfigurationOfPureROS class >> load: aByteString [ 
+	(self project version: #bleedingEdge) load: aByteString .
+]
+
 { #category : #loading }
 ConfigurationOfPureROS class >> loadBleedingEdge [
 	(self project version: #bleedingEdge) load.
