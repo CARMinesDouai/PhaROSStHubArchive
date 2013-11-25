@@ -198,6 +198,7 @@ PureROSRobulab class >> dependencies [
 		PhaROSPackageDependency tf . 
 		PhaROSPackageDependency localizer.
 		PhaROSPackageDependency merger. 
+		PhaROSPackageDependency moveBase.
 		PhaROSPackageDependency poseTracker.
 		PhaROSPackageDependency pureros.
 		PhaROSPackageDependency movement . 
