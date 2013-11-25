@@ -335,6 +335,7 @@ ConfigurationOfPhaROS >> baseline11: spec [
 		
 	].
 	spec for: #'pharo2.x' do: [  
+		
 		spec package: 'PhaROSPackageManager20'.
 		spec group: 'default' with: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSPackageManager20' );
  			group: 'default+tests' with: #( 'PhaROS' 'PhaROSTest' 'PhaROSTestROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSPackageManager20');
