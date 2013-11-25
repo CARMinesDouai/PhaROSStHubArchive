@@ -33,7 +33,8 @@ Class {
 		'process',
 		'lastPoseSettedStamp',
 		'checked',
-		'lastId'
+		'lastId',
+		'controller'
 	],
 	#category : #'PureROS-Package'
 }
