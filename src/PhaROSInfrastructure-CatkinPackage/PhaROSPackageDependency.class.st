@@ -43,7 +43,7 @@ PhaROSPackageDependency class >> merger [
 
 { #category : #dependencies }
 PhaROSPackageDependency class >> moveBase [
-	^ self phaROSPackage: #PhaROSMoveBase
+	^ self phaROSPackage: #PhaROSNodeletsMoveBase
 ]
 
 { #category : #dependencies }
