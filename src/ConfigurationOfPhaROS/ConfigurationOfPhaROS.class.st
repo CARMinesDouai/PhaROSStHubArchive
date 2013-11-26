@@ -291,25 +291,50 @@ ConfigurationOfPhaROS >> baseline11: spec [
 					repository: 'http://smalltalkhub.com/mc/sbragagnolo/TaskIT/main'.
 			].
 		
+		
+		
+		
+			"Testing"
 			spec package: 'PhaROSTest'.
 			spec package: 'PhaROSTestROS'.
 			
-			spec package: 'PhaROSControllers'.
-			spec package: 'PhaROSExperiments'.
-			spec package: 'PhaROSInfrastructure'.
+			"Cool tools"
+			spec package: 'PhaROSControllers' with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSExperiments' with: [ spec requires: #('PhaROS')].
+			
+			"Infrastructure: deployment and generation of code"
+			spec package: 'PhaROSInfrastructure' with: [ spec requires: #('PhaROS')].
+			
+			"Some already implemented nodelets"
+			
+			spec package: 'PhaROSNodeletsAction' 	with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSNodeletsLocalizer'	with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSNodeletsMerger' 	with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSNodeletsMoveBase' with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSNodeletsOdometry' with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSNodeletsPosition'	 with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSNodeletsRPC' 		with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSNodeletsTF' 		with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSNodeletsTurtlebot' with: [ spec requires: #('PhaROS')].
+			
+			spec package: 'PhaROSNodeletsTurtlesim' with: [ spec requires: #('PhaROS')].
+			
+			spec package: 'PhaROSNodeletsPoseTracker' with: [
+				spec requires: #('PhaROS' 'PhaROSNodeletsLocalizer')	
+			].
+			
+			"Some already implemented Packages"
 			
 			
-			spec package: 'PhaROSNodeletsAction'.
-			spec package: 'PhaROSNodeletsLocalizer'.
-			spec package: 'PhaROSNodeletsMerger'.
-			spec package: 'PhaROSNodeletsMoveBase'.
-			spec package: 'PhaROSNodeletsOdometry'.
-			spec package: 'PhaROSNodeletsPoseTracker'.
-			spec package: 'PhaROSNodeletsPosition'.
-			spec package: 'PhaROSNodeletsRPC'.
-			spec package: 'PhaROSNodeletsTF'.
-			spec package: 'PhaROSNodeletsTurtlebot'.
-			spec package: 'PhaROSNodeletsTurtlesim'.
+			spec package: 'PhaROSPackagesEsug' with: [
+				spec requires:#('PhaROS' 'PhaROSControllers' 'PhaROSNodeletsTurtlesim' 'PhaROSNodeletsTF' )	
+			].
+		
+		
+			spec package: 'PhaROSPackagesTest' with: [ spec requires: #('PhaROS')].
+			
+			
+			"PhaROS Configuration"	
 			
 			spec package: 'PhaROS' with: [
 				spec requires: #('XMLRPC' 'CommonTraits' 'PaulLePoulpe' 'OSProcess' 'TaskIT').
@@ -335,7 +360,6 @@ ConfigurationOfPhaROS >> baseline11: spec [
 		
 	].
 	spec for: #'pharo2.x' do: [  
-		
 		spec package: 'PhaROSPackageManager20'.
 		spec group: 'default' with: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSPackageManager20' );
  			group: 'default+tests' with: #( 'PhaROS' 'PhaROSTest' 'PhaROSTestROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSPackageManager20');
