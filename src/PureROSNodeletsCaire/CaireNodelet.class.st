@@ -19,11 +19,12 @@ CaireNodelet class >> chunkTypeDefinition [
 { #category : #'as yet unclassified' }
 CaireNodelet class >> chunksMapTypeDefinition [
 	^ PhaROSCompositeType named: 'caire/ChunksMapTransport' definedBy: {
-		 #header -> Std_msgsHeader new. 
-	 	 #info -> Nav_msgsMapMetaData new. 
+		 #header -> (Std_msgsHeader new). 
+	 	 #info ->( PhaROSTypeBrowser instance definition: 'nav_msgs/MapMetaData') . 
 		 #chunks -> (PhaROSUInt16Type new).
 	}  withConstants: {}.
 	
+
 
 
 
