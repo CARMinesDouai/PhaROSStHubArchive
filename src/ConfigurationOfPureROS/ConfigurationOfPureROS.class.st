@@ -176,6 +176,7 @@ ConfigurationOfPureROS >> baseline10: spec [
 			spec package: 'PureROSExperiments'.
 			spec package: 'PureROSNodeletsMovement'.
 			spec package: 'PureROSNodeletsKompai'.
+			spec package: 'PureROSNodeletsCaire'.
 			spec package: 'PureROSPackageKompai'. 
 			spec package: 'PureROSPackageRobulab'. 
 			spec package: 'PureROSPackageCaire'. 
