@@ -157,8 +157,7 @@ project(caire)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED)
-
+find_package(catkin REQUIRED COMPONENTS message_generation std_msgs)
 ## System dependencies are found with CMake"s conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -173,11 +172,11 @@ find_package(catkin REQUIRED)
 #######################################
 
 ## Generate messages in the "msg" folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+ add_message_files(
+   FILES
+   Chunk.msg
+   ChunksMapTransport.msg
+ )
 
 ## Generate services in the "srv" folder
 # add_service_files(
@@ -187,10 +186,10 @@ find_package(catkin REQUIRED)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+ generate_messages(
+   DEPENDENCIES
+   std_msgs
+ )
 
 ###################################
 ## catkin specific configuration ##
@@ -201,7 +200,8 @@ find_package(catkin REQUIRED)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
+  INCLUDE_DIRS include
+  CATKIN_DEPENDS message_runtime
 #  LIBRARIES caire
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
@@ -213,7 +213,8 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-# include_directories(include ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
+include_directories(include
+  ${catkin_INCLUDE_DIRS})
 
 ## Declare a cpp library
 # add_library(caire
@@ -279,7 +280,8 @@ catkin_package(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-     '
+    
+ '
 	
 ]
 
@@ -707,6 +709,17 @@ PhaROSCatkinPackage class >> xmlPureROSCaire [
   <!-- Use test_depend for packages you need only for testing: -->
   <!--   <test_depend>gtest</test_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>message_generation</build_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>message_runtime</run_depend>
+
 
 
   <!-- The export tag contains other, unspecified, tags -->
@@ -717,7 +730,8 @@ PhaROSCatkinPackage class >> xmlPureROSCaire [
     <!-- Other tools can request additional information be placed here -->
 
   </export>
-</package>'
+</package>
+'
 	
 ]
 
@@ -904,13 +918,13 @@ PhaROSCatkinPackage >> description [
 PhaROSCatkinPackage >> encodeCMAKE [
 	| file |
 	file := StandardFileStream readOnlyFileNamed: self cMakeList.
-	
+	cmake := (file upToEnd copyReplaceAll: '''' with: '"').
 	self class class compile: ('cmake{1}
 		^ ''{2} ''
-	' format: { package name . (file upToEnd copyReplaceAll: '''' with: '"')} ) classified:  ('constructor-{1}'format: { package name }).
+	' format: { package name . cmake } ) classified:  ('constructor-{1}'format: { package name }).
 	
 	file close.
-	^ 'cmake{1}' format: { package name }.
+	
 	
 	
 ]
@@ -926,14 +940,14 @@ PhaROSCatkinPackage >> encodeXML [
 	| file |
 
 	file := StandardFileStream readOnlyFileNamed: self packageXML.
+	xml := (file upToEnd copyReplaceAll: '''' with: '"').
 	
 	self class class compile: (' xml{1}
 		^ ''{2}''
-	' format: {package name . (file upToEnd copyReplaceAll: '''' with: '"')})  classified: ('constructor-{1}'format: { package name }).
+	' format: {package name . xml })  classified: ('constructor-{1}'format: { package name }).
+	
 	
 	file close.
-	^ 'xml{1}' format: { package name }.
-	
 	
 ]
 
