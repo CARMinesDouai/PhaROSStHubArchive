@@ -98,11 +98,6 @@ ConfigurationOfPureROS class >> load [
 	^self project latestVersion load
 ]
 
-{ #category : #load }
-ConfigurationOfPureROS class >> load: aByteString [ 
-	(self project version: #bleedingEdge) load: aByteString .
-]
-
 { #category : #loading }
 ConfigurationOfPureROS class >> loadBleedingEdge [
 	(self project version: #bleedingEdge) load.
@@ -176,6 +171,9 @@ ConfigurationOfPureROS >> baseline10: spec [
 			spec package: 'PureROSExperiments'.
 			spec package: 'PureROSNodeletsMovement'.
 			spec package: 'PureROSNodeletsKompai'.
+			spec package: 'PureROSPackageKompai'. 
+			spec package: 'PureROSPackageRobulab'. 
+			spec package: 'PureROSPackageCaire'. 
 			
 			
 	].
