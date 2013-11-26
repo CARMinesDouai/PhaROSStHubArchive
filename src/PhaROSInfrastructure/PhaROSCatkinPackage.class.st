@@ -279,7 +279,7 @@ catkin_package(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-  '
+     '
 	
 ]
 
@@ -891,6 +891,7 @@ PhaROSCatkinPackage >> deploy [
 
 { #category : #abstract }
 PhaROSCatkinPackage >> deployType: aType definedAs: aTypeDefinition [
+
 	^ PhaROSSystemLauncher instance deployType: aType definedAs: aTypeDefinition at: self.
 ]
 
