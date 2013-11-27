@@ -303,7 +303,7 @@ ConfigurationOfPhaROS >> baseline11: spec [
 			spec package: 'PhaROSExperiments' with: [ spec requires: #('PhaROS')].
 			
 			"Infrastructure: deployment and generation of code"
-			spec package: 'PhaROSInfrastructure' with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSInfrastructure'.
 			
 			"Some already implemented nodelets"
 			
@@ -345,7 +345,7 @@ ConfigurationOfPhaROS >> baseline11: spec [
 	
 	].
 	spec for: #'pharo1.4.x' do:[
-		spec package: 'PhaROSPackageManager14'.	
+		spec package: 'PhaROSPackageManager14'  with: [ spec requires: #( 'PhaROSInfrastructure')].
 			
 		spec group: 'default' with: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSPackageManager14' );
  			group: 'default+tests' with: #( 'PhaROS' 'PhaROSTest' 'PhaROSTestROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSPackageManager14');
@@ -360,7 +360,10 @@ ConfigurationOfPhaROS >> baseline11: spec [
 		
 	].
 	spec for: #'pharo2.x' do: [  
-		spec package: 'PhaROSPackageManager20'.
+		spec package: 'PhaROSPackageManager20'  with: [ spec requires: #( 'PhaROSInfrastructure')].
+		
+			
+		
 		spec group: 'default' with: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSPackageManager20' );
  			group: 'default+tests' with: #( 'PhaROS' 'PhaROSTest' 'PhaROSTestROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSPackageManager20');
 			
