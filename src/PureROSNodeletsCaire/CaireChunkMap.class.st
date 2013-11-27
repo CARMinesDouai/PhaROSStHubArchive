@@ -16,13 +16,13 @@ CaireChunkMap class >> fromCaireChunksMapTransport: aCaireChunksMapTransport [
 { #category : #'as yet unclassified' }
 CaireChunkMap class >> fromNav_msgsOccupancyGrid: anOccupancyGrid [
 	| transport  chunk previousValue | 
-	transport :=  CaireChunksMapTraMok new.
+	transport :=  CaireChunksMapTransport new.
 		
 	previousValue := anOccupancyGrid data first.
 	
 	anOccupancyGrid data withIndexDo: [ : value : idx  | 
 		previousValue = value ifFalse:[ 
-			chunk := CaireChunkMock new.
+			chunk := CaireChunk new.
 			chunk to: idx - 1.
 			chunk value: previousValue.
 			transport chunks add: chunk.					
@@ -127,7 +127,7 @@ CaireChunkMap >> manage: x and: y for: aValue relatedWith: aChunk [
 	relatedIndex := self pointToIndex: (x@y).
 
 
-	newChunk := (CaireChunkMock new to: relatedIndex; value: aValue; yourself).
+	newChunk := (CaireChunk new to: relatedIndex; value: aValue; yourself).
 	relatedIndex = aChunk to ifTrue: [
 		" If we are in the limit we can check if the next chunk has the same value, and just change the limits of the current and next chunk "
 		nextIndex := (chunkMap chunks indexOf: aChunk ) + 1.
@@ -148,7 +148,7 @@ CaireChunkMap >> manage: x and: y for: aValue relatedWith: aChunk [
 	previousTo := aChunk to.
 	aChunk to: relatedIndex -1 .
 	self insert: newChunk after: aChunk.
-	self insert:  (CaireChunkMock new to: previousTo; value: aChunk value; yourself) after: newChunk.
+	self insert:  (CaireChunk new to: previousTo; value: aChunk value; yourself) after: newChunk.
 	
 	
 	
