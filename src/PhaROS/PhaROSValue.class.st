@@ -11,7 +11,6 @@ Class {
 PhaROSValue >> asString [ 
 	| string  |	
 		
-		
 	
 	string := self class name, '>>', String crlf, String tab.
 	values keysAndValuesDo:[

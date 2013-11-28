@@ -183,7 +183,7 @@ PhaROSCompositeType >> installMethodsIn: aClass [
 
 { #category : #serializing }
 PhaROSCompositeType >> isAPossibleSize: aSize [
-	^ aSize > 2.
+	^ true.
 ]
 
 { #category : #serializing }
