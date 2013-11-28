@@ -69,7 +69,6 @@ PhaROSPacket >> load: aByteArray [
 PhaROSPacket >> loadStream: aStream [ 
 	| aDecoder  size |
 
-	self halt.
 	aDecoder := PhaROSDecoder on: aStream .
 
 	size := self decodePacketSizeFrom: aDecoder.
