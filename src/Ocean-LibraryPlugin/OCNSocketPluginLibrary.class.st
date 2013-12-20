@@ -325,6 +325,14 @@ OCNSocketPluginLibrary >> ensureNetworkInitialized [
 		ifNil: [OCNNetworkInitializationFailedError signal: 'failed network initialization']
 ]
 
+{ #category : #'as yet unclassified' }
+OCNSocketPluginLibrary >> get: aSocket option: aName [
+	(aSocket socketId == nil or: [(self isValid: aSocket) not])
+		ifTrue: [OCNSocketOperationFailureError signal: 'Socket status must valid before setting an option'].
+
+	^ self primSocket: aSocket socketId getOption: aName
+]
+
 { #category : #'initialize-release' }
 OCNSocketPluginLibrary >> initSemaphores [
 	semaphore := Semaphore new.
@@ -877,6 +885,18 @@ OCNSocketPluginLibrary >> primSocket: socketID setOption: aString value: aString
 	^nil
 ]
 
+{ #category : #'Primitives-UDP' }
+OCNSocketPluginLibrary >> primSocket: socketID setPort: port [
+	"Set the local port associated with a UDP socket.
+	Note: this primitive is overloaded.  The primitive will not fail on a TCP socket, but
+	the effects will not be what was desired.  Best solution would be to split Socket into
+	two subclasses, TCPSocket and UDPSocket."
+
+	<primitive: 'primitiveSocketListenWithOrWithoutBacklog' module: 'SocketPlugin'>
+	self primitiveFailed
+
+]
+
 { #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocketAbortConnection: socketID [
 	"Terminate the connection on the given port immediately without going through the normal close sequence. This is an asynchronous call; query the socket status to discover if and when the connection is actually terminated."
@@ -1232,7 +1252,21 @@ OCNSocketPluginLibrary >> set: aSocket option: aName value: aValue [
 	sockets, IP, TCP, UDP. IE SO_KEEPALIVE
 	returns an array, element one is the error number
 	element two is the resulting of the negotiated value.
-	See getOption for list of keys"
+	See getOption for list of keys
+	
+	
+	options := {
+'SO_DEBUG'. 'SO_REUSEADDR'. 'SO_REUSEPORT'. 'SO_DONTROUTE'.
+'SO_BROADCAST'. 'SO_SNDBUF'. 'SO_RCVBUF'. 'SO_KEEPALIVE'.
+'SO_OOBINLINE'. 'SO_PRIORITY'. 'SO_LINGER'. 'SO_RCVLOWAT'.
+'SO_SNDLOWAT'. 'IP_TTL'. 'IP_HDRINCL'. 'IP_RCVOPTS'.
+'IP_RCVDSTADDR'. 'IP_MULTICAST_IF'. 'IP_MULTICAST_TTL'.
+'IP_MULTICAST_LOOP'. 'UDP_CHECKSUM'. 'TCP_MAXSEG'.
+'TCP_NODELAY'. 'TCP_ABORT_THRESHOLD'. 'TCP_CONN_NOTIFY_THRESHOLD'. 
+'TCP_CONN_ABORT_THRESHOLD'. 'TCP_NOTIFY_THRESHOLD'.
+'TCP_URGENT_PTR_TYPE'}.
+
+"
 
 	(aSocket socketId == nil or: [(self isValid: aSocket) not])
 		ifTrue: [OCNSocketOperationFailureError signal: 'Socket status must valid before setting an option'].
@@ -1333,6 +1367,12 @@ OCNSocketPluginLibrary >> udpDestroy: aSocket [
 	self releaseSemaphores.
 	isDestroyed := true
 
+]
+
+{ #category : #'API-UDP' }
+OCNSocketPluginLibrary >> udpSet: aSocket withPort: aPort [
+	
+	self primSocket: aSocket socketId setPort: aPort
 ]
 
 { #category : #'Support For NameResolving' }
