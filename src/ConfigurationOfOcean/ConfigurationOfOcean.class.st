@@ -324,7 +324,7 @@ ConfigurationOfOcean >> baseline08: spec [
 	spec for: #common do: [
 		spec blessing: #baseline.
 	
-		spec repository: 'http://www.squeaksource.com/Ocean'.
+		spec repository: 'http://smalltalkhub.com/mc/CAR/Ocean/main'.
 		
 		spec project: 'Alien' with: [
 			spec 
