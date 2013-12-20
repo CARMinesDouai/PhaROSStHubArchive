@@ -123,6 +123,12 @@ OCNSocket >> finalize [
 	self destroy.
 ]
 
+{ #category : #'socket_api' }
+OCNSocket >> getOption: aName [
+
+	^self networkLibrary get: self option: aName
+]
+
 { #category : #'initialize-release' }
 OCNSocket >> initialize [
 	super initialize.
