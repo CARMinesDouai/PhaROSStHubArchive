@@ -303,7 +303,12 @@ ConfigurationOfPhaROS >> baseline11: spec [
 			spec package: 'PhaROSExperiments' with: [ spec requires: #('PhaROS')].
 			
 			"Infrastructure: deployment and generation of code"
+			
+			
 			spec package: 'PhaROSInfrastructure'.
+			spec package: 'PhaROSDeploymentDirectory' with:[ spec requires:  #('MiddlewareDeployment')].
+			
+			
 			
 			"Some already implemented nodelets"
 			
@@ -334,13 +339,14 @@ ConfigurationOfPhaROS >> baseline11: spec [
 			spec package: 'PhaROSPackagesTest' with: [ spec requires: #('PhaROS')].
 			
 			
+			
 			"PhaROS Configuration"	
 			
 			spec package: 'PhaROS' with: [
 				spec requires: #('XMLRPC' 'CommonTraits' 'PaulLePoulpe' 'OSProcess' 'TaskIT').
 			].
 		
-		
+			
 	
 	
 	].
