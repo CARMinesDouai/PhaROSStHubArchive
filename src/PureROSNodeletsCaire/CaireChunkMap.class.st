@@ -15,9 +15,10 @@ CaireChunkMap class >> fromCaireChunksMapTransport: aCaireChunksMapTransport [
 
 { #category : #'as yet unclassified' }
 CaireChunkMap class >> fromNav_msgsOccupancyGrid: anOccupancyGrid [
-	| transport  chunk previousValue | 
+	| transport  chunk previousValue  | 
 	transport :=  CaireChunksMapTransport new.
-		
+	
+	transport info: anOccupancyGrid info.
 	previousValue := anOccupancyGrid data first.
 	
 	anOccupancyGrid data withIndexDo: [ : value : idx  | 
@@ -26,10 +27,18 @@ CaireChunkMap class >> fromNav_msgsOccupancyGrid: anOccupancyGrid [
 			chunk to: idx - 1.
 			chunk value: previousValue.
 			transport chunks add: chunk.					
-		]
+			previousValue := value.
+		].
+	].
+	
+	previousValue = anOccupancyGrid data last ifTrue:[ 
+			chunk := CaireChunk new.
+			chunk to: anOccupancyGrid data size.
+			chunk value: previousValue.
+			transport chunks add: chunk
 	].
 
-	^ self fromCaireChunksMapTransport: transport; yourself.
+	^ self fromCaireChunksMapTransport: transport.
 	
 	
 ]
@@ -38,7 +47,7 @@ CaireChunkMap class >> fromNav_msgsOccupancyGrid: anOccupancyGrid [
 CaireChunkMap >> at: x at: y [
 	self verify: x and: y.
 	
-	(self lookup: (self pointToIndex: (x@y))) value. 
+	^ (self lookup: (self pointToIndex: (x@y))) value. 
 ]
 
 { #category : #'as yet unclassified' }
@@ -97,12 +106,19 @@ CaireChunkMap >> indexToPoint: anIndex [
 ]
 
 { #category : #'as yet unclassified' }
+CaireChunkMap >> info [
+	^ chunkMap info. 
+]
+
+{ #category : #'as yet unclassified' }
 CaireChunkMap >> insert: aChunk after: anOldChunk [
 	^ chunkMap chunks add: aChunk after: anOldChunk
 ]
 
 { #category : #'as yet unclassified' }
 CaireChunkMap >> intoCaireChunksMapTransport: aCaireChunksMapTransport [
+	aCaireChunksMapTransport chunks: chunkMap chunks.
+	aCaireChunksMapTransport info: chunkMap info.
 ]
 
 { #category : #'as yet unclassified' }
