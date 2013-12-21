@@ -252,6 +252,7 @@ PureROSCaire >> buildController [
 	| ctroler |
 	ctroler :=  PhaROSHandleController home.
 	ctroler nodelets use: CaireNodelet as: #caire.
+	^ ctroler
 	
 ]
 
@@ -270,6 +271,23 @@ PureROSCaire >> scriptExplorationMaster [
 		spec exploreNode.
 		spec rviz.
 	].
+
+]
+
+{ #category : #'as yet unclassified' }
+PureROSCaire >> scriptMapCompressor [
+
+	| publisher |	
+	publisher := self controller node topicPublisher: '/chunk/map' typedAs: 'caire/ChunksMapTransport'.
+
+	 ((self controller node buildConnectionFor: '/map') typedAs: 'nav_msgs/OccupancyGrid'; adapted: CaireChunkMap )
+	  for: [
+		: map |
+		publisher send: [  : m | map intoCaireChunksMapTransport: m ].
+	 ]; connect.
+	 
+	
+
 
 ]
 
