@@ -332,7 +332,7 @@ ConfigurationOfPhaROS >> baseline11: spec [
 			"Some already implemented Packages"
 			
 			
-			spec package: 'PhaROSPackagesEsug' with: [
+			spec package: 'PhaROSPackageEsug' with: [
 				spec requires:#('PhaROS' 'PhaROSControllers' 'PhaROSNodeletsTurtlesim' 'PhaROSNodeletsTF' )	
 			].
 		
