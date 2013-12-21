@@ -1,7 +1,7 @@
 Class {
 	#name : #PhaROSPackageDeployer,
 	#superclass : #Object,
-	#category : #'PhaROSInfrastructure-PackageDeployer'
+	#category : #'PhaROSInfrastructure-CatkinPackage'
 }
 
 { #category : #'as yet unclassified' }
