@@ -17,3 +17,15 @@ ExternalUnixOSProcess >> spin: times [
 
 	
 ]
+
+{ #category : #'*PhaROS' }
+ExternalUnixOSProcess >> waitUntilComplete [
+	
+
+	[ self isComplete ] whileFalse: [ self waitUntilCompleteRate wait]
+]
+
+{ #category : #'*PhaROS' }
+ExternalUnixOSProcess >> waitUntilCompleteRate [
+	^ 0.5hz.
+]
