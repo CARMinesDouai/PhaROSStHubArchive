@@ -57,18 +57,6 @@ PhaROSNodelet class >> hasConstructed: aNodeletInstance [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSNodelet class >> installOn: aPackage [
-	self flag: #infraestructureAndDeployShouldBeSomewhereElse.
-	self types asDictionary keysAndValuesDo: [ : typeName : definition |  
-		[
-			PhaROSTypeBrowser instance definition: aPackage packageName, '/', typeName. 
-		] on: Error do: [
-			 aPackage deployType: typeName definedAs: definition 
-		].
-	]
-]
-
-{ #category : #'as yet unclassified' }
 PhaROSNodelet >> configure [
 
 ]

@@ -35,7 +35,7 @@ PhaROSPackage class >> definedNodelets [
 
 { #category : #abstract }
 PhaROSPackage class >> dependencies [
-	^ { PhaROSPackageDependency pharos}
+	^ { }
 ]
 
 { #category : #abstract }
