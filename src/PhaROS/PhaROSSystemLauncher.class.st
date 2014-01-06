@@ -52,21 +52,6 @@ PhaROSSystemLauncher class >> path: aCommand [
 ]
 
 { #category : #types }
-PhaROSSystemLauncher >> deployType: aTypeName definedAs: aCompositeType at: aPackage [
-	
-	| outstream |
-	outstream := StandardFileStream forceNewFileNamed:( self typeFileName: aTypeName for: aPackage).
-	outstream ascii.
-	outstream nextPutAll: aCompositeType stringDefinition.
-	outstream flush.
-	outstream close.
-	self halt: 'Ensure that the CMakeLists.txt and package.xml files are suited for the compilation of the type, then press proceed '.
-	aPackage make.
-	
-	PhaROSTypeBrowser instance definition: aPackage packageName, '/', aTypeName.
-]
-
-{ #category : #types }
 PhaROSSystemLauncher >> rosMsg: aCommand [ 
 	
 	
@@ -181,9 +166,4 @@ PhaROSSystemLauncher >> rosservice: anArrayOfArguments [
 { #category : #launching }
 PhaROSSystemLauncher >> rosserviceCall: anArrayOfArguments [
 	^ self rosservice: {'call'}, anArrayOfArguments.
-]
-
-{ #category : #environment }
-PhaROSSystemLauncher >> typeFileName: aTypeName  for: aPackage [ 
-	^ aPackage msg, '/', aTypeName ,'.msg'.
 ]

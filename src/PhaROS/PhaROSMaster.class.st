@@ -22,7 +22,8 @@ Class {
 	#instVars : [
 		'masterXmlRpc',
 		'topics',
-		'nodes'
+		'nodes',
+		'services'
 	],
 	#classVars : [
 		'MasterInstances'
@@ -146,7 +147,8 @@ PhaROSMaster >> initialize [
 	super initialize.
 	nodes := Dictionary new. 
 	topics := Dictionary new.
-
+	services := Dictionary new.
+	
 ]
 
 { #category : #API }
@@ -167,10 +169,12 @@ PhaROSMaster >> lookupNode: nodeName with: aCallerId [
 
 { #category : #API }
 PhaROSMaster >> lookupService: serviceName with: aCallerId [
-	| serviceUriString |
-	serviceUriString := masterXmlRpc lookupService: serviceName with: aCallerId.
-	^PhaROSServiceProxy serviceName: serviceName uriFrom: serviceUriString
 	
+	^ services at: serviceName ifAbsentPut: [
+		| serviceUriString |
+		serviceUriString := masterXmlRpc lookupService: serviceName with: aCallerId.
+		PhaROSServiceProxy serviceName: serviceName uriFrom: serviceUriString.
+	].
 ]
 
 { #category : #'API-Data-Accessors' }

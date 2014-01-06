@@ -127,6 +127,17 @@ PhaROSNode >> sendTo: aTopicName typedAs: aTypeId a: aMessageConfigurationBlock 
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSNode >> serve: aCallBack as: aServiceName typedAs: aServiceType [
+	
+	self halt.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSNode >> service: aServiceName [ 
+	^ transport service: aServiceName.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSNode >> subscriber: aTopicID typedAs: aTypeID [
 
 	^ transport subscriber: aTopicID typedAs: aTypeID

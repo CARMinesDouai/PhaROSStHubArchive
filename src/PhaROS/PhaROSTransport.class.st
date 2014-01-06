@@ -187,6 +187,11 @@ PhaROSTransport >> resolvePublishersFor: aTopic [
 	
 ]
 
+{ #category : #services }
+PhaROSTransport >> service: aServiceName [
+	^ master lookupService: aServiceName with: comm url.
+]
+
 { #category : #publishing }
 PhaROSTransport >> subscribe: aNodeName with: aSocket to: aTopicID [ 
 	| topic extNode handshakeMessage channel |

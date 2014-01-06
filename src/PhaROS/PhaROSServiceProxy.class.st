@@ -37,12 +37,18 @@ PhaROSServiceProxy >> callWithArgs: args [
 	args size > 0 ifTrue: [
 		Error signal: ' Un implemented call to service with arguments '	.
 	].
+	
 	messageBytes := self bytesForMessageWithArgs: args.
 	socketStr := SocketStream openConnectionToHostNamed: self hostName port: self port.
-	socketStr sendCommand: messageBytes, #[0 0 0 0].
-	response := socketStr upToEnd.
-	socketStr close.
-	^PhaROSHSMessage newServiceMessageFrom: response asByteArray readStream
+	^
+	[ 
+		socketStr sendCommand: messageBytes, #[0 0 0 0].
+		response := socketStr upToEnd.
+		socketStr close.
+		PhaROSHSMessage newServiceMessageFrom: response asByteArray readStream
+	] doIt.
+
+
 ]
 
 { #category : #accessing }
