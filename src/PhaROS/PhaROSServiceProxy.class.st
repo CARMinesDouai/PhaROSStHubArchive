@@ -8,7 +8,9 @@ Class {
 	#instVars : [
 		'uri',
 		'serviceName',
-		'md5sum'
+		'md5sum',
+		'requestType',
+		'responseType'
 	],
 	#category : #'PhaROS-Network-XmlRpc'
 }
@@ -18,6 +20,7 @@ PhaROSServiceProxy class >> serviceName: serviceName uriFrom: uriString [
 	^self new
 		serviceName: serviceName;
 		uriFrom: uriString;
+		loadType;
 		yourself
 ]
 
@@ -46,7 +49,7 @@ PhaROSServiceProxy >> callWithArgs: args [
 		response := socketStr upToEnd.
 		socketStr close.
 		PhaROSHSMessage newServiceMessageFrom: response asByteArray readStream
-	] doIt.
+	] doIt asResult.
 
 
 ]
@@ -59,6 +62,27 @@ PhaROSServiceProxy >> callerId [
 { #category : #accessing }
 PhaROSServiceProxy >> hostName [
 	^ self uri host
+]
+
+{ #category : #ros }
+PhaROSServiceProxy >> loadType [
+	|socketStr typeBrowse response |
+	socketStr := SocketStream openConnectionToHostNamed: self hostName port: self port.
+	
+	typeBrowse := PhaROSHSMessage newServiceClientWith: [
+		:header |
+		header callerId: self callerId;
+				md5Sum: '*';
+				probe;
+				service: self serviceName
+	   ].
+	socketStr sendCommand:( PhaROSHSMessageEncoder encode: typeBrowse), #[0 0 0 0].
+	response := socketStr upToEnd.
+	socketStr close.
+	response := PhaROSHSMessage newServiceMessageFrom: response asByteArray readStream.
+	md5sum := response md5sum.
+	requestType := response requestType.
+	responseType := response responseType.
 ]
 
 { #category : #calling }

@@ -218,6 +218,11 @@ PhaROSHSMessage >> printOn: aStream [
 
 ]
 
+{ #category : #conf }
+PhaROSHSMessage >> probe [
+	self at: 'probe' put:'1'
+]
+
 { #category : #accessing }
 PhaROSHSMessage >> requestType [
 	^self at:'request_type'.

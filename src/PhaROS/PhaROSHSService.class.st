@@ -14,6 +14,11 @@ PhaROSHSService class >> verificationDictionary [
 	   }
 ]
 
+{ #category : #accessing }
+PhaROSHSService >> md5sum [
+	^ header at: #md5sum
+]
+
 { #category : #comparing }
 PhaROSHSService >> ok [
 	^self optativeAt:'ok'.

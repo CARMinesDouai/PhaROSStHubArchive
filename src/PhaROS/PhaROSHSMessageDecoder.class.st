@@ -35,7 +35,10 @@ PhaROSHSMessageDecoder class >> decodeServiceClientMessage: aStream [
 
 { #category : #decoding }
 PhaROSHSMessageDecoder class >> decodeServiceMessage: aStream [
-	^ self decode: aStream using: PhaROSHSMessage newService.
+	| message |
+	message :=  self decode: aStream using: PhaROSHSMessage newService.
+	self assert: (message header includesKey: #error) not.
+	^ message
 ]
 
 { #category : #decoding }
