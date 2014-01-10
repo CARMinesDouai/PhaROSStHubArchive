@@ -18,7 +18,7 @@ PhaROSTopicTests >> testMessageType [
 
 	publisherNode := PhaROSBlockNode name: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:  9999  xmlRpcPort:  6127 master: master soul: [
 		: me |
-		me sendTo: '/turtle1/command_velocity' typedAs: 'turtlesim/Velocity' a: [ : msg |
+		me sendTo: '/turtle1/cmd_vel' typedAs: 'geometry_msgs/Twist' a: [ : msg |
 			type := msg class. 
 		].
 	].
@@ -27,7 +27,7 @@ PhaROSTopicTests >> testMessageType [
 	publisherNode execute. 
 	
 	
-	self assert: type = TurtlesimVelocity.
+	self assert: type = (Smalltalk at: #Geometry_msgsTwist).
 ]
 
 { #category : #'as yet unclassified' }
@@ -91,7 +91,7 @@ PhaROSTopicTests >> testTopicInputChannelConfiguration [
 
 	semaphore := Semaphore new.
 	
-	node := PhaROSTestNode  name: '/TestNode' domain: '127.0.0.1' tcpPort: 9983 xmlRpcPort:  6123 master: master.	
+	node := PhaROSTestNode  name: '/TestNode' domain: '127.0.0.1' tcpPort: 9983 xmlRpcPort: 63423 master: master.	
 	master registerNode: node.
 	node subscriberBehavior: [
 		:aMessage :aChannel  |
@@ -116,24 +116,20 @@ PhaROSTopicTests >> testTopicInputChannelConfiguration [
 
 { #category : #'as yet unclassified' }
 PhaROSTopicTests >> testTopicOutputChannelConfiguration [
-	| publisherNode  topic channel |
+	| publisherNode  topic channel pub |
 
-	publisherNode := PhaROSBlockNode name: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:98298  xmlRpcPort: 64465 master:master soul: [
-		: me |
-		
-		me sendTo: '/turtle1/command_velocity'  typedAs: 'turtlesim/Velocity' a: [ : msg |
-			topic :=  master lookupTopic: '/turtle1/command_velocity'.
-			channel := topic outputchannels detect: [ : o | o xmlurl = 'http://127.0.0.1:64465/' ].
-		].
-	].
+	publisherNode := PhaROSBlockNode name: '/PublisherTestNode' domain: 'localhost' tcpPort:9155  xmlRpcPort: 62504 master: master soul: [].
+
 	master registerNode: publisherNode .
-	publisherNode execute. 
 	
-	
+	pub := publisherNode publisher:  '/turtle1/cmd_vel'  typedAs: 'geometry_msgs/Twist' .
 	
 	(Delay forMilliseconds: 1500) wait.
 	
-	publisherNode execute. 
+	pub send: [ : msg |
+			topic :=  master lookupTopic: '/turtle1/cmd_vel'.
+			channel := topic outputchannels detect: [ : o | o xmlurl = 'http://localhost:62504/' ] ifNone: [ nil ].
+	].
 	
 	
 	self assert: topic notNil.
