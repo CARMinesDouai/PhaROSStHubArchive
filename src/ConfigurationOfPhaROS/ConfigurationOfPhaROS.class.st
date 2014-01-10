@@ -95,7 +95,7 @@ ConfigurationOfPhaROS class >> load: aPackage [
 
 { #category : #loading }
 ConfigurationOfPhaROS class >> loadBleedingEdge [
-	(self project version: #bleedingEdge) load:'default+tests'.
+	(self project version: #bleedingEdge) load.
 ]
 
 { #category : #loading }
@@ -295,8 +295,8 @@ ConfigurationOfPhaROS >> baseline11: spec [
 		
 		
 			"Testing"
-			spec package: 'PhaROSTest'.
-			spec package: 'PhaROSTestROS'.
+			spec package: 'PhaROSTest' with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSTestROS' with: [ spec requires: #('PhaROS')].
 			
 			"Cool tools"
 			spec package: 'PhaROSControllers' with: [ spec requires: #('PhaROS')].
@@ -305,7 +305,7 @@ ConfigurationOfPhaROS >> baseline11: spec [
 			"Infrastructure: deployment and generation of code"
 			
 			
-			spec package: 'PhaROSInfrastructure'.
+			spec package: 'PhaROSInfrastructure' with: [ spec requires: #('PhaROS')].
 			spec package: 'MiddlewareDeployment' with: [ spec requires: #('OSProcess')].
 			spec package: 'PhaROSDeploymentDirectory' with:[ spec requires:  #('MiddlewareDeployment')].
 			
@@ -336,11 +336,6 @@ ConfigurationOfPhaROS >> baseline11: spec [
 				spec requires:#('PhaROS' 'PhaROSControllers' 'PhaROSNodeletsTurtlesim' 'PhaROSNodeletsTF' )	
 			].
 		
-		
-			spec package: 'PhaROSPackagesTest' with: [ spec requires: #('PhaROS')].
-			
-			
-			
 			"PhaROS Configuration"	
 			
 			spec package: 'PhaROS' with: [
@@ -369,8 +364,6 @@ ConfigurationOfPhaROS >> baseline11: spec [
 	spec for: #'pharo2.x' do: [  
 		spec package: 'PhaROSPackageManager20'  with: [ spec requires: #( 'PhaROSInfrastructure')].
 		
-			
-		
 		spec group: 'default' with: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSPackageManager20' );
  			group: 'default+tests' with: #( 'PhaROS' 'PhaROSTest' 'PhaROSTestROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSPackageManager20');
 			
@@ -382,9 +375,6 @@ ConfigurationOfPhaROS >> baseline11: spec [
 			group: 'nodelets' with: #('nodelets-ros-controllers' 'nodelets-behavior');
 			group: 'all' with: #('default+tests' 'nodelets').
 	].
-
-	
-			
 		
 	
 ]
