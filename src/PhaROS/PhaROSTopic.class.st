@@ -24,7 +24,7 @@ Class {
 PhaROSTopic >> busInfoFor: aNode [
 
 	 ^ { 
-		{ '0' . '/turtlesim' . 'o' . 'TCPROS' . '/turtle1/command_velocity' }  
+		{ '0' . '/turtlesim' . 'o' . 'TCPROS' . '/turtle1/cmd_vel' }  
 	}.
 ]
 

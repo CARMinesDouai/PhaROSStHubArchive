@@ -22,7 +22,7 @@ PhaROSSlave >> getBusInfo: aCallerId [
 	
 	
 	"info := { 
-		{ '0' . '/turtlesim' . 'i' . 'TCPROS' . '/turtle1/command_velocity' }  
+		{ '0' . '/turtlesim' . 'i' . 'TCPROS' . '/turtle1/cmd_vel' }  
 	}."
 	
 	 ^{ 1 . 'bus info' . info asArray }.

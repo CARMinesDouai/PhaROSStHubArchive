@@ -1,7 +1,7 @@
-Extension { #name : #BasicCodeLoader }
+Extension { #name : #BasicCommandLineHandler }
 
 { #category : #'*PhaROS' }
-BasicCodeLoader classSide >> commandLineHandlerAction: aCommandLine [
+BasicCommandLineHandler class >> commandLineHandlerAction: aCommandLine [
 	"Load the file specified on the command line"
 	| loader |
 	loader := self new.
@@ -11,7 +11,7 @@ BasicCodeLoader classSide >> commandLineHandlerAction: aCommandLine [
 ]
 
 { #category : #'*PhaROS' }
-BasicCodeLoader classSide >> commandLineHandlerCondition: aCommandLine [
+BasicCommandLineHandler class >> commandLineHandlerCondition: aCommandLine [
 	| bool | 
 	"Ensure that:
 		- there is a parameter
@@ -25,7 +25,7 @@ BasicCodeLoader classSide >> commandLineHandlerCondition: aCommandLine [
 ]
 
 { #category : #'*PhaROS' }
-BasicCodeLoader classSide >> parameterFrom: aCommandLine [
+BasicCommandLineHandler class >> parameterFrom: aCommandLine [
 
 	^ ((aCommandLine parameterAt: 1) copyReplaceAll: Character cr asString with: '') copyReplaceAll: Character lf asString with: ''. 
 ]

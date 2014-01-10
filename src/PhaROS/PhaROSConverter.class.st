@@ -22,7 +22,7 @@ PhaROSConverter class >> positionToPoint: aPhaROSValue [
 
 { #category : #'convertion-registry' }
 PhaROSConverter class >> turtlesimVelocityToPoint: aPhaROSValue [ 
-	< from: #TurtlesimVelocity to: #Point >
+	< from: #Turtle_actionlibVelocity to: #Point >
 	^ aPhaROSValue linear @ aPhaROSValue angular.
 
 ]
