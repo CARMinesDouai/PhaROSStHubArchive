@@ -14,17 +14,27 @@ PhaROSTopicTests >> setUp [
 
 { #category : #'as yet unclassified' }
 PhaROSTopicTests >> testMessageType [
-	| publisherNode  type |
+	| publisherNode  type  pub |
 
-	publisherNode := PhaROSBlockNode name: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:  9999  xmlRpcPort:  6127 master: master soul: [
-		: me |
-		me sendTo: '/turtle1/cmd_vel' typedAs: 'geometry_msgs/Twist' a: [ : msg |
-			type := msg class. 
-		].
+publisherNode := PhaROSBlockNode name: '/PublisherTestNode' domain: 'localhost' tcpPort:9157  xmlRpcPort: 6206 master: master soul: [].
+
+	master registerNode: publisherNode .
+	
+	pub := publisherNode publisher:  '/turtle1/cmd_vel'  typedAs: 'geometry_msgs/Twist' .
+	
+	pub send: [ : msg |
+			self halt.
+			type := msg class
+	].
+	(Delay forMilliseconds: 1500) wait.
+	pub send: [ : msg |
+			self halt.
+			type := msg class
 	].
 	
-	master registerNode: publisherNode.
-	publisherNode execute. 
+	
+	
+	
 	
 	
 	self assert: type = (Smalltalk at: #Geometry_msgsTwist).
@@ -118,7 +128,7 @@ PhaROSTopicTests >> testTopicInputChannelConfiguration [
 PhaROSTopicTests >> testTopicOutputChannelConfiguration [
 	| publisherNode  topic channel pub |
 
-	publisherNode := PhaROSBlockNode name: '/PublisherTestNode' domain: 'localhost' tcpPort:9155  xmlRpcPort: 62504 master: master soul: [].
+	publisherNode := PhaROSBlockNode name: '/PublisherTestNode' domain: 'localhost' tcpPort:9157  xmlRpcPort: 62506 master: master soul: [].
 
 	master registerNode: publisherNode .
 	
@@ -128,7 +138,7 @@ PhaROSTopicTests >> testTopicOutputChannelConfiguration [
 	
 	pub send: [ : msg |
 			topic :=  master lookupTopic: '/turtle1/cmd_vel'.
-			channel := topic outputchannels detect: [ : o | o xmlurl = 'http://localhost:62504/' ] ifNone: [ nil ].
+			channel := topic outputchannels detect: [ : o | o xmlurl = 'http://localhost:62506/' ] ifNone: [ nil ].
 	].
 	
 	

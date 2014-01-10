@@ -77,14 +77,14 @@ PhaROSXMLRPCTest >> testGetTopicTypes [
 
 { #category : #testing }
 PhaROSXMLRPCTest >> testGetUri [
-	self assert: ( master getUri: self callerId) =  (masterUrl, '/')
+	self assert: ( master getUri: self callerId) = (masterUrl, '/')
 ]
 
 { #category : #testing }
 PhaROSXMLRPCTest >> testLookupNode [
 	|node|
 	node :=  master lookupNode: '/rosout' with: self callerId.
-	self assert: (node url  authority  = masterUrl asUrl authority )
+	self assert: (node url  host  = masterUrl asUrl host)
 ]
 
 { #category : #testing }
@@ -92,14 +92,13 @@ PhaROSXMLRPCTest >> testLookupService [
 	|service expectedServiceName|
 	expectedServiceName := '/rosout/get_loggers'.
 	service :=  master lookupService: expectedServiceName with: self callerId.
-	self assert: service hostName = masterUrl asUrl authority.
+	self assert: service hostName = masterUrl asUrl host.
 	self assert: service serviceName = expectedServiceName 
 ]
 
 { #category : #testing }
 PhaROSXMLRPCTest >> testRegisterPublisher [
 	| currentData callerURI |
-
 	callerURI := 'http://127.0.0.1:9090/'.
 	currentData :=  master registerPublisher: self callerId  to: 'rosout' with: 'rosgraph_msgs/Log'  andCallerUri: callerURI .
 	
@@ -150,7 +149,6 @@ PhaROSXMLRPCTest >> testRegisterSubscriber [
 { #category : #testing }
 PhaROSXMLRPCTest >> testUnregisterPublisher [
 	| currentData callerURI |
-	
 	self testRegisterPublisher.
 	
 	callerURI :=  'http://127.0.0.1:9090/'.
