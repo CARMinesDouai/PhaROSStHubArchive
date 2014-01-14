@@ -64,19 +64,18 @@ PhaROSHSMessageDecoder >> dataSizeFrom: byteStream [
 
 { #category : #decoding }
 PhaROSHSMessageDecoder >> decode: byteStream [
-	|  headerSize bodySize |
+	|  headerSize |
 	
 	[" Header parsing "
-		
-		headerSize := self dataSizeFrom: byteStream.
+		headerSize := (self dataSizeFrom: byteStream).
 		self initHeaderFrom: (byteStream next: headerSize).
 		
 		((tcpmessage header includesKey: 'response_type') )ifTrue: [
 			(tcpmessage header at: 'response_type') = 'roscpp/GetLoggersResponse' ifTrue: [
 				| type body |
-				
 				type := 
 				 PhaROSType composite: {
+					#bug -> (PhaROSArrayFixedLenghtType of: 5 of: PhaROSUInt8Type).
 					#loggers -> (PhaROSArrayType of: (PhaROSTypeBrowser instance definition: 'roscpp/Logger') ).
 				} named: 'roscpp/GetLoggersResponse' withConstants:{}. 
 				

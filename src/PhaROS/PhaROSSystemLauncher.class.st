@@ -25,18 +25,13 @@ PhaROSSystemLauncher class >> fuerte [
 
 { #category : #'as yet unclassified' }
 PhaROSSystemLauncher class >> groovy [
-	^'/opt/ros/groovy/bin'
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSSystemLauncher class >> hydro [
-	^'/opt/ros/hydro/bin'
+	^'/opt/ros/groovy/bin/'
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSSystemLauncher class >> initialize [
 	super initialize.
-	distro := #hydro.
+	distro := #groovy.
 ]
 
 { #category : #'as yet unclassified' }

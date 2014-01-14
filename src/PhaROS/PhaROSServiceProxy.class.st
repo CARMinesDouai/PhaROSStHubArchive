@@ -137,6 +137,6 @@ PhaROSServiceProxy >> uri: anObject [
 { #category : #'initialize-release' }
 PhaROSServiceProxy >> uriFrom: aString [
 	| newUri |
-	newUri := ZnUrl fromString: aString.
+	newUri := URI fromString: aString.
 	self uri: newUri
 ]
