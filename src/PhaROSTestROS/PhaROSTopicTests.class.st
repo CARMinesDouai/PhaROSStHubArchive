@@ -14,30 +14,20 @@ PhaROSTopicTests >> setUp [
 
 { #category : #'as yet unclassified' }
 PhaROSTopicTests >> testMessageType [
-	| publisherNode  type  pub |
+	| publisherNode  type |
 
-publisherNode := PhaROSBlockNode name: '/PublisherTestNode' domain: 'localhost' tcpPort:9157  xmlRpcPort: 6206 master: master soul: [].
-
-	master registerNode: publisherNode .
-	
-	pub := publisherNode publisher:  '/turtle1/cmd_vel'  typedAs: 'geometry_msgs/Twist' .
-	
-	pub send: [ : msg |
-			self halt.
-			type := msg class
-	].
-	(Delay forMilliseconds: 1500) wait.
-	pub send: [ : msg |
-			self halt.
-			type := msg class
+	publisherNode := PhaROSBlockNode name: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:  9999  xmlRpcPort:  6127 master: master soul: [
+		: me |
+		me sendTo: '/turtle1/command_velocity' typedAs: 'turtlesim/Velocity' a: [ : msg |
+			type := msg class. 
+		].
 	].
 	
+	master registerNode: publisherNode.
+	publisherNode execute. 
 	
 	
-	
-	
-	
-	self assert: type = (Smalltalk at: #Geometry_msgsTwist).
+	self assert: type = TurtlesimVelocity.
 ]
 
 { #category : #'as yet unclassified' }
@@ -101,7 +91,7 @@ PhaROSTopicTests >> testTopicInputChannelConfiguration [
 
 	semaphore := Semaphore new.
 	
-	node := PhaROSTestNode  name: '/TestNode' domain: '127.0.0.1' tcpPort: 9983 xmlRpcPort: 63423 master: master.	
+	node := PhaROSTestNode  name: '/TestNode' domain: '127.0.0.1' tcpPort: 9983 xmlRpcPort:  6123 master: master.	
 	master registerNode: node.
 	node subscriberBehavior: [
 		:aMessage :aChannel  |
@@ -126,20 +116,24 @@ PhaROSTopicTests >> testTopicInputChannelConfiguration [
 
 { #category : #'as yet unclassified' }
 PhaROSTopicTests >> testTopicOutputChannelConfiguration [
-	| publisherNode  topic channel pub |
+	| publisherNode  topic channel |
 
-	publisherNode := PhaROSBlockNode name: '/PublisherTestNode' domain: 'localhost' tcpPort:9157  xmlRpcPort: 62506 master: master soul: [].
-
+	publisherNode := PhaROSBlockNode name: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:98298  xmlRpcPort: 64465 master:master soul: [
+		: me |
+		
+		me sendTo: '/turtle1/command_velocity'  typedAs: 'turtlesim/Velocity' a: [ : msg |
+			topic :=  master lookupTopic: '/turtle1/command_velocity'.
+			channel := topic outputchannels detect: [ : o | o xmlurl = 'http://127.0.0.1:64465/' ].
+		].
+	].
 	master registerNode: publisherNode .
+	publisherNode execute. 
 	
-	pub := publisherNode publisher:  '/turtle1/cmd_vel'  typedAs: 'geometry_msgs/Twist' .
+	
 	
 	(Delay forMilliseconds: 1500) wait.
 	
-	pub send: [ : msg |
-			topic :=  master lookupTopic: '/turtle1/cmd_vel'.
-			channel := topic outputchannels detect: [ : o | o xmlurl = 'http://localhost:62506/' ] ifNone: [ nil ].
-	].
+	publisherNode execute. 
 	
 	
 	self assert: topic notNil.

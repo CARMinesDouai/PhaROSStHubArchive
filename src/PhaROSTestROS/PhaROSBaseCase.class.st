@@ -17,9 +17,7 @@ PhaROSBaseCase >> callerId [
 
 { #category : #'default parameters' }
 PhaROSBaseCase >> defaultMasterIp [
-	^ NetNameResolver localHostName
-	
-	" 'localhost'"
+	^ 'localhost'
 ]
 
 { #category : #'default parameters' }
