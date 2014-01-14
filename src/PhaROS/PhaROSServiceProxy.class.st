@@ -31,24 +31,27 @@ PhaROSServiceProxy >> bytesForMessageWithArgs: args [
 
 { #category : #calling }
 PhaROSServiceProxy >> call [
-	^self callWithArgs: #()
+	^self call: [ : m | ]
 ]
 
 { #category : #calling }
-PhaROSServiceProxy >> callWithArgs: args [
-	| socketStr messageBytes response |
-	args size > 0 ifTrue: [
-		Error signal: ' Un implemented call to service with arguments '	.
-	].
+PhaROSServiceProxy >> call: aBlock [
+
+	| socketStr messageBytes response request |
+
+	request := requestType newPacket.
+	aBlock value: request value. 
 	
-	messageBytes := self bytesForMessageWithArgs: args.
+	messageBytes := (PhaROSHSMessageEncoder encode: (self messageHeader)), request dump.
+	
 	socketStr := SocketStream openConnectionToHostNamed: self hostName port: self port.
 	^
 	[ 
-		socketStr sendCommand: messageBytes, #[0 0 0 0].
-		response := socketStr upToEnd.
+		socketStr sendCommand: messageBytes.
+		response := responseType newPacket.
+		response loadStream: socketStr.
 		socketStr close.
-		PhaROSHSMessage newServiceMessageFrom: response asByteArray readStream
+		response value.
 	] doIt asResult.
 
 
@@ -97,8 +100,7 @@ PhaROSServiceProxy >> md5sum: aSum [
 ]
 
 { #category : #calling }
-PhaROSServiceProxy >> messageWithArgs: args [
-
+PhaROSServiceProxy >> messageHeader [ 
 	^ PhaROSHSMessage newServiceClientWith: [
 		:header |
 		header callerId: self callerId;
