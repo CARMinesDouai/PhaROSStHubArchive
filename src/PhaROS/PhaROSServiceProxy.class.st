@@ -53,11 +53,16 @@ PhaROSServiceProxy >> call: aBlock [
 		socketStr sendCommand: messageBytes.
 		response := responseType newPacket.
 		stream := socketStr upToEnd asByteArray readStream.
-		header := PhaROSHSMessageHeader newServiceClientMessageFrom: stream.
-		stream next.
-		self halt.
-		response loadStream: stream.
 		socketStr close.
+		header := PhaROSHSMessageHeader newServiceClientMessageFrom: stream.
+		
+		header persistent ifTrue: [  self error:' Persistent service is not implemented yet'   ].
+		
+		
+		self flag: #thisStreamNextIsABug. "BUG"
+		stream next.
+		
+		response loadStream: stream.
 		response value.
 	] doIt asResult.
 

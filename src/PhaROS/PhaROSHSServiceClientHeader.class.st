@@ -16,7 +16,7 @@ PhaROSHSServiceClientHeader class >> verificationDictionary [
 
 { #category : #accessing }
 PhaROSHSServiceClientHeader >> persistent [
-	^self optativeAt:'persistent'.
+	^(self optativeAt:'persistent') ifNil: [false].
 ]
 
 { #category : #accessing }
