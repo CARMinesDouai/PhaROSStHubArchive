@@ -1,11 +1,11 @@
 Class {
-	#name : #PhaROSHSServiceClient,
-	#superclass : #PhaROSHSMessage,
+	#name : #PhaROSHSServiceClientHeader,
+	#superclass : #PhaROSHSMessageHeader,
 	#category : #'PhaROS-Network-Tcp-Messages'
 }
 
 { #category : #accessing }
-PhaROSHSServiceClient class >> verificationDictionary [ 
+PhaROSHSServiceClientHeader class >> verificationDictionary [ 
 	^super verificationDictionary addAll: (
 		{ 
 			#md5Sum -> ByteString .
@@ -15,21 +15,21 @@ PhaROSHSServiceClient class >> verificationDictionary [
 ]
 
 { #category : #accessing }
-PhaROSHSServiceClient >> persistent [
+PhaROSHSServiceClientHeader >> persistent [
 	^self optativeAt:'persistent'.
 ]
 
 { #category : #accessing }
-PhaROSHSServiceClient >> persistent: aBoolean [ 
+PhaROSHSServiceClientHeader >> persistent: aBoolean [ 
 	^self at:'persistent' put: aBoolean .
 ]
 
 { #category : #accessing }
-PhaROSHSServiceClient >> service [
+PhaROSHSServiceClientHeader >> service [
 	^self at:'service'.
 ]
 
 { #category : #accessing }
-PhaROSHSServiceClient >> service: aServiceName [
+PhaROSHSServiceClientHeader >> service: aServiceName [
 	^self at:'service' put: aServiceName.
 ]

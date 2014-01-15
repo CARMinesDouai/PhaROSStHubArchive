@@ -136,7 +136,7 @@ PhaROSTransport >> remotePublisherNode: anURL to: aTopic [
 	socket := self comm resolveSocketTo: aTopic of: anURL for: node.
 		
 	
-	message := PhaROSHSMessage newSubscriberWith:[
+	message := PhaROSHSMessageHeader newSubscriberWith:[
 		:msg |
 		msg callerId: node name	;
 				topic: aTopic name;
@@ -150,7 +150,7 @@ PhaROSTransport >> remotePublisherNode: anURL to: aTopic [
 	
 	stream := SocketStream on: socket.
 	stream binary. 
-	connectionMessage := PhaROSHSMessage newSubscriberMessageFrom:stream.
+	connectionMessage := PhaROSHSMessageHeader newSubscriberMessageFrom:stream.
 	
 	
 	^ PhaROSExternalPublisherNode new xmlurl:anURL;  socket: socket; stream: stream; topic: aTopic; yourself.
@@ -200,7 +200,7 @@ PhaROSTransport >> subscribe: aNodeName with: aSocket to: aTopicID [
 	topic := master lookupTopic: aTopicID.
 	channel := (topic  publishingChannelFor: node).
 	
-	handshakeMessage := PhaROSHSMessage newPublisherWith: [ :msg |
+	handshakeMessage := PhaROSHSMessageHeader newPublisherWith: [ :msg |
 		msg callerId: channel owner name.
 		msg md5Sum: topic md5Sum.
 		msg type: topic type.

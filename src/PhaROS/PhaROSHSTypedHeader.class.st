@@ -1,11 +1,11 @@
 Class {
-	#name : #PhaROSHSTyped,
-	#superclass : #PhaROSHSMessage,
+	#name : #PhaROSHSTypedHeader,
+	#superclass : #PhaROSHSMessageHeader,
 	#category : #'PhaROS-Network-Tcp-Messages'
 }
 
 { #category : #verification }
-PhaROSHSTyped class >> verificationDictionary [ 
+PhaROSHSTypedHeader class >> verificationDictionary [ 
 	^super verificationDictionary addAll: (
 		{ 
 			#md5Sum -> ByteString .
@@ -15,14 +15,14 @@ PhaROSHSTyped class >> verificationDictionary [
 ]
 
 { #category : #accessing }
-PhaROSHSTyped >> type [
+PhaROSHSTypedHeader >> type [
 	^self at: 'type'.
 		
 
 ]
 
 { #category : #accessing }
-PhaROSHSTyped >> type: aString [
+PhaROSHSTypedHeader >> type: aString [
 	^self at: 'type' put: aString.
 		
 

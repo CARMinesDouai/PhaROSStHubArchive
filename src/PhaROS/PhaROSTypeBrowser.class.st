@@ -14,6 +14,17 @@ Class {
 PhaROSTypeBrowser class >> instance [
 	^ instance ifNil: [
 		instance := super new.	
+		instance register: 
+					(PhaROSType composite: {
+						#bug -> (PhaROSArrayFixedLenghtType of: 5 of: PhaROSUInt8Type).
+						#loggers -> (PhaROSArrayType of: (PhaROSTypeBrowser instance definition: 'roscpp/Logger') ).
+					} named: 'roscpp/GetLoggersResponse' withConstants:{})
+				at: 'roscpp/GetLoggersResponse'. 
+	
+		instance register: 
+					(PhaROSType composite: {
+					} named: 'roscpp/GetLoggersRequest' withConstants:{})
+				at: 'roscpp/GetLoggersRequest'. 
 	].
 ]
 
@@ -149,4 +160,9 @@ PhaROSTypeBrowser >> md5Sum: aTypeId [
 	" put the \n character away "
 	^ md5 = '' ifTrue: [ md5 ] ifFalse: [ md5 copyFrom: 1 to: md5 size -1 ].
 	
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTypeBrowser >> register: aType at: aName [
+	browse at:aName put: aType.
 ]

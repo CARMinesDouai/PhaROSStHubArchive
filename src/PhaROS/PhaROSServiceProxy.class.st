@@ -31,7 +31,7 @@ PhaROSServiceProxy >> bytesForMessageWithArgs: args [
 
 { #category : #calling }
 PhaROSServiceProxy >> call [
-	^self call: [ : m | ]
+	^self call: [ : m | self halt .]
 ]
 
 { #category : #calling }
@@ -40,6 +40,7 @@ PhaROSServiceProxy >> call: aBlock [
 	| socketStr messageBytes response request |
 
 	request := requestType newPacket.
+	
 	aBlock value: request value. 
 	
 	messageBytes := (PhaROSHSMessageEncoder encode: (self messageHeader)), request dump.
@@ -47,8 +48,12 @@ PhaROSServiceProxy >> call: aBlock [
 	socketStr := SocketStream openConnectionToHostNamed: self hostName port: self port.
 	^
 	[ 
+		|  header|
+
 		socketStr sendCommand: messageBytes.
 		response := responseType newPacket.
+		header := PhaROSHSMessageHeader newServiceClientMessageFrom: socketStr.
+		self halt.
 		response loadStream: socketStr.
 		socketStr close.
 		response value.
@@ -72,7 +77,7 @@ PhaROSServiceProxy >> loadType [
 	|socketStr typeBrowse response |
 	socketStr := SocketStream openConnectionToHostNamed: self hostName port: self port.
 	
-	typeBrowse := PhaROSHSMessage newServiceClientWith: [
+	typeBrowse := PhaROSHSMessageHeader newServiceClientWith: [
 		:header |
 		header callerId: self callerId;
 				md5Sum: '*';
@@ -82,10 +87,11 @@ PhaROSServiceProxy >> loadType [
 	socketStr sendCommand:( PhaROSHSMessageEncoder encode: typeBrowse), #[0 0 0 0].
 	response := socketStr upToEnd.
 	socketStr close.
-	response := PhaROSHSMessage newServiceMessageFrom: response asByteArray readStream.
+	response := PhaROSHSMessageHeader newServiceMessageFrom: response asByteArray readStream.
 	md5sum := response md5sum.
-	requestType := response requestType.
-	responseType := response responseType.
+	
+	requestType :=  PhaROSTypeBrowser instance definition: response requestType.
+	responseType := PhaROSTypeBrowser instance definition: response responseType.
 ]
 
 { #category : #calling }
@@ -101,7 +107,7 @@ PhaROSServiceProxy >> md5sum: aSum [
 
 { #category : #calling }
 PhaROSServiceProxy >> messageHeader [ 
-	^ PhaROSHSMessage newServiceClientWith: [
+	^ PhaROSHSMessageHeader newServiceClientWith: [
 		:header |
 		header callerId: self callerId;
 				md5Sum: self md5Sum;
