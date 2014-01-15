@@ -14,42 +14,20 @@ PhaROSTopicTests >> setUp [
 
 { #category : #'as yet unclassified' }
 PhaROSTopicTests >> testMessageType [
-	| node  semaphore publisherNode type |
+	| publisherNode  type |
 
-	semaphore := Semaphore new.
-	
-	node :=  PhaROSTestNode  name: '/TestNode' domain: '127.0.0.1' tcpPort: 9930 xmlRpcPort:  6123 master: master. 	
-	master registerNode: node.
-
-
-	publisherNode :=PhaROSBlockNode name: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:  9999  xmlRpcPort:  6127 master: master soul: [
+	publisherNode := PhaROSBlockNode name: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:  9999  xmlRpcPort:  6127 master: master soul: [
 		: me |
-		me sendTo: '/turtle1/pose'  typedAs: 'turtlesim/Pose' a: [ : msg |
+		me sendTo: '/turtle1/command_velocity' typedAs: 'turtlesim/Velocity' a: [ : msg |
 			type := msg class. 
 		].
 	].
-
+	
 	master registerNode: publisherNode.
 	publisherNode execute. 
 	
 	
-	node subscriberBehavior: [
-		:aMessage :aChannel  |
-		semaphore signal.
-	].
-
-	node subscriber: '/turtle1/pose' typedAs: 'turtlesim/Pose' .
-
-	1 second asDelay wait. 
-	
-	publisherNode execute. 
-	
-	semaphore waitTimeoutSeconds: 5.
-	
-	(Delay forMilliseconds: 1500) wait.
-
-	publisherNode execute.
-	self assert: type = TurtlesimPose.
+	self assert: type = TurtlesimVelocity.
 ]
 
 { #category : #'as yet unclassified' }
