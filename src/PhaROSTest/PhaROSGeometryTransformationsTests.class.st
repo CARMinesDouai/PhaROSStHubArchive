@@ -23,7 +23,7 @@ PhaROSGeometryTransformationsTests >> testPositionRotation [
 { #category : #'as yet unclassified' }
 PhaROSGeometryTransformationsTests >> testQuaternionAsRPY [
 	| ang |
-	<expectedFailure>
+	
 	ang := PhaROSQuaternion zero asRPY .
 	
 	self assert: ang roll = 0.0.
@@ -33,7 +33,7 @@ PhaROSGeometryTransformationsTests >> testQuaternionAsRPY [
 
 	
 
-	ang := (PhaROSQuaternion x: 0.0 y: 0.001 z: 0.0 w: -1.0) asRPY.
+	ang := (PhaROSQuaternion x: 0.0 y: 0.001 z: 0.0 w: -1.0) asRPY .
 	
 	self assert: ang roll = Float pi.
 	self assert: ang pitch = Float pi.
@@ -84,7 +84,6 @@ PhaROSGeometryTransformationsTests >> testTransformation [
 { #category : #'as yet unclassified' }
 PhaROSGeometryTransformationsTests >> testTransformationBack [
 	| util |
-	<expectedFailure>
 	util := PhaROSGeometryTransformations new.
 	#(0.0  0.0  0.0) with: (util eulerFromQuaternation:#(0.0 0.0 0.0 1.0) ) do: [ :a :b | self assert: (a closeTo: b)].
 	#(0.0  0.0  1.0006) with: (util eulerFromQuaternation:#(0.0 0.0 0.48 0.878) ) do: [ :a :b | self assert: (a closeTo: b)].

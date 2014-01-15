@@ -87,6 +87,12 @@ PhaROSCompositeTypeTest >> testUnserialize [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSCompositeTypeTest >> testUnserializeFail [
+	^ super baseUnserializeFail.
+		
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSCompositeTypeTest >> validValues [ 	
 	
 	| instance |

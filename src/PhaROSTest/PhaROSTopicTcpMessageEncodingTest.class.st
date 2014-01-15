@@ -58,7 +58,7 @@ PhaROSTopicTcpMessageEncodingTest >> setUp [
 	super setUp.
 
 "	RoStHandShakeMessageDecoder decode: self expectedByteArray."
-	message := PhaROSHSMessage newPublisherWith: [
+	message := PhaROSHSMessageHeader newPublisherWith: [
 		:msg  | 
 		msg  	
 		messageDefinition: 'string data', String lf, String lf;	
