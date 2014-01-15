@@ -57,3 +57,8 @@ PhaROSHSServiceClientHeader >> service [
 PhaROSHSServiceClientHeader >> service: aServiceName [
 	^self at:'service' put: aServiceName.
 ]
+
+{ #category : #accesing }
+PhaROSHSServiceClientHeader >> type [
+	^ header at: #type
+]

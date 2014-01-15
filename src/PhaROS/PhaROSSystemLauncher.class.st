@@ -112,6 +112,67 @@ PhaROSSystemLauncher >> rosMsgShow: aTypeId [
 	^  self rosMsg: 'show' with: aTypeId. 
 ]
 
+{ #category : #types }
+PhaROSSystemLauncher >> rosSrv: aCommand [ 
+	
+	
+	^ self rosSrv: { aCommand } tmpFile:  aCommand .
+	
+]
+
+{ #category : #types }
+PhaROSSystemLauncher >> rosSrv: anArrayOfArguments tmpFile: aTempFileName [
+	| rosmsg outstream errstream  return |
+	
+	
+	outstream := StandardFileStream forceNewFileNamed: '/tmp/',aTempFileName,'.tmp'.
+	errstream := StandardFileStream forceNewFileNamed: '/tmp/error_',aTempFileName,'.tmp'.
+	
+	rosmsg  :=  ExternalUnixOSProcess 
+							forkAndExec: (PhaROSSystemLauncher path: 'rossrv' )  
+							arguments: anArrayOfArguments 
+							environment:  nil 
+							descriptors: { FileStream stdin . outstream . errstream } .  
+		
+	[ rosmsg isComplete not ] whileTrue: [
+		(Delay forMilliseconds: 100) wait.
+	].
+	
+	rosmsg succeeded ifTrue: [
+		return := outstream reset; upToEnd.
+		outstream close.
+		errstream close.
+	] ifFalse: [
+		Error signal: 'Error discovering service type. Is this process running in a ROS environment?', ( errstream reset; upToEnd).
+		outstream close.
+		errstream close.
+	].
+
+	^ return.
+
+]
+
+{ #category : #types }
+PhaROSSystemLauncher >> rosSrv: aCommand with: aTypeId [
+	
+	
+	^ self rosSrv: { aCommand . aTypeId } tmpFile: (aTypeId copyReplaceAll: '/' with:'_').
+	
+]
+
+{ #category : #types }
+PhaROSSystemLauncher >> rosSrvMd5: aTypeId [
+
+		^ self rosSrv: 'md5' with: aTypeId. 
+
+]
+
+{ #category : #types }
+PhaROSSystemLauncher >> rosSrvShow: aTypeId [
+
+	^  self rosSrv: 'show' with: aTypeId. 
+]
+
 { #category : #launching }
 PhaROSSystemLauncher >> roslaunch: aConfigurationFile [
 | roslaunch |

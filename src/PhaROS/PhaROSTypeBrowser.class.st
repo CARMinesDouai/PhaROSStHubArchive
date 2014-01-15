@@ -24,6 +24,14 @@ PhaROSTypeBrowser class >> instance [
 					(PhaROSType composite: {
 					} named: 'roscpp/GetLoggersRequest' withConstants:{})
 				at: 'roscpp/GetLoggersRequest'. 
+		instance register: 
+					(PhaROSType composite: {
+					} named: 'std_srvs/EmptyRequest' withConstants:{})
+				at: 'std_srvs/EmptyRequest'. 
+		instance register: 
+					(PhaROSType composite: {
+					} named: 'std_srvs/EmptyResponse' withConstants:{})
+				at: 'std_srvs/EmptyResponse'. 
 	].
 ]
 
@@ -76,39 +84,7 @@ PhaROSTypeBrowser >> definition: aTypeId [
 	
 			firstLevel := (Character lf split:( PhaROSSystemLauncher instance rosMsgShow: aTypeId ) ) select: [ :str | (str beginsWith: ' ') not & (str size > 3) ] .
 						
-			(PhaROSType composite: (  
-				firstLevel select:[ : each | (each indexOf: $=) = 0] thenCollect: [
-					:each |
-					| type name association |
-					 type := ($ split: each).
-					name :=type at:2.
-					type := type at: 1.
-					
-					
-					((type indexOf: $[) = 0 ) ifTrue:[
-						association := ( name asSymbol -> (self definition: type)  ).
-					] ifFalse: [
-						((type indexOf: $]) = ((type indexOf: $[ )+1) ) ifTrue: [
-							association := (name asSymbol -> (PhaROSArrayType ofType: (self definition: (type copyReplaceAll: '[]' with: '') )  ) ).
-						] ifFalse: [
-							| size innerType |	
-							size := type copyFrom: ((type indexOf: $[) +1) to: ((type indexOf: $]) -1) asInteger .
-							innerType :=  self definition: (type copyFrom:1 to: ((type indexOf: $[) -1 ) ) .
-						
-						      association := ( name asSymbol ->  (PhaROSArrayFixedLenghtType of: size  ofType: innerType )  )
-						].
-						].
-			 ]
-			)  asArray named: aTypeId withConstants:(
-				firstLevel select:[ : each | (each indexOf: $=) ~= 0] thenCollect: [: each| 
-					| token type name constantValue |
-					token := ($ split: each).
-					name :=($= split: ( token at:2))at:1.
-					type := self definition: (token at:1).
-					constantValue  := type constantValue: (($= split: ( token at:2))at:2).
-					name asSymbol -> constantValue.
-				] )
-			) relatedClass; yourself.
+			self typeNamed: aTypeId for: firstLevel.
 
 		]) 
 
@@ -164,4 +140,65 @@ PhaROSTypeBrowser >> md5Sum: aTypeId [
 { #category : #'as yet unclassified' }
 PhaROSTypeBrowser >> register: aType at: aName [
 	browse at:aName put: aType.
+]
+
+{ #category : #browsing }
+PhaROSTypeBrowser >> serviceDefinition: aTypeId [
+
+	
+	^ (self browser at: aTypeId ifAbsentPut: [
+			| code instructions request response |
+			
+			
+			code :=  '---' split: (PhaROSSystemLauncher instance rosSrvShow: aTypeId).
+			
+			instructions := (Character lf split:( code at:1 ) ) select: [ :str | (str beginsWith: ' ') not & (str size > 3) ] .
+			request := self typeNamed:( '{1}Request' format:{ aTypeId} )for: (instructions).
+			
+			
+			instructions := (Character lf split:( code at:2 ) ) select: [ :str | (str beginsWith: ' ') not & (str size > 3) ] .
+			response := self typeNamed:( '{1}Response' format:{ aTypeId} )for: (instructions).
+			
+			{ request . response }
+
+		]) 
+
+
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTypeBrowser >> typeNamed: aTypeId for: firstLevel [ 
+	^ (PhaROSType composite: (  
+				firstLevel select:[ : each | (each indexOf: $=) = 0] thenCollect: [
+					:each |
+					| type name association |
+					 type := ($ split: each).
+					name :=type at:2.
+					type := type at: 1.
+					
+					
+					((type indexOf: $[) = 0 ) ifTrue:[
+						association := ( name asSymbol -> (self definition: type)  ).
+					] ifFalse: [
+						((type indexOf: $]) = ((type indexOf: $[ )+1) ) ifTrue: [
+							association := (name asSymbol -> (PhaROSArrayType ofType: (self definition: (type copyReplaceAll: '[]' with: '') )  ) ).
+						] ifFalse: [
+							| size innerType |	
+							size := type copyFrom: ((type indexOf: $[) +1) to: ((type indexOf: $]) -1) asInteger .
+							innerType :=  self definition: (type copyFrom:1 to: ((type indexOf: $[) -1 ) ) .
+						
+						      association := ( name asSymbol ->  (PhaROSArrayFixedLenghtType of: size  ofType: innerType )  )
+						].
+						].
+			 ]
+			)  asArray named: aTypeId withConstants:(
+				firstLevel select:[ : each | (each indexOf: $=) ~= 0] thenCollect: [: each| 
+					| token type name constantValue |
+					token := ($ split: each).
+					name :=($= split: ( token at:2))at:1.
+					type := self definition: (token at:1).
+					constantValue  := type constantValue: (($= split: ( token at:2))at:2).
+					name asSymbol -> constantValue.
+				] )
+			) relatedClass; yourself.
 ]

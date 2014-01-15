@@ -82,7 +82,7 @@ PhaROSServiceProxy >> hostName [
 { #category : #calling }
 PhaROSServiceProxy >> loadType [
 
-	| socketStr messageBytes header  |
+	| socketStr messageBytes header types |
 
 	
 	messageBytes := (PhaROSHSMessageEncoder encode: (self messageHeaderForBrowseType)), #[0 0 0 0].
@@ -92,8 +92,9 @@ PhaROSServiceProxy >> loadType [
 	header := PhaROSHSMessageHeader newServiceClientMessageFrom: (socketStr upToEnd ) asByteArray readStream.
 	socketStr close.
 
-	requestType :=  PhaROSTypeBrowser instance definition: header requestType.
-	responseType := PhaROSTypeBrowser instance definition: header responseType.
+	types := PhaROSTypeBrowser instance serviceDefinition: header type. 
+	requestType :=  types at: 1.
+	responseType := types at: 2.
 	md5sum := header md5Sum.
 	
 
