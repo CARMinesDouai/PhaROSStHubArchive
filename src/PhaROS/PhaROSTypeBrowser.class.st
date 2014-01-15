@@ -16,7 +16,6 @@ PhaROSTypeBrowser class >> instance [
 		instance := super new.	
 		instance register: 
 					(PhaROSType composite: {
-						#bug -> (PhaROSArrayFixedLenghtType of: 5 of: PhaROSUInt8Type).
 						#loggers -> (PhaROSArrayType of: (PhaROSTypeBrowser instance definition: 'roscpp/Logger') ).
 					} named: 'roscpp/GetLoggersResponse' withConstants:{})
 				at: 'roscpp/GetLoggersResponse'. 

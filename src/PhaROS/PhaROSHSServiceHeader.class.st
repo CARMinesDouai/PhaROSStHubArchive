@@ -1,9 +1,6 @@
 Class {
 	#name : #PhaROSHSServiceHeader,
 	#superclass : #PhaROSHSTypedHeader,
-	#instVars : [
-		'response'
-	],
 	#category : #'PhaROS-Network-Tcp-Messages'
 }
 
@@ -36,16 +33,6 @@ PhaROSHSServiceHeader >> requestType: anString [
 	^self at:'request_type' put: anString.
 	
 
-]
-
-{ #category : #verification }
-PhaROSHSServiceHeader >> response [ 
-	^ response .
-]
-
-{ #category : #verification }
-PhaROSHSServiceHeader >> response: aResponse [ 
-	response := aResponse 
 ]
 
 { #category : #accessing }

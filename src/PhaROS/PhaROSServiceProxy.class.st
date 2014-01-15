@@ -31,7 +31,7 @@ PhaROSServiceProxy >> bytesForMessageWithArgs: args [
 
 { #category : #calling }
 PhaROSServiceProxy >> call [
-	^self call: [ : m | self halt .]
+	^self call: [ : m | ]
 ]
 
 { #category : #calling }
@@ -48,13 +48,15 @@ PhaROSServiceProxy >> call: aBlock [
 	socketStr := SocketStream openConnectionToHostNamed: self hostName port: self port.
 	^
 	[ 
-		|  header|
+		|  header stream |
 
 		socketStr sendCommand: messageBytes.
 		response := responseType newPacket.
-		header := PhaROSHSMessageHeader newServiceClientMessageFrom: socketStr.
+		stream := socketStr upToEnd asByteArray readStream.
+		header := PhaROSHSMessageHeader newServiceClientMessageFrom: stream.
+		stream next.
 		self halt.
-		response loadStream: socketStr.
+		response loadStream: stream.
 		socketStr close.
 		response value.
 	] doIt asResult.
@@ -82,13 +84,12 @@ PhaROSServiceProxy >> loadType [
 	
 	socketStr := SocketStream openConnectionToHostNamed: self hostName port: self port.
 	socketStr sendCommand: messageBytes.
-	header := PhaROSHSMessageHeader newServiceClientMessageFrom: socketStr.
+	header := PhaROSHSMessageHeader newServiceClientMessageFrom: (socketStr upToEnd ) asByteArray readStream.
 	socketStr close.
-	
 
 	requestType :=  PhaROSTypeBrowser instance definition: header requestType.
 	responseType := PhaROSTypeBrowser instance definition: header responseType.
-	md5sum := header md5sum.
+	md5sum := header md5Sum.
 	
 
 ]

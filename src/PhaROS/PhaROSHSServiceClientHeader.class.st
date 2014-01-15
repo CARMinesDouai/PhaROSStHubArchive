@@ -25,6 +25,30 @@ PhaROSHSServiceClientHeader >> persistent: aBoolean [
 ]
 
 { #category : #accessing }
+PhaROSHSServiceClientHeader >> requestType [
+	^self at:'request_type'.
+	
+
+]
+
+{ #category : #accessing }
+PhaROSHSServiceClientHeader >> requestType: anString [
+	^self at:'request_type' put: anString.
+	
+
+]
+
+{ #category : #accessing }
+PhaROSHSServiceClientHeader >> responseType [
+	^self at: 'response_type' 
+]
+
+{ #category : #accessing }
+PhaROSHSServiceClientHeader >> responseType: aString [
+	^self at: 'response_type'  put: aString.
+]
+
+{ #category : #accessing }
 PhaROSHSServiceClientHeader >> service [
 	^self at:'service'.
 ]
