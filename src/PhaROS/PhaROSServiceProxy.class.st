@@ -72,26 +72,25 @@ PhaROSServiceProxy >> hostName [
 	^ self uri host
 ]
 
-{ #category : #ros }
+{ #category : #calling }
 PhaROSServiceProxy >> loadType [
-	|socketStr typeBrowse response |
+
+	| socketStr messageBytes header  |
+
+	
+	messageBytes := (PhaROSHSMessageEncoder encode: (self messageHeaderForBrowseType)), #[0 0 0 0].
+	
 	socketStr := SocketStream openConnectionToHostNamed: self hostName port: self port.
-	
-	typeBrowse := PhaROSHSMessageHeader newServiceClientWith: [
-		:header |
-		header callerId: self callerId;
-				md5Sum: '*';
-				probe;
-				service: self serviceName
-	   ].
-	socketStr sendCommand:( PhaROSHSMessageEncoder encode: typeBrowse), #[0 0 0 0].
-	response := socketStr upToEnd.
+	socketStr sendCommand: messageBytes.
+	header := PhaROSHSMessageHeader newServiceClientMessageFrom: socketStr.
 	socketStr close.
-	response := PhaROSHSMessageHeader newServiceMessageFrom: response asByteArray readStream.
-	md5sum := response md5sum.
 	
-	requestType :=  PhaROSTypeBrowser instance definition: response requestType.
-	responseType := PhaROSTypeBrowser instance definition: response responseType.
+
+	requestType :=  PhaROSTypeBrowser instance definition: header requestType.
+	responseType := PhaROSTypeBrowser instance definition: header responseType.
+	md5sum := header md5sum.
+	
+
 ]
 
 { #category : #calling }
@@ -115,6 +114,19 @@ PhaROSServiceProxy >> messageHeader [
 	   ].
 		
 
+]
+
+{ #category : #calling }
+PhaROSServiceProxy >> messageHeaderForBrowseType [
+
+	^ PhaROSHSMessageHeader newServiceClientWith: [
+		:header |
+		header callerId: self callerId;
+				md5Sum: '*';
+				probe;
+				service: self serviceName
+	   ].
+	
 ]
 
 { #category : #accessing }
