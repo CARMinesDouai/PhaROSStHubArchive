@@ -14,8 +14,9 @@ PhaROSHSSubscriberHeader class >> verificationDictionary [
 ]
 
 { #category : #accessing }
-PhaROSHSSubscriberHeader >> subscribeTo: aTransport with: aSocket [
-	^ aTransport subscribe: self callerId with: aSocket to: self topic.
+PhaROSHSSubscriberHeader >> subscribeTo: aTransport with: aSocketStream [
+	self flag: #shouldIRefactorSubscriberToReceiveStream.
+	^ aTransport subscribe: self callerId with: aSocketStream socket to: self topic.
 ]
 
 { #category : #accessing }

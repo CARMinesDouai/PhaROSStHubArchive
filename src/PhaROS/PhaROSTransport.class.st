@@ -111,11 +111,11 @@ PhaROSTransport >> node: aNode [
 ]
 
 { #category : #publishing }
-PhaROSTransport >> processServiceRequest: aServiceID for: aCallerID with: aSocket beingPersistent: isPersistent forProbe: isProbe [
+PhaROSTransport >> processServiceRequest: aServiceID for: aCallerID with: aSocketStream beingPersistent: isPersistent forProbe: isProbe [
 	| service handshakeMessage request response packetOfBytes |
 	
 	isPersistent ifTrue: [ 
-		aSocket close. 
+		aSocketStream  close. 
 		self error: 'Persistent connection is not already developed'.	
 	 ].
 	
@@ -134,14 +134,20 @@ PhaROSTransport >> processServiceRequest: aServiceID for: aCallerID with: aSocke
 	packetOfBytes := PhaROSHSMessageEncoder encode:handshakeMessage.
 
 	isProbe ifFalse: [ 
-		request := service requestType newPacket loadStream: (SocketStream on: aSocket).
+		request := service requestType newPacket.
+		
+		service requestType isZeroSized ifFalse: [
+			request loadStream: aSocketStream.
+		].
+	
 		response :=  service responseType newPacket.
 		service process: request value with: response value.
 		packetOfBytes	:= packetOfBytes, response dump.
 	 ].
 	
-	aSocket sendData: packetOfBytes.
-	aSocket close. 
+	aSocketStream nextPutAll: packetOfBytes.
+	aSocketStream flush.
+	aSocketStream close. 
 ]
 
 { #category : #publishing }

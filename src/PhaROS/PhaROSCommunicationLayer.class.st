@@ -66,11 +66,11 @@ PhaROSCommunicationLayer >> ip: anIP [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSCommunicationLayer >> manageIncomingConnection: aMessageHeader with: aSocket [
-	self halt. 
-	aSocket setOption: 'TCP_NODELAY' value: (aMessageHeader  tcpNodelay).
+PhaROSCommunicationLayer >> manageIncomingConnection: aMessageHeader with: aSocketStream [
 	
-	aMessageHeader subscribeTo: transport with: aSocket.
+	aSocketStream socket setOption: 'TCP_NODELAY' value: (aMessageHeader  tcpNodelay).
+	
+	aMessageHeader subscribeTo: transport with: aSocketStream.
 	
 
 ]

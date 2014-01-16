@@ -74,7 +74,7 @@ PhaROSTcpServer >> serve: aSocket [
 	message := PhaROSHSMessageDecoder decodeUnknownMessageHeader:  stream.
 	
 	PhaROSHeaderVerifier new verify: message. 
-	self owner manageIncomingConnection: message becomeKnown with: aSocket.
+	self owner manageIncomingConnection: (message becomeKnown) with: stream.
 	
 	
 ]

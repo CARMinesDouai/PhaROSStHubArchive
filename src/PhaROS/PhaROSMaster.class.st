@@ -174,8 +174,12 @@ PhaROSMaster >> lookupService: serviceName with: aCallerId [
 	
 	^ services at: serviceName ifAbsentPut: [
 		| serviceUriString |
-		serviceUriString := masterXmlRpc lookupService: serviceName with: aCallerId.
-		PhaROSServiceProxy serviceName: serviceName uriFrom: serviceUriString.
+		(serviceExposers includesKey: serviceName ) ifTrue: [ 
+			serviceExposers at: serviceName 
+		 ] ifFalse: [
+			serviceUriString := masterXmlRpc lookupService: serviceName with: aCallerId.
+			PhaROSServiceProxy serviceName: serviceName uriFrom: serviceUriString.
+		]
 	].
 ]
 

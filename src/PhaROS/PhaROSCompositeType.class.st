@@ -222,6 +222,11 @@ PhaROSCompositeType >> isAPossibleValue: aValue [
 	^ aValue isBasic not.
 ]
 
+{ #category : #'as yet unclassified' }
+PhaROSCompositeType >> isZeroSized [
+	^ typeDefinition size = 0
+]
+
 { #category : #serializing }
 PhaROSCompositeType >> md5Sum [ 
 

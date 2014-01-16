@@ -17,6 +17,21 @@ PhaROSServiceExposer class >> new: aServiceName typedAs: aTypeID [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSServiceExposer >> call [
+	^ self call: [ :m | ].
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSServiceExposer >> call: aMessageBlock [
+	| request response |
+	request :=	self requestType newPacket value.
+	response := self responseType newPacket value.
+	aMessageBlock value: request.
+	self process: request with: response.
+	^ response.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSServiceExposer >> md5Sum [
 	^ type md5Sum.
 ]

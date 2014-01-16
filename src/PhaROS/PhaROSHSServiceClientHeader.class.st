@@ -71,8 +71,8 @@ PhaROSHSServiceClientHeader >> service: aServiceName [
 ]
 
 { #category : #accesing }
-PhaROSHSServiceClientHeader >> subscribeTo: aTransport with: aSocket [
-	^ aTransport processServiceRequest: self service for: self callerId with: aSocket beingPersistent: self persistent forProbe: self probe.
+PhaROSHSServiceClientHeader >> subscribeTo: aTransport with: aSocketStream [
+	^ aTransport processServiceRequest: self service for: self callerId with: aSocketStream beingPersistent: self persistent forProbe: self probe == '1'.
 ]
 
 { #category : #accessing }
