@@ -147,7 +147,7 @@ PhaROSTypeBrowser >> serviceDefinition: aTypeId [
 
 	
 	^ (self browser at: aTypeId ifAbsentPut: [
-			| code instructions request response |
+			| code instructions request response type |
 			
 			
 			code :=  '---' split: (PhaROSSystemLauncher instance rosSrvShow: aTypeId).
@@ -159,7 +159,11 @@ PhaROSTypeBrowser >> serviceDefinition: aTypeId [
 			instructions := (Character lf split:( code at:2 ) ) select: [ :str | (str beginsWith: ' ') not & (str size > 3) ] .
 			response := self typeNamed:( '{1}Response' format:{ aTypeId} )for: (instructions).
 			
-			{ request . response }
+			type := PhaROSServiceType new.
+			type request: request ; response: response.
+			type md5Sum: (PhaROSSystemLauncher instance rosSrvMd5: aTypeId).
+			type typeName: aTypeId.
+			type
 
 		]) 
 

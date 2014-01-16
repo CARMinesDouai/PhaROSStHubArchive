@@ -179,6 +179,11 @@ PhaROSMaster >> lookupService: serviceName with: aCallerId [
 	].
 ]
 
+{ #category : #API }
+PhaROSMaster >> lookupServiceExposer: aServiceID [
+	^ serviceExposers at: aServiceID 
+]
+
 { #category : #'API-Data-Accessors' }
 PhaROSMaster >> lookupTopic: aTopicName [
 

@@ -6,9 +6,11 @@ Class {
 
 { #category : #verification }
 PhaROSHSServiceHeader class >> verificationDictionary [
-	^ {
-		#service -> ByteString
-	   }
+		^super verificationDictionary addAll: (
+		{ 
+			#service -> ByteString 
+		} asDictionary
+	); yourself.
 ]
 
 { #category : #comparing }
@@ -55,4 +57,14 @@ PhaROSHSServiceHeader >> responseType [
 { #category : #accessing }
 PhaROSHSServiceHeader >> responseType: aString [
 	^self at: 'response_type'  put: aString.
+]
+
+{ #category : #accessing }
+PhaROSHSServiceHeader >> service [
+	^ self at: 'service'
+]
+
+{ #category : #accessing }
+PhaROSHSServiceHeader >> service: aServiceName [
+	self at: 'service' put: aServiceName
 ]

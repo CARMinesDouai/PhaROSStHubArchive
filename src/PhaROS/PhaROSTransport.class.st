@@ -124,10 +124,11 @@ PhaROSTransport >> processServiceRequest: aServiceID for: aCallerID with: aSocke
 	
 	handshakeMessage := PhaROSHSMessageHeader newServiceWith:  [ :msg |
 		msg callerId: service owner name.
+		msg service: service name.
 		msg md5Sum: service md5Sum.
-		msg type: service type.
-		msg requestType: service requestType.
-		msg responseType: service responseType.
+		msg type: service type typeName.
+		msg requestType: service requestType typeName.
+		msg responseType: service responseType typeName.
 	].
 
 	packetOfBytes := PhaROSHSMessageEncoder encode:handshakeMessage.
@@ -230,6 +231,7 @@ PhaROSTransport >> service: aServiceName typedAs: aTypeID [
 	| srv |
 	
 	srv := PhaROSServiceExposer new: aServiceName typedAs: aTypeID. 
+	srv owner: node.
 	master registerService: srv at: self comm rosrpc for: self comm url with: node name.
 	
 	

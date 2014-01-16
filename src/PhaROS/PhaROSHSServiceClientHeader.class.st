@@ -75,6 +75,16 @@ PhaROSHSServiceClientHeader >> subscribeTo: aTransport with: aSocket [
 	^ aTransport processServiceRequest: self service for: self callerId with: aSocket beingPersistent: self persistent forProbe: self probe.
 ]
 
+{ #category : #accessing }
+PhaROSHSServiceClientHeader >> tcpNodelay [
+	self optativeAt:'tcp_nodelay'.
+]
+
+{ #category : #accessing }
+PhaROSHSServiceClientHeader >> tcpNodelay: aBoolean [
+	self at:'tcp_nodelay' put: aBoolean.
+]
+
 { #category : #accesing }
 PhaROSHSServiceClientHeader >> type [
 	^ header at: #type

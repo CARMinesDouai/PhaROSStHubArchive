@@ -92,10 +92,11 @@ PhaROSServiceProxy >> loadType [
 	header := PhaROSHSMessageHeader newServiceClientMessageFrom: (socketStr upToEnd ) asByteArray readStream.
 	socketStr close.
 
-	types := PhaROSTypeBrowser instance serviceDefinition: header type. 
-	requestType :=  types at: 1.
-	responseType := types at: 2.
-	md5sum := header md5Sum.
+	types := PhaROSTypeBrowser instance serviceDefinition: header type.
+	self assert: header md5Sum  = types md5Sum description: 'Incompatible type hash'. 
+	requestType :=  types request.
+	responseType := types response.
+	md5sum := types md5Sum.
 	
 
 ]
@@ -107,7 +108,7 @@ PhaROSServiceProxy >> md5Sum [
 ]
 
 { #category : #calling }
-PhaROSServiceProxy >> md5sum: aSum [
+PhaROSServiceProxy >> md5Sum: aSum [
 	md5sum := aSum.
 ]
 
