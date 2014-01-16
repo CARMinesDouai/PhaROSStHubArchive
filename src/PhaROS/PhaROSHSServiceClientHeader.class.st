@@ -24,6 +24,18 @@ PhaROSHSServiceClientHeader >> persistent: aBoolean [
 	^self at:'persistent' put: aBoolean .
 ]
 
+{ #category : #accesing }
+PhaROSHSServiceClientHeader >> probe [
+	^ self optativeAt: 'probe' 
+]
+
+{ #category : #accessing }
+PhaROSHSServiceClientHeader >> probe: anString [
+	^self at:'probe' put: anString.
+	
+
+]
+
 { #category : #accessing }
 PhaROSHSServiceClientHeader >> requestType [
 	^self at:'request_type'.
@@ -56,6 +68,11 @@ PhaROSHSServiceClientHeader >> service [
 { #category : #accessing }
 PhaROSHSServiceClientHeader >> service: aServiceName [
 	^self at:'service' put: aServiceName.
+]
+
+{ #category : #accesing }
+PhaROSHSServiceClientHeader >> subscribeTo: aTransport with: aSocket [
+	^ aTransport processServiceRequest: self service for: self callerId with: aSocket beingPersistent: self persistent forProbe: self probe.
 ]
 
 { #category : #accesing }

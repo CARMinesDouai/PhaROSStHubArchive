@@ -7,7 +7,7 @@ Class {
 { #category : #verification }
 PhaROSHSServiceHeader class >> verificationDictionary [
 	^ {
-	
+		#service -> ByteString
 	   }
 ]
 
@@ -19,6 +19,18 @@ PhaROSHSServiceHeader >> ok [
 { #category : #comparing }
 PhaROSHSServiceHeader >> ok: aBoolean [ 
 	^self at:'ok' put: aBoolean.
+]
+
+{ #category : #accessing }
+PhaROSHSServiceHeader >> probe [
+	^ self optativeAt: 'probe' 
+]
+
+{ #category : #accessing }
+PhaROSHSServiceHeader >> probe: anString [
+	^self at:'probe' put: anString.
+	
+
 ]
 
 { #category : #accessing }

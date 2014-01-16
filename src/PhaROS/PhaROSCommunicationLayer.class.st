@@ -66,9 +66,13 @@ PhaROSCommunicationLayer >> ip: anIP [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSCommunicationLayer >> manageIncomingConnection: aMessage with: aSocket [
-	aSocket setOption: 'TCP_NODELAY' value: (aMessage  tcpNodelay).
-	transport subscribe: aMessage callerId with: aSocket to: aMessage topic.
+PhaROSCommunicationLayer >> manageIncomingConnection: aMessageHeader with: aSocket [
+	self halt. 
+	aSocket setOption: 'TCP_NODELAY' value: (aMessageHeader  tcpNodelay).
+	
+	aMessageHeader subscribeTo: transport with: aSocket.
+	
+
 ]
 
 { #category : #'as yet unclassified' }
@@ -94,6 +98,12 @@ PhaROSCommunicationLayer >> resolveSocketTo: aTopic of: anURL for: aNode [
 	socket := Socket newTCP.
 	socket connectTo: ( NetNameResolver addressForName:  (tcpConnectionData at: 2) )  port: (tcpConnectionData at: 3).
 	^ socket.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSCommunicationLayer >> rosrpc [
+	^  'rosrpc://', ip, ':', tcp asString , '/'.
+	
 ]
 
 { #category : #'as yet unclassified' }

@@ -20,6 +20,11 @@ PhaROSHSMessageHeader class >> configure: aMessage with: aMessageConfigurationBl
 	
 ]
 
+{ #category : #verification }
+PhaROSHSMessageHeader class >> genericHeader [
+	^ self new .
+]
+
 { #category : #'instance creation' }
 PhaROSHSMessageHeader class >> newPublisher [
 	^ PhaROSHSPublisherHeader new.
@@ -87,6 +92,11 @@ PhaROSHSMessageHeader class >> verificationDictionary [
 	} asDictionary .
 ]
 
+{ #category : #'instance creation' }
+PhaROSHSMessageHeader class >> withHeader: aDictionary [ 	
+	^ self new withHeader: aDictionary; yourself
+]
+
 { #category : #comparing }
 PhaROSHSMessageHeader >> = anObject [ 
 	self species = anObject species ifFalse: [^false].
@@ -107,6 +117,17 @@ PhaROSHSMessageHeader >> at: aKey put: aValue [
 { #category : #accessing }
 PhaROSHSMessageHeader >> attributesDo: aBlockClosure [ 
 	^ header associationsDo: aBlockClosure.
+]
+
+{ #category : #accessing }
+PhaROSHSMessageHeader >> becomeKnown [
+	header at: #topic ifPresent:[
+		^ PhaROSHSSubscriberHeader withHeader: header.	
+	].
+	header at:#service ifPresent:[
+		^ PhaROSHSServiceClientHeader withHeader: header.	
+	].
+	self error: 'The header has not any expected shape for incoming headers'.
 ]
 
 { #category : #accessing }
@@ -196,11 +217,6 @@ PhaROSHSMessageHeader >> printOn: aStream [
 
 ]
 
-{ #category : #conf }
-PhaROSHSMessageHeader >> probe [
-	self at: 'probe' put:'1'
-]
-
 { #category : #communication }
 PhaROSHSMessageHeader >> sendTo: aSocket [
 	aSocket sendData: (PhaROSHSMessageEncoder encode: self).
@@ -214,6 +230,6 @@ PhaROSHSMessageHeader >> valuesToCompareForEquality [
 ]
 
 { #category : #accessing }
-PhaROSHSMessageHeader >> withHeader: aBlockClosure [ 
-	^ aBlockClosure value: self.
+PhaROSHSMessageHeader >> withHeader: aDictionary [
+	header := aDictionary 
 ]

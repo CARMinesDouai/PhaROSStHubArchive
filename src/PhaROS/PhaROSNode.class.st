@@ -138,6 +138,11 @@ PhaROSNode >> service: aServiceName [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSNode >> service: aServiceName typedAs: aTypeID [
+	^ transport service: aServiceName typedAs: aTypeID.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSNode >> subscriber: aTopicID typedAs: aTypeID [
 
 	^ transport subscriber: aTopicID typedAs: aTypeID

@@ -41,6 +41,12 @@ PhaROSHSMessageDecoder class >> decodeSubscriberMessage: aStream [
 ]
 
 { #category : #decoding }
+PhaROSHSMessageDecoder class >> decodeUnknownMessageHeader: aStream [ 
+
+	^ self decode: aStream using: PhaROSHSMessageHeader genericHeader.
+]
+
+{ #category : #decoding }
 PhaROSHSMessageDecoder >> addTo: dataStream bodyPartAt: dataIndex from: bytes [
 	dataStream nextPut: (self stringFrom: bytes)
 ]

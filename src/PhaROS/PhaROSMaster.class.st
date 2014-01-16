@@ -23,7 +23,8 @@ Class {
 		'masterXmlRpc',
 		'topics',
 		'nodes',
-		'services'
+		'services',
+		'serviceExposers'
 	],
 	#classVars : [
 		'MasterInstances'
@@ -148,6 +149,7 @@ PhaROSMaster >> initialize [
 	nodes := Dictionary new. 
 	topics := Dictionary new.
 	services := Dictionary new.
+	serviceExposers := Dictionary new.
 	
 ]
 
@@ -206,6 +208,18 @@ PhaROSMaster >> registerNode: aNode [
 { #category : #'API-Registration' }
 PhaROSMaster >> registerPublisher: aCallerId to: aTopicName with: aTopicMessageType andCallerUri: anUri [
 	^ masterXmlRpc registerPublisher: aCallerId to: aTopicName with: aTopicMessageType andCallerUri: anUri.
+
+]
+
+{ #category : #'API-Registration' }
+PhaROSMaster >> registerService: aService at: aROSRPCUrl for: aXMLRPCUrl with: aCallerId [ 
+	serviceExposers at: aService name ifPresent: [  self error: 'Unexpected double service register' ].
+	
+	( masterXmlRpc registerService: aService name at: aROSRPCUrl for: aXMLRPCUrl with: aCallerId) = 1 ifTrue:[
+		serviceExposers at: aService name put: aService.
+		^ aService	
+	 ].
+	self error: 'Error registering service'.
 
 ]
 

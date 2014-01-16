@@ -14,6 +14,11 @@ PhaROSHSSubscriberHeader class >> verificationDictionary [
 ]
 
 { #category : #accessing }
+PhaROSHSSubscriberHeader >> subscribeTo: aTransport with: aSocket [
+	^ aTransport subscribe: self callerId with: aSocket to: self topic.
+]
+
+{ #category : #accessing }
 PhaROSHSSubscriberHeader >> tcpNodelay [
 	self optativeAt:'tcp_nodelay'.
 ]

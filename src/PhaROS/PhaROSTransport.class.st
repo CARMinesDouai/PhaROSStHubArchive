@@ -111,6 +111,39 @@ PhaROSTransport >> node: aNode [
 ]
 
 { #category : #publishing }
+PhaROSTransport >> processServiceRequest: aServiceID for: aCallerID with: aSocket beingPersistent: isPersistent forProbe: isProbe [
+	| service handshakeMessage request response packetOfBytes |
+	
+	isPersistent ifTrue: [ 
+		aSocket close. 
+		self error: 'Persistent connection is not already developed'.	
+	 ].
+	
+	service := master lookupServiceExposer: aServiceID.
+	
+	
+	handshakeMessage := PhaROSHSMessageHeader newServiceWith:  [ :msg |
+		msg callerId: service owner name.
+		msg md5Sum: service md5Sum.
+		msg type: service type.
+		msg requestType: service requestType.
+		msg responseType: service responseType.
+	].
+
+	packetOfBytes := PhaROSHSMessageEncoder encode:handshakeMessage.
+
+	isProbe ifFalse: [ 
+		request := service requestType newPacket loadStream: (SocketStream on: aSocket).
+		response :=  service responseType newPacket.
+		service process: request value with: response value.
+		packetOfBytes	:= packetOfBytes, response dump.
+	 ].
+	
+	aSocket sendData: packetOfBytes.
+	aSocket close. 
+]
+
+{ #category : #publishing }
 PhaROSTransport >> publisher: aTopicID typedAs: aTypeID [
 	
 	^ ((master lookupTopic: aTopicID  typedAs: aTypeID) publishingChannelFor: node throught: self) publisher. 
@@ -190,6 +223,17 @@ PhaROSTransport >> resolvePublishersFor: aTopic [
 { #category : #services }
 PhaROSTransport >> service: aServiceName [
 	^ master lookupService: aServiceName with: comm url.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSTransport >> service: aServiceName typedAs: aTypeID [
+	| srv |
+	
+	srv := PhaROSServiceExposer new: aServiceName typedAs: aTypeID. 
+	master registerService: srv at: self comm rosrpc for: self comm url with: node name.
+	
+	
+	^ srv.
 ]
 
 { #category : #publishing }
