@@ -142,12 +142,12 @@ PhaROSTransport >> processServiceRequest: aServiceID for: aCallerID with: aSocke
 	
 		response :=  service responseType newPacket.
 		service process: request value with: response value.
-		packetOfBytes	:= packetOfBytes, response dump.
+		packetOfBytes	:= packetOfBytes,{1}, response dump.
 	 ].
 	
-	aSocketStream nextPutAll: packetOfBytes.
+	[aSocketStream nextPutAll: packetOfBytes.
 	aSocketStream flush.
-	aSocketStream close. 
+	aSocketStream close. ] doIt.
 ]
 
 { #category : #publishing }
