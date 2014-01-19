@@ -134,12 +134,12 @@ PhaROSNode >> serve: aCallBack as: aServiceName typedAs: aServiceType [
 
 { #category : #'as yet unclassified' }
 PhaROSNode >> service: aServiceName [ 
-	^ transport service: aServiceName.
+	^ PhaROSService for: (transport service: aServiceName).
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSNode >> service: aServiceName typedAs: aTypeID [
-	^ transport service: aServiceName typedAs: aTypeID.
+	^  PhaROSService for:(transport service: aServiceName typedAs: aTypeID).
 ]
 
 { #category : #'as yet unclassified' }
