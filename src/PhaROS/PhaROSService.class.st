@@ -1,3 +1,6 @@
+"
+PhaROSService is a reification of service. It just delegates into more lowlevel objects being polimorfic incoming services with outgoing ones.
+"
 Class {
 	#name : #PhaROSService,
 	#superclass : #Object,
