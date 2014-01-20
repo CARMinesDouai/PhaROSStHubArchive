@@ -22,7 +22,7 @@ PhaROSParameterTest >> setUp [
 { #category : #'as yet unclassified' }
 PhaROSParameterTest >> testParameterCreation [
 	|parameter|
-	parameter := node parameter: #bla initialized: Number.
+	parameter := node parameter: #bla initialized: 1.
 	
 	parameter set: 1.
 	self assert: parameter get = 1.
