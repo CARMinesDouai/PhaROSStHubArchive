@@ -182,7 +182,7 @@ PhaROSSystemLauncher >> roslaunch: aConfigurationFile [
 					arguments: { aConfigurationFile  } 
 					environment:  nil 
 					descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
-	roslaunch spin: 50.
+	roslaunch spinForRos: 50.
 	
 	^ roslaunch.
 
@@ -208,7 +208,7 @@ PhaROSSystemLauncher >> rosrun: anArrayOfArguments [
 							arguments: anArrayOfArguments
 							environment:  nil 
 							descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
-	process spin: 20.
+	process spinForRos: 20.
 	^ process. 
 ]
 
@@ -220,7 +220,7 @@ PhaROSSystemLauncher >> rosservice: anArrayOfArguments [
 							arguments: anArrayOfArguments
 							environment:  nil 
 							descriptors: { FileStream stdin . FileStream stdout . FileStream stderr } .  
-	process spin: 20.
+	process spinForRos: 20.
 	^ process. 
 ]
 
