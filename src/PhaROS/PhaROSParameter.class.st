@@ -17,7 +17,7 @@ PhaROSParameter class >> named: aName initialized: aValue [
 
 { #category : #'as yet unclassified' }
 PhaROSParameter >> checkIs: anObject [ 
-	^ anObject isKindOf: anObject
+	^ anObject isKindOf: relatedClass
 	
 ]
 

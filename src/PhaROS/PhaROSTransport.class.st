@@ -117,7 +117,7 @@ PhaROSTransport >> parameter: aName [
 
 { #category : #parameters }
 PhaROSTransport >> parameter: aName initialized: aValue [
-	^ master parameter: aName initialized: aValue for: node name subscribingTo: comm url.
+	^ (master parameter: aName asString initialized: aValue for: node name subscribingTo: comm url) transport: self; yourself .
 ]
 
 { #category : #publishing }

@@ -49,7 +49,7 @@ PhaROSMasterProxy >> deleteParam: aCallerId named: aParameterName [
 
 { #category : #'API-Parameter-Server' }
 PhaROSMasterProxy >> getParam: aParameterName for: aCallerId [ 
-	^  self serviceResult:  (self  invokeMethod: 'getParam' withArgs: {  aCallerId . aParameterName}).
+	^  self  invokeMethod: 'getParam' withArgs: {  aCallerId . aParameterName}.
 
 ]
 
@@ -106,7 +106,7 @@ PhaROSMasterProxy >> getUri: aCallerId [
 
 { #category : #'API-Parameter-Server' }
 PhaROSMasterProxy >> hasParam: aParameterName  for: aCallerId [
-	^  self serviceResult: (self  invokeMethod: 'hasParam' withArgs: { aCallerId . aParameterName }).
+	^  self  invokeMethod: 'hasParam' withArgs: { aCallerId . aParameterName }.
 ]
 
 { #category : #'API-Data-Accessors' }
@@ -175,13 +175,13 @@ PhaROSMasterProxy >> setParam: aCallerId named: aParameterName with: anObject [
 
 { #category : #'API-Parameter-Server' }
 PhaROSMasterProxy >> setParam: aParameterName with: aValue for: aCallerId [ 
-	^  self serviceResult: (self  invokeMethod: 'setParam' withArgs: { aCallerId . aParameterName . aValue}).
+	^  self  invokeMethod: 'setParam' withArgs: { aCallerId . aParameterName . aValue}.
 
 ]
 
 { #category : #'API-Parameter-Server' }
 PhaROSMasterProxy >> subscribeParam: aParameterName callingBack: anXMLRPCUrl for: aCallerId [
-	^  self serviceResult: ( self  invokeMethod: 'subscribeParam' withArgs: { aCallerId . anXMLRPCUrl. aParameterName }).
+	^  self  invokeMethod: 'subscribeParam' withArgs: { aCallerId . anXMLRPCUrl. aParameterName }.
 ]
 
 { #category : #'API-Registration' }
