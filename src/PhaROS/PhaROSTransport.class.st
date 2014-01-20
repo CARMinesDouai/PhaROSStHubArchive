@@ -110,6 +110,16 @@ PhaROSTransport >> node: aNode [
 	node := aNode 
 ]
 
+{ #category : #parameters }
+PhaROSTransport >> parameter: aName [ 
+	^ master parameter: aName.
+]
+
+{ #category : #parameters }
+PhaROSTransport >> parameter: aName initialized: aValue [
+	^ master parameter: aName initialized: aValue for: node name subscribingTo: comm url.
+]
+
 { #category : #publishing }
 PhaROSTransport >> processServiceRequest: aServiceID for: aCallerID with: aSocketStream beingPersistent: isPersistent forProbe: isProbe [
 	| service handshakeMessage request response packetOfBytes |
@@ -229,7 +239,7 @@ PhaROSTransport >> resolvePublishersFor: aTopic [
 
 { #category : #services }
 PhaROSTransport >> service: aServiceName [
-	^ master lookupService: aServiceName with: comm url.
+	^ master lookupService: aServiceName with: node name.
 ]
 
 { #category : #'as yet unclassified' }
@@ -269,4 +279,9 @@ PhaROSTransport >> subscribe: aNodeName with: aSocket to: aTopicID [
 { #category : #subscribing }
 PhaROSTransport >> subscriber: aTopicID typedAs: aTypeID [
 	^ ((master lookupTopic: aTopicID  typedAs: aTypeID) subscribingChannelFor: node throught: self). 
+]
+
+{ #category : #parameters }
+PhaROSTransport >> sync: aParameter [
+	^ master syncParameter: aParameter for: comm name.
 ]

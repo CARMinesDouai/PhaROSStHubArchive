@@ -24,7 +24,8 @@ PhaROSCommunicationLayer >> configure [
 						#getBusInfo -> {self -> #getBusInfo: } .
 						#getPid -> { self -> #getPid: } .
 						#requestTopic -> { self -> #requestTopic:for:availableFor: } .
-						#getPublications -> { self -> #getPublications: }
+						#getPublications -> { self -> #getPublications: } .
+						#paramUpdate -> { self -> #from:update:with: }
 					} asXMLRPCHttpModule 
 					at:'/' .
 					
@@ -35,6 +36,12 @@ PhaROSCommunicationLayer >> configure [
 PhaROSCommunicationLayer >> finalize [ 
 	self stop.
 	transport := nil.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSCommunicationLayer >> from: aCallerId update: aParameterName with: aValue [ 
+	(transport parameter: aParameterName) setNotBinded: aValue.
+	^ { 1 . 'Success' . 0 }
 ]
 
 { #category : #'as yet unclassified' }

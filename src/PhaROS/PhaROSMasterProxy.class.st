@@ -34,11 +34,23 @@ PhaROSMasterProxy class >> url: anUrl [
 	^ self id:'anArbitraryId' url: anUrl.
 ]
 
+{ #category : #'API-Parameter-Server' }
+PhaROSMasterProxy >> deleteParam: aParameterName for: aCallerId [ 
+	^ self serviceResult: ( self  invokeMethod: 'deleteParam' withArgs: {  aCallerId . aParameterName}).
+
+]
+
 { #category : #'API-Data-Mutators' }
 PhaROSMasterProxy >> deleteParam: aCallerId named: aParameterName [ 
 	^ self  invokeMethod: 'deleteParam' withArgs: {aCallerId . aParameterName}.
 	
 	
+]
+
+{ #category : #'API-Parameter-Server' }
+PhaROSMasterProxy >> getParam: aParameterName for: aCallerId [ 
+	^  self serviceResult:  (self  invokeMethod: 'getParam' withArgs: {  aCallerId . aParameterName}).
+
 ]
 
 { #category : #'API-Data-Accessors' }
@@ -54,6 +66,11 @@ PhaROSMasterProxy >> getParamNames: aCallerId [
 
 
 	
+]
+
+{ #category : #'API-Parameter-Server' }
+PhaROSMasterProxy >> getParamNamesFor: aCallerId [
+	^  self serviceResult: ( self  invokeMethod: 'getParamNames' withArgs: { aCallerId  }).
 ]
 
 { #category : #'API-Data-Accessors' }
@@ -85,6 +102,11 @@ PhaROSMasterProxy >> getTopicTypes: aCallerId [
 PhaROSMasterProxy >> getUri: aCallerId [
 	^self  invokeMethod: 'getUri' withArgs: {aCallerId }.
 
+]
+
+{ #category : #'API-Parameter-Server' }
+PhaROSMasterProxy >> hasParam: aParameterName  for: aCallerId [
+	^  self serviceResult: (self  invokeMethod: 'hasParam' withArgs: { aCallerId . aParameterName }).
 ]
 
 { #category : #'API-Data-Accessors' }
@@ -131,9 +153,35 @@ PhaROSMasterProxy >> registerSubscriber: aCallerId to: aTopicName with: aTopicMe
 
 ]
 
+{ #category : #'API-Parameter-Server' }
+PhaROSMasterProxy >> searchParam: aParameterName for: aCallerId [ 
+	^  self serviceResult:  (self  invokeMethod: 'searchParam' withArgs: {  aCallerId . aParameterName}).
+
+]
+
+{ #category : #private }
+PhaROSMasterProxy >> serviceResult: aResult [
+	^ (aResult at: 1) = 1 ifTrue: [ 
+		aResult at: 3.
+	 ] ifFalse: [ 
+		self error:(aResult at:2 ).
+	 ]
+]
+
 { #category : #'API-Data-Mutators' }
 PhaROSMasterProxy >> setParam: aCallerId named: aParameterName with: anObject [
 	^ self  invokeMethod: 'setParam' withArgs: {aCallerId . aParameterName . anObject}.
+]
+
+{ #category : #'API-Parameter-Server' }
+PhaROSMasterProxy >> setParam: aParameterName with: aValue for: aCallerId [ 
+	^  self serviceResult: (self  invokeMethod: 'setParam' withArgs: { aCallerId . aParameterName . aValue}).
+
+]
+
+{ #category : #'API-Parameter-Server' }
+PhaROSMasterProxy >> subscribeParam: aParameterName callingBack: anXMLRPCUrl for: aCallerId [
+	^  self serviceResult: ( self  invokeMethod: 'subscribeParam' withArgs: { aCallerId . anXMLRPCUrl. aParameterName }).
 ]
 
 { #category : #'API-Registration' }
@@ -146,4 +194,9 @@ PhaROSMasterProxy >> unregisterPublisher: aCallerId from: aTopicName andCallerUr
 PhaROSMasterProxy >> unregisterSubscriber: aCallerId from: aTopicName andCallerUri: anUri [
 	^ self  invokeMethod: 'unregisterSubscriber' withArgs: { aCallerId . aTopicName .  anUri}.
 
+]
+
+{ #category : #'API-Parameter-Server' }
+PhaROSMasterProxy >> unsubscribeParam: aParameterName callingBack: anXMLRPCUrl for: aCallerId [
+	^  self serviceResult:  (self  invokeMethod: 'unsubscribeParam' withArgs: { aCallerId . anXMLRPCUrl. aParameterName }).
 ]

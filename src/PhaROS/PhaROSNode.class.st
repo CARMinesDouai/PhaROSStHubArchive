@@ -105,6 +105,11 @@ PhaROSNode >> onSubscribe: aNode to: aTopic [
 	"when a node is subscribed to a topic that is broadcasted by this node, you receive this message"
 ]
 
+{ #category : #parameters }
+PhaROSNode >> parameter: aName initialized: aValue [
+	^ transport parameter: aName initialized: aValue.
+]
+
 { #category : #output }
 PhaROSNode >> printOn: aStream [
 	aStream nextPutAll: 'Node-', (self name ifNil:'').

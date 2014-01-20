@@ -47,3 +47,8 @@ String >> normalizeFrame [
 	   ].
 	
 ]
+
+{ #category : #'*PhaROS' }
+String class >> parameterClass [
+	^ String
+]

@@ -24,7 +24,8 @@ Class {
 		'topics',
 		'nodes',
 		'services',
-		'serviceExposers'
+		'serviceExposers',
+		'parameters'
 	],
 	#classVars : [
 		'MasterInstances'
@@ -46,13 +47,6 @@ PhaROSMaster class >> localhost [
 PhaROSMaster class >> url: anUrl [ 
 	^ self new url: anUrl; yourself 
 
-]
-
-{ #category : #'API-Data-Mutators' }
-PhaROSMaster >> deleteParam: aCallerId named: aParameterName [ 
-	^ masterXmlRpc deleteParam: aCallerId named: aParameterName.
-	
-	
 ]
 
 { #category : #registration }
@@ -150,7 +144,7 @@ PhaROSMaster >> initialize [
 	topics := Dictionary new.
 	services := Dictionary new.
 	serviceExposers := Dictionary new.
-	
+	parameters := Dictionary new.
 ]
 
 { #category : #API }
@@ -209,6 +203,34 @@ PhaROSMaster >> lookupTopic: aTopicName typedAs: aTypeId [
 	^ topic.
 ]
 
+{ #category : #'API-Parameter-Server' }
+PhaROSMaster >> parameter: aName [ 
+
+	 ^parameters at: aName.
+	
+]
+
+{ #category : #'API-Parameter-Server' }
+PhaROSMaster >> parameter: aName initialized: aValue for: aCallerId subscribingTo: anXMLRpcUrl [
+	| parameter |
+	 parameter := parameters at: aName ifAbsentPut: [
+		| build | 
+		build := (masterXmlRpc hasParam: aName) ifTrue:[
+			PhaROSParameter named: aName initialized: (masterXmlRpc getParam: aName for: aCallerId) .
+		] ifFalse: [ 
+			masterXmlRpc setParam: aName with: aValue for: aCallerId. 
+			PhaROSParameter named: aName initialized: aValue .
+		 ].
+		masterXmlRpc subscribeParam: aName callingBack: anXMLRpcUrl for: aCallerId. 
+		build
+	 ].
+
+	(parameter checkIs: aValue) ifFalse: [
+		self error:'The parameter is not of type ', aValue class asString. 	
+	].
+	
+]
+
 { #category : #'as yet unclassified' }
 PhaROSMaster >> registerNode: aNode [
 	nodes at: aNode name put: aNode .
@@ -238,11 +260,6 @@ PhaROSMaster >> registerSubscriber: aCallerId to: aTopicName with: aTopicMessage
 
 ]
 
-{ #category : #'API-Data-Mutators' }
-PhaROSMaster >> setParam: aCallerId named: aParameterName with: anObject [
-	^ masterXmlRpc setParam: aCallerId named: aParameterName with: anObject.
-]
-
 { #category : #service }
 PhaROSMaster >> stop [
 	topics valuesDo:#finalize.
@@ -250,6 +267,11 @@ PhaROSMaster >> stop [
 	nodes removeAll.
 	topics removeAll.
 	Smalltalk garbageCollectMost.
+]
+
+{ #category : #'API-Parameter-Server' }
+PhaROSMaster >> syncParameter: aParameter for: aCallerId [
+	^ masterXmlRpc setParam: aParameter name with: aParameter get for: aCallerId 
 ]
 
 { #category : #accessing }
