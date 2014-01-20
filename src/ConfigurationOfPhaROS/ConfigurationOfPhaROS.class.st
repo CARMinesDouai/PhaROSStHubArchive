@@ -306,8 +306,10 @@ ConfigurationOfPhaROS >> baseline11: spec [
 			
 			
 			spec package: 'PhaROSInfrastructure' with: [ spec requires: #('PhaROS')].
-			spec package: 'MiddlewareDeployment' with: [ spec requires: #('OSProcess')].
-			spec package: 'PhaROSDeploymentDirectory' with:[ spec requires:  #('MiddlewareDeployment')].
+			
+			
+			
+			spec package: 'PhaROSDeploymentDirectory'.
 			
 			
 			
