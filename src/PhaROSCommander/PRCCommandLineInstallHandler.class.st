@@ -38,11 +38,13 @@ PRCCommandLineInstallHandler >> realActivate [
 	| location package version silent deployer sourceFolder |
 	
 	
-	
 	version := self version.
-	package := self package.
 	location := self location.
 	silent := self silent.
+	
+	
+	package := self package.
+	
 	sourceFolder := location asFileReference / #src.
 	
 	self forceNewIfNeededAt: sourceFolder / package.
