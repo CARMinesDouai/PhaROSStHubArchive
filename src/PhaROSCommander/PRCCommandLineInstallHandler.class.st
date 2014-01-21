@@ -23,7 +23,7 @@ Options:
 --help            Shows this text
 --location      Absolute path to a valid catkin workspace (not source folder. The workspace. By example /home/user/workspace ). 
                     Default value is the current directory.		
---silent          { true | false }. If silent is false you will be prompted for an image to use, and you will be able to see the installation of the output image. 
+--silent          { true | false }. If silent is false you will be able to see the installation of the output image. 
                     Default value is true. 
 --version       { 1.4 | 2.0 | 3.0 }. It indicates the version of pharo to download. It will not count if you are in a not silent session. 
                     Default value is 2.0

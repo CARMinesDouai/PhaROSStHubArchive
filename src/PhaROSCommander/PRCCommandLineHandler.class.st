@@ -70,7 +70,7 @@ PRCCommandLineHandler >> checkVersion: aByteSymbol [
 PRCCommandLineHandler >> forceNewIfNeededAt: aPackageFileReference [
 	self forceNewPackage ifTrue: [
 		(aPackageFileReference) exists ifTrue: [ 
-			(aPackageFileReference) delete.		
+			(aPackageFileReference) deleteRecursively.		
 		]
 	] ifFalse: [
 		(aPackageFileReference) exists ifTrue: [ 
@@ -81,7 +81,7 @@ PRCCommandLineHandler >> forceNewIfNeededAt: aPackageFileReference [
 
 { #category : #resolving }
 PRCCommandLineHandler >> forceNewPackage [
-	^ self optionAt: 'force-new' ifAbsent: [ false ].
+	^ self hasOption: 'force-new'
 ]
 
 { #category : #accessing }
