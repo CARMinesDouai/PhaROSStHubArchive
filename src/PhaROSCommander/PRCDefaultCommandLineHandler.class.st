@@ -19,6 +19,12 @@ PRCDefaultCommandLineHandler class >> isResponsibleFor: aCommandLineArguments [
 ]
 
 { #category : #'as yet unclassified' }
+PRCDefaultCommandLineHandler >> activate [
+	super activate.
+	self exitSuccess.
+]
+
+{ #category : #'as yet unclassified' }
 PRCDefaultCommandLineHandler >> handleSubcommand [
 	"check if there is an active subcommand"
 	
