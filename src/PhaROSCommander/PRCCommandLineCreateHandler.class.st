@@ -129,7 +129,7 @@ PRCCommandLineCreateHandler >> realActivate [
 	archObject packageAuthorEmail: authorEmail .
 	archObject packageName: package.
 		
-	deployer deploy:  (PRCCommandPackageRegistry  deployUnitForPackage:  archetype).
+	deployer deploy: archObject.
 
 
 
