@@ -1,11 +1,11 @@
 Class {
-	#name : #PhaROSCommandLineHandler,
+	#name : #PRCCommandLineHandler,
 	#superclass : #CommandLineHandler,
 	#category : #PhaROSCommander
 }
 
 { #category : #activation }
-PhaROSCommandLineHandler >> activate [ 	
+PRCCommandLineHandler >> activate [ 	
 	self help ifTrue:[
 		self stdout nextPutAll: self helpMessage, String lf.
 	] ifFalse:[
@@ -17,7 +17,7 @@ PhaROSCommandLineHandler >> activate [
 ]
 
 { #category : #validation }
-PhaROSCommandLineHandler >> checkBoolean: aBoolean ifFail: aFailBlock [
+PRCCommandLineHandler >> checkBoolean: aBoolean ifFail: aFailBlock [
  	(aBoolean compare: 'true' caseSensitive: false) = 2 ifTrue:[ ^ true ].
 	(aBoolean compare: 'false' caseSensitive: false) = 2 ifTrue:[ ^ false ].
 	^ aFailBlock value.
@@ -26,7 +26,7 @@ PhaROSCommandLineHandler >> checkBoolean: aBoolean ifFail: aFailBlock [
 ]
 
 { #category : #validation }
-PhaROSCommandLineHandler >> checkLocation: aLocation [ 
+PRCCommandLineHandler >> checkLocation: aLocation [ 
 	
 	^( aLocation exists and: [ 
 		self isAValidCatkinWorkspace: aLocation.
@@ -38,13 +38,13 @@ PhaROSCommandLineHandler >> checkLocation: aLocation [
 ]
 
 { #category : #validation }
-PhaROSCommandLineHandler >> checkPackage: aPackageName [ 
-	^ (PhaROSCommandPackageRegistry existsPackageNamed: aPackageName ) ifTrue: [  aPackageName  ] ifFalse: [  self error: aPackageName, ' is not a valid package.' ].
+PRCCommandLineHandler >> checkPackage: aPackageName [ 
+	^ (PRCCommandPackageRegistry existsPackageNamed: aPackageName ) ifTrue: [  aPackageName  ] ifFalse: [  self error: aPackageName, ' is not a valid package.' ].
 ]
 
 { #category : #validation }
-PhaROSCommandLineHandler >> checkSilent: aBoolean [
-	self checkBoolean: aBoolean ifFail: [ 
+PRCCommandLineHandler >> checkSilent: aBoolean [
+	^ self checkBoolean: aBoolean ifFail: [ 
 		 self error: aBoolean asString, ' is not a valid value for --silent. It should be true or false'.
 	].
 	
@@ -52,7 +52,7 @@ PhaROSCommandLineHandler >> checkSilent: aBoolean [
 ]
 
 { #category : #validation }
-PhaROSCommandLineHandler >> checkVersion: aByteSymbol [ 
+PRCCommandLineHandler >> checkVersion: aByteSymbol [ 
 	
 	^ (({ #'1.4' . #'2.0' . #'3.0' } detect: [: t | t = aByteSymbol] ifNone: [ 
 		{ #'14' . #'20' . #'30' } detect: [: t | t = aByteSymbol] ifNone: [ 
@@ -67,7 +67,7 @@ PhaROSCommandLineHandler >> checkVersion: aByteSymbol [
 ]
 
 { #category : #accessing }
-PhaROSCommandLineHandler >> forceNewIfNeededAt: aPackageFileReference [
+PRCCommandLineHandler >> forceNewIfNeededAt: aPackageFileReference [
 	self forceNewPackage ifTrue: [
 		(aPackageFileReference) exists ifTrue: [ 
 			(aPackageFileReference) delete.		
@@ -80,56 +80,56 @@ PhaROSCommandLineHandler >> forceNewIfNeededAt: aPackageFileReference [
 ]
 
 { #category : #resolving }
-PhaROSCommandLineHandler >> forceNewPackage [
+PRCCommandLineHandler >> forceNewPackage [
 	^ self optionAt: 'force-new' ifAbsent: [ false ].
 ]
 
 { #category : #accessing }
-PhaROSCommandLineHandler >> help [
+PRCCommandLineHandler >> help [
 	^ self hasOption: #help.
 	
 ]
 
 { #category : #activation }
-PhaROSCommandLineHandler >> helpMessage [
+PRCCommandLineHandler >> helpMessage [
 	^ self subclassResponsibility 
 ]
 
 { #category : #validation }
-PhaROSCommandLineHandler >> isAValidCatkinWorkspace: aLocation [ 
+PRCCommandLineHandler >> isAValidCatkinWorkspace: aLocation [ 
 	^ aLocation isDirectory and: [
 		(aLocation / #src ) exists and: [ (aLocation / #src ) isDirectory ]
 	 ].
 ]
 
 { #category : #accessing }
-PhaROSCommandLineHandler >> location [
+PRCCommandLineHandler >> location [
 
 	^ (self checkLocation: (self optionAt: #location ifAbsent: [  self workingDirectory ] ) asFileReference ) pathString.
 ]
 
 { #category : #resolving }
-PhaROSCommandLineHandler >> package [
+PRCCommandLineHandler >> package [
 	^ self checkPackage: (commandLine optionAt: #package ifAbsent:[ commandLine argumentAt: 1 ])
 ]
 
 { #category : #activation }
-PhaROSCommandLineHandler >> realActivate [
+PRCCommandLineHandler >> realActivate [
 	self subclassResponsibility 
 ]
 
 { #category : #resolving }
-PhaROSCommandLineHandler >> silent [
+PRCCommandLineHandler >> silent [
 	^ self checkSilent: (commandLine optionAt: #silent ifAbsent: [ 'true' ]).
 ]
 
 { #category : #resolving }
-PhaROSCommandLineHandler >> version [
+PRCCommandLineHandler >> version [
 	
 	^ self checkVersion: (self optionAt: #version ifAbsent: [ #'20' ]).
 ]
 
 { #category : #accessing }
-PhaROSCommandLineHandler >> workingDirectory [
+PRCCommandLineHandler >> workingDirectory [
 	^ OSProcessAccessor forThisOSProcess  environmentAt: #PWD.
 ]

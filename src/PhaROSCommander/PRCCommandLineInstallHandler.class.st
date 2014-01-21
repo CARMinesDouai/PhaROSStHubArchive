@@ -1,21 +1,21 @@
 Class {
-	#name : #PhaROSCommandLineInstallHandler,
-	#superclass : #PhaROSCommandLineHandler,
+	#name : #PRCCommandLineInstallHandler,
+	#superclass : #PRCCommandLineHandler,
 	#category : #PhaROSCommander
 }
 
 { #category : #'as yet unclassified' }
-PhaROSCommandLineInstallHandler class >> commandName [
+PRCCommandLineInstallHandler class >> commandName [
 	^ 'install'
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSCommandLineInstallHandler class >> description [ 
+PRCCommandLineInstallHandler class >> description [ 
 	^ 'PhaROS installing utility'
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSCommandLineInstallHandler >> helpMessage [ 
+PRCCommandLineInstallHandler >> helpMessage [ 
 	^ '
 usage: pharos install PACKAGE [OPTIONS]
  
@@ -33,7 +33,7 @@ Options:
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSCommandLineInstallHandler >> realActivate [
+PRCCommandLineInstallHandler >> realActivate [
 
 	| location package version silent deployer sourceFolder |
 	
