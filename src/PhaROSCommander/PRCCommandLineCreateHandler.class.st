@@ -37,9 +37,9 @@ PRCCommandLineCreateHandler class >> commandName [
 { #category : #'as yet unclassified' }
 PRCCommandLineCreateHandler >> archetype [
 
-	^ self checkPackage: (commandLine optionAt: #archetype ifAbsent:[ commandLine argumentAt: 1 ]) ifFail: [ 
+	^ self checkPackage: (commandLine optionAt: #archetype ifAbsent:[ 'basic-archetype' ]) ifFail: [ 
 		self loadRepositories.
-		self checkPackage: (commandLine optionAt: #archetype ifAbsent:[ commandLine argumentAt: 1 ])
+		self checkPackage: (commandLine optionAt: #archetype ifAbsent:[ 'basic-archetype' ])
 	 ].
 
 ]
@@ -120,7 +120,7 @@ PRCCommandLineCreateHandler >> realActivate [
 	
 	self assert: archObject isArchetype description:'You cannot install a package that is not archetype for creating packages'.
 	
-	archObject description: description. 
+	archObject packageDescription: description. 
 	
 	archObject packageMaintainer: maintainer .
 	archObject packageMaintainerEmail: maintainerEmail .
