@@ -6,14 +6,12 @@ Class {
 
 { #category : #activation }
 PRCCommandLineHandler >> activate [ 	
-	self help ifTrue:[
-		self stdout nextPutAll: self helpMessage, String lf.
-	] ifFalse:[
-		[ self realActivate ] on: Error do: [ :e |
-			self stderr nextPutAll: e messageText, String lf.
-		].
+
+	self activateHelp.
+	[ self realActivate ] on: Error do: [ :e |
+		self stderr nextPutAll: e messageText, String lf.
 	].
-	Smalltalk snapshot: false andQuit: true.
+	self exitSuccess.
 ]
 
 { #category : #validation }
@@ -91,17 +89,6 @@ PRCCommandLineHandler >> forceNewPackage [
 	^ self hasOption: 'force-new'
 ]
 
-{ #category : #accessing }
-PRCCommandLineHandler >> help [
-	^ self hasOption: #help.
-	
-]
-
-{ #category : #activation }
-PRCCommandLineHandler >> helpMessage [
-	^ self subclassResponsibility 
-]
-
 { #category : #validation }
 PRCCommandLineHandler >> isAValidCatkinWorkspace: aLocation [ 
 	^ aLocation isDirectory and: [
@@ -111,8 +98,34 @@ PRCCommandLineHandler >> isAValidCatkinWorkspace: aLocation [
 
 { #category : #resolving }
 PRCCommandLineHandler >> loadRepositories [
-	| repositoriesFile errors  |
+	
+	self readRepositories do:[
+		:repo | 
+		" We load the package, and register the directory class to the package registry "
+			Gofer it url: (repo at:'url') username: (repo at:'user') password: (repo at:'password') ; package: (repo at:'repository'); load.
+			PRCCommandPackageRegistry register: (Smalltalk at: (repo at: 'directory') asSymbol) 
+	].
+]
+
+{ #category : #accessing }
+PRCCommandLineHandler >> location [
+
+	^ (self checkLocation: (self optionAt: #location ifAbsent: [  self workingDirectory ] ) asFileReference ) pathString.
+]
+
+{ #category : #resolving }
+PRCCommandLineHandler >> package [
+	^ self checkPackage: (commandLine optionAt: #package ifAbsent:[ commandLine argumentAt: 1 ]) ifFail: [ 
+		self loadRepositories.
+		self checkPackage: (commandLine optionAt: #package ifAbsent:[ commandLine argumentAt: 1 ])
+	 ].
+]
+
+{ #category : #resolving }
+PRCCommandLineHandler >> readRepositories [
+	| repositoriesFile errors repositories |
 	repositoriesFile := 	(FileLocator workingDirectory / self repositoriesFileName ).
+	repositories := OrderedCollection new.
 	
 	repositoriesFile exists ifTrue: [ 
 		| content stream |
@@ -132,37 +145,27 @@ PRCCommandLineHandler >> loadRepositories [
 			entry := entry copyReplaceAll: String cr with: ''.
 			entry := entry copyReplaceAll: String space with: ''.
 			entry := entry copyReplaceAll: String tab with: ''.
-			[
-				repo := Dictionary new. 
-				('|' split: entry ) do: [ :field  |
-					| nameValue |
-					nameValue := ':' split: field .
-					repo at: (nameValue at:1) put: (nameValue at:2).
-				].
-			
-				" We load the package, and register the directory class to the package registry "
-				Gofer it url: (repo at:'url') username: (repo at:'user') password: (repo at:'password') ; package: (repo at:'repository'); load.
-				PRCCommandPackageRegistry register: (Smalltalk at: (repo at: 'directory') asSymbol) 
-			
-			] on: Error do: [ :e | errors add: 'WARNING- Error loading [', entry, ']:', e messageText ].
+			entry isEmpty ifFalse: [
+				[
+					repo := Dictionary new. 
+					('|' split: entry ) do: [ :field  |
+						| nameValue |
+						nameValue := '=' split: field .
+						repo at: (nameValue at:1) put: (nameValue at:2).
+					].
+					repositories add: repo.
+					
+				
+				] on: Error do: [ :e |  errors add: 'WARNING- Corrupt entry in repositories file entry [', entry, ']:', e messageText ].
+			]
 		 ].
 	
 		errors do: [  :e | self stdout nextPutAll: e, String lf ].
 	 ] ifFalse: [ 
 		"If there is no reigstered repository we show INFO just to remember user he may add repositories"
 		self stdout nextPutAll: 'INFO- There are not repositories registered', String lf
-	 ]
-]
-
-{ #category : #accessing }
-PRCCommandLineHandler >> location [
-
-	^ (self checkLocation: (self optionAt: #location ifAbsent: [  self workingDirectory ] ) asFileReference ) pathString.
-]
-
-{ #category : #resolving }
-PRCCommandLineHandler >> package [
-	^ self checkPackage: (commandLine optionAt: #package ifAbsent:[ commandLine argumentAt: 1 ]) ifFail: [ self loadRepositories ].
+	 ].
+	^ repositories.
 ]
 
 { #category : #activation }

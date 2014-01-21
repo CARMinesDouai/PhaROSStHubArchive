@@ -1,3 +1,22 @@
+"
+usage: pharos register-repository --url=anUrl --package=aPackage [ OPTIONS ]
+
+
+Options: 
+
+          --url		[ MANDATORY ] url of a monticello repository
+          --package	[ MANDATORY ] monticello package name.
+          --directory	Name of the class that works as directory This class must implement  
+                               - #includesPackage: 
+                               - #deployUnitForPackage: 
+                              Default value - the value given for package. 
+          --user	Username for the monticello repository
+                              Default value - empty
+          --password	Password for the monticello repository
+                              Default value - empty
+	
+	
+"
 Class {
 	#name : #PRCCommandLineRepositoryInstallerHandler,
 	#superclass : #PRCCommandLineHandler,
@@ -18,10 +37,12 @@ PRCCommandLineRepositoryInstallerHandler >> realActivate [
 	             url package directory --user user --password password
 	"
 	
-	url := (self optionAt: #url ifAbsent: [ self argumentAt: 1 ]).
-	repository :=  (self optionAt: #package ifAbsent: [ self argumentAt: 2 ]).
-	class :=  (self optionAt: #directory ifAbsent: [ self argumentAt: 3 ]).
+	url := (self optionAt: #url ifAbsent: [ self error: 'URL is not an optional parameter. (--url url)' ]).
+	repository :=  (self optionAt: #package ifAbsent: [ 'Monticello package is not an optional parameter. (--package package)' ]).
+	class :=  (self optionAt: #directory ifAbsent: [ repository ]).
 	user :=  (self optionAt: #user ifAbsent: [ '' ]).
+	password := ''.
+	
 	user isEmpty ifFalse:[
 		password :=  (self optionAt: #password ifAbsent: [ user:=''. '' ]).
 	].
@@ -31,19 +52,20 @@ PRCCommandLineRepositoryInstallerHandler >> realActivate [
 		((Smalltalk at: class asSymbol) respondsTo: #includesPackage: ) ifFalse: [ 
 			self error: class, ' must respond to #includesPackage: to be registered'.
 		 ]
+	
 	] on:Error do: [ 
-		:e | self error: 'Error installing repository: ', e messageText.
+		:e | self error: 'Error installing repository: ', e messageText, String lf.
 	 ].
 
 	repo := ((FileLocator workingDirectory / self repositoriesFileName) openWritable: true) writeStream.
 	
 	repo setToEnd.
-	repo nextPutAll: (self repositoryFormat format:{url . repository . class . user . password } ).
+	repo nextPutAll: (self repositoryFormat format:{url . repository . class . user . password } ), String lf.
 	repo close. 
-	self stdout nextPutAll: ' repository installed correctly. '.
+	self stdout nextPutAll: ' repository installed correctly. ', String lf.
 ]
 
 { #category : #'as yet unclassified' }
 PRCCommandLineRepositoryInstallerHandler >> repositoryFormat [
-	^ 'url={1}|repository={2}|directory={3}|user:{4}|password:{5};'
+	^ 'url={1}|repository={2}|directory={3}|user={4}|password={5};'
 ]
