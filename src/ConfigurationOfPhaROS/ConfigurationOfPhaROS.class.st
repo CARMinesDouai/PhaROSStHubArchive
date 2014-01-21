@@ -344,7 +344,7 @@ ConfigurationOfPhaROS >> baseline11: spec [
 				spec requires: #('XMLRPC' 'CommonTraits' 'PaulLePoulpe' 'OSProcess' 'TaskIT').
 			].
 		
-			
+			spec group: 'basic-archetype' with: #('PhaROS' 'PhaROSControllers' 'PhaROSNodeletsTurtlesim' 'PhaROSNodeletsTF' ).
 	
 	
 	].
