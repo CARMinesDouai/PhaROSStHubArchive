@@ -128,9 +128,10 @@ ConfigurationOfPhaROSCommander >> baseline10: spec [
 			].
 		
 			spec package: 'PhaROSCommander' with: [ spec requires: #('ROSCatkinDeployer' ) ].
-			
+			spec package: 'PhaROSCommanderTests' with: [ spec requires: #('PhaROSCommander' ) ].
 			spec group: 'default'  with: #( 'PhaROSCommander' ).
 			spec group: 'core'  with: #( 'PhaROSCommander' ).
+			spec group: 'core+tests'  with: #( 'PhaROSCommanderTests' ).
 			
 	].
 
