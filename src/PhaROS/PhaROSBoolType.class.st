@@ -25,7 +25,7 @@ PhaROSBoolType >> decode: aFLDecoder [
 		^ true.	
 	].
 	
-	RoStUnexpextedValue signal: 'Unexpected value'.
+	self signal: 'Unexpected value'.
 ]
 
 { #category : #serialize }

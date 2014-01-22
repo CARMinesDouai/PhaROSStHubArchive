@@ -14,7 +14,7 @@ PhaROSUInt16Type >> decode: aFLDecoder [
 	[
 		^ aFLDecoder nextEncodedUint16.
 	] on: Error do: [
-		RoStUnexpextedValue signal: 'cannot load value'.
+		self signal: 'cannot load value'.
 	].
 ]
 
