@@ -112,7 +112,7 @@ PRCCommandLineCreateHandler >> realActivate [
 	deployer := silent ifTrue: [
 		RCDDeployerFactory silentDeployerFor:  sourceFolder pathString withPharoVersion:  version.
 	] ifFalse:[
-		RCDDeployerFactory interactiveDeployerFor: sourceFolder pathString  
+		RCDDeployerFactory interactiveDeployerFor: sourceFolder pathString  withPharoVersion:  version.
 	].
 	
 	
