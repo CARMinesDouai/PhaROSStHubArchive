@@ -32,19 +32,19 @@ BlockClosure >> doIt [
 
 { #category : #'*TaskIT' }
 BlockClosure >> doItOnceWhen: aConditionalBlock [
-	^ (TKTConsumableEventualTask for: self when: aConditionalBlock for: 1) taskIt.
+	^ (TKTConsumableEventualTask for: self when: aConditionalBlock for: 1) scheduleIt.
 ]
 
 { #category : #'*TaskIT' }
 BlockClosure >> doItWhen: aConditionalBlock [ 
 	| eventualTask |
 	eventualTask := TKTEventualTask for: self when: aConditionalBlock.
-	eventualTask taskIt.
+	eventualTask scheduleIt.
 	^ eventualTask.
 ]
 
 { #category : #'*TaskIT' }
-BlockClosure >> taskIt [
+BlockClosure >> scheduleIt [
 	^ TKTTaskDispatcher it: self asTask.
 ]
 

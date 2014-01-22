@@ -6,5 +6,5 @@ Class {
 
 { #category : #'as yet unclassified' }
 TKTTaskerHandler >> spawn: aBlock [	
-	^ aBlock taskIt.
+	^ aBlock scheduleIt.
 ]

@@ -1,3 +1,6 @@
+"
+To be removed
+"
 Class {
 	#name : #TKTStickyFuture,
 	#superclass : #TKTFuture,
@@ -7,9 +10,9 @@ Class {
 	#category : #'TaskIT-Kernel'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 TKTStickyFuture >> cancel [
-	self deployValue: TKTCancelledFuture new.
+	self deployValue: TKTCancelledFutureValue new.
 
 ]
 
@@ -27,17 +30,17 @@ TKTStickyFuture >> deployValue: aValue [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTStickyFuture >> process [
 	^ process.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTStickyFuture >> process: aProcess [ 
 	process := aProcess.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTStickyFuture >> stop [
 	self process ifNotNil: [ 
 			self process terminate. 

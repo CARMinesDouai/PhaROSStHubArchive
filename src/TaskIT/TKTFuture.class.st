@@ -1,3 +1,16 @@
+"
+A TKTFuture is the promise of an execution's result. A TKTFuture can hold an error produced by the task execution, the value of the finished execution, or none if the task has not yet finished.
+
+The value promised by the future can be obtained both synchronous and asynchronously. To obtain the TKTFuture value synchronously we send it the #value message. Synchronous access to the value will block the caller's process until the result is available.
+
+[ 20 benchFib ] doIt value.
+
+Support for asynchronous execution is provided via callbacks. A callback is a block with zero or one argument that will hold the value resultant from the task execution. A callback can be added to a future with the #whenFinished: message. A TKTFuture supports the addition of many different callbacks.
+
+[ 40 benchFib ] doIt whenFinished: [ :result | result logCr ].
+
+Note: On the one hand, the callbacks registered while the task is not yet finished will be executed on the process of the task when it finishes. On the other hand, callbacks registered while the task is already finished will be executing in the caller thread with the already available result.
+"
 Class {
 	#name : #TKTFuture,
 	#superclass : #Object,
@@ -13,7 +26,7 @@ Class {
 	#category : #'TaskIT-Kernel'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #converting }
 TKTFuture >> asResult [
 	result ifNil: [
 		result := TKTResult for: self. 
@@ -21,30 +34,20 @@ TKTFuture >> asResult [
 	^ result.
 ]
 
-{ #category : #'as yet unclassified' }
-TKTFuture >> at: anObject [
-	^ processData at: anObject
-]
-
-{ #category : #'as yet unclassified' }
-TKTFuture >> at: anObject put: aValue [
-	processData at: anObject put: aValue.
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 TKTFuture >> cancel [ 
 	TKTTaskDispatcher expropiate: self.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'execution-finished' }
 TKTFuture >> deployError: anError [
 	error := anError.
 	isDeployed := true.
+	value := TKTInvalidFutureValue new.
 	semaphore signal.
-	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'execution-finished' }
 TKTFuture >> deployValue: aValue [
 	value := aValue.
 	isDeployed := true.
@@ -53,27 +56,31 @@ TKTFuture >> deployValue: aValue [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #finalization }
 TKTFuture >> finalize [ 
 	self cancel.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'initialize-release' }
 TKTFuture >> initialize [ 
 	isDeployed := false.
 	value := nil. 
 	error := nil.
 	callbacks := TKTVariable for: OrderedCollection new.
 	semaphore := Semaphore new.
-	processData := TKTVariable for: Dictionary new.
 ]
 
 { #category : #testing }
-TKTFuture >> processFinished [
+TKTFuture >> isProcessFinished [
 	self shouldBeImplemented.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
+TKTFuture >> isValueAvailable [
+	^ isDeployed.
+]
+
+{ #category : #actions }
 TKTFuture >> value [
 
 	semaphore wait.
@@ -86,14 +93,9 @@ TKTFuture >> value [
 
 ]
 
-{ #category : #'as yet unclassified' }
-TKTFuture >> valueAvailable [
-	^ isDeployed.
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #callbacks }
 TKTFuture >> whenFinished: aBlock [
-	self valueAvailable ifTrue:[
+	self isValueAvailable ifTrue:[
 		aBlock cull: value.	
 	] ifFalse: [
 		callbacks add: aBlock.

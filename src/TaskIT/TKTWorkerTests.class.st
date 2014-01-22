@@ -17,7 +17,7 @@ TKTWorkerTests >> setUp [
 		
 	TKTTaskDispatcher instance: TKTTaskDispatcherMock new.
 	
-	[] taskIt.
+	[] scheduleIt.
 	[] doItWhen: [].	
 	[] doItOnceWhen: []. 	
 	

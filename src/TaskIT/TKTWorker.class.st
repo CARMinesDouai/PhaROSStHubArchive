@@ -36,7 +36,7 @@ TKTWorker >> cleanupTasks [
 
 { #category : #'as yet unclassified' }
 TKTWorker >> doIt [
-	(future isNil or: [ future valueAvailable]) ifTrue: [
+	(future isNil or: [ future isValueAvailable]) ifTrue: [
 		future := super doIt.	
 	].
 	
@@ -53,7 +53,7 @@ TKTWorker >> initialize [
 
 { #category : #'as yet unclassified' }
 TKTWorker >> isRunning [
-	^ future valueAvailable not.
+	^ future isValueAvailable not.
 ]
 
 { #category : #'as yet unclassified' }
@@ -98,7 +98,7 @@ TKTWorker >> restart [
 	
 	 
 	currentTask ifNotNil: [ 
-		currentTask value processFinished ifFalse: [
+		currentTask value isProcessFinished ifFalse: [
 			currentTask  priority: 10.
 			workQueue do: currentTask.
 		].
@@ -114,7 +114,6 @@ TKTWorker >> run [
 		task := currentTask key.
 		taskFuture := currentTask value.
 		
-		beginning := DateAndTime now. 
 		task value: taskFuture.
 		doneTasks add: task.
 		currentTask := nil.
@@ -134,7 +133,7 @@ TKTWorker >> stop [
 	] asTask -> TKTFuture new.
 	(Delay forMilliseconds: 500) wait.
 
-	future valueAvailable ifFalse: [
+	future isValueAvailable ifFalse: [
 		future cancel.		
 	].
 	
@@ -142,7 +141,7 @@ TKTWorker >> stop [
 
 { #category : #'as yet unclassified' }
 TKTWorker >> stopWorkingOnThat [ 
-	currentTask value deployValue: TKTCancelledFuture new.
+	currentTask value deployValue: TKTCancelledFutureValue new.
 	currentTask := nil. 
 	self restart.
 ]

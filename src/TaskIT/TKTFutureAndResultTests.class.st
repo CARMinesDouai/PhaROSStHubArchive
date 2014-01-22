@@ -42,7 +42,7 @@ TKTFutureAndResultTests >> testDeployValueIntoFuture [
 	value := TKTTestObject new.
 	future deployValue: value.
 	
-	self assert: future valueAvailable.
+	self assert: future isValueAvailable.
 	self assert: future value = value.
 	
 ]
@@ -69,14 +69,14 @@ TKTFutureAndResultTests >> testDeployValueIntoStickyFuture [
 	
 	future process: ([ [(Delay forMilliseconds: 500 )wait] whileTrue: [ true ] ] forkNamed:'Test').
 	
-	self deny: future valueAvailable.
+	self deny: future isValueAvailable.
 	self deny: future process isTerminated.
 	
 	value := TKTTestObject new.
 	future deployValue: value.
 	
 	self assert: future process isNil.
-	self assert: future valueAvailable.
+	self assert: future isValueAvailable.
 	self assert: future value = value.
 	
 ]
@@ -111,7 +111,7 @@ TKTFutureAndResultTests >> testNewFuture [
 	| future |
 	future := TKTFuture new.
 	
-	self deny: future valueAvailable.
+	self deny: future isValueAvailable.
 	
 ]
 
@@ -120,7 +120,7 @@ TKTFutureAndResultTests >> testNewStickyFuture [
 	| future |
 	future := TKTStickyFuture new.
 	
-	self deny: future valueAvailable.
+	self deny: future isValueAvailable.
 	
 ]
 

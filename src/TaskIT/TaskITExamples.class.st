@@ -10,7 +10,7 @@ TaskITExamples >> commonSchedduledTask [
 	self new commonSchedduledTask
 	"
 	
-	^ [ 2 + 2 ] taskIt value = 4 
+	^ [ 2 + 2 ] scheduleIt value = 4 
 ]
 
 { #category : #'as yet unclassified' }
@@ -46,7 +46,7 @@ TaskITExamples >> referencedProcess [
 
 { #category : #'as yet unclassified' }
 TaskITExamples >> referencedTask [
-	^ [[ true ] whileTrue: [ Transcript show: 'running in a task'; cr. (Delay forMilliseconds: 500) wait] ] taskIt asStickyReference.
+	^ [[ true ] whileTrue: [ Transcript show: 'running in a task'; cr. (Delay forMilliseconds: 500) wait] ] scheduleIt asStickyReference.
 ]
 
 { #category : #'as yet unclassified' }
