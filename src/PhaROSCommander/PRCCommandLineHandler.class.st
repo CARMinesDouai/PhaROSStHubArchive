@@ -9,8 +9,8 @@ PRCCommandLineHandler >> activate [
 
 	self activateHelp.
 	[ self realActivate ] on: Error do: [ :e |
-		self halt.
 		self stderr nextPutAll: e messageText, String lf.
+		self halt.
 	].
 	self exitSuccess.
 ]
