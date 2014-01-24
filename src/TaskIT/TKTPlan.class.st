@@ -1,7 +1,7 @@
 "
 The Idea of the Plan side of TaskIT is to be able to define a relation in between computations that we want to be able to change how do they behave in terms of concurrence, and let a Visitor to define the way they will execute. 
 
-Other powerful idea related with this explicit relation is the fact that there is more information for managing errors, events and for giving chances to run  each thread each time. In case that one process die, why can know how it impacts the rest of the processes. 
+Other powerful idea related with this explicit relation is the fact that there is more information for managing errors, events and for giving chances to run  each thread each time. In case that one process die, we can know how it impacts on the rest of the processes. 
 
 In order to define the relations in between this maybe-process we use the following simbols
 
@@ -10,7 +10,7 @@ Usually we write
 [  A ] => [ :a | B(a) ].
 
 
-& and, A & B, both should be executed, they are dont need the results of any of both. 
+& and, A & B, both should be executed, they dont need each others result
 
 [ A ] & [ B ] = { a . b }.
 
@@ -38,18 +38,6 @@ To have a better example, let add an other process
 [ : cs | A  ] => [ : a | B ] =>> [ :b | C ].
 
 In this case, all the output from a will go to be executed by B, that by C and the results from C will go to A as an input.
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

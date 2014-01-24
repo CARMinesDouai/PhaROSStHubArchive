@@ -83,14 +83,8 @@ TKTTask >> cleanup [
 
 { #category : #sorting }
 TKTTask >> doIt [
-	| future |
-	future := TKTStickyFuture new.
 	
-	future process:( [
-		self value: future.
-	] forkAt: self priority named: 'Task').
-
-	^ future.
+	^ TKTOneShotRunner new run: self
 ]
 
 { #category : #executing }
@@ -143,6 +137,4 @@ TKTTask >> value: aFuture [
 	].
 	
 	aFuture deployValue: value.
-	
-	
 ]

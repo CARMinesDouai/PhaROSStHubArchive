@@ -84,11 +84,6 @@ TKTFuture >> initialize [
 ]
 
 { #category : #testing }
-TKTFuture >> isProcessFinished [
-	self shouldBeImplemented.
-]
-
-{ #category : #testing }
 TKTFuture >> isValueAvailable [
 	^ isDeployed.
 ]
