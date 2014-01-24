@@ -25,10 +25,10 @@ TKTFutureAndResultTests >> testCallbackInAnAlreadyDeployedFuture [
 { #category : #'as yet unclassified' }
 TKTFutureAndResultTests >> testDeployResult [
 	| result value |
-	result := TKTResult new.
+	result := TKTLazyResult new.
 	value := TKTTestObject new.
 	
-	self assert: result class = TKTResult.
+	self assert: result class = TKTLazyResult.
 	result deployValue: value.
 	self assert: result == value.
 	

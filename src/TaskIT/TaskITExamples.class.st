@@ -34,7 +34,7 @@ TaskITExamples >> commonTaskResult [
 	"
 	| result |
 	result :=  [ 2 + 2 ] doIt asResult.
-	self assert: result class = TKTResult.
+	self assert: result class = TKTLazyResult.
 	(Delay forMilliseconds: 300) wait.
 	self assert: result = 4.0. 
 ]
@@ -58,12 +58,12 @@ TaskITExamples >> wrappingCalls [
 	"
 	| result |
 	result :=   2 paralellize + 2.
-	self assert: result class = TKTResult.
+	self assert: result class = TKTLazyResult.
 	(Delay forMilliseconds: 300) wait.
 	self assert: result = 4.0. 
 	
 	result := Object paralellize new.
-	self assert: result class = TKTResult.
+	self assert: result class = TKTLazyResult.
 	(Delay forMilliseconds: 300) wait.
 	self assert: result class = Object. 
 ]

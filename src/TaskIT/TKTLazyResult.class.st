@@ -1,5 +1,5 @@
 Class {
-	#name : #TKTResult,
+	#name : #TKTLazyResult,
 	#superclass : #Object,
 	#instVars : [
 		'future',
@@ -9,33 +9,33 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-TKTResult class >> for: aFuture [
+TKTLazyResult class >> for: aFuture [
 	^ self new future: aFuture ; yourself.
 ]
 
 { #category : #'as yet unclassified' }
-TKTResult >> = other [ 	
+TKTLazyResult >> = other [ 	
 	^ self perform: #= withArguments: {other}.
 ]
 
 { #category : #'as yet unclassified' }
-TKTResult >> asString [ 	
+TKTLazyResult >> asString [ 	
 	^ self perform: #asString.
 ]
 
 { #category : #'as yet unclassified' }
-TKTResult >> at: anId [
+TKTLazyResult >> at: anId [
 	^ self perform: #at: withArguments: { anId }.
 ]
 
 { #category : #'as yet unclassified' }
-TKTResult >> cancel [
+TKTLazyResult >> cancel [
 	cancelled := true.
 	^ future cancel.
 ]
 
 { #category : #'as yet unclassified' }
-TKTResult >> deployValue:  aValue [
+TKTLazyResult >> deployValue:  aValue [
 	| realValue |
 
 	realValue := (aValue class = SmallInteger) ifTrue: [ aValue asFloat ] ifFalse: [ aValue ]. 	
@@ -45,7 +45,7 @@ TKTResult >> deployValue:  aValue [
 ]
 
 { #category : #'as yet unclassified' }
-TKTResult >> doesNotUnderstand: aMessage [
+TKTLazyResult >> doesNotUnderstand: aMessage [
 	
 	cancelled ifTrue: [
 		Error signal: 'The process was cancelled'.
@@ -56,36 +56,36 @@ TKTResult >> doesNotUnderstand: aMessage [
 ]
 
 { #category : #'as yet unclassified' }
-TKTResult >> finalize [ 
+TKTLazyResult >> finalize [ 
 	future finalize.
 
 ]
 
 { #category : #'as yet unclassified' }
-TKTResult >> future: aFuture [
+TKTLazyResult >> future: aFuture [
 	aFuture whenFinished: [ :  aValue  |  self deployValue: aValue ].	
 	future set: aFuture.
 	
 ]
 
 { #category : #'as yet unclassified' }
-TKTResult >> initialize [ 
+TKTLazyResult >> initialize [ 
 	cancelled := false.
 	future := TKTVariable for: nil.
 ]
 
 { #category : #'as yet unclassified' }
-TKTResult >> isKindOf: aClass [
+TKTLazyResult >> isKindOf: aClass [
 	^ self perform: #isKindOf:   withArguments: { aClass }
 ]
 
 { #category : #'as yet unclassified' }
-TKTResult >> isResult [
+TKTLazyResult >> isResult [
 	^ true
 ]
 
 { #category : #'as yet unclassified' }
-TKTResult >> perform: aSelector [ 
+TKTLazyResult >> perform: aSelector [ 
 		| rslt | 
 		future apply: [
 			: aFuture | 
@@ -95,7 +95,7 @@ TKTResult >> perform: aSelector [
 ]
 
 { #category : #'as yet unclassified' }
-TKTResult >> perform: aSelector withArguments: anArray [
+TKTLazyResult >> perform: aSelector withArguments: anArray [
 		| rslt | 
 		future apply: [
 			: aFuture | 
@@ -105,11 +105,11 @@ TKTResult >> perform: aSelector withArguments: anArray [
 ]
 
 { #category : #'as yet unclassified' }
-TKTResult >> size [ 	
+TKTLazyResult >> size [ 	
 	^ self perform: #size.
 ]
 
 { #category : #'as yet unclassified' }
-TKTResult >> value [ 	
+TKTLazyResult >> value [ 	
 	^ self perform: #value.
 ]

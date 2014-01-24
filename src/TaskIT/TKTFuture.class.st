@@ -29,9 +29,21 @@ Class {
 { #category : #converting }
 TKTFuture >> asResult [
 	result ifNil: [
-		result := TKTResult for: self. 
+		result := TKTLazyResult for: self. 
 	].
 	^ result.
+]
+
+{ #category : #deprecated }
+TKTFuture >> at: key [ 
+
+	^ processData at: key
+]
+
+{ #category : #deprecated }
+TKTFuture >> at: key put: anObject [
+
+	^ processData at: key put: anObject
 ]
 
 { #category : #actions }
@@ -68,6 +80,7 @@ TKTFuture >> initialize [
 	error := nil.
 	callbacks := TKTVariable for: OrderedCollection new.
 	semaphore := Semaphore new.
+	processData := TKTVariable for: Dictionary new.
 ]
 
 { #category : #testing }
