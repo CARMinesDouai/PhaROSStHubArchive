@@ -67,7 +67,7 @@ PRCCommandLineCreateHandler >> exampleGenerator [
 	^  [ 
 		: deploymentUnit |
 		| pack |
-		pack := deploymentUnit package capitalized,'Package'.
+		pack := deploymentUnit packageName capitalized,'Package'.
 		
 		(Smalltalk at: #PhaROSPackage) subclass: pack asSymbol
 		instanceVariableNames: ''
