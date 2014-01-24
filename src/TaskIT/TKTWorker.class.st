@@ -56,6 +56,17 @@ TKTWorker >> initialize [
 	self onStart.
 ]
 
+{ #category : #running }
+TKTWorker >> interruptCurrentTask [
+
+	currentTask ifNotNil: [ 
+		currentTask value isProcessFinished ifFalse: [
+			currentTask  priority: 10.
+			workQueue do: currentTask.
+		].
+	].
+]
+
 { #category : #'worker-assignment' }
 TKTWorker >> isWorkingWith: aFuture [
 	^ currentTask value = aFuture 
@@ -102,12 +113,7 @@ TKTWorker >> priority: anObject [
 { #category : #running }
 TKTWorker >> restart [
 	 
-	currentTask ifNotNil: [ 
-		currentTask value isProcessFinished ifFalse: [
-			currentTask  priority: 10.
-			workQueue do: currentTask.
-		].
-	].
+	self interruptCurrentTask.
 	self onStart.
 	self startWorkerProcess.
 ]

@@ -99,9 +99,9 @@ TKTFuture >> runner: aRunner [
 TKTFuture >> value [
 
 	semaphore wait.
-		
+
 	error ifNotNil:[
-		error signal.
+		error pass.
 	].
 
 	^ value.
