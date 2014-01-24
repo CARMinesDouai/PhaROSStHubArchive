@@ -59,12 +59,10 @@ TKTTaskDispatcher >> destroy [
 
 { #category : #'as yet unclassified' }
 TKTTaskDispatcher >> dispatch: aTaskOrBlock [
-	| task future  |
+	| task |
 	
 	task := aTaskOrBlock asTask.
-	future := TKTFuture new.
-	(self selectWorkerFor: task) scheddule: (task -> future).
-	^ future.
+	^ (self selectWorkerFor: task) scheduleTask: task.
 ]
 
 { #category : #'as yet unclassified' }

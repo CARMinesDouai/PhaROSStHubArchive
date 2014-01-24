@@ -8,7 +8,7 @@ Class {
 TKTTestVariable >> testApply [
 	| variable |
 	
-	variable := TKTVariable for: 1.
+	variable := TKTExclusiveAccessVariable initialValue: 1.
 	
 	self assert: (variable apply: [ : val | val + 2 ]) = 3
 ]
@@ -17,7 +17,7 @@ TKTTestVariable >> testApply [
 TKTTestVariable >> testDoesnotUnderstandForwarding [
 	| variable |
 	
-	variable := TKTVariable for: 1.
+	variable := TKTExclusiveAccessVariable initialValue: 1.
 	
 	self assert: (variable + 2 ) = 3.
 	 self assert: (variable < 2 ) .
@@ -27,7 +27,7 @@ TKTTestVariable >> testDoesnotUnderstandForwarding [
 TKTTestVariable >> testGetSet [
 	| variable |
 	
-	variable := TKTVariable for: 1.
+	variable := TKTExclusiveAccessVariable initialValue: 1.
 	
 	self assert: variable value = 1.
 	self assert: variable get = 1.
@@ -41,9 +41,9 @@ TKTTestVariable >> testGetSet [
 TKTTestVariable >> testValue [
 	| variable |
 	
-	variable := TKTVariable for: 1.
+	variable := TKTExclusiveAccessVariable initialValue: 1.
 	
 	self assert: variable value = 1.
-	variable := TKTVariable for: [ 3 + 2 ].
+	variable := TKTExclusiveAccessVariable initialValue: [ 3 + 2 ].
 	self assert: variable value = 5. 
 ]

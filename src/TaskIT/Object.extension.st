@@ -17,7 +17,7 @@ Object >> asStickyReference [
 
 { #category : #'*TaskIT' }
 Object >> asThreadsafeReference [
-	^ TKTVariable for: self.
+	^ TKTExclusiveAccessVariable initialValue: self.
 ]
 
 { #category : #'*TaskIT' }

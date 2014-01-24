@@ -7,7 +7,6 @@ Class {
 		'onIdleTime',
 		'currentTask',
 		'beginning',
-		'future',
 		'doneTasks',
 		'priority'
 	],
@@ -27,21 +26,18 @@ TKTWorker class >> with: aPriority [
 		yourself
 ]
 
-{ #category : #'as yet unclassified' }
-TKTWorker >> busy [
+{ #category : #'worker-assignment' }
+TKTWorker >> busyTime [
 	^ workQueue size * 500.
 ]
 
 { #category : #cancelling }
 TKTWorker >> cancelFutures [
 
-	future ifNil: [ ^self ].
-	future valueAvailable ifFalse: [
-		future cancel.		
-	].
+	"We will have many futures"
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scheduling }
 TKTWorker >> cleanupTasks [
 	doneTasks do: #cleanup.
 	doneTasks removeAll.
@@ -52,7 +48,9 @@ TKTWorker >> initialize [
 	super initialize.
 	
 	workQueue := TKTPriorityQueue new.
-	onIdleTime := [ self cleanupTasks ]. 
+	
+	"We return nil in here because we use it as a marker when asking for the next task"
+	onIdleTime := [ self cleanupTasks . nil ].
 	priority := Processor userBackgroundPriority.
 
 	self onStart.
@@ -63,7 +61,7 @@ TKTWorker >> isWorkingWith: aFuture [
 	^ currentTask value = aFuture 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'worker-assignment' }
 TKTWorker >> matching: anOtherTask [ 
 	| frequency |
 	
@@ -72,10 +70,10 @@ TKTWorker >> matching: anOtherTask [
 		frequency := frequency - (1000 // anOtherTask expectedFrequency).
 	]. 
 	
-	^ ((self priority - anOtherTask priority ) abs * 1000) + self busy + frequency.
+	^ ((self priority - anOtherTask priority ) abs * 1000) + self busyTime + frequency.
 ]
 
-{ #category : #accessing }
+{ #category : #scheduling }
 TKTWorker >> next [
 	^ workQueue nextIfTimeOut: onIdleTime
 ]
@@ -85,11 +83,10 @@ TKTWorker >> onIdleTime: aBlockOrWork [
 	onIdleTime:= aBlockOrWork asWork.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 TKTWorker >> onStart [ 
-	keepRunning := TKTVariable for: false.
+	keepRunning := TKTExclusiveAccessVariable initialValue: false.
 	doneTasks := Set new.
-	future := nil.
 ]
 
 { #category : #accessing }
@@ -104,10 +101,6 @@ TKTWorker >> priority: anObject [
 
 { #category : #running }
 TKTWorker >> restart [
-
-	future stop.
-	future := nil.
-	
 	 
 	currentTask ifNotNil: [ 
 		currentTask value isProcessFinished ifFalse: [
@@ -122,7 +115,7 @@ TKTWorker >> restart [
 { #category : #running }
 TKTWorker >> run [
 	| task taskFuture | 
-	(currentTask := self next ) ifNotNil: [ 
+	(currentTask := self next) ifNotNil: [ 
 		task := currentTask key.
 		taskFuture := currentTask value.
 		
@@ -132,10 +125,19 @@ TKTWorker >> run [
 	]
 ]
 
-{ #category : #'as yet unclassified' }
-TKTWorker >> scheddule: aTaskFutureAssoc [ 
+{ #category : #scheduling }
+TKTWorker >> schedule: aTaskFutureAssoc [ 
 	" aTaskFutureAssoc is an association that match the task to run with a future related with this processing instance"
-	^ workQueue add: aTaskFutureAssoc.
+	^ workQueue add: aTaskFutureAssoc
+]
+
+{ #category : #scheduling }
+TKTWorker >> scheduleTask: aTask [
+
+	| future |
+	future := TKTFuture new.
+	self schedule: aTask -> future.
+	^ future
 ]
 
 { #category : #running }
@@ -148,17 +150,14 @@ TKTWorker >> startWorkerProcess [
 
 ]
 
-{ #category : #accessing }
+{ #category : #running }
 TKTWorker >> stop [
-	self scheddule: [
-		keepRunning set: false.
-	] asTask -> TKTFuture new.
+	self scheduleTask: [ keepRunning set: false ] asTask.
 	(Delay forMilliseconds: 500) wait.
-	
 	self cancel.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 TKTWorker >> stopWorkingOnThat [ 
 	currentTask value deployValue: TKTCancelledFutureValue new.
 	currentTask := nil. 
@@ -170,7 +169,7 @@ TKTWorker >> timeout: aSmallInteger [
 	^ workQueue timeout: aSmallInteger 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 TKTWorker >> workerLoop [
 
 	keepRunning set: true.

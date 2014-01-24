@@ -79,9 +79,9 @@ TKTFuture >> initialize [
 	isDeployed := false.
 	value := nil. 
 	error := nil.
-	callbacks := TKTVariable for: OrderedCollection new.
+	callbacks := TKTExclusiveAccessVariable initialValue: OrderedCollection new.
 	semaphore := Semaphore new.
-	processData := TKTVariable for: Dictionary new.
+	processData := TKTExclusiveAccessVariable initialValue: Dictionary new.
 ]
 
 { #category : #testing }

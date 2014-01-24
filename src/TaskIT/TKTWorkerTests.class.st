@@ -45,7 +45,7 @@ TKTWorkerTests >> testMatchingIndexChangeWhenThereIsWork [
 	self assert: eventualTask class =TKTEventualTask.
 	self assert: ceventualTask class =TKTConsumableEventualTask.
 	
-	self assert: (deadWorker matching: commonTask) < (deadWorker scheddule:commonTask;  matching: commonTask).
+	self assert: (deadWorker matching: commonTask) < (deadWorker scheduleTask: commonTask;  matching: commonTask).
 	
 	self assert: (deadWorker matching: commonTask) = (deadWorker matching: commonTask).
 	self assert: (deadWorker matching: eventualTask) = (deadWorker matching: eventualTask).
@@ -53,7 +53,7 @@ TKTWorkerTests >> testMatchingIndexChangeWhenThereIsWork [
 	self assert: (deadWorker matching: ceventualTask) = (deadWorker matching: eventualTask).
 	self deny: (deadWorker matching: commonTask) = (deadWorker matching: eventualTask).
 	
-	self assert: (deadEventKindWorker matching: commonTask) < (deadEventKindWorker scheddule:commonTask; matching: commonTask).
+	self assert: (deadEventKindWorker matching: commonTask) < (deadEventKindWorker scheduleTask: commonTask; matching: commonTask).
 	
 	self assert: (deadEventKindWorker matching: commonTask) = (deadEventKindWorker matching: commonTask).
 	self assert: (deadEventKindWorker matching: eventualTask) = (deadEventKindWorker matching: eventualTask).

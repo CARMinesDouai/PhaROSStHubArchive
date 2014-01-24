@@ -71,7 +71,7 @@ TKTLazyResult >> future: aFuture [
 { #category : #'as yet unclassified' }
 TKTLazyResult >> initialize [ 
 	cancelled := false.
-	future := TKTVariable for: nil.
+	future := TKTExclusiveAccessVariable initialValue: nil.
 ]
 
 { #category : #'as yet unclassified' }

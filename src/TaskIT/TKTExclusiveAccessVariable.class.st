@@ -1,5 +1,5 @@
 Class {
-	#name : #TKTVariable,
+	#name : #TKTExclusiveAccessVariable,
 	#superclass : #Object,
 	#instVars : [
 		'value',
@@ -9,12 +9,12 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-TKTVariable class >> for: aValue [
+TKTExclusiveAccessVariable class >> initialValue: aValue [
 	^ self new set: aValue; yourself.
 ]
 
 { #category : #'as yet unclassified' }
-TKTVariable >> apply: aBlock [
+TKTExclusiveAccessVariable >> apply: aBlock [
 	| rslt |
 	mutex critical: [
 		rslt := aBlock value: value.
@@ -23,17 +23,17 @@ TKTVariable >> apply: aBlock [
 ]
 
 { #category : #'as yet unclassified' }
-TKTVariable >> at: anObject [
+TKTExclusiveAccessVariable >> at: anObject [
 	^ self get at: anObject .
 ]
 
 { #category : #'as yet unclassified' }
-TKTVariable >> at: anObject put: anOtherObject [
+TKTExclusiveAccessVariable >> at: anObject put: anOtherObject [
 	^ self get at: anObject put: anOtherObject.
 ]
 
 { #category : #'as yet unclassified' }
-TKTVariable >> doesNotUnderstand: aMessage [ 
+TKTExclusiveAccessVariable >> doesNotUnderstand: aMessage [ 
 	| rslt |
 	mutex critical: [
 		rslt := value perform: aMessage selector withArguments: aMessage arguments
@@ -43,14 +43,14 @@ TKTVariable >> doesNotUnderstand: aMessage [
 ]
 
 { #category : #'as yet unclassified' }
-TKTVariable >> finalize [ 
+TKTExclusiveAccessVariable >> finalize [ 
 	value finalize.
 	super finalize.
 	
 ]
 
 { #category : #'as yet unclassified' }
-TKTVariable >> get [
+TKTExclusiveAccessVariable >> get [
 	| val |
 	mutex critical: [
 		val := value.	
@@ -59,18 +59,18 @@ TKTVariable >> get [
 ]
 
 { #category : #'as yet unclassified' }
-TKTVariable >> initialize [ 
+TKTExclusiveAccessVariable >> initialize [ 
 	mutex := Mutex new.
 ]
 
 { #category : #'as yet unclassified' }
-TKTVariable >> set: aValue [
+TKTExclusiveAccessVariable >> set: aValue [
 	mutex critical: [
 		value := aValue.	
 	]
 ]
 
 { #category : #'as yet unclassified' }
-TKTVariable >> value [
+TKTExclusiveAccessVariable >> value [
 	^ self get value.
 ]

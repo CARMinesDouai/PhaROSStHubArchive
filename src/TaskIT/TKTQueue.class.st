@@ -20,7 +20,7 @@ TKTQueue >> add: anObject [
 
 { #category : #'as yet unclassified' }
 TKTQueue >> initialize [ 
-	queue := TKTVariable for: (OrderedCollection new).
+	queue := TKTExclusiveAccessVariable initialValue: (OrderedCollection new).
 	workAvailability := Semaphore new.
 	timeout := 5000.
 ]
