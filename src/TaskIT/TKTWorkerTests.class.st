@@ -28,7 +28,6 @@ TKTWorkerTests >> setUp [
 	
 	deadWorker := TKTWorker new priority: Processor userBackgroundPriority; yourself .
 	deadEventKindWorker  := TKTWorker new priority: Processor systemBackgroundPriority; timeout: 300; yourself.
-	
 ]
 
 { #category : #'as yet unclassified' }

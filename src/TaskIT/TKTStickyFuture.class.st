@@ -20,7 +20,6 @@ TKTStickyFuture >> cancel [
 TKTStickyFuture >> deployError: anError [
 	self stop.
 	super deployError: anError.
-	
 ]
 
 { #category : #'as yet unclassified' }

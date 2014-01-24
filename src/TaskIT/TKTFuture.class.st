@@ -21,7 +21,8 @@ Class {
 		'value',
 		'result',
 		'semaphore',
-		'processData'
+		'processData',
+		'runner'
 	],
 	#category : #'TaskIT-Kernel'
 }
@@ -86,6 +87,12 @@ TKTFuture >> initialize [
 { #category : #testing }
 TKTFuture >> isValueAvailable [
 	^ isDeployed.
+]
+
+{ #category : #'as yet unclassified' }
+TKTFuture >> runner: aRunner [ 
+
+	runner := aRunner
 ]
 
 { #category : #actions }

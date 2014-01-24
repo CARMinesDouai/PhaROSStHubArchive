@@ -1,48 +1,32 @@
 Class {
 	#name : #TKTOneShotRunner,
-	#superclass : #Object,
+	#superclass : #TKTRunner,
 	#instVars : [
-		'process',
 		'future'
 	],
 	#category : #'TaskIT-Kernel'
 }
 
 { #category : #running }
-TKTOneShotRunner >> cancel [
+TKTOneShotRunner >> cancelFutures [
 
-	self stopProcess.
 	self cancel: future.
-]
-
-{ #category : #cancelling }
-TKTOneShotRunner >> cancel: aTKTFuture [ 
-
-	aTKTFuture deployValue: TKTCancelledFutureValue new.
-]
-
-{ #category : #testing }
-TKTOneShotRunner >> isTerminated [
-
-	^ process isNil or: [ process isTerminated ]
 ]
 
 { #category : #running }
 TKTOneShotRunner >> run: aTKTTask [
 
-	future := TKTFuture new.
+	future := TKTFuture new
+					runner: self;
+					yourself.
+					
 	process := [
 		aTKTTask value: future.
 		self stopProcess.
-	] forkAt: aTKTTask priority named: 'A TKTTask'.
+	] newProcess.
+	process name: 'A TKTTask'.
+	process priority: aTKTTask priority.
+	process resume.
+	
 	^ future.
-]
-
-{ #category : #private }
-TKTOneShotRunner >> stopProcess [
-
-	| oldProcess |
-	oldProcess := process.
-	process := nil.
-	oldProcess terminate.
 ]

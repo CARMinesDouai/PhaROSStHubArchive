@@ -13,7 +13,7 @@ TKTTaskOneShotRunnerNormalComputationTests >> setUp [
 
 	super setUp.
 	runner := TKTOneShotRunner new.
-	result := (runner run: [ 1+2 ] asTask) value.
+	result := (runner run: ([ 1+2 ] asTask)) value.
 ]
 
 { #category : #'as yet unclassified' }

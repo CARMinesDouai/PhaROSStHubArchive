@@ -1,6 +1,6 @@
 Class {
 	#name : #TKTWorker,
-	#superclass : #TKTTask,
+	#superclass : #TKTRunner,
 	#instVars : [
 		'keepRunning',
 		'workQueue',
@@ -8,7 +8,8 @@ Class {
 		'currentTask',
 		'beginning',
 		'future',
-		'doneTasks'
+		'doneTasks',
+		'priority'
 	],
 	#category : #'TaskIT-Tasks-Worker'
 }
@@ -20,12 +21,24 @@ TKTWorker class >> spawn [
 
 { #category : #'as yet unclassified' }
 TKTWorker class >> with: aPriority [
-	^ self new priority:aPriority ; doIt ; yourself.
+	^ self new
+		priority: aPriority;
+		doIt;
+		yourself
 ]
 
 { #category : #accessing }
 TKTWorker >> busy [
 	^ workQueue size * 500.
+]
+
+{ #category : #cancelling }
+TKTWorker >> cancelFutures [
+
+	future ifNil: [ ^self ].
+	future valueAvailable ifFalse: [
+		future cancel.		
+	].
 ]
 
 { #category : #'as yet unclassified' }
@@ -34,29 +47,28 @@ TKTWorker >> cleanupTasks [
 	doneTasks removeAll.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'menu commands' }
 TKTWorker >> doIt [
-	(future isNil or: [ future isValueAvailable]) ifTrue: [
-		future := super doIt.	
-	].
-	
+
+	process := [ self workerLoop ] newProcess.
+	process priority: self priority.
+	process name: 'Worker'.
+	process resume.
+
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'initialize-release' }
 TKTWorker >> initialize [ 
 	super initialize.
+	
 	workQueue := TKTPriorityQueue new.
 	onIdleTime := [ self cleanupTasks. nil. ]. 
-	block := [ self workerLoop ].
+	priority := Processor userBackgroundPriority.
+
 	self onStart.
 ]
 
-{ #category : #'as yet unclassified' }
-TKTWorker >> isRunning [
-	^ future isValueAvailable not.
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 TKTWorker >> isWorkingWith: aFuture [
 	^ currentTask value = aFuture 
 ]
@@ -73,12 +85,12 @@ TKTWorker >> matching: anOtherTask [
 	^ ((self priority - anOtherTask priority ) abs * 1000) + self busy + frequency.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTWorker >> next [
 	^ workQueue nextIfTimeOut: onIdleTime
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTWorker >> onIdleTime: aBlockOrWork [
 	onIdleTime:= aBlockOrWork asWork.
 ]
@@ -90,7 +102,17 @@ TKTWorker >> onStart [
 	future := nil.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+TKTWorker >> priority [
+	^ priority
+]
+
+{ #category : #accessing }
+TKTWorker >> priority: anObject [
+	priority := anObject
+]
+
+{ #category : #'context stack menu' }
 TKTWorker >> restart [
 
 	future stop.
@@ -107,7 +129,7 @@ TKTWorker >> restart [
 	self doIt.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 TKTWorker >> run [
 	| task taskFuture | 
 	(currentTask := self next ) ifNotNil: [ 
@@ -126,17 +148,14 @@ TKTWorker >> scheddule: aTaskFutureAssoc [
 	^ workQueue add: aTaskFutureAssoc.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTWorker >> stop [
 	self scheddule: [
 		keepRunning set: false.
 	] asTask -> TKTFuture new.
 	(Delay forMilliseconds: 500) wait.
-
-	future isValueAvailable ifFalse: [
-		future cancel.		
-	].
 	
+	self cancel.
 ]
 
 { #category : #'as yet unclassified' }
