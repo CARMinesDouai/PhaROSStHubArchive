@@ -89,7 +89,7 @@ TKTFuture >> isValueAvailable [
 	^ isDeployed.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTFuture >> runner: aRunner [ 
 
 	runner := aRunner
@@ -99,6 +99,33 @@ TKTFuture >> runner: aRunner [
 TKTFuture >> value [
 
 	semaphore wait.
+	^ self valueTimeoutOcurred: false
+]
+
+{ #category : #actions }
+TKTFuture >> valueTimeoutMilliseconds: aTimeout [
+
+	^ self valueTimeoutOcurred: (self waitForValue: aTimeout)
+]
+
+{ #category : #actions }
+TKTFuture >> valueTimeoutMilliseconds: aTimeout ifTimeOut: aBlock [
+
+	^ self
+		valueTimeoutOcurred: (self waitForValue: aTimeout)
+		ifTimeOut: aBlock
+]
+
+{ #category : #actions }
+TKTFuture >> valueTimeoutOcurred: aBoolean [
+
+	^ self valueTimeoutOcurred: aBoolean ifTimeOut: [ self error: 'timeout ocurred when getting the future value' ].
+]
+
+{ #category : #actions }
+TKTFuture >> valueTimeoutOcurred: aBoolean ifTimeOut: aBlock [
+
+	aBoolean ifTrue: [ ^ aBlock value ].
 
 	error ifNotNil:[
 		error pass.
@@ -106,6 +133,12 @@ TKTFuture >> value [
 
 	^ value.
 
+]
+
+{ #category : #private }
+TKTFuture >> waitForValue: milliseconds [ 
+
+	^ semaphore waitTimeoutMSecs: milliseconds
 ]
 
 { #category : #callbacks }
