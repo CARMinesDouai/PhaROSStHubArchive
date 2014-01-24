@@ -87,11 +87,6 @@ TKTTask >> doIt [
 	^ TKTOneShotRunner new run: self
 ]
 
-{ #category : #executing }
-TKTTask >> fallback: anError into: aFuture [
-	aFuture deployError: anError.
-]
-
 { #category : #accessing }
 TKTTask >> priority [
 	^ priority .
@@ -100,6 +95,24 @@ TKTTask >> priority [
 { #category : #accessing }
 TKTTask >> priority: aPriority [
 	priority := aPriority.
+]
+
+{ #category : #running }
+TKTTask >> runOnRunner: aRunner withFuture: aFuture [
+
+	| value |
+	self setUp.
+	[
+		[
+			value := block cull: self cull: aFuture. 
+		] on: Error do: [ : exception |
+			^ aRunner deployError: exception intoFuture: aFuture.
+		]
+	] ensure: [
+		self tearDown.
+	].
+	
+	aRunner deployValue: value intoFuture: aFuture.
 ]
 
 { #category : #executing }
@@ -118,23 +131,11 @@ TKTTask >> tearDown [
 { #category : #executing }
 TKTTask >> value [
 	" The future is dispendable in this case, cause is executing in the same thread "
-	^ self value: TKTFuture new.
+	^ TKTSameThreadRunner new run: self
 ]
 
 { #category : #executing }
 TKTTask >> value: aFuture [ 
-	| value | 
-	self setUp.
-	[
-		[
-			value :=  ( block cull: self cull: aFuture ). 
-		] on: Error do: [ 
-			: exception |
-			self fallback: exception into:aFuture.
-		]
-	] ensure: [
-		self tearDown.
-	].
 	
-	aFuture deployValue: value.
+	self error.
 ]

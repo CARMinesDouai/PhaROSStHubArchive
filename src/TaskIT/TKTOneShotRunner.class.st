@@ -1,6 +1,6 @@
 Class {
 	#name : #TKTOneShotRunner,
-	#superclass : #TKTRunner,
+	#superclass : #TKTOwnProcessRunner,
 	#instVars : [
 		'future'
 	],
@@ -21,7 +21,7 @@ TKTOneShotRunner >> run: aTKTTask [
 					yourself.
 					
 	process := [
-		aTKTTask value: future.
+		aTKTTask runOnRunner: self withFuture: future.
 		self stopProcess.
 	] newProcess.
 	process name: 'A TKTTask'.

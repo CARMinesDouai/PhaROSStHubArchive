@@ -1,6 +1,6 @@
 Class {
 	#name : #TKTWorker,
-	#superclass : #TKTRunner,
+	#superclass : #TKTOwnProcessRunner,
 	#instVars : [
 		'keepRunning',
 		'workQueue',
@@ -56,7 +56,7 @@ TKTWorker >> initialize [
 	self onStart.
 ]
 
-{ #category : #testing }
+{ #category : #'worker-assignment' }
 TKTWorker >> isWorkingWith: aFuture [
 	^ currentTask value = aFuture 
 ]
@@ -119,7 +119,8 @@ TKTWorker >> run [
 		task := currentTask key.
 		taskFuture := currentTask value.
 		
-		task value: taskFuture.
+		task runOnRunner: self withFuture: taskFuture.
+
 		doneTasks add: task.
 		currentTask := nil.
 	]

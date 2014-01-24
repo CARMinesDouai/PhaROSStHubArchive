@@ -41,6 +41,7 @@ TKTEventualTask >> initialize [
 ]
 
 { #category : #'as yet unclassified' }
-TKTEventualTask >> value: aFuture [ 
-	^ condition value ifTrue: [ super value: aFuture ].
+TKTEventualTask >> runOnRunner: aRunner withFuture: aFuture [
+
+	^ condition value ifTrue: [ super runOnRunner: aRunner withFuture: aFuture ].
 ]

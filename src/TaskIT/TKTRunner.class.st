@@ -1,32 +1,35 @@
 Class {
 	#name : #TKTRunner,
 	#superclass : #Object,
-	#instVars : [
-		'process'
-	],
 	#category : #'TaskIT-Kernel'
 }
 
-{ #category : #running }
+{ #category : #cancelling }
 TKTRunner >> cancel [
 
-	self stopProcess.
-	self cancelFutures.
+	self subclassResponsibility
 ]
 
 { #category : #cancelling }
 TKTRunner >> cancel: aTKTFuture [ 
 
+	aTKTFuture isValueAvailable ifTrue: [ self error: 'this future was already deployed' ].
 	aTKTFuture deployValue: TKTCancelledFutureValue new.
 ]
 
-{ #category : #cancelling }
-TKTRunner >> cancelFutures [
+{ #category : #running }
+TKTRunner >> deployError: anError intoFuture: aFuture [
 
-	self subclassResponsibility
+	aFuture deployError: anError.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
+TKTRunner >> deployValue: aValue intoFuture: aFuture [
+
+	aFuture deployValue: aValue.
+]
+
+{ #category : #testing }
 TKTRunner >> isRunning [
 	^ self isTerminated not
 ]
@@ -34,14 +37,11 @@ TKTRunner >> isRunning [
 { #category : #testing }
 TKTRunner >> isTerminated [
 
-	^ process isNil or: [ process isTerminated ]
+	self subclassResponsibility
 ]
 
-{ #category : #private }
-TKTRunner >> stopProcess [
+{ #category : #running }
+TKTRunner >> run: aTKTTask [
 
-	| oldProcess |
-	oldProcess := process.
-	oldProcess terminate.
-	process := nil.
+	self subclassResponsibility
 ]

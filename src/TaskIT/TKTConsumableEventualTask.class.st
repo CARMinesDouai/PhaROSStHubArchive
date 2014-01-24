@@ -25,10 +25,11 @@ TKTConsumableEventualTask >> instances: nTimes [
 ]
 
 { #category : #'as yet unclassified' }
-TKTConsumableEventualTask >> value: aFuture [ 
+TKTConsumableEventualTask >> runOnRunner: aRunner withFuture: aFuture [
+
 	instances > 0 ifTrue: [ 
 		^ condition value ifTrue: [ 
-			super value: aFuture.
+			super runOnRunner: aRunner withFuture: aFuture.
 			instances := instances - 1.
 		]
 	].

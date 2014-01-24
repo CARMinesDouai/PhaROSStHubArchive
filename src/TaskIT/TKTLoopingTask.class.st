@@ -14,6 +14,13 @@ TKTLoopingTask >> block: aBlock [
 ]
 
 { #category : #'as yet unclassified' }
+TKTLoopingTask >> runOnRunner: aRunner withFuture: aFuture [
+
+	aFuture at: #keepRunning put: true.
+	^ super runOnRunner: aRunner withFuture: aFuture.
+]
+
+{ #category : #'as yet unclassified' }
 TKTLoopingTask >> value: aFuture [
 	aFuture at: #keepRunning put: true. 
 	^ super value: aFuture.
