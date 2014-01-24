@@ -63,6 +63,63 @@ PRCCommandLineCreateHandler >> description [
 ]
 
 { #category : #'as yet unclassified' }
+PRCCommandLineCreateHandler >> exampleGenerator [
+	^  [ 
+		: unit |
+		| pack |
+		pack := unit package capitalized,'Package'.
+		
+		(Smalltalk at: #PhaROSPackage) subclass: pack asSymbol
+		instanceVariableNames: ''
+		classVariableNames: 'DependentsFields'
+		poolDictionaries: ''
+		category: pack.
+		
+		(Smalltalk at: pack asSymbol) compile: 'buildController
+			^ PhaROSHandleController home.
+		'.
+		(Smalltalk at: pack asSymbol) compile: 'nodeletInjectionExample
+			self controller nodelets use: PhaROSNodelet as:#genericNodelet.
+			self controller nodelets genericNodelet isKindOf: PhaROSNodelet.
+		'.
+		(Smalltalk at: pack asSymbol) compile: 'scriptExample
+			"Any method that starts with a script is deployed as script Here you can start doing stuff".
+		'.
+		(Smalltalk at: pack asSymbol) compile: 'scriptTopicPublishingExample
+			| publisher |
+			"For publishing into a topic,you just need a publisher object. You can obtain it asking to the related node like in the following code".
+			
+			publisher := self controller node topicPublisher: ''/example/string'' 
+								  typedAs: ''std_msgs/String''.
+								
+			publisher send:[ : string | string data: ''this is an example'' ].
+		'.
+		(Smalltalk at: pack asSymbol) compile: 'scriptTopicSubscribingExample
+			
+			"For subscribing to a topic, you just need a subscriber to configure it with a callback (block). You can obtain it asking to the related node like in the following code".
+			(self rosnode buildConnectionFor: ''/example/string'' ) typedAs: ''std_msgs/String''; 
+																	for: [ : string |  "this is a callback" Transcript show: string data ];
+																    connect .
+																
+			"As you can see, buildConnectionFor: aTopicID, returns an object configurable. This is a builder, you can configure it as much as you want, and when you send connect message it will make the proper connection. For better usage of the builder check the documentation "
+		'.
+		(Smalltalk at: pack asSymbol) compile: 'scriptServiceDefining
+			
+			"TODO"
+		'.
+		(Smalltalk at: pack asSymbol) compile: 'scriptServiceInvoking
+			
+			"TODO"
+		'.
+		(Smalltalk at: pack asSymbol) compile: 'scriptParameterBinding
+			
+			"TODO"
+		'.
+	 ].
+
+]
+
+{ #category : #'as yet unclassified' }
 PRCCommandLineCreateHandler >> maintainer [
 
 	^  (self optionAt: #'maintainer' ifAbsent: [ self author] ).
@@ -116,6 +173,8 @@ PRCCommandLineCreateHandler >> realActivate [
 	
 	deployer codeGenerator registerPreProcess: (' Author fullName: ''{1}'' ' format:{ self pharoUser }).
 	
+	deployer codeGenerator registerPostProcess: self exampleGenerator.
+
 	archObject := PRCCommandPackageRegistry  deployUnitForPackage:  archetype.
 	
 	self assert: archObject isArchetype description:'You cannot install a package that is not archetype for creating packages'.
