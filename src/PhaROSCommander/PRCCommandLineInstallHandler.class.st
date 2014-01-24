@@ -10,6 +10,7 @@ Options:
           --version	{ 1.4 | 2.0 | 3.0 }. It indicates the version of pharo to download. It will not count if you are in a not silent session. 
                               Default value is 2.0
           --package	Indicates the name of the package to install (If you use <<pharos install aPackage --package=otherPackage>> the one to be installed is otherPackage ).
+          --pharo-user	Indicates the user name for the result image.
           --force-new	DELETE the package if it exists in the pointed location. 
 
 "
@@ -39,7 +40,6 @@ PRCCommandLineInstallHandler >> realActivate [
 	location := self location.
 	silent := self silent.
 	
-	
 	package := self package.
 	
 	sourceFolder := location asFileReference / #src.
@@ -51,7 +51,7 @@ PRCCommandLineInstallHandler >> realActivate [
 	] ifFalse:[
 		RCDDeployerFactory interactiveDeployerFor: sourceFolder pathString  withPharoVersion:  version.
 	].
-	
+	deployer codeGenerator registerPreProcess: (' Author fullName: ''{1}'' ' format:{ self pharoUser }).
 	deployer deploy:  (PRCCommandPackageRegistry  deployUnitForPackage:  package).
 
 

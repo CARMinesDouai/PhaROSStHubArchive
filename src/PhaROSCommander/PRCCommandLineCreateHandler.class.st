@@ -19,7 +19,7 @@ Options:
           --maintainer-email	Indicates the email of the maintainer 
                               Default value is the indicated in author-email
           --description	Indicates the description of the package
-
+	    --pharo-user	Indicates the user name for the result image.
           --force-new	DELETE the package if it exists in the pointed location. 
 
 "
@@ -103,7 +103,6 @@ PRCCommandLineCreateHandler >> realActivate [
 	description := self description.
 	
 	archetype := self archetype.
-		
 	
 	sourceFolder := location asFileReference / #src.
 	
@@ -115,6 +114,7 @@ PRCCommandLineCreateHandler >> realActivate [
 		RCDDeployerFactory interactiveDeployerFor: sourceFolder pathString  withPharoVersion:  version.
 	].
 	
+	deployer codeGenerator registerPreProcess: (' Author fullName: ''{1}'' ' format:{ self pharoUser }).
 	
 	archObject := PRCCommandPackageRegistry  deployUnitForPackage:  archetype.
 	

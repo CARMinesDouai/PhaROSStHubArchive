@@ -122,6 +122,12 @@ PRCCommandLineHandler >> package [
 	 ].
 ]
 
+{ #category : #'as yet unclassified' }
+PRCCommandLineHandler >> pharoUser [
+
+	^  (self optionAt: #'pharo-user' ifAbsent: [  'pharos' ] ).
+]
+
 { #category : #resolving }
 PRCCommandLineHandler >> readRepositories [
 	| repositoriesFile errors repositories |
