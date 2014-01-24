@@ -126,6 +126,7 @@ ConfigurationOfPeripherics >> baseline10: spec [
 	spec for: #common do: [
 			spec blessing: #baseline.
 			spec repository: 'http://car.mines-douai.fr/squeaksource/Peripherics'.
+			
 			spec project: 'TaskIT' with: [
 				spec 
 					className: 'ConfigurationOfTaskIT';
@@ -144,7 +145,7 @@ ConfigurationOfPeripherics >> baseline10: spec [
 			].
 		
 			spec package: 'StarGazer' with: [
-				spec requires: #('TaskIt').
+				spec requires: #('TaskIT').
 			].
 			spec package: 'StarGazerTest' with: [
 				spec requires: #('StarGazer').
