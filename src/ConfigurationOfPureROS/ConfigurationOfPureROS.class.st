@@ -220,10 +220,15 @@ ConfigurationOfPureROS >> baseline11: spec [
 					repository: 'http://smalltalkhub.com/mc/sbragagnolo/TaskIT/main'.
 			].
 		
-		     spec package: 'StarGazer' with: [
-				spec repository: 'http://car.mines-douai.fr/squeaksource/Peripherics'.
+			spec project: 'StarGazer' with: [
+				spec 
+					className: 'ConfigurationOfPeripherics';
+					file: 'ConfigurationOfPeripherics' ;
+					versionString: #bleedingEdge;
+					repository: 'http://car.mines-douai.fr/squeaksource/Peripherics';
+					loads:#('StarGazerROS').
 			].
-		
+		   
 			spec package: 'PureROS' with: [
 				spec requires: #('PhaROS' 'PureNG' 'TaskIT' ).
 			].
