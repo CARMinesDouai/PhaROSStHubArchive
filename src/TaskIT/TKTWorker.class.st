@@ -23,11 +23,11 @@ TKTWorker class >> spawn [
 TKTWorker class >> with: aPriority [
 	^ self new
 		priority: aPriority;
-		doIt;
+		startWorkerProcess;
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : #'as yet unclassified' }
 TKTWorker >> busy [
 	^ workQueue size * 500.
 ]
@@ -47,22 +47,12 @@ TKTWorker >> cleanupTasks [
 	doneTasks removeAll.
 ]
 
-{ #category : #'menu commands' }
-TKTWorker >> doIt [
-
-	process := [ self workerLoop ] newProcess.
-	process priority: self priority.
-	process name: 'Worker'.
-	process resume.
-
-]
-
 { #category : #'initialize-release' }
 TKTWorker >> initialize [ 
 	super initialize.
 	
 	workQueue := TKTPriorityQueue new.
-	onIdleTime := [ self cleanupTasks. nil. ]. 
+	onIdleTime := [ self cleanupTasks ]. 
 	priority := Processor userBackgroundPriority.
 
 	self onStart.
@@ -112,7 +102,7 @@ TKTWorker >> priority: anObject [
 	priority := anObject
 ]
 
-{ #category : #'context stack menu' }
+{ #category : #running }
 TKTWorker >> restart [
 
 	future stop.
@@ -126,7 +116,7 @@ TKTWorker >> restart [
 		].
 	].
 	self onStart.
-	self doIt.
+	self startWorkerProcess.
 ]
 
 { #category : #running }
@@ -146,6 +136,16 @@ TKTWorker >> run [
 TKTWorker >> scheddule: aTaskFutureAssoc [ 
 	" aTaskFutureAssoc is an association that match the task to run with a future related with this processing instance"
 	^ workQueue add: aTaskFutureAssoc.
+]
+
+{ #category : #running }
+TKTWorker >> startWorkerProcess [
+
+	process := [ self workerLoop ] newProcess.
+	process priority: self priority.
+	process name: 'Worker'.
+	process resume.
+
 ]
 
 { #category : #accessing }

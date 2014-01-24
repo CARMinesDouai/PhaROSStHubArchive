@@ -30,5 +30,4 @@ TKTParalellizerHandler >> spawn: aBlock [
 	] ifFalse: [
 		aBlock doIt.
 	].
-	
 ]
