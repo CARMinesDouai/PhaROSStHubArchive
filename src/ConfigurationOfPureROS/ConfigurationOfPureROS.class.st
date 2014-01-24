@@ -188,6 +188,70 @@ ConfigurationOfPureROS >> baseline10: spec [
 ]
 
 { #category : #'as yet unclassified' }
+ConfigurationOfPureROS >> baseline11: spec [
+	<version:'1.1-baseline'>
+	spec for: #common do: [
+			spec blessing: #baseline.
+			spec repository: 'http://car.mines-douai.fr/squeaksource/Pure'.
+			
+			
+			spec project: 'PhaROS' with: [
+				spec 
+					className: 'ConfigurationOfPhaROS';
+					file: 'ConfigurationOfPhaROS' ;
+					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'; 
+					versionString: #bleedingEdge;
+					loads: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition' 'PhaROSNodeletsLocalizer' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsRPC' 'PhaROSNodeletsMerger').
+			].
+			
+		      spec project: 'PureNG' with: [
+				spec 
+					className: 'ConfigurationOfPureNG';
+					file: 'ConfigurationOfPureNG' ;
+					versionString: #bleedingEdge;
+					repository: 'http://car.mines-douai.fr/squeaksource/Pure'.
+			].
+		
+			spec project: 'TaskIT' with: [
+				spec 
+					className: 'ConfigurationOfTaskIT';
+					file: 'ConfigurationOfTaskIT' ;
+					versionString: #bleedingEdge;
+					repository: 'http://smalltalkhub.com/mc/sbragagnolo/TaskIT/main'.
+			].
+		
+		     spec package: 'StarGazer' with: [
+				spec repository: 'http://car.mines-douai.fr/squeaksource/Peripherics'.
+			].
+		
+			spec package: 'PureROS' with: [
+				spec requires: #('PhaROS' 'PureNG' 'TaskIT' ).
+			].
+		
+			spec package: 'PureROSExperiments'.
+			
+			spec package: 'PureROSNodeletsMovement'.
+			spec package: 'PureROSNodeletsKompai'.
+			spec package: 'PureROSNodeletsCaire'.
+			
+			
+			spec package: 'PureROSPackageKompai' with:[
+				spec requires: #('PureROSNodeletsKompai' 'PureROS').	
+			]. 
+			spec package: 'PureROSPackageRobulab' with:[
+				spec requires: #('PureROSNodeletsMovement' 'PureROS').	
+			]. 
+			spec package: 'PureROSPackageCaire' with:[
+				spec requires: #('PureROSNodeletsCaire' 'PureROS').	
+			]. 
+			
+			
+	].
+
+
+]
+
+{ #category : #'as yet unclassified' }
 ConfigurationOfPureROS >> project [
 
 	^ project ifNil: [
