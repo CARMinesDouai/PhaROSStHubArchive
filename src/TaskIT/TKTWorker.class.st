@@ -1,14 +1,13 @@
 Class {
 	#name : #TKTWorker,
-	#superclass : #TKTOwnProcessRunner,
+	#superclass : #TKTPersistentRunner,
 	#instVars : [
 		'keepRunning',
 		'workQueue',
 		'onIdleTime',
 		'currentTask',
 		'beginning',
-		'doneTasks',
-		'priority'
+		'doneTasks'
 	],
 	#category : #'TaskIT-Tasks-Worker'
 }
@@ -22,7 +21,7 @@ TKTWorker class >> spawn [
 TKTWorker class >> with: aPriority [
 	^ self new
 		priority: aPriority;
-		startWorkerProcess;
+		start;
 		yourself
 ]
 
@@ -43,6 +42,12 @@ TKTWorker >> cleanupTasks [
 	doneTasks removeAll.
 ]
 
+{ #category : #accessing }
+TKTWorker >> defaultProcessName [
+
+	^ 'Task Worker'
+]
+
 { #category : #'initialize-release' }
 TKTWorker >> initialize [ 
 	super initialize.
@@ -50,8 +55,7 @@ TKTWorker >> initialize [
 	workQueue := TKTPriorityQueue new.
 	
 	"We return nil in here because we use it as a marker when asking for the next task"
-	onIdleTime := [ self cleanupTasks . nil ].
-	priority := Processor userBackgroundPriority.
+	onIdleTime := [ [ self cleanupTasks ] asTask -> self newFuture ].
 
 	self onStart.
 ]
@@ -89,6 +93,12 @@ TKTWorker >> next [
 	^ workQueue nextIfTimeOut: onIdleTime
 ]
 
+{ #category : #scheduling }
+TKTWorker >> nextTask [
+
+	^ self next value
+]
+
 { #category : #accessing }
 TKTWorker >> onIdleTime: aBlockOrWork [
 	onIdleTime:= aBlockOrWork asWork.
@@ -100,36 +110,35 @@ TKTWorker >> onStart [
 	doneTasks := Set new.
 ]
 
-{ #category : #accessing }
-TKTWorker >> priority [
-	^ priority
-]
-
-{ #category : #accessing }
-TKTWorker >> priority: anObject [
-	priority := anObject
-]
-
 { #category : #running }
 TKTWorker >> restart [
 	 
 	self interruptCurrentTask.
 	self onStart.
-	self startWorkerProcess.
+	self start.
 ]
 
 { #category : #running }
 TKTWorker >> run [
-	| task taskFuture | 
-	(currentTask := self next) ifNotNil: [ 
-		task := currentTask key.
-		taskFuture := currentTask value.
-		
-		task runOnRunner: self withFuture: taskFuture.
 
-		doneTasks add: task.
-		currentTask := nil.
+	keepRunning set: true.
+	[ keepRunning get ] whileTrue: [ | task taskFuture | 
+		(currentTask := self next) ifNotNil: [ 
+			task := currentTask key.
+			taskFuture := currentTask value.
+			
+			task runOnRunner: self withFuture: taskFuture.
+
+			doneTasks add: task.
+			currentTask := nil.
+		]
 	]
+]
+
+{ #category : #scheduling }
+TKTWorker >> run: aTask [
+
+	^ self scheduleTask: aTask asTask
 ]
 
 { #category : #scheduling }
@@ -142,26 +151,9 @@ TKTWorker >> schedule: aTaskFutureAssoc [
 TKTWorker >> scheduleTask: aTask [
 
 	| future |
-	future := TKTFuture new.
+	future := self newFuture.
 	self schedule: aTask -> future.
 	^ future
-]
-
-{ #category : #running }
-TKTWorker >> startWorkerProcess [
-
-	process := [ self workerLoop ] newProcess.
-	process priority: self priority.
-	process name: 'Worker'.
-	process resume.
-
-]
-
-{ #category : #running }
-TKTWorker >> stop [
-	self scheduleTask: [ keepRunning set: false ] asTask.
-	(Delay forMilliseconds: 500) wait.
-	self cancel.
 ]
 
 { #category : #running }
@@ -174,14 +166,4 @@ TKTWorker >> stopWorkingOnThat [
 { #category : #accessing }
 TKTWorker >> timeout: aSmallInteger [ 
 	^ workQueue timeout: aSmallInteger 
-]
-
-{ #category : #running }
-TKTWorker >> workerLoop [
-
-	keepRunning set: true.
-	[ keepRunning get ] whileTrue: [ 
-		self run. 
-	]
-
 ]

@@ -14,9 +14,7 @@ TKTSameThreadRunner >> isTerminated [
 TKTSameThreadRunner >> run: aTKTTask [
 
 	| future |
-	future := TKTFuture new
-					runner: self;
-					yourself.				
-	aTKTTask runOnRunner: self withFuture: future.
+	future := self newFuture.				
+	aTKTTask asTask runOnRunner: self withFuture: future.
 	^ future.
 ]

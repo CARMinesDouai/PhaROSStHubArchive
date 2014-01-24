@@ -69,11 +69,6 @@ TKTFuture >> deployValue: aValue [
 	
 ]
 
-{ #category : #finalization }
-TKTFuture >> finalize [ 
-	self cancel.
-]
-
 { #category : #'initialize-release' }
 TKTFuture >> initialize [ 
 	isDeployed := false.
@@ -116,13 +111,13 @@ TKTFuture >> valueTimeoutMilliseconds: aTimeout ifTimeOut: aBlock [
 		ifTimeOut: aBlock
 ]
 
-{ #category : #actions }
+{ #category : #private }
 TKTFuture >> valueTimeoutOcurred: aBoolean [
 
 	^ self valueTimeoutOcurred: aBoolean ifTimeOut: [ self error: 'timeout ocurred when getting the future value' ].
 ]
 
-{ #category : #actions }
+{ #category : #private }
 TKTFuture >> valueTimeoutOcurred: aBoolean ifTimeOut: aBlock [
 
 	aBoolean ifTrue: [ ^ aBlock value ].

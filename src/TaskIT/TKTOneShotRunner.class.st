@@ -13,19 +13,24 @@ TKTOneShotRunner >> cancelFutures [
 	self cancel: future.
 ]
 
+{ #category : #accessing }
+TKTOneShotRunner >> defaultProcessName [
+
+	^ 'One Shot runner'
+]
+
 { #category : #running }
 TKTOneShotRunner >> run: aTKTTask [
 
-	future := TKTFuture new
-					runner: self;
-					yourself.
-					
+	| task |
+	future := self newFuture.
+	task := aTKTTask asTask.
 	process := [
-		aTKTTask runOnRunner: self withFuture: future.
+		task runOnRunner: self withFuture: future.
 		self stopProcess.
 	] newProcess.
 	process name: 'A TKTTask'.
-	process priority: aTKTTask priority.
+	process priority: task priority.
 	process resume.
 	
 	^ future.

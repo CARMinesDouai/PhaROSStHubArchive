@@ -16,13 +16,16 @@ TKTStickyReference >> asStickyReference [
 
 { #category : #'as yet unclassified' }
 TKTStickyReference >> finalize [ 
+	self halt.
 	self proxyTarget finalize.
 	target := nil. 
 ]
 
 { #category : #'as yet unclassified' }
 TKTStickyReference >> proxyTarget: aTarget [
-	self finalizationRegistry add: self.
+
+	aTarget finalizationRegistry add: self.
+	self toFinalizeSend:#finalize to:aTarget  with: aTarget.
 	^ super proxyTarget: aTarget.
 	
 ]

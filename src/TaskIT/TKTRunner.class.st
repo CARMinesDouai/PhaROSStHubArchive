@@ -40,6 +40,14 @@ TKTRunner >> isTerminated [
 	self subclassResponsibility
 ]
 
+{ #category : #private }
+TKTRunner >> newFuture [
+
+	^ TKTFuture new
+			runner: self;
+			yourself
+]
+
 { #category : #running }
 TKTRunner >> run: aTKTTask [
 

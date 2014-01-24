@@ -2,7 +2,8 @@ Class {
 	#name : #TKTOwnProcessRunner,
 	#superclass : #TKTRunner,
 	#instVars : [
-		'process'
+		'process',
+		'processName'
 	],
 	#category : #'TaskIT-Kernel'
 }
@@ -24,6 +25,18 @@ TKTOwnProcessRunner >> cancelFutures [
 TKTOwnProcessRunner >> isTerminated [
 
 	^ process isNil or: [ process isTerminated ]
+]
+
+{ #category : #accessing }
+TKTOwnProcessRunner >> processName [
+
+	^ processName ifNil: [ self defaultProcessName ].
+]
+
+{ #category : #accessing }
+TKTOwnProcessRunner >> processName: aName [
+
+	processName := aName
 ]
 
 { #category : #private }

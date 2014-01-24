@@ -33,6 +33,15 @@ TKTExclusiveAccessVariable >> at: anObject put: anOtherObject [
 ]
 
 { #category : #'as yet unclassified' }
+TKTExclusiveAccessVariable >> do: aBlock [
+	| rslt |
+	mutex critical: [
+		rslt := aBlock value: value.
+	].
+	^ rslt.
+]
+
+{ #category : #'as yet unclassified' }
 TKTExclusiveAccessVariable >> doesNotUnderstand: aMessage [ 
 	| rslt |
 	mutex critical: [
