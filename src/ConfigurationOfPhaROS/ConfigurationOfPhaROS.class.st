@@ -348,35 +348,16 @@ ConfigurationOfPhaROS >> baseline11: spec [
 	
 	
 	].
-	spec for: #'pharo1.4.x' do:[
-		spec package: 'PhaROSPackageManager14'  with: [ spec requires: #( 'PhaROSInfrastructure')].
+	
+		spec 	group: 'default' with: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure'  );
+ 				group: 'default+tests' with: #( 'PhaROS' 'PhaROSTest' 'PhaROSTestROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSPackageManager14');
+				group: 'core' with: #('PhaROS' );
+				group: 'core+tests' with: #('PhaROS' 'PhaROSTest' 'PhaROSTestROS' );
 			
-		spec group: 'default' with: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSPackageManager14' );
- 			group: 'default+tests' with: #( 'PhaROS' 'PhaROSTest' 'PhaROSTestROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSPackageManager14');
-			
-			group: 'core' with: #('PhaROS' );
-			group: 'core+tests' with: #('PhaROS' 'PhaROSTest' 'PhaROSTestROS' );
-			
-			group: 'nodelets-ros-controllers' with: #( 'PhaROSNodeletsAction' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition' 'PhaROSNodeletsTurtlesim' 'PhaROSNodeletsTurtlebot');
-			group: 'nodelets-behavior' with: #( 'PhaROSNodeletsLocalizer' 'PhaROSNodeletsMerger' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsRPC');
-			group: 'nodelets' with: #('nodelets-ros-controllers' 'nodelets-behavior');
-			group: 'all' with: #('default+tests' 'nodelets').
-		
-	].
-	spec for: #'pharo2.x' do: [  
-		spec package: 'PhaROSPackageManager20'  with: [ spec requires: #( 'PhaROSInfrastructure')].
-		
-		spec group: 'default' with: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSPackageManager20' );
- 			group: 'default+tests' with: #( 'PhaROS' 'PhaROSTest' 'PhaROSTestROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSPackageManager20');
-			
-			group: 'core' with: #('PhaROS' );
-			group: 'core+tests' with: #('PhaROS' 'PhaROSTest' 'PhaROSTestROS' );
-			
-			group: 'nodelets-ros-controllers' with: #( 'PhaROSNodeletsAction' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition' 'PhaROSNodeletsTurtlesim' 'PhaROSNodeletsTurtlebot');
-			group: 'nodelets-behavior' with: #( 'PhaROSNodeletsLocalizer' 'PhaROSNodeletsMerger' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsRPC');
-			group: 'nodelets' with: #('nodelets-ros-controllers' 'nodelets-behavior');
-			group: 'all' with: #('default+tests' 'nodelets').
-	].
+				group: 'nodelets-ros-controllers' with: #( 'PhaROSNodeletsAction' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition' 'PhaROSNodeletsTurtlesim' 'PhaROSNodeletsTurtlebot');
+				group: 'nodelets-behavior' with: #( 'PhaROSNodeletsLocalizer' 'PhaROSNodeletsMerger' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsRPC');
+				group: 'nodelets' with: #('nodelets-ros-controllers' 'nodelets-behavior');
+				group: 'all' with: #('default+tests' 'nodelets').
 		
 	
 ]
