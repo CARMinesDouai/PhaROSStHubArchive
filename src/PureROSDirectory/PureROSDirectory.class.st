@@ -56,7 +56,8 @@ PureROSDirectory class >> kompaiMetacelloPackage [
 			#metacello -> ({ 
 				#url -> 'http://car.mines-douai.fr/squeaksource/Pure' . 
 				#configurationOf -> 'ConfigurationOfPureROS' . 
-				#package -> 'kompai'  
+				#package -> 'PureROSPackageKompai' . 
+				#needsCredentials -> true. 
 			} asDictionary)
 		 } asDictionary 
 	
@@ -80,7 +81,8 @@ PureROSDirectory class >> robulabMetacelloPackage [
 			#metacello -> ({ 
 				#url -> 'http://car.mines-douai.fr/squeaksource/Pure' . 
 				#configurationOf -> 'ConfigurationOfPureROS' . 
-				#package -> 'roboshop'  
+				#package -> 'PureROSPackageRobulab' .
+				#needsCredentials -> true. 
 			} asDictionary)
 		 } asDictionary 
 	
