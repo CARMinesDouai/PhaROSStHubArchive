@@ -65,9 +65,9 @@ PRCCommandLineCreateHandler >> description [
 { #category : #'as yet unclassified' }
 PRCCommandLineCreateHandler >> exampleGenerator [
 	^  [ 
-		: unit |
+		: deploymentUnit |
 		| pack |
-		pack := unit package capitalized,'Package'.
+		pack := deploymentUnit package capitalized,'Package'.
 		
 		(Smalltalk at: #PhaROSPackage) subclass: pack asSymbol
 		instanceVariableNames: ''
