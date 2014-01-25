@@ -22,6 +22,7 @@ PRCDefaultCommandLineHandler class >> isResponsibleFor: aCommandLineArguments [
 
 { #category : #'as yet unclassified' }
 PRCDefaultCommandLineHandler >> activate [
+	self loadNetworkSettings.
 	super activate.
 	self exitSuccess.
 ]
@@ -39,4 +40,20 @@ PRCDefaultCommandLineHandler >> handleSubcommand [
 		ifTrue: [ ^ self ].
 		
 	^ handlers first activateWith: commandLine.
+]
+
+{ #category : #'as yet unclassified' }
+PRCDefaultCommandLineHandler >> loadNetworkSettings [
+	| currentConfiguration |
+	
+	currentConfiguration := (OSProcess thisOSProcess environmentAt: #http_proxy) ifNil: [ (OSProcess thisOSProcess environmentAt: #HTTP_PROXY) ].
+	currentConfiguration ifNil: [ 
+		NetworkSystemSettings useHTTPProxy: false.
+	 ] ifNotNil: [ 
+		currentConfiguration := currentConfiguration asZnUrl.
+		NetworkSystemSettings useHTTPProxy: false.
+		NetworkSystemSettings httpProxyServer: currentConfiguration host.
+		NetworkSystemSettings httpProxyPort: currentConfiguration port.		
+	 ].
+
 ]
