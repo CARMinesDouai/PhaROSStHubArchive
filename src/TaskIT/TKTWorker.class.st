@@ -30,12 +30,6 @@ TKTWorker >> busyTime [
 ]
 
 { #category : #cancelling }
-TKTWorker >> cancel: aFuture [ 
-
-	self expropiate: aFuture
-]
-
-{ #category : #cancelling }
 TKTWorker >> cancelFutures [
 
 	"We will have many futures"
@@ -164,8 +158,9 @@ TKTWorker >> scheduleTask: aTask [
 
 { #category : #running }
 TKTWorker >> stopWorkingOnThat [ 
-	currentTask value deployValue: TKTCancelledFutureValue new.
-	currentTask := nil. 
+
+	self cancel: currentTask value.
+	currentTask := nil.
 	self restart.
 ]
 
