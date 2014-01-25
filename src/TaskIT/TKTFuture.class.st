@@ -49,7 +49,7 @@ TKTFuture >> at: key put: anObject [
 
 { #category : #actions }
 TKTFuture >> cancel [ 
-	TKTTaskDispatcher expropiate: self.
+	runner cancel: self
 ]
 
 { #category : #'execution-finished' }

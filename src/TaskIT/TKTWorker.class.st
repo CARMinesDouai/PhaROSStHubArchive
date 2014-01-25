@@ -30,6 +30,12 @@ TKTWorker >> busyTime [
 ]
 
 { #category : #cancelling }
+TKTWorker >> cancel: aFuture [ 
+
+	self expropiate: aFuture
+]
+
+{ #category : #cancelling }
 TKTWorker >> cancelFutures [
 
 	"We will have many futures"
