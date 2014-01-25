@@ -9,6 +9,11 @@ Class {
 	#category : #'TaskIT-PersistenRunners'
 }
 
+{ #category : #testing }
+TKTPersistentRunner class >> isAbstract [
+	^ self = TKTOwnProcessRunner
+]
+
 { #category : #running }
 TKTPersistentRunner >> afterRunTask: currentTask [
 

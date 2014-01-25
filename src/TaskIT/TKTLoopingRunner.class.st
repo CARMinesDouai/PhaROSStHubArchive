@@ -10,6 +10,12 @@ Class {
 	#category : #'TaskIT-PersistenRunners'
 }
 
+{ #category : #'as yet unclassified' }
+TKTLoopingRunner >> cancelFutures [
+
+	self cancel: future
+]
+
 { #category : #accessing }
 TKTLoopingRunner >> defaultProcessName [
 

@@ -13,28 +13,28 @@ TKTLazyResult class >> for: aFuture [
 	^ self new future: aFuture ; yourself.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #comparing }
 TKTLazyResult >> = other [ 	
 	^ self perform: #= withArguments: {other}.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #converting }
 TKTLazyResult >> asString [ 	
 	^ self perform: #asString.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTLazyResult >> at: anId [
 	^ self perform: #at: withArguments: { anId }.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 TKTLazyResult >> cancel [
 	cancelled := true.
 	^ future cancel.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'execution-finished' }
 TKTLazyResult >> deployValue:  aValue [
 	| realValue |
 
@@ -44,7 +44,7 @@ TKTLazyResult >> deployValue:  aValue [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'error handling' }
 TKTLazyResult >> doesNotUnderstand: aMessage [
 	
 	cancelled ifTrue: [
@@ -55,61 +55,53 @@ TKTLazyResult >> doesNotUnderstand: aMessage [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #finalization }
 TKTLazyResult >> finalize [ 
 	future finalize.
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTLazyResult >> future: aFuture [
-	aFuture whenFinished: [ :  aValue  |  self deployValue: aValue ].	
-	future set: aFuture.
-	
+	aFuture whenFinished: [ :aValue | self deployValue: aValue ].
+	future set: aFuture
 ]
 
-{ #category : #'as yet unclassified' }
-TKTLazyResult >> initialize [ 
+{ #category : #'initialize-release' }
+TKTLazyResult >> initialize [
+	super initialize.
 	cancelled := false.
 	future := TKTExclusiveAccessVariable initialValue: nil.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'class membership' }
 TKTLazyResult >> isKindOf: aClass [
-	^ self perform: #isKindOf:   withArguments: { aClass }
+	^ self perform: #isKindOf: withArguments: {aClass}
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 TKTLazyResult >> isResult [
 	^ true
 ]
 
-{ #category : #'as yet unclassified' }
-TKTLazyResult >> perform: aSelector [ 
-		| rslt | 
-		future apply: [
-			: aFuture | 
-			rslt := aFuture value perform: aSelector 
-		].
-		^ rslt
+{ #category : #'message handling' }
+TKTLazyResult >> perform: aSelector [
+
+	^ future do: [ :aFuture | aFuture value perform: aSelector ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'message handling' }
 TKTLazyResult >> perform: aSelector withArguments: anArray [
-		| rslt | 
-		future apply: [
-			: aFuture | 
-			rslt := aFuture value perform: aSelector withArguments: anArray
-		].
-		^ rslt
+	
+	^ future do: [ :aFuture | aFuture value perform: aSelector withArguments: anArray ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTLazyResult >> size [ 	
 	^ self perform: #size.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #evaluating }
 TKTLazyResult >> value [ 	
 	^ self perform: #value.
 ]

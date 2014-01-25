@@ -108,7 +108,7 @@ TKTFutureAndResultTests >> testNewStickyFuture [
 { #category : #'as yet unclassified' }
 TKTFutureAndResultTests >> testResultBecomes [
 	
-	| future value result |
+	| future result |
 	future := TKTFuture new.
 	result := future asResult.
 	future deployValue: 'STRING'.

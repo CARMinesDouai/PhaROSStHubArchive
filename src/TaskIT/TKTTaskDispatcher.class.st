@@ -5,7 +5,7 @@ Class {
 		'workers',
 		'eventualTasks'
 	],
-	#classInstVars : [
+	#classVars : [
 		'TaskInstance'
 	],
 	#category : #'TaskIT-Tasks-Worker'

@@ -15,11 +15,9 @@ TKTExclusiveAccessVariable class >> initialValue: aValue [
 
 { #category : #'as yet unclassified' }
 TKTExclusiveAccessVariable >> apply: aBlock [
-	| rslt |
-	mutex critical: [
-		rslt := aBlock value: value.
-	].
-	^ rslt.
+
+	^ mutex critical: [ aBlock value: value ].
+
 ]
 
 { #category : #'as yet unclassified' }
@@ -34,20 +32,14 @@ TKTExclusiveAccessVariable >> at: anObject put: anOtherObject [
 
 { #category : #'as yet unclassified' }
 TKTExclusiveAccessVariable >> do: aBlock [
-	| rslt |
-	mutex critical: [
-		rslt := aBlock value: value.
-	].
-	^ rslt.
+
+	^ mutex critical: [ aBlock value: value ].
 ]
 
 { #category : #'as yet unclassified' }
 TKTExclusiveAccessVariable >> doesNotUnderstand: aMessage [ 
-	| rslt |
-	mutex critical: [
-		rslt := value perform: aMessage selector withArguments: aMessage arguments
-	].
-	^ rslt 
+
+	^ mutex critical: [ value perform: aMessage selector withArguments: aMessage arguments ].
 	
 ]
 
@@ -60,11 +52,7 @@ TKTExclusiveAccessVariable >> finalize [
 
 { #category : #'as yet unclassified' }
 TKTExclusiveAccessVariable >> get [
-	| val |
-	mutex critical: [
-		val := value.	
-	].
-	^ val.
+	mutex critical: [ ^ value ]
 ]
 
 { #category : #'as yet unclassified' }

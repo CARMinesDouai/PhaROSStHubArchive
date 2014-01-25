@@ -8,6 +8,11 @@ Class {
 	#category : #'TaskIT-Kernel'
 }
 
+{ #category : #testing }
+TKTOwnProcessRunner class >> isAbstract [
+	^ self = TKTOwnProcessRunner
+]
+
 { #category : #running }
 TKTOwnProcessRunner >> cancel [
 
@@ -17,6 +22,12 @@ TKTOwnProcessRunner >> cancel [
 
 { #category : #cancelling }
 TKTOwnProcessRunner >> cancelFutures [
+
+	self subclassResponsibility
+]
+
+{ #category : #accessing }
+TKTOwnProcessRunner >> defaultProcessName [
 
 	self subclassResponsibility
 ]

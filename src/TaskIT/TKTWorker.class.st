@@ -6,18 +6,17 @@ Class {
 		'workQueue',
 		'onIdleTime',
 		'currentTask',
-		'beginning',
 		'doneTasks'
 	],
 	#category : #'TaskIT-PersistenRunners'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 TKTWorker class >> spawn [
 	^ self with: Processor userBackgroundPriority.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 TKTWorker class >> with: aPriority [
 	^ self new
 		priority: aPriority;
@@ -101,7 +100,8 @@ TKTWorker >> nextTask [
 
 { #category : #accessing }
 TKTWorker >> onIdleTime: aBlockOrWork [
-	onIdleTime:= aBlockOrWork asWork.
+
+	onIdleTime := aBlockOrWork asTask.
 ]
 
 { #category : #running }
@@ -144,7 +144,7 @@ TKTWorker >> run: aTask [
 { #category : #scheduling }
 TKTWorker >> schedule: aTaskFutureAssoc [ 
 	" aTaskFutureAssoc is an association that match the task to run with a future related with this processing instance"
-	^ workQueue add: aTaskFutureAssoc
+	workQueue add: aTaskFutureAssoc
 ]
 
 { #category : #scheduling }

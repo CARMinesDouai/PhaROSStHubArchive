@@ -28,7 +28,7 @@ TKTConsumableEventualTask >> instances: nTimes [
 TKTConsumableEventualTask >> runOnRunner: aRunner withFuture: aFuture [
 
 	instances > 0 ifTrue: [ 
-		^ condition value ifTrue: [ 
+		condition value ifTrue: [ 
 			super runOnRunner: aRunner withFuture: aFuture.
 			instances := instances - 1.
 		]
