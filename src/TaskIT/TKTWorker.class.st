@@ -9,7 +9,7 @@ Class {
 		'beginning',
 		'doneTasks'
 	],
-	#category : #'TaskIT-Tasks-Worker'
+	#category : #'TaskIT-PersistenRunners'
 }
 
 { #category : #'as yet unclassified' }

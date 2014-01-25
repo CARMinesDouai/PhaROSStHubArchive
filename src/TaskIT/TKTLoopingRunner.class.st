@@ -7,7 +7,7 @@ Class {
 		'loopsRun',
 		'maxLoops'
 	],
-	#category : #'TaskIT-Tasks'
+	#category : #'TaskIT-PersistenRunners'
 }
 
 { #category : #accessing }

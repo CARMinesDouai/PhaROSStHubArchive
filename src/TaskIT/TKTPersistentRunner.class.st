@@ -6,7 +6,7 @@ Class {
 		'priority',
 		'failureBlock'
 	],
-	#category : #'TaskIT-Tasks'
+	#category : #'TaskIT-PersistenRunners'
 }
 
 { #category : #running }

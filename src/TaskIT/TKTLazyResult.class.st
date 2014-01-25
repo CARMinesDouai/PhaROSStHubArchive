@@ -5,7 +5,7 @@ Class {
 		'future',
 		'cancelled'
 	],
-	#category : #'TaskIT-Tasks-Worker'
+	#category : #'TaskIT-Kernel'
 }
 
 { #category : #'as yet unclassified' }
