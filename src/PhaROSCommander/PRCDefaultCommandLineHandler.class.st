@@ -50,10 +50,14 @@ PRCDefaultCommandLineHandler >> loadNetworkSettings [
 	currentConfiguration ifNil: [ 
 		NetworkSystemSettings useHTTPProxy: false.
 	 ] ifNotNil: [ 
-		currentConfiguration := currentConfiguration asZnUrl.
-		NetworkSystemSettings useHTTPProxy: false.
-		NetworkSystemSettings httpProxyServer: currentConfiguration host.
-		NetworkSystemSettings httpProxyPort: currentConfiguration port.		
+		currentConfiguration ifEmpty: [ 
+			NetworkSystemSettings useHTTPProxy: false.
+		 ] ifNotEmpty: [  
+			currentConfiguration := currentConfiguration asZnUrl.
+			NetworkSystemSettings useHTTPProxy: true.
+			NetworkSystemSettings httpProxyServer: currentConfiguration host.
+			NetworkSystemSettings httpProxyPort: currentConfiguration port.		
+		].
 	 ].
 
 ]
