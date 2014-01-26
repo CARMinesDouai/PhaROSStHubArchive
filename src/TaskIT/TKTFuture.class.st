@@ -93,7 +93,7 @@ TKTFuture >> runner: aRunner [
 { #category : #actions }
 TKTFuture >> value [
 
-	semaphore wait.
+	self wait.
 	^ self valueTimeoutOcurred: false
 ]
 
@@ -128,6 +128,13 @@ TKTFuture >> valueTimeoutOcurred: aBoolean ifTimeOut: aBlock [
 
 	^ value.
 
+]
+
+{ #category : #actions }
+TKTFuture >> wait [
+
+	self isValueAvailable ifTrue: [ ^ self ].
+	semaphore wait.
 ]
 
 { #category : #private }

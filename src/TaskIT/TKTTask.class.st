@@ -42,19 +42,26 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'block',
-		'priority'
+		'priority',
+		'stdout',
+		'stderr'
 	],
 	#category : #'TaskIT-Kernel'
 }
 
 { #category : #'instance creation' }
-TKTTask class >> for: aBlock [ 
-	^ self for: aBlock at: Processor userBackgroundPriority.
+TKTTask class >> for: aBlock [
+	^ self new
+		block: aBlock;
+		yourself
 ]
 
 { #category : #'instance creation' }
-TKTTask class >> for: aBlock at: aPriority [ 
-	^ self new block: aBlock; priority: aPriority  ; yourself .
+TKTTask class >> for: aBlock at: aPriority [
+
+	^ (self for: aBlock)
+		priority: aPriority;
+		yourself
 ]
 
 { #category : #sorting }
@@ -87,6 +94,19 @@ TKTTask >> doIt [
 	^ TKTOneShotRunner new run: self
 ]
 
+{ #category : #running }
+TKTTask >> executeWithFuture: aFuture [
+
+	^ block cull: self cull: aFuture
+]
+
+{ #category : #'initialize-release' }
+TKTTask >> initialize [ 
+
+	super initialize.
+	priority := Processor userBackgroundPriority
+]
+
 { #category : #accessing }
 TKTTask >> priority [
 	^ priority .
@@ -104,7 +124,7 @@ TKTTask >> runOnRunner: aRunner withFuture: aFuture [
 	self setUp.
 	[
 		[
-			value := block cull: self cull: aFuture. 
+			value := self executeWithFuture: aFuture. 
 		] on: Error do: [ : exception |
 			^ aRunner deployError: exception intoFuture: aFuture.
 		]
