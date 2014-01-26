@@ -64,58 +64,74 @@ PRCCommandLineCreateHandler >> description [
 
 { #category : #'as yet unclassified' }
 PRCCommandLineCreateHandler >> exampleGenerator [
-	^  [ 
-		: deploymentUnit |
-		| pack |
-		pack := deploymentUnit packageName capitalized,'Package'.
-		
-		(Smalltalk at: #PhaROSPackage) subclass: pack asSymbol
-		instanceVariableNames: ''
-		classVariableNames: ''
-		poolDictionaries: ''
-		category: pack.
-		
-		(Smalltalk at: pack asSymbol) compile: 'buildController
-			^ PhaROSHandleController home.
-		'.
-		(Smalltalk at: pack asSymbol) compile: 'nodeletInjectionExample
-			self controller nodelets use: PhaROSNodelet as:#genericNodelet.
-			self controller nodelets genericNodelet isKindOf: PhaROSNodelet.
-		'.
-		(Smalltalk at: pack asSymbol) compile: 'scriptExample
-			"Any method that starts with a script is deployed as script Here you can start doing stuff".
-		'.
-		(Smalltalk at: pack asSymbol) compile: 'scriptTopicPublishingExample
-			| publisher |
-			"For publishing into a topic,you just need a publisher object. You can obtain it asking to the related node like in the following code".
-			
-			publisher := self controller node topicPublisher: ''/example/string'' 
-								  typedAs: ''std_msgs/String''.
-								
-			publisher send:[ : string | string data: ''this is an example'' ].
-		'.
-		(Smalltalk at: pack asSymbol) compile: 'scriptTopicSubscribingExample
-			
-			"For subscribing to a topic, you just need a subscriber to configure it with a callback (block). You can obtain it asking to the related node like in the following code".
-			(self rosnode buildConnectionFor: ''/example/string'' ) typedAs: ''std_msgs/String''; 
-																	for: [ : string |  "this is a callback" Transcript show: string data ];
-																    connect .
-																
-			"As you can see, buildConnectionFor: aTopicID, returns an object configurable. This is a builder, you can configure it as much as you want, and when you send connect message it will make the proper connection. For better usage of the builder check the documentation "
-		'.
-		(Smalltalk at: pack asSymbol) compile: 'scriptServiceDefining
-			
-			"TODO"
-		'.
-		(Smalltalk at: pack asSymbol) compile: 'scriptServiceInvoking
-			
-			"TODO"
-		'.
-		(Smalltalk at: pack asSymbol) compile: 'scriptParameterBinding
-			
-			"TODO"
-		'.
-	 ].
+^  [ 
+: deploymentUnit |
+| pack |
+pack := deploymentUnit packageName capitalized,'Package'.
+
+(Smalltalk at: #PhaROSPackage) subclass: pack asSymbol
+instanceVariableNames: ''
+classVariableNames: ''
+poolDictionaries: ''
+category: pack.
+
+(Smalltalk at: pack asSymbol) compile: 'buildController
+	^ PhaROSHandleController home.
+'.
+(Smalltalk at: pack asSymbol) compile: 'nodeletInjectionExample
+	self controller nodelets use: PhaROSNodelet as:#genericNodelet.
+	self controller nodelets genericNodelet isKindOf: PhaROSNodelet.
+'.
+(Smalltalk at: pack asSymbol) compile: 'scriptExample
+	"Any method that starts with a script is deployed as script Here you can start doing stuff".
+'.
+(Smalltalk at: pack asSymbol) compile: 'scriptTopicPublishingExample
+	| publisher |
+	"For publishing into a topic,you just need a publisher object. You can obtain it asking to the related node like in the following code".
+	
+	publisher := self controller node 
+						topicPublisher: ''/example/string'' 
+						typedAs: ''std_msgs/String''.
+						
+	publisher send:[ : string | string data: ''this is an example'' ].
+'.
+(Smalltalk at: pack asSymbol) compile: 'scriptTopicSubscribingExample
+	
+	"For subscribing to a topic, you just need a subscriber to configure it with a callback (block). You can obtain it asking to the related node like in the following code".
+	(self controller node buildConnectionFor: ''/example/string'' ) 
+								typedAs: ''std_msgs/String''; 
+								for: [ : string |  "this is a callback" Transcript show: string data ];
+								connect .
+														
+	"As you can see, buildConnectionFor: aTopicID, returns an object configurable. This is a builder, you can configure it as much as you want, and when you send connect message it will make the proper connection. For better usage of the builder check the documentation "
+'.
+(Smalltalk at: pack asSymbol) compile: 'scriptServiceDefining
+	"In ROS we do have services. A Service is an async computation that has related a request and a response types. In order to make available a service in ROS world you should execute the following code"
+	self controller node serve: [ :req :rsp | "this block will be executed when any one calls for this service" Transcript show: ''Service has been called.''; cr.  ] at: ''/pharos/service'' typedAs:''roscpp/Empty''.
+	
+'.
+
+(Smalltalk at: pack asSymbol) compile: 'scriptServiceInvoking
+	| service |
+	"In order ask for a service to be executed, you need to ask to the attached node for a service call object. For doing this you should type the following code"
+	service := self controller node service: ''/rosout/get_loggers''.
+	service call.
+	
+	"This service call will ask for the loggers"
+'.
+
+
+(Smalltalk at: pack asSymbol) compile: 'scriptParameterBinding
+	| integer |
+	"A parameter is a value registered in the master. The idea is to give the chance to 3rd agents to change the value of this parameter. In order to ask for a parameter instance we call the following code"
+	
+	integer := self controller node parameter: ''integer'' initialized: 1. 
+	
+	" The variable integer now points to a binding. This binding understands #set: and #get messages. Is related with the ROS running environment. "
+	
+	
+'.
+ ].
 
 ]
 
