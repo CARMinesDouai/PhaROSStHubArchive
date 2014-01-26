@@ -65,7 +65,7 @@ PRCCommandLineCreateHandler >> description [
 { #category : #'as yet unclassified' }
 PRCCommandLineCreateHandler >> docGenerator [
 
-^  [ 
+^  [ :deploymentUnit |
 
 | workspace window contents |
 
@@ -247,11 +247,12 @@ contents := '
 "	
 '.
 
+(Smalltalk at: (deploymentUnit packageName capitalized,'Package') asSymbol ) browse.
+
 workspace := Workspace new. 
 window := workspace openLabel: 'PhaROS - Cheatsheet'.
 window maximize.
-workspace contents: contents; changed: #contents.
-
+workspace contents: contents; changed: #contents. 
 
  ].
 
