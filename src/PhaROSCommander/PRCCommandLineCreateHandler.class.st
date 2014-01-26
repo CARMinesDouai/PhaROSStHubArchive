@@ -75,7 +75,7 @@ SystemWindow allInstances do:#close.
 contents := '
 "
 	Welcome to PhaROS! 
-	Remember always to check for updates in http://car.mines-douai.fr/PhaROS. 
+	Remember always to check for updates in http://car.mines-douai.fr/PhaROS. 	
 	
 	-----------------------------------------------------------
 	Inside a package object 
