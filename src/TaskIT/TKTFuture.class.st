@@ -47,6 +47,16 @@ TKTFuture >> at: key put: anObject [
 	^ processData at: key put: anObject
 ]
 
+{ #category : #private }
+TKTFuture >> basicGetValue [
+
+	error ifNotNil:[
+		error pass.
+	].
+
+	^ value
+]
+
 { #category : #actions }
 TKTFuture >> cancel [ 
 	runner cancel: self
@@ -77,6 +87,12 @@ TKTFuture >> initialize [
 	callbacks := TKTExclusiveAccessVariable initialValue: OrderedCollection new.
 	semaphore := Semaphore new.
 	processData := TKTExclusiveAccessVariable initialValue: Dictionary new.
+]
+
+{ #category : #testing }
+TKTFuture >> isError [
+	
+	^ error notNil
 ]
 
 { #category : #testing }
@@ -122,12 +138,7 @@ TKTFuture >> valueTimeoutOcurred: aBoolean ifTimeOut: aBlock [
 
 	aBoolean ifTrue: [ ^ aBlock value ].
 
-	error ifNotNil:[
-		error pass.
-	].
-
-	^ value.
-
+	^ self basicGetValue
 ]
 
 { #category : #actions }
