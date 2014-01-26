@@ -71,7 +71,7 @@ PRCCommandLineCreateHandler >> exampleGenerator [
 		
 		(Smalltalk at: #PhaROSPackage) subclass: pack asSymbol
 		instanceVariableNames: ''
-		classVariableNames: 'DependentsFields'
+		classVariableNames: ''
 		poolDictionaries: ''
 		category: pack.
 		

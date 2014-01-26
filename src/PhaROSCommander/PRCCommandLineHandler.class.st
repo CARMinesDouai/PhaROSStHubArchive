@@ -8,6 +8,7 @@ Class {
 PRCCommandLineHandler >> activate [ 	
 
 	self activateHelp.
+	self loadNetworkSettings.
 	[ self realActivate ] on: Error do: [ :e |
 		self stderr nextPutAll: e messageText, String lf.
 		self exitFailure.
@@ -95,6 +96,27 @@ PRCCommandLineHandler >> isAValidCatkinWorkspace: aLocation [
 	^ aLocation isDirectory and: [
 		(aLocation / #src ) exists and: [ (aLocation / #src ) isDirectory ]
 	 ].
+]
+
+{ #category : #'as yet unclassified' }
+PRCCommandLineHandler >> loadNetworkSettings [
+	| currentConfiguration |
+	
+	currentConfiguration := (OSProcess thisOSProcess environmentAt: #http_proxy) ifNil: [ (OSProcess thisOSProcess environmentAt: #HTTP_PROXY) ].
+
+	currentConfiguration ifNil: [ 
+		NetworkSystemSettings useHTTPProxy: false.
+	 ] ifNotNil: [ 
+		currentConfiguration ifEmpty: [ 
+			NetworkSystemSettings useHTTPProxy: false.
+		 ] ifNotEmpty: [  
+			currentConfiguration := currentConfiguration asZnUrl.
+			NetworkSystemSettings useHTTPProxy: true.
+			NetworkSystemSettings httpProxyServer: currentConfiguration host.
+			NetworkSystemSettings httpProxyPort: currentConfiguration port.		
+		].
+	 ].
+
 ]
 
 { #category : #resolving }
