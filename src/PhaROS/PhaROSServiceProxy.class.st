@@ -93,10 +93,10 @@ PhaROSServiceProxy >> loadType [
 	socketStr close.
 
 	types := PhaROSTypeBrowser instance serviceDefinition: header type.
-	self assert: header md5Sum  = types md5Sum description: 'Incompatible type hash'. 
+	"self assert: header md5Sum  = types md5Sum description: 'Incompatible type hash'. "
 	requestType :=  types request.
 	responseType := types response.
-	md5sum := types md5Sum.
+	md5sum := header md5Sum.
 	
 
 ]
