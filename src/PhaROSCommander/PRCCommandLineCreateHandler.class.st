@@ -158,6 +158,7 @@ category: pack,'-Nodelets'.
 
 
 Workspace openContents: '
+"
 	Welcome to PhaROS! 
 	Remember always to check for updates in http://car.mines-douai.fr/PhaROS. 
 	
@@ -181,7 +182,7 @@ Workspace openContents: '
 	
 	(self controller node buildConnectionFor: ''/example/string'' ) 
 			typedAs: ''std_msgs/String''; 
-			for: [ : string |  "this is a callback" Transcript show: string data ];
+			for: [ : string |  Transcript show: string data ];
 			connect .
 	
 	
@@ -196,7 +197,6 @@ Workspace openContents: '
 	------------------------
 	
 	self controller node serve: [ :req :rsp | 
-		"this block will be executed when any one calls for this service"
 		 Transcript show: ''Service has been called.''; cr.  
 	] at: ''/pharos/service'' typedAs:''roscpp/Empty''.
 	
@@ -225,7 +225,7 @@ Workspace openContents: '
 		^ self myControllerConfigurationMethod: super buildController.
 	
 	myControllerConfigurationMethod: aController
-		"configure here"
+		<< Make here your configurations >>
 		^ aController
 		
 		
@@ -329,7 +329,7 @@ Workspace openContents: '
 		Help 
 			pharos create-repository --help 
 			
-	
+"	
 ' label: 'PhaROS - Cheatsheet'.
 
 
