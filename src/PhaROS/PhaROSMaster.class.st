@@ -206,7 +206,7 @@ PhaROSMaster >> lookupTopic: aTopicName typedAs: aTypeId [
 { #category : #'API-Parameter-Server' }
 PhaROSMaster >> parameter: aName [ 
 
-	 ^parameters at: aName.
+	 ^parameters at: aName ifAbsentPut:[ parameters at: aName, '/']. 
 	
 ]
 

@@ -40,7 +40,7 @@ PhaROSCommunicationLayer >> finalize [
 
 { #category : #'as yet unclassified' }
 PhaROSCommunicationLayer >> from: aCallerId update: aParameterName with: aValue [ 
-	(transport parameter: aParameterName) setNotBinded: aValue.
+	(transport parameter: aParameterName normalizeParameterName ) setNotBinded: aValue.
 	^ { 1 . 'Success' . 0 }
 ]
 
