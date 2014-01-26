@@ -132,9 +132,9 @@ PhaROSNode >> sendTo: aTopicName typedAs: aTypeId a: aMessageConfigurationBlock 
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSNode >> serve: aCallBack as: aServiceName typedAs: aServiceType [
-	
-	self halt.
+PhaROSNode >> serve: aBlock at: aServiceName typedAs: aTypeID [
+
+	^  transport  serve: aBlock at: aServiceName typedAs: aTypeID.
 ]
 
 { #category : #'as yet unclassified' }
@@ -143,13 +143,7 @@ PhaROSNode >> service: aServiceName [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSNode >> service: aServiceName typedAs: aTypeID [
-	^  PhaROSService for:(transport service: aServiceName typedAs: aTypeID).
-]
-
-{ #category : #'as yet unclassified' }
 PhaROSNode >> subscriber: aTopicID typedAs: aTypeID [
-
 	^ transport subscriber: aTopicID typedAs: aTypeID
 	
 ]
