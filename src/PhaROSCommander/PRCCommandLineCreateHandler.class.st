@@ -64,9 +64,15 @@ PRCCommandLineCreateHandler >> description [
 
 { #category : #'as yet unclassified' }
 PRCCommandLineCreateHandler >> docGenerator [
+
 ^  [ 
 
-Workspace openContents: '
+| workspace window contents |
+
+SystemWindow allInstances do:#close.
+
+
+contents := '
 "
 	Welcome to PhaROS! 
 	Remember always to check for updates in http://car.mines-douai.fr/PhaROS. 
@@ -239,7 +245,12 @@ Workspace openContents: '
 			pharos create-repository --help 
 			
 "	
-' label: 'PhaROS - Cheatsheet'.
+'.
+
+workspace := Workspace new. 
+window := workspace openLabel: 'PhaROS - Cheatsheet'.
+window maximize.
+workspace contents: contents; changed: #contents.
 
 
  ].
