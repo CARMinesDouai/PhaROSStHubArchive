@@ -35,11 +35,6 @@ PhaROSPackage class >> version [
 	self subclassResponsibility.
 ]
 
-{ #category : #scripts }
-PhaROSPackage >> buildController [ 
-	self subclassResponsibility.
-]
-
 { #category : #'helper thread' }
 PhaROSPackage >> clock [
 	^ PhaROSTickingClock new
