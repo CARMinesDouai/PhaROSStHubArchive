@@ -76,10 +76,57 @@ contents := '
 "
 	Welcome to PhaROS! 
 	Remember always to check for updates in http://car.mines-douai.fr/PhaROS. 	
+
+	-----------------------------------------------------------
+	Running the generated package
+	-----------------------------------------------------------
+	
+	The generated package has implemented some scripts to show you the basic usage of PhaROS. In PhaROS a package has scripts. Each scripts represents a Node. Each of these nodes share the same class and code. So, take that in count when you implement a new script. 
+	
+	-----------------------------------------------------------------------------
+	Basic ROS commands for your generated package
+	-----------------------------------------------------------------------------
+	
+	For browse your package trough command line.
+	
+		roscd name-of-your-package 
+	
+	For editing the image
+	
+		rosrun name-of-your-package edit 
+		
+	For running a script with graphical interface 
+	
+		rosrun name-of-your-package pharos script-name 
+	
+	 For running a script without graphical interface 
+	
+		rosrun name-of-your-package headless script-name 
+	
+	For listing your scripts
+	
+		rosls name-of-your-package/image/scripts
 	
 	-----------------------------------------------------------
 	Inside a package object 
 	-----------------------------------------------------------
+	
+	Creating a new Script
+	--------------------------------
+	
+		For creating a new script you need to add to your package class a method named script{NameOfYourScript}. Inside this method you will have available a controller, which is an object that gives construction facilities and access to an already built  node. 
+		self controller node. 
+		
+		Inside this method you configure the given node and trigger all the logic of your node. (So, from ROS point of view, each script is a node)
+		
+		In order to make this script available for execution you have two possibilties:
+				
+				- write a text file that executes this method ( PackageName new script{NameOfYourScript}. ) and save it into packageFolder/image/scripts 
+				- commit all your code and use the pharos tool to install it back, this will generate all the needed files. (we are working for making this step easier)
+				
+		For examples of what an script is, browse the generated example package and match names with the names available in the script folder. (roscd {package-name}/image/scripts).
+		
+		
 	
 	Publish topic 
 	-------------------
