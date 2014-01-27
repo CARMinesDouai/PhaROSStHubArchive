@@ -37,7 +37,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 PRCCommandLineRepositoryInstallerHandler class >> commandName [
-	^ 'repository-register'
+	^ 'register-repository'
 ]
 
 { #category : #'as yet unclassified' }
