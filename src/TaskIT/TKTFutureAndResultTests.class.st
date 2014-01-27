@@ -10,7 +10,7 @@ TKTFutureAndResultTests >> testCallbackInAnAlreadyDeployedFuture [
 	| future value shouldBeValue |
 	
 	shouldBeValue := false.
-	future := [ 1+2 ] doIt.
+	future := [ 1+2 ] shootIt.
 	value := TKTTestObject new.
 	
 	future deployValue: value.
@@ -85,6 +85,20 @@ TKTFutureAndResultTests >> testFutureResultLazyInstantiation [
 	
 	self assert: future asResult  hash= future asResult hash.
 	
+]
+
+{ #category : #'as yet unclassified' }
+TKTFutureAndResultTests >> testFutureValueTimeouts [
+	| future |
+	future := [ (Delay forMilliseconds: 100) wait ] shootIt.
+	self assert: (future valueTimeoutMilliseconds: 20 ifTimeout: [ 2]) equals: 2.
+]
+
+{ #category : #'as yet unclassified' }
+TKTFutureAndResultTests >> testFutureValueTimeoutsError [
+	| future |
+	future := [ (Delay forMilliseconds: 100) wait ] shootIt.
+	self should: [future valueTimeoutMilliseconds: 20 ] raise: TKTTimeoutError.
 ]
 
 { #category : #'as yet unclassified' }

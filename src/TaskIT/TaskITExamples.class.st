@@ -22,7 +22,7 @@ TaskITExamples >> commonTask [
 	
 	"
 	
-	^ [ 2 + 2 ] doIt value = 4 .
+	^ [ 2 + 2 ] shootIt value = 4 .
 ]
 
 { #category : #'as yet unclassified' }
@@ -33,7 +33,7 @@ TaskITExamples >> commonTaskResult [
 	In this case, we ask to the future for a result. A result object is an object that depends in that future and it becomes into the value of the future when it is finally processed. 
 	"
 	| result |
-	result :=  [ 2 + 2 ] doIt asResult.
+	result :=  [ 2 + 2 ] shootIt asResult.
 	self assert: result class = TKTLazyResult.
 	(Delay forMilliseconds: 300) wait.
 	self assert: result = 4.0. 
@@ -41,7 +41,7 @@ TaskITExamples >> commonTaskResult [
 
 { #category : #'as yet unclassified' }
 TaskITExamples >> referencedProcess [
-	^ [[ true ] whileTrue: [ Transcript show: 'running'; cr. (Delay forMilliseconds: 500) wait] ] doIt asStickyReference.
+	^ [[ true ] whileTrue: [ Transcript show: 'running'; cr. (Delay forMilliseconds: 500) wait] ] shootIt asStickyReference.
 ]
 
 { #category : #'as yet unclassified' }

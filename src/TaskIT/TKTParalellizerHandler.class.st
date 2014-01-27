@@ -26,8 +26,8 @@ TKTParalellizerHandler >> loopingClass [
 { #category : #'as yet unclassified' }
 TKTParalellizerHandler >> spawn: aBlock [ 
 	^ looping ifTrue: [
-		(self loopingClass for: aBlock) doIt.
+		(self loopingClass for: aBlock) shootIt.
 	] ifFalse: [
-		aBlock doIt.
+		aBlock shootIt.
 	].
 ]

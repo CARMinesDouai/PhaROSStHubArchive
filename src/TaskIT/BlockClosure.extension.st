@@ -26,11 +26,6 @@ BlockClosure >> asTaskAt: aPriority [
 ]
 
 { #category : #'*TaskIT' }
-BlockClosure >> doIt [
-	^ self asTask doIt.
-]
-
-{ #category : #'*TaskIT' }
 BlockClosure >> doItOnceWhen: aConditionalBlock [
 	^ (TKTConsumableEventualTask for: self when: aConditionalBlock for: 1) scheduleIt.
 ]
@@ -46,6 +41,11 @@ BlockClosure >> doItWhen: aConditionalBlock [
 { #category : #'*TaskIT' }
 BlockClosure >> scheduleIt [
 	^ TKTTaskDispatcher it: self asTask.
+]
+
+{ #category : #'*TaskIT' }
+BlockClosure >> shootIt [
+	^ self asTask shootIt.
 ]
 
 { #category : #'*TaskIT' }

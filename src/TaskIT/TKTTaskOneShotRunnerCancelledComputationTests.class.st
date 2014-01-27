@@ -3,15 +3,15 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'runner',
-		'result'
+		'result',
+		'future'
 	],
 	#category : #'TaskIT-Kernel-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 TKTTaskOneShotRunnerCancelledComputationTests >> setUp [
 
-	| future |
 	super setUp.
 	runner := TKTOneShotRunner new.
 	future := runner run: [ (Delay forMilliseconds: 1000) wait ] asTask.
@@ -19,13 +19,19 @@ TKTTaskOneShotRunnerCancelledComputationTests >> setUp [
 	result := future value.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
+TKTTaskOneShotRunnerCancelledComputationTests >> testIsNotError [
+
+	self deny: future isError.
+]
+
+{ #category : #tests }
 TKTTaskOneShotRunnerCancelledComputationTests >> testResultWasCancelled [
 
 	self assert: (result isKindOf: TKTCancelledFutureValue).
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskOneShotRunnerCancelledComputationTests >> testTerminatesTheProcess [
 
 	self assert: runner isTerminated.

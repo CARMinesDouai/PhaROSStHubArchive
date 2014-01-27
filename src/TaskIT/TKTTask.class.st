@@ -88,12 +88,6 @@ TKTTask >> block: aBlock [
 TKTTask >> cleanup [
 ]
 
-{ #category : #sorting }
-TKTTask >> doIt [
-	
-	^ TKTOneShotRunner new run: self
-]
-
 { #category : #running }
 TKTTask >> executeWithFuture: aFuture [
 
@@ -142,6 +136,12 @@ TKTTask >> scheduleIt [
 
 { #category : #executing }
 TKTTask >> setUp [
+]
+
+{ #category : #executing }
+TKTTask >> shootIt [
+	
+	^ TKTOneShotRunner new run: self
 ]
 
 { #category : #executing }

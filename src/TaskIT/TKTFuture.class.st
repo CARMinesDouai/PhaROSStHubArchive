@@ -120,7 +120,7 @@ TKTFuture >> valueTimeoutMilliseconds: aTimeout [
 ]
 
 { #category : #actions }
-TKTFuture >> valueTimeoutMilliseconds: aTimeout ifTimeOut: aBlock [
+TKTFuture >> valueTimeoutMilliseconds: aTimeout ifTimeout: aBlock [
 
 	^ self
 		valueTimeoutOcurred: (self waitForValue: aTimeout)
@@ -130,7 +130,7 @@ TKTFuture >> valueTimeoutMilliseconds: aTimeout ifTimeOut: aBlock [
 { #category : #private }
 TKTFuture >> valueTimeoutOcurred: aBoolean [
 
-	^ self valueTimeoutOcurred: aBoolean ifTimeOut: [ self error: 'timeout ocurred when getting the future value' ].
+	^ self valueTimeoutOcurred: aBoolean ifTimeOut: [ TKTTimeoutError signal: 'timeout ocurred when getting the future value' ].
 ]
 
 { #category : #private }

@@ -8,7 +8,7 @@ Class {
 	#category : #'TaskIT-Kernel-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 TKTTaskOneShotRunnerNormalComputationTests >> setUp [
 
 	super setUp.
@@ -16,13 +16,13 @@ TKTTaskOneShotRunnerNormalComputationTests >> setUp [
 	result := (runner run: ([ 1+2 ] asTask)) value.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskOneShotRunnerNormalComputationTests >> testRunsTheTask [
 
 	self assert: result equals: 3
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskOneShotRunnerNormalComputationTests >> testTerminatesTheProcess [
 
 	self assert: runner isTerminated.
