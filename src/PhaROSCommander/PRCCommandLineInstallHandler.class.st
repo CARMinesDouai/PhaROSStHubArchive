@@ -67,6 +67,7 @@ PRCCommandLineInstallHandler >> realActivate [
 		
 		deployer deploy:  (PRCCommandPackageRegistry  deployUnitForPackage:  package).
 	 ] ifNotEmpty:[
+		self halt.
 		deployer deploy:  (PRCCommandPackageRegistry  deployUnitForPackage:  package) withVersion: packageVersion.
 	] 
 	
