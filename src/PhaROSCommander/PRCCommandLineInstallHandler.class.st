@@ -64,7 +64,7 @@ PRCCommandLineInstallHandler >> realActivate [
 	].
 	deployer codeGenerator registerPreProcess: (' Author fullName: ''{1}'' ' format:{ self pharoUser }).
 	
-	deployer codeGenerator registerPostProcess: ( '(Smalltalk at:#PhaROSSystemLauncher) distro: {1} asSymbol. ' format: { rosDistro } ).
+	deployer codeGenerator registerPostProcess: ( '(Smalltalk at:#PhaROSSystemLauncher) distro: ''{1}'' asSymbol. ' format: { rosDistro } ).
 	
 	
 	packageVersion ifEmpty: [ 
