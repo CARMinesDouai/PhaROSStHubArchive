@@ -83,13 +83,3 @@ PRCCommandLineInstallHandler >> realActivate [
 
 
 ]
-
-{ #category : #'as yet unclassified' }
-PRCCommandLineInstallHandler >> rosDistro [
-	| val |
-	val := commandLine optionAt: #'ros-distro' ifAbsent:[ 'groovy' ].
-	({ #groovy . #fuerte . #hydro } includes: val asSymbol ) ifFalse: [ self error: val, ' Is not a valid ROS distribution' ].
-	^ val. 
-	
-
-]

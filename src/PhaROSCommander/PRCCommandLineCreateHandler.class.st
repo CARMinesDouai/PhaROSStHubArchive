@@ -343,6 +343,7 @@ category: pack,'-Nodelets'.
 
 	aController nodelets use: {1} as:#example.
 	aController nodelets example isKindOf: {1}.
+	^ aController.
 	
 ' format: {nodelet}) classified: 'private - configuration'.
 
@@ -427,7 +428,7 @@ PRCCommandLineCreateHandler >> package [
 { #category : #'as yet unclassified' }
 PRCCommandLineCreateHandler >> realActivate [
 
-	| location package archetype archObject version silent deployer sourceFolder author authorEmail maintainer maintainerEmail description |
+	| location package archetype archObject version silent deployer sourceFolder author authorEmail maintainer maintainerEmail description rosDistro |
 	
 	
 	version := self version.
@@ -445,7 +446,9 @@ PRCCommandLineCreateHandler >> realActivate [
 	description := self description.
 	
 	archetype := self archetype.
+	rosDistro := self rosDistro. 
 	
+
 	sourceFolder := location asFileReference / #src.
 	
 	self forceNewIfNeededAt: sourceFolder / package.
@@ -457,6 +460,7 @@ PRCCommandLineCreateHandler >> realActivate [
 	].
 	
 	deployer codeGenerator registerPreProcess: (' Author fullName: ''{1}'' ' format:{ self pharoUser }).
+	deployer codeGenerator registerPostProcess: ( '(Smalltalk at:#PhaROSSystemLauncher) distro: {1} asSymbol. ' format: { rosDistro } ).
 	
 	deployer codeGenerator registerPostProcess: self exampleGenerator.
 	deployer codeGenerator registerPostProcess: self docGenerator.

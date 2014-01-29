@@ -207,6 +207,16 @@ PRCCommandLineHandler >> repositoriesFileName [
 	^ 'repositories'
 ]
 
+{ #category : #'as yet unclassified' }
+PRCCommandLineHandler >> rosDistro [
+	| val |
+	val := commandLine optionAt: #'ros-distro' ifAbsent:[ 'groovy' ].
+	({ #groovy . #fuerte . #hydro } includes: val asSymbol ) ifFalse: [ self error: val, ' Is not a valid ROS distribution' ].
+	^ val. 
+	
+
+]
+
 { #category : #resolving }
 PRCCommandLineHandler >> silent [
 	^ self checkSilent: (commandLine optionAt: #silent ifAbsent: [ 'true' ]).
