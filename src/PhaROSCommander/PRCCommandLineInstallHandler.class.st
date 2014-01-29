@@ -10,6 +10,7 @@ Options:
           --version	{ 1.4 | 2.0 | 3.0 }. It indicates the version of pharo to download. It will not count if you are in a not silent session. 
                               Default value is 2.0
           --package	Indicates the name of the package to install (If you use <<pharos install aPackage --package=otherPackage>> the one to be installed is otherPackage ).
+--package-version	Indicates the package version. By default it takes the latest one.
           --pharo-user	Indicates the user name for the result image.
           --force-new	DELETE the package if it exists in the pointed location. 
 
@@ -31,9 +32,16 @@ PRCCommandLineInstallHandler class >> description [
 ]
 
 { #category : #'as yet unclassified' }
+PRCCommandLineInstallHandler >> packageVersion [
+	^ commandLine optionAt: #'package-version' ifAbsent:[ '' ].
+	
+
+]
+
+{ #category : #'as yet unclassified' }
 PRCCommandLineInstallHandler >> realActivate [
 
-	| location package version silent deployer sourceFolder |
+	| location package version silent deployer sourceFolder packageVersion |
 	
 	
 	version := self version.
@@ -41,6 +49,7 @@ PRCCommandLineInstallHandler >> realActivate [
 	silent := self silent.
 	
 	package := self package.
+	packageVersion := self packageVersion. 
 	
 	sourceFolder := location asFileReference / #src.
 	
@@ -52,7 +61,15 @@ PRCCommandLineInstallHandler >> realActivate [
 		RCDDeployerFactory interactiveDeployerFor: sourceFolder pathString  withPharoVersion:  version.
 	].
 	deployer codeGenerator registerPreProcess: (' Author fullName: ''{1}'' ' format:{ self pharoUser }).
-	deployer deploy:  (PRCCommandPackageRegistry  deployUnitForPackage:  package).
+	
+	
+	packageVersion ifEmpty: [ 
+		
+		deployer deploy:  (PRCCommandPackageRegistry  deployUnitForPackage:  package).
+	 ] ifNotEmpty:[
+		deployer deploy:  (PRCCommandPackageRegistry  deployUnitForPackage:  package) withVersion: packageVersion.
+	] 
+	
 
 
 
