@@ -136,19 +136,6 @@ ConfigurationOfTaskIT >> baseline10: spec [
 
 ]
 
-{ #category : #baselines }
-ConfigurationOfTaskIT >> baselineStable01: spec [
-	<version:'0.1-baseline-stable'>
-	spec for: #common do: [
-			spec blessing: #baseline.
-			spec repository: 'http://smalltalkhub.com/mc/sbragagnolo/TaskIT/main'.
-			spec group: 'default'  with: #( 'TaskIT' ).
-			spec group: 'experimental'  with: #( 'TaskIT' ).
-	].
-
-
-]
-
 { #category : #accessing }
 ConfigurationOfTaskIT >> project [
 
@@ -171,23 +158,9 @@ ConfigurationOfTaskIT >> project [
 { #category : #versions }
 ConfigurationOfTaskIT >> stable: spec [
 	<symbolicVersion: #'stable'>
-	spec for: #'pharo1.4.x' version: '0.1'.
-	spec for: #'pharo2.x' version: '0.1'.
-	
-]
-
-{ #category : #versions }
-ConfigurationOfTaskIT >> version01: spec [ 
-	<version: '0.1' imports: #('0.1-baseline-stable') >
-	
-	spec for: #common do: [
-		spec blessing: #stable.
-		spec author: 'SantiagoBragagnolo'.
-		spec timestamp: '15/11/2013 12:00'.
-		spec package:'TaskIT' with: 'TaskIT-SantiagoBragagnolo.20'.
-	].
-
-
+	spec for: #'pharo1.4.x' version: '1.0'.
+	spec for: #'pharo2.x' version: '1.0'.
+	spec for: #'pharo3.x' version: '1.0'.	
 ]
 
 { #category : #versions }
@@ -195,10 +168,10 @@ ConfigurationOfTaskIT >> version10: spec [
 	<version: '1.0' imports: #('1.0-baseline') >
 	
 	spec for: #common do: [
-		spec blessing: #experimental.
+		spec blessing: #stable.
 		spec author: 'SantiagoBragagnolo'.
 		spec timestamp: '15/11/2013 12:00'.
-
+		spec package:'TaskIT' with: 'TaskIT-SantiagoBragagnolo.30'.
 	].
 
 
