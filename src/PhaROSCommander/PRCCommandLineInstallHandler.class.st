@@ -10,7 +10,7 @@ Options:
           --version	{ 1.4 | 2.0 | 3.0 }. It indicates the version of pharo to download. It will not count if you are in a not silent session. 
                               Default value is 2.0
           --package	Indicates the name of the package to install (If you use <<pharos install aPackage --package=otherPackage>> the one to be installed is otherPackage ).
---package-version	Indicates the package version. By default it takes the latest one.
+          --package-version	Indicates the package version. By default it takes the latest one.
           --pharo-user	Indicates the user name for the result image.
           --force-new	DELETE the package if it exists in the pointed location. 
 
