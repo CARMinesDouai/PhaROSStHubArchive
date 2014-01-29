@@ -11,6 +11,7 @@ Options:
                               Default value is 2.0
           --package	Indicates the name of the package to install (If you use <<pharos install aPackage --package=otherPackage>> the one to be installed is otherPackage ).
           --package-version	Indicates the package version. By default it takes the latest one.
+	    --ros-distro	Indicates the distribution of ROS that you want to use. By default is groovy { groovy | hydro | fuerte } 	
           --pharo-user	Indicates the user name for the result image.
           --force-new	DELETE the package if it exists in the pointed location. 
 
@@ -41,7 +42,7 @@ PRCCommandLineInstallHandler >> packageVersion [
 { #category : #'as yet unclassified' }
 PRCCommandLineInstallHandler >> realActivate [
 
-	| location package version silent deployer sourceFolder packageVersion |
+	| location package version silent deployer sourceFolder packageVersion rosDistro |
 	
 	
 	version := self version.
@@ -50,6 +51,7 @@ PRCCommandLineInstallHandler >> realActivate [
 	
 	package := self package.
 	packageVersion := self packageVersion. 
+	rosDistro := self rosDistro. 
 	
 	sourceFolder := location asFileReference / #src.
 	
@@ -61,6 +63,8 @@ PRCCommandLineInstallHandler >> realActivate [
 		RCDDeployerFactory interactiveDeployerFor: sourceFolder pathString  withPharoVersion:  version.
 	].
 	deployer codeGenerator registerPreProcess: (' Author fullName: ''{1}'' ' format:{ self pharoUser }).
+	
+	deployer codeGenerator registerPostProcess: ( '(Smalltalk at:#PhaROSSystemLauncher) distro: {1} asSymbol. ' format: { rosDistro } ).
 	
 	
 	packageVersion ifEmpty: [ 
@@ -77,5 +81,15 @@ PRCCommandLineInstallHandler >> realActivate [
 
 
 
+
+]
+
+{ #category : #'as yet unclassified' }
+PRCCommandLineInstallHandler >> rosDistro [
+	| val |
+	val := commandLine optionAt: #'ros-distro' ifAbsent:[ 'groovy' ].
+	({ #groovy . #fuerte . #hydro } includes: val asSymbol ) ifFalse: [ self error: val, ' Is not a valid ROS distribution' ].
+	^ val. 
+	
 
 ]
