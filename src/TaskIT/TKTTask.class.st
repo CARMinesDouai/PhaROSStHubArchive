@@ -151,7 +151,7 @@ TKTTask >> tearDown [
 { #category : #executing }
 TKTTask >> value [
 	" The future is dispendable in this case, cause is executing in the same thread "
-	^ TKTSameThreadRunner new run: self
+	^ TKTSameProcessRunner new run: self
 ]
 
 { #category : #executing }
