@@ -17,12 +17,13 @@ Class {
 	#instVars : [
 		'isDeployed',
 		'error',
-		'callbacks',
 		'value',
 		'result',
 		'semaphore',
 		'processData',
-		'runner'
+		'runner',
+		'successCallbacks',
+		'errorCallbacks'
 	],
 	#category : #'TaskIT-Kernel'
 }
@@ -51,7 +52,7 @@ TKTFuture >> at: key put: anObject [
 TKTFuture >> basicGetValue [
 
 	error ifNotNil:[
-		error pass.
+		error signal.
 	].
 
 	^ value
@@ -65,26 +66,27 @@ TKTFuture >> cancel [
 { #category : #'execution-finished' }
 TKTFuture >> deployError: anError [
 	error := anError.
-	isDeployed := true.
 	value := TKTInvalidFutureValue new.
-	semaphore signal.
+	errorCallbacks get do: [ : c  | c cull: error ].
+	isDeployed := true.
 ]
 
 { #category : #'execution-finished' }
 TKTFuture >> deployValue: aValue [
 	value := aValue.
+	successCallbacks get do: [ : c  | c cull: aValue ].
 	isDeployed := true.
-	callbacks get do: [ : c  | c cull: aValue ].
-	semaphore signal.
-	
 ]
 
 { #category : #'initialize-release' }
-TKTFuture >> initialize [ 
+TKTFuture >> initialize [
+	super initialize.
+	
 	isDeployed := false.
 	value := nil. 
 	error := nil.
-	callbacks := TKTExclusiveAccessVariable initialValue: OrderedCollection new.
+	successCallbacks := TKTExclusiveAccessVariable initialValue: OrderedCollection new.
+	errorCallbacks := TKTExclusiveAccessVariable initialValue: OrderedCollection new.
 	semaphore := Semaphore new.
 	processData := TKTExclusiveAccessVariable initialValue: Dictionary new.
 ]
@@ -100,10 +102,36 @@ TKTFuture >> isValueAvailable [
 	^ isDeployed.
 ]
 
+{ #category : #callbacks }
+TKTFuture >> onError: aCallback [ 
+
+	self isError ifTrue:[
+		aCallback cull: error.	
+	] ifFalse: [
+		errorCallbacks add: aCallback.
+	]
+]
+
+{ #category : #callbacks }
+TKTFuture >> onSuccess: aCallback [ 
+
+	self isValueAvailable ifTrue:[
+		aCallback cull: value.	
+	] ifFalse: [
+		successCallbacks add: aCallback.
+	]
+]
+
 { #category : #accessing }
 TKTFuture >> runner: aRunner [ 
 
 	runner := aRunner
+]
+
+{ #category : #'execution-finished' }
+TKTFuture >> signal [
+
+	semaphore signal.
 ]
 
 { #category : #actions }
@@ -152,13 +180,4 @@ TKTFuture >> wait [
 TKTFuture >> waitForValue: milliseconds [ 
 
 	^ semaphore waitTimeoutMSecs: milliseconds
-]
-
-{ #category : #callbacks }
-TKTFuture >> whenFinished: aBlock [
-	self isValueAvailable ifTrue:[
-		aBlock cull: value.	
-	] ifFalse: [
-		callbacks add: aBlock.
-	]
 ]

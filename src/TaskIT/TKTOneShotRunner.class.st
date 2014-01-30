@@ -26,8 +26,7 @@ TKTOneShotRunner >> run: aTKTTask [
 	future := self newFuture.
 	task := aTKTTask asTask.
 	process := [
-		task runOnRunner: self withFuture: future.
-		self stopProcess.
+		task runOnRunner: self withFuture: future
 	] newProcess.
 	process name: 'A TKTTask'.
 	process priority: task priority.

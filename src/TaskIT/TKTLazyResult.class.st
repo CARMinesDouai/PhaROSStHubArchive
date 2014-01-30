@@ -63,7 +63,7 @@ TKTLazyResult >> finalize [
 
 { #category : #accessing }
 TKTLazyResult >> future: aFuture [
-	aFuture whenFinished: [ :aValue | self deployValue: aValue ].
+	aFuture onSuccess: [ :aValue | self deployValue: aValue ].
 	future set: aFuture
 ]
 

@@ -4,6 +4,31 @@ Class {
 	#category : #'TaskIT-Kernel'
 }
 
+{ #category : #running }
+TKTRunner >> afterDeployError: anError intoFuture: aFuture [
+
+	aFuture signal.
+]
+
+{ #category : #running }
+TKTRunner >> afterDeployValue: aValue intoFuture: aFuture [
+
+	aFuture signal.
+]
+
+{ #category : #running }
+TKTRunner >> basicDeployError: anError intoFuture: aFuture [
+
+	anError freeze.
+	aFuture deployError: anError.
+]
+
+{ #category : #running }
+TKTRunner >> basicDeployValue: aValue intoFuture: aFuture [
+	
+	aFuture deployValue: aValue.
+]
+
 { #category : #cancelling }
 TKTRunner >> cancel [
 
@@ -20,13 +45,15 @@ TKTRunner >> cancel: aTKTFuture [
 { #category : #running }
 TKTRunner >> deployError: anError intoFuture: aFuture [
 
-	aFuture deployError: anError.
+	self basicDeployError: anError intoFuture: aFuture.
+	self afterDeployError: anError intoFuture: aFuture.
 ]
 
 { #category : #running }
 TKTRunner >> deployValue: aValue intoFuture: aFuture [
 
-	aFuture deployValue: aValue.
+	self basicDeployValue: aValue intoFuture: aFuture.
+	self afterDeployValue: aValue intoFuture: aFuture.
 ]
 
 { #category : #testing }

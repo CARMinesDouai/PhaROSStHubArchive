@@ -14,7 +14,7 @@ TKTFutureAndResultTests >> testCallbackInAnAlreadyDeployedFuture [
 	value := TKTTestObject new.
 	
 	future deployValue: value.
-	future whenFinished: [ :val | shouldBeValue := val ].
+	future onSuccess: [ :val | shouldBeValue := val ].
 	
 	
 	self assert: shouldBeValue = value.
@@ -54,7 +54,7 @@ TKTFutureAndResultTests >> testDeployValueIntoFutureWithCallback [
 	future := TKTFuture new.
 	value := TKTTestObject new.
 	
-	future whenFinished: [ :val | shouldBeValue := val ].
+	future onSuccess: [ :val | shouldBeValue := val ].
 	future deployValue: value.
 	
 	self assert: shouldBeValue = value.
@@ -69,12 +69,37 @@ TKTFutureAndResultTests >> testDeployValueIntoStickyFutureWithCallback [
 	future := TKTFuture new.
 	value := TKTTestObject new.
 	
-	future whenFinished: [ :val | shouldBeValue := val ].
+	future onSuccess: [ :val | shouldBeValue := val ].
 	future deployValue: value.
 	
 	self assert: shouldBeValue = value.
 	
 	
+]
+
+{ #category : #'as yet unclassified' }
+TKTFutureAndResultTests >> testErrorCallbackWhenAlreadyFinished [
+	| future error theError |
+	error := Error new.
+	future := [ error signal ] shootIt.
+	future wait.
+	self assert: future isError.
+	
+	future onError: [ :err | theError := err ].
+	
+	self assert: theError equals: error.
+]
+
+{ #category : #'as yet unclassified' }
+TKTFutureAndResultTests >> testErrorCallbackWhenFinished [
+	| future semaphore error theError |
+	semaphore := Semaphore new.
+	error := Error new.
+	future := [ error signal ] shootIt.
+	future onError: [ :err | theError := err. semaphore signal. ].
+	semaphore wait.
+	
+	self assert: theError equals: error
 ]
 
 { #category : #'as yet unclassified' }
@@ -139,4 +164,27 @@ TKTFutureAndResultTests >> testStickyFutureResultLazyInstantiation [
 	
 	self assert: future asResult hash = future asResult hash.
 	
+]
+
+{ #category : #'as yet unclassified' }
+TKTFutureAndResultTests >> testValueCallbackWhenAlreadyFinished [
+	| future shouldBeValue |
+	future := [ 2+2 ] shootIt.
+	
+	self assert: future value equals: 4.
+	
+	future onSuccess: [ :val | shouldBeValue := val ].
+	
+	self assert: shouldBeValue equals: 4.
+]
+
+{ #category : #'as yet unclassified' }
+TKTFutureAndResultTests >> testValueCallbackWhenFinished [
+	| future shouldBeValue semaphore |
+	semaphore := Semaphore new.
+	future := [ 2+2 ] shootIt.
+	future onSuccess: [ :val | shouldBeValue := val. semaphore signal. ].
+	semaphore wait.
+	
+	self assert: shouldBeValue equals: 4.
 ]

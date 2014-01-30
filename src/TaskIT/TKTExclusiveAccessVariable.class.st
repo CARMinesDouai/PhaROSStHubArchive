@@ -40,7 +40,6 @@ TKTExclusiveAccessVariable >> do: aBlock [
 TKTExclusiveAccessVariable >> doesNotUnderstand: aMessage [ 
 
 	^ mutex critical: [ value perform: aMessage selector withArguments: aMessage arguments ].
-	
 ]
 
 { #category : #'as yet unclassified' }
