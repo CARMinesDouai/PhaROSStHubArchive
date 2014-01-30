@@ -1,15 +1,55 @@
 "
-A TKTFuture is the promise of an execution's result. A TKTFuture can hold an error produced by the task execution, the value of the finished execution, or none if the task has not yet finished.
+As the execution of a task can last some time, the immediate result of the ==shootIt== message is a future object. A future object, instance of ==TKTFuture==, is the promise of an execution's result. A future can hold the value of the finished execution, an error produced by the task execution, or neither if the task has not yet finished.
 
-The value promised by the future can be obtained both synchronous and asynchronously. To obtain the TKTFuture value synchronously we send it the #value message. Synchronous access to the value will block the caller's process until the result is available.
+[[[
+aFuture := [ 2 + 2 ] shootIt.
+]]]
 
-[ 20 benchFib ] doIt value.
+The simplest way to interact with a future is synchronously. That is, when asking for a future's value, it will block the actual process until the value is available. We can do that by sending our future the message ==value==.
 
-Support for asynchronous execution is provided via callbacks. A callback is a block with zero or one argument that will hold the value resultant from the task execution. A callback can be added to a future with the #whenFinished: message. A TKTFuture supports the addition of many different callbacks.
+[[[
+future := [ 2 + 2 ] shootIt.
+self assert: future value equals: 4.
+]]]
 
-[ 40 benchFib ] doIt whenFinished: [ :result | result logCr ].
+However, it could have happened that the finished in an erroneous state, with an exception. In such case, the exception that was thrown inside the task's execution is forwarded to the sender of ==value==.
 
-Note: On the one hand, the callbacks registered while the task is not yet finished will be executed on the process of the task when it finishes. On the other hand, callbacks registered while the task is already finished will be executing in the caller thread with the already available result.
+[[[
+future := [ SomeError signal ] shootIt.
+[ future value ] on: SomeError do: [ :error | ""We handle the error"" ].
+]]]
+
+A future can also tell us if the task is already finished or not, by sending it the message ==isValueAvailable==. The ==isValueAvailable== message, opposed to the ==value== message, will not block the caller's process but return immediately a boolean informing if the task has finished.
+
+[[[
+future := [ 2 + 2 ] shootIt.
+future isValueAvailable.
+]]]
+
+However, waiting synchronously for the task to be finished can be a waste of CPU time sometimes. For those cases when completely synchronous execution does not fit TaskIT provides the alternative of retrieving a value with a timeout option, using the ==valueTimeoutMilliseconds:== message. When we specify a timeout, we can also provide a block to handle the timeout case using the ==valueTimeoutMilliseconds:ifTimeout:==. If we choose not to provide such a block, the default behavior in case of timeout is to throw a ==TKTTimeoutError== exception.
+
+[[[
+future := [ (Delay forMilliseconds: 100) wait ] shootIt.
+
+future valueTimeoutMilliseconds: 2 ifTimeout: [ ""if it times out we execute this block""].
+
+future valueTimeoutMilliseconds: 2.
+]]]
+
+Support for asynchronous execution is provided via callbacks. A callback is a block with zero or one argument that will be executed when the task execution is finished. Futures accept callbacks for success and error of execution. On success, TaskIT will provide the callback with the result of the execution as argument. On the other side, when an error ocurrs during the execution of the task, TaskIT will execute the error callback with the exception object. A callback is represented by a ==Block== object and configured for a future object via the ==onSuccess:== and ==onError:== messages. Note that callback arguments are optional, and many callbacks can be configured at the same time for the same future object.
+
+[[[
+future := [ 40000000 factorial ] shootIt.
+future onSuccess: [ 'Finished factorial and I don't care about the result' logCr ].
+future onSuccess: [ :result | result logCr ].
+
+future := [ self error ] shootIt.
+future onError: [ 'An error ocurred!!' logCr ].
+future onError: [ :exception | exception asString logCr ].
+]]]
+
+Callbacks handle transparently the finalization of a task. On the one hand, the callbacks registered while the task is running (and so, not yet finished) will be saved and executed when the task finishes on the process that executes the task. On the other hand, callbacks that are registered when the task has already finished will run synchronously in the caller process with the already available result.
+
 "
 Class {
 	#name : #TKTFuture,
