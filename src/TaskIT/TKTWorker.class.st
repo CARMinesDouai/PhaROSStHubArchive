@@ -8,7 +8,7 @@ Class {
 		'currentTask',
 		'doneTasks'
 	],
-	#category : #'TaskIT-PersistenRunners'
+	#category : #'TaskIT-PersistentRunners'
 }
 
 { #category : #'instance creation' }

@@ -7,10 +7,10 @@ Class {
 		'loopsRun',
 		'maxLoops'
 	],
-	#category : #'TaskIT-PersistenRunners'
+	#category : #'TaskIT-PersistentRunners'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #cancelling }
 TKTLoopingRunner >> cancelFutures [
 
 	self cancel: future
