@@ -338,14 +338,10 @@ ConfigurationOfPhaROS >> baseline11: spec [
 				spec requires:#('PhaROS' 'PhaROSControllers' 'PhaROSNodeletsTurtlesim' 'PhaROSNodeletsTF' )	
 			].
 		
-			spec package: 'ChatterPackage' with:[
-				spec requires:#('PhaROS' 'PhaROSControllers').
+			spec package: 'ChatterPackage' with: [
+				spec requires:#('PhaROS' 'PhaROSControllers'  )	
 			].
 		
-		
-			spec package: 'ArduinoPackage' with:[
-				spec requires:#('PhaROS' 'PhaROSControllers').
-			].
 		
 			"PhaROS Configuration"	
 			
