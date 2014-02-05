@@ -23,7 +23,7 @@ ChatterListener >> channel: aChannel [
 ChatterListener >> listen: aMsg [
 	output ifNotNil: [ 
 		output nextPutAll: aMsg data.
-			
+		output nextPutAll: String lf.
 	]
 ]
 

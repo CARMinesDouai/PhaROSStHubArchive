@@ -15,11 +15,6 @@ ChatterPackage >> buildController [
 ]
 
 { #category : #'private - configuration' }
-ChatterPackage >> node [
-	^ self controller node.
-]
-
-{ #category : #'private - configuration' }
 ChatterPackage >> nodeletInjectionExample: aController [
 	"
 		Nodelets are units objects responsible for solving common problems, meaning that there are reusable. 
@@ -34,18 +29,16 @@ ChatterPackage >> nodeletInjectionExample: aController [
 
 ]
 
-{ #category : #'private - configuration' }
-ChatterPackage >> nodelets [
-	^ self controller nodelets
-]
-
 { #category : #scripts }
 ChatterPackage >> scriptListener [
-	self nodelets chatter listener output: FileStream stdout.
-	
+	self log: 'Starting up Listener '.
+	self nodelets chatter listener output: self stdout.
+	self log: 'You will read here all the text written in talker nodes'.
 ]
 
 { #category : #scripts }
 ChatterPackage >> scriptTalker [
-	self nodelets chatter talker consume: FileStream stdin.
+	self log: 'Starting up Talker'.
+	self nodelets chatter talker consume: self stdin.
+	self log: 'Write your input and press enter'.
 ]
