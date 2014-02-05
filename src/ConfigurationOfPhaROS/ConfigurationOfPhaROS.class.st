@@ -352,7 +352,7 @@ ConfigurationOfPhaROS >> baseline11: spec [
 		
 		
 			spec 	group: 'default' with: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure'  );
-	 				group: 'default+tests' with: #( 'PhaROS' 'PhaROSTest' 'PhaROSTestROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSPackageManager14');
+	 				group: 'default+tests' with: #( 'PhaROS' 'PhaROSTest' 'PhaROSTestROS' 'PhaROSControllers' 'PhaROSInfrastructure' );
 					group: 'core' with: #('PhaROS' );
 					group: 'core+tests' with: #('PhaROS' 'PhaROSTest' 'PhaROSTestROS' );
 				
@@ -361,8 +361,11 @@ ConfigurationOfPhaROS >> baseline11: spec [
 					group: 'nodelets' with: #('nodelets-ros-controllers' 'nodelets-behavior');
 					group: 'all' with: #('default+tests' 'nodelets').
 		
+			
+			spec group: 'full-archetype' with: #('all' ).
 			spec group: 'basic-archetype' with: #('PhaROS' 'PhaROSControllers' 'PhaROSNodeletsTurtlesim' 'PhaROSNodeletsTF' ).
-	
+			spec group: 'core-archetype' with: #('PhaROS' ).
+		
 	
 	].
 	
