@@ -338,6 +338,15 @@ ConfigurationOfPhaROS >> baseline11: spec [
 				spec requires:#('PhaROS' 'PhaROSControllers' 'PhaROSNodeletsTurtlesim' 'PhaROSNodeletsTF' )	
 			].
 		
+			spec package: 'ChatterPackage' with:[
+				spec requires:#('PhaROS' 'PhaROSControllers').
+			].
+		
+		
+			spec package: 'ArduinoPackage' with:[
+				spec requires:#('PhaROS' 'PhaROSControllers').
+			].
+		
 			"PhaROS Configuration"	
 			
 			spec package: 'PhaROS' with: [
@@ -347,7 +356,7 @@ ConfigurationOfPhaROS >> baseline11: spec [
 		
 		
 			spec 	group: 'default' with: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure'  );
-	 				group: 'default+tests' with: #( 'PhaROS' 'PhaROSTest' 'PhaROSTestROS' 'PhaROSControllers' 'PhaROSInfrastructure' );
+	 				group: 'default+tests' with: #( 'PhaROS' 'PhaROSTest' 'PhaROSTestROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSPackageManager14');
 					group: 'core' with: #('PhaROS' );
 					group: 'core+tests' with: #('PhaROS' 'PhaROSTest' 'PhaROSTestROS' );
 				
@@ -356,10 +365,8 @@ ConfigurationOfPhaROS >> baseline11: spec [
 					group: 'nodelets' with: #('nodelets-ros-controllers' 'nodelets-behavior');
 					group: 'all' with: #('default+tests' 'nodelets').
 		
-			spec group: 'full-archetype' with: #('all' ).
 			spec group: 'basic-archetype' with: #('PhaROS' 'PhaROSControllers' 'PhaROSNodeletsTurtlesim' 'PhaROSNodeletsTF' ).
-			spec group: 'core-archetype' with: #('PhaROS' ).
-		
+	
 	
 	].
 	
