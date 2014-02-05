@@ -46,11 +46,31 @@ PhaROSPackage >> controller [
 ]
 
 { #category : #scripts }
-PhaROSPackage >> quit [
-	Smalltalk snapshot: false andQuit: true.
+PhaROSPackage >> exit: aCode [
+	Smalltalk exit: aCode.
 ]
 
-{ #category : #scripts }
+{ #category : #log }
+PhaROSPackage >> log: aString [
+	self stdout nextPutAll: (aString, String lf).
+]
+
+{ #category : #accessing }
+PhaROSPackage >> node [
+	^ self controller node.
+]
+
+{ #category : #accessing }
+PhaROSPackage >> nodelets [
+	^ self controller nodelets
+]
+
+{ #category : #stdio }
+PhaROSPackage >> stdin [
+	^  FileStream stdin.
+]
+
+{ #category : #stdio }
 PhaROSPackage >> stdout [ 
 	^  FileStream stdout.
 ]
