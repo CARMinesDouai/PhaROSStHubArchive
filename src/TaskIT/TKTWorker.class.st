@@ -157,6 +157,13 @@ TKTWorker >> scheduleTask: aTask [
 ]
 
 { #category : #running }
+TKTWorker >> stop [
+	self scheduleTask: [ keepRunning set: false ] asTask.
+	(Delay forMilliseconds: 500) wait.
+	super stop.
+]
+
+{ #category : #running }
 TKTWorker >> stopWorkingOnThat [ 
 
 	self cancel: currentTask value.

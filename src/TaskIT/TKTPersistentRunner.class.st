@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'keepRunning',
 		'priority',
-		'failureBlock'
+		'failureBlock',
+		'finishedSemaphore'
 	],
 	#category : #'TaskIT-PersistentRunners'
 }
@@ -55,8 +56,10 @@ TKTPersistentRunner >> initialize [
 
 	super initialize.
 	self priority: Processor userBackgroundPriority.
+	
 	keepRunning := TKTExclusiveAccessVariable initialValue: true.
 	failureBlock := [ :e | e pass ].
+	finishedSemaphore := Semaphore new.
 ]
 
 { #category : #running }
@@ -81,7 +84,8 @@ TKTPersistentRunner >> run [
 	keepRunning set: true.
 	[ self shouldKeepRunning ] whileTrue: [ 
 		self executeNextTask.
-	]
+	].
+	finishedSemaphore signal
 ]
 
 { #category : #running }
@@ -101,7 +105,12 @@ TKTPersistentRunner >> start [
 
 { #category : #running }
 TKTPersistentRunner >> stop [
-	self scheduleTask: [ keepRunning set: false ] asTask.
-	(Delay forMilliseconds: 500) wait.
+	keepRunning set: false.
 	self cancel.
+]
+
+{ #category : #running }
+TKTPersistentRunner >> waitToFinish [
+
+	finishedSemaphore wait.
 ]

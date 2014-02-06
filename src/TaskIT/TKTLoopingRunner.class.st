@@ -10,6 +10,12 @@ Class {
 	#category : #'TaskIT-PersistentRunners'
 }
 
+{ #category : #running }
+TKTLoopingRunner >> afterRunTask: aTask [
+
+	loopsRun := loopsRun + 1
+]
+
 { #category : #cancelling }
 TKTLoopingRunner >> cancelFutures [
 
@@ -41,7 +47,7 @@ TKTLoopingRunner >> initialize [
 { #category : #accessing }
 TKTLoopingRunner >> loopTimes: someTimes [
 
-	maxLoops := 0.
+	maxLoops := someTimes.
 ]
 
 { #category : #running }
