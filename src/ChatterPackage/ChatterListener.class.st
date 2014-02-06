@@ -16,12 +16,13 @@ ChatterListener class >> for: aSubscription [
 { #category : #'as yet unclassified' }
 ChatterListener >> channel: aChannel [
 	channel := aChannel.
-	channel for: [ : msg | self listen: msg ].
+	channel for: [ : msg :chn | self listen: msg from: chn owner ].
 ]
 
 { #category : #'as yet unclassified' }
-ChatterListener >> listen: aMsg [
+ChatterListener >> listen: aMsg from: aNode [
 	output ifNotNil: [ 
+		output nextPutAll: aNode name, ' said:'.
 		output nextPutAll: aMsg data.
 		output nextPutAll: String lf.
 	]

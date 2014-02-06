@@ -23,7 +23,9 @@ ChatterTalker >> consume: aReadStream [
 	([
 		[ 
 			channel send: [ : m | 
-				m data: (token:=self getMessageFrom: aReadStream) 
+				token:=self getMessageFrom: aReadStream.
+				self log: 'Sending data to all subscribers'.
+				m data: token. 
 			].
 		] doWhileFalse: [ token = 'exit' ] .
 	] asTaskAt: Processor systemBackgroundPriority) shootIt.
