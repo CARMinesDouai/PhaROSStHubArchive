@@ -31,14 +31,51 @@ ChatterPackage >> nodeletInjectionExample: aController [
 
 { #category : #scripts }
 ChatterPackage >> scriptListener [
+
+
+	self log: 'Starting up Listener '.
+	
+	(self node buildConnectionFor:  '/chat/channel') 
+				typedAs: 'std_msgs/String' ; 
+				for: [ : aMsg :aChannel | 
+					self stdout nextPutAll: aChannel owner name, ' said:'.
+					self stdout  nextPutAll: aMsg data.
+					self stdout  nextPutAll: String lf.
+				 ];
+				connect.
+				
+	self log: 'You will read here all the text written in talker nodes'.
+]
+
+{ #category : #'nodelet scripts' }
+ChatterPackage >> scriptNodeletListener [
 	self log: 'Starting up Listener '.
 	self nodelets chatter listener output: self stdout.
 	self log: 'You will read here all the text written in talker nodes'.
 ]
 
-{ #category : #scripts }
-ChatterPackage >> scriptTalker [
+{ #category : #'nodelet scripts' }
+ChatterPackage >> scriptNodeletTalker [
 	self log: 'Starting up Talker'.
 	self nodelets chatter talker consume: self stdin.
 	self log: 'Write your input and press enter'.
+]
+
+{ #category : #scripts }
+ChatterPackage >> scriptTalker [
+	| publisher |
+	self log: 'Starting up Talker'.
+	publisher := self node topicPublisher: '/chat/channel' typedAs: 'std_msgs/String'.
+	self paralellize looping talkTo: publisher.
+	self log: 'Write your input and press enter'.
+]
+
+{ #category : #'private - talker' }
+ChatterPackage >> talkTo: publisher [
+	| token |
+	publisher send: [ : m | 
+		token :=self stdin upTo: Character lf.
+		self log: 'Sending data to all subscribers'.
+		m data: token. 
+	].
 ]

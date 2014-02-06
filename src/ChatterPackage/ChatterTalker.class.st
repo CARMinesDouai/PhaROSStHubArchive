@@ -19,20 +19,15 @@ ChatterTalker >> channel: aChannel [
 
 { #category : #'as yet unclassified' }
 ChatterTalker >> consume: aReadStream [
-	| token |
-	([
-		[ 
-			channel send: [ : m | 
-				token:=self getMessageFrom: aReadStream.
-				self log: 'Sending data to all subscribers'.
-				m data: token. 
-			].
-		] doWhileFalse: [ token = 'exit' ] .
-	] asTaskAt: Processor systemBackgroundPriority) shootIt.
+	self paralellize looping readFrom: aReadStream.
 ]
 
 { #category : #'as yet unclassified' }
-ChatterTalker >> getMessageFrom: aReadStream [
-	^ aReadStream upTo: Character lf.
-	
+ChatterTalker >> readFrom: anInputStream [
+	| token |
+	channel send: [ : m | 
+		token := anInputStream upTo: Character lf.
+		self log: 'Sending data to all subscribers'.
+		m data: token. 
+	].
 ]
