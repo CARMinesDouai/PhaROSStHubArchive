@@ -103,10 +103,3 @@ PhaROSNodelet >> nodelets [
 PhaROSNodelet >> rosnode [
 	^ self controller node.
 ]
-
-{ #category : #'as yet unclassified' }
-PhaROSNodelet >> types [
-	"{ #name -> PhaROSCompositeType } asDictionary"
-	^ self subclassResponsibility.
-	
-]

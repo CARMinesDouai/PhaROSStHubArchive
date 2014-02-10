@@ -13,29 +13,9 @@ Class {
 	#category : #'PhaROS-Package'
 }
 
-{ #category : #abstract }
-PhaROSPackage class >> author [
-	self subclassResponsibility 
-]
-
-{ #category : #accessing }
-PhaROSPackage class >> definedNodelets [
-	^ {}
-]
-
-{ #category : #abstract }
-PhaROSPackage class >> dependencies [
-	^ { }
-]
-
-{ #category : #abstract }
-PhaROSPackage class >> packageName [
-	self subclassResponsibility 
-]
-
-{ #category : #abstract }
-PhaROSPackage class >> version [ 
-	self subclassResponsibility.
+{ #category : #types }
+PhaROSPackage class >> types [
+	^ {  }
 ]
 
 { #category : #'helper thread' }
