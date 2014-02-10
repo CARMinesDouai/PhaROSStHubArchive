@@ -1,3 +1,6 @@
+"
+A PhaROSCollectionType is an abstract representation of collections type
+"
 Class {
 	#name : #PhaROSCollectionType,
 	#superclass : #PhaROSType,

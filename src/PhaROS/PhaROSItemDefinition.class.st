@@ -1,3 +1,6 @@
+"
+Generic part of a type definition.
+"
 Class {
 	#name : #PhaROSItemDefinition,
 	#superclass : #Object,

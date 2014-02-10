@@ -1,3 +1,6 @@
+"
+A PhaROSUInt64Type  is a 64 bits represetnation of unsigned int 
+"
 Class {
 	#name : #PhaROSUInt64Type,
 	#superclass : #PhaROSType,

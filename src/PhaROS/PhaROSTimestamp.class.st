@@ -1,3 +1,6 @@
+"
+A PhaROSTimestamp is wrapper that makes easy to make the conversions between ROS and pharo
+"
 Class {
 	#name : #PhaROSTimestamp,
 	#superclass : #Object,

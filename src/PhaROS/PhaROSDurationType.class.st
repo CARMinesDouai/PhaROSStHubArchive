@@ -1,3 +1,6 @@
+"
+A PhaROSDurationType is type that represents interval  of time
+"
 Class {
 	#name : #PhaROSDurationType,
 	#superclass : #PhaROSType,

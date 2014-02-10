@@ -1,3 +1,6 @@
+"
+A PhaROSFloat32Type is Float 32 bits type
+"
 Class {
 	#name : #PhaROSFloat32Type,
 	#superclass : #PhaROSType,

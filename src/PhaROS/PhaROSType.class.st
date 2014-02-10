@@ -1,3 +1,6 @@
+"
+A PhaROSType is abstract representation of type
+"
 Class {
 	#name : #PhaROSType,
 	#superclass : #Object,

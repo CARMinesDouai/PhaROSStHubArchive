@@ -1,3 +1,6 @@
+"
+A PhaROSMessageAdapter is a set of adaptions and adaption-polimorfic that applies a set of message sendings in order to get from one object a new one.
+"
 Class {
 	#name : #PhaROSMessageAdapter,
 	#superclass : #Object,

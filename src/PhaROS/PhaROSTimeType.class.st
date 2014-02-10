@@ -1,3 +1,6 @@
+"
+A PhaROSTimeType is a time stamp type.
+"
 Class {
 	#name : #PhaROSTimeType,
 	#superclass : #PhaROSType,

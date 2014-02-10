@@ -1,3 +1,6 @@
+"
+A PhaROSValueHolder is an object that holds a value and a timestamp of the settings. So you can ask for expiration with an ammount of milliseconds or if is valid.
+"
 Class {
 	#name : #PhaROSValueHolder,
 	#superclass : #Object,

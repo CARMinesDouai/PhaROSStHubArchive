@@ -1,3 +1,6 @@
+"
+A PhaROSBoolType is a bool type. 
+"
 Class {
 	#name : #PhaROSBoolType,
 	#superclass : #PhaROSType,

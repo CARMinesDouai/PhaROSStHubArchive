@@ -1,3 +1,6 @@
+"
+A PhaROSInt16Type is a 16 bits represetnation of int 
+"
 Class {
 	#name : #PhaROSInt16Type,
 	#superclass : #PhaROSType,

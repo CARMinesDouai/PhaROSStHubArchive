@@ -1,3 +1,6 @@
+"
+A PhaROSUInt8Type   is a 8 bits represetnation of unsigned int 
+"
 Class {
 	#name : #PhaROSUInt8Type,
 	#superclass : #PhaROSType,

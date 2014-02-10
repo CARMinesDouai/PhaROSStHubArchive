@@ -1,3 +1,6 @@
+"
+A PhaROSSystemLauncher is facade for executing ros commands in the host machine
+"
 Class {
 	#name : #PhaROSSystemLauncher,
 	#superclass : #Object,

@@ -1,3 +1,6 @@
+"
+A PhaROSPackage class is the representation of a set of behaviors 
+"
 Class {
 	#name : #PhaROSPackage,
 	#superclass : #Object,

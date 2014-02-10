@@ -1,3 +1,6 @@
+"
+A PhaROSArrayType is an array of variable length and fixed type.
+"
 Class {
 	#name : #PhaROSArrayType,
 	#superclass : #PhaROSCollectionType,

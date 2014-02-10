@@ -1,3 +1,6 @@
+"
+A PhaROSStringType is a variable length string type
+"
 Class {
 	#name : #PhaROSStringType,
 	#superclass : #PhaROSType,

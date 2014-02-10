@@ -1,3 +1,6 @@
+"
+A PhaROSPosition is a 3 dimension position representation
+"
 Class {
 	#name : #PhaROSPosition,
 	#superclass : #Object,

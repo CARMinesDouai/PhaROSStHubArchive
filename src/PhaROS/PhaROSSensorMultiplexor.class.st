@@ -1,3 +1,6 @@
+"
+A PhaROSSensorMultiplexor is an objects that syncronizes the values of all the sensors all the times that there is a tick. If all the sensed values are valid (not expired), a setted callback is called
+"
 Class {
 	#name : #PhaROSSensorMultiplexor,
 	#superclass : #Object,

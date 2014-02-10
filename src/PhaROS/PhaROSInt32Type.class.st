@@ -1,3 +1,6 @@
+"
+A PhaROSInt32Type  is a 32 bits represetnation of int 
+"
 Class {
 	#name : #PhaROSInt32Type,
 	#superclass : #PhaROSType,
