@@ -92,7 +92,7 @@ PhaROSServiceProxy >> loadType [
 	header := PhaROSHSMessageHeader newServiceClientMessageFrom: (socketStr upToEnd ) asByteArray readStream.
 	socketStr close.
 
-	types := PhaROSTypeBrowser instance serviceDefinition: header type.
+	types := (PhaROSTypeBrowser instance serviceType: header type) .
 	"self assert: header md5Sum  = types md5Sum description: 'Incompatible type hash'. "
 	requestType :=  types request.
 	responseType := types response.

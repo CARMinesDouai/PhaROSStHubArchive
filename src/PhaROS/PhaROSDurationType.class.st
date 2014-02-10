@@ -4,9 +4,14 @@ Class {
 	#category : #'PhaROS-Types-Basic'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSDurationType class >> dataTypeSize [
 	^ 8
+]
+
+{ #category : #'pseudo-dsl' }
+PhaROSDurationType class >> registerAlterName [
+	" Name collision. DSL constructor name is at Duration class as extention method "
 ]
 
 { #category : #'as yet unclassified' }

@@ -45,54 +45,54 @@ PhaROSTimestamp >> > aDateAndTime [
 	^ timestamp > aDateAndTime asDateAndTime.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #converting }
 PhaROSTimestamp >> asDateAndTime [
 	^ timestamp
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #comparing }
 PhaROSTimestamp >> closeTo: anOtherPhaROSTimeStamp [
 	^ timestamp = anOtherPhaROSTimeStamp timestamp.
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #converting }
 PhaROSTimestamp >> nanoSeconds [
 	^ timestamp nanoSecond.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'simple instance creation' }
 PhaROSTimestamp >> nanoSeconds: anAmountOfNSeconds [ 
 	timestamp nanoSeconds: anAmountOfNSeconds 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSTimestamp >> seconds [
 	^ timestamp asUnixTime .
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 PhaROSTimestamp >> seconds: anAmountOfSeconds [
 	timestamp seconds: anAmountOfSeconds.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 PhaROSTimestamp >> seconds: anAmountOfSeconds  nanoSeconds: anAmountOfNSeconds [ 
 	timestamp := (DateAndTime fromUnixTime: anAmountOfSeconds) + (Time seconds: 0 nanoSeconds: anAmountOfNSeconds ).
 	^ timestamp.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #converting }
 PhaROSTimestamp >> secondsUTC [
 	^ timestamp asUnixTime - (timestamp offset asSeconds).
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSTimestamp >> timestamp [ 
 	^ timestamp.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSTimestamp >> timestamp: aDateAndTime [
 	timestamp := aDateAndTime.
 	

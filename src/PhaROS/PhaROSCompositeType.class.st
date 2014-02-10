@@ -14,8 +14,14 @@ Class {
 	#category : #'PhaROS-Types-Basic'
 }
 
+{ #category : #'pseudo-dsl' }
+PhaROSCompositeType class >> definedBy: aROSTypeId named: aName [ 
+	 ^ PhaROSFieldDefinition named: aName type: (PhaROSTypeBrowser instance type: aROSTypeId ).
+]
+
 { #category : #construction }
 PhaROSCompositeType class >> initialize [ 
+	super initialize.
 	types := Dictionary new.
 ]
 
@@ -37,6 +43,11 @@ PhaROSCompositeType class >> new [
 	self error: 'You must use at least #named: construction method'.
 ]
 
+{ #category : #'pseudo-dsl' }
+PhaROSCompositeType class >> registerAlterName [ 
+	"Do not apply"
+]
+
 { #category : #construction }
 PhaROSCompositeType class >> remove: aName [
 	types at:aName ifPresent: [
@@ -53,49 +64,8 @@ PhaROSCompositeType class >> reset [
 ]
 
 { #category : #serializing }
-PhaROSCompositeType >> buildRelatedClass [
-	| class|
-	
-	
-	Smalltalk at:(self relatedClassName asSymbol) ifPresent:[
-		:cl |
-		^ cl.	
-	].
-	
-	
-	self doItSilently: [
-		class := self createClass.
-		
-		self installMethodsIn: class.
-		self installConstantsIn: class.
-	].
-
-
-	^ class  .
-
-
-
-
-
-
-
-]
-
-{ #category : #serializing }
 PhaROSCompositeType >> constants [ 
 	^ constants ifNil: [ constants := Dictionary new ].
-]
-
-{ #category : #serializing }
-PhaROSCompositeType >> createClass [
-
-	^ PhaROSValue subclass: self relatedClassName asSymbol
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'PhaROSGenerated'.
-	
-	
 ]
 
 { #category : #serializing }
@@ -130,7 +100,7 @@ PhaROSCompositeType >> decode: aFLDecoder [
 
 { #category : #serializing }
 PhaROSCompositeType >> defaultValueString [
-	 ^ self relatedClassName, ' new'
+	 ^ relatedClass name , ' new'
 
 
 
@@ -173,43 +143,11 @@ PhaROSCompositeType >> doItSilently: aBlock [
 
 ]
 
-{ #category : #serializing }
-PhaROSCompositeType >> erase [
-	relatedClass ifNotNil:[
-		relatedClass removeFromSystem
-	].
-]
-
 { #category : #'initialize-release' }
 PhaROSCompositeType >> initialize [ 
 	"attribute's name  => attribute's type"
 	typeDefinition := OrderPreservingDictionary new.
 	constants := Dictionary new.
-]
-
-{ #category : #serializing }
-PhaROSCompositeType >> installConstantsIn: aClass [
-	| init |
-	
-	self constants keysAndValuesDo: [ :name :value |
-		aClass class compile: (('{1}', String crlf, String tab, '^{2}' , String crlf) translated format: { name asLowercase . value }) .
-	].
-]
-
-{ #category : #serializing }
-PhaROSCompositeType >> installMethodsIn: aClass [
-	| init |
-	init := OrderedCollection new.
-	self typeDefinition keysAndValuesDo:  [
-			:name :type |
-			aClass compile: (('{1}' , String crlf, String tab, '^ self getAt: #{1}. ', String crlf) translated format: { name} ).
-			aClass compile: (('{1}: aValue' , String crlf, String tab, '^ self at: #{1} put: aValue. ', String crlf ) translated format: { name } ).
-			type isCollectionType ifTrue: [
-				aClass compile: (('add{1}: aValue' , String crlf, String tab, '^ self {2} add: aValue. ', String crlf ) translated format: { (name capitalized copyFrom:1 to: name size -1 ) . name } ).
-			].
-			init add:( (String tab, ' self {1}: {2}. ', String crlf) translated format: { name . type defaultValueString }).
-		].
-		aClass compile: (init inject:'initialize', String crlf, String tab, 'super initialize.', String crlf into:[ :acc :line | acc, line ]).
 ]
 
 { #category : #serializing }
@@ -248,18 +186,12 @@ PhaROSCompositeType >> newInstance [
 
 { #category : #serializing }
 PhaROSCompositeType >> relatedClass [
-	^ relatedClass ifNil: [
-			relatedClass := self buildRelatedClass.
-	  ]
+	^ relatedClass
 ]
 
 { #category : #serializing }
-PhaROSCompositeType >> relatedClassName [
-
-	 ^ (self typeName copyReplaceAll: '/' with:'' ) capitalized 
-
-
-
+PhaROSCompositeType >> relatedClass: aClass [
+	relatedClass := aClass.
 ]
 
 { #category : #serializing }
@@ -275,17 +207,6 @@ PhaROSCompositeType >> serialize:aValue into: aFLEncoder [
 { #category : #'as yet unclassified' }
 PhaROSCompositeType >> setEncodeDecodeSelectors [ 
 	
-]
-
-{ #category : #deploying }
-PhaROSCompositeType >> stringDefinition [
-	| return |
-	return := String crlf.
-	typeDefinition keysAndValuesDo: [:k :v | 
-		return := return,  v typeName, ' ',  k asString, String crlf.
-	].
-	^ return.
-
 ]
 
 { #category : #serializing }
@@ -305,16 +226,17 @@ PhaROSCompositeType >> typeName: aTypeName [
 
 { #category : #'initialize-release' }
 PhaROSCompositeType >> useConstants: aConstantsArray [ 
-	aConstantsArray do: [ :assoc |
-		self constants at: assoc key put: assoc value.
+	aConstantsArray do: [ : constant |
+		self constants at: constant name put: constant value.
 	]
 	
 ]
 
 { #category : #'initialize-release' }
-PhaROSCompositeType >> useTypeDefinition: anArray [
-	anArray do: [ :assoc |
-		typeDefinition at: assoc key put: assoc value.
+PhaROSCompositeType >> useTypeDefinition: anArrayOfFields [
+	anArrayOfFields do: [ : field |
+		
+		typeDefinition at: field name put: field type.
 	]
 	
 ]

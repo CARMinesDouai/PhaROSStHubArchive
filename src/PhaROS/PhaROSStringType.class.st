@@ -4,6 +4,11 @@ Class {
 	#category : #'PhaROS-Types-Basic'
 }
 
+{ #category : #'pseudo-dsl' }
+PhaROSStringType class >> registerAlterName [
+	" Name collision. DSL constructor name is at String class as extention method "
+]
+
 { #category : #testing }
 PhaROSStringType >> constantValue: aValue [ 
 	| realValue | 

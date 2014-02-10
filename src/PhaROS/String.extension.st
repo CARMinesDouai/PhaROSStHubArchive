@@ -1,9 +1,20 @@
 Extension { #name : #String }
 
 { #category : #'*PhaROS' }
+String class >> constant: aName value: aValue [  
+	
+	^ PhaROSStringType constant: aName value: aValue  
+]
+
+{ #category : #'*PhaROS' }
 String >> evaluateExpression: aByteString [ 
 	self class compile:  'DoIt ^', aByteString.
 	^ self DoIt
+]
+
+{ #category : #'*PhaROS' }
+String class >> forPhaROSTyping [
+		^ PhaROSStringType 
 ]
 
 { #category : #'*PhaROS' }
@@ -35,6 +46,12 @@ String >> format [
 						ifFalse: [result nextPut: currentChar]]].
 
 	^ result contents
+]
+
+{ #category : #'*PhaROS' }
+String class >> named: aName [ 
+	"This extention method is related wih PhaROS-Types-DSL package. Is for type definition from image side "
+	^PhaROSStringType named: aName
 ]
 
 { #category : #'*PhaROS' }

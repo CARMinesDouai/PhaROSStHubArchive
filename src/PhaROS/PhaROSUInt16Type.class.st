@@ -4,6 +4,11 @@ Class {
 	#category : #'PhaROS-Types-Basic'
 }
 
+{ #category : #'pseudo-dsl' }
+PhaROSUInt16Type class >> alterName [
+	^ #UInt16
+]
+
 { #category : #accessing }
 PhaROSUInt16Type class >> dataTypeSize [
 	^ 2

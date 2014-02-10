@@ -8,14 +8,42 @@ Class {
 	#category : #'PhaROS-Types-Basic'
 }
 
-{ #category : #construction }
+{ #category : #'instance creation' }
 PhaROSType class >> composite: anArray named: aByteString withConstants: aConstantsArray [
 	^ PhaROSCompositeType named: aByteString definedBy: anArray withConstants: aConstantsArray.
 ]
 
-{ #category : #construction }
+{ #category : #'pseudo-dsl' }
+PhaROSType class >> constant: aTypeName value: aValue [ 
+	^ PhaROSConstantDefinition named: aTypeName typedAs: self new withValue: aValue.
+]
+
+{ #category : #'instance creation' }
 PhaROSType class >> float32: aByteSymbol [ 
 	^ PhaROSFloat32Type new.
+]
+
+{ #category : #private }
+PhaROSType class >> forPhaROSTyping [
+	^ self
+]
+
+{ #category : #'pseudo-dsl' }
+PhaROSType class >> initialize [ 	
+	super initialize.
+	self = PhaROSType ifFalse: [
+		self registerAlterName.
+	]
+]
+
+{ #category : #'pseudo-dsl' }
+PhaROSType class >> named: aName [ 
+	^ PhaROSFieldDefinition named: aName type: self new .
+]
+
+{ #category : #'pseudo-dsl' }
+PhaROSType class >> registerAlterName [
+	Smalltalk at: self alterName put: self.
 ]
 
 { #category : #accessing }

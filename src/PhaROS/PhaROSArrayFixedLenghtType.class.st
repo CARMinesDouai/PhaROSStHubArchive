@@ -7,6 +7,21 @@ Class {
 	#category : #'PhaROS-Types-Basic'
 }
 
+{ #category : #'pseudo-dsl' }
+PhaROSArrayFixedLenghtType class >> alterName [
+	^ #FixedArray
+]
+
+{ #category : #'pseudo-dsl' }
+PhaROSArrayFixedLenghtType class >> named: aName [
+	self error: 'Fixed array need more than just name. Use #named:sized:ofType: instead'
+]
+
+{ #category : #'pseudo-dsl' }
+PhaROSArrayFixedLenghtType class >> named: aName sized: aSize ofType: aType [
+	^ PhaROSFieldDefinition named: aName type: (self of: aSize ofType: aType forPhaROSTyping new) .
+]
+
 { #category : #'as yet unclassified' }
 PhaROSArrayFixedLenghtType class >> of: aSize of: aClass [
 	^ self new size: aSize; ofClass: aClass; yourself .

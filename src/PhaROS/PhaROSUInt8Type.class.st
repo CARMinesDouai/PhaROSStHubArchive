@@ -4,7 +4,12 @@ Class {
 	#category : #'PhaROS-Types-Basic'
 }
 
-{ #category : #serialize }
+{ #category : #'pseudo-dsl' }
+PhaROSUInt8Type class >> alterName [
+	^ #UInt8
+]
+
+{ #category : #accessing }
 PhaROSUInt8Type class >> dataTypeSize [ 
 	^ 1
 ]

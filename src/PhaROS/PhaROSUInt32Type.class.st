@@ -4,7 +4,12 @@ Class {
 	#category : #'PhaROS-Types-Basic'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'pseudo-dsl' }
+PhaROSUInt32Type class >> alterName [
+	^ #UInt32
+]
+
+{ #category : #accessing }
 PhaROSUInt32Type class >> dataTypeSize [
 	^ 4
 ]

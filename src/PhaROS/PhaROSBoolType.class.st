@@ -4,6 +4,11 @@ Class {
 	#category : #'PhaROS-Types-Basic'
 }
 
+{ #category : #'pseudo-dsl' }
+PhaROSBoolType class >> alterName [
+	^ #Bool
+]
+
 { #category : #serialize }
 PhaROSBoolType class >> dataTypeSize [ 
 	^ 1

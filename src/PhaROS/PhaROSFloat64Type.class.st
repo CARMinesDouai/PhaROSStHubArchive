@@ -4,7 +4,12 @@ Class {
 	#category : #'PhaROS-Types-Basic'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'pseudo-dsl' }
+PhaROSFloat64Type class >> alterName [
+	^ #Float64
+]
+
+{ #category : #accessing }
 PhaROSFloat64Type class >> dataTypeSize [
 	^ 8
 ]

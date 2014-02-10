@@ -13,7 +13,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSServiceExposer class >> new: aServiceName typedAs: aTypeID [
-	^ self new name: aServiceName; type: (PhaROSTypeBrowser instance serviceDefinition: aTypeID); yourself.
+	^ self new name: aServiceName; type: (PhaROSTypeBrowser instance serviceType: aTypeID)  ; yourself.
 ]
 
 { #category : #'as yet unclassified' }

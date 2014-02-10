@@ -277,7 +277,7 @@ PhaROSMaster >> syncParameter: aParameter for: aCallerId [
 
 { #category : #accessing }
 PhaROSMaster >> typeFactory: aTypeId [ 
-	^ PhaROSTypeBrowser instance definition: aTypeId
+	^ PhaROSTypeBrowser instance type: aTypeId
 ]
 
 { #category : #registration }
