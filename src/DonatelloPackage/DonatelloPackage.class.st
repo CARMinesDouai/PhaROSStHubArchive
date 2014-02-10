@@ -10,7 +10,7 @@ DonatelloPackage class >> switchCommandServiceType [
 	ROSType service named: #Switch package: #donatello request:{
 		String constant:#random value: 'random'.
 		String constant:#quiet value: 'quiet'.
-		String named: #command .
+		String named: #command.
 	} response: { 
 	}.
 ]
