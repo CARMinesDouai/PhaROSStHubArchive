@@ -58,7 +58,7 @@ TurtleHandle >> initializeWith: aName and: aSim [
 	name:= aName.
 	sim := aSim.
 	
-	velocityOut := sim rosnode topicPublisher: '/', aName, '/command_velocity' typedAs: 'geometry_msgs/Twist'.
+	velocityOut := sim rosnode topicPublisher: '/', aName, '/command_velocity' typedAs: 'turtlesim/Velocity'.
 	(sim rosnode buildConnectionFor: '/',aName,'/color_sensor') 
 			typedAs: 'turtlesim/Color'; 
 			for: [ : aColor | self currentColor: aColor ];
