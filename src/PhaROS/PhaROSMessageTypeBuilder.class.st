@@ -86,6 +86,11 @@ PhaROSMessageTypeBuilder >> definition: anArrayOfAssociations [
 	definition := anArrayOfAssociations
 ]
 
+{ #category : #dependencies }
+PhaROSMessageTypeBuilder >> dependencies [
+	^ self build dependencies.
+]
+
 { #category : #'related class building' }
 PhaROSMessageTypeBuilder >> installConstantsIn: aClass [
 	
@@ -134,5 +139,5 @@ PhaROSMessageTypeBuilder >> relatedClass [
 
 { #category : #converting }
 PhaROSMessageTypeBuilder >> rosdefinition [
-	^ definition inject: '' into: [ :acc :item | acc, item rosdefinition, String lf  ]
+	^ definition rosdefinition.
 ]

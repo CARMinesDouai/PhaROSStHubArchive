@@ -39,3 +39,8 @@ PhaROSTypeDefinition >> definition: anArrayOfDefinitions [
 PhaROSTypeDefinition >> fields [
 	^ definition select: #isField
 ]
+
+{ #category : #converting }
+PhaROSTypeDefinition >> rosdefinition [
+	definition inject: '' into: [ :acc :item | acc, item rosdefinition, String lf  ]
+]

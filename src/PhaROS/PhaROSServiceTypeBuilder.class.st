@@ -54,6 +54,16 @@ PhaROSServiceTypeBuilder >> build [
 	^ PhaROSServiceType new request: request build ; response: response build; typeName: (package, '/', name); yourself.
 ]
 
+{ #category : #dependencies }
+PhaROSServiceTypeBuilder >> dependencies [
+	^ request dependencies, response dependencies.
+]
+
+{ #category : #testing }
+PhaROSServiceTypeBuilder >> isServiceType [
+	^ true
+]
+
 { #category : #accessing }
 PhaROSServiceTypeBuilder >> name: anObject [
 	name := anObject
@@ -85,4 +95,9 @@ PhaROSServiceTypeBuilder >> rosdefinition [
 	request rosdefinition . 
  	response rosdefinition
 } .
+]
+
+{ #category : #accessing }
+PhaROSServiceTypeBuilder >> shortName [
+	^ name
 ]
