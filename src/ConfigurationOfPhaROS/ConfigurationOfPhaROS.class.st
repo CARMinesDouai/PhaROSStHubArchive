@@ -343,7 +343,7 @@ ConfigurationOfPhaROS >> baseline11: spec [
 			].
 			
 			spec package: 'DonatelloPackage' with: [
-				spec requires:#('PhaROS' 'PhaROSControllers'  )	
+				spec requires:#('PhaROS' 'PhaROSControllers' 'PhaROSNodeletsTF'  )	
 			].
 		
 			"PhaROS Configuration"	
