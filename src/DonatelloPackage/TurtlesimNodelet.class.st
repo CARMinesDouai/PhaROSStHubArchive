@@ -19,6 +19,11 @@ TurtlesimNodelet >> defaultTurtleHandler [
 	^ self turtleHandleFor: 'turtle1'.
 ]
 
+{ #category : #handler }
+TurtlesimNodelet >> existantTurtleHandleFor: aTurtleName [ 
+	^ turtles at: aTurtleName.
+]
+
 { #category : #'initialize-release' }
 TurtlesimNodelet >> initialize [
 
