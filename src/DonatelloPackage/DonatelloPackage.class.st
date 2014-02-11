@@ -76,7 +76,7 @@ DonatelloPackage >> scriptSwitchRequest [
 	
 	self log: 'Please, write the name of one of the following algorithms  '.
 	
-	self log: DonatelloAlgorithms new list.
+	self log: DonatelloAlgorithms new list asString.
 	
 	algorithm := self stdin upTo: Character lf.
 	
