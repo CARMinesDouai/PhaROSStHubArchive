@@ -10,7 +10,7 @@ Class {
 { #category : #algorithms }
 DonatelloAlgorithms >> algorithmFor: aCommand [
 	
-	^ algorithms at: aCommand lowercase ifAbsent: [ 
+	^ algorithms at: aCommand asLowercase  ifAbsent: [ 
 		self idleHandler.	
 	 ]
 	
