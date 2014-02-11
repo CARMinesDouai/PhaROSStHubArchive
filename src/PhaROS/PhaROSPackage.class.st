@@ -18,6 +18,12 @@ PhaROSPackage class >> types [
 	^ {  }
 ]
 
+{ #category : #stdio }
+PhaROSPackage >> askUserFor: aLegend [
+	self log: aLegend.
+	^self stdin upTo: Character lf
+]
+
 { #category : #'helper thread' }
 PhaROSPackage >> clock [
 	^ PhaROSTickingClock new
