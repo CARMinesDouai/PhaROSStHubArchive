@@ -1,3 +1,6 @@
+"
+A PhaROSEncoder is stream encoder. It writes in a given stream. It expose several methods per type. 
+"
 Class {
 	#name : #PhaROSEncoder,
 	#superclass : #Object,

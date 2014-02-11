@@ -122,7 +122,7 @@ PhaROSTransport >> parameter: aName initialized: aValue [
 
 { #category : #publishing }
 PhaROSTransport >> processServiceRequest: aServiceID for: aCallerID with: aSocketStream beingPersistent: isPersistent forProbe: isProbe [
-	| service handshakeMessage request response packetOfBytes |
+	| service handshakeMessage request response  |
 	
 	isPersistent ifTrue: [ 
 		aSocketStream  close. 
@@ -141,7 +141,8 @@ PhaROSTransport >> processServiceRequest: aServiceID for: aCallerID with: aSocke
 		msg responseType: service responseType typeName.
 	].
 
-	packetOfBytes := PhaROSHSMessageEncoder encode:handshakeMessage.
+	aSocketStream nextPutAll: (PhaROSHSMessageEncoder encode:handshakeMessage) ; flush.
+
 
 	isProbe ifFalse: [ 
 		request := service requestType newPacket.
@@ -152,12 +153,11 @@ PhaROSTransport >> processServiceRequest: aServiceID for: aCallerID with: aSocke
 	
 		response :=  service responseType newPacket.
 		service process: request value with: response value.
-		packetOfBytes	:= packetOfBytes,{1}, response dump.
-	 ].
+		
+		[aSocketStream nextPutAll: ({1}, response dump) ; flush ; close. ] shootIt.
+	 ] ifTrue: [ aSocketStream close ] .
 	
-	[aSocketStream nextPutAll: packetOfBytes.
-	aSocketStream flush.
-	aSocketStream close. ] doIt.
+	
 ]
 
 { #category : #publishing }

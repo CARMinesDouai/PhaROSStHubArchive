@@ -45,7 +45,7 @@ PhaROSServiceTypeBuilder class >> named: aTypeName  request: aDefinition respons
 	
 	packageTypeName := '/' split: aTypeName.
 	^ 
-	self new request: aDefinition; response: otherDefinition; name: (packageTypeName at:1); package: (packageTypeName at:2); yourself.
+	self new request: aDefinition; response: otherDefinition; name: (packageTypeName at:2); package: (packageTypeName at:1); yourself.
 
 ]
 

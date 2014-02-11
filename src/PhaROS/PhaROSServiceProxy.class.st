@@ -64,7 +64,7 @@ PhaROSServiceProxy >> call: aBlock [
 		
 		response loadStream: stream.
 		response value.
-	] doIt asResult.
+	] shootIt asResult.
 
 
 ]

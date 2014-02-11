@@ -1,3 +1,6 @@
+"
+A PhaROSDecoder is stream encoder. It reads from a given stream. It expose several methods per type. 
+"
 Class {
 	#name : #PhaROSDecoder,
 	#superclass : #Object,

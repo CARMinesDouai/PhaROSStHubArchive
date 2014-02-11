@@ -26,7 +26,9 @@ PhaROSConstantDefinition class >> parseRosLine: aLine typePool: aTypePool [
 
 { #category : #converting }
 PhaROSConstantDefinition >> classAccessor [
-	^ (('{1}', String crlf, String tab, '^{2}' , String crlf) translated format: { name asLowercase . value })
+	
+
+	^ (('{1}', String crlf, String tab, '^{2}' , String crlf) translated format: { name asLowercase . self valueForGeneration })
 ]
 
 { #category : #testing }
@@ -41,7 +43,7 @@ PhaROSConstantDefinition >> name: aName [
 
 { #category : #converting }
 PhaROSConstantDefinition >> rosdefinition [ 
-	^ ' {1} {2}={3}' format: { type typeName . name . value asString }.
+	^ ' {1} {2}={3}' format: { type typeName . name . self valueForGeneration }.
 ]
 
 { #category : #accessing }
@@ -52,4 +54,9 @@ PhaROSConstantDefinition >> type: aPhaROSType [
 { #category : #accessing }
 PhaROSConstantDefinition >> value: aValue [
 	value:= aValue.
+]
+
+{ #category : #converting }
+PhaROSConstantDefinition >> valueForGeneration [
+	^ (type isKindOf: PhaROSStringType ) ifTrue: [ '''{1}''' format: { value asString } ] ifFalse: [ value asString ].
 ]
