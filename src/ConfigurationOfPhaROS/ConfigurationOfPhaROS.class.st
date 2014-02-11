@@ -341,7 +341,10 @@ ConfigurationOfPhaROS >> baseline11: spec [
 			spec package: 'ChatterPackage' with: [
 				spec requires:#('PhaROS' 'PhaROSControllers'  )	
 			].
-		
+			
+			spec package: 'DonatelloPackage' with: [
+				spec requires:#('PhaROS' 'PhaROSControllers'  )	
+			].
 		
 			"PhaROS Configuration"	
 			
