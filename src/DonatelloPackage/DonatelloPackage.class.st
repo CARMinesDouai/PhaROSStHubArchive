@@ -69,9 +69,14 @@ DonatelloPackage >> nodeletInjectionExample: aController [
 ]
 
 { #category : #scripts }
+DonatelloPackage >> registerDefaultHandler [
+	turtles at: 'turtle1' put: 	self nodelets turtlesim defaultTurtleHandler.
+]
+
+{ #category : #scripts }
 DonatelloPackage >> scriptAlgorithmSwitcher [
 	"In ROS we do have services. A Service is an async computation that has related a request and a response types. In order to make available a service in ROS world you should execute the following code"
-	self nodelets turtlesim defaultTurtleHandler.
+	self registerDefaultHandler.
 	self controller node serve: [ :req :rsp | 
 		"this block will be executed when any one calls for this service" 
 		(self getOrCreateHandleFor: req turtleID)  algorithm: (DonatelloAlgorithms new algorithmFor: req command).		
@@ -85,22 +90,18 @@ DonatelloPackage >> scriptSwitchRequest [
 	| service turtle algorithm  |
 	"In order ask for a service to be executed, you need to ask to the attached node for a service call object. For doing this you should type the following code"
 	
-	self log: 'Please, write the name of turtle you want to switch the algorithm. (The default one is called turtle1) '.
-	turtle := self stdin upTo: Character lf.
-	
-	self log: 'Please, write the name of one of the following algorithms  '.
-	
-	self log: DonatelloAlgorithms new list asString.
-	
-	algorithm := self stdin upTo: Character lf.
-	
+	turtle := self askUserFor:  'Please, write the name of turtle you want to switch the algorithm. (The default one is called turtle1) '.	
+	algorithm := self askUserFor: 'Please, write the name of one of the following algorithms  ',  DonatelloAlgorithms new list asString.
 
 	service := self controller node service: '/donatello/switch'.
-	service call: [: m | 
+	
+	self log: (service call: [: m | 
 		m turtleID: turtle.
 		m command: algorithm.
-	].
+	]) asString.
 	
+	self exit: 0. 
+		
 	"This service call will ask for the loggers"
 
 ]

@@ -19,6 +19,10 @@ TurtleHandle class >> frameParent [
 
 { #category : #control }
 TurtleHandle >> algorithm: aBlock [
+	processHandler ifNotNil:[
+		processHandler finalize.
+	].
+
 	 processHandler := [aBlock cull: self ] shootIt asStickyReference.
 ]
 

@@ -22,7 +22,10 @@ DonatelloAlgorithms >> circularHandler [
 ^ [ : handler |
 		handler forwardAt: 1.0.
 		1 seconds asDelay wait.
-		[  true ] whileTrue: [handler rotate: 1.0. 1 seconds asDelay wait.].
+		[  true ] whileTrue: [
+			handler rotateAt: 1.0. 
+			1 seconds asDelay wait.
+		].
 	].
 ]
 
