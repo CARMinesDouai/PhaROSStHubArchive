@@ -1,6 +1,9 @@
 Class {
 	#name : #DonatelloPackage,
 	#superclass : #PhaROSPackage,
+	#instVars : [
+		'turtles'
+	],
 	#category : #DonatelloPackage
 }
 
@@ -37,6 +40,18 @@ DonatelloPackage >> buildController [
 
 ]
 
+{ #category : #scripts }
+DonatelloPackage >> getOrCreateHandleFor: aTurtleID [
+
+	^ turtles at: aTurtleID ifAbsentPut: [ self nodelets turtlesim spawnTurtle: aTurtleID ].
+]
+
+{ #category : #scripts }
+DonatelloPackage >> initialize [
+	super initialize.
+	turtles := Dictionary new.
+]
+
 { #category : #'private - configuration' }
 DonatelloPackage >> nodeletInjectionExample: aController [
 	"
@@ -59,8 +74,7 @@ DonatelloPackage >> scriptAlgorithmSwitcher [
 	self nodelets turtlesim defaultTurtleHandler.
 	self controller node serve: [ :req :rsp | 
 		"this block will be executed when any one calls for this service" 
-		(self nodelets turtlesim turtleHandleFor: req turtleID) algorithm: (DonatelloAlgorithms new algorithmFor: req command). 
-		
+		(self getOrCreateHandleFor: req turtleID)  algorithm: (DonatelloAlgorithms new algorithmFor: req command).		
 	] at: '/donatello/switch' typedAs:'donatello/Switch'.
 	
 

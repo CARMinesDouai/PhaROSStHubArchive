@@ -1,9 +1,6 @@
 Class {
 	#name : #TurtlesimNodelet,
 	#superclass : #PhaROSStaticNodelet,
-	#instVars : [
-		'turtles'
-	],
 	#category : #'DonatelloPackage-Nodelet'
 }
 
@@ -22,13 +19,6 @@ TurtlesimNodelet >> defaultTurtleHandler [
 { #category : #handler }
 TurtlesimNodelet >> existantTurtleHandleFor: aTurtleName [ 
 	^ turtles at: aTurtleName.
-]
-
-{ #category : #'initialize-release' }
-TurtlesimNodelet >> initialize [
-
-	super initialize.
-	turtles := Dictionary new.
 ]
 
 { #category : #spawner }
@@ -51,7 +41,5 @@ TurtlesimNodelet >> spawnTurtle: aName at: aPoint [
 
 { #category : #handler }
 TurtlesimNodelet >> turtleHandleFor: aTurtleName [
-	^ turtles at: aTurtleName ifAbsent:[
-		 TurtleHandle new initializeWith: aTurtleName and: self; yourself.
-	]
+	^ TurtleHandle new initializeWith: aTurtleName and: self; yourself.
 ]
