@@ -42,5 +42,5 @@ PhaROSTypeDefinition >> fields [
 
 { #category : #converting }
 PhaROSTypeDefinition >> rosdefinition [
-	definition inject: '' into: [ :acc :item | acc, item rosdefinition, String lf  ]
+	^ definition inject: '' into: [ :acc :item | acc, item rosdefinition, String lf  ]
 ]
