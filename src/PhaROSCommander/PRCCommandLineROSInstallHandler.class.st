@@ -30,7 +30,7 @@ PRCCommandLineROSInstallHandler class >> commandName [
 
 { #category : #'as yet unclassified' }
 PRCCommandLineROSInstallHandler >> execute: aCommand [
-	self stdout nextPutAll: aCommand, String lf.
+	OSProcess command: aCommand.
 ]
 
 { #category : #'as yet unclassified' }
