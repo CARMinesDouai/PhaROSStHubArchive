@@ -25,6 +25,59 @@ ConfigurationOfTaskIT class >> bootstrapPackage: aString from: aPath [
 			version workingCopy repositoryGroup addRepository: repository]
 ]
 
+{ #category : #catalog }
+ConfigurationOfTaskIT class >> catalogChangeLog [
+	"Returns a paragraph describing the most important changes in the configuration class."
+	^ '- 1.0 - 10/01/2014 - First stable version
+[[[
+	ConfigurationOfTaskIT project version: ''1.0'' ) load					
+]]]
+'
+]
+
+{ #category : #catalog }
+ConfigurationOfTaskIT class >> catalogContactInfo [
+	"Returns a paragraph describing contact information such as email, mailing lists and website."
+	^ '
+		You can find a chapter of TaskIT at https://ci.inria.fr/pharo-contribution/job/PharoForTheEnterprise/lastSuccessfulBuild/artifact/TaskIT/TaskIT.pier.html
+		You can get in contact with the programmers at santiagobragagnolo@gmail.com and guillermopolito@gmail.com'
+]
+
+{ #category : #catalog }
+ConfigurationOfTaskIT class >> catalogDescription [
+	"Returns a paragraph describing the project"
+	^ 'Expressing and managing concurrent computations is indeed a concern of importance to develop applications that scale. A web application may want to use different processes for each of its incoming requests. Or maybe it wants to use a "thread pool" in some cases. In other case, our desktop application may want to send computations to a worker to not block the UI thread.
+TaskIT is a library that eases the usage of processes in Pharo. It provides abstractions to schedule and/or parallelize of the execution of pieces of code.'
+]
+
+{ #category : #catalog }
+ConfigurationOfTaskIT class >> catalogKeyClassesAndExample [
+	"Returns a paragraph or more describing the key classes of your project. You can use Pillar/Pier syntax to layout out the text i.e., ==Code== and - for bullet."
+	^ 'A task is a first class representation of a piece of code to be executed, the main abstraction inside TaskIT. By reifying a task, TaskIT can paralellize it, start it and/or stop it whenever we want. A task, instance of TKTTask, is created in the following way:
+
+TKTTask for: [ someObject someMessage ].
+TKTTask for: [ someObject someMessage ] at: aPriority.
+A normal task contains a block with a piece of code to be run. The result of the task''s execution will be the result of its block.
+
+Additionally, a task contains a priority that will be used to decide the order of execution between other tasks. If we do not specify a priority explicitly, the default userBackgroundPriority defined in Pharo''s ProcessorScheduler is used. We will discuss about the importance of a task''s priority in the task runners'' section.
+
+Alternatively, blocks are extended to provided a nice syntax sugar to create tasks:
+
+[ someObject someMessage ] asTask.
+[ someObject someMessage ] asTaskAt: aPriority.
+
+For an extensive explanation, please address the related chapter of the book Pharo for the enterprise. 
+'
+
+
+]
+
+{ #category : #catalog }
+ConfigurationOfTaskIT class >> catalogKeywords [
+	"Returns an array of symbols"
+	^ #(processing process threading tasks pharo threadpool) 
+]
+
 { #category : #private }
 ConfigurationOfTaskIT class >> ensureMetacello [
 	"Bootstrap Gofer (if necessary), load latest mcz file for ConfigurationOfMetacello (using old 
@@ -170,7 +223,7 @@ ConfigurationOfTaskIT >> version10: spec [
 	spec for: #common do: [
 		spec blessing: #stable.
 		spec author: 'SantiagoBragagnolo'.
-		spec timestamp: '15/11/2013 12:00'.
+		spec timestamp: '10/01/2014 12:00'.
 		spec package:'TaskIT' with: 'TaskIT-SantiagoBragagnolo.30'.
 	].
 
