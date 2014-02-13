@@ -98,6 +98,11 @@ TKTWorker >> nextTask [
 	^ self next value
 ]
 
+{ #category : #scheduling }
+TKTWorker >> noteFutureHasFinished: aFuture [
+	
+]
+
 { #category : #accessing }
 TKTWorker >> onIdleTime: aBlockOrWork [
 

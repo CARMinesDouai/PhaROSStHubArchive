@@ -68,6 +68,10 @@ TKTPersistentRunner >> nextTask [
 	self subclassResponsibility
 ]
 
+{ #category : #running }
+TKTPersistentRunner >> noteFutureHasFinished: aFuture [
+]
+
 { #category : #accessing }
 TKTPersistentRunner >> priority [
 	^ priority

@@ -14,8 +14,8 @@ TKTTaskOneShotRunnerCancelledComputationTests >> setUp [
 
 	super setUp.
 	runner := TKTOneShotRunner new.
-	future := runner run: [ (Delay forMilliseconds: 100000) wait ] asTask.
-	runner cancel.
+	future := runner run: [ (Delay forMilliseconds: 10000) wait ] asTask.
+	runner cancelFutures.
 	result := future value.
 ]
 

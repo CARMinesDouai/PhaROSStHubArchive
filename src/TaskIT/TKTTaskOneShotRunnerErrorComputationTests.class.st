@@ -14,7 +14,6 @@ TKTTaskOneShotRunnerErrorComputationTests >> setUp [
 	super setUp.
 	runner := TKTOneShotRunner new.
 	future := runner run: [ self error. ] asTask.
-	self halt.
 	future wait.
 ]
 

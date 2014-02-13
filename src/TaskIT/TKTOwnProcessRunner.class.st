@@ -48,10 +48,9 @@ TKTOwnProcessRunner >> clearProcess [
 	"We remove the reference to the process to allow it to be garbage collected. Don't know if this is proper expected behavior, but it works."
 	
 	process ifNotNil: [
-		process terminate.
 		process := nil.
 	] ifNil: [ 
-		self error: 'The runner is not running'.
+		FileStream stdout nextPutAll: 'The runner is not running', String lf.
 	 ]
 ]
 
