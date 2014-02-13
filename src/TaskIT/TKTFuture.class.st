@@ -118,7 +118,7 @@ TKTFuture >> deployValue: aValue [
 	isDeployed := true.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #finalization }
 TKTFuture >> finalize [
 	self cancel
 ]

@@ -11,7 +11,7 @@ Class {
 	#category : #'TaskIT-Kernel-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 TKTWorkerTests >> setUp [
 	super setUp.
 		
@@ -30,7 +30,7 @@ TKTWorkerTests >> setUp [
 	deadEventKindWorker  := TKTWorker new priority: Processor systemBackgroundPriority; timeout: 300; yourself.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 TKTWorkerTests >> tearDown [ 
 	super tearDown.
 		
@@ -38,7 +38,7 @@ TKTWorkerTests >> tearDown [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTWorkerTests >> testMatchingIndexChangeWhenThereIsWork [
 	
 	self assert: commonTask class =TKTTask.
@@ -70,7 +70,7 @@ TKTWorkerTests >> testMatchingIndexChangeWhenThereIsWork [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTWorkerTests >> testMatchingIndexIsAlwaysTheSame [
 	
 	
@@ -94,7 +94,7 @@ TKTWorkerTests >> testMatchingIndexIsAlwaysTheSame [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTWorkerTests >> testMatchingIndexShouldAssignWell [
 
 	self assert: (deadWorker matching: commonTask) < (deadWorker matching: eventualTask).

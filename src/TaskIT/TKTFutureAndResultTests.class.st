@@ -4,7 +4,7 @@ Class {
 	#category : #'TaskIT-Kernel-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTFutureAndResultTests >> testCallbackInAnAlreadyDeployedFuture [
 	
 	| future value shouldBeValue |
@@ -22,7 +22,7 @@ TKTFutureAndResultTests >> testCallbackInAnAlreadyDeployedFuture [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTFutureAndResultTests >> testDeployResult [
 	| result value |
 	result := TKTLazyResult new.
@@ -34,7 +34,7 @@ TKTFutureAndResultTests >> testDeployResult [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTFutureAndResultTests >> testDeployValueIntoFuture [
 	| future value |
 	future := TKTFuture new.
@@ -47,7 +47,7 @@ TKTFutureAndResultTests >> testDeployValueIntoFuture [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTFutureAndResultTests >> testDeployValueIntoFutureWithCallback [
 	| future value shouldBeValue |
 	shouldBeValue := false.
@@ -62,7 +62,7 @@ TKTFutureAndResultTests >> testDeployValueIntoFutureWithCallback [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTFutureAndResultTests >> testDeployValueIntoStickyFutureWithCallback [
 	| future value shouldBeValue |
 	shouldBeValue := false.
@@ -77,7 +77,7 @@ TKTFutureAndResultTests >> testDeployValueIntoStickyFutureWithCallback [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTFutureAndResultTests >> testErrorCallbackWhenAlreadyFinished [
 	| future error theError |
 	error := Error new.
@@ -90,7 +90,7 @@ TKTFutureAndResultTests >> testErrorCallbackWhenAlreadyFinished [
 	self assert: theError equals: error.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTFutureAndResultTests >> testErrorCallbackWhenFinished [
 	| future semaphore error theError |
 	semaphore := Semaphore new.
@@ -102,7 +102,7 @@ TKTFutureAndResultTests >> testErrorCallbackWhenFinished [
 	self assert: theError equals: error
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTFutureAndResultTests >> testFutureResultLazyInstantiation [
 	
 	| future |
@@ -112,21 +112,21 @@ TKTFutureAndResultTests >> testFutureResultLazyInstantiation [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTFutureAndResultTests >> testFutureValueTimeouts [
 	| future |
 	future := [ (Delay forMilliseconds: 100) wait ] shootIt.
 	self assert: (future valueTimeoutMilliseconds: 20 ifTimeout: [ 2]) equals: 2.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTFutureAndResultTests >> testFutureValueTimeoutsError [
 	| future |
 	future := [ (Delay forMilliseconds: 100) wait ] shootIt.
 	self should: [future valueTimeoutMilliseconds: 20 ] raise: TKTTimeoutError.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTFutureAndResultTests >> testNewFuture [
 	| future |
 	future := TKTFuture new.
@@ -135,7 +135,7 @@ TKTFutureAndResultTests >> testNewFuture [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTFutureAndResultTests >> testNewStickyFuture [
 	| future |
 	future := TKTFuture new.
@@ -144,7 +144,7 @@ TKTFutureAndResultTests >> testNewStickyFuture [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTFutureAndResultTests >> testResultBecomes [
 	
 	| future result |
@@ -156,7 +156,7 @@ TKTFutureAndResultTests >> testResultBecomes [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTFutureAndResultTests >> testStickyFutureResultLazyInstantiation [
 	
 	| future |
@@ -166,7 +166,7 @@ TKTFutureAndResultTests >> testStickyFutureResultLazyInstantiation [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTFutureAndResultTests >> testValueCallbackWhenAlreadyFinished [
 	| future shouldBeValue |
 	future := [ 2+2 ] shootIt.
@@ -178,7 +178,7 @@ TKTFutureAndResultTests >> testValueCallbackWhenAlreadyFinished [
 	self assert: shouldBeValue equals: 4.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTFutureAndResultTests >> testValueCallbackWhenFinished [
 	| future shouldBeValue semaphore |
 	semaphore := Semaphore new.

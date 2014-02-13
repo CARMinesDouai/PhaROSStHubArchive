@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'value',
-		'mutex'
+		'mutex',
+		'aquiredBy'
 	],
 	#category : #'TaskIT-Util'
 }
@@ -13,60 +14,60 @@ TKTExclusiveAccessVariable class >> initialValue: aValue [
 	^ self new set: aValue; yourself.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'mutual exclusion - explicit' }
 TKTExclusiveAccessVariable >> apply: aBlock [
 
-	^ mutex critical: [ aBlock value: value ].
+	^ self do: aBlock.
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'mutual exclusion - proxy' }
 TKTExclusiveAccessVariable >> at: anObject [
 	^ self get at: anObject .
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'mutual exclusion - proxy' }
 TKTExclusiveAccessVariable >> at: anObject put: anOtherObject [
 	^ self get at: anObject put: anOtherObject.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'mutual exclusion - explicit' }
 TKTExclusiveAccessVariable >> do: aBlock [
 
 	^ mutex critical: [ aBlock value: value ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'mutual exclusion - proxy' }
 TKTExclusiveAccessVariable >> doesNotUnderstand: aMessage [ 
 
 	^ mutex critical: [ value perform: aMessage selector withArguments: aMessage arguments ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #finalization }
 TKTExclusiveAccessVariable >> finalize [ 
 	value finalize.
 	super finalize.
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'mutual exclusion - explicit' }
 TKTExclusiveAccessVariable >> get [
 	mutex critical: [ ^ value ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'initialize-release' }
 TKTExclusiveAccessVariable >> initialize [ 
 	mutex := Mutex new.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'mutual exclusion - explicit' }
 TKTExclusiveAccessVariable >> set: aValue [
 	mutex critical: [
 		value := aValue.	
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'mutual exclusion - proxy' }
 TKTExclusiveAccessVariable >> value [
 	^ self get value.
 ]

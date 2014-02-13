@@ -45,13 +45,13 @@ TKTTaskDispatcher class >> reset [
 	TaskInstance := nil.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialize }
 TKTTaskDispatcher >> destroy [
 	workers do: #stop.
 	workers removeAll.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTTaskDispatcher >> dispatch: aTaskOrBlock [
 	| task |
 	
@@ -59,7 +59,7 @@ TKTTaskDispatcher >> dispatch: aTaskOrBlock [
 	^ (self selectWorkerFor: task) scheduleTask: task.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'initialize-release' }
 TKTTaskDispatcher >> initialize [ 
 	super initialize.
 	workers := Set new.
@@ -68,7 +68,7 @@ TKTTaskDispatcher >> initialize [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTTaskDispatcher >> selectWorkerFor: aTask [
 	
 	^ (workers asSortedCollection: [:w1 :w2 | (w1 matching: aTask ) > (w2 matching: aTask )]) first.

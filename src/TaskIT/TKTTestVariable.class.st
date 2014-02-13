@@ -4,7 +4,7 @@ Class {
 	#category : #'TaskIT-Kernel-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTestVariable >> testApply [
 	| variable |
 	
@@ -13,7 +13,7 @@ TKTTestVariable >> testApply [
 	self assert: (variable apply: [ : val | val + 2 ]) = 3
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTestVariable >> testDoesnotUnderstandForwarding [
 	| variable |
 	
@@ -23,7 +23,7 @@ TKTTestVariable >> testDoesnotUnderstandForwarding [
 	 self assert: (variable < 2 ) .
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTestVariable >> testGetSet [
 	| variable |
 	
@@ -37,7 +37,7 @@ TKTTestVariable >> testGetSet [
 	self assert: variable value = 5. 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTestVariable >> testValue [
 	| variable |
 	

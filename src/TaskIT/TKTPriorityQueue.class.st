@@ -4,7 +4,7 @@ Class {
 	#category : #'TaskIT-Channel'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'initialize-release' }
 TKTPriorityQueue >> initialize [ 
 	super initialize.
 	queue := TKTExclusiveAccessVariable initialValue: (SortedCollection sortBlock: [ :w1 :w2 | w1 > w2 ]).

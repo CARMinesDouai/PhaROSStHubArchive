@@ -7,30 +7,30 @@ Class {
 	#category : #'TaskIT-Channel'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTChannel >> broadcast: anObject [
 	"put an object that all the consumers will receive".
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'initialize-release' }
 TKTChannel >> initialize [ 
 	queue := TKTQueue new.
 	queue timeout: 60 * 1000.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTChannel >> peek [
 	"look for an object, if is nothing, returns nil"
 	^ queue peek.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTChannel >> pick [
 	"wait for an object"
 	^ queue next.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 TKTChannel >> put: anObject [
 	"add a consumable object into the channel. The first process that take it is the new owner"
 	^ queue add: anObject.

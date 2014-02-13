@@ -4,13 +4,13 @@ Class {
 	#category : #'TaskIT-Util'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #configuration }
 TKTParalellizer >> looping [
 	handler looping.
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #converting }
 TKTParalellizer >> paralellize [
 	 ^ self.
 ]

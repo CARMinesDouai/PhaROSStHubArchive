@@ -18,7 +18,7 @@ TKTWitness class >> for: aTarget [
 	^ self new target: aTarget; yourself.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTWitness >> target: aTarget [
 	self toFinalizeSend: #cleanup: to: TKTWitness with: aTarget .
 	

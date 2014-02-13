@@ -9,7 +9,7 @@ Class {
 	#category : #'TaskIT-Kernel-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 TKTTaskOneShotRunnerCancelledFutureTests >> setUp [
 
 	super setUp.
@@ -19,19 +19,19 @@ TKTTaskOneShotRunnerCancelledFutureTests >> setUp [
 	result := future value.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskOneShotRunnerCancelledFutureTests >> testIsNotError [
 
 	self deny: future isError.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskOneShotRunnerCancelledFutureTests >> testResultWasCancelled [
 
 	self assert: (result isKindOf: TKTCancelledFutureValue).
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskOneShotRunnerCancelledFutureTests >> testTerminatesTheProcess [
 
 	self assert: runner isTerminated.

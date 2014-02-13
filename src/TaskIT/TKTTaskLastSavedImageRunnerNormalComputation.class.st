@@ -9,7 +9,7 @@ Class {
 	#category : #'TaskIT-Kernel-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 TKTTaskLastSavedImageRunnerNormalComputation >> setUp [
 
 	super setUp.
@@ -18,13 +18,13 @@ TKTTaskLastSavedImageRunnerNormalComputation >> setUp [
 	result := future value.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskLastSavedImageRunnerNormalComputation >> testRunsTheTask [
 
 	self assert: result equals: 3
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskLastSavedImageRunnerNormalComputation >> testTerminatesTheProcess [
 
 	self assert: runner isTerminated.

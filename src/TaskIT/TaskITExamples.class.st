@@ -15,7 +15,7 @@ TaskITExamples class >> bla: anObject [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
 TaskITExamples >> commonSchedduledTask [
 	"
 	self new commonSchedduledTask
@@ -24,7 +24,7 @@ TaskITExamples >> commonSchedduledTask [
 	^ [ 2 + 2 ] scheduleIt value = 4 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
 TaskITExamples >> commonTask [ 
 	"
 	self new commonTask
@@ -36,7 +36,7 @@ TaskITExamples >> commonTask [
 	^ [ 2 + 2 ] shootIt value = 4 .
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
 TaskITExamples >> commonTaskResult [
 	"
 	self new commonTaskResult
@@ -50,17 +50,17 @@ TaskITExamples >> commonTaskResult [
 	self assert: result = 4.0. 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
 TaskITExamples >> referencedProcess [
 	^ [1 to: 23330 do: [ :i |Transcript show: 'running'; cr. (Delay forMilliseconds: 500) wait] ] shootIt asStickyReference.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
 TaskITExamples >> referencedTask [
 	^ [[ true ] whileTrue: [ Transcript show: 'running in a task'; cr. (Delay forMilliseconds: 500) wait] ] scheduleIt asStickyReference.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
 TaskITExamples >> wrappingCalls [
 	"
 	self new wrappingCalls. 

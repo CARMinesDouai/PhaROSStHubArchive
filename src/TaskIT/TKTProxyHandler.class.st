@@ -12,24 +12,24 @@ TKTProxyHandler class >> for: anObject [
 	^ self new wrapp: anObject ; yourself.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'handle - class proxy' }
 TKTProxyHandler >> handleInterceptionToInstance: anInterception [
 	^ (self spawn: ([  super handleInterceptionToInstance: anInterception  ] )) asResult.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'handle - methods' }
 TKTProxyHandler >> handleMethodExecution: anInterception [
 	^ (self spawn: ([  super handleMethodExecution: anInterception  ] )) asResult.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'handle - debugging' }
 TKTProxyHandler >> handlePrintStringLimitedTo: anInterception [
 	| proxy |
 	proxy := anInterception proxy. 
 	^ 'This is the print of a proxy of class: ',  proxy tktClass name asString.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #handle }
 TKTProxyHandler >> manageMessage: anInterception [
 	(self shouldFork: anInterception ) ifTrue: [ 
 		^ (self spawn: [ super manageMessage: anInterception ]) asResult.	
@@ -37,12 +37,12 @@ TKTProxyHandler >> manageMessage: anInterception [
 	^super manageMessage: anInterception
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 TKTProxyHandler >> shouldFork: anInterception [
 	^ ((Object includesSelector: anInterception message selector ) or:[ (Class includesSelector: anInterception message selector )or:[ ClassDescription includesSelector: anInterception message selector ]]) not.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 TKTProxyHandler >> spawn: aBlock [
 	self subclassResponsibility.
 ]

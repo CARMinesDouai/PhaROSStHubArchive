@@ -9,7 +9,7 @@ Class {
 	#category : #'TaskIT-Channel'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #adding }
 TKTQueue >> add: anObject [
 	
 	queue add: anObject.	
@@ -18,31 +18,31 @@ TKTQueue >> add: anObject [
 	^ anObject.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'initialize-release' }
 TKTQueue >> initialize [ 
 	queue := TKTExclusiveAccessVariable initialValue: (OrderedCollection new).
 	workAvailability := Semaphore new.
 	timeout := 5000.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTQueue >> next [
 	^ self nextIfTimeOut: [ self next ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTQueue >> nextIfTimeOut: aBlock [
 	^ (workAvailability waitTimeoutMSecs: timeout ) ifTrue: aBlock ifFalse: [ self peek  ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTQueue >> peek [
 	^ self peekIfNothing: [
 		^ nil.
 	 ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTQueue >> peekAll [
 	| ord current |
 	
@@ -53,7 +53,7 @@ TKTQueue >> peekAll [
 	^ ord.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTQueue >> peekIfNothing: aBlock [
 	| work theresWork |
 	
@@ -67,7 +67,7 @@ TKTQueue >> peekIfNothing: aBlock [
 	^ theresWork ifFalse: aBlock ifTrue: [ work ]. 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTQueue >> size [
 	^ queue get size.
 ]
@@ -77,7 +77,7 @@ TKTQueue >> timeout [
 	^ timeout
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TKTQueue >> timeout: aTimeout [
 	"Millseconds"
 	timeout := aTimeout.

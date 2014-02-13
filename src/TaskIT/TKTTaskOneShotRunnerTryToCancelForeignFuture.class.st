@@ -9,7 +9,7 @@ Class {
 	#category : #'TaskIT-Kernel-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 TKTTaskOneShotRunnerTryToCancelForeignFuture >> setUp [
 
 	super setUp.
@@ -18,7 +18,7 @@ TKTTaskOneShotRunnerTryToCancelForeignFuture >> setUp [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskOneShotRunnerTryToCancelForeignFuture >> testCancelForeignFutureShouldFail [
 
 	self should: [ 

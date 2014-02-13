@@ -10,7 +10,7 @@ Class {
 { #category : #'as yet unclassified' }
 TKTStickyReference class >> for: anObject [
 	| handler |
-	handler := GHSimpleForwarderProxyHandler new.
+	handler := TKTProxyHandler new.
 "	handler methodsNotToIntercept at: #printStringLimitedTo: put:#handlePrintStringLimitedTo:."
 	
 	^ self createProxyFor:anObject handler: handler.
@@ -58,7 +58,7 @@ TKTStickyReference >> identityHash [
 	^ self basicIdentityHash bitShift: 18
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 TKTStickyReference >> initializeWith: aTarget handler: aHandler [
 	super initializeWith: aTarget handler: aHandler.
 	witness := TKTWitness for: aTarget.

@@ -13,7 +13,7 @@ TKTOwnProcessRunner class >> isAbstract [
 	^ self = TKTOwnProcessRunner
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #hooks }
 TKTOwnProcessRunner >> afterDeployError: anError intoFuture: aFuture [
 	
 	super afterDeployError: anError intoFuture: aFuture.
@@ -21,7 +21,7 @@ TKTOwnProcessRunner >> afterDeployError: anError intoFuture: aFuture [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #hooks }
 TKTOwnProcessRunner >> afterDeployValue: aValue intoFuture: aFuture [
 	
 	super afterDeployValue: aValue intoFuture: aFuture.

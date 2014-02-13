@@ -4,7 +4,7 @@ Class {
 	#category : #'TaskIT-Kernel-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskTests >> testConsumableEventualTaskCountJustWhenConditionalApply [
 	| task booleanExpression flag |
 	
@@ -44,7 +44,7 @@ TKTTaskTests >> testConsumableEventualTaskCountJustWhenConditionalApply [
 	self deny: flag.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskTests >> testExecuteTask [
 	| task shouldBeTrue |
 	
@@ -60,7 +60,7 @@ TKTTaskTests >> testExecuteTask [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskTests >> testNewConsumableEventualTask [
 	| task booleanExpression flag |
 	
@@ -87,7 +87,7 @@ TKTTaskTests >> testNewConsumableEventualTask [
 	self deny: flag.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskTests >> testNewEventualTask [
 	| task booleanExpression flag |
 	
@@ -107,7 +107,7 @@ TKTTaskTests >> testNewEventualTask [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskTests >> testNewEventualTaskRequeueITSelfAtCleanup [
 	| task booleanExpression flag |
 	
@@ -134,7 +134,7 @@ TKTTaskTests >> testNewEventualTaskRequeueITSelfAtCleanup [
 	TKTTaskDispatcher reset.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskTests >> testNewTask [
 	| task |
 	
@@ -147,7 +147,7 @@ TKTTaskTests >> testNewTask [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskTests >> testNewTaskDispatcherDestroyWorkers [
 
 		
@@ -167,7 +167,7 @@ TKTTaskTests >> testNewTaskDispatcherDestroyWorkers [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskTests >> testNewTaskDispatcherResetDestroyInstance [
 
 	| instance |
@@ -181,7 +181,7 @@ TKTTaskTests >> testNewTaskDispatcherResetDestroyInstance [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskTests >> testNewTaskWithAsTask [
 	| task |
 	
@@ -190,7 +190,7 @@ TKTTaskTests >> testNewTaskWithAsTask [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskTests >> testNewTaskWithAsTaskAndPriority [
 	| task |
 	
@@ -203,7 +203,7 @@ TKTTaskTests >> testNewTaskWithAsTaskAndPriority [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskTests >> testNewTaskWithPriority [
 	| task |
 	
@@ -217,7 +217,7 @@ TKTTaskTests >> testNewTaskWithPriority [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskTests >> testTaskAssertOrderedByPriority [
 	| taskHighPriority taskLowPriority |
 	
@@ -233,7 +233,7 @@ TKTTaskTests >> testTaskAssertOrderedByPriority [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskTests >> testTaskDenialOrderedByPriority [
 	| taskHighPriority taskLowPriority |
 	
@@ -249,7 +249,7 @@ TKTTaskTests >> testTaskDenialOrderedByPriority [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TKTTaskTests >> testTaskOrderInASortedCollection [
 	| taskHighPriority taskLowPriority taskMiddlePriority collection |
 	

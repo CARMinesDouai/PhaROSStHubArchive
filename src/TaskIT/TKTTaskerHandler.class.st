@@ -4,7 +4,7 @@ Class {
 	#category : #'TaskIT-Util'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 TKTTaskerHandler >> spawn: aBlock [	
 	^ aBlock scheduleIt.
 ]
