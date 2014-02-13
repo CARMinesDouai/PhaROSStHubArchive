@@ -1,11 +1,6 @@
 Class {
 	#name : #TKTTaskOneShotRunnerCancelledComputationTests,
-	#superclass : #TestCase,
-	#instVars : [
-		'runner',
-		'result',
-		'future'
-	],
+	#superclass : #TKTTaskAbstractOneShotRunner,
 	#category : #'TaskIT-Kernel-Tests'
 }
 
@@ -13,8 +8,7 @@ Class {
 TKTTaskOneShotRunnerCancelledComputationTests >> setUp [
 
 	super setUp.
-	runner := TKTOneShotRunner new.
-	future := runner run: [ (Delay forMilliseconds: 10000) wait ] asTask.
+	future := runner run: [ (Delay forMilliseconds: 1000) wait ] asTask.
 	runner cancelFutures.
 	result := future value.
 ]

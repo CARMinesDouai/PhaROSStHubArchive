@@ -2,12 +2,16 @@ Class {
 	#name : #TKTProcess,
 	#superclass : #Object,
 	#instVars : [
-		'process',
 		'executable',
 		'processName'
 	],
 	#category : #'TaskIT-Kernel'
 }
+
+{ #category : #controlling }
+TKTProcess >> executable: aBlock [
+	executable := aBlock.
+]
 
 { #category : #controlling }
 TKTProcess >> isTerminated [

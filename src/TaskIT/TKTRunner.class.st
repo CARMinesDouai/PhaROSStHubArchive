@@ -16,13 +16,11 @@ Class {
 
 { #category : #running }
 TKTRunner >> afterDeployError: anError intoFuture: aFuture [
-
 	aFuture signal.
 ]
 
 { #category : #running }
 TKTRunner >> afterDeployValue: aValue intoFuture: aFuture [
-
 	aFuture signal.
 ]
 

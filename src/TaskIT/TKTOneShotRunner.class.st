@@ -63,3 +63,8 @@ TKTOneShotRunner >> run: aTKTTask [
 	
 	^ future.
 ]
+
+{ #category : #'as yet unclassified' }
+TKTOneShotRunner >> workingFuture [
+	^ future.
+]

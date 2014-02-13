@@ -1,6 +1,6 @@
 Class {
 	#name : #TKTTaskerHandler,
-	#superclass : #TKTProxyHandler,
+	#superclass : #TKTSpawnerProxyHandler,
 	#category : #'TaskIT-Util'
 }
 

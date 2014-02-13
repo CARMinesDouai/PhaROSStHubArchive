@@ -13,22 +13,6 @@ TKTOwnProcessRunner class >> isAbstract [
 	^ self = TKTOwnProcessRunner
 ]
 
-{ #category : #hooks }
-TKTOwnProcessRunner >> afterDeployError: anError intoFuture: aFuture [
-	
-	super afterDeployError: anError intoFuture: aFuture.
-	self clearProcess.
-	
-]
-
-{ #category : #hooks }
-TKTOwnProcessRunner >> afterDeployValue: aValue intoFuture: aFuture [
-	
-	super afterDeployValue: aValue intoFuture: aFuture.
-	self clearProcess.
-	
-]
-
 { #category : #running }
 TKTOwnProcessRunner >> cancel [
 
@@ -48,6 +32,7 @@ TKTOwnProcessRunner >> clearProcess [
 	"We remove the reference to the process to allow it to be garbage collected. Don't know if this is proper expected behavior, but it works."
 	
 	process ifNotNil: [
+		process terminate.
 		process := nil.
 	] ifNil: [ 
 		FileStream stdout nextPutAll: 'The runner is not running', String lf.

@@ -1,10 +1,6 @@
 Class {
 	#name : #TKTTaskOneShotRunnerErrorComputationTests,
-	#superclass : #TestCase,
-	#instVars : [
-		'runner',
-		'future'
-	],
+	#superclass : #TKTTaskAbstractOneShotRunner,
 	#category : #'TaskIT-Kernel-Tests'
 }
 
@@ -12,7 +8,6 @@ Class {
 TKTTaskOneShotRunnerErrorComputationTests >> setUp [
 
 	super setUp.
-	runner := TKTOneShotRunner new.
 	future := runner run: [ self error. ] asTask.
 	future wait.
 ]

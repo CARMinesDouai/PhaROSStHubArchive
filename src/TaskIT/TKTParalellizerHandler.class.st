@@ -1,6 +1,6 @@
 Class {
 	#name : #TKTParalellizerHandler,
-	#superclass : #TKTProxyHandler,
+	#superclass : #TKTSpawnerProxyHandler,
 	#instVars : [
 		'looping'
 	],

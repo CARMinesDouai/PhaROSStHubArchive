@@ -9,7 +9,6 @@ Class {
 
 { #category : #'as yet unclassified' }
 TKTWitness class >> cleanup: aTarget [
-self halt.
 	aTarget finalize.
 ]
 

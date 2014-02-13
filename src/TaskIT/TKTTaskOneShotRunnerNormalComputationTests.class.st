@@ -1,10 +1,6 @@
 Class {
 	#name : #TKTTaskOneShotRunnerNormalComputationTests,
-	#superclass : #TestCase,
-	#instVars : [
-		'runner',
-		'result'
-	],
+	#superclass : #TKTTaskAbstractOneShotRunner,
 	#category : #'TaskIT-Kernel-Tests'
 }
 
@@ -12,7 +8,6 @@ Class {
 TKTTaskOneShotRunnerNormalComputationTests >> setUp [
 	
 	super setUp.
-	runner := TKTOneShotRunner new.
 	result := (runner run: ([  1+2 ] asTask)) value.
 ]
 
