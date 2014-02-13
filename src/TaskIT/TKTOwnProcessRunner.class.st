@@ -16,22 +16,24 @@ TKTOwnProcessRunner class >> isAbstract [
 { #category : #'as yet unclassified' }
 TKTOwnProcessRunner >> afterDeployError: anError intoFuture: aFuture [
 	
-	self clearProcess.
 	super afterDeployError: anError intoFuture: aFuture.
+	self clearProcess.
+	
 ]
 
 { #category : #'as yet unclassified' }
 TKTOwnProcessRunner >> afterDeployValue: aValue intoFuture: aFuture [
 	
-	self clearProcess.
 	super afterDeployValue: aValue intoFuture: aFuture.
+	self clearProcess.
+	
 ]
 
 { #category : #running }
 TKTOwnProcessRunner >> cancel [
 
 	self clearProcess.
-	self cancelFutures.
+
 ]
 
 { #category : #cancelling }
@@ -44,7 +46,13 @@ TKTOwnProcessRunner >> cancelFutures [
 TKTOwnProcessRunner >> clearProcess [
 
 	"We remove the reference to the process to allow it to be garbage collected. Don't know if this is proper expected behavior, but it works."
-	process := nil.
+	
+	process ifNotNil: [
+		process terminate.
+		process := nil.
+	] ifNil: [ 
+		self error: 'The runner is not running'.
+	 ]
 ]
 
 { #category : #accessing }

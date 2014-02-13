@@ -20,6 +20,16 @@ Class {
 }
 
 { #category : #running }
+TKTOneShotRunner >> cancel: aFuture [
+	"this routine do not let a task to run it teardown process"
+	aFuture == future ifFalse: [ 
+		self error: 'The given future is not the related with the runner. I cannot cancel it'.
+	].
+	super cancel: aFuture.
+	
+]
+
+{ #category : #running }
 TKTOneShotRunner >> cancelFutures [
 
 	self cancel: future.
@@ -29,6 +39,13 @@ TKTOneShotRunner >> cancelFutures [
 TKTOneShotRunner >> defaultProcessName [
 
 	^ 'One Shot runner'
+]
+
+{ #category : #running }
+TKTOneShotRunner >> noteFutureHasFinished: aFuture [
+	future == aFuture ifTrue: [ 
+		self clearProcess.	
+	 ]
 ]
 
 { #category : #running }

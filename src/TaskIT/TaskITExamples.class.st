@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+TaskITExamples class >> bla [
+
+]
+
+{ #category : #'as yet unclassified' }
+TaskITExamples class >> bla: anObject [
+	"FileStream stdout nextPutAll: anObject asString, String lf."
+
+]
+
+{ #category : #'as yet unclassified' }
 TaskITExamples >> commonSchedduledTask [
 	"
 	self new commonSchedduledTask
@@ -41,7 +52,7 @@ TaskITExamples >> commonTaskResult [
 
 { #category : #'as yet unclassified' }
 TaskITExamples >> referencedProcess [
-	^ [[ true ] whileTrue: [ Transcript show: 'running'; cr. (Delay forMilliseconds: 500) wait] ] shootIt asStickyReference.
+	^ [1 to: 23330 do: [ :i |Transcript show: 'running'; cr. (Delay forMilliseconds: 500) wait] ] shootIt asStickyReference.
 ]
 
 { #category : #'as yet unclassified' }

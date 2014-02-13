@@ -1,6 +1,6 @@
 Class {
 	#name : #TKTTasker,
-	#superclass : #GHTargetBasedProxy,
+	#superclass : #TKTAbstractProxy,
 	#category : #'TaskIT-Util'
 }
 

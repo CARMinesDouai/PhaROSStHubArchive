@@ -118,6 +118,11 @@ TKTFuture >> deployValue: aValue [
 	isDeployed := true.
 ]
 
+{ #category : #'as yet unclassified' }
+TKTFuture >> finalize [
+	self cancel
+]
+
 { #category : #'initialize-release' }
 TKTFuture >> initialize [
 	super initialize.
@@ -129,6 +134,12 @@ TKTFuture >> initialize [
 	errorCallbacks := TKTExclusiveAccessVariable initialValue: OrderedCollection new.
 	semaphore := Semaphore new.
 	processData := TKTExclusiveAccessVariable initialValue: Dictionary new.
+]
+
+{ #category : #testing }
+TKTFuture >> isCancelled [
+	
+	^ self isValueAvailable and: [ value isKindOf:TKTCancelledFutureValue ]
 ]
 
 { #category : #testing }

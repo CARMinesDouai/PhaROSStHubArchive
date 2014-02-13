@@ -1,6 +1,6 @@
 Class {
 	#name : #TKTParalellizer,
-	#superclass : #GHTargetBasedProxy,
+	#superclass : #TKTAbstractProxy,
 	#category : #'TaskIT-Util'
 }
 

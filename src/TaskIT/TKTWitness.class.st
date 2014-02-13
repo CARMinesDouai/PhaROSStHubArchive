@@ -1,0 +1,25 @@
+Class {
+	#name : #TKTWitness,
+	#superclass : #Object,
+	#instVars : [
+		'target'
+	],
+	#category : #'TaskIT-Util'
+}
+
+{ #category : #'as yet unclassified' }
+TKTWitness class >> cleanup: aTarget [
+self halt.
+	aTarget finalize.
+]
+
+{ #category : #'as yet unclassified' }
+TKTWitness class >> for: aTarget [
+	^ self new target: aTarget; yourself.
+]
+
+{ #category : #'as yet unclassified' }
+TKTWitness >> target: aTarget [
+	self toFinalizeSend: #cleanup: to: TKTWitness with: aTarget .
+	
+]

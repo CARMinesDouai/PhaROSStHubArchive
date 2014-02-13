@@ -14,7 +14,7 @@ TKTTaskOneShotRunnerCancelledComputationTests >> setUp [
 
 	super setUp.
 	runner := TKTOneShotRunner new.
-	future := runner run: [ (Delay forMilliseconds: 1000) wait ] asTask.
+	future := runner run: [ (Delay forMilliseconds: 100000) wait ] asTask.
 	runner cancel.
 	result := future value.
 ]
@@ -28,7 +28,7 @@ TKTTaskOneShotRunnerCancelledComputationTests >> testIsNotError [
 { #category : #tests }
 TKTTaskOneShotRunnerCancelledComputationTests >> testResultWasCancelled [
 
-	self assert: (result isKindOf: TKTCancelledFutureValue).
+	self assert:future isCancelled.
 ]
 
 { #category : #tests }

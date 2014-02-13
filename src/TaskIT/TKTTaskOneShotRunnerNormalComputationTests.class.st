@@ -10,10 +10,10 @@ Class {
 
 { #category : #running }
 TKTTaskOneShotRunnerNormalComputationTests >> setUp [
-
+	
 	super setUp.
 	runner := TKTOneShotRunner new.
-	result := (runner run: ([ 1+2 ] asTask)) value.
+	result := (runner run: ([  1+2 ] asTask)) value.
 ]
 
 { #category : #tests }

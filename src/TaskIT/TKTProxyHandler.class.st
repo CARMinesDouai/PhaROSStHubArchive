@@ -23,6 +23,13 @@ TKTProxyHandler >> handleMethodExecution: anInterception [
 ]
 
 { #category : #'as yet unclassified' }
+TKTProxyHandler >> handlePrintStringLimitedTo: anInterception [
+	| proxy |
+	proxy := anInterception proxy. 
+	^ 'This is the print of a proxy of class: ',  proxy tktClass name asString.
+]
+
+{ #category : #'as yet unclassified' }
 TKTProxyHandler >> manageMessage: anInterception [
 	(self shouldFork: anInterception ) ifTrue: [ 
 		^ (self spawn: [ super manageMessage: anInterception ]) asResult.	

@@ -94,6 +94,11 @@ TKTTask >> executeWithFuture: aFuture [
 	^ block cull: self cull: aFuture
 ]
 
+{ #category : #accessing }
+TKTTask >> finalize [
+	self halt.
+]
+
 { #category : #'initialize-release' }
 TKTTask >> initialize [ 
 
@@ -115,18 +120,20 @@ TKTTask >> priority: aPriority [
 TKTTask >> runOnRunner: aRunner withFuture: aFuture [
 
 	| value |
-	self setUp.
+	self setUpOnRunner: aRunner withFuture: aFuture.
 	[
 		[
 			value := self executeWithFuture: aFuture. 
 		] on: Error do: [ : exception |
 			^ aRunner deployError: exception intoFuture: aFuture.
-		]
+		].
+		aRunner deployValue: value intoFuture: aFuture.
 	] ensure: [
-		self tearDown.
+		self tearDownOnRunner: aRunner withFuture: aFuture.
+		aRunner noteFutureHasFinished: aFuture.
 	].
 	
-	aRunner deployValue: value intoFuture: aFuture.
+	
 ]
 
 { #category : #executing }
@@ -135,7 +142,7 @@ TKTTask >> scheduleIt [
 ]
 
 { #category : #executing }
-TKTTask >> setUp [
+TKTTask >> setUpOnRunner: aRunner withFuture: aFuture [
 ]
 
 { #category : #executing }
@@ -145,7 +152,8 @@ TKTTask >> shootIt [
 ]
 
 { #category : #executing }
-TKTTask >> tearDown [
+TKTTask >> tearDownOnRunner: aRunner withFuture: aFuture [
+	
 ]
 
 { #category : #executing }
