@@ -4,6 +4,20 @@ Class {
 	#category : #'DonatelloPackage-Nodelet'
 }
 
+{ #category : #handler }
+TurtlesimNodelet >> broadcastTFFor: aTurtleHandle [
+	self nodelets pose2tf express: aTurtleHandle poseStamped as: aTurtleHandle frame childOf: TurtleHandle frameParent.
+]
+
+{ #category : #handler }
+TurtlesimNodelet >> chooseAnObjectiveForPursuitFor: aHandle [
+	| possible |
+	possible := TurtleHandle allInstances reject: [ :h | h == aHandle].
+	(possible size > 0 ) ifFalse: [ self error: 'There are not pursuitable targets' ].
+	^ possible shuffle  at: 1.
+	
+]
+
 { #category : #'initialize-release' }
 TurtlesimNodelet >> configure [
 	self nodelets use: PhaROSTransformationNodelet as: #transformation.
@@ -14,11 +28,6 @@ TurtlesimNodelet >> configure [
 { #category : #handler }
 TurtlesimNodelet >> defaultTurtleHandler [
 	^ self turtleHandleFor: 'turtle1'.
-]
-
-{ #category : #handler }
-TurtlesimNodelet >> existantTurtleHandleFor: aTurtleName [ 
-	^ turtles at: aTurtleName.
 ]
 
 { #category : #spawner }

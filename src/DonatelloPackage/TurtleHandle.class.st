@@ -23,7 +23,7 @@ TurtleHandle >> algorithm: aBlock [
 		processHandler finalize.
 	].
 
-	 processHandler := [aBlock cull: self ] shootIt asStickyReference.
+	 processHandler := [aBlock cull: self cull: sim ] shootIt asStickyReference.
 ]
 
 { #category : #accessing }
@@ -101,4 +101,14 @@ TurtleHandle >> poseStamped [
 { #category : #control }
 TurtleHandle >> rotateAt: aSpeed [
 	self moveAt: 0.0 and: aSpeed. 
+]
+
+{ #category : #control }
+TurtleHandle >> tf [
+	sim broadcastTFFor: self.
+]
+
+{ #category : #'as yet unclassified' }
+TurtleHandle >> transformationTo: aTurtleHandle [
+ 	^ sim nodelets transformation transformBetween: aTurtleHandle frame and: self frame.
 ]

@@ -23,7 +23,7 @@ DonatelloAlgorithms >> circularHandler [
 		handler forwardAt: 1.0.
 		1 seconds asDelay wait.
 		[  true ] whileTrue: [
-			handler rotateAt: 1.0. 
+			handler moveAt: 0.4 and: 1.0.
 			1 seconds asDelay wait.
 		].
 	].
@@ -33,7 +33,11 @@ DonatelloAlgorithms >> circularHandler [
 DonatelloAlgorithms >> idleHandler [ 
 
 ^ [ : handler | 
+	
+	[ true ] whileTrue: [ 	
 		handler forwardAt: 0.0.
+		1 hz wait.
+	].
 ].
 ]
 
@@ -112,14 +116,18 @@ DonatelloAlgorithms >> pharoHandler [
 { #category : #algorithms }
 DonatelloAlgorithms >> pursuiterHandler [
 	
-	^ [ : handle | 
+	^ [ : handle : nodelet | 
 		| default  |
-		default := self nodelets turtlesim defaultTurtleHandler.
+		
+		default := nodelet chooseAnObjectiveForPursuitFor: handle.
+		handle tf.
+		default tf.
+		
+		
 		[ true ] whileTrue: [
 			| trs linear angular |
 			[			
-				trs :=  self controller nodelets transformation transformBetween: default  frame and: handle  frame.
-				Transcript show: trs; cr.
+				trs :=  handle transformationTo: default.
 				linear := (trs position module2d) * 0.5.
 				angular :=4 * ( trs position y arcTan: trs position x).
 				handle moveAt:  linear and: angular.	
@@ -134,11 +142,25 @@ DonatelloAlgorithms >> pursuiterHandler [
 DonatelloAlgorithms >> randomHandler [
 
 	^ [ : handle |
-		| linear angular |
+		| linear angular random sign|
+		
+		random := (Random seed: DateAndTime now asUnixTime).
+		sign := 1.
 		
 		[ true ] whileTrue: [
-			linear := (Random seed: DateAndTime now asUnixTime)  next; next; nextInt:20 + ((Random seed: DateAndTime now asUnixTime)  next; nextInt:9) / 10.
-			angular := (Random seed: DateAndTime now asUnixTime)  next;next; next; nextInt:9 + ((Random seed: DateAndTime now asUnixTime)  next; next; nextInt:9) / 10.
+			(random nextInt: 20) even ifTrue: [
+				random := (Random seed: DateAndTime now asUnixTime).
+			] ifFalse: [ 
+				sign := sign * -1.
+			 ].
+			
+			
+			linear := (random next; next; nextInt:20 )+((random nextInt:9)) / 10.
+			angular := (random next;next; next; nextInt:9) + (random  next; next; nextInt:9) / 10.
+			
+			linear := linear * sign. 
+			angular := angular * sign * -1.
+			
 			handle moveAt: linear and: angular. 			
 			( (Random seed: DateAndTime now asUnixTime) next; nextInt: 3) seconds asDelay wait.
 		].
