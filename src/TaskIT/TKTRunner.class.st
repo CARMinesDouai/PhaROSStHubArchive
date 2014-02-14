@@ -45,10 +45,11 @@ TKTRunner >> cancel [
 
 { #category : #cancelling }
 TKTRunner >> cancel: aTKTFuture [ 
-
-	aTKTFuture isValueAvailable ifTrue: [ self error: 'this future was already deployed' ].
-	aTKTFuture deployValue: TKTCancelledFutureValue new.
-	self noteFutureHasFinished: aTKTFuture.
+	aTKTFuture isCancelled ifFalse: [
+		aTKTFuture isValueAvailable ifTrue: [ self error: 'this future was already deployed' ].
+		aTKTFuture deployValue: TKTCancelledFutureValue new.
+		self noteFutureHasFinished: aTKTFuture.
+	]
 ]
 
 { #category : #running }

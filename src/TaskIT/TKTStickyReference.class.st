@@ -40,14 +40,6 @@ TKTStickyReference >> executor [
 	^self shallowCopy actAsExecutor
 ]
 
-{ #category : #finalization }
-TKTStickyReference >> finalize [
-
-	self halt.
-	self proxyTarget finalize.
-	target := nil. 
-]
-
 { #category : #hash }
 TKTStickyReference >> identityHash [
 	"Answer a SmallInteger whose value is related to the receiver's identity.
