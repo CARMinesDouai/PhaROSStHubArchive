@@ -120,7 +120,9 @@ TKTFuture >> deployValue: aValue [
 
 { #category : #finalization }
 TKTFuture >> finalize [
-	self cancel
+	self isValueAvailable ifFalse: [
+		self cancel
+	].
 ]
 
 { #category : #'initialize-release' }
