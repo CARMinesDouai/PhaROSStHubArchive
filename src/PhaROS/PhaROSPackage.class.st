@@ -19,9 +19,8 @@ PhaROSPackage class >> types [
 ]
 
 { #category : #stdio }
-PhaROSPackage >> askUserFor: aLegend [
-	self log: aLegend.
-	^self stdin upTo: Character lf
+PhaROSPackage >> askUserFor: aString [
+	^ self nodelets io askUserFor: aString.
 ]
 
 { #category : #'helper thread' }
@@ -41,7 +40,7 @@ PhaROSPackage >> exit: aCode [
 
 { #category : #log }
 PhaROSPackage >> log: aString [
-	self stdout nextPutAll: (aString, String lf).
+	self nodelets io stdout nextPutAll: (aString, String lf).
 ]
 
 { #category : #accessing }
@@ -56,10 +55,10 @@ PhaROSPackage >> nodelets [
 
 { #category : #stdio }
 PhaROSPackage >> stdin [
-	^  FileStream stdin.
+	^ self nodelets io stdin
 ]
 
 { #category : #stdio }
-PhaROSPackage >> stdout [ 
-	^  FileStream stdout.
+PhaROSPackage >> stdout [
+	^ self nodelets io stdout
 ]
