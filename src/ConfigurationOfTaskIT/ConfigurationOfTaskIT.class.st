@@ -202,9 +202,6 @@ ConfigurationOfTaskIT >> baseline20: spec [
 					file: 'ConfigurationOfGhost' ;
 					repository: 'http://ss3.gemstone.com/ss/Ghost'
 			].
-			spec package: 'TaskIT' with: [
-				spec requires: #('Ghost').
-			].
 			spec project: 'OSProcess' with: [
 				spec 
 					className: 'ConfigurationOfOSProcess';
@@ -212,7 +209,15 @@ ConfigurationOfTaskIT >> baseline20: spec [
 					repository: 'http://www.squeaksource.com/MetacelloRepository'; 
 					versionString: #stable.
 			].
-			spec group: 'default'  with: #( 'TaskIT' ).
+			spec package: 'TaskIT' with: [
+				spec requires: #('Ghost' ).
+			].
+			spec package: 'TaskITFork' with: [ 
+				spec requires: #('TaskIT' 'OSProcess').
+			 ].
+			
+			spec group: 'core'with: #( 'TaskIT').
+			spec group: 'default'  with: #( 'TaskIT' 'TaskITFork' ).
 	].
 
 
