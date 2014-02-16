@@ -63,7 +63,8 @@ Class {
 		'processData',
 		'runner',
 		'successCallbacks',
-		'errorCallbacks'
+		'errorCallbacks',
+		'cancelCallbacks'
 	],
 	#category : #'TaskIT-Kernel'
 }
@@ -114,7 +115,11 @@ TKTFuture >> deployError: anError [
 { #category : #'execution-finished' }
 TKTFuture >> deployValue: aValue [
 	value := aValue.
-	successCallbacks get do: [ : c  | c cull: aValue ].
+	self isCancelled ifFalse:[
+		successCallbacks get do: [ : c  | c cull: aValue ].
+	] ifTrue: [  
+		cancelCallbacks  get do: [ : c  | c cull: aValue ].
+	].
 	isDeployed := true.
 ]
 
@@ -134,6 +139,7 @@ TKTFuture >> initialize [
 	error := nil.
 	successCallbacks := TKTExclusiveAccessVariable initialValue: OrderedCollection new.
 	errorCallbacks := TKTExclusiveAccessVariable initialValue: OrderedCollection new.
+	cancelCallbacks := TKTExclusiveAccessVariable initialValue: OrderedCollection new.
 	semaphore := Semaphore new.
 	processData := TKTExclusiveAccessVariable initialValue: Dictionary new.
 ]
@@ -153,6 +159,16 @@ TKTFuture >> isError [
 { #category : #testing }
 TKTFuture >> isValueAvailable [
 	^ isDeployed.
+]
+
+{ #category : #callbacks }
+TKTFuture >> onCancel: aCallback [ 
+
+	self isCancelled ifTrue:[
+		aCallback cull: value.	
+	] ifFalse: [
+		cancelCallbacks add: aCallback.
+	]
 ]
 
 { #category : #callbacks }
