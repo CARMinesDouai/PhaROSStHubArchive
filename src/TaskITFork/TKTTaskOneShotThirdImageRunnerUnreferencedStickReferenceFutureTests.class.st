@@ -25,6 +25,6 @@ TKTTaskOneShotThirdImageRunnerUnreferencedStickReferenceFutureTests >> testFutur
 
 { #category : #'as yet unclassified' }
 TKTTaskOneShotThirdImageRunnerUnreferencedStickReferenceFutureTests >> testProcessHasFinished [
-
+	3 seconds asDelay wait.
 	self assert: runner isTerminated 
 ]

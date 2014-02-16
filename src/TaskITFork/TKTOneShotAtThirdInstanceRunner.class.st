@@ -47,11 +47,14 @@ TKTOneShotAtThirdInstanceRunner >> run: aTKTTask [
 	
 	process executable: [
 		|  remoteTask localFuture |		
-		remoteTask := FLMaterializer  materializeFromFileNamed: inputPath.
-		localFuture :=  remoteTask shootIt .
-		localFuture wait.
-		FLSerializer serialize: localFuture toFileNamed:  outputPath.
-		inputPath asFileReference delete.
+		[	
+			remoteTask := FLMaterializer  materializeFromFileNamed: inputPath.
+			localFuture :=  remoteTask shootIt .
+			localFuture wait.
+			FLSerializer serialize: localFuture toFileNamed:  outputPath.
+		] ensure: [
+			inputPath asFileReference delete.
+		]
 	].
 
 	
@@ -63,15 +66,21 @@ TKTOneShotAtThirdInstanceRunner >> run: aTKTTask [
 		| remoteFuture |
 		self waitUntilProcessIsComplete.		
 		[
-			remoteFuture := (FLMaterializer materializeFromFileNamed: outputPath).
-		] on: Error do: [
-			self error: 'Error decoding answer from remote image!'.
-		].
+			[
+				remoteFuture := (FLMaterializer materializeFromFileNamed: outputPath).
+			] on: Error do: [
+				self error: 'Error decoding answer from remote image!'.
+			]
+		] ensure: [ outputPath asFileReference delete ].
 	
 		remoteFuture value.
 	] shootIt.
 
-	future onCancel: [ self halt. process terminate.  ]. 
+	future onCancel: [ 
+		process terminate.
+		outputPath asFileReference delete.
+		inputPath asFileReference delete.
+	 ]. 
 
 
 	^ future.

@@ -22,11 +22,11 @@ TKTInstanceProcess >> execute [
 	| blockFile executorFile stream |
 	
 	" Encode the block to execute with fuel (it will care about the contextual references -- Take in care inconsistences)"
-	blockFile := imagePath asFileReference parent / ('{1}.fl' format: { self hash }).
+	blockFile := self fuelFile.
 	FLSerializer serialize: executable toFileNamed: blockFile pathString.
 
 	" Generate a file that loads the encoded block, execute it, erase the files and quit"
-	executorFile :=  imagePath asFileReference parent / ('{1}.st' format: { self hash }).
+	executorFile := self executorFile.
 	stream := executorFile writeStream.
 	stream nextPutAll: ('
 	(FLMaterializer materializeFromFileNamed:''{1}'') ensure: [
@@ -44,6 +44,16 @@ TKTInstanceProcess >> execute [
 		descriptors: { FileStream stdin . FileStream stdout . FileStream stderr }.
 				
 
+]
+
+{ #category : #controlling }
+TKTInstanceProcess >> executorFile [
+	^ imagePath asFileReference parent / ('{1}.st' format: { self hash }).
+]
+
+{ #category : #controlling }
+TKTInstanceProcess >> fuelFile [
+	^ imagePath asFileReference parent / ('{1}.fl' format: { self hash }).
 ]
 
 { #category : #accessing }
@@ -68,7 +78,9 @@ TKTInstanceProcess >> resume [
 
 { #category : #accessing }
 TKTInstanceProcess >> terminate [ 
-	process terminate
+	process terminate.
+	self fuelFile delete.
+	self executorFile delete.
 ]
 
 { #category : #accessing }
