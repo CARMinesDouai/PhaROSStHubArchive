@@ -115,12 +115,13 @@ TKTFuture >> deployError: anError [
 { #category : #'execution-finished' }
 TKTFuture >> deployValue: aValue [
 	value := aValue.
+	isDeployed := true.
 	self isCancelled ifFalse:[
 		successCallbacks get do: [ : c  | c cull: aValue ].
 	] ifTrue: [  
 		cancelCallbacks  get do: [ : c  | c cull: aValue ].
 	].
-	isDeployed := true.
+	
 ]
 
 { #category : #finalization }
