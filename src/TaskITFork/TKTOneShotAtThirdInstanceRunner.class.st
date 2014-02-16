@@ -31,7 +31,7 @@ Class {
 { #category : #'as yet unclassified' }
 TKTOneShotAtThirdInstanceRunner >> run: aTKTTask [
 
-	| task outputPath inputPath |
+	| task outputPath inputPath  |
 
 	task := aTKTTask asTask.
 	self assert: (task isClean) description: 'The task to execute in a third image cannot point any contextual value '.
@@ -61,8 +61,7 @@ TKTOneShotAtThirdInstanceRunner >> run: aTKTTask [
 	
 	future:= [ 
 		| remoteFuture |
-		self waitUntilProcessIsComplete.
-		
+		self waitUntilProcessIsComplete.		
 		[
 			remoteFuture := (FLMaterializer materializeFromFileNamed: outputPath).
 		] on: Error do: [
@@ -71,6 +70,9 @@ TKTOneShotAtThirdInstanceRunner >> run: aTKTTask [
 	
 		remoteFuture value.
 	] shootIt.
+
+	future onCancel: [ self halt. process terminate.  ]. 
+
 
 	^ future.
 ]
