@@ -106,6 +106,11 @@ TKTTask >> initialize [
 	priority := Processor userBackgroundPriority
 ]
 
+{ #category : #'as yet unclassified' }
+TKTTask >> isClean [
+	^ block isClean.
+]
+
 { #category : #accessing }
 TKTTask >> priority [
 	^ priority .

@@ -54,12 +54,13 @@ TKTOneShotRunner >> run: aTKTTask [
 	| task |
 	future := self newFuture.
 	task := aTKTTask asTask.
-	process := [
+	process := TKTPharoProcess  new.
+	process executable: [
 		task runOnRunner: self withFuture: future
-	] newProcess.
+	].
 	process name: 'A TKTTask'.
 	process priority: task priority.
-	process resume.
+	process execute.
 	
 	^ future.
 ]

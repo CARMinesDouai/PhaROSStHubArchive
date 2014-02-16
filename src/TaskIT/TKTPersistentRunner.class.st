@@ -101,10 +101,11 @@ TKTPersistentRunner >> shouldKeepRunning [
 { #category : #running }
 TKTPersistentRunner >> start [
 
-	process := [ self run ] newProcess.
+	process := TKTPharoProcess new. 
+	process executable: [ self run ].
 	process priority: self priority.
 	process name: self processName.
-	process resume.
+	process execute.
 ]
 
 { #category : #running }

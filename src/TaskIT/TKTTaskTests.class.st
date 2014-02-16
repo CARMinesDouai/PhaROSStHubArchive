@@ -154,7 +154,7 @@ TKTTaskTests >> testNewTaskDispatcherDestroyWorkers [
 	TKTTaskDispatcher reset.
 	TKTTaskDispatcher instance.
 	
-	1 to: 3 do: [ : i | Smalltalk garbageCollect ].
+	20 timesRepeat: [Smalltalk garbageCollect ].
 	
 	self assert: TKTWorker allInstances size = 2.
 	
