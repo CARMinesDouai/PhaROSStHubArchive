@@ -53,7 +53,7 @@ TKTOneShotAtThirdInstanceRunner >> run: aTKTTask [
 			localFuture wait.
 			FLSerializer serialize: localFuture toFileNamed:  outputPath.
 		] ensure: [
-			inputPath asFileReference delete.
+			inputPath asFileReference deleteIfAbsent:[].
 		]
 	].
 
@@ -71,15 +71,15 @@ TKTOneShotAtThirdInstanceRunner >> run: aTKTTask [
 			] on: Error do: [
 				self error: 'Error decoding answer from remote image!'.
 			]
-		] ensure: [ outputPath asFileReference delete ].
+		] ensure: [ outputPath asFileReference deleteIfAbsent:[] ].
 	
 		remoteFuture value.
 	] shootIt.
 
 	future onCancel: [ 
 		process terminate.
-		outputPath asFileReference delete.
-		inputPath asFileReference delete.
+		outputPath asFileReference deleteIfAbsent:[].
+		inputPath asFileReference deleteIfAbsent:[].
 	 ]. 
 
 

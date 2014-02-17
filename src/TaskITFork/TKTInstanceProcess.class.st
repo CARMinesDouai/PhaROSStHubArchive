@@ -79,8 +79,8 @@ TKTInstanceProcess >> resume [
 { #category : #accessing }
 TKTInstanceProcess >> terminate [ 
 	process terminate.
-	self fuelFile delete.
-	self executorFile delete.
+	self fuelFile deleteIfAbsent:[].
+	self executorFile deleteIfAbsent:[].
 ]
 
 { #category : #accessing }
