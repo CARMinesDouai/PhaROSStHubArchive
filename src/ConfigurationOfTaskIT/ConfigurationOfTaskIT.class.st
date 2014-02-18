@@ -277,3 +277,17 @@ ConfigurationOfTaskIT >> version11: spec [
 
 
 ]
+
+{ #category : #versions }
+ConfigurationOfTaskIT >> version20: spec [ 
+	<version: '2.0' imports: #('2.0-baseline') >
+	
+	spec for: #common do: [
+		spec blessing: #alpha.
+		spec author: 'SantiagoBragagnolo'.
+		spec timestamp: '18/02/2014 12:00'.
+		spec package:'TaskIT' with: 'TaskIT-SantiagoBragagnolo.68'.
+	].
+
+
+]
