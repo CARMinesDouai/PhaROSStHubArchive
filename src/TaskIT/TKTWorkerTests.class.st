@@ -26,8 +26,8 @@ TKTWorkerTests >> setUp [
 	ceventualTask := TKTTaskDispatcher instance tasks at:3.
 	
 	
-	deadWorker := TKTWorker new priority: Processor userBackgroundPriority; yourself .
-	deadEventKindWorker  := TKTWorker new priority: Processor systemBackgroundPriority; timeout: 300; yourself.
+	deadWorker := TKTWorker with: Processor userBackgroundPriority .
+	deadEventKindWorker  := (TKTWorker with: Processor systemBackgroundPriority) timeout: 300; yourself.
 ]
 
 { #category : #running }

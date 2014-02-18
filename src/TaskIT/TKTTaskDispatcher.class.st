@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'workers',
-		'eventualTasks'
+		'eventualTasks',
+		'sharedQueue'
 	],
 	#classVars : [
 		'TaskInstance'
@@ -53,23 +54,17 @@ TKTTaskDispatcher >> destroy [
 
 { #category : #accessing }
 TKTTaskDispatcher >> dispatch: aTaskOrBlock [
-	| task |
 	
-	task := aTaskOrBlock asTask.
-	^ (self selectWorkerFor: task) scheduleTask: task.
+	sharedQueue add: aTaskOrBlock asTask.
+	
 ]
 
 { #category : #'initialize-release' }
 TKTTaskDispatcher >> initialize [ 
 	super initialize.
 	workers := Set new.
-	workers 	add: (TKTWorker spawn timeout: 5000; yourself ); 
-				add: ((TKTWorker with: Processor systemBackgroundPriority) timeout: 300; yourself ).
+	sharedQueue := TKTPriorityQueue new. 
+	workers 	add: ((TKTWorker spawn:sharedQueue) timeout: 5000; yourself ); 
+				add: ((TKTWorker with: Processor systemBackgroundPriority usingQueue: sharedQueue) timeout: 300; yourself ).
 
-]
-
-{ #category : #accessing }
-TKTTaskDispatcher >> selectWorkerFor: aTask [
-	
-	^ (workers asSortedCollection: [:w1 :w2 | (w1 matching: aTask ) > (w2 matching: aTask )]) first.
 ]

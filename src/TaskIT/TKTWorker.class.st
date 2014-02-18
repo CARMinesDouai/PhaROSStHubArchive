@@ -3,7 +3,7 @@ Class {
 	#superclass : #TKTPersistentRunner,
 	#instVars : [
 		'keepRunning',
-		'workQueue',
+		'workingQueue',
 		'onIdleTime',
 		'currentTask',
 		'doneTasks'
@@ -13,20 +13,31 @@ Class {
 
 { #category : #'instance creation' }
 TKTWorker class >> spawn [
-	^ self with: Processor userBackgroundPriority.
+	^ self with: Processor userBackgroundPriority usingQueue: TKTPriorityQueue new.
+]
+
+{ #category : #'instance creation' }
+TKTWorker class >> spawn: aQueue [
+	^ self with: Processor userBackgroundPriority usingQueue: aQueue.
 ]
 
 { #category : #'instance creation' }
 TKTWorker class >> with: aPriority [
+	^ self with: aPriority  usingQueue: TKTPriorityQueue new.
+]
+
+{ #category : #'instance creation' }
+TKTWorker class >> with: aPriority usingQueue: aQueue [
 	^ self new
 		priority: aPriority;
+		workingQueue: aQueue;
 		start;
 		yourself
 ]
 
 { #category : #'worker-assignment' }
 TKTWorker >> busyTime [
-	^ workQueue size * 500.
+	^ workingQueue size * 500.
 ]
 
 { #category : #cancelling }
@@ -51,8 +62,6 @@ TKTWorker >> defaultProcessName [
 TKTWorker >> initialize [ 
 	super initialize.
 	
-	workQueue := TKTPriorityQueue new.
-	
 	"We return nil in here because we use it as a marker when asking for the next task"
 	onIdleTime := [ [ self cleanupTasks ] asTask -> self newFuture ].
 
@@ -65,7 +74,7 @@ TKTWorker >> interruptCurrentTask [
 	currentTask ifNotNil: [ 
 		currentTask value isProcessFinished ifFalse: [
 			currentTask  priority: 10.
-			workQueue do: currentTask.
+			workingQueue do: currentTask.
 		].
 	].
 ]
@@ -79,7 +88,7 @@ TKTWorker >> isWorkingWith: aFuture [
 TKTWorker >> matching: anOtherTask [ 
 	| frequency |
 	
-	frequency :=  workQueue timeout.  
+	frequency :=  workingQueue timeout.  
 	(anOtherTask respondsTo: #expectedFrequency) ifTrue: [
 		frequency := frequency - (1000 // anOtherTask expectedFrequency).
 	]. 
@@ -89,7 +98,7 @@ TKTWorker >> matching: anOtherTask [
 
 { #category : #scheduling }
 TKTWorker >> next [
-	^ workQueue nextIfTimeOut: onIdleTime
+	^ workingQueue nextIfTimeOut: onIdleTime
 ]
 
 { #category : #scheduling }
@@ -149,7 +158,7 @@ TKTWorker >> run: aTask [
 { #category : #scheduling }
 TKTWorker >> schedule: aTaskFutureAssoc [ 
 	" aTaskFutureAssoc is an association that match the task to run with a future related with this processing instance"
-	workQueue add: aTaskFutureAssoc
+	workingQueue add: aTaskFutureAssoc
 ]
 
 { #category : #scheduling }
@@ -178,5 +187,15 @@ TKTWorker >> stopWorkingOnThat [
 
 { #category : #accessing }
 TKTWorker >> timeout: aSmallInteger [ 
-	^ workQueue timeout: aSmallInteger 
+	^ workingQueue timeout: aSmallInteger 
+]
+
+{ #category : #'initialize-release' }
+TKTWorker >> workQueue: aQueue [
+	workingQueue= aQueue
+]
+
+{ #category : #running }
+TKTWorker >> workingQueue: aQueue [
+	workingQueue := aQueue.
 ]
