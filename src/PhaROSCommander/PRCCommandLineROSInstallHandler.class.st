@@ -30,7 +30,14 @@ PRCCommandLineROSInstallHandler class >> commandName [
 
 { #category : #'as yet unclassified' }
 PRCCommandLineROSInstallHandler >> execute: aCommand [
-	OSProcess command: aCommand.
+
+	(ExternalUnixOSProcess forkAndExec: ExternalUnixOSProcess defaultShellPath arguments: (Array with: '-c' with: aCommand)  environment: nil descriptors: {
+		FileStream stdin .
+		FileStream stdout .
+		FileStream stderr .	
+	}) waitUntilComplete.
+	 
+	
 ]
 
 { #category : #'as yet unclassified' }
