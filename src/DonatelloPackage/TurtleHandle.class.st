@@ -2,12 +2,12 @@ Class {
 	#name : #TurtleHandle,
 	#superclass : #Object,
 	#instVars : [
-		'sim',
 		'name',
 		'velocityOut',
 		'color',
 		'pose',
-		'processHandler'
+		'processHandler',
+		'turtlesimNodelet'
 	],
 	#category : #'DonatelloPackage-Nodelet'
 }
@@ -23,7 +23,7 @@ TurtleHandle >> algorithm: aBlock [
 		processHandler finalize.
 	].
 
-	 processHandler := [aBlock cull: self cull: sim ] shootIt asStickyReference.
+	 processHandler := [aBlock cull: self cull: turtlesimNodelet ] shootIt asStickyReference.
 ]
 
 { #category : #accessing }
@@ -58,17 +58,17 @@ TurtleHandle >> frame [
 ]
 
 { #category : #'initialize-release' }
-TurtleHandle >> initializeWith: aName and: aSim [
+TurtleHandle >> initializeWith: aName and: aTurtlesimNodelet [
 	name:= aName.
-	sim := aSim.
+	turtlesimNodelet := aTurtlesimNodelet.
 	
-	velocityOut := sim rosnode topicPublisher: '/', aName, '/command_velocity' typedAs: 'turtlesim/Velocity'.
-	(sim rosnode buildConnectionFor: '/',aName,'/color_sensor') 
+	velocityOut := turtlesimNodelet rosnode topicPublisher: '/', aName, '/command_velocity' typedAs: 'turtlesim/Velocity'.
+	(turtlesimNodelet rosnode buildConnectionFor: '/',aName,'/color_sensor') 
 			typedAs: 'turtlesim/Color'; 
 			for: [ : aColor | self currentColor: aColor ];
 	 		connect.
 			
-	(sim rosnode buildConnectionFor: '/',aName,'/pose') 
+	(turtlesimNodelet rosnode buildConnectionFor: '/',aName,'/pose') 
 			typedAs: 'turtlesim/Pose'; 
 			for: [ : aPose | self currentPose: aPose ];
 			connect.
@@ -91,7 +91,7 @@ TurtleHandle >> pose [
 
 { #category : #'topic-reading' }
 TurtleHandle >> poseStamped [
-		^(sim rosnode buildConnectionFor: '/',name,'/pose') 
+		^(turtlesimNodelet rosnode buildConnectionFor: '/',name,'/pose') 
 			typedAs: 'turtlesim/Pose'; 
 			adapted: PhaROSPose;
 			connect.
@@ -105,10 +105,10 @@ TurtleHandle >> rotateAt: aSpeed [
 
 { #category : #control }
 TurtleHandle >> tf [
-	sim broadcastTFFor: self.
+	turtlesimNodelet broadcastTFFor: self.
 ]
 
 { #category : #'as yet unclassified' }
 TurtleHandle >> transformationTo: aTurtleHandle [
- 	^ sim nodelets transformation transformBetween: aTurtleHandle frame and: self frame.
+ 	^ turtlesimNodelet nodelets transformation transformBetween: aTurtleHandle frame and: self frame.
 ]
