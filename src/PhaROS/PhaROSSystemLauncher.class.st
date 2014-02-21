@@ -32,6 +32,11 @@ PhaROSSystemLauncher class >> groovy [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSSystemLauncher class >> hydro [
+	^ '/opt/ros/hydro/bin/'
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSSystemLauncher class >> initialize [
 	super initialize.
 	distro := #groovy.
