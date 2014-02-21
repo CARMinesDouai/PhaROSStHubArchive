@@ -29,15 +29,20 @@ PRCCommandLineROSInstallHandler class >> commandName [
 ]
 
 { #category : #'as yet unclassified' }
+PRCCommandLineROSInstallHandler >> defaultShellPath [
+	| path |
+	path := '/bin/bash'.
+	(OSProcess fileExists: path)
+		ifTrue: [^ path]
+		ifFalse: [self notify: path, ' not found']
+]
+
+{ #category : #'as yet unclassified' }
 PRCCommandLineROSInstallHandler >> execute: aCommand [
 
-	(ExternalUnixOSProcess forkAndExec: ExternalUnixOSProcess defaultShellPath arguments: (Array with: '-c' with: aCommand)  environment: nil descriptors: {
-		FileStream stdin .
-		FileStream stdout .
-		FileStream stderr .	
-	}) waitUntilComplete.
-	 
-	
+	 ^ ExternalUnixOSProcess forkAndExec: self defaultShellPath
+		arguments: (Array with: '-c' with: aCommand)
+		environment: nil.
 ]
 
 { #category : #'as yet unclassified' }
