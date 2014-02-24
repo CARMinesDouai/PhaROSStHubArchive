@@ -5,7 +5,8 @@ Class {
 		'name',
 		'value',
 		'transport',
-		'relatedClass'
+		'relatedClass',
+		'callbacks'
 	],
 	#category : #'PhaROS-Kernel'
 }
@@ -27,6 +28,12 @@ PhaROSParameter >> get [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSParameter >> initialize [ 	
+	super initialize.
+	callbacks := Set new.
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSParameter >> name [
 	^ name
 ]
@@ -34,6 +41,16 @@ PhaROSParameter >> name [
 { #category : #'as yet unclassified' }
 PhaROSParameter >> name: aName [
 	name := aName
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSParameter >> noteOnChange: newValue oldValue: oldValue [
+	callbacks do:[ :c | c cull: newValue cull: oldValue ].
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSParameter >> onChange: aCallback [ 
+	callbacks add: aCallback. 
 ]
 
 { #category : #'as yet unclassified' }
@@ -50,7 +67,10 @@ PhaROSParameter >> set: aValue [
 { #category : #'as yet unclassified' }
 PhaROSParameter >> setNotBinded: aValue [
 	(self checkIs: aValue) ifFalse: [  self error: 'ERROR Setting value to parameter. Wrong type! ', aValue class name ].
-	value := aValue.
+	[ aValue = value ] ifFalse: [
+ 		self noteOnChange: aValue oldValue: value. 
+	].
+	value:= aValue.
 ]
 
 { #category : #'as yet unclassified' }
