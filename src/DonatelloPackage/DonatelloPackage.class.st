@@ -30,6 +30,17 @@ DonatelloPackage class >> types [
 	 }
 ]
 
+{ #category : #'private - color management' }
+DonatelloPackage >> bindRed: aRedColorBind green: aGreenColorBind  blue: aBlueColorBind with: aTurtleHandle [
+
+
+	0.5 hz wait. 
+	
+	aRedColorBind set: aTurtleHandle pose x.
+	aGreenColorBind set: aTurtleHandle pose y.
+	aBlueColorBind set: aTurtleHandle pose theta.
+]
+
 { #category : #'private - configuration' }
 DonatelloPackage >> buildController [
 	"This message is called by the accessor controller when the variable that stores the controller is pointing to nil.
@@ -40,7 +51,7 @@ DonatelloPackage >> buildController [
 
 ]
 
-{ #category : #scripts }
+{ #category : #'private - auxiliar' }
 DonatelloPackage >> getOrCreateHandleFor: aTurtleID [
 
 	^ turtles at: aTurtleID ifAbsentPut: [ self nodelets turtlesim spawnTurtle: aTurtleID ].
@@ -68,7 +79,7 @@ DonatelloPackage >> nodeletInjectionExample: aController [
 
 ]
 
-{ #category : #scripts }
+{ #category : #'private - auxiliar' }
 DonatelloPackage >> registerDefaultHandler [
 	turtles at: 'turtle1' put: 	self nodelets turtlesim defaultTurtleHandler.
 ]
@@ -86,6 +97,24 @@ DonatelloPackage >> scriptAlgorithmSwitcher [
 	] at: '/donatello/switch' typedAs:'donatello/Switch'.
 	self log: 'Done.'.
 
+]
+
+{ #category : #scripts }
+DonatelloPackage >> scriptColor [
+	| version distro red green blue |
+	
+	version := self node parameter:'/rosversion' initialized:''.
+	distro := self node parameter: '/rosdistro'	initialized:''.
+
+	self log: (' Running Donatello color node at ROS {1} ({2})' format: { version get . distro get }).
+	
+	red :=  self node parameter:'/background_r' initialized: 0.
+	green :=  self node parameter:'/background_g' initialized: 0.
+	blue :=  self node parameter:'/background_b' initialized: 0.
+	
+	self log: 'Donatello color node is a node that change the background color of the running TurtleSIM node with the behaviour of a turlte'.
+	
+	self paralellize looping bindRed:red green: green blue: blue with: (self getOrCreateHandleFor: (self askUserFor: 'Which turtle you want to define the background color? - Remember default turtle''s name is turtle1 ')).
 ]
 
 { #category : #scripts }
