@@ -107,7 +107,7 @@ PhaROSNode >> onSubscribe: aNode to: aTopic [
 
 { #category : #parameters }
 PhaROSNode >> parameter: aName initialized: aValue [
-	^ transport parameter: (( self name , '/', aName)normalizeParameterName) initialized: aValue.
+	^ transport parameter: aName normalizeParameterName initialized: aValue.
 ]
 
 { #category : #output }

@@ -22,23 +22,23 @@ PhaROSParameter >> checkIs: anObject [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'file menu action' }
 PhaROSParameter >> get [
 	^ value.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'initialize-release' }
 PhaROSParameter >> initialize [ 	
 	super initialize.
 	callbacks := Set new.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSParameter >> name [
 	^ name
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSParameter >> name: aName [
 	name := aName
 ]
@@ -48,17 +48,17 @@ PhaROSParameter >> noteOnChange: newValue oldValue: oldValue [
 	callbacks do:[ :c | c cull: newValue cull: oldValue ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #callbacks }
 PhaROSParameter >> onChange: aCallback [ 
 	callbacks add: aCallback. 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSParameter >> relatedClass: aClass [
 	relatedClass := aClass
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'mutual exclusion - explicit' }
 PhaROSParameter >> set: aValue [
 	self setNotBinded: aValue.
 	transport sync: self.
@@ -67,13 +67,13 @@ PhaROSParameter >> set: aValue [
 { #category : #'as yet unclassified' }
 PhaROSParameter >> setNotBinded: aValue [
 	(self checkIs: aValue) ifFalse: [  self error: 'ERROR Setting value to parameter. Wrong type! ', aValue class name ].
-	[ aValue = value ] ifFalse: [
+	aValue = value  ifFalse: [
  		self noteOnChange: aValue oldValue: value. 
 	].
 	value:= aValue.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSParameter >> transport: aTransport [
 	transport := aTransport.
 ]
