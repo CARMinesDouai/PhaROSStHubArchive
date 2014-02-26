@@ -4,6 +4,26 @@ Class {
 	#category : #'DonatelloPackage-Nodelet'
 }
 
+{ #category : #parameters }
+TurtlesimNodelet >> bgcBlue [
+	^ self controller node parameter:'/background_b' initialized: 0.
+]
+
+{ #category : #parameters }
+TurtlesimNodelet >> bgcGreen [
+	^ self controller node parameter:'/background_g' initialized: 0.
+]
+
+{ #category : #parameters }
+TurtlesimNodelet >> bgcRGB [
+	^ { self bgcRed . self bgcGreen . self bgcBlue }
+]
+
+{ #category : #parameters }
+TurtlesimNodelet >> bgcRed [
+	^ self controller node parameter:'/background_r' initialized: 0.
+]
+
 { #category : #handler }
 TurtlesimNodelet >> broadcastTFFor: aTurtleHandle [
 	self nodelets pose2tf express: aTurtleHandle poseStamped as: aTurtleHandle frame childOf: TurtleHandle frameParent.
@@ -16,6 +36,11 @@ TurtlesimNodelet >> chooseAnObjectiveForPursuitFor: aHandle [
 	(possible size > 0 ) ifFalse: [ self error: 'There are not pursuitable targets' ].
 	^ possible shuffle  at: 1.
 	
+]
+
+{ #category : #service }
+TurtlesimNodelet >> clear [
+	^  (self controller node service: '/clear') call.
 ]
 
 { #category : #'initialize-release' }

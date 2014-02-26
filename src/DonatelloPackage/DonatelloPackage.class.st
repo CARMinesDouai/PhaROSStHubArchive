@@ -31,14 +31,23 @@ DonatelloPackage class >> types [
 ]
 
 { #category : #'private - color management' }
-DonatelloPackage >> bindRed: aRedColorBind green: aGreenColorBind  blue: aBlueColorBind with: aTurtleHandle [
+DonatelloPackage >> bindRed: aRedColorBind green: aGreenColorBind  blue: aBlueColorBind with: aTurtleHandle  rate: aRate [
 
+	aRate get hz wait. 
+	aRedColorBind set: ((aTurtleHandle pose position x * 100) % 255) asInteger.
+	aGreenColorBind set: ((aTurtleHandle pose position y* 100) % 255) asInteger.
+	aBlueColorBind set: 255 - ((aTurtleHandle pose orientation z* 100) % 255) asInteger.
+	self nodelets turtlesim clear.
+]
 
-	0.5 hz wait. 
-	
-	aRedColorBind set: aTurtleHandle pose x.
-	aGreenColorBind set: aTurtleHandle pose y.
-	aBlueColorBind set: aTurtleHandle pose theta.
+{ #category : #'private - color management' }
+DonatelloPackage >> bindRed: aRedColorBind green: aGreenColorBind  blue: aBlueColorBind with: aTurtleHandle tickingOn: aService rate: aRate [
+
+	aRate get hz wait. 
+	aRedColorBind set: ((aTurtleHandle pose position x * 100) % 255) asInteger.
+	aGreenColorBind set: ((aTurtleHandle pose position y* 100) % 255) asInteger.
+	aBlueColorBind set: 255 - ((aTurtleHandle pose orientation z* 100) % 255) asInteger.
+	aService call.
 ]
 
 { #category : #'private - configuration' }
@@ -57,7 +66,7 @@ DonatelloPackage >> getOrCreateHandleFor: aTurtleID [
 	^ turtles at: aTurtleID ifAbsentPut: [ self nodelets turtlesim spawnTurtle: aTurtleID ].
 ]
 
-{ #category : #scripts }
+{ #category : #'initialize-release' }
 DonatelloPackage >> initialize [
 	super initialize.
 	turtles := Dictionary new.
@@ -77,6 +86,11 @@ DonatelloPackage >> nodeletInjectionExample: aController [
 	^ aController.
 	
 
+]
+
+{ #category : #'private - auxiliar' }
+DonatelloPackage >> rate [
+	^ self node parameter:'/color/rate' initialized: 0.5
 ]
 
 { #category : #'private - auxiliar' }
@@ -101,20 +115,35 @@ DonatelloPackage >> scriptAlgorithmSwitcher [
 
 { #category : #scripts }
 DonatelloPackage >> scriptColor [
-	| version distro red green blue |
+	| version distro red green blue  rate |
+	
+	self registerDefaultHandler.
 	
 	version := self node parameter:'/rosversion' initialized:''.
 	distro := self node parameter: '/rosdistro'	initialized:''.
 
 	self log: (' Running Donatello color node at ROS {1} ({2})' format: { version get . distro get }).
 	
-	red :=  self node parameter:'/background_r' initialized: 0.
-	green :=  self node parameter:'/background_g' initialized: 0.
-	blue :=  self node parameter:'/background_b' initialized: 0.
+	red :=  self nodelets turtlesim bgcRed.
+	green :=  self nodelets turtlesim bgcGreen.
+	blue :=  self nodelets turtlesim bgcBlue.
 	
+	rate :=  self rate.
+
 	self log: 'Donatello color node is a node that change the background color of the running TurtleSIM node with the behaviour of a turlte'.
 	
-	self paralellize looping bindRed:red green: green blue: blue with: (self getOrCreateHandleFor: (self askUserFor: 'Which turtle you want to define the background color? - Remember default turtle''s name is turtle1 ')).
+	self paralellize looping 
+					bindRed: red 
+					green: green 
+					blue: blue 
+					with: (self getOrCreateHandleFor: (self askUserFor: 'Which turtle you want to define the background color? - Remember default turtle''s name is turtle1 ')) 
+					rate: rate.
+	
+	self log: ('Color node running at: {1} hz' format: { rate get }).
+	
+	rate onChange: [ :newRate :oldRate | 
+		self log: ('Changeing color rate update from{1} to {2}' format: { oldRate . newRate }).	
+	 ].
 ]
 
 { #category : #scripts }
