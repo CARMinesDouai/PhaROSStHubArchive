@@ -1,18 +1,10 @@
-"
-A PhaROSInt64Type  is a 64 bits represetnation of int 
-"
 Class {
 	#name : #PhaROSInt64Type,
 	#superclass : #PhaROSType,
 	#category : #'PhaROS-Types-Basic'
 }
 
-{ #category : #'pseudo-dsl' }
-PhaROSInt64Type class >> alterName [
-	^ #Int64
-]
-
-{ #category : #accessing }
+{ #category : #'as yet unclassified' }
 PhaROSInt64Type class >> dataTypeSize [
 	^ 8
 ]

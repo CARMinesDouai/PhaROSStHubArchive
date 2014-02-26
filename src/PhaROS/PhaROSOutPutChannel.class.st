@@ -56,7 +56,6 @@ PhaROSOutPutChannel >> publisher [
 
 { #category : #service }
 PhaROSOutPutChannel >> send: aMessage [
-	
 	self subscribers do: [ : aNode |  self send: aMessage to: aNode. ].
 ]
 
@@ -64,11 +63,9 @@ PhaROSOutPutChannel >> send: aMessage [
 PhaROSOutPutChannel >> sendAMessage: aMessageConfigurationBlock [
 	| message |
 	message := self newMessage.
-	subscribers size > 0 ifTrue: [
-		aMessageConfigurationBlock value: message value.
-		^ self send: message.
-	]
 	
+	aMessageConfigurationBlock value: message value.
+	^ self send: message.
 
 ]
 

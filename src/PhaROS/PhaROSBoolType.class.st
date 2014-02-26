@@ -1,16 +1,8 @@
-"
-A PhaROSBoolType is a bool type. 
-"
 Class {
 	#name : #PhaROSBoolType,
 	#superclass : #PhaROSType,
 	#category : #'PhaROS-Types-Basic'
 }
-
-{ #category : #'pseudo-dsl' }
-PhaROSBoolType class >> alterName [
-	^ #Bool
-]
 
 { #category : #serialize }
 PhaROSBoolType class >> dataTypeSize [ 
@@ -33,7 +25,7 @@ PhaROSBoolType >> decode: aFLDecoder [
 		^ true.	
 	].
 	
-	self signal: 'Unexpected value'.
+	RoStUnexpextedValue signal: 'Unexpected value'.
 ]
 
 { #category : #serialize }

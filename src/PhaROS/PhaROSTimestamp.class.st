@@ -1,6 +1,3 @@
-"
-A PhaROSTimestamp is wrapper that makes easy to make the conversions between ROS and pharo
-"
 Class {
 	#name : #PhaROSTimestamp,
 	#superclass : #Object,
@@ -48,54 +45,54 @@ PhaROSTimestamp >> > aDateAndTime [
 	^ timestamp > aDateAndTime asDateAndTime.
 ]
 
-{ #category : #converting }
+{ #category : #'as yet unclassified' }
 PhaROSTimestamp >> asDateAndTime [
 	^ timestamp
 ]
 
-{ #category : #comparing }
+{ #category : #'as yet unclassified' }
 PhaROSTimestamp >> closeTo: anOtherPhaROSTimeStamp [
 	^ timestamp = anOtherPhaROSTimeStamp timestamp.
 	
 ]
 
-{ #category : #converting }
+{ #category : #'as yet unclassified' }
 PhaROSTimestamp >> nanoSeconds [
 	^ timestamp nanoSecond.
 ]
 
-{ #category : #'simple instance creation' }
+{ #category : #'as yet unclassified' }
 PhaROSTimestamp >> nanoSeconds: anAmountOfNSeconds [ 
 	timestamp nanoSeconds: anAmountOfNSeconds 
 ]
 
-{ #category : #accessing }
+{ #category : #'as yet unclassified' }
 PhaROSTimestamp >> seconds [
 	^ timestamp asUnixTime .
 ]
 
-{ #category : #private }
+{ #category : #'as yet unclassified' }
 PhaROSTimestamp >> seconds: anAmountOfSeconds [
 	timestamp seconds: anAmountOfSeconds.
 ]
 
-{ #category : #private }
+{ #category : #'as yet unclassified' }
 PhaROSTimestamp >> seconds: anAmountOfSeconds  nanoSeconds: anAmountOfNSeconds [ 
 	timestamp := (DateAndTime fromUnixTime: anAmountOfSeconds) + (Time seconds: 0 nanoSeconds: anAmountOfNSeconds ).
 	^ timestamp.
 ]
 
-{ #category : #converting }
+{ #category : #'as yet unclassified' }
 PhaROSTimestamp >> secondsUTC [
 	^ timestamp asUnixTime - (timestamp offset asSeconds).
 ]
 
-{ #category : #accessing }
+{ #category : #'as yet unclassified' }
 PhaROSTimestamp >> timestamp [ 
 	^ timestamp.
 ]
 
-{ #category : #accessing }
+{ #category : #'as yet unclassified' }
 PhaROSTimestamp >> timestamp: aDateAndTime [
 	timestamp := aDateAndTime.
 	

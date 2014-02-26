@@ -1,6 +1,3 @@
-"
-It representates the state of the ROS system.
-"
 Class {
 	#name : #PhaROSSystemState,
 	#superclass : #Object,

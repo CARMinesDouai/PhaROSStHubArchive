@@ -1,6 +1,3 @@
-"
-A PhaROSCollectionType is an abstract representation of collections type
-"
 Class {
 	#name : #PhaROSCollectionType,
 	#superclass : #PhaROSType,
@@ -10,14 +7,6 @@ Class {
 	],
 	#category : #'PhaROS-Types-Basic'
 }
-
-{ #category : #'pseudo-dsl' }
-PhaROSCollectionType class >> registerAlterName [
-	" This is an abstract class. Does not apply "
-	self = PhaROSCollectionType ifFalse: [ 
-		super registerAlterName.
-	 ]
-]
 
 { #category : #'as yet unclassified' }
 PhaROSCollectionType >> dataTypeSizeFor: aValue [

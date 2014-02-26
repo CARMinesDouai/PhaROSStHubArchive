@@ -105,11 +105,6 @@ PhaROSNode >> onSubscribe: aNode to: aTopic [
 	"when a node is subscribed to a topic that is broadcasted by this node, you receive this message"
 ]
 
-{ #category : #parameters }
-PhaROSNode >> parameter: aName initialized: aValue [
-	^ transport parameter: aName normalizeParameterName initialized: aValue.
-]
-
 { #category : #output }
 PhaROSNode >> printOn: aStream [
 	aStream nextPutAll: 'Node-', (self name ifNil:'').
@@ -132,18 +127,8 @@ PhaROSNode >> sendTo: aTopicName typedAs: aTypeId a: aMessageConfigurationBlock 
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSNode >> serve: aBlock at: aServiceName typedAs: aTypeID [
-
-	^  transport  serve: aBlock at: aServiceName typedAs: aTypeID.
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSNode >> service: aServiceName [ 
-	^ PhaROSService for: (transport service: aServiceName).
-]
-
-{ #category : #'as yet unclassified' }
 PhaROSNode >> subscriber: aTopicID typedAs: aTypeID [
+
 	^ transport subscriber: aTopicID typedAs: aTypeID
 	
 ]

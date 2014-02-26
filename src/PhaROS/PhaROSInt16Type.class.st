@@ -1,18 +1,10 @@
-"
-A PhaROSInt16Type is a 16 bits represetnation of int 
-"
 Class {
 	#name : #PhaROSInt16Type,
 	#superclass : #PhaROSType,
 	#category : #'PhaROS-Types-Basic'
 }
 
-{ #category : #'pseudo-dsl' }
-PhaROSInt16Type class >> alterName [
-	^ #Int16
-]
-
-{ #category : #accessing }
+{ #category : #'as yet unclassified' }
 PhaROSInt16Type class >> dataTypeSize [
 	^ 2
 ]

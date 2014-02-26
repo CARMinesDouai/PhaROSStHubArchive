@@ -1,16 +1,8 @@
-"
-A PhaROSFloat32Type is Float 32 bits type
-"
 Class {
 	#name : #PhaROSFloat32Type,
 	#superclass : #PhaROSType,
 	#category : #'PhaROS-Types-Basic'
 }
-
-{ #category : #'pseudo-dsl' }
-PhaROSFloat32Type class >> alterName [
-	^ #Float32
-]
 
 { #category : #construction }
 PhaROSFloat32Type class >> dataTypeSize [

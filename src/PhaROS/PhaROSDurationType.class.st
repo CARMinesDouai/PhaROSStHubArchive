@@ -1,20 +1,12 @@
-"
-A PhaROSDurationType is type that represents interval  of time
-"
 Class {
 	#name : #PhaROSDurationType,
 	#superclass : #PhaROSType,
 	#category : #'PhaROS-Types-Basic'
 }
 
-{ #category : #accessing }
+{ #category : #'as yet unclassified' }
 PhaROSDurationType class >> dataTypeSize [
 	^ 8
-]
-
-{ #category : #'pseudo-dsl' }
-PhaROSDurationType class >> registerAlterName [
-	" Name collision. DSL constructor name is at Duration class as extention method "
 ]
 
 { #category : #'as yet unclassified' }

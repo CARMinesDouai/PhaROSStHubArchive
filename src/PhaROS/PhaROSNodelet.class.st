@@ -40,7 +40,8 @@ Class {
 	#name : #PhaROSNodelet,
 	#superclass : #Object,
 	#instVars : [
-		'controller'
+		'controller',
+		'launch'
 	],
 	#category : #'PhaROS-Nodelets'
 }
@@ -53,6 +54,11 @@ PhaROSNodelet class >> buildNodelet [
 { #category : #'as yet unclassified' }
 PhaROSNodelet class >> hasConstructed: aNodeletInstance [
 	^ aNodeletInstance isKindOf: self.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSNodelet class >> package [
+	self subclassResponsibility.
 ]
 
 { #category : #'as yet unclassified' }
@@ -86,7 +92,28 @@ PhaROSNodelet >> dependencies [
 PhaROSNodelet >> finalize [
 
 	controller := nil.
-	
+	launch := nil.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSNodelet >> install [
+	self flag: #infraestructureAndDeployShouldBeSomewhereElse.
+	self types asDictionary keysAndValuesDo: [ : typeName : definition | 
+		
+		[
+			PhaROSTypeBrowser instance definition: self class package packageName, '/', typeName. 
+		] on: Error do: [
+			 self class package deployType: typeName definedAs: definition 
+		].
+	]
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSNodelet >> launch [
+	launch ifNil: [ self dependencies size > 0 ifTrue: [
+			launch := PhaROSSystemLauncher instance launch: [ :b | self configureDependencies: b ]
+		]
+	].
 ]
 
 { #category : #'as yet unclassified' }
@@ -102,4 +129,11 @@ PhaROSNodelet >> nodelets [
 { #category : #'as yet unclassified' }
 PhaROSNodelet >> rosnode [
 	^ self controller node.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSNodelet >> types [
+	"{ #name -> PhaROSCompositeType } asDictionary"
+	^ self subclassResponsibility.
+	
 ]

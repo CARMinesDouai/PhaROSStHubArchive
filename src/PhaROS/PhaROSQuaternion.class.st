@@ -1,6 +1,3 @@
-"
-A PhaROSQuaternion is representation of orientation with imaginary numbers. 
-"
 Class {
 	#name : #PhaROSQuaternion,
 	#superclass : #Object,

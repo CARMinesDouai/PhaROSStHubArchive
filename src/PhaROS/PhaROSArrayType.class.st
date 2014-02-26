@@ -1,21 +1,8 @@
-"
-A PhaROSArrayType is an array of variable length and fixed type.
-"
 Class {
 	#name : #PhaROSArrayType,
 	#superclass : #PhaROSCollectionType,
 	#category : #'PhaROS-Types-Basic'
 }
-
-{ #category : #'pseudo-dsl' }
-PhaROSArrayType class >> named: aName [
-	self error: 'Array need more than just name. Use #named:ofType: instead'
-]
-
-{ #category : #'pseudo-dsl' }
-PhaROSArrayType class >> named: aName ofType: aType [
-	^ PhaROSFieldDefinition named: aName type: (self  ofType: aType forPhaROSTyping new) .
-]
 
 { #category : #construction }
 PhaROSArrayType class >> of: aClass [
@@ -25,11 +12,6 @@ PhaROSArrayType class >> of: aClass [
 { #category : #'as yet unclassified' }
 PhaROSArrayType class >> ofType: aType [
 	^ self new relatedType: aType; yourself .
-]
-
-{ #category : #'pseudo-dsl' }
-PhaROSArrayType class >> registerAlterName [
-	" Name collision. DSL constructor name is at Array class as extention method "
 ]
 
 { #category : #accessing }

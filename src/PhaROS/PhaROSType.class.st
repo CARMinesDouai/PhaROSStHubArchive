@@ -1,6 +1,3 @@
-"
-A PhaROSType is abstract representation of type
-"
 Class {
 	#name : #PhaROSType,
 	#superclass : #Object,
@@ -11,42 +8,14 @@ Class {
 	#category : #'PhaROS-Types-Basic'
 }
 
-{ #category : #'instance creation' }
+{ #category : #construction }
 PhaROSType class >> composite: anArray named: aByteString withConstants: aConstantsArray [
 	^ PhaROSCompositeType named: aByteString definedBy: anArray withConstants: aConstantsArray.
 ]
 
-{ #category : #'pseudo-dsl' }
-PhaROSType class >> constant: aTypeName value: aValue [ 
-	^ PhaROSConstantDefinition named: aTypeName typedAs: self new withValue: aValue.
-]
-
-{ #category : #'instance creation' }
+{ #category : #construction }
 PhaROSType class >> float32: aByteSymbol [ 
 	^ PhaROSFloat32Type new.
-]
-
-{ #category : #private }
-PhaROSType class >> forPhaROSTyping [
-	^ self
-]
-
-{ #category : #'pseudo-dsl' }
-PhaROSType class >> initialize [ 	
-	super initialize.
-	self = PhaROSType ifFalse: [
-		self registerAlterName.
-	]
-]
-
-{ #category : #'pseudo-dsl' }
-PhaROSType class >> named: aName [ 
-	^ PhaROSFieldDefinition named: aName type: self new .
-]
-
-{ #category : #'pseudo-dsl' }
-PhaROSType class >> registerAlterName [
-	Smalltalk at: self alterName put: self.
 ]
 
 { #category : #accessing }

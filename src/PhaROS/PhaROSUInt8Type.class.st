@@ -1,18 +1,10 @@
-"
-A PhaROSUInt8Type   is a 8 bits represetnation of unsigned int 
-"
 Class {
 	#name : #PhaROSUInt8Type,
 	#superclass : #PhaROSType,
 	#category : #'PhaROS-Types-Basic'
 }
 
-{ #category : #'pseudo-dsl' }
-PhaROSUInt8Type class >> alterName [
-	^ #UInt8
-]
-
-{ #category : #accessing }
+{ #category : #serialize }
 PhaROSUInt8Type class >> dataTypeSize [ 
 	^ 1
 ]

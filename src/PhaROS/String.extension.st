@@ -1,20 +1,9 @@
 Extension { #name : #String }
 
 { #category : #'*PhaROS' }
-String class >> constant: aName value: aValue [  
-	
-	^ PhaROSStringType constant: aName value: aValue  
-]
-
-{ #category : #'*PhaROS' }
 String >> evaluateExpression: aByteString [ 
 	self class compile:  'DoIt ^', aByteString.
 	^ self DoIt
-]
-
-{ #category : #'*PhaROS' }
-String class >> forPhaROSTyping [
-		^ PhaROSStringType 
 ]
 
 { #category : #'*PhaROS' }
@@ -49,12 +38,6 @@ String >> format [
 ]
 
 { #category : #'*PhaROS' }
-String class >> named: aName [ 
-	"This extention method is related wih PhaROS-Types-DSL package. Is for type definition from image side "
-	^PhaROSStringType named: aName
-]
-
-{ #category : #'*PhaROS' }
 String >> normalizeFrame [
 	
 	^ (self at: 1 ) = $/ ifTrue: [
@@ -63,25 +46,4 @@ String >> normalizeFrame [
 		self.
 	   ].
 	
-]
-
-{ #category : #'*PhaROS' }
-String >> normalizeParameterName [
-		| normalizedName  |
-	normalizedName := self.
-	
-	normalizedName first = $/ ifFalse: [ 
-		normalizedName := '/', normalizedName.
-	].
-	normalizedName last = $/ ifFalse: [ 
-		normalizedName := normalizedName, '/'.	
-	 ].
-	[ (normalizedName indexOf:'//') = 0] whileFalse: [ normalizedName := normalizedName copyReplaceAll: '//' with: '/'  ].
-
-	^ normalizedName.
-]
-
-{ #category : #'*PhaROS' }
-String class >> parameterClass [
-	^ String
 ]

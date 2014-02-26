@@ -1,10 +1,7 @@
-"
-A PhaROSGeometryTransformations is an util for transforming between kinds of orientations
-"
 Class {
 	#name : #PhaROSGeometryTransformations,
 	#superclass : #Object,
-	#category : #'PhaROS-Util-Geometry'
+	#category : #'PhaROS-Util'
 }
 
 { #category : #'as yet unclassified' }

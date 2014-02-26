@@ -1,18 +1,10 @@
-"
-A PhaROSFloat64Type is Float 64 bits type 
-"
 Class {
 	#name : #PhaROSFloat64Type,
 	#superclass : #PhaROSType,
 	#category : #'PhaROS-Types-Basic'
 }
 
-{ #category : #'pseudo-dsl' }
-PhaROSFloat64Type class >> alterName [
-	^ #Float64
-]
-
-{ #category : #accessing }
+{ #category : #'as yet unclassified' }
 PhaROSFloat64Type class >> dataTypeSize [
 	^ 8
 ]

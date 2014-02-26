@@ -1,11 +1,6 @@
 Extension { #name : #Duration }
 
 { #category : #'*PhaROS' }
-Duration class >> named: aName [ 
-	^ PhaROSDurationType named: aName
-]
-
-{ #category : #'*PhaROS' }
 Duration >> nanoSecondsField [ 
 	^nanos.
 ]

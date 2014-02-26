@@ -10,7 +10,7 @@ Class {
 { #category : #'instance creation' }
 PhaROSProxy class >> url: urlString [
 	|url|
-	url := ZnUrl fromString: urlString.
+	url := Url absoluteFromText: urlString.
 	^self new
 		url: url;
 		yourself

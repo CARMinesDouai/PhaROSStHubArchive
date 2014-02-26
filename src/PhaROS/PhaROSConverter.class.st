@@ -1,6 +1,3 @@
-"
-A PhaROSConverter is an adaption-polimorifc object that make conversions between an object of one type to other type. This is for makeing easy go from a generated type to a business-domain object
-"
 Class {
 	#name : #PhaROSConverter,
 	#superclass : #Object,
