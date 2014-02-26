@@ -294,6 +294,66 @@ ConfigurationOfPureROS >> version100Beta: spec [
 
 ]
 
+{ #category : #demo }
+ConfigurationOfPureROS >> version100Kompai: spec [ 
+	<version: 'kompai' imports: #('1.0-baseline') >
+	"Demo for kompai node"
+	spec for: #common do: [
+		spec blessing: #demo.
+		spec author: 'SantiagoBragagnolo'.
+		spec timestamp: '26/02/2014 12:00'.
+		spec 
+			project: 'PhaROS' with: 'Demo';
+			project: 'PureNG' with: '1.0-Beta';
+			package: 'TaskIT' with: 'TaskIT-SantiagoBragagnolo.16';
+			package: 'StarGazer' with: 'StarGazer-SantiagoBragagnolo.79';
+			package: 'PureROS' with: 'PureROS-SantiagoBragagnolo.144'.
+
+		].
+
+
+]
+
+{ #category : #demo }
+ConfigurationOfPureROS >> version100Robulab: spec [ 
+	<version: 'robulab' imports: #('1.0-baseline') >
+	"Demo for kompai node"
+	spec for: #common do: [
+		spec blessing: #demo.
+		spec author: 'SantiagoBragagnolo'.
+		spec timestamp: '26/02/2014 12:00'.
+		spec 
+			project: 'PhaROS' with: 'DemoRobulab';
+			project: 'PureNG' with: '1.0-Beta';
+			package: 'TaskIT' with: 'TaskIT-SantiagoBragagnolo.16';
+			package: 'StarGazer' with: 'StarGazer-SantiagoBragagnolo.79';
+			package: 'PureROS' with: 'PureROS-SantiagoBragagnolo.666'.
+
+		].
+
+
+]
+
+{ #category : #demo }
+ConfigurationOfPureROS >> version100Stargazer: spec [ 
+	<version: 'robulab' imports: #('1.0-baseline') >
+	"Demo for kompai node"
+	spec for: #common do: [
+		spec blessing: #demo.
+		spec author: 'SantiagoBragagnolo'.
+		spec timestamp: '26/02/2014 12:00'.
+		spec 
+			project: 'PhaROS' with: 'Demo';
+			project: 'PureNG' with: '1.0-Beta';
+			package: 'TaskIT' with: 'TaskIT-SantiagoBragagnolo.16';
+			package: 'StarGazer' with: 'StarGazer-SantiagoBragagnolo.demo';
+			package: 'PureROS' with: 'PureROS-SantiagoBragagnolo.144'.
+
+		].
+
+
+]
+
 { #category : #'as yet unclassified' }
 ConfigurationOfPureROS >> versionDemo2: spec [ 
 	<version: 'Demo-2' imports: #('1.0-baseline') >
