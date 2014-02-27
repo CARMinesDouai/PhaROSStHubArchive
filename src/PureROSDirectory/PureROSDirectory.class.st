@@ -4,6 +4,31 @@ Class {
 	#category : #PureROSDirectory
 }
 
+{ #category : #packages }
+PureROSDirectory class >> caireMetacelloPackage [
+	^ { 
+			#name -> 'caire' .
+			#description -> 'Caire Package' . 
+			#license ->  'MIT'  .
+			#version -> '0.1.0' .
+			#maintainer -> ({ 
+				#name-> 'Santiago Bragagnolo' . 
+				#email -> 'santiagobragagnolo@gmail.com' 
+			}  asDictionary) .
+			#author -> ({  
+				#name-> 'Santiago Bragagnolo' . 
+				#email -> 'santiagobragagnolo@mail.com'  
+			} asDictionary) .
+			#metacello -> ({ 
+				#url -> 'http://car.mines-douai.fr/squeaksource/Pure' . 
+				#configurationOf -> 'ConfigurationOfPureROS' . 
+				#package -> 'PureROSPackageCaire' .
+				#needsCredentials -> true. 
+			} asDictionary)
+		 } asDictionary 
+	
+]
+
 { #category : #util }
 PureROSDirectory class >> deployUnitFor: aCriteria [
 	^ self deployUnits detect: aCriteria ifNone: [ self error: 'There is not unit for the given criteria' ].
@@ -29,6 +54,7 @@ PureROSDirectory class >> deployUnitsMetadata [
 	
 		self kompaiMetacelloPackage .
 		self robulabMetacelloPackage .	
+		self caireMetacelloPackage.
 	 }
 ]
 
