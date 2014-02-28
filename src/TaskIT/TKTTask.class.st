@@ -36,6 +36,73 @@ The message #doIt will execute the task as a new pharo process. As this executio
 TKTTask implements the #value: template method with hooks to be overriden by its subclasses.
   - #setUp allows to execute a piece of code before the task is executed
   - #tearDown allows to make a cleanup after the task has been executed
+
+
+
+
+
+
+
+
+
+
+=============================
+
+
+!!!Customizing Tasks
+
+
+	When you need to customize a task, the most important thing is to mind the main invocation method. 
+	
+[[[  
+runOnRunner: aRunner withFuture: aFuture
+
+	| value |
+	self setUpOnRunner: aRunner withFuture: aFuture.
+	[
+		[
+			value := self executeWithFuture: aFuture. 
+		] on: Error do: [ : exception |
+			^ aRunner deployError: exception intoFuture: aFuture.
+		].
+		aRunner deployValue: value intoFuture: aFuture.
+	] ensure: [
+		self tearDownOnRunner: aRunner withFuture: aFuture.
+		aRunner noteFutureHasFinished: aFuture.
+	].
+]]]
+
+The task execution life cycle is defined here. 
+	
+It has a setup, execution and teardown	 time that is always executed. 
+In this method we also have two important parts the deploy of the result (success or error) and the notification of a future as finished. (The future window is not just the task running, it is all the task execution life time. From the setup to the teardown).
+
+So, if you need a task to setUp resources, or have some cleanup post processing, in the same process line, do not hesitate in subclassing and using this prepared hooks.  
+
+[[[
+TKTSubClassedTask>>#setUpOnRunner: aRunner withFuture: aFuture.
+TKTSubClassedTask>>#tearDownOnRunner: aRunner withFuture: aFuture.
+]]]
+
+By other side, if what you need is to change the execution it self (Maybe the main invocation method is not really suitable for you), remember always to notice the runner about the finishing of an execution, by sending the proper notification inside your overridden method.
+
+[[[
+TKTSubClassedTask>>#runOnRunner: aRunner withFuture: aFuture
+	""...""
+	aRunner noteFutureHasFinished: aFuture.
+	""...""
+]]]
+
+
+
+
+
+
+
+
+
+
+
 "
 Class {
 	#name : #TKTTask,

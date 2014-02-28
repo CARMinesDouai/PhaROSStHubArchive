@@ -190,11 +190,6 @@ TKTWorker >> timeout: aSmallInteger [
 	^ workingQueue timeout: aSmallInteger 
 ]
 
-{ #category : #'initialize-release' }
-TKTWorker >> workQueue: aQueue [
-	workingQueue= aQueue
-]
-
 { #category : #running }
 TKTWorker >> workingQueue: aQueue [
 	workingQueue := aQueue.

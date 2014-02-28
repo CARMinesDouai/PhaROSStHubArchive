@@ -80,12 +80,6 @@ TKTLazyResult >> doesNotUnderstand: aMessage [
 	
 ]
 
-{ #category : #finalization }
-TKTLazyResult >> finalize [ 
-	future finalize.
-
-]
-
 { #category : #'initialize-release' }
 TKTLazyResult >> initialize [
 	super initialize.

@@ -46,6 +46,11 @@ TKTTaskDispatcher class >> reset [
 	TaskInstance := nil.
 ]
 
+{ #category : #'initialize-release' }
+TKTTaskDispatcher >> addWorker [
+	workers add: ((TKTWorker spawn:sharedQueue) timeout: 5000; yourself )
+]
+
 { #category : #initialize }
 TKTTaskDispatcher >> destroy [
 	workers do: #stop.
@@ -64,7 +69,24 @@ TKTTaskDispatcher >> initialize [
 	super initialize.
 	workers := Set new.
 	sharedQueue := TKTPriorityQueue new. 
-	workers 	add: ((TKTWorker spawn:sharedQueue) timeout: 5000; yourself ); 
-				add: ((TKTWorker with: Processor systemBackgroundPriority usingQueue: sharedQueue) timeout: 300; yourself ).
+	self addWorker; addWorker. 
 
+]
+
+{ #category : #'initialize-release' }
+TKTTaskDispatcher >> removeWorker [
+	| selected finalizationQueue |
+	selected := workers anyOne.
+	finalizationQueue := TKTPriorityQueue new.
+	finalizationQueue add: [ selected stop ].
+	
+	selected workingQueue: finalizationQueue. 
+	workers remove: selected.
+	
+^ selected
+]
+
+{ #category : #'initialize-release' }
+TKTTaskDispatcher >> workersAmount [
+	^ workers size.
 ]
