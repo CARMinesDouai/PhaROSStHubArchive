@@ -1,3 +1,6 @@
+"
+A PhaROSFilter is an adaption-polimorifc object that on the adaption process it returns the result of sendinf an unary message to the receptor. This is good for going through the structure of the ROSTypes, which are quite deep
+"
 Class {
 	#name : #PhaROSFilter,
 	#superclass : #Object,

@@ -28,7 +28,7 @@ PhaROSExternalNode >> checkConnection [
 { #category : #accessing }
 PhaROSExternalNode >> finalize [
 	[
-	socket close.]  on: Error do:[ ].
+	socket closeAndDestroy:20 .]  on: Error do:[ ].
 ]
 
 { #category : #accessing }

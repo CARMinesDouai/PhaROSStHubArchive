@@ -1,10 +1,18 @@
+"
+A PhaROSInt32Type  is a 32 bits represetnation of int 
+"
 Class {
 	#name : #PhaROSInt32Type,
 	#superclass : #PhaROSType,
 	#category : #'PhaROS-Types-Basic'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'pseudo-dsl' }
+PhaROSInt32Type class >> alterName [
+	^ #Int32
+]
+
+{ #category : #accessing }
 PhaROSInt32Type class >> dataTypeSize [
 	^ 4
 ]

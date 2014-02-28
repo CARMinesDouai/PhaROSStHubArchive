@@ -1,10 +1,18 @@
+"
+A PhaROSUInt64Type  is a 64 bits represetnation of unsigned int 
+"
 Class {
 	#name : #PhaROSUInt64Type,
 	#superclass : #PhaROSType,
 	#category : #'PhaROS-Types-Basic'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'pseudo-dsl' }
+PhaROSUInt64Type class >> alterName [
+	^ #UInt64
+]
+
+{ #category : #accessing }
 PhaROSUInt64Type class >> dataTypeSize [
 	^ 8
 ]

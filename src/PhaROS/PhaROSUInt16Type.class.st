@@ -1,8 +1,16 @@
+"
+A PhaROSUInt16Type  is a 16 bits represetnation of unsigned int 
+"
 Class {
 	#name : #PhaROSUInt16Type,
 	#superclass : #PhaROSType,
 	#category : #'PhaROS-Types-Basic'
 }
+
+{ #category : #'pseudo-dsl' }
+PhaROSUInt16Type class >> alterName [
+	^ #UInt16
+]
 
 { #category : #accessing }
 PhaROSUInt16Type class >> dataTypeSize [
@@ -14,7 +22,7 @@ PhaROSUInt16Type >> decode: aFLDecoder [
 	[
 		^ aFLDecoder nextEncodedUint16.
 	] on: Error do: [
-		RoStUnexpextedValue signal: 'cannot load value'.
+		self signal: 'cannot load value'.
 	].
 ]
 

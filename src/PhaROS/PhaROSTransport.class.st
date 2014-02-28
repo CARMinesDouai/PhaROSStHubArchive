@@ -20,8 +20,14 @@ PhaROSTransport class >> domain: anIP xml: aPort tcp: otherPort master: aMaster 
 ]
 
 { #category : #publishing }
+PhaROSTransport >> blacklist: anUrl [
+
+	blacklist at: anUrl ifPresent: [ : val | blacklist at:anUrl put: val +1 ] ifAbsent:[ blacklist at: anUrl put: 1].
+]
+
+{ #category : #publishing }
 PhaROSTransport >> comm [
-	^ comm ref.
+	^ comm
 ]
 
 { #category : #accessing }
@@ -69,13 +75,19 @@ PhaROSTransport >> finalize [
 
 { #category : #publishing }
 PhaROSTransport >> initialize [ 
-	blacklist := Set new.
+	blacklist := Dictionary new.
+]
+
+{ #category : #publishing }
+PhaROSTransport >> isBlackListed: anUrl [
+	^ blacklist at: anUrl ifPresent: [ : val | val > 3 ] ifAbsent: [ false ].
 ]
 
 { #category : #accessing }
 PhaROSTransport >> isPublisherOf:  aTopic [
+[
  	^ (master lookupTopic: aTopic) isAPublisher: node. 
-	
+] on:Error do: [ ^ false ].	
 ]
 
 { #category : #publishing }
@@ -98,6 +110,56 @@ PhaROSTransport >> node: aNode [
 	node := aNode 
 ]
 
+{ #category : #parameters }
+PhaROSTransport >> parameter: aName [ 
+	^ master parameter: aName.
+]
+
+{ #category : #parameters }
+PhaROSTransport >> parameter: aName initialized: aValue [
+	^ (master parameter: aName asString initialized: aValue for: node name subscribingTo: comm url) transport: self; yourself .
+]
+
+{ #category : #publishing }
+PhaROSTransport >> processServiceRequest: aServiceID for: aCallerID with: aSocketStream beingPersistent: isPersistent forProbe: isProbe [
+	| service handshakeMessage request response  |
+	
+	isPersistent ifTrue: [ 
+		aSocketStream  close. 
+		self error: 'Persistent connection is not already developed'.	
+	 ].
+	
+	service := master lookupServiceExposer: aServiceID.
+	
+	
+	handshakeMessage := PhaROSHSMessageHeader newServiceWith:  [ :msg |
+		msg callerId: service owner name.
+		msg service: service name.
+		msg md5Sum: service md5Sum.
+		msg type: service type typeName.
+		msg requestType: service requestType typeName.
+		msg responseType: service responseType typeName.
+	].
+
+	aSocketStream nextPutAll: (PhaROSHSMessageEncoder encode:handshakeMessage) ; flush.
+
+
+	isProbe ifFalse: [ 
+		request := service requestType newPacket.
+		
+		service requestType isZeroSized ifFalse: [
+			request loadStream: aSocketStream.
+		].
+	
+		response :=  service responseType newPacket.
+		service process: request value with: response value.
+		
+		[aSocketStream nextPutAll: ({1}, response dump) ; flush ; close. ] shootIt.
+	 ] ifTrue: [ aSocketStream close ] .
+	
+	
+]
+
 { #category : #publishing }
 PhaROSTransport >> publisher: aTopicID typedAs: aTypeID [
 	
@@ -108,19 +170,23 @@ PhaROSTransport >> publisher: aTopicID typedAs: aTypeID [
 PhaROSTransport >> publisherNode: anURL to: aTopic [
 	
 	^ (aTopic isLocalPublisher: anURL) ifTrue: [
+		
 			self localPublisherNode: anURL to: aTopic. 
 		] ifFalse: [
+		
 			self remotePublisherNode: anURL to: aTopic. 
 	   ].
 ]
 
 { #category : #publishing }
 PhaROSTransport >> remotePublisherNode: anURL to: aTopic [
-	| socket  message connectionMessage|
+	| socket  message connectionMessage stream |
+	
 	
 	socket := self comm resolveSocketTo: aTopic of: anURL for: node.
 		
-	message := PhaROSHSMessage newSubscriberWith:[
+	
+	message := PhaROSHSMessageHeader newSubscriberWith:[
 		:msg |
 		msg callerId: node name	;
 				topic: aTopic name;
@@ -128,12 +194,16 @@ PhaROSTransport >> remotePublisherNode: anURL to: aTopic [
 				type: aTopic type.
 				
 	].
+	
 	message sendTo: socket .
 	
-	connectionMessage := PhaROSHSMessage newSubscriberMessageFrom: socket receiveDataWithTimeout.
+	
+	stream := SocketStream on: socket.
+	stream binary. 
+	connectionMessage := PhaROSHSMessageHeader newSubscriberMessageFrom:stream.
 	
 	
-	^ PhaROSExternalPublisherNode new xmlurl:anURL;  socket: socket; topic: aTopic; yourself.
+	^ PhaROSExternalPublisherNode new xmlurl:anURL;  socket: socket; stream: stream; topic: aTopic; yourself.
 ]
 
 { #category : #publishing }
@@ -142,12 +212,14 @@ PhaROSTransport >> resolvePublishersFor: aTopic [
 	
 	
 	urls := (master registerSubscriber: node name to: aTopic name with: aTopic type andCallerUri: self comm url) asSet.
+	
 	channel := aTopic subscribingChannelFor: node.
 	
 	^ urls collect: [ :url |
-		(blacklist includes: url ) ifFalse: [
+		(self isBlackListed: url ) ifFalse: [
 		channel publishers detect: [ : p | p xmlurl = url ] ifNone: [ 
 			| publisherNode |
+			
 			[
 				publisherNode := self publisherNode: url to: aTopic .
 				publisherNode channel: channel.
@@ -155,13 +227,31 @@ PhaROSTransport >> resolvePublishersFor: aTopic [
 				publisherNode setup.
 			] on: Error do: [: e | 
 				self log: ' Error connecting to ', url.
-				blacklist add: url.
+				self log: e messageText.
+				self blacklist: url.
 				publisherNode := nil.
 			]
 		]
 	]
 	] thenSelect: #notNil.
 	
+]
+
+{ #category : #services }
+PhaROSTransport >> serve: aBlock at: aServiceName typedAs: aTypeID [ 
+	| srv |
+	
+	srv := PhaROSServiceExposer new: aServiceName typedAs: aTypeID. 
+	srv owner: node.
+	master registerService: srv at: self comm rosrpc for: self comm url with: node name.
+	srv serve: aBlock.
+	
+	^ srv.
+]
+
+{ #category : #services }
+PhaROSTransport >> service: aServiceName [
+	^ master lookupService: aServiceName with: node name.
 ]
 
 { #category : #publishing }
@@ -172,7 +262,7 @@ PhaROSTransport >> subscribe: aNodeName with: aSocket to: aTopicID [
 	topic := master lookupTopic: aTopicID.
 	channel := (topic  publishingChannelFor: node).
 	
-	handshakeMessage := PhaROSHSMessage newPublisherWith: [ :msg |
+	handshakeMessage := PhaROSHSMessageHeader newPublisherWith: [ :msg |
 		msg callerId: channel owner name.
 		msg md5Sum: topic md5Sum.
 		msg type: topic type.
@@ -189,4 +279,9 @@ PhaROSTransport >> subscribe: aNodeName with: aSocket to: aTopicID [
 { #category : #subscribing }
 PhaROSTransport >> subscriber: aTopicID typedAs: aTypeID [
 	^ ((master lookupTopic: aTopicID  typedAs: aTypeID) subscribingChannelFor: node throught: self). 
+]
+
+{ #category : #parameters }
+PhaROSTransport >> sync: aParameter [
+	^ master syncParameter: aParameter for: comm name.
 ]

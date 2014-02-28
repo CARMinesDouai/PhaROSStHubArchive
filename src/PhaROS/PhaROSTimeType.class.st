@@ -1,12 +1,20 @@
+"
+A PhaROSTimeType is a time stamp type.
+"
 Class {
 	#name : #PhaROSTimeType,
 	#superclass : #PhaROSType,
 	#category : #'PhaROS-Types-Basic'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSTimeType class >> dataTypeSize [
 	^ 8
+]
+
+{ #category : #'pseudo-dsl' }
+PhaROSTimeType class >> registerAlterName [
+	" Name collision. DSL constructor name is at Time class as extention method "
 ]
 
 { #category : #'as yet unclassified' }

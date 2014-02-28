@@ -22,7 +22,10 @@ Class {
 	#instVars : [
 		'masterXmlRpc',
 		'topics',
-		'nodes'
+		'nodes',
+		'services',
+		'serviceExposers',
+		'parameters'
 	],
 	#classVars : [
 		'MasterInstances'
@@ -32,12 +35,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSMaster class >> initialize [ 
-	MasterInstances := Dictionary new. 
-]
-
-{ #category : #construction }
-PhaROSMaster class >> instances [
-	^ MasterInstances.
+	MasterInstances := WeakArray new
 ]
 
 { #category : #service }
@@ -45,43 +43,16 @@ PhaROSMaster class >> localhost [
 	^ self url: 'http://127.0.0.1:11311/'.
 ]
 
-{ #category : #service }
-PhaROSMaster class >> stopAndUnregisterUrl: anUrlString [
-	MasterInstances at: anUrlString ifPresent: [
-		: master | 
-		master stop.
-		MasterInstances removeKey: anUrlString.
-	].
-	Smalltalk garbageCollect.
-
-]
-
-{ #category : #service }
-PhaROSMaster class >> stopLocalhost [
-	^ self stopAndUnregisterUrl: 'http://127.0.0.1:11311/'.
-]
-
-{ #category : #construction }
-PhaROSMaster class >> unregisterUrl: anUrlString [ 
-	MasterInstances at: anUrlString ifPresent: [
-		MasterInstances removeKey: anUrlString .
-	]
-]
-
 { #category : #'as yet unclassified' }
 PhaROSMaster class >> url: anUrl [ 
-	^MasterInstances at: anUrl ifAbsentPut:[
-		self new url: anUrl; yourself.
-	]
-	
+	^ self new url: anUrl; yourself 
 
 ]
 
-{ #category : #'API-Data-Mutators' }
-PhaROSMaster >> deleteParam: aCallerId named: aParameterName [ 
-	^ masterXmlRpc deleteParam: aCallerId named: aParameterName.
-	
-	
+{ #category : #registration }
+PhaROSMaster >> finalize [
+	super finalize.
+	self stop.
 ]
 
 { #category : #'API-Data-Accessors' }
@@ -171,7 +142,9 @@ PhaROSMaster >> initialize [
 	super initialize.
 	nodes := Dictionary new. 
 	topics := Dictionary new.
-
+	services := Dictionary new.
+	serviceExposers := Dictionary new.
+	parameters := Dictionary new.
 ]
 
 { #category : #API }
@@ -192,10 +165,21 @@ PhaROSMaster >> lookupNode: nodeName with: aCallerId [
 
 { #category : #API }
 PhaROSMaster >> lookupService: serviceName with: aCallerId [
-	| serviceUriString |
-	serviceUriString := masterXmlRpc lookupService: serviceName with: aCallerId.
-	^PhaROSServiceProxy serviceName: serviceName uriFrom: serviceUriString
 	
+	^ services at: serviceName ifAbsentPut: [
+		| serviceUriString |
+		(serviceExposers includesKey: serviceName ) ifTrue: [ 
+			serviceExposers at: serviceName 
+		 ] ifFalse: [
+			serviceUriString := masterXmlRpc lookupService: serviceName with: aCallerId.
+			PhaROSServiceProxy serviceName: serviceName uriFrom: serviceUriString.
+		]
+	].
+]
+
+{ #category : #API }
+PhaROSMaster >> lookupServiceExposer: aServiceID [
+	^ serviceExposers at: aServiceID 
 ]
 
 { #category : #'API-Data-Accessors' }
@@ -219,6 +203,35 @@ PhaROSMaster >> lookupTopic: aTopicName typedAs: aTypeId [
 	^ topic.
 ]
 
+{ #category : #'API-Parameter-Server' }
+PhaROSMaster >> parameter: aName [ 
+
+	 ^parameters at: aName ifAbsentPut:[ parameters at: aName, '/']. 
+	
+]
+
+{ #category : #'API-Parameter-Server' }
+PhaROSMaster >> parameter: aName initialized: aValue for: aCallerId subscribingTo: anXMLRpcUrl [
+	| parameter |
+	 parameter := parameters at: aName ifAbsentPut: [
+		| build | 
+		build := (masterXmlRpc hasParam: aName for: aCallerId ) ifTrue:[
+			PhaROSParameter named: aName initialized: (masterXmlRpc getParam: aName for: aCallerId) .
+		] ifFalse: [ 
+			masterXmlRpc setParam: aName with: aValue for: aCallerId. 
+			PhaROSParameter named: aName initialized: aValue .
+		 ].
+		masterXmlRpc subscribeParam: aName callingBack: anXMLRpcUrl for: aCallerId. 
+		build
+	 ].
+
+	(parameter checkIs: aValue) ifFalse: [
+		self error:'The parameter is not of type ', aValue class asString. 	
+	].
+	^ parameter.
+	
+]
+
 { #category : #'as yet unclassified' }
 PhaROSMaster >> registerNode: aNode [
 	nodes at: aNode name put: aNode .
@@ -231,14 +244,21 @@ PhaROSMaster >> registerPublisher: aCallerId to: aTopicName with: aTopicMessageT
 ]
 
 { #category : #'API-Registration' }
-PhaROSMaster >> registerSubscriber: aCallerId to: aTopicName with: aTopicMessageType andCallerUri: anUri [
-	^ masterXmlRpc registerSubscriber: aCallerId to: aTopicName with: aTopicMessageType andCallerUri: anUri.
+PhaROSMaster >> registerService: aService at: aROSRPCUrl for: aXMLRPCUrl with: aCallerId [ 
+	serviceExposers at: aService name ifPresent: [  self error: 'Unexpected double service register' ].
+	
+	( masterXmlRpc registerService: aService name at: aROSRPCUrl for: aXMLRPCUrl with: aCallerId) = 1 ifTrue:[
+		serviceExposers at: aService name put: aService.
+		^ aService	
+	 ].
+	self error: 'Error registering service'.
 
 ]
 
-{ #category : #'API-Data-Mutators' }
-PhaROSMaster >> setParam: aCallerId named: aParameterName with: anObject [
-	^ masterXmlRpc setParam: aCallerId named: aParameterName with: anObject.
+{ #category : #'API-Registration' }
+PhaROSMaster >> registerSubscriber: aCallerId to: aTopicName with: aTopicMessageType andCallerUri: anUri [
+	^ masterXmlRpc registerSubscriber: aCallerId to: aTopicName with: aTopicMessageType andCallerUri: anUri.
+
 ]
 
 { #category : #service }
@@ -250,15 +270,14 @@ PhaROSMaster >> stop [
 	Smalltalk garbageCollectMost.
 ]
 
-{ #category : #service }
-PhaROSMaster >> stopAndUnregister [
-
-	^ PhaROSMaster stopAndUnregisterUrl: masterXmlRpc url asString.
+{ #category : #'API-Parameter-Server' }
+PhaROSMaster >> syncParameter: aParameter for: aCallerId [
+	^ masterXmlRpc setParam: aParameter name with: aParameter get for: aCallerId 
 ]
 
 { #category : #accessing }
 PhaROSMaster >> typeFactory: aTypeId [ 
-	^ PhaROSTypeBrowser instance definition: aTypeId
+	^ PhaROSTypeBrowser instance type: aTypeId
 ]
 
 { #category : #registration }

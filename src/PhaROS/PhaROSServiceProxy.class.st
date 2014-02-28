@@ -8,7 +8,9 @@ Class {
 	#instVars : [
 		'uri',
 		'serviceName',
-		'md5sum'
+		'md5sum',
+		'requestType',
+		'responseType'
 	],
 	#category : #'PhaROS-Network-XmlRpc'
 }
@@ -18,6 +20,7 @@ PhaROSServiceProxy class >> serviceName: serviceName uriFrom: uriString [
 	^self new
 		serviceName: serviceName;
 		uriFrom: uriString;
+		loadType;
 		yourself
 ]
 
@@ -28,21 +31,42 @@ PhaROSServiceProxy >> bytesForMessageWithArgs: args [
 
 { #category : #calling }
 PhaROSServiceProxy >> call [
-	^self callWithArgs: #()
+	^self call: [ : m | ]
 ]
 
 { #category : #calling }
-PhaROSServiceProxy >> callWithArgs: args [
-	| socketStr messageBytes response |
-	args size > 0 ifTrue: [
-		Error signal: ' Un implemented call to service with arguments '	.
-	].
-	messageBytes := self bytesForMessageWithArgs: args.
+PhaROSServiceProxy >> call: aBlock [
+
+	| socketStr messageBytes response request |
+
+	request := requestType newPacket.
+	
+	aBlock value: request value. 
+	
+	messageBytes := (PhaROSHSMessageEncoder encode: (self messageHeader)), request dump.
+	
 	socketStr := SocketStream openConnectionToHostNamed: self hostName port: self port.
-	socketStr sendCommand: messageBytes, #[0 0 0 0].
-	response := socketStr upToEnd.
-	socketStr close.
-	^PhaROSHSMessage newServiceMessageFrom: response asByteArray
+	^
+	[ 
+		|  header stream |
+
+		socketStr sendCommand: messageBytes.
+		response := responseType newPacket.
+		stream := socketStr upToEnd asByteArray readStream.
+		socketStr close.
+		header := PhaROSHSMessageHeader newServiceClientMessageFrom: stream.
+		
+		header persistent ifTrue: [  self error:' Persistent service is not implemented yet'   ].
+		
+		
+		self flag: #thisStreamNextIsABug. "BUG"
+		stream next.
+		
+		response loadStream: stream.
+		response value.
+	] shootIt asResult.
+
+
 ]
 
 { #category : #accessing }
@@ -56,20 +80,41 @@ PhaROSServiceProxy >> hostName [
 ]
 
 { #category : #calling }
+PhaROSServiceProxy >> loadType [
+
+	| socketStr messageBytes header types |
+
+	
+	messageBytes := (PhaROSHSMessageEncoder encode: (self messageHeaderForBrowseType)), #[0 0 0 0].
+	
+	socketStr := SocketStream openConnectionToHostNamed: self hostName port: self port.
+	socketStr sendCommand: messageBytes.
+	header := PhaROSHSMessageHeader newServiceClientMessageFrom: (socketStr upToEnd ) asByteArray readStream.
+	socketStr close.
+
+	types := (PhaROSTypeBrowser instance serviceType: header type) .
+	"self assert: header md5Sum  = types md5Sum description: 'Incompatible type hash'. "
+	requestType :=  types request.
+	responseType := types response.
+	md5sum := header md5Sum.
+	
+
+]
+
+{ #category : #calling }
 PhaROSServiceProxy >> md5Sum [
 	md5sum  ifNil: [ md5sum := 'd41d8cd98f00b204e9800998ecf8427e' ] .
 	^md5sum.
 ]
 
 { #category : #calling }
-PhaROSServiceProxy >> md5sum: aSum [
+PhaROSServiceProxy >> md5Sum: aSum [
 	md5sum := aSum.
 ]
 
 { #category : #calling }
-PhaROSServiceProxy >> messageWithArgs: args [
-
-	^ PhaROSHSMessage newServiceClientWith: [
+PhaROSServiceProxy >> messageHeader [ 
+	^ PhaROSHSMessageHeader newServiceClientWith: [
 		:header |
 		header callerId: self callerId;
 				md5Sum: self md5Sum;
@@ -77,6 +122,19 @@ PhaROSServiceProxy >> messageWithArgs: args [
 	   ].
 		
 
+]
+
+{ #category : #calling }
+PhaROSServiceProxy >> messageHeaderForBrowseType [
+
+	^ PhaROSHSMessageHeader newServiceClientWith: [
+		:header |
+		header callerId: self callerId;
+				md5Sum: '*';
+				probe: '1';
+				service: self serviceName
+	   ].
+	 
 ]
 
 { #category : #accessing }

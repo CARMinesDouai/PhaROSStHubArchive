@@ -1,8 +1,16 @@
+"
+A PhaROSInt8Type i is a 8 bits represetnation of int. Also used as byte or char.
+"
 Class {
 	#name : #PhaROSInt8Type,
 	#superclass : #PhaROSType,
 	#category : #'PhaROS-Types-Basic'
 }
+
+{ #category : #'pseudo-dsl' }
+PhaROSInt8Type class >> alterName [
+	^ #Int8
+]
 
 { #category : #accessing }
 PhaROSInt8Type class >> dataTypeSize [

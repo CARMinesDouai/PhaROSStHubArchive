@@ -24,7 +24,8 @@ PhaROSCommunicationLayer >> configure [
 						#getBusInfo -> {self -> #getBusInfo: } .
 						#getPid -> { self -> #getPid: } .
 						#requestTopic -> { self -> #requestTopic:for:availableFor: } .
-						#getPublications -> { self -> #getPublications: }
+						#getPublications -> { self -> #getPublications: } .
+						#paramUpdate -> { self -> #from:update:with: }
 					} asXMLRPCHttpModule 
 					at:'/' .
 					
@@ -35,6 +36,12 @@ PhaROSCommunicationLayer >> configure [
 PhaROSCommunicationLayer >> finalize [ 
 	self stop.
 	transport := nil.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSCommunicationLayer >> from: aCallerId update: aParameterName with: aValue [ 
+	(transport parameter: aParameterName normalizeParameterName ) setNotBinded: aValue.
+	^ { 1 . 'Success' . 0 }
 ]
 
 { #category : #'as yet unclassified' }
@@ -66,15 +73,23 @@ PhaROSCommunicationLayer >> ip: anIP [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSCommunicationLayer >> manageIncomingConnection: aMessage with: aSocket [
-	aSocket setOption: 'TCP_NODELAY' value: (aMessage  tcpNodelay).
-	transport subscribe: aMessage callerId with: aSocket to: aMessage topic.
+PhaROSCommunicationLayer >> manageIncomingConnection: aMessageHeader with: aSocketStream [
+	
+	aSocketStream socket setOption: 'TCP_NODELAY' value: (aMessageHeader  tcpNodelay).
+	aMessageHeader subscribeTo: transport with: aSocketStream.
+	
+
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSCommunicationLayer >> requestTopic: aCallerId for:aTopic availableFor: anArrayOfProtocols [
-	(transport isPublisherOf: aTopic) ifTrue: [
-		^ { 1 .  'Protocols' . {  'TCPROS'  .  ip .  tcp }  }	
+
+	^ (transport isPublisherOf: aTopic) ifTrue: [
+		
+		{ 1 .  'Protocols' . {  'TCPROS'  .  ip .  tcp }  }	
+	] ifFalse: [
+		
+		{} 
 	].
 	
 ]
@@ -89,6 +104,12 @@ PhaROSCommunicationLayer >> resolveSocketTo: aTopic of: anURL for: aNode [
 	socket := Socket newTCP.
 	socket connectTo: ( NetNameResolver addressForName:  (tcpConnectionData at: 2) )  port: (tcpConnectionData at: 3).
 	^ socket.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSCommunicationLayer >> rosrpc [
+	^  'rosrpc://', ip, ':', tcp asString , '/'.
+	
 ]
 
 { #category : #'as yet unclassified' }

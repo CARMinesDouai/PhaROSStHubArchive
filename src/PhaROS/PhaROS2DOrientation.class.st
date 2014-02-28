@@ -1,3 +1,6 @@
+"
+A PhaROS2DOrientation is 2D orientation, based on z. 
+"
 Class {
 	#name : #PhaROS2DOrientation,
 	#superclass : #Object,

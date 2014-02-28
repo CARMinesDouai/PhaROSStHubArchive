@@ -1,3 +1,6 @@
+"
+A PhaROSPosition is a 3 dimension position representation
+"
 Class {
 	#name : #PhaROSPosition,
 	#superclass : #Object,
@@ -65,11 +68,6 @@ PhaROSPosition >> approximated: anOtherPosition threshold: anScalar [
 { #category : #printing }
 PhaROSPosition >> asDump [
 	^ 'PhaROSPosition x: {1} y:{2} z:{3}' format:{x asString . y asString . z asString }.
-]
-
-{ #category : #converting }
-PhaROSPosition >> asPoint [
-	^ x @ y 
 ]
 
 { #category : #converting }

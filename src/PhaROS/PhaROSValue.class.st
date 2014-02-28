@@ -1,3 +1,6 @@
+"
+A PhaROSValue is a Value that has it definition in a dictionary. Is used as super class of all the generated classes related with  types.
+"
 Class {
 	#name : #PhaROSValue,
 	#superclass : #Object,
@@ -10,7 +13,6 @@ Class {
 { #category : #'as yet unclassified' }
 PhaROSValue >> asString [ 
 	| string  |	
-		
 		
 	
 	string := self class name, '>>', String crlf, String tab.

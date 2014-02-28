@@ -1,3 +1,6 @@
+"
+A PhaROSRPYOrientation is Roll pitch yaw orientation representation.
+"
 Class {
 	#name : #PhaROSRPYOrientation,
 	#superclass : #Object,
