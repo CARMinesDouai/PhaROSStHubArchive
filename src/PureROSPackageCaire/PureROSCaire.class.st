@@ -2,10 +2,45 @@ Class {
 	#name : #PureROSCaire,
 	#superclass : #PhaROSPackage,
 	#instVars : [
-		'process'
+		'process',
+		'x',
+		'y',
+		'ax',
+		'ay'
 	],
 	#category : #PureROSPackageCaire
 }
+
+{ #category : #'as yet unclassified' }
+PureROSCaire class >> chunkTypeDefinition [
+	^ ROSType message named: 'Chunks' package: 'caire' defined: {
+		UInt16 named: #to .
+		UInt8 named: #value.
+	}  
+
+
+]
+
+{ #category : #'as yet unclassified' }
+PureROSCaire class >> chunksMapTypeDefinition [
+	^ ROSType message named: 'ChunksMapTransport' package: 'caire' defined: {  
+		ROSType definedBy:'std_msgs/Header'   named: #header.
+		ROSType definedBy:'nav_msgs/MapMetaData'   named: #info.
+		Array named: #chunks  ofType: self chunkTypeDefinition .
+	}.
+	
+	
+	
+]
+
+{ #category : #'as yet unclassified' }
+PureROSCaire class >> types [
+	^ { self chunkTypeDefinition  . self chunksMapTypeDefinition }.
+	
+
+
+
+]
 
 { #category : #'as yet unclassified' }
 PureROSCaire >> buildController [ 
@@ -13,6 +48,31 @@ PureROSCaire >> buildController [
 	ctroler :=  PhaROSHandleController home.
 	ctroler nodelets use: CaireNodelet as: #caire.
 	^ ctroler
+	
+]
+
+{ #category : #'as yet unclassified' }
+PureROSCaire >> init [
+	x := 0.0.
+	y := 0.0.
+	ax := 0.0.
+	ay := 0.0.
+]
+
+{ #category : #'as yet unclassified' }
+PureROSCaire >> registerDelta: aVector [
+	|dxM dyM|
+	
+	dxM := aVector x / 12350.
+	dyM := aVector y / 12350.
+	
+	x := x + dxM.
+	y := y + dyM.
+	ax :=dxM / aVector z.
+	ay := dyM / aVector z.
+	Transcript show: '+D:'; show: aVector; cr.
+	Transcript show: '@'; show: x@y; cr.
+	Transcript show: 'Speed:' ; show: ax @ay; cr. 
 	
 ]
 
@@ -62,7 +122,8 @@ PureROSCaire >> scriptMapFusion [
 	mapFusor on: #FusedMapUpdate do: [: updatedMap | 
 		out send: [ :m | updatedMap intoOccupancyGrid: m ].
 	].
-
+	
+	
 		" Sensor processor "
 	self clock tickAt: 1 hz on: ({
 		 ((self controller node buildConnectionFor: '/p3dx0/map') typedAs: 'nav_msgs/OccupancyGrid'; adapted: CaireMap ).
@@ -101,4 +162,18 @@ PureROSCaire >> scriptMappingForExploration [
 		spec relay: '/tf' to: '/pharos/in/tf' named: 'tf_in_relay'.
 	].
 
+]
+
+{ #category : #'as yet unclassified' }
+PureROSCaire >> scriptSmaJerry [
+
+	self init.
+	self nodelets use: SMAJerry as: #jerry.
+
+	self clock tickAt: 50 hz on:( { 
+		 self nodelets jerry. 
+	} asSensors infinityTolerance; for: [ 
+		: vector |
+		self registerDelta:( vector at:1) .
+	 ])
 ]
