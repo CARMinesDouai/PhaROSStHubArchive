@@ -54,21 +54,36 @@ PhaROSConverter >> convertTo: aClass [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSConverter >> ifConfigurationsFor: anArrayConf at: aClass do: aBlock [
+	| pragmas |
+	pragmas :=  (Pragma allNamed: #from:to: in: aClass class) select: [
+		: pragma |  pragma arguments = anArrayConf
+	].
+	pragmas size > 0 ifTrue: [ aBlock value: pragmas ]
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSConverter >> lookUpConverterFrom: aClass to: anOtherClass [
 
-	| pragmas |
+	| apply |
 	
 	converter ifNotNil: [ ^ converter ].
 	
-	pragmas := (Pragma allNamed: #from:to: in: PhaROSConverter class) select: [
-		: pragma |  pragma arguments = { aClass name asSymbol . anOtherClass name asSymbol}.
+	apply := [ : pragmas :class | 
+		pragmas size > 1 ifTrue: [ self warn: 'There is more than one way to convert ', aClass name, ' to ', anOtherClass name ].
+		^  (converter:= [ : aValueToConvert | (pragmas at:1) method valueWithReceiver: class class arguments: { aValueToConvert } ])
 	].
-	pragmas size = 0 ifTrue: [ self error: 'There is not way to convert ', aClass name, ' to ', anOtherClass name ].
-	pragmas size > 1 ifTrue: [ self warn: 'There is more than one way to convert ', aClass name, ' to ', anOtherClass name ].
-	pragmas := pragmas at:1.
-	
-	converter:=  [ : aValueToConvert | pragmas method valueWithReceiver: PhaROSConverter class arguments: { aValueToConvert } ].
-	^ converter. 
+
+	self ifConfigurationsFor: { aClass name asSymbol . anOtherClass name asSymbol} at: anOtherClass do: [ : pragmas | 
+		apply value: pragmas value: anOtherClass 
+	].
+
+	self ifConfigurationsFor: { aClass name asSymbol . anOtherClass name asSymbol} at: PhaROSConverter do: [ : pragmas | 
+		apply value: pragmas value: PhaROSConverter 
+	].
+		
+	self error: 'There is not way to convert ', aClass name, ' to ', anOtherClass name.
+
 ]
 
 { #category : #'as yet unclassified' }

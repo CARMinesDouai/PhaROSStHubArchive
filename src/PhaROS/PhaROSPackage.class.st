@@ -23,11 +23,6 @@ PhaROSPackage >> askUserFor: aString [
 	^ self nodelets io askUserFor: aString.
 ]
 
-{ #category : #'helper thread' }
-PhaROSPackage >> clock [
-	^ PhaROSTickingClock new
-]
-
 { #category : #scripts }
 PhaROSPackage >> controller [
 	^ __ctrl ifNil: [ __ctrl := self buildController ].

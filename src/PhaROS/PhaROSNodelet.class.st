@@ -55,51 +55,51 @@ PhaROSNodelet class >> hasConstructed: aNodeletInstance [
 	^ aNodeletInstance isKindOf: self.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'initialize-release' }
 PhaROSNodelet >> configure [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSNodelet >> configureDependencies: aLaunchSpec [
 	self dependencies do: [: dep | dep value: aLaunchSpec ].
 	^ aLaunchSpec 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSNodelet >> controller [
 	^ controller
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSNodelet >> controller: aController [ 
 	controller := aController.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSNodelet >> dependencies [
 	" [ : launchSpec | launchSpec add here all the dependencies ]"
 	^ self subclassResponsibility
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #finalization }
 PhaROSNodelet >> finalize [
 
 	controller := nil.
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 PhaROSNodelet >> name [
 	^self subclassResponsibility 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSNodelet >> nodelets [
 	^ self controller nodelets.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSNodelet >> rosnode [
 	^ self controller node.
 ]

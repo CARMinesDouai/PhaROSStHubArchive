@@ -91,6 +91,11 @@ PhaROSMessageTypeBuilder >> dependencies [
 	^ self build dependencies.
 ]
 
+{ #category : #proto }
+PhaROSMessageTypeBuilder >> forPhaROSTyping [
+	^ self build
+]
+
 { #category : #'related class building' }
 PhaROSMessageTypeBuilder >> installConstantsIn: aClass [
 	
@@ -112,6 +117,11 @@ PhaROSMessageTypeBuilder >> installMethodsIn: aClass [
 	
 	aClass compile: ((self definition fields collect: #initializer) inject: 'initialize', String crlf, String tab, 'super initialize.', String crlf into:[ :acc :line | acc, line ]).
 
+]
+
+{ #category : #proto }
+PhaROSMessageTypeBuilder >> isServiceType [
+	^ false
 ]
 
 { #category : #accessing }
@@ -140,4 +150,9 @@ PhaROSMessageTypeBuilder >> relatedClass [
 { #category : #converting }
 PhaROSMessageTypeBuilder >> rosdefinition [
 	^ definition rosdefinition.
+]
+
+{ #category : #accessing }
+PhaROSMessageTypeBuilder >> shortName [
+	^ name
 ]
