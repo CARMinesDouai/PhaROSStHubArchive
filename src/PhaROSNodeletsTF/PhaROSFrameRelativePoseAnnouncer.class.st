@@ -47,7 +47,7 @@ PhaROSFrameRelativePoseAnnouncer >> fetchStamp: aPose [
 
 { #category : #'as yet unclassified' }
 PhaROSFrameRelativePoseAnnouncer >> for: aCallback [
-	callback add: aCallback 
+	handler add: aCallback 
 ]
 
 { #category : #'as yet unclassified' }
@@ -60,21 +60,21 @@ PhaROSFrameRelativePoseAnnouncer >> inform [
 
 	self checkFrame: fromFrame.
 	self checkFrame: toFrame.
-	[
-	self receive: (fromFrame poseRelativeTo: toFrame) from: self. ] on:Error do: [ :e | self log: e messageText ]
+
+	self receive: (fromFrame poseRelativeTo: toFrame) from: self. 
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSFrameRelativePoseAnnouncer >> initialize [
 	super initialize. 
-	callback := Set new.
+	handler := Set new.
 	condition := PhaROSTopicFlux defaultConditional.
 	adapter := PhaROSTopicFlux defaultAdapter adaptToAdapter.
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSFrameRelativePoseAnnouncer >> redirect: anAdaptedMessage from: aChannel at: aTimeStamp [ 
-	callback do: [
+	handler do: [
 		: cb |
 		cb cull: anAdaptedMessage cull: aChannel cull: aTimeStamp.	
 	].
