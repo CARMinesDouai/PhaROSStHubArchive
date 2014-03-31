@@ -26,7 +26,8 @@ Class {
 		'topicName',
 		'adapter',
 		'when',
-		'forDebug'
+		'forDebug',
+		'errors'
 	],
 	#classInstVars : [
 		'typeID'
@@ -49,9 +50,19 @@ PhaROSTopicConectionBuilder >> adapted: anAdaption [
 PhaROSTopicConectionBuilder >> build [
 	
 	^  forDebug ifTrue: [
-		PhaROSTopicFluxDebug new adapter: adapter; condition: when; callback: callback; yourself
+			PhaROSTopicFluxDebug new 
+				adapter: adapter; 
+				condition: when; 
+				handler: callback; 
+				errors: errors; 
+				yourself.
 	   ] ifFalse:  [
-		PhaROSTopicFlux new adapter: adapter; condition: when; callback: callback; yourself
+			PhaROSTopicFlux new 
+				adapter: adapter; 
+				condition: when; 
+				handler: callback; 
+				errors: errors;  
+				yourself.
 	   ].
 	
 
@@ -90,12 +101,19 @@ PhaROSTopicConectionBuilder >> initialize [
 	adapter := PhaROSTopicFlux defaultAdapter.
 	forDebug := false.
 	callback := [ :msg :chn | self debug: 'Warning! This topic conection it has no callback configured! '].
+
+	errors := Dictionary new.
 ]
 
 { #category : #accessing }
 PhaROSTopicConectionBuilder >> node: aNode topicName: aTopicName [
 	node := aNode.
 	topicName := aTopicName.
+]
+
+{ #category : #setting }
+PhaROSTopicConectionBuilder >> on: anErrorClass do: aValuable [
+	^ (errors at: anErrorClass ifAbsentPut: [ Set new ]) add: aValuable.
 ]
 
 { #category : #setting }

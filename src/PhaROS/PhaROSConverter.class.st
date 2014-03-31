@@ -71,7 +71,7 @@ PhaROSConverter >> lookUpConverterFrom: aClass to: anOtherClass [
 	
 	apply := [ : pragmas :class | 
 		pragmas size > 1 ifTrue: [ self warn: 'There is more than one way to convert ', aClass name, ' to ', anOtherClass name ].
-		^  (converter:= [ : aValueToConvert | (pragmas at:1) method valueWithReceiver: class class arguments: { aValueToConvert } ])
+		^  (converter:= [ : aValueToConvert | (pragmas at:1) method valueWithReceiver: class  arguments: { aValueToConvert } ])
 	].
 
 	self ifConfigurationsFor: { aClass name asSymbol . anOtherClass name asSymbol} at: anOtherClass do: [ : pragmas | 

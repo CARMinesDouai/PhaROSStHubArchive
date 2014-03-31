@@ -3,7 +3,7 @@ A PhaROSPublisher is an obeject that allows to send a message to a channel, that
 "
 Class {
 	#name : #PhaROSPublisher,
-	#superclass : #Object,
+	#superclass : #PhaROSConfigurableErrorManagement,
 	#instVars : [
 		'channel'
 	],
@@ -22,5 +22,7 @@ PhaROSPublisher >> channel: aChannel [
 
 { #category : #'as yet unclassified' }
 PhaROSPublisher >> send: aMessageBlock [
-	^ channel sendAMessage: aMessageBlock. 
+	^ self execute: [
+		channel sendAMessage: aMessageBlock. 
+	].
 ]

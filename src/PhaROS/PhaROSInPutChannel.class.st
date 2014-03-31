@@ -37,6 +37,7 @@ PhaROSInPutChannel >> finalize [
 PhaROSInPutChannel >> initialize [ 
 	super initialize.
 	publishers := Set new.
+
 ]
 
 { #category : #'as yet unclassified' }
@@ -78,6 +79,7 @@ PhaROSInPutChannel >> spinOnce [
 	
 ].]  on: Error do: [
 	: e | self log: e messageText.
+	e signal.
 ]
 ]
 

@@ -26,12 +26,12 @@ redirect:from:at:
 "
 Class {
 	#name : #PhaROSTopicFlux,
-	#superclass : #Object,
+	#superclass : #PhaROSConfigurableErrorManagement,
 	#instVars : [
 		'adapter',
 		'condition',
-		'callback',
-		'lastTimeStamp'
+		'lastTimeStamp',
+		'handler'
 	],
 	#classInstVars : [
 		'defaultAdapter',
@@ -77,16 +77,6 @@ PhaROSTopicFlux >> adapter: anAdaption [
 ]
 
 { #category : #accessing }
-PhaROSTopicFlux >> callback: aCallback [
-	callback := aCallback
-]
-
-{ #category : #accessing }
-PhaROSTopicFlux >> condition [ 
-	^ condition 
-]
-
-{ #category : #accessing }
 PhaROSTopicFlux >> condition: aCondition [
 	condition := aCondition.
 ]
@@ -98,8 +88,13 @@ PhaROSTopicFlux >> fetchStamp: aMessage [
 
 { #category : #accessing }
 PhaROSTopicFlux >> for: aBlockClosure [ 
-	self callback: aBlockClosure.
+	self handler: aBlockClosure.
 	
+]
+
+{ #category : #accessing }
+PhaROSTopicFlux >> handler: aCallback [
+	handler := aCallback
 ]
 
 { #category : #dispatching }
@@ -123,22 +118,21 @@ PhaROSTopicFlux >> printOn: aStream [
 	adapter printOn: aStream.
 	aStream nextPutAll: String cr.
 	aStream nextPutAll: ' is executed '.
-	callback printOn: aStream.
+	handler printOn: aStream.
 ]
 
 { #category : #dispatching }
 PhaROSTopicFlux >> receive: aMessage from: aChannel [
-	(self imInterestedIn: aMessage from: aChannel) ifTrue: [
-		lastTimeStamp := DateAndTime now.
-		self redirect: (self adapt: aMessage ) from: aChannel at: (self fetchStamp: aMessage).
-	].
-
-
-
+	^ self execute: [
+		(self imInterestedIn: aMessage from: aChannel) ifTrue: [
+			lastTimeStamp := DateAndTime now.
+			self redirect: (self adapt: aMessage ) from: aChannel at: (self fetchStamp: aMessage).
+		].
+	]
 ]
 
 { #category : #dispatching }
 PhaROSTopicFlux >> redirect: anAdaptedMessage from: aChannel at: aTimeStamp [ 
-	^ callback receive: anAdaptedMessage from: aChannel at: aTimeStamp .
+	^ handler receive: anAdaptedMessage from: aChannel at: aTimeStamp .
 
 ]

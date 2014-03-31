@@ -54,13 +54,13 @@ PhaROSServer >> port: aPortNumber [
 { #category : #'as yet unclassified' }
 PhaROSServer >> serve [
 	| socket |
-	[
+
 	(socket := (listener waitForAcceptFor: self acceptWaitTimeout)) ifNil: [
 		 self noteAcceptWaitTimedOut. 
 	 ] ifNotNil: [
 		delegate value: socket. 
 	].
-	] on: Error do:[ :e | self halt ].
+
 ]
 
 { #category : #'as yet unclassified' }
