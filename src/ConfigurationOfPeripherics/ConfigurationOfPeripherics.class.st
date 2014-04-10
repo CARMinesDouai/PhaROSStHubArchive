@@ -125,7 +125,7 @@ ConfigurationOfPeripherics >> baseline10: spec [
 	<version:'1.0-baseline'>
 	spec for: #common do: [
 			spec blessing: #baseline.
-			spec repository: 'http://car.mines-douai.fr/squeaksource/Peripherics'.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/PhaROSPeripherics/main'.
 			
 			spec project: 'TaskIT' with: [
 				spec 
@@ -139,7 +139,7 @@ ConfigurationOfPeripherics >> baseline10: spec [
 				spec 
 					className: 'ConfigurationOfPhaROS';
 					file: 'ConfigurationOfPhaROS' ;
-					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'; 
+					repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main'; 
 					versionString: #bleedingEdge;
 					loads: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSNodeletsTF' 'PhaROSNodeletsMerger').
 			].
