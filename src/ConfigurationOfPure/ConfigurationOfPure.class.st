@@ -128,13 +128,13 @@ ConfigurationOfPure >> baseline10: spec [
 	<version:'1.0-baseline'>
 	spec for: #common do: [
 			spec blessing: #baseline.
-			spec repository: 'http://car.mines-douai.fr/squeaksource/Pure'.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/Robulab/main'.
 			spec project: 'CommonTraits' with: [
 				spec 
 					className: 'ConfigurationOfCommonTraits';
 					file: 'ConfigurationOfCommonTraits' ;
 					versionString: #bleedingEdge;
-					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
+					repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main'.
 			].
 		spec project: 'PAUL' with: [
 				spec 
