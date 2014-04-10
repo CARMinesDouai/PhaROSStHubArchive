@@ -115,10 +115,10 @@ ConfigurationOfPureNG >> baseline10: spec [
 	<version:'1.0-baseline'>
 	spec for: #common do: [
 			spec blessing: #baseline.
-			spec repository: 'http://car.mines-douai.fr/squeaksource/Pure'.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/Robulab/main'.
 			spec package: 'Concurrency' with: [
 				spec
-					repository: 'http://car.mines-douai.fr/squeaksource/ReusableBricks'.
+					repository: 'http://smalltalkhub.com/mc/CAR/ReusableBricks/main'.
 			].
 			spec package: 'PureNG' with: [ 
 				spec requires: 'Concurrency' 
