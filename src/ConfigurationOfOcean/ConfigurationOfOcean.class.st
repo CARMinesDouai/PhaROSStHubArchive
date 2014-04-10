@@ -123,7 +123,7 @@ ConfigurationOfOcean >> baseline01: spec [
 
 		spec package: 'Ocean' with: [
 			spec requires: #('Alien' 'OSProcess' ).
-			spec repository: 'http://www.squeaksource.com/Ocean'.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/Ocean/main'.
 		].
 	]
 ]
@@ -154,7 +154,7 @@ ConfigurationOfOcean >> baseline02: spec [
 
 		spec package: 'Ocean' with: [
 			spec requires: #('Alien' 'OSProcess' ).
-			spec repository: 'http://www.squeaksource.com/Ocean'.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/Ocean/main'.
 		].
 	]
 ]
@@ -185,7 +185,7 @@ ConfigurationOfOcean >> baseline03: spec [
 
 		spec package: 'Ocean' with: [
 			spec requires: #('Alien' 'OSProcess' ).
-			spec repository: 'http://www.squeaksource.com/Ocean'.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/Ocean/main'.
 		].
 	]
 ]
@@ -217,7 +217,7 @@ ConfigurationOfOcean >> baseline04: spec [
 
 		spec package: 'Ocean' with: [
 			spec requires: #('Alien' 'OSProcess' ).
-			spec repository: 'http://www.squeaksource.com/Ocean'.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/Ocean/main'.
 		].
 	]
 ]
@@ -239,7 +239,7 @@ ConfigurationOfOcean >> baseline05: spec [
 
 		spec package: 'Ocean' with: [
 			spec requires: #('Alien').
-			spec repository: 'http://www.squeaksource.com/Ocean'.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/Ocean/main'.
 		].
 	
 		spec group: 'default' with: #('Alien' 'Ocean').
@@ -254,7 +254,7 @@ ConfigurationOfOcean >> baseline06: spec [
 	spec for: #common do: [
 		spec blessing: #baseline.
 	
-		spec repository: 'http://www.squeaksource.com/Ocean'.
+		spec repository: 'http://smalltalkhub.com/mc/CAR/Ocean/main'.
 		
 		spec project: 'Alien' with: [
 			spec 
@@ -289,7 +289,7 @@ ConfigurationOfOcean >> baseline07: spec [
 	spec for: #common do: [
 		spec blessing: #baseline.
 	
-		spec repository: 'http://www.squeaksource.com/Ocean'.
+		spec repository: 'http://smalltalkhub.com/mc/CAR/Ocean/main'.
 		
 		spec project: 'Alien' with: [
 			spec 
