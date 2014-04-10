@@ -144,14 +144,14 @@ ConfigurationOfPureROS >> baseline10: spec [
 	<version:'1.0-baseline'>
 	spec for: #common do: [
 			spec blessing: #baseline.
-			spec repository: 'http://car.mines-douai.fr/squeaksource/Pure'.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/Robulab/main'.
 			
 			
 			spec project: 'PhaROS' with: [
 				spec 
 					className: 'ConfigurationOfPhaROS';
 					file: 'ConfigurationOfPhaROS' ;
-					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'; 
+					repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main'; 
 					versionString: #bleedingEdge
 			].
 			
@@ -160,13 +160,13 @@ ConfigurationOfPureROS >> baseline10: spec [
 					className: 'ConfigurationOfPureNG';
 					file: 'ConfigurationOfPureNG' ;
 					versionString: #bleedingEdge;
-					repository: 'http://car.mines-douai.fr/squeaksource/Pure'.
+					repository: 'http://smalltalkhub.com/mc/CAR/Robulab/main'.
 			].
 			spec package: 'TaskIT' with: [
 				spec repository: 'http://smalltalkhub.com/mc/sbragagnolo/TaskIT/main'.
 			].
 		     spec package: 'StarGazer' with: [
-				spec repository: 'http://car.mines-douai.fr/squeaksource/Peripherics'.
+				spec repository: 'http://smalltalkhub.com/mc/CAR/PhaROSPeripherics/main'.
 			].
 		
 			spec package: 'PureROS' with: [
@@ -192,14 +192,14 @@ ConfigurationOfPureROS >> baseline11: spec [
 	<version:'1.1-baseline'>
 	spec for: #common do: [
 			spec blessing: #baseline.
-			spec repository: 'http://car.mines-douai.fr/squeaksource/Pure'.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/Robulab/main'.
 			
 			
 			spec project: 'PhaROS' with: [
 				spec 
 					className: 'ConfigurationOfPhaROS';
 					file: 'ConfigurationOfPhaROS' ;
-					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'; 
+					repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main'; 
 					versionString: #bleedingEdge;
 					loads: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition' 'PhaROSNodeletsLocalizer' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsRPC' 'PhaROSNodeletsMerger').
 			].
@@ -209,7 +209,7 @@ ConfigurationOfPureROS >> baseline11: spec [
 					className: 'ConfigurationOfPureNG';
 					file: 'ConfigurationOfPureNG' ;
 					versionString: #bleedingEdge;
-					repository: 'http://car.mines-douai.fr/squeaksource/Pure'.
+					repository: 'http://smalltalkhub.com/mc/CAR/Robulab/main'.
 			].
 		
 			spec project: 'TaskIT' with: [
@@ -225,7 +225,7 @@ ConfigurationOfPureROS >> baseline11: spec [
 					className: 'ConfigurationOfPeripherics';
 					file: 'ConfigurationOfPeripherics' ;
 					versionString: #bleedingEdge;
-					repository: 'http://car.mines-douai.fr/squeaksource/Peripherics';
+					repository: 'http://smalltalkhub.com/mc/CAR/PhaROSPeripherics/main';
 					loads:#('StarGazerROS').
 			].
 		   
