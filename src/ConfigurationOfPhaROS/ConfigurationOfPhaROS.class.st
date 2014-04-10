@@ -141,7 +141,7 @@ ConfigurationOfPhaROS >> baseline10: spec [
 	"BASE LINE WITHOUT KOM"
 	spec for: #common do: [
 			spec blessing: #baseline.
-			spec repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main'.
 			spec project: 'XMLRPC' with: [
 				spec 
 					className: 'ConfigurationOfXMLRPC';
@@ -168,7 +168,7 @@ ConfigurationOfPhaROS >> baseline10: spec [
 					className: 'ConfigurationOfCommonTraits';
 					file: 'ConfigurationOfCommonTraits' ;
 					versionString: #bleedingEdge;
-					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
+					repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main'.
 			].
 		    
 			spec package: 'TaskIT' with: [
@@ -192,7 +192,7 @@ ConfigurationOfPhaROS >> baseline10b: spec [
 	" BASELINE WITH KOM SERVER "
 	spec for: #common do: [
 			spec blessing: #baseline.
-			spec repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main'.
 			spec project: 'XMLRPC' with: [
 				spec 
 					className: 'ConfigurationOfXMLRPC';
@@ -219,7 +219,7 @@ ConfigurationOfPhaROS >> baseline10b: spec [
 					className: 'ConfigurationOfCommonTraits';
 					file: 'ConfigurationOfCommonTraits' ;
 					versionString: #bleedingEdge;
-					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
+					repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main'.
 			].
 		    
 			spec package: 'TaskIT' with: [
@@ -253,7 +253,7 @@ ConfigurationOfPhaROS >> baseline11: spec [
 
 	spec for: #common do: [
 			spec blessing: #baseline.
-			spec repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main'.
 			spec project: 'XMLRPC' with: [
 				spec 
 					className: 'ConfigurationOfXMLRPC';
@@ -280,7 +280,7 @@ ConfigurationOfPhaROS >> baseline11: spec [
 					className: 'ConfigurationOfCommonTraits';
 					file: 'ConfigurationOfCommonTraits' ;
 					versionString: #bleedingEdge;
-					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'.
+					repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main'.
 			].
 		
 			spec project: 'TaskIT' with: [
