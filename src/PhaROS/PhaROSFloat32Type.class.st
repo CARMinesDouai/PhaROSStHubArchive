@@ -17,11 +17,6 @@ PhaROSFloat32Type class >> dataTypeSize [
 	^ 4
 ]
 
-{ #category : #construction }
-PhaROSFloat32Type class >> named: aVariableName [
-	^ self new name: aVariableName; yourself.
-]
-
 { #category : #serialize }
 PhaROSFloat32Type >> decode: aFLDecoder [ 
 	^ aFLDecoder nextEncodedFloat32.
