@@ -37,9 +37,14 @@ PhaROSSystemLauncher class >> hydro [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSSystemLauncher class >> indigo [
+	^'/opt/ros/indigo/bin/'
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSSystemLauncher class >> initialize [
 	super initialize.
-	distro := #groovy.
+	distro := #indigo.
 ]
 
 { #category : #'as yet unclassified' }

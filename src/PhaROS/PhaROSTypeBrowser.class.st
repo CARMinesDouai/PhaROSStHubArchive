@@ -101,6 +101,8 @@ PhaROSTypeBrowser >> initialize [
 
 	browse := Dictionary new.
 	
+	browse at: 'byte' put: (PhaROSBasicTypeBuilder for:  PhaROSInt8Type new).
+	browse at: 'char' put: (PhaROSBasicTypeBuilder for:  PhaROSInt8Type new).
 	browse at: 'bool' put: (PhaROSBasicTypeBuilder for:  PhaROSBoolType new).
 	browse at: 'float32' put: (PhaROSBasicTypeBuilder for:  PhaROSFloat32Type new).
 	browse at: 'float64' put: (PhaROSBasicTypeBuilder for:  PhaROSFloat64Type new).
