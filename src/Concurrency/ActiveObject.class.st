@@ -1,3 +1,29 @@
+"
+An ActiveObject is an Object that drives a process to perform some action block. Note that an active object has a name that is attached to its process. So, it's easier to track on the process Browser.
+
+Example
+-Ensure Transcript is open ""Transcript open""
+
+-Evaulate
+""|hello goodbye|
+hello := ActiveObject repeat: [Transcript cr; show: 'Hello'] every: 50 milliSeconds.
+goodbye := ActiveObject repeat: [Transcript cr; show: 'Goodbye'] every: 30 milliSeconds.
+hello start.
+goodbye start.
+[1 second wait.
+hello stop.
+goodbye stop] fork.
+""
+
+Instance Variables
+	process:		<Process>
+	actionBlock:		<activityBlock> action to be performed by the active object within the process
+	activityLock:		<Mutex> for synchronizing start and stop
+	name:		<String> process name
+	priority:		<Integer> process priority
+
+
+"
 Class {
 	#name : #ActiveObject,
 	#superclass : #Object,
@@ -5,21 +31,84 @@ Class {
 		'process',
 		'activityBlock',
 		'activityLock',
-		'priority'
+		'priority',
+		'name'
 	],
 	#category : #Concurrency
 }
 
-{ #category : #'instance creation' }
+{ #category : #'instance-creation' }
+ActiveObject class >> blockForRepeating: aBlockClosure every: aDuration [
+	^ [ 
+	| delay |
+	delay := aDuration asDelay.
+	[ 
+	aBlockClosure value.
+	aDuration wait ] repeat ]
+]
+
+{ #category : #'instance-creation' }
+ActiveObject class >> blockForRepeating: stepBlock every: aDuration while: conditionBlock [
+	^ [ 
+	| delay |
+	delay := aDuration asDelay.
+	conditionBlock whileTrue: [ 
+		stepBlock value.
+		aDuration wait ] 
+	]
+]
+
+{ #category : #'instance-creation' }
 ActiveObject class >> do: taskBlock [
 	^self new
 		activityBlock: taskBlock;
 		yourself
 ]
 
-{ #category : #'instance creation' }
-ActiveObject class >> do: taskBlock ensure: stopBlock [ 
-	^self do: [taskBlock ensure: stopBlock]
+{ #category : #'instance-creation' }
+ActiveObject class >> do: taskBlock ensure: cleanupBlock [ 
+	^self do: [taskBlock ensure: cleanupBlock]
+]
+
+{ #category : #'instance-creation' }
+ActiveObject class >> do: initBlock thenRepeat: stepBlock every: aDuration [ 
+	^self do: [
+		initBlock value.
+		(self blockForRepeating: stepBlock every: aDuration) value
+		]
+]
+
+{ #category : #'instance-creation' }
+ActiveObject class >> do: initBlock thenRepeat: stepBlock every: aDuration ensure: cleanUpBlock [
+	^self 
+		do: [
+			initBlock value.
+			(self blockForRepeating: stepBlock every: aDuration) value
+		]ensure: cleanUpBlock
+]
+
+{ #category : #'instance-creation' }
+ActiveObject class >> repeat: taskBlock every: aDuration [
+	^ self do: (self blockForRepeating: taskBlock every: aDuration)
+]
+
+{ #category : #'instance-creation' }
+ActiveObject class >> repeat: taskBlock every: aDuration ensure: cleanupBlock [
+	^self 
+		do: (self blockForRepeating: taskBlock every: aDuration)
+		ensure: cleanupBlock
+]
+
+{ #category : #'instance-creation' }
+ActiveObject class >> repeat: taskBlock every: aDuration while: conditionBlock [
+	^self do: (self blockForRepeating: taskBlock every: aDuration while: conditionBlock)
+]
+
+{ #category : #'instance-creation' }
+ActiveObject class >> repeat: taskBlock every: aDuration while: conditionBlock ensure: cleanupBlock [
+	^self 
+		do: (self blockForRepeating: taskBlock every: aDuration while: conditionBlock)
+		ensure: cleanupBlock
 ]
 
 { #category : #accessing }
@@ -28,13 +117,18 @@ ActiveObject >> activityBlock [
 ]
 
 { #category : #accessing }
-ActiveObject >> activityBlock: anObject [
-	activityBlock := anObject
+ActiveObject >> activityBlock: aBlock [
+	activityBlock := aBlock 
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #'initailize-release' }
+ActiveObject >> defaultName [
+	^'anActiveObject'
+]
+
+{ #category : #'initailize-release' }
 ActiveObject >> defaultPriority [
-	^Processor userBackgroundPriority 
+	^30
 ]
 
 { #category : #finalization }
@@ -42,24 +136,66 @@ ActiveObject >> finalize [
 	self stop
 ]
 
-{ #category : #'initialize-release' }
-ActiveObject >> initialize [ 
-	super initialize.
-	activityLock := Mutex new.
-	self priority: self defaultPriority.
-
+{ #category : #'testing-private' }
+ActiveObject >> ifProcessAlive: blockForLiveProcess ifDead: blockForDeadProcess [
+	"WARNING: Low-level use ifStarted:ifStoped: instead"
+	activityLock critical: [
+		process ifNil: [ ^blockForDeadProcess value ].
+		process isTerminated ifTrue:  [ ^blockForDeadProcess value ].
+		^blockForLiveProcess value]
 ]
 
 { #category : #testing }
-ActiveObject >> isStarted [ 
-	^self isStopped not
+ActiveObject >> ifStarted: aBlock [ 
+	^self 
+		ifStarted: aBlock
+		ifStopped: self 
+]
+
+{ #category : #testing }
+ActiveObject >> ifStarted: blockForStarted ifStopped: blockForStopped [ 
+	^self ifProcessAlive: blockForStarted ifDead: blockForStopped 
+]
+
+{ #category : #testing }
+ActiveObject >> ifStopped: aBlock [ 
+	^self 
+		ifStarted:  self 
+		ifStopped: aBlock 
+]
+
+{ #category : #'initailize-release' }
+ActiveObject >> initialize [
+	super initialize.
+	activityLock := Mutex new.
+	self name: self defaultName.
+	self priority: self defaultPriority
+]
+
+{ #category : #testing }
+ActiveObject >> isStarted [
+	^self 
+		ifStarted: [ true ] 
+		ifStopped: [false] 
 ]
 
 { #category : #testing }
 ActiveObject >> isStopped [
-	activityLock critical: [
-		self process isNil ifTrue: [^true].
-		^self process isTerminated]
+	^self 
+		ifStarted: [ false ] 
+		ifStopped: [true] 
+]
+
+{ #category : #accessing }
+ActiveObject >> name [
+	^ name
+]
+
+{ #category : #accessing }
+ActiveObject >> name: aString [
+	name := aString.
+	self ifStopped: [^self].
+	process name: self name
 ]
 
 { #category : #accessing }
@@ -70,18 +206,8 @@ ActiveObject >> priority [
 { #category : #accessing }
 ActiveObject >> priority: newPriority [
 	priority := newPriority.
-	self isStopped ifTrue: [^self].
-	self process priority: priority
-]
-
-{ #category : #accessing }
-ActiveObject >> process [
-	^ process
-]
-
-{ #category : #accessing }
-ActiveObject >> process: anObject [
-	process := anObject
+	self ifStopped: [^self].
+	process priority: self priority
 ]
 
 { #category : #finalization }
@@ -89,22 +215,24 @@ ActiveObject >> registerForFinalization [
 	self finalizationRegistry add: self
 ]
 
-{ #category : #activity }
+{ #category : #acting }
 ActiveObject >> start [
-	activityLock critical: [
-		self isStarted
-			ifTrue: [^self].
-		self process: self activityBlock newProcess.
-		self process priority: self priority.
+	"The process (i.e. the activityBlock) MUST NOT have any reference to the active object (self) to enable finalization"
+	"This is because processes are never GCed unless they are terminated.
+	And we want force stopping the active object i.e. terminate the process once the active object reference is forgotten"
+	self ifStopped: [ 
+		process := self activityBlock newProcess.
+		process priority: self priority.
+		process name: self name.
 		self registerForFinalization.
-		self process	 resume]
-
+		process resume
+	]
 ]
 
-{ #category : #activity }
+{ #category : #acting }
 ActiveObject >> stop [
-	activityLock critical: [
-		self process isNil ifTrue: [^true].
-		process terminate]
-
+	self ifStarted: [
+		process terminate.
+	]
+	
 ]
