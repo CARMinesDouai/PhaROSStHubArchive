@@ -3,6 +3,8 @@ ConfigurationOfOcean load
 
 (ConfigurationOfOcean project version: #bleedingEdge) load.
 
+""version before loading the old socket API""
+(ConfigurationOfOcean project version: '1.0') load.
 
 "
 Class {
@@ -519,19 +521,19 @@ ConfigurationOfOcean >> version09: spec [
 
 { #category : #versions }
 ConfigurationOfOcean >> version10: spec [
-	<version: '0.91' imports: #('0.8-baseline')>
+	<version: '1.0' imports: #('0.8-baseline')>
 	
 	spec for: #common do: [
 		spec 
 			blessing: #development; 
 			project: 'Alien' with:  #development;
 			package: 'Ocean-Kernel' with: 'Ocean-Kernel-NouryBouraqadi.13';
-			package: 'Ocean-KernelTests' with: 'Ocean-KernelTests-LucFabresse.17';
+			package: 'Ocean-KernelTests' with: 'Ocean-KernelTests-NouryBouraqadi.18';
 			package: 'Ocean-LibraryPlugin' with: 'Ocean-LibraryPlugin-LucFabresse.14';
-			package: 'Ocean-LibraryPluginTests' with: 'Ocean-LibraryPluginTests-LucFabresse.7' ;
+			package: 'Ocean-LibraryPluginTests' with: 'Ocean-LibraryPluginTests-NouryBouraqadi.8' ;
 			package: 'Ocean-LibraryPosix' with: 'Ocean-LibraryPosix-LucFabresse.1';
 			package: 'Ocean-LibraryPosixTests' with: 'Ocean-LibraryPosixTests-LucFabresse.2';
 			package: 'Ocean-Benchmarks' with: 'Ocean-Benchmarks-LucFabresse.2';
-			package: 'Ocean-IpV6' with: 'Ocean-IpV6-LucFabresse.2'.
+			package: 'Ocean-IpV6' with: 'Ocean-IpV6-NouryBouraqadi.3'.
 	]
 ]
