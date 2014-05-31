@@ -1315,6 +1315,13 @@ OCNSocketPluginLibrary >> tcpReceiveFrom: aSocket into: aStringOrByteArray start
 ]
 
 { #category : #'socket_api' }
+OCNSocketPluginLibrary >> tcpReceiveFrom: aSocket into: aStringOrByteArray startingAt: aNumber count: count [
+	| bytesRead |
+	bytesRead := self primSocket: aSocket socketId receiveDataInto: aStringOrByteArray startingAt: aNumber count: count.
+	^bytesRead
+]
+
+{ #category : #'socket_api' }
 OCNSocketPluginLibrary >> tcpReceiveFrom: aSocket startingAt: aNumber [
 	^ self tcpReceiveFrom: aSocket into: self receiveDataBuffer startingAt: aNumber
 ]
