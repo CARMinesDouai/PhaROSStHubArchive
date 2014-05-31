@@ -1,4 +1,6 @@
 "
+the socket_api protocol is a compatibility layer with old sockets
+
 an OCNTcpSocket has the following lifecycle :
  
 state 1 : clean
@@ -202,7 +204,7 @@ OCNConversationTcpSocket >> isConnected [
 	^self state = self connectedStateSymbol
 ]
 
-{ #category : #communicating }
+{ #category : #'state testing' }
 OCNConversationTcpSocket >> isDataAvailable [
 	^self isConnected and: [self networkLibrary isDataAvailableFrom: self]
 ]
@@ -242,6 +244,20 @@ OCNConversationTcpSocket >> receiveDataInto: aStringOrByteArray startingAt: aNum
 		whileTrue: [
 			self waitForDataIfClosed: [closed := true].
 			bytesRead := self networkLibrary tcpReceiveFrom: self	into: aStringOrByteArray startingAt: aNumber].
+	^bytesRead
+]
+
+{ #category : #'socket_api' }
+OCNConversationTcpSocket >> receiveDataInto: aStringOrByteArray startingAt: aNumber count: count [
+	
+	| bytesRead closed |
+	bytesRead := 0.
+	closed := false.
+	self isConnected ifFalse: [OCNSocketOperationForbiddenError signal: 'Socket should be connected before receiving'].	
+	[closed not and: [bytesRead = 0]]
+		whileTrue: [
+			self waitForDataIfClosed: [closed := true].
+			bytesRead := self networkLibrary tcpReceiveFrom: self into: aStringOrByteArray startingAt: aNumber count: count].
 	^bytesRead
 ]
 
@@ -415,6 +431,11 @@ OCNConversationTcpSocket >> sendStreamContents: stream checkBlock: checkBlock [
 			buffer := stream next: chunkSize into: buffer.
 			self send: buffer]]
 		ensure: [stream close]
+]
+
+{ #category : #accessing }
+OCNConversationTcpSocket >> sendTimeOutSeconds [
+	^self connectionTimeoutSeconds
 ]
 
 { #category : #accessing }

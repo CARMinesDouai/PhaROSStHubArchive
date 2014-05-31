@@ -99,12 +99,6 @@ OCNSocket >> closeAndDestroy:timeoutSeconds [
 	^self destroy
 ]
 
-{ #category : #'socket_api' }
-OCNSocket >> dataAvailable [
-	
-	^self networkLibrary isDataAvailableFrom: self
-]
-
 { #category : #connection }
 OCNSocket >> destroy [
 	self isDestroyed
@@ -249,15 +243,15 @@ OCNSocket >> sendDataBufferSize [
 	^self class sendDataBufferSize 
 ]
 
-{ #category : #accessing }
-OCNSocket >> sendTimeOutSeconds [
-	^self connectionTimeoutSeconds
-]
-
 { #category : #'socket_api' }
 OCNSocket >> setOption: aName value: aValue [ 
 	
 	^self networkLibrary set: self option: aName value: aValue 
+]
+
+{ #category : #'socket_api' }
+OCNSocket >> socketHandle [
+	^socketId
 ]
 
 { #category : #accessing }

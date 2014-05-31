@@ -1,3 +1,6 @@
+"
+the socket_api protocol is a compatibility layer with old sockets
+"
 Class {
 	#name : #OCNServerTcpSocket,
 	#superclass : #OCNTcpSocket,
@@ -47,6 +50,13 @@ OCNServerTcpSocket >> initialize [
 	self acceptTimeoutSeconds: 3. 
 ]
 
+{ #category : #'socket_api' }
+OCNServerTcpSocket >> isConnected [
+
+	"it makes no sense to have isConnected on listening socket but it is used in the old API"
+	^ self networkLibrary isSocketConnected: self
+]
+
 { #category : #'state testing' }
 OCNServerTcpSocket >> isListening [
 	^self state = self listeningStateSymbol 
@@ -77,15 +87,11 @@ OCNServerTcpSocket >> listenOn: anIpAddress [
 ]
 
 { #category : #'socket_api' }
-OCNServerTcpSocket >> listenOn: anIpAddress backlogSize: backlog [
+OCNServerTcpSocket >> listenOn: aPortNumber backlogSize: backlog [
 	"Listens on the interface whose IP corresponds to the provided address"
 	
-	[ self networkLibrary listen: self on: anIpAddress backlogSize: backlog  ]
-		on: OCNSocketOperationFailureError
-		do: [ :ex | 
-			self destroy.
-			ex pass ].
-	self state: self listeningStateSymbol
+	self backlogSize: backlog.
+	self listenAllInterfacesOnPort: aPortNumber
 ]
 
 { #category : #'state names' }
