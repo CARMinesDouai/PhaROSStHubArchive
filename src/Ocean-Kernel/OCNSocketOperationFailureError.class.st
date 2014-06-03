@@ -1,5 +1,5 @@
 Class {
 	#name : #OCNSocketOperationFailureError,
-	#superclass : #Error,
+	#superclass : #OCNError,
 	#category : #'Ocean-Kernel'
 }

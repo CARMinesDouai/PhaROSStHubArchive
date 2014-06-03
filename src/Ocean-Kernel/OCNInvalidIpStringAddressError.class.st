@@ -1,6 +1,6 @@
 Class {
 	#name : #OCNInvalidIpStringAddressError,
-	#superclass : #Error,
+	#superclass : #OCNError,
 	#instVars : [
 		'invalidStringAddress'
 	],

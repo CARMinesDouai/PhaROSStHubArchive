@@ -45,6 +45,15 @@ OCNIpAddress class >> afInetFamily [
 ]
 
 { #category : #'instance creation' }
+OCNIpAddress class >> ip: anIP port: aPortNumer [
+
+	^ self new
+		ip: anIP ;
+		port: aPortNumer;
+		yourself
+]
+
+{ #category : #'instance creation' }
 OCNIpAddress class >> newFromString: aStringIpAddress [
 	self subclassResponsibility 
 ]

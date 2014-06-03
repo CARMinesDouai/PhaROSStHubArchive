@@ -1,5 +1,5 @@
 Class {
 	#name : #OCNInvalidDatagramPacketError,
-	#superclass : #Error,
+	#superclass : #OCNError,
 	#category : #'Ocean-Kernel'
 }

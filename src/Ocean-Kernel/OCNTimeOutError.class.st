@@ -1,5 +1,5 @@
 Class {
 	#name : #OCNTimeOutError,
-	#superclass : #Error,
+	#superclass : #OCNError,
 	#category : #'Ocean-Kernel'
 }

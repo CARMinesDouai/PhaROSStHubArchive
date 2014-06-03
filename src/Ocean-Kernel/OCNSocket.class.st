@@ -37,12 +37,6 @@ OCNSocket class >> sendDataBufferSize [
 	^2048
 ]
 
-{ #category : #'socket_api' }
-OCNSocket >> address [
-	
-	^self localAddress
-]
-
 { #category : #connection }
 OCNSocket >> basicDestroy [
 	self state: self destroyedStateSymbol.
@@ -81,22 +75,10 @@ OCNSocket >> cleanStateSymbol [
 	^ #clean
 ]
 
-{ #category : #'socket_api' }
-OCNSocket >> close [
-	^self networkLibrary close: self.
-]
-
-{ #category : #'socket_api' }
+{ #category : #'backward compatibility' }
 OCNSocket >> closeAndDestroy [
-	self close.
-	^self destroy
-]
-
-{ #category : #'socket_api' }
-OCNSocket >> closeAndDestroy:timeoutSeconds [
-	self flag: 'todo'.
-	self close.
-	^self destroy
+	
+	^ self destroy 
 ]
 
 { #category : #connection }
@@ -117,10 +99,46 @@ OCNSocket >> finalize [
 	self destroy.
 ]
 
-{ #category : #'socket_api' }
-OCNSocket >> getOption: aName [
+{ #category : #accessing }
+OCNSocket >> getOption: aName [ 
+	"Get options on this socket, see Unix man pages for values for 
+	sockets, IP, TCP, UDP. IE SO_KEEPALIVE
+	returns an array, element one is an status number (0 ok, -1 read only option)
+	element two is the resulting of the requested option"
 
-	^self networkLibrary get: self option: aName
+	self isValid
+		ifFalse: [OCNSocketOperationForbiddenError signal: 'Socket must be clean before getting an option'].
+	^self networkLibrary primSocket: socketId getOption: aName
+
+"| foo options |
+Socket initializeNetwork.
+foo := Socket newTCP.
+foo connectTo: (NetNameResolver addressFromString: '192.168.1.1') port: 80.
+foo waitForConnectionUntil: (Socket standardDeadline).
+
+options := {
+'SO_DEBUG'. 'SO_REUSEADDR'. 'SO_REUSEPORT'. 'SO_DONTROUTE'.
+'SO_BROADCAST'. 'SO_SNDBUF'. 'SO_RCVBUF'. 'SO_KEEPALIVE'.
+'SO_OOBINLINE'. 'SO_PRIORITY'. 'SO_LINGER'. 'SO_RCVLOWAT'.
+'SO_SNDLOWAT'. 'IP_TTL'. 'IP_HDRINCL'. 'IP_RCVOPTS'.
+'IP_RCVDSTADDR'. 'IP_MULTICAST_IF'. 'IP_MULTICAST_TTL'.
+'IP_MULTICAST_LOOP'. 'UDP_CHECKSUM'. 'TCP_MAXSEG'.
+'TCP_NODELAY'. 'TCP_ABORT_THRESHOLD'. 'TCP_CONN_NOTIFY_THRESHOLD'. 
+'TCP_CONN_ABORT_THRESHOLD'. 'TCP_NOTIFY_THRESHOLD'.
+'TCP_URGENT_PTR_TYPE'}.
+
+1 to: options size do: [:i | | fum |
+	fum :=foo getOption: (options at: i).
+	Transcript show: (options at: i),fum printString;cr].
+
+foo := Socket newUDP.
+foo setPeer: (NetNameResolver addressFromString: '192.168.1.9') port: 7.
+foo waitForConnectionUntil: (Socket standardDeadline).
+
+1 to: options size do: [:i | | fum |
+	fum :=foo getOption: (options at: i).
+	Transcript show: (options at: i),fum printString;cr].
+"
 ]
 
 { #category : #'initialize-release' }
@@ -158,46 +176,9 @@ OCNSocket >> isDestroyed [
 	^self state = self destroyedStateSymbol
 ]
 
-{ #category : #'socket_api' }
-OCNSocket >> isOtherEndClosed [
-	
-	^self networkLibrary isOtherEndClosed: self
-]
-
-{ #category : #'socket_api' }
-OCNSocket >> isThisEndClosed [
-	
-	^self networkLibrary isThisEndClosed: self
-]
-
-{ #category : #'socket_api' }
-OCNSocket >> isUnconnected [
-	
-	^self networkLibrary isUnconnected: self
-]
-
-{ #category : #'socket_api' }
+{ #category : #'state testing' }
 OCNSocket >> isValid [
-	
-	^self networkLibrary isValid: self
-]
-
-{ #category : #'socket_api' }
-OCNSocket >> isWaitingForConnection [
-	
-	^self networkLibrary isWaitingForConnection: self
-]
-
-{ #category : #'socket_api' }
-OCNSocket >> localAddress [
-	
-	^self networkLibrary localAddress: self
-]
-
-{ #category : #'socket_api' }
-OCNSocket >> localPort [
-	
-	^self networkLibrary localPort: self
+	^ self isDestroyed not
 ]
 
 { #category : #accessing }
@@ -215,27 +196,9 @@ OCNSocket >> newSocketId [
 	self subclassResponsibility 
 ]
 
-{ #category : #'socket_api' }
-OCNSocket >> port [
-	
-	^self localPort
-]
-
 { #category : #constants }
 OCNSocket >> receiveDataBufferSize [
 	^self class receiveDataBufferSize 
-]
-
-{ #category : #'socket_api' }
-OCNSocket >> remoteAddress [
-	
-	^self networkLibrary remoteAddress: self
-]
-
-{ #category : #'socket_api' }
-OCNSocket >> remotePort [
-	
-	^self networkLibrary remotePort: self
 ]
 
 { #category : #constants }
@@ -243,15 +206,21 @@ OCNSocket >> sendDataBufferSize [
 	^self class sendDataBufferSize 
 ]
 
-{ #category : #'socket_api' }
+{ #category : #accessing }
 OCNSocket >> setOption: aName value: aValue [ 
-	
-	^self networkLibrary set: self option: aName value: aValue 
-]
+	| value |
+	"setup options on this socket, see Unix man pages for values for 
+	sockets, IP, TCP, UDP. IE SO_KEEPALIVE
+	returns an array, element one is the error number
+	element two is the resulting of the negotiated value.
+	See getOption for list of keys"
 
-{ #category : #'socket_api' }
-OCNSocket >> socketHandle [
-	^socketId
+	self isValid
+		ifFalse: [InvalidSocketStatusException signal: 'Socket status must valid before setting an option'].
+	value := aValue asString.
+	aValue == true ifTrue: [value := '1'].
+	aValue == false ifTrue: [value := '0'].
+	^ self networkLibrary primSocket: socketId setOption: aName value: value
 ]
 
 { #category : #accessing }
@@ -273,59 +242,4 @@ OCNSocket >> state [
 OCNSocket >> state: anObject [
 	
 	state := anObject
-]
-
-{ #category : #'socket_api' }
-OCNSocket >> timeOut [
-	^ 3
-]
-
-{ #category : #'socket_api' }
-OCNSocket >> waitForAcceptFor: timeout [
-	"Wait and accept an incoming connection. Return nil if it falis"
-	self waitForConnectionFor: timeout ifTimedOut: [^ nil].
-	^ self isConnected
-		ifTrue:[self accept]
-]
-
-{ #category : #'socket_api' }
-OCNSocket >> waitForConnectionFor: timeout [
-	
-	self waitForConnectionFor: timeout ifTimedOut: []
-]
-
-{ #category : #'socket_api' }
-OCNSocket >> waitForConnectionFor: timeout ifTimedOut: timeoutBlock [
-	
-	self networkLibrary waitForConnectionOf: self timeoutSeconds: timeout onTimeoutDo: timeoutBlock
-]
-
-{ #category : #'socket_api' }
-OCNSocket >> waitForDataFor: timeout [
-	"Wait for the given nr of seconds for data to arrive.
-	Signal a time out or connection close exception if either happens before data becomes available."
-
-	^self
-		waitForDataFor: timeout
-		ifClosed: [ConnectionClosed signal: 'Connection closed while waiting for data.']
-		ifTimedOut: [ConnectionTimedOut signal: 'Data receive timed out.']
-
-]
-
-{ #category : #'socket_api' }
-OCNSocket >> waitForDataFor: timeout ifClosed: closedBlock ifTimedOut: timedOutBlock [
-	self flag:'TODO: include a close condition'.
-	self networkLibrary waitForDataOn: self socketId for: timeout ifClosed: closedBlock ifTimedOut: timedOutBlock
-]
-
-{ #category : #'socket_api' }
-OCNSocket >> waitForDataIfClosed: closedBlock [
-	self flag:'TODO: include a close condition'.
-	self networkLibrary waitForDataOn: self socketId for: self timeOut onTimedOut: closedBlock
-]
-
-{ #category : #'socket_api' }
-OCNSocket >> waitForSendDoneFor: timeout [
-
-	self networkLibrary waitForSendDoneOn: self socketId for: timeout
 ]

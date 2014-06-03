@@ -28,9 +28,3 @@ OCNUdpSocket >> send: aDatagramPacket [
 		OCNInvalidDatagramPacketError signal: 'The datagram is not well structured'
 	]
 ]
-
-{ #category : #communicating }
-OCNUdpSocket >> setPort: aPort [
-	
-	^self networkLibrary udpSet: self withPort: aPort
-]

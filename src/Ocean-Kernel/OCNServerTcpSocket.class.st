@@ -1,6 +1,3 @@
-"
-the socket_api protocol is a compatibility layer with old sockets
-"
 Class {
 	#name : #OCNServerTcpSocket,
 	#superclass : #OCNTcpSocket,
@@ -15,12 +12,6 @@ Class {
 OCNServerTcpSocket >> accept [
 	
 	^self networkLibrary acceptFrom: self.
-]
-
-{ #category : #'socket_api' }
-OCNServerTcpSocket >> acceptFrom: aSocket [
-	
-	^self networkLibrary acceptFrom: aSocket.
 ]
 
 { #category : #accessing }
@@ -48,13 +39,6 @@ OCNServerTcpSocket >> initialize [
 	super initialize.
 	self backlogSize: 10.
 	self acceptTimeoutSeconds: 3. 
-]
-
-{ #category : #'socket_api' }
-OCNServerTcpSocket >> isConnected [
-
-	"it makes no sense to have isConnected on listening socket but it is used in the old API"
-	^ self networkLibrary isSocketConnected: self
 ]
 
 { #category : #'state testing' }
@@ -86,15 +70,26 @@ OCNServerTcpSocket >> listenOn: anIpAddress [
 	self state: self listeningStateSymbol
 ]
 
-{ #category : #'socket_api' }
-OCNServerTcpSocket >> listenOn: aPortNumber backlogSize: backlog [
+{ #category : #'backward compatibility' }
+OCNServerTcpSocket >> listenOn: portNumber backlogSize: backlog [
 	"Listens on the interface whose IP corresponds to the provided address"
 	
 	self backlogSize: backlog.
-	self listenAllInterfacesOnPort: aPortNumber
+	self listenAllInterfacesOnPort: portNumber
 ]
 
 { #category : #'state names' }
 OCNServerTcpSocket >> listeningStateSymbol [
 	^#listening
+]
+
+{ #category : #'backward compatibility' }
+OCNServerTcpSocket >> localPort [
+	^ self networkLibrary localPortOf: self 
+]
+
+{ #category : #'backward compatibility' }
+OCNServerTcpSocket >> waitForAcceptFor: timeout [
+	self acceptTimeoutSeconds: timeout.
+	^ self accept
 ]

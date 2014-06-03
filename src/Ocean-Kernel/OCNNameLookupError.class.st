@@ -1,5 +1,5 @@
 Class {
 	#name : #OCNNameLookupError,
-	#superclass : #Error,
+	#superclass : #OCNError,
 	#category : #'Ocean-Kernel'
 }
