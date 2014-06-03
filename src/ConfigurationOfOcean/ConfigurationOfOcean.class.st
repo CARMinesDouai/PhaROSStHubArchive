@@ -355,6 +355,43 @@ ConfigurationOfOcean >> baseline08: spec [
 	]
 ]
 
+{ #category : #baselines }
+ConfigurationOfOcean >> baseline09: spec [
+	<version: '0.9-baseline'>
+	
+	spec for: #common do: [
+		spec blessing: #baseline.
+	
+		spec repository: 'http://smalltalkhub.com/mc/CAR/Ocean/main'.
+		
+		spec project: 'Alien' with: [
+			spec 
+				className: 'ConfigurationOfAlien' ; 
+				loads: {'All'}; 
+				file: 'ConfigurationOfAlien';
+				repository: 'http://www.squeaksource.com/Alien'
+		].
+		
+		spec package: 'Ocean-Kernel'.
+		spec package: 'Ocean-KernelTests' with: [ spec requires: 'Ocean-Kernel' ].
+		spec package: 'Ocean-LibraryPlugin' with: [ spec requires: 'Ocean-Kernel' ].
+		spec package: 'Ocean-LibraryPluginTests' with: [ spec requires: 'Ocean-LibraryPlugin'; requires: 'Ocean-KernelTests' ].
+		spec package: 'Ocean-LibraryPosix' with: [ spec requires: 'Alien' ].
+		spec package: 'Ocean-LibraryPosixTests' with: [ spec requires: 'Ocean-LibraryPosix'; requires: 'Ocean-KernelTests'].
+		spec package: 'Ocean-Benchmarks' with: [ spec requires: 'Ocean-Kernel' ].
+		spec package: 'Ocean-IpV6' with: [ spec requires: 'Ocean-Kernel' ].
+		spec package: 'Ocean-ZincZodiacIntegration' with: [ spec requires: 'Ocean-Kernel' ].
+			
+		spec group: 'default' with: #('Ocean-LibraryPlugin'  'Ocean-IpV6' 'Ocean-ZincZodiacIntegration').
+		spec group: 'default tests' with: #('default' 'Ocean-LibraryPluginTests').
+		spec group: 'posix' with: #('Ocean-LibraryPosix').
+		spec group: 'posix tests' with: #('posix' 'Ocean-LibraryPosixTests').
+		spec group: 'full' with: #('default' 'posix').
+		spec group: 'full tests' with: #('default tests' 'posix tests').
+		
+	]
+]
+
 { #category : #'symbolic versions' }
 ConfigurationOfOcean >> default: spec [
 	<version: #'default' imports: #('0.7-baseline')>
@@ -535,5 +572,25 @@ ConfigurationOfOcean >> version10: spec [
 			package: 'Ocean-LibraryPosixTests' with: 'Ocean-LibraryPosixTests-LucFabresse.2';
 			package: 'Ocean-Benchmarks' with: 'Ocean-Benchmarks-LucFabresse.2';
 			package: 'Ocean-IpV6' with: 'Ocean-IpV6-NouryBouraqadi.3'.
+	]
+]
+
+{ #category : #versions }
+ConfigurationOfOcean >> version11: spec [
+	<version: '1.1' imports: #('0.9-baseline')>
+	
+	spec for: #common do: [
+		spec 
+			blessing: #development; 
+			project: 'Alien' with:  #development;
+			package: 'Ocean-Kernel' with: 'Ocean-Kernel-LucFabresse.22';
+			package: 'Ocean-KernelTests' with: 'Ocean-KernelTests-LucFabresse.19';
+			package: 'Ocean-LibraryPlugin' with: 'Ocean-LibraryPlugin-LucFabresse.22';
+			package: 'Ocean-LibraryPluginTests' with: 'Ocean-LibraryPluginTests-NouryBouraqadi.8' ;
+			package: 'Ocean-LibraryPosix' with: 'Ocean-LibraryPosix-LucFabresse.1';
+			package: 'Ocean-LibraryPosixTests' with: 'Ocean-LibraryPosixTests-LucFabresse.2';
+			package: 'Ocean-Benchmarks' with: 'Ocean-Benchmarks-LucFabresse.2';
+			package: 'Ocean-IpV6' with: 'Ocean-IpV6-NouryBouraqadi.3';
+			package: 'Ocean-ZincZodiacIntegration' with: 'Ocean-ZincZodiacIntegration-LucFabresse.1'
 	]
 ]
