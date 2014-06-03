@@ -16,13 +16,9 @@ Class {
 	#instVars : [
 		'isDestroyed',
 		'semaphore',
-		'semaIndex',
 		'readSemaphore',
 		'writeSemaphore',
-		'readSemaIndex',
-		'writeSemaIndex',
-		'receiveDataBuffer',
-		'primitiveOnlySupportsOneSemaphore'
+		'receiveDataBuffer'
 	],
 	#classVars : [
 		'Clean',
@@ -84,23 +80,14 @@ OCNSocketPluginLibrary class >> proxy [
 
 { #category : #'API-TCP' }
 OCNSocketPluginLibrary >> acceptFrom: aServerSocket [
-	|conversationSocket conversationSocketId networkLibrary |
-	
-	self ensureNetworkInitialized.
-	
-	self waitForConnectionOf: aServerSocket timeoutSeconds: aServerSocket acceptTimeoutSeconds 
-		onTimeoutDo: [OCNSocketOperationFailureError signal: 'Accept timeout'].
 
-	networkLibrary :=  self species new. 
-	conversationSocketId := self
-		primAcceptFrom: aServerSocket socketId
-		receiveBufferSize:  OCNSocket receiveDataBufferSize
-		sendBufSize: OCNSocket sendDataBufferSize 
-		semaIndex:  networkLibrary semaIndex
-		readSemaIndex:  networkLibrary readSemaIndex
-		writeSemaIndex:  networkLibrary writeSemaIndex.
+	| newNetworkLibrary newSocketId |
 	
-	^OCNConversationTcpSocket newConnectedWithId: conversationSocketId library: networkLibrary
+	newNetworkLibrary :=  self species new. 
+
+	newSocketId := newNetworkLibrary tryAcceptFrom: aServerSocket.
+		
+	^ OCNConversationTcpSocket newConnectedWithId: newSocketId library: newNetworkLibrary
 
 ]
 
@@ -231,34 +218,11 @@ OCNSocketPluginLibrary >> bind: aSocket toIpv4Address: anOCNIPV4SocketAddress [
 ]
 
 { #category : #'API-TCP' }
-OCNSocketPluginLibrary >> close: aSocket [
-	
-	aSocket socketId ifNil: [ ^self ].
-	isDestroyed ifTrue: [^self].
-	^self primSocketCloseConnection: aSocket socketId.
-]
-
-{ #category : #'API-TCP' }
 OCNSocketPluginLibrary >> connect: aSocket toServerWithIpv4Address: serverAddress [
 
-	^ self connect: aSocket toServerWithIpv4Address: serverAddress timeout: aSocket connectionTimeoutSeconds.
-
-]
-
-{ #category : #'API-TCP' }
-OCNSocketPluginLibrary >> connect: aSocket toServerWithIpv4Address: serverAddress timeout: timeoutSeconds [
-
 	self ensureNetworkInitialized.
 	self primSocket: aSocket socketId connectTo: serverAddress ip port: serverAddress port.
-	self waitForConnectionOf: aSocket timeoutSeconds: timeoutSeconds
-
-]
-
-{ #category : #'socket_api' }
-OCNSocketPluginLibrary >> connectNonBlocking: aSocket toServerWithIpv4Address: serverAddress [
-
-	self ensureNetworkInitialized.
-	self primSocket: aSocket socketId connectTo: serverAddress ip port: serverAddress port.
+	self waitForConnectionOf: aSocket timeoutSeconds: aSocket connectionTimeoutSeconds
 
 ]
 
@@ -270,18 +234,32 @@ OCNSocketPluginLibrary >> convertIpv4StringAddressToByteArray: stringAddress [
 { #category : #'Support For Sockets' }
 OCNSocketPluginLibrary >> createSocketDescriptorIdFor: anOCNSocket withType:  socketType [
 	
-	| socketId status|
-
-	socketId := self primSocketCreateNetwork: 0
+	| socketId  semaIndex readSemaIndex writeSemaIndex |
+	
+	[
+		semaphore := Semaphore new.
+		readSemaphore := Semaphore new.
+		writeSemaphore := Semaphore new.
+	 
+		semaIndex := Smalltalk registerExternalObject: semaphore.
+		readSemaIndex := Smalltalk registerExternalObject: readSemaphore.
+		writeSemaIndex := Smalltalk registerExternalObject: writeSemaphore.
+	
+		socketId := self primSocketCreateNetwork: 0
 			type: socketType
 			receiveBufferSize: anOCNSocket receiveDataBufferSize
 			sendBufSize: anOCNSocket sendDataBufferSize
-			semaIndex: semaIndex.
-	
-	self flag: 'clean the following test. a newly created Udp socket is in the Connected state'.
-	(socketId notNil and: [((status := (self primSocketConnectionStatus: socketId)) = Clean) or: [ status = Connected ]]) ifTrue: [ ^socketId ].
-	self releaseSemaphores.
-	OCNSocketOperationFailureError signal: 'Socket creation failure'
+			semaIndex: semaIndex
+			readSemaIndex: readSemaIndex 
+			writeSemaIndex: writeSemaIndex.
+	] on: Error do: [ :er | OCNSocketOperationFailureError signal: 'Socket creation failure'].
+
+	socketId ifNil: [ 
+			self releaseSemaphores. 
+			OCNSocketOperationFailureError signal: 'Socket creation failure'
+	].
+
+	^socketId
 	
 ]
 
@@ -302,12 +280,6 @@ OCNSocketPluginLibrary >> defaultAddressLookupTimeout [
 	
 ]
 
-{ #category : #'socket_api' }
-OCNSocketPluginLibrary >> disconnect: aSocket [
-
-	^ self primSocketAbortConnection: aSocket socketId
-]
-
 { #category : #'initialize-release' }
 OCNSocketPluginLibrary >> ensureNetworkInitialized [
 	"Initialize the network drivers and record the semaphore to be used by the resolver. Do nothing if the network is already initialized. Evaluate the given block if network initialization fails."
@@ -325,32 +297,10 @@ OCNSocketPluginLibrary >> ensureNetworkInitialized [
 		ifNil: [OCNNetworkInitializationFailedError signal: 'failed network initialization']
 ]
 
-{ #category : #'as yet unclassified' }
-OCNSocketPluginLibrary >> get: aSocket option: aName [
-	(aSocket socketId == nil or: [(self isValid: aSocket) not])
-		ifTrue: [OCNSocketOperationFailureError signal: 'Socket status must valid before setting an option'].
-
-	^ self primSocket: aSocket socketId getOption: aName
-]
-
-{ #category : #'initialize-release' }
-OCNSocketPluginLibrary >> initSemaphores [
-	semaphore := Semaphore new.
-	readSemaphore := Semaphore new.
-	writeSemaphore := Semaphore new.
-	
-	semaIndex := Smalltalk registerExternalObject: semaphore.
-	readSemaIndex := Smalltalk registerExternalObject: readSemaphore.
-	writeSemaIndex := Smalltalk registerExternalObject: writeSemaphore.
-
-]
-
 { #category : #'initialize-release' }
 OCNSocketPluginLibrary >> initialize [
 	super initialize.
-	isDestroyed := false.
-	primitiveOnlySupportsOneSemaphore := false.
-	[self initSemaphores] on: Error do: [ :er | OCNSocketOperationFailureError signal: 'Socket creation failure']
+	isDestroyed := false
 
 ]
 
@@ -412,15 +362,6 @@ OCNSocketPluginLibrary >> isDataAvailableFrom: socket [
 
 ]
 
-{ #category : #'socket_api' }
-OCNSocketPluginLibrary >> isOtherEndClosed: aSocket [
-	"Return true if this socket had the other end closed."
-
-	aSocket socketId == nil ifTrue: [^ false].
-	^ (self primSocketConnectionStatus: aSocket socketId) == OtherEndClosed
-
-]
-
 { #category : #'API-TCP' }
 OCNSocketPluginLibrary >> isSocketConnected: socket [ 
 	socket socketId ifNil: [^ false].
@@ -428,39 +369,19 @@ OCNSocketPluginLibrary >> isSocketConnected: socket [
 
 ]
 
-{ #category : #'socket_api' }
-OCNSocketPluginLibrary >> isThisEndClosed: aSocket [
-	"Return true if this socket had the this end closed."
-
-	aSocket socketId == nil ifTrue: [^ false].
-	^ (self primSocketConnectionStatus: aSocket socketId) == ThisEndClosed
-]
-
-{ #category : #'socket_api' }
-OCNSocketPluginLibrary >> isUnconnected: aSocket [
-	"Return true if this socket had the this end closed."
-
-	aSocket socketId == nil ifTrue: [^ false].
-	^ (self primSocketConnectionStatus: aSocket socketId) == 0
-]
-
-{ #category : #'socket_api' }
-OCNSocketPluginLibrary >> isValid: aSocket [
-	"Return true if this socket contains a valid, non-nil socket handle."
-
-	| status |
-	aSocket socketId == nil ifTrue: [^ false].
-	status := self primSocketConnectionStatus: aSocket socketId.
-	^ status ~= InvalidSocket
+{ #category : #'API-TCP' }
+OCNSocketPluginLibrary >> isSocketOtherEndClosed: socket [ 
+	socket socketId ifNil: [^ false].
+	^ (self primSocketConnectionStatus: socket socketId) == self tcpSocketOtherEndClosedStatus 
 
 ]
 
-{ #category : #'socket_api' }
-OCNSocketPluginLibrary >> isWaitingForConnection: aSocket [
+{ #category : #'API-TCP' }
+OCNSocketPluginLibrary >> isWaitingForConnection: socket [
 	"Return true if this socket is waiting for a connection."
 
-	aSocket socketId == nil ifTrue: [^ false].
-	^ (self primSocketConnectionStatus: aSocket socketId) == WaitingForConnection
+	socket socketId == nil ifTrue: [^ false].
+	^ (self primSocketConnectionStatus: socket socketId) == WaitingForConnection
 
 ]
 
@@ -471,21 +392,6 @@ OCNSocketPluginLibrary >> listen: aServerSocket on: anIpAddress [
 		do: [ OCNSocketOperationFailureError signal: 'socket cannot listen' ]
 
 	
-]
-
-{ #category : #'socket_api' }
-OCNSocketPluginLibrary >> listen: aServerSocket on: anIpAddress backlogSize: backlog [
-	[self primSocket: aServerSocket socketId listenOn: anIpAddress port backlogSize: backlog interface: anIpAddress ip]
-		on: PrimitiveFailed 
-		do: [ OCNSocketOperationFailureError signal: 'socket cannot listen' ]
-
-	
-]
-
-{ #category : #'socket_api' }
-OCNSocketPluginLibrary >> localAddress: aSocket [
-	
-	^ self primSocketLocalAddress: aSocket socketId
 ]
 
 { #category : #'Support For NameResolving' }
@@ -521,9 +427,15 @@ OCNSocketPluginLibrary >> localHostName [
 	^hostname
 ]
 
-{ #category : #'socket_api' }
-OCNSocketPluginLibrary >> localPort: aSocket [
-	^ self primSocketLocalPort: aSocket socketId
+{ #category : #'API-TCP' }
+OCNSocketPluginLibrary >> localPortOf: socket [
+		
+		(self isWaitingForConnection: socket)
+		ifFalse: [
+			[self waitForConnectionOf: self timeoutSeconds: self acceptTimeoutSeconds ]
+				on: OCNTimeOutError
+				do: [:ex | ^ 0]].
+		^ self primSocketLocalPort: socket socketId
 ]
 
 { #category : #'Support For NameResolving' }
@@ -565,11 +477,12 @@ OCNSocketPluginLibrary >> primAcceptFrom: aHandle receiveBufferSize: rcvBufSize 
 ]
 
 { #category : #'Primitives-TCP' }
-OCNSocketPluginLibrary >> primAcceptFrom: aHandle receiveBufferSize: rcvBufSize sendBufSize: sndBufSize semaIndex: semaInd readSemaIndex: aReadSema writeSemaIndex: aWriteSema [
+OCNSocketPluginLibrary >> primAcceptFrom: aHandle receiveBufferSize: rcvBufSize sendBufSize: sndBufSize semaIndex: semIndex readSemaIndex: aReadSema writeSemaIndex: aWriteSema [
 	"Create and return a new socket handle based on accepting the connection from the given listening socket"
+	
 	<primitive: 'primitiveSocketAccept3Semaphores' module: 'SocketPlugin'>
-	primitiveOnlySupportsOneSemaphore := true.
-	^self primAcceptFrom: aHandle receiveBufferSize: rcvBufSize sendBufSize: sndBufSize semaIndex: semaIndex 
+	
+	^ self primitiveFailed
 ]
 
 { #category : #'Primitives-NameResolving' }
@@ -885,18 +798,6 @@ OCNSocketPluginLibrary >> primSocket: socketID setOption: aString value: aString
 	^nil
 ]
 
-{ #category : #'Primitives-UDP' }
-OCNSocketPluginLibrary >> primSocket: socketID setPort: port [
-	"Set the local port associated with a UDP socket.
-	Note: this primitive is overloaded.  The primitive will not fail on a TCP socket, but
-	the effects will not be what was desired.  Best solution would be to split Socket into
-	two subclasses, TCPSocket and UDPSocket."
-
-	<primitive: 'primitiveSocketListenWithOrWithoutBacklog' module: 'SocketPlugin'>
-	self primitiveFailed
-
-]
-
 { #category : #'Primitives-Unused' }
 OCNSocketPluginLibrary >> primSocketAbortConnection: socketID [
 	"Terminate the connection on the given port immediately without going through the normal close sequence. This is an asynchronous call; query the socket status to discover if and when the connection is actually terminated."
@@ -935,7 +836,7 @@ OCNSocketPluginLibrary >> primSocketCloseConnection: socketID [
 
 ]
 
-{ #category : #'Support For TCP' }
+{ #category : #'Primitives-TCP' }
 OCNSocketPluginLibrary >> primSocketConnectionStatus: socketID [
 	"Return an integer reflecting the connection status of this socket. For a list of possible values, see the comment in the 'initialize' method of this class. If the primitive fails, return a status indicating that the socket handle is no longer valid, perhaps because the Pharo image was saved and restored since the socket was created. (Sockets do not survive snapshots.)"
 
@@ -958,18 +859,13 @@ OCNSocketPluginLibrary >> primSocketCreateNetwork: netType type: socketType rece
 ]
 
 { #category : #'Primitives-Socket' }
-OCNSocketPluginLibrary >> primSocketCreateNetwork: netType type: socketType receiveBufferSize: rcvBufSize sendBufSize: sendBufSize semaIndex: semaphoreIndex readSemaIndex: aReadSemaphore writeSemaIndex: aWriteSema [
+OCNSocketPluginLibrary >> primSocketCreateNetwork: netType type: socketType receiveBufferSize: rcvBufSize sendBufSize: sendBufSize semaIndex: semaphoreIndex readSemaIndex: aReadSema writeSemaIndex: aWriteSema [
 	"See comment in primSocketCreateNetwork: with one semaIndex. However you should know that some implementations
 	ignore the buffer size and this interface supports three semaphores,  one for open/close/listen and the other two for
 	reading and writing"
 
 	<primitive: 'primitiveSocketCreate3Semaphores' module: 'SocketPlugin'>
-	primitiveOnlySupportsOneSemaphore := true.
-	^ self primSocketCreateNetwork: netType
-			type: socketType
-			receiveBufferSize: rcvBufSize
-			sendBufSize: sendBufSize
-			semaIndex: semaIndex	
+	^ self primitiveFailed
 ]
 
 { #category : #'Primitives-Unused' }
@@ -1122,11 +1018,6 @@ JMM - 000503 fixed didn't work correctly"
 ]
 
 { #category : #accessing }
-OCNSocketPluginLibrary >> readSemaIndex [
-	^readSemaIndex
-]
-
-{ #category : #accessing }
 OCNSocketPluginLibrary >> receiveDataBuffer [
 	^receiveDataBuffer ifNil: [ receiveDataBuffer := (ByteArray new: OCNSocket receiveDataBufferSize) ]
 ]
@@ -1183,18 +1074,6 @@ OCNSocketPluginLibrary >> releaseSemaphores [
 	readSemaphore := writeSemaphore := semaphore := nil.
 ]
 
-{ #category : #'socket_api' }
-OCNSocketPluginLibrary >> remoteAddress: aSocket [
-
-	^ self primSocketRemoteAddress: aSocket socketId
-]
-
-{ #category : #'socket_api' }
-OCNSocketPluginLibrary >> remotePort: aSocket [
-
-	^ self primSocketRemotePort: aSocket socketId
-]
-
 { #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> resolverMutex [
 	ResolverMutex ifNil: [ResolverMutex := Semaphore forMutualExclusion].
@@ -1210,11 +1089,6 @@ OCNSocketPluginLibrary >> resolverStatus [
 { #category : #'Support For NameResolving' }
 OCNSocketPluginLibrary >> resolverUninitializedCode [
 	^ 0  "network is not initialized"
-]
-
-{ #category : #accessing }
-OCNSocketPluginLibrary >> semaIndex [
-	^semaIndex
 ]
 
 { #category : #'Support For UDP' }
@@ -1243,37 +1117,6 @@ OCNSocketPluginLibrary >> sendUDPOn: aSocket datagram: aDatagramPacket [
 	"this method should deal with sourceAdress: from DatagramPacket."
 	^ self sendUDPDataOn: aSocket socketId contents: aDatagramPacket data toHost: aDatagramPacket targetAddress ip port: aDatagramPacket targetAddress port
 	
-]
-
-{ #category : #'as yet unclassified' }
-OCNSocketPluginLibrary >> set: aSocket option: aName value: aValue [ 
-	| value |
-	"setup options on this socket, see Unix man pages for values for 
-	sockets, IP, TCP, UDP. IE SO_KEEPALIVE
-	returns an array, element one is the error number
-	element two is the resulting of the negotiated value.
-	See getOption for list of keys
-	
-	
-	options := {
-'SO_DEBUG'. 'SO_REUSEADDR'. 'SO_REUSEPORT'. 'SO_DONTROUTE'.
-'SO_BROADCAST'. 'SO_SNDBUF'. 'SO_RCVBUF'. 'SO_KEEPALIVE'.
-'SO_OOBINLINE'. 'SO_PRIORITY'. 'SO_LINGER'. 'SO_RCVLOWAT'.
-'SO_SNDLOWAT'. 'IP_TTL'. 'IP_HDRINCL'. 'IP_RCVOPTS'.
-'IP_RCVDSTADDR'. 'IP_MULTICAST_IF'. 'IP_MULTICAST_TTL'.
-'IP_MULTICAST_LOOP'. 'UDP_CHECKSUM'. 'TCP_MAXSEG'.
-'TCP_NODELAY'. 'TCP_ABORT_THRESHOLD'. 'TCP_CONN_NOTIFY_THRESHOLD'. 
-'TCP_CONN_ABORT_THRESHOLD'. 'TCP_NOTIFY_THRESHOLD'.
-'TCP_URGENT_PTR_TYPE'}.
-
-"
-
-	(aSocket socketId == nil or: [(self isValid: aSocket) not])
-		ifTrue: [OCNSocketOperationFailureError signal: 'Socket status must valid before setting an option'].
-	value := aValue asString.
-	aValue == true ifTrue: [value := '1'].
-	aValue == false ifTrue: [value := '0'].
-	^ self primSocket: aSocket socketId setOption: aName value: value
 ]
 
 { #category : #'Support For NameResolving' }
@@ -1306,24 +1149,11 @@ OCNSocketPluginLibrary >> tcpReceiveFrom: aSocket [
 	^self receiveDataBuffer copyFrom: 1 to: bytesRead
 ]
 
-{ #category : #'socket_api' }
-OCNSocketPluginLibrary >> tcpReceiveFrom: aSocket into: aStringOrByteArray startingAt: aNumber [
-	| bytesRead |
-	bytesRead := self primSocket: aSocket socketId receiveDataInto: aStringOrByteArray startingAt: aNumber count: aStringOrByteArray size-aNumber+1.
-	aStringOrByteArray copyFrom: 1 to: bytesRead.
-	^bytesRead
-]
-
-{ #category : #'socket_api' }
+{ #category : #'API-TCP' }
 OCNSocketPluginLibrary >> tcpReceiveFrom: aSocket into: aStringOrByteArray startingAt: aNumber count: count [
 	| bytesRead |
 	bytesRead := self primSocket: aSocket socketId receiveDataInto: aStringOrByteArray startingAt: aNumber count: count.
 	^bytesRead
-]
-
-{ #category : #'socket_api' }
-OCNSocketPluginLibrary >> tcpReceiveFrom: aSocket startingAt: aNumber [
-	^ self tcpReceiveFrom: aSocket into: self receiveDataBuffer startingAt: aNumber
 ]
 
 { #category : #'API-TCP' }
@@ -1337,24 +1167,24 @@ OCNSocketPluginLibrary >> tcpSendData: aByteStringOrByteArray to: aSocket [
 					count: aByteStringOrByteArray size.
 	self 
 		waitForSendDoneOn: socketId 
-		for: aSocket sendTimeOutSeconds.
+		for: aSocket sendTimeoutSeconds.
 	^sentCount
 
 
 ]
 
 { #category : #'API-TCP' }
-OCNSocketPluginLibrary >> tcpSendData: aByteStringOrByteArray to: aSocket for: aTimeoutInSeconds [
+OCNSocketPluginLibrary >> tcpSendSomeData: aByteStringOrByteArray startIndex: startIndex count: count to: aSocket [
 	|socketId sentCount| 
 	socketId := aSocket socketId.
 	sentCount := self 
 					primSocket: socketId 
 					sendData: aByteStringOrByteArray 
-					startIndex: 1 
-					count: aByteStringOrByteArray size.
+					startIndex: startIndex 
+					count: count.
 	self 
 		waitForSendDoneOn: socketId 
-		for: aTimeoutInSeconds.
+		for: aSocket sendTimeoutSeconds.
 	^sentCount
 
 
@@ -1363,6 +1193,45 @@ OCNSocketPluginLibrary >> tcpSendData: aByteStringOrByteArray to: aSocket for: a
 { #category : #'Support For TCP' }
 OCNSocketPluginLibrary >> tcpSocketConnectedStatus [
 	^2
+]
+
+{ #category : #'Support For TCP' }
+OCNSocketPluginLibrary >> tcpSocketOtherEndClosedStatus [
+	^3
+]
+
+{ #category : #'Support For TCP' }
+OCNSocketPluginLibrary >> tryAcceptFrom: aServerSocket [ 
+
+	| semaIndex readSemaIndex writeSemaIndex conversationSocketId |
+	[
+		semaphore := Semaphore new.
+		readSemaphore := Semaphore new.
+		writeSemaphore := Semaphore new.
+	 
+		semaIndex := Smalltalk registerExternalObject: semaphore.
+		readSemaIndex := Smalltalk registerExternalObject: readSemaphore.
+		writeSemaIndex := Smalltalk registerExternalObject: writeSemaphore.
+	
+		conversationSocketId := self
+			primAcceptFrom: aServerSocket socketId
+			receiveBufferSize:  OCNSocket receiveDataBufferSize
+			sendBufSize: OCNSocket sendDataBufferSize 
+			semaIndex:  semaIndex
+			readSemaIndex:  readSemaIndex
+			writeSemaIndex:  writeSemaIndex 
+	] repeatWithGCIf: [ :socketId | socketId isNil].
+
+	conversationSocketId ifNil: [ 
+			self releaseSemaphores. 
+			OCNSocketOperationFailureError signal: 'Socket accept failure'
+	].
+
+	^conversationSocketId
+	
+	
+
+
 ]
 
 { #category : #'API-UDP' }
@@ -1374,12 +1243,6 @@ OCNSocketPluginLibrary >> udpDestroy: aSocket [
 	self releaseSemaphores.
 	isDestroyed := true
 
-]
-
-{ #category : #'API-UDP' }
-OCNSocketPluginLibrary >> udpSet: aSocket withPort: aPort [
-	
-	self primSocket: aSocket socketId setPort: aPort
 ]
 
 { #category : #'Support For NameResolving' }
@@ -1403,61 +1266,26 @@ OCNSocketPluginLibrary >> waitForCompletionUntil: deadline [
 
 ]
 
-{ #category : #'socket_api' }
+{ #category : #'Support For TCP' }
 OCNSocketPluginLibrary >> waitForConnectionOf: anOCNSocket timeoutSeconds: timeout [
 	
 	self waitForConnectionOf: anOCNSocket timeoutSeconds: timeout 
-		onTimeoutDo: [OCNSocketOperationFailureError signal: 'Connection timeout']
+		onTimeoutDo: [OCNTimeOutError signal: 'Connection timeout']
 
 ]
 
-{ #category : #'socket_api' }
+{ #category : #'Support For TCP' }
 OCNSocketPluginLibrary >> waitForConnectionOf: anOCNSocket timeoutSeconds: timeout onTimeoutDo: aTimeoutBlock [
-	"| endTime |
+	| endTime |
 	endTime := Time now asSeconds + timeout.
 	[(self primSocketConnectionStatus: anOCNSocket socketId) = Connected ifTrue: [^self].
 		Time now asSeconds > endTime.
 	] whileFalse.
-	aTimeoutBlock value"
+	aTimeoutBlock value
 
-	| startTime msecsDelta msecsEllapsed status |
-	startTime := Time millisecondClockValue.
-	msecsDelta := (timeout * 1000) truncated.
-	status := self primSocketConnectionStatus: anOCNSocket socketId.
-	[(status = WaitingForConnection) and: [(msecsEllapsed := Time millisecondsSince: startTime) < msecsDelta]]
-		whileTrue: [
-			semaphore waitTimeoutMSecs: msecsDelta - msecsEllapsed.
-			status := self primSocketConnectionStatus: anOCNSocket socketId].
-
-	status = Connected ifFalse: [^aTimeoutBlock value].
-	^ true
 ]
 
-{ #category : #'socket_api' }
-OCNSocketPluginLibrary >> waitForDataOn: socketId for: timeoutSeconds ifClosed: closedBlock ifTimedOut: timedOutBlock [
-	"Wait for the given nr of seconds for data to arrive or signal a TimeOutException."
-	
-	| startTime msecsDelta |
-	startTime := Time millisecondClockValue.
-	msecsDelta := (timeoutSeconds * 1000) truncated.
-	[(Time millisecondsSince: startTime) < msecsDelta] whileTrue: [
-		(self primSocketReceiveDataAvailable: socketId) ifTrue: [^self].
-		"(socketId isNil or: [ (self primSocketConnectionStatus: socketId) ~= Connected]) ifTrue: [ 
-				
-		]."
-		"readSemaphore waitTimeoutMSecs: (msecsDelta / 10)".
-		(self primSocketConnectionStatus: socketId) == self tcpSocketConnectedStatus
-			ifFalse: [^timedOutBlock value].
-		(Delay forMilliseconds: msecsDelta / 10) wait
-	].
-	
-	(self primSocketReceiveDataAvailable: socketId) ifFalse: [
-			(self primSocketConnectionStatus: socketId) == self tcpSocketConnectedStatus
-				ifTrue: [^timedOutBlock value]
-				ifFalse: [^closedBlock value]].
-]
-
-{ #category : #'socket_api' }
+{ #category : #'Support For Receiving' }
 OCNSocketPluginLibrary >> waitForDataOn: socketId for: timeoutSeconds onTimedOut: timedOutBlock [
 	"Wait for the given nr of seconds for data to arrive or signal a TimeOutException."
 	
@@ -1510,7 +1338,7 @@ OCNSocketPluginLibrary >> waitForSendDoneOn: socketId for: timeoutSeconds onTime
 
 	| startTime msecsDelta msecsEllapsed sendDone |
 	
-" Look at Socket>>waitForSendDoneUntil: and Socket>>waitForSendDoneFor:"
+" Look at Socket>>waitForSendDoneFor:"
 	
 	startTime := Time millisecondClockValue.
 	msecsDelta := (timeoutSeconds * 1000) truncated.
@@ -1522,13 +1350,7 @@ OCNSocketPluginLibrary >> waitForSendDoneOn: socketId for: timeoutSeconds onTime
 	sendDone ifFalse: aBlock
 ]
 
-{ #category : #accessing }
-OCNSocketPluginLibrary >> writeSemaIndex [
-	^writeSemaIndex
-]
-
 { #category : #'Support For Sending' }
 OCNSocketPluginLibrary >> writeSemaphore [
-	primitiveOnlySupportsOneSemaphore ifTrue: [^semaphore].
-	^writeSemaphore
+	^ writeSemaphore
 ]
