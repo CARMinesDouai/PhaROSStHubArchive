@@ -557,6 +557,25 @@ ConfigurationOfOcean >> version09: spec [
 ]
 
 { #category : #versions }
+ConfigurationOfOcean >> version101: spec [
+	<version: '1.01' imports: #('0.8-baseline')>
+	
+	spec for: #common do: [
+		spec 
+			blessing: #development; 
+			project: 'Alien' with:  #development;
+			package: 'Ocean-Kernel' with: 'Ocean-Kernel-janniklaval.20';
+			package: 'Ocean-KernelTests' with: 'Ocean-KernelTests-NouryBouraqadi.18';
+			package: 'Ocean-LibraryPlugin' with: 'Ocean-LibraryPlugin-janniklaval.20';
+			package: 'Ocean-LibraryPluginTests' with: 'Ocean-LibraryPluginTests-NouryBouraqadi.8' ;
+			package: 'Ocean-LibraryPosix' with: 'Ocean-LibraryPosix-LucFabresse.1';
+			package: 'Ocean-LibraryPosixTests' with: 'Ocean-LibraryPosixTests-LucFabresse.2';
+			package: 'Ocean-Benchmarks' with: 'Ocean-Benchmarks-LucFabresse.2';
+			package: 'Ocean-IpV6' with: 'Ocean-IpV6-NouryBouraqadi.3'.
+	]
+]
+
+{ #category : #versions }
 ConfigurationOfOcean >> version10: spec [
 	<version: '1.0' imports: #('0.8-baseline')>
 	
