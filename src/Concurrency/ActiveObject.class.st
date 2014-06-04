@@ -1,29 +1,3 @@
-"
-An ActiveObject is an Object that drives a process to perform some action block. Note that an active object has a name that is attached to its process. So, it's easier to track on the process Browser.
-
-Example
--Ensure Transcript is open ""Transcript open""
-
--Evaulate
-""|hello goodbye|
-hello := ActiveObject repeat: [Transcript cr; show: 'Hello'] every: 50 milliSeconds.
-goodbye := ActiveObject repeat: [Transcript cr; show: 'Goodbye'] every: 30 milliSeconds.
-hello start.
-goodbye start.
-[1 second wait.
-hello stop.
-goodbye stop] fork.
-""
-
-Instance Variables
-	process:		<Process>
-	actionBlock:		<activityBlock> action to be performed by the active object within the process
-	activityLock:		<Mutex> for synchronizing start and stop
-	name:		<String> process name
-	priority:		<Integer> process priority
-
-
-"
 Class {
 	#name : #ActiveObject,
 	#superclass : #Object,
