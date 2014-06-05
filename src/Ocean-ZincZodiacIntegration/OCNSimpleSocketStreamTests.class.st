@@ -49,6 +49,28 @@ OCNSimpleSocketStreamTests >> tearDown [
 	"OCNInstaller makesZincUseOldNetwork "
 ]
 
+{ #category : #'OCN testing' }
+OCNSimpleSocketStreamTests >> testAccept [
+	| clientSocket semaphore |
+	semaphore := self runServer: [ :serverSocket :mySemaphore | | clientSocketServerSide |
+		self assert: (serverSocket isKindOf: OCNServerTcpSocket).
+		clientSocketServerSide := serverSocket waitForAcceptFor: 10.
+		self assert: (clientSocketServerSide isKindOf: OCNConversationTcpSocket).
+		self assert: serverSocket localPort = self port.
+		self assert: clientSocketServerSide localPort = self port.
+		mySemaphore signal.
+		clientSocketServerSide closeAndDestroy].
+	
+	clientSocket := OCNConversationTcpSocket newConnectedToIp: #[127 0 0 1] port: self port.	
+	semaphore wait.
+	self assert: clientSocket localPort ~= self port.
+	self assert: (clientSocket isKindOf: OCNConversationTcpSocket).	
+	clientSocket closeAndDestroy.
+	semaphore wait.
+	
+	
+]
+
 { #category : #testing }
 OCNSimpleSocketStreamTests >> testAddOneEcho [
 	| dataSent dataRead clientStream semaphore |
@@ -67,6 +89,18 @@ OCNSimpleSocketStreamTests >> testAddOneEcho [
 	semaphore wait
 ]
 
+{ #category : #'OCN testing' }
+OCNSimpleSocketStreamTests >> testLocalPort [
+	
+	| semaphore |
+	semaphore := self runServer: [ :serverSocket :mySemaphore |
+		self assert: (serverSocket isKindOf: OCNServerTcpSocket).
+		self assert: serverSocket localPort = self port.
+		mySemaphore signal.
+	 ].
+	semaphore wait.
+]
+
 { #category : #testing }
 OCNSimpleSocketStreamTests >> testPlainClientRead [
 	| dataSent dataRead clientStream semaphore |
@@ -75,6 +109,8 @@ OCNSimpleSocketStreamTests >> testPlainClientRead [
 		self assert: (serverSocket isKindOf: OCNServerTcpSocket).
 		clientSocket := serverSocket waitForAcceptFor: 10.
 		self assert: (clientSocket isKindOf: OCNConversationTcpSocket).
+		self assert: serverSocket localPort = self port.
+		self assert: clientSocket localPort = self port.
 		serverStream := self referenceSocketStreamOn: clientSocket.
 		serverStream nextPutAll: dataSent.
 		serverStream close.
