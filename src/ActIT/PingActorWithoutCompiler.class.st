@@ -35,7 +35,7 @@ PingActorWithoutCompiler >> initialize [
 { #category : #'as yet unclassified' }
 PingActorWithoutCompiler >> ping: anActor [
 
-	anActor send: #pingFrom: with: ATCurrentActor value
+	anActor pingFrom: ATCurrentActor value
 ]
 
 { #category : #'as yet unclassified' }
