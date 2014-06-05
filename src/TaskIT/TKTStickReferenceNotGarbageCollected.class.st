@@ -1,11 +1,11 @@
 Class {
-	#name : #TKTTaskOneShotRunnerUnreferencedStickReferenceDeployedFutureTests,
+	#name : #TKTStickReferenceNotGarbageCollected,
 	#superclass : #TKTTaskAbstractOneShotRunner,
-	#category : #'TaskIT-Kernel-Tests'
+	#category : #'TaskIT-Util-Tests'
 }
 
 { #category : #'as yet unclassified' }
-TKTTaskOneShotRunnerUnreferencedStickReferenceDeployedFutureTests >> setUp [
+TKTStickReferenceNotGarbageCollected >> setUp [
 
 	super setUp.
 	future := (runner run: [ 2 ] asTask) asStickyReference.
@@ -15,22 +15,22 @@ TKTTaskOneShotRunnerUnreferencedStickReferenceDeployedFutureTests >> setUp [
 ]
 
 { #category : #'as yet unclassified' }
-TKTTaskOneShotRunnerUnreferencedStickReferenceDeployedFutureTests >> testFutureHasExpectedResult [
+TKTStickReferenceNotGarbageCollected >> testFutureHasExpectedResult [
 	self assert: result = 2.
 ]
 
 { #category : #'as yet unclassified' }
-TKTTaskOneShotRunnerUnreferencedStickReferenceDeployedFutureTests >> testFutureHasNotBeenCancelled [
+TKTStickReferenceNotGarbageCollected >> testFutureHasNotBeenCancelled [
 	self deny: runner workingFuture  isCancelled.
 ]
 
 { #category : #'as yet unclassified' }
-TKTTaskOneShotRunnerUnreferencedStickReferenceDeployedFutureTests >> testFutureIsNotError [
+TKTStickReferenceNotGarbageCollected >> testFutureIsNotError [
 	self deny: runner workingFuture isError.
 ]
 
 { #category : #'as yet unclassified' }
-TKTTaskOneShotRunnerUnreferencedStickReferenceDeployedFutureTests >> testProcessHasFinished [
+TKTStickReferenceNotGarbageCollected >> testProcessHasFinished [
 
 	self assert: runner isTerminated 
 ]

@@ -8,7 +8,9 @@ Class {
 TKTTaskOneShotRunnerNormalComputationTests >> setUp [
 	
 	super setUp.
-	result := (runner run: ([  1+2 ] asTask)) value.
+	runner run: [  1+2 ] asTask.
+	runner wait.
+	result := runner result value.
 ]
 
 { #category : #tests }

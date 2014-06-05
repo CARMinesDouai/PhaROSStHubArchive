@@ -8,13 +8,13 @@ Class {
 TKTTaskOneShotRunnerErrorComputationTests >> setUp [
 
 	super setUp.
-	future := runner run: [ self error. ] asTask.
-	future wait.
+	runner run: [ self error ] asTask.
+	runner wait.
 ]
 
 { #category : #tests }
 TKTTaskOneShotRunnerErrorComputationTests >> testFutureIsError [
-	self assert: future isError.
+	self assert: runner result isError.
 ]
 
 { #category : #tests }
@@ -26,5 +26,5 @@ TKTTaskOneShotRunnerErrorComputationTests >> testTerminatesTheProcess [
 { #category : #tests }
 TKTTaskOneShotRunnerErrorComputationTests >> testValueRaisesError [
 
-	self should: [ future value ] raise: Error
+	self should: [ runner result value ] raise: Error
 ]

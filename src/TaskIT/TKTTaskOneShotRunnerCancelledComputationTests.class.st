@@ -8,21 +8,21 @@ Class {
 TKTTaskOneShotRunnerCancelledComputationTests >> setUp [
 
 	super setUp.
-	future := runner run: [ (Delay forMilliseconds: 1000) wait ] asTask.
-	runner cancelFutures.
-	result := future value.
+	runner run: [ (Delay forMilliseconds: 1000) wait ] asTask.
+	runner cancel.
+	result := runner value.
 ]
 
 { #category : #tests }
 TKTTaskOneShotRunnerCancelledComputationTests >> testIsNotError [
 
-	self deny: future isError.
+	self deny: runner result isError.
 ]
 
 { #category : #tests }
 TKTTaskOneShotRunnerCancelledComputationTests >> testResultWasCancelled [
 
-	self assert:future isCancelled.
+	self assert: runner result isCancelled.
 ]
 
 { #category : #tests }

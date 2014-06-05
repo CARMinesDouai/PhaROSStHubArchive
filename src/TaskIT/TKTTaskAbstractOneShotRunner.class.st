@@ -3,8 +3,7 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'runner',
-		'result',
-		'future'
+		'result'
 	],
 	#category : #'TaskIT-Kernel-Tests'
 }

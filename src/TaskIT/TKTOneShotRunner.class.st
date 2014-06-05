@@ -14,10 +14,47 @@ Class {
 	#name : #TKTOneShotRunner,
 	#superclass : #TKTOwnProcessRunner,
 	#instVars : [
-		'future'
+		'future',
+		'result',
+		'finishingSemaphore'
 	],
 	#category : #'TaskIT-Kernel'
 }
+
+{ #category : #running }
+TKTOneShotRunner >> afterDeployError: anError intoFuture: aFuture [
+
+	super afterDeployError: anError intoFuture: aFuture.
+	finishingSemaphore signal.
+]
+
+{ #category : #running }
+TKTOneShotRunner >> afterDeployValue: aValue intoFuture: aFuture [
+
+	super afterDeployValue: aValue intoFuture: aFuture.
+	finishingSemaphore signal.
+]
+
+{ #category : #running }
+TKTOneShotRunner >> basicDeployError: anError intoFuture: aFuture [
+
+	super basicDeployError: anError intoFuture: aFuture.
+	result := TKTErrorResult new setError: anError.
+]
+
+{ #category : #running }
+TKTOneShotRunner >> basicDeployValue: aValue intoFuture: aFuture [
+
+	super basicDeployValue: aValue intoFuture: aFuture.
+	result := TKTSuccessResult new setValue: aValue.
+]
+
+{ #category : #running }
+TKTOneShotRunner >> cancel [
+
+	super cancel.
+	result := TKTCancelledExecutionResult new.
+]
 
 { #category : #running }
 TKTOneShotRunner >> cancel: aFuture [
@@ -41,11 +78,25 @@ TKTOneShotRunner >> defaultProcessName [
 	^ 'One Shot runner'
 ]
 
+{ #category : #'initialize - release' }
+TKTOneShotRunner >> initialize [
+
+	super initialize.
+	finishingSemaphore := Semaphore new.
+	result := nil.
+]
+
 { #category : #running }
 TKTOneShotRunner >> noteFutureHasFinished: aFuture [
 	future == aFuture ifTrue: [ 
 		self clearProcess.	
 	 ]
+]
+
+{ #category : #accessing }
+TKTOneShotRunner >> result [
+	
+	^ result ifNil: [ self error: 'Result is not yet available' ]
 ]
 
 { #category : #running }
@@ -54,18 +105,24 @@ TKTOneShotRunner >> run: aTKTTask [
 	| task |
 	future := self newFuture.
 	task := aTKTTask asTask.
-	process := TKTPharoProcess  new.
+	process := TKTPharoProcess new.
 	process executable: [
-		task runOnRunner: self withFuture: future
+		task runOnRunner: self withFuture: future.
 	].
 	process name: 'A TKTTask'.
 	process priority: task priority.
 	process execute.
-	
 	^ future.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
+TKTOneShotRunner >> wait [
+
+	finishingSemaphore wait.
+	self clearProcess.
+]
+
+{ #category : #accessing }
 TKTOneShotRunner >> workingFuture [
 	^ future.
 ]
