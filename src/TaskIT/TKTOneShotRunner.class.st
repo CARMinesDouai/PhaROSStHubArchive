@@ -54,6 +54,7 @@ TKTOneShotRunner >> cancel [
 
 	super cancel.
 	result := TKTCancelledExecutionResult new.
+	self clearProcess.
 ]
 
 { #category : #running }
