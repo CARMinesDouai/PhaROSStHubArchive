@@ -58,7 +58,6 @@ OCNSocketPluginLibrary class >> initialize [
 	Connected := 2.
 	OtherEndClosed := 3.
 	ThisEndClosed := 4.
-	
 	"NetNameResolver initialize"
 	"Note: On the Mac, the name resolver is asynchronous (i.e., Pharo can do other things while it is working), but can only handle one request at a time. On other platforms, such as Unix, the resolver is synchronous; a call to, say, the name lookup primitive will block all Pharo processes until it returns."
 
@@ -83,11 +82,16 @@ OCNSocketPluginLibrary >> acceptFrom: aServerSocket [
 
 	| newNetworkLibrary newSocketId |
 	
+	self waitForConnectionOf: aServerSocket timeoutSeconds: aServerSocket acceptTimeoutSeconds  onTimeoutDo: [ OCNTimeOutError signal: 'accept timeout' ].
+	
+	(self isSocketConnected: aServerSocket) ifFalse: [ OCNTimeOutError signal: 'accept timeout' 	].
+	
 	newNetworkLibrary :=  self species new. 
 
 	newSocketId := newNetworkLibrary tryAcceptFrom: aServerSocket.
 		
 	^ OCNConversationTcpSocket newConnectedWithId: newSocketId library: newNetworkLibrary
+	 
 
 ]
 
@@ -432,7 +436,7 @@ OCNSocketPluginLibrary >> localPortOf: socket [
 		
 		(self isWaitingForConnection: socket)
 		ifFalse: [
-			[self waitForConnectionOf: self timeoutSeconds: self acceptTimeoutSeconds ]
+			[self waitForConnectionOf: socket timeoutSeconds: socket connectionTimeoutSeconds ]
 				on: OCNTimeOutError
 				do: [:ex | ^ 0]].
 		^ self primSocketLocalPort: socket socketId
@@ -1117,6 +1121,21 @@ OCNSocketPluginLibrary >> sendUDPOn: aSocket datagram: aDatagramPacket [
 	"this method should deal with sourceAdress: from DatagramPacket."
 	^ self sendUDPDataOn: aSocket socketId contents: aDatagramPacket data toHost: aDatagramPacket targetAddress ip port: aDatagramPacket targetAddress port
 	
+]
+
+{ #category : #'Support For Sockets' }
+OCNSocketPluginLibrary >> statusStringOf: socket [
+	| status |
+	socket socketId == nil ifTrue: [^ 'destroyed'].
+	status := self primSocketConnectionStatus: socket socketId .
+	status = InvalidSocket ifTrue: [^ 'invalidSocketHandle'].
+	status = Clean ifTrue: [^ 'clean/unconnected'].
+	status = WaitingForConnection ifTrue: [^ 'waitingForConnection'].
+	status = Connected ifTrue: [^ 'connected'].
+	status = OtherEndClosed ifTrue: [^ 'otherEndClosedButNotThisEnd'].
+	status = ThisEndClosed ifTrue: [^ 'thisEndClosedButNotOtherEnd'].
+	^ 'unknown socket status'
+
 ]
 
 { #category : #'Support For NameResolving' }
