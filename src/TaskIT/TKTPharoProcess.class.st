@@ -42,6 +42,24 @@ TKTPharoProcess >> resume [
 ]
 
 { #category : #controlling }
+TKTPharoProcess >> setProcessSpecificVariableValue: aProcessSpecificVariable with: aValue [
+
+	process setProcessSpecificVariableValue: aProcessSpecificVariable with: aValue
+]
+
+{ #category : #controlling }
+TKTPharoProcess >> suspend [
+
+	process ifNil: [ 
+		self error: 'The process has not being executed yet'.
+	] ifNotNil:[
+		self isTerminated ifFalse:[
+			process suspend.	
+		]
+	]
+]
+
+{ #category : #controlling }
 TKTPharoProcess >> terminate [
 
 	process ifNil: [ 

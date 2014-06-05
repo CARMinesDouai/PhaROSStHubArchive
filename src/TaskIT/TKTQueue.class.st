@@ -18,6 +18,18 @@ TKTQueue >> add: anObject [
 	^ anObject.
 ]
 
+{ #category : #converting }
+TKTQueue >> asOrderedCollection [
+
+	^ queue get asOrderedCollection
+]
+
+{ #category : #accessing }
+TKTQueue >> collect: aBlock [
+
+	^ queue collect: aBlock
+]
+
 { #category : #'initialize-release' }
 TKTQueue >> initialize [ 
 	queue := TKTExclusiveAccessVariable initialValue: (OrderedCollection new).

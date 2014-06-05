@@ -55,6 +55,12 @@ TKTOwnProcessRunner >> isTerminated [
 ]
 
 { #category : #accessing }
+TKTOwnProcessRunner >> process [
+
+	^ process
+]
+
+{ #category : #accessing }
 TKTOwnProcessRunner >> processName [
 
 	^ processName ifNil: [ self defaultProcessName ].

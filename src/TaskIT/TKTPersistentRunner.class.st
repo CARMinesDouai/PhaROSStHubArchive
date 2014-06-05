@@ -244,6 +244,12 @@ TKTPersistentRunner >> priority: anObject [
 ]
 
 { #category : #running }
+TKTPersistentRunner >> resume [
+	
+	process resume.
+]
+
+{ #category : #running }
 TKTPersistentRunner >> run [
 
 	keepRunning set: true.
@@ -273,6 +279,12 @@ TKTPersistentRunner >> start [
 TKTPersistentRunner >> stop [
 	keepRunning set: false.
 	self cancel.
+]
+
+{ #category : #running }
+TKTPersistentRunner >> suspend [
+	
+	process suspend.
 ]
 
 { #category : #running }

@@ -124,6 +124,12 @@ TKTWorker >> onStart [
 	doneTasks := Set new.
 ]
 
+{ #category : #accessing }
+TKTWorker >> pendingTasks [
+
+	^ self workingQueue collect: #key
+]
+
 { #category : #running }
 TKTWorker >> restart [
 	 
@@ -188,6 +194,12 @@ TKTWorker >> stopWorkingOnThat [
 { #category : #accessing }
 TKTWorker >> timeout: aSmallInteger [ 
 	^ workingQueue timeout: aSmallInteger 
+]
+
+{ #category : #accessing }
+TKTWorker >> workingQueue [
+
+	^ workingQueue
 ]
 
 { #category : #running }
