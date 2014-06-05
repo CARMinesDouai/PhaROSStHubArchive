@@ -110,8 +110,9 @@ Class {
 	#instVars : [
 		'block',
 		'priority',
-		'stdout',
-		'stderr'
+		'errorCallbacks',
+		'successCallbacks',
+		'cancelCallbacks'
 	],
 	#category : #'TaskIT-Kernel'
 }
@@ -170,12 +171,34 @@ TKTTask >> finalize [
 TKTTask >> initialize [ 
 
 	super initialize.
-	priority := Processor userBackgroundPriority
+	priority := Processor userBackgroundPriority.
+	successCallbacks := TKTExclusiveAccessVariable initialValue: OrderedCollection new.
+	errorCallbacks := TKTExclusiveAccessVariable initialValue: OrderedCollection new.
+	cancelCallbacks := TKTExclusiveAccessVariable initialValue: OrderedCollection new.
+
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 TKTTask >> isClean [
 	^ block isClean.
+]
+
+{ #category : #callbacks }
+TKTTask >> onCancel: aCallback [ 
+
+	cancelCallbacks add: aCallback
+]
+
+{ #category : #callbacks }
+TKTTask >> onError: aCallback [ 
+
+	errorCallbacks add: aCallback
+]
+
+{ #category : #callbacks }
+TKTTask >> onSuccess: aCallback [ 
+
+	successCallbacks add: aCallback
 ]
 
 { #category : #accessing }
@@ -197,15 +220,16 @@ TKTTask >> runOnRunner: aRunner withFuture: aFuture [
 		[
 			value := self executeWithFuture: aFuture. 
 		] on: Error do: [ : exception |
+			exception freeze.
+			errorCallbacks get do: [ : c  | c cull: exception ].
 			^ aRunner deployError: exception intoFuture: aFuture.
 		].
+		successCallbacks get do: [ : c  | c cull: value ].
 		aRunner deployValue: value intoFuture: aFuture.
 	] ensure: [
 		self tearDownOnRunner: aRunner withFuture: aFuture.
 		aRunner noteFutureHasFinished: aFuture.
 	].
-	
-	
 ]
 
 { #category : #executing }

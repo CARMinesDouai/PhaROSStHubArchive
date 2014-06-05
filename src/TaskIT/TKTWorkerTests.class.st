@@ -8,7 +8,7 @@ Class {
 		'deadWorker',
 		'deadEventKindWorker'
 	],
-	#category : #'TaskIT-Kernel-Tests'
+	#category : #'TaskIT-PersistentRunners-Tests'
 }
 
 { #category : #running }

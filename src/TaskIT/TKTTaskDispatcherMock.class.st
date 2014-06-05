@@ -5,7 +5,7 @@ Class {
 		'destroyed',
 		'tasks'
 	],
-	#category : #'TaskIT-Kernel-Tests'
+	#category : #'TaskIT-Tasks-Worker-Tests'
 }
 
 { #category : #initialize }
