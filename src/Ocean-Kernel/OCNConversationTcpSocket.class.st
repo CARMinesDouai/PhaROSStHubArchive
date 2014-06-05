@@ -27,7 +27,6 @@ Class {
 	#name : #OCNConversationTcpSocket,
 	#superclass : #OCNTcpSocket,
 	#instVars : [
-		'connectionTimeoutSeconds',
 		'sendTimeoutSeconds',
 		'receiveTimeOutSeconds'
 	],
@@ -100,20 +99,9 @@ OCNConversationTcpSocket >> connectedStateSymbol [
 
 ]
 
-{ #category : #accessing }
-OCNConversationTcpSocket >> connectionTimeoutSeconds [
-	^connectionTimeoutSeconds
-]
-
-{ #category : #accessing }
-OCNConversationTcpSocket >> connectionTimeoutSeconds: anObject [
-	connectionTimeoutSeconds := anObject
-]
-
 { #category : #'initialize-release' }
 OCNConversationTcpSocket >> initialize [ 
 	super initialize.
-	self connectionTimeoutSeconds: 3.
 	self sendTimeoutSeconds: 3.
 	self receiveTimeOutSeconds: 3
 ]

@@ -196,6 +196,14 @@ OCNSocket >> newSocketId [
 	self subclassResponsibility 
 ]
 
+{ #category : #printing }
+OCNSocket >> printOn: stream [
+
+	super printOn: stream.
+	stream nextPutAll: '[', self statusString, ']'.
+
+]
+
 { #category : #constants }
 OCNSocket >> receiveDataBufferSize [
 	^self class receiveDataBufferSize 
@@ -242,4 +250,13 @@ OCNSocket >> state [
 OCNSocket >> state: anObject [
 	
 	state := anObject
+]
+
+{ #category : #'backward compatibility' }
+OCNSocket >> statusString [
+	"Return a string describing the status of this socket."
+
+	^ self networkLibrary statusStringOf: self 
+	
+
 ]

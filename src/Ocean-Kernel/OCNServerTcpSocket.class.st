@@ -84,11 +84,6 @@ OCNServerTcpSocket >> listeningStateSymbol [
 ]
 
 { #category : #'backward compatibility' }
-OCNServerTcpSocket >> localPort [
-	^ self networkLibrary localPortOf: self 
-]
-
-{ #category : #'backward compatibility' }
 OCNServerTcpSocket >> waitForAcceptFor: timeout [
 	self acceptTimeoutSeconds: timeout.
 	^ self accept
