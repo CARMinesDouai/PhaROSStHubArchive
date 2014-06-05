@@ -1,3 +1,6 @@
+"
+I'm the success of an execution
+"
 Class {
 	#name : #TKTSuccessResult,
 	#superclass : #TKTResult,

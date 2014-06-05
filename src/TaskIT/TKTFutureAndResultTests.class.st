@@ -1,7 +1,7 @@
 Class {
 	#name : #TKTFutureAndResultTests,
 	#superclass : #TestCase,
-	#category : #'TaskIT-Kernel-Tests'
+	#category : #'TaskIT-Futures-Tests'
 }
 
 { #category : #tests }

@@ -182,6 +182,13 @@ TKTPersistentRunner >> beforeRunTask: currentTask [
 ]
 
 { #category : #running }
+TKTPersistentRunner >> clearProcess [
+
+	process terminate.
+	process := nil.
+]
+
+{ #category : #running }
 TKTPersistentRunner >> executeNextTask [
 
 	[
@@ -272,4 +279,5 @@ TKTPersistentRunner >> stop [
 TKTPersistentRunner >> waitToFinish [
 
 	finishedSemaphore wait.
+	self clearProcess.
 ]

@@ -1,3 +1,6 @@
+"
+I'm a cancelled task execution.
+"
 Class {
 	#name : #TKTCancelledExecutionResult,
 	#superclass : #TKTResult,

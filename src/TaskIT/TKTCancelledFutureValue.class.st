@@ -4,7 +4,7 @@ I'm the value placed on a future when the future was cancelled. I throw an excep
 Class {
 	#name : #TKTCancelledFutureValue,
 	#superclass : #Object,
-	#category : #'TaskIT-Kernel'
+	#category : #'TaskIT-Futures'
 }
 
 { #category : #'error handling' }

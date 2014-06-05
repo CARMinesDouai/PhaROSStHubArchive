@@ -66,7 +66,7 @@ Class {
 		'errorCallbacks',
 		'cancelCallbacks'
 	],
-	#category : #'TaskIT-Kernel'
+	#category : #'TaskIT-Futures'
 }
 
 { #category : #converting }

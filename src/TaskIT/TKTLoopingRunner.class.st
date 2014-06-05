@@ -1,3 +1,6 @@
+"
+A TKTLoopingRunner is a persistent runner that will loop and execute a unique task many times
+"
 Class {
 	#name : #TKTLoopingRunner,
 	#superclass : #TKTPersistentRunner,

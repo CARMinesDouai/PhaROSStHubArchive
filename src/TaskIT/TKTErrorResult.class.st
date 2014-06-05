@@ -1,3 +1,6 @@
+"
+I'm an error during a task execution.
+"
 Class {
 	#name : #TKTErrorResult,
 	#superclass : #TKTResult,

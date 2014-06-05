@@ -4,7 +4,7 @@ I'm the value placed on a future when the future execution produced an error. I 
 Class {
 	#name : #TKTInvalidFutureValue,
 	#superclass : #Object,
-	#category : #'TaskIT-Kernel'
+	#category : #'TaskIT-Futures'
 }
 
 { #category : #'error handling' }

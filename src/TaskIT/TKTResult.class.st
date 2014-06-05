@@ -1,3 +1,6 @@
+"
+I represent the result of a task execution.
+"
 Class {
 	#name : #TKTResult,
 	#superclass : #Object,

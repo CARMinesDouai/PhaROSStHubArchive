@@ -28,7 +28,7 @@ Class {
 		'future',
 		'cancelled'
 	],
-	#category : #'TaskIT-Kernel'
+	#category : #'TaskIT-Futures'
 }
 
 { #category : #'instance creation' }

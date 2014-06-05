@@ -1,3 +1,6 @@
+"
+I'm a runner that manages the life-cyly of a process.
+"
 Class {
 	#name : #TKTOwnProcessRunner,
 	#superclass : #TKTRunner,
