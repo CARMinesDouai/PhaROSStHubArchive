@@ -15,7 +15,7 @@ pharos usage
 "
 Class {
 	#name : #PRCDefaultCommandLineHandler,
-	#superclass : #DefaultCommandLineHandler,
+	#superclass : #BasicCommandLineHandler,
 	#category : #PhaROSCommander
 }
 
