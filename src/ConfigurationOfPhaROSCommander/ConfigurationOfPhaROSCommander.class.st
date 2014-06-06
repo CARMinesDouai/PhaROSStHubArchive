@@ -1,3 +1,6 @@
+"
+ConfigurationOfPhaROSCommander loadBleedingEdge
+"
 Class {
 	#name : #ConfigurationOfPhaROSCommander,
 	#superclass : #Object,
