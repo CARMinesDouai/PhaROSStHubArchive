@@ -1,3 +1,6 @@
+"
+ConfigurationOfTaskIT loadBleedingEdge
+"
 Class {
 	#name : #ConfigurationOfTaskIT,
 	#superclass : #Object,
@@ -209,6 +212,42 @@ ConfigurationOfTaskIT >> baseline20: spec [
 					repository: 'http://www.squeaksource.com/MetacelloRepository'; 
 					versionString: #stable.
 			].
+			spec package: 'TaskIT' with: [
+				spec requires: #('Ghost' ).
+			].
+			spec package: 'TaskITFork' with: [ 
+				spec requires: #('TaskIT' 'OSProcess').
+			 ].
+			
+			spec group: 'core'with: #( 'TaskIT').
+			spec group: 'default'  with: #( 'TaskIT' 'TaskITFork' ).
+	].
+
+
+]
+
+{ #category : #'as yet unclassified' }
+ConfigurationOfTaskIT >> baseline21: spec [
+	<version:'2.1-baseline'>
+	spec for: #common do: [
+			spec blessing: #baseline.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/TaskIT/main'.
+		
+			spec project: 'Ghost' with: [
+				spec 
+					className: 'ConfigurationOfGhost';
+					file: 'ConfigurationOfGhost' ;
+					repository: 'http://smalltalkhub.com/mc/CAR/Ghost/main'
+			].
+		
+			spec project: 'OSProcess' with: [
+				spec 
+					className: 'ConfigurationOfOSProcess';
+					file: 'ConfigurationOfOSProcess' ;
+					repository: 'http://www.squeaksource.com/MetacelloRepository'; 
+					versionString: #stable.
+			].
+		
 			spec package: 'TaskIT' with: [
 				spec requires: #('Ghost' ).
 			].
