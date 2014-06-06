@@ -444,7 +444,6 @@ ConfigurationOfPhaROS >> baseline12: spec [
 			spec package: 'PhaROSNodeletsPosition'	 with: [ spec requires: #('PhaROS')].
 			spec package: 'PhaROSNodeletsRPC' 		with: [ spec requires: #('PhaROS')].
 			spec package: 'PhaROSNodeletsTF' 		with: [ spec requires: #('PhaROS')].
-			spec package: 'PhaROSNodeletsTurtlebot' with: [ spec requires: #('PhaROS')].
 			
 			spec package: 'PhaROSNodeletsTurtlesim' with: [ spec requires: #('PhaROS')].
 			
@@ -452,41 +451,17 @@ ConfigurationOfPhaROS >> baseline12: spec [
 				spec requires: #('PhaROS' 'PhaROSNodeletsLocalizer')	
 			].
 			
-			"Some already implemented Packages"
-			spec package: 'PhaROSPackageEsug' with: [
-				spec requires:#('PhaROS' 'PhaROSControllers' 'PhaROSNodeletsTurtlesim' 'PhaROSNodeletsTF' )	
-			].
-		
-			spec package: 'ChatterPackage' with: [
-				spec requires:#('PhaROS' 'PhaROSControllers'  )	
-			].
-			
-			spec package: 'DonatelloPackage' with: [
-				spec requires:#('PhaROS' 'PhaROSControllers' 'PhaROSNodeletsTF'  )	
-			].
-		
-			"PhaROS Configuration"	
-			
+			"PhaROS Configuration"
 			spec package: 'PhaROS' with: [
 				spec requires: #('XMLRPC' 'CommonTraits' 'Equals' 'PaulLePoulpe' 'OSProcess' 'TaskIT').
 			].
 	
-			spec 	group: 'default' with: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure'  );
-	 				group: 'default+tests' with: #( 'PhaROS' 'PhaROSTest' 'PhaROSTestROS' 'PhaROSControllers' 'PhaROSInfrastructure' );
-					group: 'core' with: #('PhaROS' );
-					group: 'core+tests' with: #('PhaROS' 'PhaROSTest' 'PhaROSTestROS' );
+			"PhaROSInfrastructure is deprecated? but ROSLaunch still used?"
+			spec 
+				group: 'default' with: #('PhaROS'  'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSNodeletsAction' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition'  'PhaROSNodeletsTurtlesim'  'PhaROSNodeletsLocalizer' 'PhaROSNodeletsMerger' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsRPC' 'tests' );
+				group: 'tests' with: #('PhaROSTest'  'PhaROSTestROS').
 				
-					group: 'nodelets-ros-controllers' with: #( 'PhaROSNodeletsAction' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition' 'PhaROSNodeletsTurtlesim' 'PhaROSNodeletsTurtlebot');
-					group: 'nodelets-behavior' with: #( 'PhaROSNodeletsLocalizer' 'PhaROSNodeletsMerger' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsRPC');
-					group: 'nodelets' with: #('nodelets-ros-controllers' 'nodelets-behavior');
-					group: 'all' with: #('default+tests' 'nodelets').
-		
-			
-			spec group: 'full-archetype' with: #('all' ).
-			spec group: 'basic-archetype' with: #('PhaROS' 'PhaROSControllers' 'PhaROSNodeletsTurtlesim' 'PhaROSNodeletsTF' ).
-			spec group: 'core-archetype' with: #('PhaROS' ).
-		
-	
+			spec group: 'basic-archetype' with: #( 'default' ).
 	].
 	
 		
