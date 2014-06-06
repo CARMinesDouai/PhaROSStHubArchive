@@ -21,7 +21,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 PRCDefaultCommandLineHandler class >> isResponsibleFor: aCommandLineArguments [
-	^ true.
+	^false 
 ]
 
 { #category : #'as yet unclassified' }
