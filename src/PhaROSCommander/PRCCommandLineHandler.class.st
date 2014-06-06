@@ -4,6 +4,11 @@ Class {
 	#category : #PhaROSCommander
 }
 
+{ #category : #'as yet unclassified' }
+PRCCommandLineHandler class >> isAbstract [
+	^ self = PRCCommandLineHandler
+]
+
 { #category : #activation }
 PRCCommandLineHandler >> activate [ 	
 
