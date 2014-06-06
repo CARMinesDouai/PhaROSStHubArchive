@@ -16,15 +16,6 @@ TaskITExamples class >> bla: anObject [
 ]
 
 { #category : #examples }
-TaskITExamples >> commonSchedduledTask [
-	"
-	self new commonSchedduledTask
-	"
-	
-	^ [ 2 + 2 ] scheduleIt value = 4 
-]
-
-{ #category : #examples }
 TaskITExamples >> commonTask [ 
 	"
 	self new commonTask
@@ -53,11 +44,6 @@ TaskITExamples >> commonTaskResult [
 { #category : #examples }
 TaskITExamples >> referencedProcess [
 	^ [1 to: 23330 do: [ :i |Transcript show: 'running'; cr. (Delay forMilliseconds: 500) wait] ] shootIt asStickyReference.
-]
-
-{ #category : #examples }
-TaskITExamples >> referencedTask [
-	^ [[ true ] whileTrue: [ Transcript show: 'running in a task'; cr. (Delay forMilliseconds: 500) wait] ] scheduleIt asStickyReference.
 ]
 
 { #category : #examples }

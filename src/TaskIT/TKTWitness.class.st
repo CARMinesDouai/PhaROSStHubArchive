@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'target'
 	],
-	#category : #'TaskIT-Util'
+	#category : #'TaskIT-Sugar'
 }
 
 { #category : #'as yet unclassified' }

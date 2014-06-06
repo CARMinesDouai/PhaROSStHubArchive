@@ -1,7 +1,7 @@
 Class {
 	#name : #TKTAbstractProxy,
 	#superclass : #GHTargetBasedProxy,
-	#category : #'TaskIT-Util'
+	#category : #'TaskIT-Sugar'
 }
 
 { #category : #'accessing instances and variables' }

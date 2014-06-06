@@ -6,7 +6,7 @@ Class {
 		'mutex',
 		'aquiredBy'
 	],
-	#category : #'TaskIT-Util'
+	#category : #'TaskIT-Sugar'
 }
 
 { #category : #'as yet unclassified' }

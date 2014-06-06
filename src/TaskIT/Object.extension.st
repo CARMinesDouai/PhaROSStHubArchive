@@ -24,9 +24,3 @@ Object >> asThreadsafeReference [
 Object >> paralellize [
 	^ TKTParalellizer createProxyFor: self handler: TKTParalellizerHandler  new.
 ]
-
-{ #category : #'*TaskIT' }
-Object >> scheddule [ 
-	^ TKTTasker createProxyFor: self handler: TKTTaskerHandler  new.
-	
-]

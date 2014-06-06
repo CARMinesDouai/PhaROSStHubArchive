@@ -233,11 +233,6 @@ TKTTask >> runOnRunner: aRunner withFuture: aFuture [
 ]
 
 { #category : #executing }
-TKTTask >> scheduleIt [
-	^ TKTTaskDispatcher it: self.
-]
-
-{ #category : #executing }
 TKTTask >> setUpOnRunner: aRunner withFuture: aFuture [
 ]
 

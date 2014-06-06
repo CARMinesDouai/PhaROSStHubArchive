@@ -1,7 +1,7 @@
 Class {
 	#name : #TKTProxyHandler,
 	#superclass : #GHSimpleForwarderProxyHandler,
-	#category : #'TaskIT-Util'
+	#category : #'TaskIT-Sugar'
 }
 
 { #category : #'handle - debugging' }

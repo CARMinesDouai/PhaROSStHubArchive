@@ -35,11 +35,6 @@ TKTWorker class >> with: aPriority usingQueue: aQueue [
 		yourself
 ]
 
-{ #category : #'worker-assignment' }
-TKTWorker >> busyTime [
-	^ workingQueue size * 500.
-]
-
 { #category : #cancelling }
 TKTWorker >> cancelFutures [
 
@@ -79,21 +74,9 @@ TKTWorker >> interruptCurrentTask [
 	].
 ]
 
-{ #category : #'worker-assignment' }
+{ #category : #testing }
 TKTWorker >> isWorkingWith: aFuture [
 	^ currentTask value = aFuture 
-]
-
-{ #category : #'worker-assignment' }
-TKTWorker >> matching: anOtherTask [ 
-	| frequency |
-	
-	frequency :=  workingQueue timeout.  
-	(anOtherTask respondsTo: #expectedFrequency) ifTrue: [
-		frequency := frequency - (1000 // anOtherTask expectedFrequency).
-	]. 
-	
-	^ ((self priority - anOtherTask priority ) abs * 1000) + self busyTime + frequency.
 ]
 
 { #category : #scheduling }

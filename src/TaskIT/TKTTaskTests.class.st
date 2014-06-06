@@ -5,46 +5,6 @@ Class {
 }
 
 { #category : #tests }
-TKTTaskTests >> testConsumableEventualTaskCountJustWhenConditionalApply [
-	| task booleanExpression flag |
-	
-	booleanExpression := false. 
-	flag := false.
-	task := TKTConsumableEventualTask for: [ flag := flag not ] when: [ booleanExpression ] for: 2. 
-
-	self assert: (task priority = Processor systemBackgroundPriority).
-
-	task value.
-	self deny: flag.	
-	
-	booleanExpression := true.
-	
-	task value. 
-	self assert: flag.
-	
-	booleanExpression := false.
-	
-	task value. 
-	self assert: flag.
-	task value. 
-	self assert: flag.
-	task value. 
-	self assert: flag.
-	task value. 
-	self assert: flag.
-	
-	booleanExpression := true.
-	task value. 
-	self deny: flag.
-	task value. 
-	self deny: flag.
-	task value. 
-	self deny: flag.
-	task value. 
-	self deny: flag.
-]
-
-{ #category : #tests }
 TKTTaskTests >> testExecuteTask [
 	| task shouldBeTrue |
 	
@@ -58,80 +18,6 @@ TKTTaskTests >> testExecuteTask [
 	
 
 
-]
-
-{ #category : #tests }
-TKTTaskTests >> testNewConsumableEventualTask [
-	| task booleanExpression flag |
-	
-	booleanExpression := false. 
-	flag := false.
-	task := TKTConsumableEventualTask for: [ flag := flag not ] when: [ booleanExpression ] for: 2. 
-
-	self assert: (task priority = Processor systemBackgroundPriority).
-
-	task value.
-	self deny: flag.	
-	
-	booleanExpression := true.
-	
-	
-	
-	task value. 
-	self assert: flag.
-	
-	task value. 
-	self deny: flag.
-	
-	task value. 
-	self deny: flag.
-]
-
-{ #category : #tests }
-TKTTaskTests >> testNewEventualTask [
-	| task booleanExpression flag |
-	
-	booleanExpression := false. 
-	flag := false.
-	task := TKTEventualTask for: [ flag := true ] when: [ booleanExpression ]. 
-
-	self assert: (task priority = Processor systemBackgroundPriority).
-
-	task value.
-	self deny: flag.	
-	
-	booleanExpression := true.
-	
-	task value. 
-	self assert: flag.
-	
-]
-
-{ #category : #tests }
-TKTTaskTests >> testNewEventualTaskRequeueITSelfAtCleanup [
-	| task booleanExpression flag |
-	
-	TKTTaskDispatcher instance: TKTTaskDispatcherMock new.
-	
-	
-	booleanExpression := false. 
-	flag := false.
-	task :=  [ flag := true ]  doItWhen: [ booleanExpression ]. 
-	
-	
-	
-	self assert: TKTTaskDispatcher instance tasks size = 1.
-	self assert: (task priority = Processor systemBackgroundPriority).	
-	self assert: (TKTTaskDispatcher instance tasks removeFirst) = task.
-	self assert: TKTTaskDispatcher instance tasks size = 0.
-	
-	task cleanup.
-	
-	self assert: TKTTaskDispatcher instance tasks size = 1.
-	self assert: (TKTTaskDispatcher instance tasks removeFirst) = task.
-	self assert: TKTTaskDispatcher instance tasks size = 0.
-	
-	TKTTaskDispatcher reset.
 ]
 
 { #category : #tests }

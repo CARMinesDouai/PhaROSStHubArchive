@@ -1,7 +1,7 @@
 Class {
 	#name : #TKTStickyReferenceIsGarbageCollected,
 	#superclass : #TKTTaskAbstractOneShotRunner,
-	#category : #'TaskIT-Util-Tests'
+	#category : #'TaskIT-Sugar-Tests'
 }
 
 { #category : #'as yet unclassified' }

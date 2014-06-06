@@ -1,7 +1,7 @@
 Class {
 	#name : #TKTTestVariable,
 	#superclass : #TestCase,
-	#category : #'TaskIT-Util-Tests'
+	#category : #'TaskIT-Sugar-Tests'
 }
 
 { #category : #tests }

@@ -1,7 +1,7 @@
 Class {
 	#name : #TKTParalellizer,
 	#superclass : #TKTAbstractProxy,
-	#category : #'TaskIT-Util'
+	#category : #'TaskIT-Sugar'
 }
 
 { #category : #configuration }
