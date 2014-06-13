@@ -16,9 +16,10 @@ TKTStickyReference class >> for: anObject [
 	^ self createProxyFor:anObject handler: handler.
 ]
 
-{ #category : #'*TaskIT' }
+{ #category : #'as yet unclassified' }
 TKTStickyReference >> asStickyReference [ 
-	^ self .
+
+	^ self
 ]
 
 { #category : #hash }

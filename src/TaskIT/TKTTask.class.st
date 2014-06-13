@@ -228,7 +228,6 @@ TKTTask >> runOnRunner: aRunner withFuture: aFuture [
 		aRunner deployValue: value intoFuture: aFuture.
 	] ensure: [
 		self tearDownOnRunner: aRunner withFuture: aFuture.
-		aRunner noteFutureHasFinished: aFuture.
 	].
 ]
 

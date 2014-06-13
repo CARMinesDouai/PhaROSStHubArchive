@@ -15,8 +15,7 @@ Class {
 	#superclass : #TKTOwnProcessRunner,
 	#instVars : [
 		'future',
-		'result',
-		'finishingSemaphore'
+		'result'
 	],
 	#category : #'TaskIT-Kernel'
 }
@@ -54,7 +53,6 @@ TKTOneShotRunner >> cancel [
 
 	super cancel.
 	result := TKTCancelledExecutionResult new.
-	self clearProcess.
 ]
 
 { #category : #running }
@@ -63,6 +61,7 @@ TKTOneShotRunner >> cancel: aFuture [
 	aFuture == future ifFalse: [ 
 		self error: 'The given future is not the related with the runner. I cannot cancel it'.
 	].
+	self cancel.
 	super cancel: aFuture.
 	
 ]
@@ -83,15 +82,7 @@ TKTOneShotRunner >> defaultProcessName [
 TKTOneShotRunner >> initialize [
 
 	super initialize.
-	finishingSemaphore := Semaphore new.
 	result := nil.
-]
-
-{ #category : #running }
-TKTOneShotRunner >> noteFutureHasFinished: aFuture [
-	future == aFuture ifTrue: [ 
-		self clearProcess.	
-	 ]
 ]
 
 { #category : #accessing }
@@ -114,13 +105,6 @@ TKTOneShotRunner >> run: aTKTTask [
 	process priority: task priority.
 	process execute.
 	^ future.
-]
-
-{ #category : #running }
-TKTOneShotRunner >> wait [
-
-	finishingSemaphore wait.
-	self clearProcess.
 ]
 
 { #category : #accessing }

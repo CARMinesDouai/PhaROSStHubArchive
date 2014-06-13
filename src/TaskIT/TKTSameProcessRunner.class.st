@@ -21,11 +21,6 @@ TKTSameProcessRunner >> isTerminated [
 ]
 
 { #category : #running }
-TKTSameProcessRunner >> noteFutureHasFinished: aFuture [
-	
-]
-
-{ #category : #running }
 TKTSameProcessRunner >> run: aTKTTask [
 
 	| future |

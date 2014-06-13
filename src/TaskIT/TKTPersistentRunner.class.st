@@ -158,8 +158,7 @@ Class {
 	#instVars : [
 		'keepRunning',
 		'priority',
-		'failureBlock',
-		'finishedSemaphore'
+		'failureBlock'
 	],
 	#category : #'TaskIT-PersistentRunners'
 }
@@ -169,30 +168,22 @@ TKTPersistentRunner class >> isAbstract [
 	^ self = TKTOwnProcessRunner
 ]
 
-{ #category : #running }
+{ #category : #scheduling }
 TKTPersistentRunner >> afterRunTask: currentTask [
 
 	"Hook for subclasses"
 ]
 
-{ #category : #running }
+{ #category : #scheduling }
 TKTPersistentRunner >> beforeRunTask: currentTask [
 
 	"Hook for subclasses"
 ]
 
-{ #category : #running }
-TKTPersistentRunner >> clearProcess [
-
-	process terminate.
-	process := nil.
-]
-
-{ #category : #running }
+{ #category : #scheduling }
 TKTPersistentRunner >> executeNextTask [
 
-	[
-	| currentTask |
+	[ | currentTask |
 	currentTask := self nextTask.
 	self beforeRunTask: currentTask.
 	currentTask runOnRunner: self withFuture: (self futureForTask: currentTask).
@@ -220,17 +211,12 @@ TKTPersistentRunner >> initialize [
 	
 	keepRunning := TKTExclusiveAccessVariable initialValue: true.
 	failureBlock := [ :e | e pass ].
-	finishedSemaphore := Semaphore new.
 ]
 
-{ #category : #running }
+{ #category : #scheduling }
 TKTPersistentRunner >> nextTask [
 
 	self subclassResponsibility
-]
-
-{ #category : #running }
-TKTPersistentRunner >> noteFutureHasFinished: aFuture [
 ]
 
 { #category : #accessing }
@@ -256,7 +242,7 @@ TKTPersistentRunner >> run [
 	[ self shouldKeepRunning ] whileTrue: [ 
 		self executeNextTask.
 	].
-	finishedSemaphore signal
+	finishingSemaphore signal
 ]
 
 { #category : #running }
@@ -288,8 +274,8 @@ TKTPersistentRunner >> suspend [
 ]
 
 { #category : #running }
-TKTPersistentRunner >> waitToFinish [
+TKTPersistentRunner >> terminateProcess [
 
-	finishedSemaphore wait.
-	self clearProcess.
+	process terminate.
+	process := nil.
 ]

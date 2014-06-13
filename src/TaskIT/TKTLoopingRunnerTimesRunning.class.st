@@ -1,5 +1,5 @@
 Class {
-	#name : #TKTTaskLoopingRunnerTimesRunning,
+	#name : #TKTLoopingRunnerTimesRunning,
 	#superclass : #TestCase,
 	#instVars : [
 		'runner',
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #running }
-TKTTaskLoopingRunnerTimesRunning >> setUp [
+TKTLoopingRunnerTimesRunning >> setUp [
 
 	super setUp.
 	runner := TKTLoopingRunner new.
@@ -17,23 +17,23 @@ TKTTaskLoopingRunnerTimesRunning >> setUp [
 	runner run: [ times := times + 1 ].
 	runner loopTimes: self timesToLoop.
 	runner start.
-	runner waitToFinish.
+	runner wait.
 ]
 
 { #category : #tests }
-TKTTaskLoopingRunnerTimesRunning >> testShouldBeFinished [
+TKTLoopingRunnerTimesRunning >> testShouldBeFinished [
 
 	self assert: runner isTerminated
 ]
 
 { #category : #tests }
-TKTTaskLoopingRunnerTimesRunning >> testTimesLoopedAreTimesToLoop [
+TKTLoopingRunnerTimesRunning >> testTimesLoopedAreTimesToLoop [
 
 	self assert: times equals: self timesToLoop
 ]
 
 { #category : #running }
-TKTTaskLoopingRunnerTimesRunning >> timesToLoop [
+TKTLoopingRunnerTimesRunning >> timesToLoop [
 
 	^ 17
 ]

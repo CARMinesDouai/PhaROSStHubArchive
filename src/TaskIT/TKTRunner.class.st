@@ -48,7 +48,6 @@ TKTRunner >> cancel: aTKTFuture [
 	aTKTFuture isCancelled ifFalse: [
 		aTKTFuture isValueAvailable ifTrue: [ self error: 'this future was already deployed' ].
 		aTKTFuture deployValue: TKTCancelledFutureValue new.
-		self noteFutureHasFinished: aTKTFuture.
 	]
 ]
 
@@ -64,6 +63,12 @@ TKTRunner >> deployValue: aValue intoFuture: aFuture [
 
 	self basicDeployValue: aValue intoFuture: aFuture.
 	self afterDeployValue: aValue intoFuture: aFuture.
+]
+
+{ #category : #finalization }
+TKTRunner >> finalize [
+
+	^ self cancel
 ]
 
 { #category : #testing }
@@ -83,11 +88,6 @@ TKTRunner >> newFuture [
 	^ TKTFuture new
 			runner: self;
 			yourself
-]
-
-{ #category : #running }
-TKTRunner >> noteFutureHasFinished: aFuture [
-	self subclassResponsibility.
 ]
 
 { #category : #running }

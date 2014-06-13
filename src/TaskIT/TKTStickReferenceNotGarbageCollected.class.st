@@ -7,11 +7,13 @@ Class {
 { #category : #'as yet unclassified' }
 TKTStickReferenceNotGarbageCollected >> setUp [
 
+	| reference |
 	super setUp.
-	future := (runner run: [ 2 ] asTask) asStickyReference.
-	result := future value.
-	future := nil. 
+	reference := (runner run: [ 2 ] asTask) asStickyReference.
+	result := reference value.
+	reference := nil. 
 	5 timesRepeat: [ Smalltalk garbageCollect ].
+	(Delay forMilliseconds: 1) wait.
 ]
 
 { #category : #'as yet unclassified' }
@@ -32,5 +34,5 @@ TKTStickReferenceNotGarbageCollected >> testFutureIsNotError [
 { #category : #'as yet unclassified' }
 TKTStickReferenceNotGarbageCollected >> testProcessHasFinished [
 
-	self assert: runner isTerminated 
+	self assert: runner isTerminated
 ]
