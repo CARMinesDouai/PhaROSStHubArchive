@@ -31,7 +31,7 @@ For more information checkout the package PhaROSDeploymentDirectory from the squ
 "
 Class {
 	#name : #PRCCommandLineRepositoryInstallerHandler,
-	#superclass : #PRCCommandLineHandler,
+	#superclass : #PRCDisabledCommandLineHandler,
 	#category : #PhaROSCommander
 }
 

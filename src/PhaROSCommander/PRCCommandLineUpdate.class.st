@@ -4,9 +4,14 @@ Class {
 	#category : #PhaROSCommander
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PRCCommandLineUpdate class >> commandName [
 	^ 'update-tool'
+]
+
+{ #category : #help }
+PRCCommandLineUpdate class >> shortHelpText [
+	^ 'check if there is any update of the tool, and it update it'
 ]
 
 { #category : #'as yet unclassified' }

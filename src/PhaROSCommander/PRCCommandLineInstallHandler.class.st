@@ -18,7 +18,7 @@ Options:
 "
 Class {
 	#name : #PRCCommandLineInstallHandler,
-	#superclass : #PRCCommandLineHandler,
+	#superclass : #PRCDisabledCommandLineHandler,
 	#category : #PhaROSCommander
 }
 

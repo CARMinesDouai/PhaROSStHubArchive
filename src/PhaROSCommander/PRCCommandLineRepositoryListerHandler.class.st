@@ -3,7 +3,7 @@ list the repositories from repository file. If there is any problem, delete the 
 "
 Class {
 	#name : #PRCCommandLineRepositoryListerHandler,
-	#superclass : #PRCCommandLineHandler,
+	#superclass : #PRCDisabledCommandLineHandler,
 	#category : #PhaROSCommander
 }
 

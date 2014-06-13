@@ -9,6 +9,11 @@ PRCCommandLineHandler class >> isAbstract [
 	^ self = PRCCommandLineHandler
 ]
 
+{ #category : #help }
+PRCCommandLineHandler class >> shortHelpText [
+	^ self subclassResponsibility 
+]
+
 { #category : #activation }
 PRCCommandLineHandler >> activate [ 	
 

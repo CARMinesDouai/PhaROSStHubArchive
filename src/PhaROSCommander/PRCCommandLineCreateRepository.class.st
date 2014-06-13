@@ -9,7 +9,7 @@ usage
 "
 Class {
 	#name : #PRCCommandLineCreateRepository,
-	#superclass : #PRCCommandLineHandler,
+	#superclass : #PRCDisabledCommandLineHandler,
 	#category : #PhaROSCommander
 }
 

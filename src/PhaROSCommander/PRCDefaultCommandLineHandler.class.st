@@ -34,3 +34,26 @@ PRCDefaultCommandLineHandler >> activate [
 	super activate.
 	self exitSuccess.
 ]
+
+{ #category : #'as yet unclassified' }
+PRCDefaultCommandLineHandler >> helpText [
+	
+	^String streamContents: [  :s |
+		|commandsHandlers|
+		commandsHandlers := self allHandlers reject:  [ :c | c = self class ].
+		s << 'pharos usage:'; lf.
+		
+		commandsHandlers do: [ :h |
+			s tab << 'pharos ' << h commandName.
+			s tab << h shortHelpText ; lf
+		]
+	] 
+	 
+]
+
+{ #category : #'as yet unclassified' }
+PRCDefaultCommandLineHandler >> printHelp [
+	self stderr
+		nextPutAll: self helpText; lf
+
+]

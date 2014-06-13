@@ -16,7 +16,7 @@ Options:
 "
 Class {
 	#name : #PRCCommandLineROSInstallHandler,
-	#superclass : #PRCCommandLineHandler,
+	#superclass : #PRCDisabledCommandLineHandler,
 	#instVars : [
 		'configurations'
 	],

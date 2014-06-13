@@ -30,9 +30,14 @@ Class {
 	#category : #PhaROSCommander
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PRCCommandLineCreateHandler class >> commandName [
 	^ 'create'
+]
+
+{ #category : #help }
+PRCCommandLineCreateHandler class >> shortHelpText [
+	^ 'Creates a new package based on an archetype'
 ]
 
 { #category : #'as yet unclassified' }
