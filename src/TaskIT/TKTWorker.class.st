@@ -15,7 +15,8 @@ Class {
 
 { #category : #'instance creation' }
 TKTWorker class >> spawn [
-	^ self with: Processor userBackgroundPriority usingQueue: TKTPriorityQueue new.
+
+	^ self with: Processor userBackgroundPriority
 ]
 
 { #category : #'instance creation' }
@@ -24,8 +25,15 @@ TKTWorker class >> spawn: aQueue [
 ]
 
 { #category : #'instance creation' }
+TKTWorker class >> suspended [
+
+	^ self spawn suspend; yourself
+]
+
+{ #category : #'instance creation' }
 TKTWorker class >> with: aPriority [
-	^ self with: aPriority  usingQueue: TKTPriorityQueue new.
+
+	^ self with: aPriority usingQueue: TKTQueue new.
 ]
 
 { #category : #'instance creation' }
@@ -110,7 +118,7 @@ TKTWorker >> onStart [
 { #category : #accessing }
 TKTWorker >> pendingTasks [
 
-	^ self workingQueue collect: #key
+	^ self workingQueue asOrderedCollection
 ]
 
 { #category : #running }
