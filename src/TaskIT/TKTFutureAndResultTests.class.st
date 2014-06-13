@@ -63,21 +63,6 @@ TKTFutureAndResultTests >> testDeployValueIntoFutureWithCallback [
 ]
 
 { #category : #tests }
-TKTFutureAndResultTests >> testDeployValueIntoStickyFutureWithCallback [
-	| future value shouldBeValue |
-	shouldBeValue := false.
-	future := TKTFuture new.
-	value := TKTTestObject new.
-	
-	future onSuccess: [ :val | shouldBeValue := val ].
-	future deployValue: value.
-	
-	self assert: shouldBeValue = value.
-	
-	
-]
-
-{ #category : #tests }
 TKTFutureAndResultTests >> testErrorCallbackWhenAlreadyFinished [
 	| future error theError |
 	error := Error new.
@@ -103,16 +88,6 @@ TKTFutureAndResultTests >> testErrorCallbackWhenFinished [
 ]
 
 { #category : #tests }
-TKTFutureAndResultTests >> testFutureResultLazyInstantiation [
-	
-	| future |
-	future := TKTFuture new.
-	
-	self assert: future asResult  hash= future asResult hash.
-	
-]
-
-{ #category : #tests }
 TKTFutureAndResultTests >> testFutureValueTimeouts [
 	| future |
 	future := [ (Delay forMilliseconds: 100) wait ] shootIt.
@@ -127,16 +102,16 @@ TKTFutureAndResultTests >> testFutureValueTimeoutsError [
 ]
 
 { #category : #tests }
-TKTFutureAndResultTests >> testNewFuture [
+TKTFutureAndResultTests >> testLazyResultInstantiation [
+	
 	| future |
 	future := TKTFuture new.
 	
-	self deny: future isValueAvailable.
-	
+	self assert: future asResult hash = future asResult hash.
 ]
 
 { #category : #tests }
-TKTFutureAndResultTests >> testNewStickyFuture [
+TKTFutureAndResultTests >> testNewFuture [
 	| future |
 	future := TKTFuture new.
 	
@@ -153,16 +128,6 @@ TKTFutureAndResultTests >> testResultBecomes [
 	future deployValue: 'STRING'.
 	self assert: result = 'STRING'.
 	self assert: future asResult = 'STRING'.
-	
-]
-
-{ #category : #tests }
-TKTFutureAndResultTests >> testStickyFutureResultLazyInstantiation [
-	
-	| future |
-	future := TKTFuture new.
-	
-	self assert: future asResult hash = future asResult hash.
 	
 ]
 
