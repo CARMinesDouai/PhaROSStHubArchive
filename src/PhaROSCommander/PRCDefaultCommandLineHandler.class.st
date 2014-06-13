@@ -36,15 +36,36 @@ PRCDefaultCommandLineHandler >> activate [
 ]
 
 { #category : #'as yet unclassified' }
+PRCDefaultCommandLineHandler >> handleSubcommand [
+	"check if there is an active subcommand"
+	
+	| handlers |
+	
+	handlers := self selectHandlers.
+	
+	"ignore the default command line handler"
+	handlers first = self class
+		ifTrue: [ ^ self ].
+		
+	^ handlers first activateWith: commandLine.
+]
+
+{ #category : #'as yet unclassified' }
 PRCDefaultCommandLineHandler >> helpText [
 	
 	^String streamContents: [  :s |
-		|commandsHandlers|
+		|commandsHandlers max|
 		commandsHandlers := self allHandlers reject:  [ :c | c = self class ].
 		s << 'pharos usage:'; lf.
-		
+
+		max:=0.
+		commandsHandlers do: [ :h |
+			max :=  h commandName size max: max.
+		].
+
 		commandsHandlers do: [ :h |
 			s tab << 'pharos ' << h commandName.
+			(max - h commandName size) timesRepeat: [ s nextPut: Character space ]. 
 			s tab << h shortHelpText ; lf
 		]
 	] 
@@ -56,4 +77,12 @@ PRCDefaultCommandLineHandler >> printHelp [
 	self stderr
 		nextPutAll: self helpText; lf
 
+]
+
+{ #category : #'as yet unclassified' }
+PRCDefaultCommandLineHandler >> selectHandlers [
+	| handlers |
+	handlers := (self subCommandsRoot selectHandlersFor: commandLine).
+	handlers := handlers sort: [ :a :b | a priority >= b priority ].
+	^ handlers
 ]
