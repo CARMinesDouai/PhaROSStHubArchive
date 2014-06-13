@@ -20,27 +20,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PRCDefaultCommandLineHandler class >> isAbstract [
+	^ false
+]
+
+{ #category : #'as yet unclassified' }
 PRCDefaultCommandLineHandler class >> isResponsibleFor: aCommandLineArguments [
-	^false 
+	^true 
 ]
 
 { #category : #'as yet unclassified' }
 PRCDefaultCommandLineHandler >> activate [
 	super activate.
 	self exitSuccess.
-]
-
-{ #category : #'as yet unclassified' }
-PRCDefaultCommandLineHandler >> handleSubcommand [
-	"check if there is an active subcommand"
-	
-	| handlers |
-	
-	handlers := self selectHandlers.
-	
-	"ignore the default command line handler"
-	handlers first = self class
-		ifTrue: [ ^ self ].
-		
-	^ handlers first activateWith: commandLine.
 ]
