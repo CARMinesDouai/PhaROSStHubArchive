@@ -1,6 +1,6 @@
 Class {
 	#name : #PITEventualTask,
-	#superclass : #TKTTask,
+	#superclass : #TKTJob,
 	#instVars : [
 		'condition'
 	],

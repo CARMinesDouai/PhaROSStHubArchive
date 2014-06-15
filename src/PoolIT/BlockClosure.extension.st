@@ -15,7 +15,7 @@ BlockClosure >> doItWhen: aConditionalBlock [
 
 { #category : #'*PoolIT' }
 BlockClosure >> scheduleIt [
-	^ PITWorkersPool it: self asTask.
+	^ PITWorkersPool it: self asTKTJob.
 ]
 
 { #category : #'*PoolIT' }

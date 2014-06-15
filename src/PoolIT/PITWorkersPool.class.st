@@ -60,7 +60,7 @@ PITWorkersPool >> destroy [
 { #category : #accessing }
 PITWorkersPool >> dispatch: aTaskOrBlock [
 	
-	sharedQueue add: aTaskOrBlock asTask.
+	sharedQueue add: aTaskOrBlock asTKTJob.
 	
 ]
 

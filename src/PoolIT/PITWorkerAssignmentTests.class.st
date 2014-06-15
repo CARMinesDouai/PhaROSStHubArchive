@@ -41,7 +41,7 @@ PITWorkerAssignmentTests >> tearDown [
 { #category : #tests }
 PITWorkerAssignmentTests >> testMatchingIndexChangeWhenThereIsWork [
 	
-	self assert: commonTask class =TKTTask.
+	self assert: commonTask class =TKTJob.
 	self assert: eventualTask class =PITEventualTask.
 	self assert: ceventualTask class =PITConsumableEventualTask.
 	
