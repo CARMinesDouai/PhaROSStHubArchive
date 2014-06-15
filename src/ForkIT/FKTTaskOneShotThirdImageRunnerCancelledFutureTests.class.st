@@ -8,7 +8,7 @@ Class {
 FKTTaskOneShotThirdImageRunnerCancelledFutureTests >> setUp [
 
 	super setUp.
-	future := runner run: [ (Delay forMilliseconds: 10000000000) wait ] asTask.
+	future := runner run: [ (Delay forMilliseconds: 10000000000) wait ] asTKTJob.
 	future cancel.
 	result := future value.
 ]

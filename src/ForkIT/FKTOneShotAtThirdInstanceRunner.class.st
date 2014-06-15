@@ -29,11 +29,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-FKTOneShotAtThirdInstanceRunner >> run: aTKTTask [
+FKTOneShotAtThirdInstanceRunner >> run: aJob [
 
 	| task outputPath inputPath  |
 
-	task := aTKTTask asTask.
+	task := aJob asTKTJob asTask.
 	self assert: (task isClean) description: 'The task to execute in a third image cannot point any contextual value '.
 	
 	process := FKTInstanceProcess simpleInstance.

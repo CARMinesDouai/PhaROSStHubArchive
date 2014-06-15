@@ -8,7 +8,7 @@ Class {
 FKTTaskOneShotThirdImageRunnerUnreferencedStickReferenceFutureTests >> setUp [
 
 	super setUp.
-	future := (runner run: [ (Delay forMilliseconds: 1000) wait ] asTask) asStickyReference.
+	future := (runner run: [ (Delay forMilliseconds: 1000) wait ] asTKTJob) asStickyReference.
 	future := nil.
 	10 timesRepeat: [ Smalltalk garbageCollect ].
 ]
