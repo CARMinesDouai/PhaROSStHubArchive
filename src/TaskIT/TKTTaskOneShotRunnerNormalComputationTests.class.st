@@ -8,7 +8,7 @@ Class {
 TKTTaskOneShotRunnerNormalComputationTests >> setUp [
 	
 	super setUp.
-	runner run: [  1+2 ] asTask.
+	runner run: [  1+2 ] asTKTJob.
 	runner wait.
 	result := runner result value.
 ]

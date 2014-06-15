@@ -7,7 +7,6 @@ Class {
 	#instVars : [
 		'workingQueue',
 		'onIdleTime',
-		'currentTask',
 		'doneTasks'
 	],
 	#category : #'TaskIT-PersistentRunners'
@@ -77,17 +76,11 @@ TKTWorker >> defaultProcessName [
 	^ 'Task Worker'
 ]
 
-{ #category : #private }
-TKTWorker >> futureForTask: aTask [
-
-	^ self newFuture
-]
-
 { #category : #'initialize-release' }
 TKTWorker >> initialize [
 
 	super initialize.
-	onIdleTime := [ [ self cleanupTasks ] asTask ].
+	onIdleTime := [ [ self cleanupTasks ] asTKTJob ].
 	self onStart.
 ]
 
@@ -105,7 +98,7 @@ TKTWorker >> nextTask [
 { #category : #accessing }
 TKTWorker >> onIdleTime: aBlockOrWork [
 
-	onIdleTime := [ aBlockOrWork asTask ].
+	onIdleTime := [ aBlockOrWork asTKTJob ].
 ]
 
 { #category : #running }
@@ -133,13 +126,13 @@ TKTWorker >> restart [
 { #category : #running }
 TKTWorker >> run: aTask [
 
-	^ self scheduleTask: aTask asTask
+	^ self scheduleTask: aTask asTKTJob
 ]
 
 { #category : #scheduling }
-TKTWorker >> scheduleTask: aTask [
+TKTWorker >> scheduleTask: aJob [
 
-	workingQueue add: aTask
+	workingQueue add: aJob
 ]
 
 { #category : #scheduling }

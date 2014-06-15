@@ -9,11 +9,11 @@ TKTStickReferenceNotGarbageCollected >> setUp [
 
 	| reference |
 	super setUp.
-	reference := (runner run: [ 2 ] asTask) asStickyReference.
-	result := reference value.
-	reference := nil. 
+	reference := (runner run: [ 2 ]) asStickyReference.
 	5 timesRepeat: [ Smalltalk garbageCollect ].
 	(Delay forMilliseconds: 1) wait.
+	runner wait.
+	result := runner currentTask result value.
 ]
 
 { #category : #'as yet unclassified' }
@@ -23,12 +23,14 @@ TKTStickReferenceNotGarbageCollected >> testFutureHasExpectedResult [
 
 { #category : #'as yet unclassified' }
 TKTStickReferenceNotGarbageCollected >> testFutureHasNotBeenCancelled [
-	self deny: runner workingFuture  isCancelled.
+
+	self deny: runner currentTask isCancelled.
 ]
 
 { #category : #'as yet unclassified' }
 TKTStickReferenceNotGarbageCollected >> testFutureIsNotError [
-	self deny: runner workingFuture isError.
+
+	self deny: runner currentTask isError.
 ]
 
 { #category : #'as yet unclassified' }

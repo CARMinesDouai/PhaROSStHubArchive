@@ -14,8 +14,7 @@ Class {
 	#name : #TKTOneShotRunner,
 	#superclass : #TKTOwnProcessRunner,
 	#instVars : [
-		'future',
-		'result'
+		'future'
 	],
 	#category : #'TaskIT-Kernel'
 }
@@ -38,21 +37,21 @@ TKTOneShotRunner >> afterDeployValue: aValue intoFuture: aFuture [
 TKTOneShotRunner >> basicDeployError: anError intoFuture: aFuture [
 
 	super basicDeployError: anError intoFuture: aFuture.
-	result := TKTErrorResult new setError: anError.
+	self currentTask result: (TKTErrorResult new setError: anError).
 ]
 
 { #category : #running }
 TKTOneShotRunner >> basicDeployValue: aValue intoFuture: aFuture [
 
 	super basicDeployValue: aValue intoFuture: aFuture.
-	result := TKTSuccessResult new setValue: aValue.
+	self currentTask result: (TKTSuccessResult new setValue: aValue; yourself).
 ]
 
 { #category : #running }
 TKTOneShotRunner >> cancel [
 
 	super cancel.
-	result := TKTCancelledExecutionResult new.
+	self currentTask result: TKTCancelledExecutionResult new.
 ]
 
 { #category : #running }
@@ -78,36 +77,21 @@ TKTOneShotRunner >> defaultProcessName [
 	^ 'One Shot runner'
 ]
 
-{ #category : #'initialize - release' }
-TKTOneShotRunner >> initialize [
-
-	super initialize.
-	result := nil.
-]
-
 { #category : #accessing }
 TKTOneShotRunner >> result [
 	
-	^ result ifNil: [ self error: 'Result is not yet available' ]
+	^ self currentTask result
 ]
 
 { #category : #running }
-TKTOneShotRunner >> run: aTKTTask [
+TKTOneShotRunner >> run: aJob [
 
-	| task |
-	future := self newFuture.
-	task := aTKTTask asTask.
+	currentTask := aJob asTKTJob asTask.
 	process := TKTPharoProcess new.
 	process executable: [
-		task runOnRunner: self withFuture: future.
+		currentTask runOnRunner: self withFuture: nil.
 	].
 	process name: 'A TKTTask'.
-	process priority: task priority.
+	process priority: currentTask priority.
 	process execute.
-	^ future.
-]
-
-{ #category : #accessing }
-TKTOneShotRunner >> workingFuture [
-	^ future.
 ]

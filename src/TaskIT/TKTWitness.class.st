@@ -15,6 +15,7 @@ TKTWitness class >> cleanup: aTarget [
 
 { #category : #'as yet unclassified' }
 TKTWitness class >> for: aTarget [
+
 	^ self new target: aTarget; yourself.
 ]
 

@@ -31,11 +31,11 @@ TKTWorkerTests >> testRunningWorkerExecutesTasksAsTheyArrive [
 	worker resume.
 	
 	worker run: task.
-	(Delay forMilliseconds: 1) wait.
+	(Delay forMilliseconds: 10) wait.
 	self assert: worker pendingTasks size equals: 0.
 	
 	worker run: task.
-	(Delay forMilliseconds: 1) wait.
+	(Delay forMilliseconds: 10) wait.
 	self assert: worker pendingTasks size equals: 0.
 ]
 

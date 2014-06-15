@@ -1,6 +1,6 @@
 Class {
 	#name : #TKTLoopingTask,
-	#superclass : #TKTTask,
+	#superclass : #TKTJob,
 	#instVars : [
 		'realBlock'
 	],

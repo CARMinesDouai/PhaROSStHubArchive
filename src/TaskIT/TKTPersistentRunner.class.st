@@ -183,10 +183,9 @@ TKTPersistentRunner >> beforeRunTask: currentTask [
 { #category : #scheduling }
 TKTPersistentRunner >> executeNextTask [
 
-	[ | currentTask |
-	currentTask := self nextTask.
+	[ currentTask := self nextTask asTask.
 	self beforeRunTask: currentTask.
-	currentTask runOnRunner: self withFuture: (self futureForTask: currentTask).
+	currentTask runOnRunner: self withFuture: nil.
 	self afterRunTask: currentTask.
 	] on: Error do: failureBlock.
 ]

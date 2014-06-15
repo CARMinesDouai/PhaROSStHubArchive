@@ -8,7 +8,7 @@ Class {
 TKTTaskOneShotRunnerCancelledComputationTests >> setUp [
 
 	super setUp.
-	runner run: [ (Delay forMilliseconds: 1000) wait ] asTask.
+	runner run: [ (Delay forMilliseconds: 1000) wait ].
 	runner cancel.
 	result := runner value.
 ]

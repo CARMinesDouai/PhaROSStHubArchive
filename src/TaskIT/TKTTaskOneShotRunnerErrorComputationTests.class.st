@@ -8,7 +8,7 @@ Class {
 TKTTaskOneShotRunnerErrorComputationTests >> setUp [
 
 	super setUp.
-	runner run: [ self error ] asTask.
+	runner run: [ self error ] asTKTJob.
 	runner wait.
 ]
 
