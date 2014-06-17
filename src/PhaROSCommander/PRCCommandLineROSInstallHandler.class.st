@@ -57,7 +57,8 @@ PRCCommandLineROSInstallHandler >> initialize [
 		#oneiric -> { #fuerte . #groovy  } .
 		#precise -> { #fuerte . #groovy . #hydro} .
 		#quantal -> { #groovy . #hydro} .
-		#raring -> { #hydro } 
+		#raring -> { #hydro }.
+		#trusty -> { #indigo }.
 	 }asDictionary 
 ]
 

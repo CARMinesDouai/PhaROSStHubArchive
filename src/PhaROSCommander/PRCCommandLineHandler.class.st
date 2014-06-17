@@ -183,8 +183,8 @@ PRCCommandLineHandler >> repositoriesFileName [
 { #category : #'as yet unclassified' }
 PRCCommandLineHandler >> rosDistro [
 	| val |
-	val := commandLine optionAt: #'ros-distro' ifAbsent:[ 'groovy' ].
-	({ #groovy . #fuerte . #hydro } includes: val asSymbol ) ifFalse: [ self error: val, ' Is not a valid ROS distribution' ].
+	val := commandLine optionAt: #'ros-distro' ifAbsent:[ 'indigo' ].
+	({ #groovy . #fuerte . #hydro. #indigo } includes: val asSymbol ) ifFalse: [ self error: val, ' Is not a valid ROS distribution' ].
 	^ val. 
 	
 
@@ -198,10 +198,10 @@ PRCCommandLineHandler >> silent [
 { #category : #resolving }
 PRCCommandLineHandler >> version [
 	
-	^ self checkVersion: (self optionAt: #version ifAbsent: [ #'20' ]).
+	^ self checkVersion: (self optionAt: #version ifAbsent: [ #'30' ]).
 ]
 
 { #category : #accessing }
 PRCCommandLineHandler >> workingDirectory [
-	^ OSProcessAccessor forThisOSProcess  environmentAt: #PWD.
+	^ (FileLocator home / 'PhaROS-ws') pathString
 ]
