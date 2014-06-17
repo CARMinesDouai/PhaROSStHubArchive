@@ -60,6 +60,17 @@ DonatelloPackage >> buildController [
 
 ]
 
+{ #category : #scripts }
+DonatelloPackage >> convertToGeometryVector3: aTriplet [
+
+	^ Geometry_msgsVector3 new
+		x: aTriplet first;
+		y: aTriplet second;
+		z: aTriplet third;
+		yourself			
+
+]
+
 { #category : #'private - auxiliar' }
 DonatelloPackage >> getOrCreateHandleFor: aTurtleID [
 
@@ -164,5 +175,28 @@ DonatelloPackage >> scriptSwitchRequest [
 	self exit: 0. 
 		
 	"This service call will ask for the loggers"
+
+]
+
+{ #category : #scripts }
+DonatelloPackage >> scriptTurtleBot [
+	|  publisher   |
+	"In order ask for a service to be executed, you need to ask to the attached node for a service call object. For doing this you should type the following code"
+	
+	self log: 'Moving the turtle'.
+	publisher := self controller node topicPublisher: '/achao' typedAs: 'geometry_msgs/Twist'.
+	publisher send: [ :msg | 
+		msg linear: (self convertToGeometryVector3: #(1.0 0.0 0.0)).
+		msg angular: (self convertToGeometryVector3: #(0.0 0.0 0.0)).
+		
+		1 seconds asDelay wait.
+		[  true ] whileTrue: [
+			self log:'hello'.
+			msg linear: (self convertToGeometryVector3: #(0.4  0.0 0.0)).
+			msg angular: (self convertToGeometryVector3: #(0.0 0.0 1.0)).
+			1 seconds asDelay wait.
+		].
+	].
+	
 
 ]

@@ -20,10 +20,10 @@ DonatelloAlgorithms >> algorithmFor: aCommand [
 DonatelloAlgorithms >> circularHandler [ 
 
 ^ [ : handler |
-		handler forwardAt: 1.0.
+		handler forwardAt: #(1.0 0.0 0.0).
 		1 seconds asDelay wait.
 		[  true ] whileTrue: [
-			handler moveAt: 0.4 and: 1.0.
+			handler moveAt: #(0.4  0.0 0.0) and: #(0.0 0.0 1.0).
 			1 seconds asDelay wait.
 		].
 	].
@@ -35,7 +35,7 @@ DonatelloAlgorithms >> idleHandler [
 ^ [ : handler | 
 	
 	[ true ] whileTrue: [ 	
-		handler forwardAt: 0.0.
+		handler forwardAt: #(0.0 0.0 0.0).
 		1 hz wait.
 	].
 ].
@@ -63,53 +63,53 @@ DonatelloAlgorithms >> list [
 DonatelloAlgorithms >> pharoHandler [
 
 ^ [ : handler |
-		handler moveAt: 30.0 and:20.0. 
-		1.5 seconds asDelay wait.
-		handler moveAt: 30.0 and:20.0. 
-		1.5 seconds asDelay wait.
-		handler moveAt: 30.0 and:20.0. 
-		1.5 seconds asDelay wait.
-		handler moveAt: 30.0 and:20.0. 
-		1.5 seconds asDelay wait.
-		handler moveAt: 30.0 and:20.0. 
-		1.5 seconds asDelay wait.
-		handler moveAt:0.0 and: -0.3.
+		handler moveAt: #(30.0 0.0 0.0) and:#(0.0 0.0 20.0).
+		1 seconds asDelay wait.		 
+		handler moveAt: #(30.0 0.0 0.0) and:#(0.0 0.0 20.0). 
 		1 seconds asDelay wait.
-		handler moveAt:1.0 and: 0.0.
+		handler moveAt: #(30.0 0.0 0.0) and:#(0.0 0.0 20.0). 
 		1 seconds asDelay wait.
-		handler moveAt:1.0 and: 0.0.
+		handler moveAt: #(30.0 0.0 0.0) and:#(0.0 0.0 20.0). 
+		1 seconds asDelay wait. 
+		handler moveAt: #(30.0 0.0 0.0) and:#(0.0 0.0 20.0).  
 		1 seconds asDelay wait.
-		handler moveAt:1.0 and: 0.0.
+		handler moveAt:#(0.0 0.0 0.0) and: #(0.0 0.0 -0.3). 
 		1 seconds asDelay wait.
-		handler moveAt:0.0 and: 1.3.
+		handler moveAt:#(1.0 0.0 0.0) and: #(0.0 0.0 0.0). 
 		1 seconds asDelay wait.
-		handler moveAt: 1.0 and: 0.0.
+		handler moveAt:#(1.0 0.0 0.0) and: #(0.0 0.0 0.0). 
 		1 seconds asDelay wait.
-		handler moveAt:0.0 and: -1.5.
+		handler moveAt:#(1.0 0.0 0.0) and: #(0.0 0.0 0.0). 
 		1 seconds asDelay wait.
-		handler moveAt: 0.8 and: 0.0.
+		handler moveAt:#(0.0 0.0 0.0) and: #(0.0 0.0 1.3). 
 		1 seconds asDelay wait.
-		handler moveAt:0.0 and: -1.65.
+		handler moveAt: #(1.0 0.0 0.0) and: #(0.0 0.0 0.0). 
 		1 seconds asDelay wait.
-		handler moveAt: 1.0 and: 0.0.
+		handler moveAt:#(0.0 0.0 0.0) and: #(0.0 0.0 -1.5). 
 		1 seconds asDelay wait.
-		handler moveAt:0.0 and: -1.5.
+		handler moveAt: #(0.8 0.0 0.0) and: #(0.0 0.0 0.0). 
 		1 seconds asDelay wait.
-		handler moveAt: 0.8 and: 0.0.
+		handler moveAt:#(0.0 0.0 0.0) and: #(0.0 0.0 -1.65). 
 		1 seconds asDelay wait.
-		handler moveAt:0.0 and: -1.5.
+		handler moveAt: #(1.0 0.0 0.0) and: #(0.0 0.0 0.0). 
 		1 seconds asDelay wait.
-		handler moveAt: 1.0 and: 0.0.
+		handler moveAt:#(0.0 0.0 0.0) and: #(0.0 0.0 -1.5). 
 		1 seconds asDelay wait.
-		handler moveAt:0.0 and: 1.3.
+		handler moveAt: #(0.8 0.0 0.0) and: #(0.0 0.0 0.0). 
 		1 seconds asDelay wait.
-		handler moveAt:1.0 and: 0.0.
+		handler moveAt:#(0.0 0.0 0.0) and: #(0.0 0.0 -1.5). 
 		1 seconds asDelay wait.
-		handler moveAt:1.0 and: 0.0.
+		handler moveAt: #(1.0 0.0 0.0) and: #(0.0 0.0 0.0). 
 		1 seconds asDelay wait.
-		handler moveAt:1.0 and: 0.0.
+		handler moveAt:#(0.0 0.0 0.0) and: #(0.0 0.0 1.3). 
 		1 seconds asDelay wait.
-		handler moveAt:0.0 and: 0.3.
+		handler moveAt: #(1.0 0.0 0.0) and: #(0.0 0.0 0.0). 
+		1 seconds asDelay wait.
+		handler moveAt: #(1.0 0.0 0.0) and: #(0.0 0.0 0.0). 
+		1 seconds asDelay wait.
+		handler moveAt: #(1.0 0.0 0.0) and: #(0.0 0.0 0.0). 
+		1 seconds asDelay wait.
+		handler moveAt:#(0.0 0.0 0.0) and: #(0.0 0.0 0.3).	 
 	].
 ]
 
@@ -130,7 +130,7 @@ DonatelloAlgorithms >> pursuiterHandler [
 				trs :=  handle transformationTo: default.
 				linear := (trs position module2d) * 0.5.
 				angular :=4 * ( trs position y arcTan: trs position x).
-				handle moveAt:  linear and: angular.	
+				handle moveAt:  {linear . 0.0 . 0.0} and: {0.0 . 0.0 . angular}.	
 			] on: Error do: [].
 
 			(Delay forMilliseconds: 100) wait.
@@ -161,7 +161,7 @@ DonatelloAlgorithms >> randomHandler [
 			linear := linear * sign. 
 			angular := angular * sign * -1.
 			
-			handle moveAt: linear and: angular. 			
+			handle moveAt: {linear . 0.0 . 0.0}  and: {0.0 . 0.0 . angular}. 			
 			( (Random seed: DateAndTime now asUnixTime) next; nextInt: 3) seconds asDelay wait.
 		].
  	].
