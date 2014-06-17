@@ -162,49 +162,12 @@ PRCCommandLineHandler >> pharoUser [
 
 { #category : #resolving }
 PRCCommandLineHandler >> readRepositories [
-	| repositoriesFile errors repositories |
-	repositoriesFile := 	(FileLocator workingDirectory / self repositoriesFileName ).
-	repositories := OrderedCollection new.
+	| repos |
+	repos := OrderedCollection new.
 	
-	repositoriesFile exists ifTrue: [ 
-		| content stream |
-		stream := (repositoriesFile openWritable: false) readStream.
-		content := stream upToEnd.
-		stream close.
-		
-		"We want to load as much directories as we can. And also is mechanism of resolving, so if some repository fails, we just show a warning. error collection is for collecting the exceptions"
-		errors := OrderedCollection new. 
-		
-		"The repositories file haste the following format
-			'url={1}|repository={2}|directory={3}|user:{4}|password:{5};'	
-		"
-		(';' split: content) do: [ 	: entr |
-			| repo entry |
-			entry := entr copyReplaceAll: String lf with: ''. 
-			entry := entry copyReplaceAll: String cr with: ''.
-			entry := entry copyReplaceAll: String space with: ''.
-			entry := entry copyReplaceAll: String tab with: ''.
-			entry isEmpty ifFalse: [
-				[
-					repo := Dictionary new. 
-					('|' split: entry ) do: [ :field  |
-						| nameValue |
-						nameValue := '=' split: field .
-						repo at: (nameValue at:1) put: (nameValue at:2).
-					].
-					repositories add: repo.
-					
-				
-				] on: Error do: [ :e |  errors add: 'WARNING- Corrupt entry in repositories file entry [', entry, ']:', e messageText ].
-			]
-		 ].
-	
-		errors do: [  :e | self stdout nextPutAll: e, String lf ].
-	 ] ifFalse: [ 
-		"If there is no reigstered repository we show INFO just to remember user he may add repositories"
-		self stdout nextPutAll: 'INFO- There are not repositories registered', String lf
-	 ].
-	^ repositories.
+	repos add: {'directory'->'PhaROSDeploymentDirectory' . 'password'->'' .  'repository' -> 'PhaROSDeploymentDirectory' . 'url'->'http://smalltalkhub.com/mc/CAR/PhaROS/main' . 'user' ->'' } asDictionary.
+	repos add: {'directory'->'PeriphericsDirectory' . 'password' ->'' . 'repository'->'PeriphericsDirectory' . 'url'->'http://smalltalkhub.com/mc/CAR/PhaROSPeripherics/main' . 'user'->''} asDictionary.
+	^ repos
 ]
 
 { #category : #activation }
