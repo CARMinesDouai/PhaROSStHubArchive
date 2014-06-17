@@ -37,7 +37,7 @@ TurtleHandle >> color [
 	^ color.
 ]
 
-{ #category : #control }
+{ #category : #utilties }
 TurtleHandle >> convertToGeometryVector3: aTriplet [
 
 	^ Geometry_msgsVector3 new
@@ -78,7 +78,7 @@ TurtleHandle >> initializeWith: aName and: aTurtlesimNodelet [
 	name:= aName.
 	turtlesimNodelet := aTurtlesimNodelet.
 	
-	velocityOut := turtlesimNodelet rosnode topicPublisher: '/', aName, '/cmd_vel' typedAs: 'geometry_msgs/Twist'.
+	velocityOut := turtlesimNodelet rosnode topicPublisher: '/achao' typedAs: 'geometry_msgs/Twist'.
 	(turtlesimNodelet rosnode buildConnectionFor: '/',aName,'/color_sensor') 
 			typedAs: 'turtlesim/Color'; 
 			for: [ : aColor | self currentColor: aColor ];
@@ -124,7 +124,7 @@ TurtleHandle >> tf [
 	turtlesimNodelet broadcastTFFor: self.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #utilties }
 TurtleHandle >> transformationTo: aTurtleHandle [
  	^ turtlesimNodelet nodelets transformation transformBetween: aTurtleHandle frame and: self frame.
 ]
