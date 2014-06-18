@@ -54,7 +54,7 @@ PeriphericsDirectory class >> stargazerMetacelloPackage [
 				#email -> 'santiagobragagnolo@mail.com' 
 			} asDictionary) .
 			#metacello -> ({ 
-				#url -> 'http://car.mines-douai.fr/squeaksource/Peripherics' . 
+				#url -> 'http://smalltalkhub.com/mc/CAR/PhaROSPeripherics/main' . 
 				#configurationOf -> 'ConfigurationOfPeripherics' . 
 				#package -> 'StarGazerROS'  
 			} asDictionary)
