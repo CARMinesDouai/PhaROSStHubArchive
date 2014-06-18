@@ -1,5 +1,7 @@
 "
-ConfigurationOfPhaROS loadBleedingEdge
+ConfigurationOfPhaROS loadStable.
+
+ConfigurationOfPhaROS loadBleedingEdge.
 "
 Class {
 	#name : #ConfigurationOfPhaROS,
@@ -106,6 +108,11 @@ ConfigurationOfPhaROS class >> loadBleedingEdgeForTest [
 { #category : #loading }
 ConfigurationOfPhaROS class >> loadESUG [
 	(self project version: #'1.0-Beta3') load.
+]
+
+{ #category : #loading }
+ConfigurationOfPhaROS class >> loadStable [
+	(self project version: #stable) load.
 ]
 
 { #category : #'metacello tool support' }
@@ -397,7 +404,8 @@ ConfigurationOfPhaROS >> baseline12: spec [
 				spec 	className: 'ConfigurationOfPaulLePoulpe'; 
 						loads: #('default' );
 						file: 'ConfigurationOfPaulLePoulpe';
-						repository: 'http://ss3.gemstone.com/ss/PaulLePoulpe'. 
+						repository: 'http://ss3.gemstone.com/ss/PaulLePoulpe';
+						versionString: #bleedingEdge.
 			].
 		
 			spec project: 'OSProcess' with: [
@@ -468,7 +476,7 @@ ConfigurationOfPhaROS >> baseline12: spec [
 	
 ]
 
-{ #category : #versions }
+{ #category : #'old fixed versions' }
 ConfigurationOfPhaROS >> pharosRoboshop1: spec [
 	"symbolic version name used in the RoboShop deliverable 1"
 	<symbolicVersion: #pharosRoboshop1>
@@ -476,7 +484,7 @@ ConfigurationOfPhaROS >> pharosRoboshop1: spec [
 	spec for: #common version: #notDefined.
 ]
 
-{ #category : #versions }
+{ #category : #'old fixed versions' }
 ConfigurationOfPhaROS >> pharosRoboshop2: spec [
 	"symbolic version name used in the RoboShop deliverable 1"
 	<symbolicVersion: #pharosRoboshop2>
@@ -484,7 +492,7 @@ ConfigurationOfPhaROS >> pharosRoboshop2: spec [
 	spec for: #common version: #notDefined.
 ]
 
-{ #category : #versions }
+{ #category : #'old fixed versions' }
 ConfigurationOfPhaROS >> pharosStage1: spec [
 	"symbolic version name used in the RoboShop deliverable 1"
 	<symbolicVersion: #pharosStage1>
@@ -511,7 +519,14 @@ ConfigurationOfPhaROS >> project [
 
 ]
 
-{ #category : #versions }
+{ #category : #'symbolic versions' }
+ConfigurationOfPhaROS >> stable: spec [
+	<symbolicVersion: #'stable'>
+	spec for: #'common' version: '1.2.1'
+	
+]
+
+{ #category : #'old fixed versions' }
 ConfigurationOfPhaROS >> version100Beta11: spec [ 
 	<version: '1.1-Beta1' imports: #('1.0-baseline') >
 	
@@ -530,7 +545,7 @@ spec package:'TaskIT' with: 'TaskIT-SantiagoBragagnolo.20'
 
 ]
 
-{ #category : #versions }
+{ #category : #'old fixed versions' }
 ConfigurationOfPhaROS >> version100Beta1: spec [ 
 	<version: '1.0-Beta1' imports: #('1.0b-baseline') >
 	
@@ -549,7 +564,7 @@ ConfigurationOfPhaROS >> version100Beta1: spec [
 
 ]
 
-{ #category : #versions }
+{ #category : #'old fixed versions' }
 ConfigurationOfPhaROS >> version100Beta2: spec [ 
 	<version: '1.0-Beta2' imports: #('1.0b-baseline') >
 	
@@ -568,7 +583,7 @@ ConfigurationOfPhaROS >> version100Beta2: spec [
 
 ]
 
-{ #category : #versions }
+{ #category : #'old fixed versions' }
 ConfigurationOfPhaROS >> version100Beta3: spec [ 
 	<version: '1.0-Beta3' imports: #('1.0b-baseline') >
 	
@@ -588,6 +603,21 @@ ConfigurationOfPhaROS >> version100Beta3: spec [
 ]
 
 { #category : #versions }
+ConfigurationOfPhaROS >> version121: spec [ 
+	<version: '1.2.1' imports: #('1.2-baseline') >
+	
+	spec for: #common do: [ 
+		spec blessing: #'v1.2.1 - after moving most of PhaROS to sthub'.
+		spec author: 'LucFabresse'.
+		spec timestamp: '18/06/2014 16:00'.
+		spec project: 'XMLRPC' with: '1.01'.
+		spec project: 'PaulLePoulpe' with: '1.0.1'.
+		spec package: 'PhaROS' with: 'PhaROS-PabloEstefo.709'.
+		spec package:'TaskIT' with: 'TaskIT-SantiagoBragagnolo.20'
+	]
+]
+
+{ #category : #'old fixed versions' }
 ConfigurationOfPhaROS >> versionDemo2: spec [ 
 	<version: 'Demo-2' imports: #('1.0b-baseline') >
 	
@@ -604,7 +634,7 @@ ConfigurationOfPhaROS >> versionDemo2: spec [
 
 ]
 
-{ #category : #versions }
+{ #category : #'old fixed versions' }
 ConfigurationOfPhaROS >> versionDemo: spec [ 
 	<version: 'Demo' imports: #('1.0b-baseline') >
 	
@@ -621,7 +651,7 @@ ConfigurationOfPhaROS >> versionDemo: spec [
 
 ]
 
-{ #category : #versions }
+{ #category : #'old fixed versions' }
 ConfigurationOfPhaROS >> versionDemoRobulab: spec [ 
 	<version: 'DemoRobulab' imports: #('1.0b-baseline') >
 	
