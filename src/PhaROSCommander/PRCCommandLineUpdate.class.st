@@ -1,6 +1,6 @@
 Class {
 	#name : #PRCCommandLineUpdate,
-	#superclass : #PRCCommandLineHandler,
+	#superclass : #PRCDisabledCommandLineHandler,
 	#category : #PhaROSCommander
 }
 
