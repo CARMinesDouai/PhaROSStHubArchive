@@ -404,7 +404,7 @@ ConfigurationOfPhaROS >> baseline12: spec [
 				spec 
 					className: 'ConfigurationOfOSProcess';
 					file: 'ConfigurationOfOSProcess' ;
-					repository: 'http://www.squeaksource.com/MetacelloRepository'; 
+					repository: 'http://smalltalkhub.com/mc/Pharo/MetaRepoPharo30/main'; 
 					versionString: #stable.
 			].
 			
