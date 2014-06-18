@@ -203,7 +203,7 @@ ConfigurationOfTaskIT >> baseline20: spec [
 				spec 
 					className: 'ConfigurationOfGhost';
 					file: 'ConfigurationOfGhost' ;
-					repository: 'http://ss3.gemstone.com/ss/Ghost'
+					repository: 'http://smalltalkhub.com/mc/CAR/Ghost/main'
 			].
 			spec project: 'OSProcess' with: [
 				spec 
