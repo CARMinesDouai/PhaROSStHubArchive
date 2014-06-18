@@ -96,6 +96,11 @@ ConfigurationOfPhaROSCommander class >> loadBleedingEdgeForTest [
 	(self project version: #bleedingEdge) load:'core+test'.
 ]
 
+{ #category : #load }
+ConfigurationOfPhaROSCommander class >> loadStable [
+	(self project version: #stable) load.
+]
+
 { #category : #'metacello tool support' }
 ConfigurationOfPhaROSCommander class >> metacelloVersion: versionString loads: anArrayOrString [
 	"Stash the last version loaded and the list of packages loaded for that version. The list
@@ -158,4 +163,25 @@ ConfigurationOfPhaROSCommander >> project [
 	].
 
 
+]
+
+{ #category : #'symbolic versions' }
+ConfigurationOfPhaROSCommander >> stable: spec [
+	<symbolicVersion: #'stable'>
+	spec for: #'common' version: '1.0.1'
+	
+]
+
+{ #category : #'as yet unclassified' }
+ConfigurationOfPhaROSCommander >> version101: spec [ 
+	<version: '1.0.1' imports: #('1.0-baseline') >
+	
+	spec for: #common do: [ 
+		spec blessing: #'v0.1 - after moving most of PhaROS to sthub'.
+		spec author: 'LucFabresse'.
+		spec timestamp: '18/06/2014 16:00'.
+		spec project: 'ROSCatkinDeployer' with: '1.0-baseline'. "bleeding..."
+		spec package: 'PhaROSCommander' with: 'PhaROSCommander-LucFabresse.63'.
+		spec package: 'PhaROSCommanderTests' with: 'PhaROSCommanderTest-SantiagoBragangolo.1'.
+	]
 ]
