@@ -313,6 +313,9 @@ workspace contents: contents; changed: #contents.
 
 { #category : #'as yet unclassified' }
 PRCCommandLineCreateHandler >> exampleGenerator [
+
+self flag: 'MUST be externalized in PhaROS-Example'.
+
 ^  [ 
 : deploymentUnit |
 | pack nodelet |
