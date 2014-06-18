@@ -133,7 +133,7 @@ ConfigurationOfGhost >> baseline11: spec [
 		
 	spec for: #pharo do: [
 		
-		spec repository: 'http://ss3.gemstone.com/ss/Ghost'.
+		spec repository: 'http://smalltalkhub.com/mc/CAR/Ghost/main'.
 
 		spec package: 'GhostProxies'.
 		spec package: 'GhostProxiesTests' with: [ spec requires: #('GhostProxies') ].
