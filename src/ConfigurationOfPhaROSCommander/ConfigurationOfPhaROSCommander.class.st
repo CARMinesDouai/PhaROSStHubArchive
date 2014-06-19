@@ -168,11 +168,11 @@ ConfigurationOfPhaROSCommander >> project [
 { #category : #'symbolic versions' }
 ConfigurationOfPhaROSCommander >> stable: spec [
 	<symbolicVersion: #'stable'>
-	spec for: #'common' version: '1.0.1'
+	spec for: #'common' version: '1.0.2'
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #versions }
 ConfigurationOfPhaROSCommander >> version101: spec [ 
 	<version: '1.0.1' imports: #('1.0-baseline') >
 	
@@ -182,6 +182,20 @@ ConfigurationOfPhaROSCommander >> version101: spec [
 		spec timestamp: '18/06/2014 16:00'.
 		spec project: 'ROSCatkinDeployer' with: '1.0-baseline'. "bleeding..."
 		spec package: 'PhaROSCommander' with: 'PhaROSCommander-LucFabresse.63'.
+		spec package: 'PhaROSCommanderTests' with: 'PhaROSCommanderTest-SantiagoBragangolo.1'.
+	]
+]
+
+{ #category : #versions }
+ConfigurationOfPhaROSCommander >> version102: spec [ 
+	<version: '1.0.2' imports: #('1.0-baseline') >
+	
+	spec for: #common do: [ 
+		spec blessing: #'v0.1 - after moving most of PhaROS to sthub'.
+		spec author: 'LucFabresse'.
+		spec timestamp: '19/06/2014 16:00'.
+		spec project: 'ROSCatkinDeployer' with: '1.0-baseline'. "bleeding..."
+		spec package: 'PhaROSCommander' with: 'PhaROSCommander-PabloEstefo.65'.
 		spec package: 'PhaROSCommanderTests' with: 'PhaROSCommanderTest-SantiagoBragangolo.1'.
 	]
 ]
