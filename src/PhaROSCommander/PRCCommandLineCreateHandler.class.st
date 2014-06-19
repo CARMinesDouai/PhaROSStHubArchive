@@ -7,9 +7,9 @@ Options:
                               Default value is the current directory.		
           --silent	{ true | false }. If silent is false you will be able to see the installation of the output image. 
                               Default value is true. 
-          --version	{ 1.4 | 2.0 | 3.0 }. It indicates the version of pharo to download. It will not count if you are in a not silent session. 
-                              Default value is 2.0
-          --ros-distro	Indicates the distribution of ROS that you want to use. By default is groovy { groovy | hydro | fuerte } 	
+          --version	{ 2.0 | 3.0 }. It indicates the version of pharo to download. It will not count if you are in a not silent session. 
+                              Default value is 3.0
+          --ros-distro	Indicates the distribution of ROS that you want to use. By default is groovy { groovy | hydro | fuerte | indigo } 	
           --archetype	Indicates the name of the archetype to use for creating things. 
                               Default is basic-archetype.
           --author	Indicates the name of the author
