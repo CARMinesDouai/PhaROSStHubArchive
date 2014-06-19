@@ -1,3 +1,6 @@
+"
+ConfigurationOfPureNGTest loadBleedingEdge
+"
 Class {
 	#name : #ConfigurationOfPureNGTest,
 	#superclass : #Object,
