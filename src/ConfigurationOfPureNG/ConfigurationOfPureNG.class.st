@@ -1,3 +1,6 @@
+"
+ConfigurationOfPureNG loadBleedingEdge
+"
 Class {
 	#name : #ConfigurationOfPureNG,
 	#superclass : #Object,
