@@ -203,7 +203,7 @@ ConfigurationOfTaskIT >> baseline20: spec [
 				spec 
 					className: 'ConfigurationOfGhost';
 					file: 'ConfigurationOfGhost' ;
-					repository: 'http://smalltalkhub.com/mc/CAR/Ghost/main'
+					repository: 'http://ss3.gemstone.com/ss/Ghost'
 			].
 			spec project: 'OSProcess' with: [
 				spec 
@@ -212,15 +212,27 @@ ConfigurationOfTaskIT >> baseline20: spec [
 					repository: 'http://www.squeaksource.com/MetacelloRepository'; 
 					versionString: #stable.
 			].
+		
 			spec package: 'TaskIT' with: [
 				spec requires: #('Ghost' ).
 			].
-			spec package: 'TaskITFork' with: [ 
+			spec package: 'ForkIT' with: [ 
 				spec requires: #('TaskIT' 'OSProcess').
 			 ].
-			
+			spec package: 'ActIT' with: [ 
+				spec requires: #('TaskIT').
+			 ].
+			spec package: 'PoolIT' with: [ 
+				spec requires: #('TaskIT').
+			 ].
+			spec package: 'PlanIT' with: [ 
+				spec requires: #('TaskIT').
+			 ].
 			spec group: 'core'with: #( 'TaskIT').
-			spec group: 'default'  with: #( 'TaskIT' 'TaskITFork' ).
+			spec group: 'fulltasks'  with: #( 'TaskIT' 'ForkIT' ).
+			spec group: 'default'  with: #( 'TaskIT' 'ForkIT' 'PoolIT'  ).
+			spec group: 'full'  with: #( 'TaskIT' 'ForkIT'  'PlanIT' 'ActIT' 'PoolIT'  ).
+			
 	].
 
 
@@ -251,12 +263,22 @@ ConfigurationOfTaskIT >> baseline21: spec [
 			spec package: 'TaskIT' with: [
 				spec requires: #('Ghost' ).
 			].
-			spec package: 'TaskITFork' with: [ 
+			spec package: 'ForkIT' with: [ 
 				spec requires: #('TaskIT' 'OSProcess').
 			 ].
-			
+			spec package: 'ActIT' with: [ 
+				spec requires: #('TaskIT').
+			 ].
+			spec package: 'PoolIT' with: [ 
+				spec requires: #('TaskIT').
+			 ].
+			spec package: 'PlanIT' with: [ 
+				spec requires: #('TaskIT').
+			 ].
 			spec group: 'core'with: #( 'TaskIT').
-			spec group: 'default'  with: #( 'TaskIT' 'TaskITFork' ).
+			spec group: 'fulltasks'  with: #( 'TaskIT' 'ForkIT' ).
+			spec group: 'default'  with: #( 'TaskIT' 'ForkIT' 'PoolIT'  ).
+			spec group: 'full'  with: #( 'TaskIT' 'ForkIT'  'PlanIT' 'ActIT' 'PoolIT'  ).
 	].
 
 
@@ -285,8 +307,8 @@ ConfigurationOfTaskIT >> project [
 ConfigurationOfTaskIT >> stable: spec [
 	<symbolicVersion: #'stable'>
 	spec for: #'pharo1.4.x' version: '1.1'.
-	spec for: #'pharo2.x' version: '1.1'.
-	spec for: #'pharo3.x' version: '1.1'.	
+	spec for: #'pharo2.x' version: '2.0'.
+	spec for: #'pharo3.x' version: '2.1'.	
 ]
 
 { #category : #versions }
@@ -322,10 +344,28 @@ ConfigurationOfTaskIT >> version20: spec [
 	<version: '2.0' imports: #('2.0-baseline') >
 	
 	spec for: #common do: [
-		spec blessing: #alpha.
+		spec blessing: #stable.
 		spec author: 'SantiagoBragagnolo'.
 		spec timestamp: '18/02/2014 12:00'.
 		spec package:'TaskIT' with: 'TaskIT-SantiagoBragagnolo.68'.
+	].
+
+
+]
+
+{ #category : #versions }
+ConfigurationOfTaskIT >> version21: spec [ 
+	<version: '2.0' imports: #('2.0-baseline') >
+	
+	spec for: #common do: [
+		spec blessing: #stable.
+		spec author: 'SantiagoBragagnolo'.
+		spec timestamp: '18/02/2014 12:00'.
+		spec package:'TaskIT' with: 'TaskIT-SantiagoBragagnolo.77'.
+		spec package:'ForkIT' with: 'ForkIT-SantiagoBragagnolo.3'.
+		spec package:'ActIT' with: 'ActIT-GuillermoPolito.3'.
+		spec package:'PlanIT' with: 'PlanIT-SantiagoBragagnolo.1'.
+		spec package:'PoolIT' with: 'PoolIT-SantiagoBragagnolo.1'.
 	].
 
 
