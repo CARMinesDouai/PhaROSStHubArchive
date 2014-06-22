@@ -8,7 +8,7 @@ Class {
 FKTTaskOneShotThirdImageRunnerErrorComputationTests >> setUp [
 
 	super setUp.
-	future := runner run: [ Error signal: 'An Error'. ] asTKTJob.
+	future := runner run: [ Error signal: 'An Error'. ] asTask.
 	future wait.
 ]
 

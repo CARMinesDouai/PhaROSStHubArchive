@@ -33,8 +33,8 @@ FKTOneShotAtThirdInstanceRunner >> run: aJob [
 
 	| task outputPath inputPath  |
 
-	task := aJob asTKTJob asTask.
-	self assert: (task isClean) description: 'The task to execute in a third image cannot point any contextual value '.
+	task := aJob  asTask.
+	"self assert: (task isClean) description: 'The task to execute in a third image cannot point any contextual value '."
 	
 	process := FKTInstanceProcess simpleInstance.
 

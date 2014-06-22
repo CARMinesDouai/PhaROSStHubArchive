@@ -8,7 +8,7 @@ Class {
 FKTTaskOneShotThirdImageRunnerNormalComputationTests >> setUp [
 	
 	super setUp.
-	result := (runner run: ([  1+2 ] asTKTJob)) value.
+	result := (runner run: ([  1+2 ] asTask)) value.
 ]
 
 { #category : #tests }

@@ -8,7 +8,7 @@ Class {
 FKTTaskOneShotThirdImageRunnerTryToCancelForeignFuture >> setUp [
 
 	super setUp.
-	future := runner run: [ (Delay forMilliseconds: 1000) wait ] asTKTJob.
+	future := runner run: [ (Delay forMilliseconds: 1000) wait ] asTask.
 
 ]
 
