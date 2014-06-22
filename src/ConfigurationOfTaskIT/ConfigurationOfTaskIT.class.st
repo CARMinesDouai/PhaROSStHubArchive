@@ -362,7 +362,7 @@ ConfigurationOfTaskIT >> version21: spec [
 		spec author: 'SantiagoBragagnolo'.
 		spec timestamp: '18/02/2014 12:00'.
 		spec package:'TaskIT' with: 'TaskIT-SantiagoBragagnolo.77'.
-		spec package:'ForkIT' with: 'ForkIT-SantiagoBragagnolo.3'.
+		spec package:'ForkIT' with: 'ForkIT-SantiagoBragagnolo.4'.
 		spec package:'ActIT' with: 'ActIT-GuillermoPolito.3'.
 		spec package:'PlanIT' with: 'PlanIT-SantiagoBragagnolo.1'.
 		spec package:'PoolIT' with: 'PoolIT-SantiagoBragagnolo.1'.
