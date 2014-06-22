@@ -355,7 +355,7 @@ ConfigurationOfTaskIT >> version20: spec [
 
 { #category : #versions }
 ConfigurationOfTaskIT >> version21: spec [ 
-	<version: '2.0' imports: #('2.0-baseline') >
+	<version: '2.1' imports: #('2.0-baseline') >
 	
 	spec for: #common do: [
 		spec blessing: #stable.
