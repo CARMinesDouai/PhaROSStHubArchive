@@ -466,10 +466,15 @@ ConfigurationOfPhaROS >> baseline12: spec [
 	
 			"PhaROSInfrastructure is deprecated? but ROSLaunch still used?"
 			spec 
-				group: 'default' with: #('PhaROS'  'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSNodeletsAction' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition'  'PhaROSNodeletsTurtlesim'  'PhaROSNodeletsLocalizer' 'PhaROSNodeletsMerger' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsRPC' 'tests' );
+				group: 'default' with: #('PhaROS'  'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSNodeletsAction' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition'   'PhaROSNodeletsLocalizer' 'PhaROSNodeletsMerger' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsRPC' );
+				
+				group: 'examples' with: #( 'PhaROSNodeletsTurtlesim'  );
+					
 				group: 'tests' with: #('PhaROSTest'  'PhaROSTestROS').
 				
-			spec group: 'basic-archetype' with: #( 'default' ).
+			spec group: 'basic-archetype' with: #( 'default' 'examples' 'tests').
+			
+			
 	].
 	
 		
