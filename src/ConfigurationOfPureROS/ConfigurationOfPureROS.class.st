@@ -1,3 +1,7 @@
+"
+ConfigurationOfPureROS loadBleedingEdge
+
+"
 Class {
 	#name : #ConfigurationOfPureROS,
 	#superclass : #Object,
@@ -139,7 +143,7 @@ ConfigurationOfPureROS class >> unloadMetacello [
 	Smalltalk at: #ConfigurationOfMetacello ifPresent: [:cls | cls unloadMetacello ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #baselines }
 ConfigurationOfPureROS >> baseline10: spec [
 	<version:'1.0-baseline'>
 	spec for: #common do: [
@@ -187,7 +191,7 @@ ConfigurationOfPureROS >> baseline10: spec [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #baselines }
 ConfigurationOfPureROS >> baseline11: spec [
 	<version:'1.1-baseline'>
 	spec for: #common do: [
@@ -256,7 +260,68 @@ ConfigurationOfPureROS >> baseline11: spec [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #baselines }
+ConfigurationOfPureROS >> baseline12: spec [
+	<version:'1.2-baseline'>
+	spec for: #common do: [
+			spec blessing: #baseline.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/Robulab/main'.
+			
+			
+			spec project: 'PhaROS' with: [
+				spec 
+					className: 'ConfigurationOfPhaROS';
+					file: 'ConfigurationOfPhaROS' ;
+					repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main'; 
+					versionString: #bleedingEdge;
+					loads: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition' 'PhaROSNodeletsLocalizer' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsRPC' 'PhaROSNodeletsMerger').
+			].
+			
+		      spec project: 'PureNG' with: [
+				spec 
+					className: 'ConfigurationOfPureNG';
+					file: 'ConfigurationOfPureNG' ;
+					versionString: #bleedingEdge;
+					repository: 'http://smalltalkhub.com/mc/CAR/Robulab/main'.
+			].
+		
+			spec project: 'StarGazer' with: [
+				spec 
+					className: 'ConfigurationOfPeripherics';
+					file: 'ConfigurationOfPeripherics' ;
+					versionString: #bleedingEdge;
+					repository: 'http://smalltalkhub.com/mc/CAR/PhaROSPeripherics/main';
+					loads:#('StarGazerROS').
+			].
+		   
+			spec package: 'PureROS' with: [
+				spec requires: #('PhaROS' 'PureNG').
+			].
+		
+			spec package: 'PureROSExperiments'.
+			
+			spec package: 'PureROSNodeletsMovement'.
+			spec package: 'PureROSNodeletsKompai'.
+			spec package: 'PureROSNodeletsCaire'.
+			
+			
+			spec package: 'PureROSPackageKompai' with:[
+				spec requires: #('PureROSNodeletsKompai' 'PureROS').	
+			]. 
+			spec package: 'PureROSPackageRobulab' with:[
+				spec requires: #('PureROSNodeletsMovement' 'PureROS' 'StarGazer').	
+			]. 
+			spec package: 'PureROSPackageCaire' with:[
+				spec requires: #('PureROSNodeletsCaire' 'PureROS').	
+			]. 
+			
+			
+	].
+
+
+]
+
+{ #category : #accessing }
 ConfigurationOfPureROS >> project [
 
 	^ project ifNil: [
@@ -275,7 +340,7 @@ ConfigurationOfPureROS >> project [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #versions }
 ConfigurationOfPureROS >> version100Beta: spec [ 
 	<version: '1.0-Beta1' imports: #('1.0-baseline') >
 	
@@ -294,7 +359,7 @@ ConfigurationOfPureROS >> version100Beta: spec [
 
 ]
 
-{ #category : #demo }
+{ #category : #'versions - demos' }
 ConfigurationOfPureROS >> version100Kompai: spec [ 
 	<version: 'kompai' imports: #('1.0-baseline') >
 	"Demo for kompai node"
@@ -314,7 +379,7 @@ ConfigurationOfPureROS >> version100Kompai: spec [
 
 ]
 
-{ #category : #demo }
+{ #category : #'versions - demos' }
 ConfigurationOfPureROS >> version100Robulab: spec [ 
 	<version: 'robulab' imports: #('1.0-baseline') >
 	"Demo for kompai node"
@@ -334,7 +399,7 @@ ConfigurationOfPureROS >> version100Robulab: spec [
 
 ]
 
-{ #category : #demo }
+{ #category : #'versions - demos' }
 ConfigurationOfPureROS >> version100Stargazer: spec [ 
 	<version: 'robulab' imports: #('1.0-baseline') >
 	"Demo for kompai node"
@@ -354,7 +419,7 @@ ConfigurationOfPureROS >> version100Stargazer: spec [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'versions - demos' }
 ConfigurationOfPureROS >> versionDemo2: spec [ 
 	<version: 'Demo-2' imports: #('1.0-baseline') >
 	
