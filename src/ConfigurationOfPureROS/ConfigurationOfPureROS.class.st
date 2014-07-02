@@ -274,7 +274,7 @@ ConfigurationOfPureROS >> baseline12: spec [
 					file: 'ConfigurationOfPhaROS' ;
 					repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main'; 
 					versionString: #bleedingEdge;
-					loads: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition' 'PhaROSNodeletsLocalizer' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsRPC' 'PhaROSNodeletsMerger').
+					loads: #( 'default' 'tests' ).
 			].
 			
 		      spec project: 'PureNG' with: [
@@ -359,7 +359,7 @@ ConfigurationOfPureROS >> version100Beta: spec [
 
 ]
 
-{ #category : #'versions - demos' }
+{ #category : #demo }
 ConfigurationOfPureROS >> version100Kompai: spec [ 
 	<version: 'kompai' imports: #('1.0-baseline') >
 	"Demo for kompai node"
@@ -379,7 +379,7 @@ ConfigurationOfPureROS >> version100Kompai: spec [
 
 ]
 
-{ #category : #'versions - demos' }
+{ #category : #demo }
 ConfigurationOfPureROS >> version100Robulab: spec [ 
 	<version: 'robulab' imports: #('1.0-baseline') >
 	"Demo for kompai node"
@@ -399,7 +399,7 @@ ConfigurationOfPureROS >> version100Robulab: spec [
 
 ]
 
-{ #category : #'versions - demos' }
+{ #category : #demo }
 ConfigurationOfPureROS >> version100Stargazer: spec [ 
 	<version: 'robulab' imports: #('1.0-baseline') >
 	"Demo for kompai node"
