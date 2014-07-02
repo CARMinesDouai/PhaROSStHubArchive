@@ -423,12 +423,12 @@ ConfigurationOfPhaROS >> baseline12: spec [
 				spec repository: 'http://smalltalkhub.com/mc/CAR/ReusableBricks/main'
 			].
 	
-			spec project: 'TaskIT' with: [
+			spec project: 'TaskITProject' with: [
 				spec 
 					className: 'ConfigurationOfTaskIT';
 					file: 'ConfigurationOfTaskIT' ;
-					versionString: #bleedingEdge;
-					repository: 'http://smalltalkhub.com/mc/CAR/TaskIT/main'.
+					repository: 'http://smalltalkhub.com/mc/CAR/TaskIT/main';
+					versionString:  #stable
 			].
 		
 			"Testing"
@@ -461,7 +461,7 @@ ConfigurationOfPhaROS >> baseline12: spec [
 			
 			"PhaROS Configuration"
 			spec package: 'PhaROS' with: [
-				spec requires: #('XMLRPC' 'CommonTraits' 'Equals' 'PaulLePoulpe' 'OSProcess' 'TaskIT').
+				spec requires: #('XMLRPC' 'CommonTraits' 'Equals' 'PaulLePoulpe' 'OSProcess' 'TaskITProject').
 			].
 	
 			"PhaROSInfrastructure is deprecated? but ROSLaunch still used?"
@@ -527,7 +527,7 @@ ConfigurationOfPhaROS >> project [
 { #category : #'symbolic versions' }
 ConfigurationOfPhaROS >> stable: spec [
 	<symbolicVersion: #'stable'>
-	spec for: #'common' version: '1.2.1'
+	spec for: #'common' version: '1.2.2'
 	
 ]
 
@@ -619,6 +619,21 @@ ConfigurationOfPhaROS >> version121: spec [
 		spec project: 'PaulLePoulpe' with: '1.0.1'.
 		spec package: 'PhaROS' with: 'PhaROS-PabloEstefo.709'.
 		spec package:'TaskIT' with: 'TaskIT-SantiagoBragagnolo.20'
+	]
+]
+
+{ #category : #versions }
+ConfigurationOfPhaROS >> version122: spec [ 
+	<version: '1.2.2' imports: #('1.2-baseline') >
+	
+	spec for: #common do: [ 
+		spec blessing: #'v1.2.2 - adapt to new taskit'.
+		spec author: 'LucFabresse'.
+		spec timestamp: '1/07/2014 16:00'.
+		spec project: 'XMLRPC' with: '1.01'.
+		spec project: 'PaulLePoulpe' with: '1.0.1'.
+		spec package: 'PhaROS' with: 'PhaROS-PabloEstefo.709'.
+		spec project: 'TaskIT' with: '2.1' 
 	]
 ]
 
