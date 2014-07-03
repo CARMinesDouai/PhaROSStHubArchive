@@ -81,7 +81,7 @@ PurePhaROSNotificationController >> onMovementNotification: aMovementNotificatio
 
 [	self movementCallbacks  do: [ : cb | cb value: aMovementNotification ].
 	allMovementCallbacksCalled ifNotNil:[ allMovementCallbacksCalled cull: aMovementNotification.].
-	lastMovementNotification := aMovementNotification.] taskIt.
+	lastMovementNotification := aMovementNotification.] shootIt.
 ]
 
 { #category : #'as yet unclassified' }
