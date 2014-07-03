@@ -315,7 +315,7 @@ ConfigurationOfPureROS >> baseline12: spec [
 				spec requires: #('PureROSNodeletsCaire' 'PureROS').	
 			]. 
 			
-			
+			spec group: 'core' with: #( 'PureROS' 'PureROSNodeletsKompai')
 	].
 
 
