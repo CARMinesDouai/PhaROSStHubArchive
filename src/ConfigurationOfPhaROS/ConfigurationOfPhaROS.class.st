@@ -412,7 +412,7 @@ ConfigurationOfPhaROS >> baseline12: spec [
 				spec 
 					className: 'ConfigurationOfOSProcess';
 					file: 'ConfigurationOfOSProcess' ;
-					repository: 'http://smalltalkhub.com/mc/Pharo/MetaRepoPharo30/main'; 
+					repository: 'http://smalltalkhub.com/mc/Pharo/MetaRepoForPharo30/main'; 
 					versionString: #stable.
 			].
 			
