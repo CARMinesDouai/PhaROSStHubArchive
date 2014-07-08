@@ -322,9 +322,9 @@ ConfigurationOfPureROS >> baseline12: spec [
 				spec requires: #('PureROSNodeletsCaire' 'PureROS').	
 			]. 
 			
-			spec group: 'core' with: #( 'PureROS' 'PureROSNodeletsKompai').
+			spec group: 'core' with: #( 'PureROS' ).
 			
-			spec group: 'core-kompai' with: #( 'PureROS' 'PureROSNodeletsKompai' 'PureROSExperiments' 'PureROSNodeletsMovement' 'PureROSPackageKompai' 'PureROSPackageRobulab' 'Experiment-Utils')
+			spec group: 'kompai' with: #( 'PureROSNodeletsKompai' 'PureROSExperiments' 'PureROSNodeletsMovement' 'PureROSPackageKompai' 'PureROSPackageRobulab' 'Experiment-Utils')
 	].
 
 ]
