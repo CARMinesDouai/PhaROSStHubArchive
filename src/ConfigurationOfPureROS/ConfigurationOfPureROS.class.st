@@ -292,14 +292,7 @@ ConfigurationOfPureROS >> baseline12: spec [
 					versionString: #bleedingEdge;
 					repository: 'http://smalltalkhub.com/mc/CAR/PhaROSPeripherics/main';
 					loads:#('StarGazerROS').
-			].
-		   	
-			 spec project: 'Experiment-Utils' with: [
-				spec 
-					repository: 'http://smalltalkhub.com/mc/PabloEstefo/Experiment-Utils/main';
-					loads:#('Experiment-Utils').
-			].
-		
+			].		
 		
 			spec package: 'PureROS' with: [
 				spec requires: #('PhaROS' 'PureNG').
@@ -324,7 +317,7 @@ ConfigurationOfPureROS >> baseline12: spec [
 			
 			spec group: 'core' with: #( 'PureROS' ).
 			
-			spec group: 'kompai' with: #( 'PureROSNodeletsKompai' 'PureROSExperiments' 'PureROSNodeletsMovement' 'PureROSPackageKompai' 'PureROSPackageRobulab' 'Experiment-Utils')
+			spec group: 'kompai' with: #( 'PureROSNodeletsKompai' 'PureROSExperiments' 'PureROSNodeletsMovement' 'PureROSPackageKompai' 'PureROSPackageRobulab' )
 	].
 
 ]
