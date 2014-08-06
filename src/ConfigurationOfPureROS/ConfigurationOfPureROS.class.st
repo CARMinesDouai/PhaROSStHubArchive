@@ -1,6 +1,8 @@
 "
 ConfigurationOfPureROS loadBleedingEdge
 
+(ConfigurationOfPureROS project version: #bleedingEdge)
+	load: { 'kompai' }.
 "
 Class {
 	#name : #ConfigurationOfPureROS,
@@ -317,7 +319,7 @@ ConfigurationOfPureROS >> baseline12: spec [
 			
 			spec group: 'core' with: #( 'PureROS' ).
 			
-			spec group: 'kompai' with: #( 'PureROSNodeletsKompai' 'PureROSExperiments' 'PureROSNodeletsMovement' 'PureROSPackageKompai' )
+			spec group: 'kompai' with: #('core' 'PureROSNodeletsKompai' 'PureROSNodeletsMovement' 'PureROSPackageKompai' )
 	].
 
 ]
