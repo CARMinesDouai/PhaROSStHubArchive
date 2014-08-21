@@ -131,3 +131,18 @@ ActiveObjectActivityTest >> testRestartUponNormalTermination [
 	
 	
 ]
+
+{ #category : #testing }
+ActiveObjectActivityTest >> testRunUntilCompletness [
+	activeObject := ActiveObject 
+		repeat: [counter := counter + 1]
+		every: 10 milliSeconds
+		while: [ counter < 10 ]
+		ensure: [ activityTerminatedSemaphore signal].
+	activeObject runTillDone.
+	activeObject := nil. "Unreference the active object"
+	Smalltalk garbageCollectMost.
+	self assertSemaphore: activityTerminatedSemaphore signaledWithinMilliseconds:  500.
+	self assert: counter = 10.
+	
+]

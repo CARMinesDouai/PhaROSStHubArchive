@@ -37,7 +37,7 @@ Class {
 	#category : #Concurrency
 }
 
-{ #category : #'instance-creation' }
+{ #category : #private }
 ActiveObject class >> blockForRepeating: aBlockClosure every: aDuration [
 	^ [ 
 	| delay |
@@ -47,7 +47,7 @@ ActiveObject class >> blockForRepeating: aBlockClosure every: aDuration [
 	aDuration wait ] repeat ]
 ]
 
-{ #category : #'instance-creation' }
+{ #category : #private }
 ActiveObject class >> blockForRepeating: stepBlock every: aDuration while: conditionBlock [
 	^ [ 
 	| delay |
@@ -213,6 +213,11 @@ ActiveObject >> priority: newPriority [
 { #category : #finalization }
 ActiveObject >> registerForFinalization [
 	self finalizationRegistry add: self
+]
+
+{ #category : #acting }
+ActiveObject >> runTillDone [
+	[self start] fork
 ]
 
 { #category : #acting }
