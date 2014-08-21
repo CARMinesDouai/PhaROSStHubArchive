@@ -6,8 +6,14 @@ Class {
 	#instVars : [
 		'stage'
 	],
-	#category : #'Equals-Example'
+	#category : #'Equals-Examples'
 }
+
+{ #category : #comparing }
+Fruit >> = anObject [ 
+	self species = anObject species ifFalse: [^false].
+	^self valuesToCompareForEquality = anObject valuesToCompareForEquality
+]
 
 { #category : #staging }
 Fruit >> beRipe [
@@ -27,6 +33,13 @@ Fruit >> beUnripe [
 { #category : #accessing }
 Fruit >> color [
 	^self subclassResponsibility
+]
+
+{ #category : #comparing }
+Fruit >> hash [
+	^self valuesToCompareForEquality inject: self species hash into: [:hash :comparisonValue|
+		(hash bitXor: comparisonValue hash) hashMultiply]
+
 ]
 
 { #category : #'initialize - release' }

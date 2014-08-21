@@ -1,7 +1,7 @@
 Class {
 	#name : #FruitComparisons,
-	#superclass : #Object,
-	#category : #'Equals-Example'
+	#superclass : #Comparisons,
+	#category : #'Equals-Examples'
 }
 
 { #category : #comparisons }
@@ -44,16 +44,4 @@ FruitComparisons class >> compareYellowAppleAndBanana [
 	apple := Apple color: Color yellow.
 	banana := Banana new.
 	self display: apple = banana
-]
-
-{ #category : #displaying }
-FruitComparisons class >> display: aBoolean [
-	| displayColor displayLabel |
-	displayLabel := aBoolean ifTrue: [ 'Equal' ] ifFalse: [ 'Different' ].
-	displayColor := aBoolean ifTrue: [ Color green ] ifFalse: [ Color yellow ].
-	GrowlMorph 
-		openWithLabel: displayLabel
-		contents: ''
-		backgroundColor: displayColor
-		labelColor: Color black
 ]

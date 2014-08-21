@@ -21,6 +21,6 @@ TEquality >> = anObject [
 { #category : #comparing }
 TEquality >> hash [
 	^self valuesToCompareForEquality inject: self species hash into: [:hash :comparisonValue|
-		(hash + comparisonValue hash) hashMultiply]
+		(hash bitXor: comparisonValue hash) hashMultiply]
 
 ]

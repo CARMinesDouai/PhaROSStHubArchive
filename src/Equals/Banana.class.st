@@ -1,7 +1,7 @@
 Class {
 	#name : #Banana,
 	#superclass : #Fruit,
-	#category : #'Equals-Example'
+	#category : #'Equals-Examples'
 }
 
 { #category : #accessing }

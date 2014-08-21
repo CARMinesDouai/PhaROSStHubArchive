@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'color'
 	],
-	#category : #'Equals-Example'
+	#category : #'Equals-Examples'
 }
 
 { #category : #'instance creation' }
