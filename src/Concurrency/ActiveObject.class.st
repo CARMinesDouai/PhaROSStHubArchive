@@ -71,6 +71,23 @@ ActiveObject class >> do: taskBlock ensure: cleanupBlock [
 ]
 
 { #category : #'instance-creation' }
+ActiveObject class >> do: initBlock thenRepeat: loopBlock [
+	^self do: [
+		initBlock value.
+		loopBlock repeat
+		]
+]
+
+{ #category : #'instance-creation' }
+ActiveObject class >> do: initBlock thenRepeat: loopBlock ensure: cleanupBlock [
+	^self 
+		do: [
+			initBlock value.
+			loopBlock repeat] 
+		ensure: cleanupBlock
+]
+
+{ #category : #'instance-creation' }
 ActiveObject class >> do: initBlock thenRepeat: stepBlock every: aDuration [ 
 	^self do: [
 		initBlock value.
@@ -85,6 +102,11 @@ ActiveObject class >> do: initBlock thenRepeat: stepBlock every: aDuration ensur
 			initBlock value.
 			(self blockForRepeating: stepBlock every: aDuration) value
 		]ensure: cleanUpBlock
+]
+
+{ #category : #'instance-creation' }
+ActiveObject class >> repeat: taskBlock [
+	^self do: [ taskBlock repeat ]
 ]
 
 { #category : #'instance-creation' }
