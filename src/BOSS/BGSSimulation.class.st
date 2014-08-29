@@ -103,6 +103,11 @@ BGSSimulation >> reset [
 	self changed
 ]
 
+{ #category : #accessing }
+BGSSimulation >> robot: robotId [
+	^self robotsDict at: robotId
+]
+
 { #category : #'initialize-release' }
 BGSSimulation >> robotClass [
 	^self subclassResponsibility
