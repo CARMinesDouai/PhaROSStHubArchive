@@ -20,3 +20,14 @@ PhaROSHandleController classSide >> robulab: aName [
 	
 	^ rbl .
 ]
+
+{ #category : #'*PureROS-Nodelet' }
+PhaROSHandleController classSide >> robulab: aRobotName nodeNamed: aNodeName [	
+	| rbl |
+	
+	rbl :=  self homeWithNodeNamed: aNodeName.
+	rbl nodelets use: PureROSRobulabNodelet as: #robulab.
+	rbl nodelets robulab robotName: aRobotName. 
+	
+	^ rbl .
+]
