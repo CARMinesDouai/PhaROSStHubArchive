@@ -117,7 +117,8 @@ ConfigurationOfReusableBricks >> baseline01: spec [
 		spec repository: 'http://smalltalkhub.com/mc/CAR/ReusableBricks/main/'.
 		spec 
 			package: 'Equals';
-			package: 'Concurrency'. ].
+			package: 'Concurrency';
+			package: 'BooleanExpressions'. ].
 
 ]
 
