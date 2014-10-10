@@ -319,7 +319,8 @@ ConfigurationOfPureROS >> baseline12: spec [
 			
 			spec group: 'core' with: #( 'PureROS' ).
 			
-			spec group: 'kompai' with: #('core' 'PureROSNodeletsKompai' 'PureROSNodeletsMovement' 'PureROSPackageKompai' )
+			spec group: 'kompai' with: #('core' 'PureROSNodeletsKompai' 'PureROSNodeletsMovement' 'PureROSPackageKompai' ).
+			spec group: 'robulab' with: #('core' 'PureROSNodeletsKompai' 'PureROSNodeletsMovement' 'PureROSPackageRobulab' )
 	].
 
 ]
