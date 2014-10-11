@@ -63,7 +63,12 @@ BoTestCase >> isSatisified: selector in: testCaseClass [
 	|case|
 	case := testCaseClass selector: selector.
 	(self result isRun: case) ifFalse: [self result runRequiredCase: case].
-	^self result isPassed: case
+	^(self result isPassed: case) and: [case isExpectedFailure not]
+]
+
+{ #category : #'tester actions' }
+BoTestCase >> questionWithoutCancel: aMessage [
+	^UIManager default questionWithoutCancel: aMessage
 ]
 
 { #category : #'tester actions' }
@@ -73,7 +78,12 @@ BoTestCase >> requestAction: aString [
 
 { #category : #'tester actions' }
 BoTestCase >> requestAssert: aMessage [
-	self assert: (UIManager default  questionWithoutCancel: aMessage)
+	self assert: (self questionWithoutCancel: aMessage)
+]
+
+{ #category : #'tester actions' }
+BoTestCase >> requestDeny: aMessage [
+	self deny: (self  questionWithoutCancel: aMessage)
 ]
 
 { #category : #requirements }
