@@ -62,7 +62,11 @@ BoTestCase >> isSatisfied: selector [
 BoTestCase >> isSatisified: selector in: testCaseClass [ 
 	|case|
 	case := testCaseClass selector: selector.
-	(self result isRun: case) ifFalse: [self result runRequiredCase: case].
+	(self result isRun: case) ifFalse: [
+		RunRequirementException new 
+			requiredTestCase: case;
+			signal
+	].
 	^(self result isPassed: case) and: [case isExpectedFailure not]
 ]
 
@@ -100,6 +104,13 @@ BoTestCase >> requires: aSymbolOrATestCaseClass [
 	BoRequirementFailureException signal: 'Unknown requirement: ', aSymbolOrATestCaseClass printString
 ]
 
+{ #category : #performing }
+BoTestCase >> restartAfterRunning: requiredTestCase [	
+	requiredTestCase ifNil: [^self].
+	self result runRequiredCase: requiredTestCase.
+	self runCase
+]
+
 { #category : #accessing }
 BoTestCase >> result [
 	^result
@@ -127,6 +138,16 @@ BoTestCase >> run [
 BoTestCase >> run: aBoTestResult [
 	self result: aBoTestResult.
 	super run: aBoTestResult
+]
+
+{ #category : #performing }
+BoTestCase >> runCase [
+	| requiredTestCase |
+	[super runCase] 
+		on: RunRequirementException 
+		do: [ :ex | requiredTestCase := ex requiredTestCase].
+	self restartAfterRunning: requiredTestCase	
+
 ]
 
 { #category : #accessing }
