@@ -10,58 +10,26 @@ Class {
 		'gmappingProcess'
 	],
 	#classInstVars : [
-		'instance',
-		'distro'
+		'instance'
 	],
 	#category : #'PhaROS-Util'
 }
 
-{ #category : #'as yet unclassified' }
-PhaROSSystemLauncher class >> distro: aDistroSymbol [
-	distro := aDistroSymbol
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSSystemLauncher class >> fuerte [
-	^'/opt/ros/fuerte/bin/'
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSSystemLauncher class >> groovy [
-	^'/opt/ros/groovy/bin/'
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSSystemLauncher class >> hydro [
-	^ '/opt/ros/hydro/bin/'
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSSystemLauncher class >> indigo [
-	^'/opt/ros/indigo/bin/'
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSSystemLauncher class >> initialize [
-	super initialize.
-	distro := #indigo.
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSSystemLauncher class >> instance [
 	^ instance ifNil: [
 		instance := super new.	
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 PhaROSSystemLauncher class >> new [
 	self error: 'This is a singleton object, use instance instead of new'.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSSystemLauncher class >> path: aCommand [
-	^ (distro value: self) , '/', aCommand 
+	^ PhaROSSystemInfo instance rospath , '/', aCommand 
 ]
 
 { #category : #types }

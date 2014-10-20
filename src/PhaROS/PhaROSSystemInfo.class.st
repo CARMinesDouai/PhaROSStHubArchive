@@ -1,8 +1,50 @@
+"
+I am a facade of ROS commands.
+"
 Class {
 	#name : #PhaROSSystemInfo,
 	#superclass : #Object,
+	#instVars : [
+		'distro',
+		'path'
+	],
+	#classInstVars : [
+		'instance'
+	],
 	#category : #'PhaROS-Util'
 }
+
+{ #category : #distro }
+PhaROSSystemInfo class >> fuerte [
+	^'/opt/ros/fuerte/bin/'
+]
+
+{ #category : #distro }
+PhaROSSystemInfo class >> groovy [
+	^'/opt/ros/groovy/bin/'
+]
+
+{ #category : #distro }
+PhaROSSystemInfo class >> hydro [
+	^ '/opt/ros/hydro/bin/'
+]
+
+{ #category : #distro }
+PhaROSSystemInfo class >> indigo [
+	^'/opt/ros/indigo/bin/'
+]
+
+{ #category : #accessing }
+PhaROSSystemInfo class >> instance [
+
+	^ instance ifNil: [ instance := super new ]
+]
+
+{ #category : #'instance creation' }
+PhaROSSystemInfo class >> new [
+
+	self error: 'Please, use instance instead.'
+]
 
 { #category : #services }
 PhaROSSystemInfo >> argsOfService: aService [
@@ -36,15 +78,21 @@ PhaROSSystemInfo >> cleanup [
 { #category : #parameters }
 PhaROSSystemInfo >> deleteParameter: aParam [
 
-	^ OSProcess thisOSProcess waitForCommandOutput: '/opt/ros/indigo/bin/rosparam delete ', aParam.
+	^ OSProcess thisOSProcess waitForCommandOutput: self rospath,'rosparam delete ', aParam.
 	
+]
+
+{ #category : #accessing }
+PhaROSSystemInfo >> distro [
+
+	 ^ distro ifNil:  [ distro := ((OSProcess thisOSProcess waitForCommandOutput: 'rosversion -d') subStrings: String lf) first ].
 ]
 
 { #category : #services }
 PhaROSSystemInfo >> findServicesFor: aMsgType [
 
 	|lst|
-	lst := OSProcess thisOSProcess waitForCommandOutput: ('/opt/ros/indigo/bin/rosservice find ', aMsgType).
+	lst := OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rosservice find ', aMsgType).
 	^ lst subStrings: String lf.
 	
 ]
@@ -53,7 +101,7 @@ PhaROSSystemInfo >> findServicesFor: aMsgType [
 PhaROSSystemInfo >> findTopicsFor: aTopicType [
 
 	|lst|
-	lst := OSProcess thisOSProcess waitForCommandOutput: ('/opt/ros/indigo/bin/rostopic find ', aTopicType).
+	lst := OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rostopic find ', aTopicType).
 	^ lst subStrings: String lf.
 	
 ]
@@ -61,49 +109,49 @@ PhaROSSystemInfo >> findTopicsFor: aTopicType [
 { #category : #parameters }
 PhaROSSystemInfo >> getParameter: aParam [
 
-	^ OSProcess thisOSProcess waitForCommandOutput: '/opt/ros/indigo/bin/rosparam get ', aParam.
+	^ OSProcess thisOSProcess waitForCommandOutput: self rospath,'rosparam get ', aParam.
 	
 ]
 
 { #category : #nodes }
 PhaROSSystemInfo >> infoOfNode: aNodeName [
 
-	^ OSProcess thisOSProcess waitForCommandOutput: ('/opt/ros/indigo/bin/rosnode info ', aNodeName).
+	^ OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rosnode info ', aNodeName).
 	
 ]
 
 { #category : #services }
 PhaROSSystemInfo >> infoOfService: aServiceName [
 
-	^ OSProcess thisOSProcess waitForCommandOutput: ('/opt/ros/indigo/bin/rosservice info ', aServiceName).
+	^ OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rosservice info ', aServiceName).
 	
 ]
 
 { #category : #topics }
 PhaROSSystemInfo >> infoOfTopic: aTopicName [
 
-	^ OSProcess thisOSProcess waitForCommandOutput: ('/opt/ros/indigo/bin/rostopic info ', aTopicName).
+	^ OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rostopic info ', aTopicName).
 	
 ]
 
 { #category : #nodes }
 PhaROSSystemInfo >> killNode: aNodeName [
 
-	^ OSProcess thisOSProcess waitForCommandOutput: ('/opt/ros/indigo/bin/rosnode kill ', aNodeName).
+	^ OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rosnode kill ', aNodeName).
 	
 ]
 
 { #category : #parameters }
 PhaROSSystemInfo >> loadParametersFromFile: aFileName [
 
-	^ OSProcess thisOSProcess waitForCommandOutput: '/opt/ros/indigo/bin/rosparam load ', aFileName.
+	^ OSProcess thisOSProcess waitForCommandOutput: self rospath,'rosparam load ', aFileName.
 	
 ]
 
 { #category : #messages }
 PhaROSSystemInfo >> md5OfMessage: aMessageName [
 
-	^ OSProcess thisOSProcess waitForCommandOutput: ('/opt/ros/indigo/bin/rosmsg md5 ', aMessageName).
+	^ OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rosmsg md5 ', aMessageName).
 	
 ]
 
@@ -111,7 +159,7 @@ PhaROSSystemInfo >> md5OfMessage: aMessageName [
 PhaROSSystemInfo >> messageList [
 
 	|lst|
-	lst := OSProcess thisOSProcess waitForCommandOutput: '/opt/ros/indigo/bin/rosmsg list'.
+	lst := OSProcess thisOSProcess waitForCommandOutput: self rospath,'rosmsg list'.
 	^ lst subStrings: String lf.
 ]
 
@@ -119,7 +167,7 @@ PhaROSSystemInfo >> messageList [
 PhaROSSystemInfo >> messageListOfPackage: aPackageName [
 
 	|lst|
-	lst := OSProcess thisOSProcess waitForCommandOutput: '/opt/ros/indigo/bin/rosmsg package ', aPackageName.
+	lst := OSProcess thisOSProcess waitForCommandOutput: self rospath,'rosmsg package ', aPackageName.
 	^ lst subStrings: String lf.
 ]
 
@@ -127,7 +175,7 @@ PhaROSSystemInfo >> messageListOfPackage: aPackageName [
 PhaROSSystemInfo >> nodeList [
 
 	|lst|
-	lst := OSProcess thisOSProcess waitForCommandOutput: '/opt/ros/indigo/bin/rosnode list'.
+	lst := OSProcess thisOSProcess waitForCommandOutput: self rospath,'rosnode list'.
 	^ lst subStrings: String lf.
 ]
 
@@ -135,7 +183,7 @@ PhaROSSystemInfo >> nodeList [
 PhaROSSystemInfo >> nodeListOnMachine: aHostname [
 
 	|lst|
-	lst := OSProcess thisOSProcess waitForCommandOutput: ('/opt/ros/indigo/bin/rosnode machine ', aHostname).
+	lst := OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rosnode machine ', aHostname).
 	^ lst subStrings: String lf.
 ]
 
@@ -143,7 +191,7 @@ PhaROSSystemInfo >> nodeListOnMachine: aHostname [
 PhaROSSystemInfo >> packagesContainingMessage: aMessageName [
 
 	|lst|
-	lst := OSProcess thisOSProcess waitForCommandOutput: '/opt/ros/indigo/bin/rosmsg packages ', aMessageName.
+	lst := OSProcess thisOSProcess waitForCommandOutput: self rospath,'rosmsg packages ', aMessageName.
 	^ lst subStrings: String lf.
 ]
 
@@ -151,7 +199,7 @@ PhaROSSystemInfo >> packagesContainingMessage: aMessageName [
 PhaROSSystemInfo >> parameterList [
 
 	|lst|
-	lst := OSProcess thisOSProcess waitForCommandOutput: '/opt/ros/indigo/bin/rosparam list'.
+	lst := OSProcess thisOSProcess waitForCommandOutput: self rospath,'rosparam list'.
 	^ lst subStrings: String lf.
 ]
 
@@ -159,7 +207,7 @@ PhaROSSystemInfo >> parameterList [
 PhaROSSystemInfo >> pingAllNodes [
 
 	|lst|
-	lst := OSProcess thisOSProcess waitForCommandOutput: ('/opt/ros/indigo/bin/rosnode ping -a').
+	lst := OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rosnode ping -a').
 	^ lst subStrings: String lf.
 ]
 
@@ -167,41 +215,47 @@ PhaROSSystemInfo >> pingAllNodes [
 PhaROSSystemInfo >> pingNode: aNodeName [
 
 	|lst|
-	lst := OSProcess thisOSProcess waitForCommandOutput: ('/opt/ros/indigo/bin/rosnode ping -c 10 ', aNodeName).
+	lst := OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rosnode ping -c 10 ', aNodeName).
 	^ lst subStrings: String lf.
 ]
 
 { #category : #topics }
 PhaROSSystemInfo >> printMessageOf: aTopicName [
 
-	^ OSProcess thisOSProcess waitForCommandOutput: ('/opt/ros/indigo/bin/rostopic echo -n 1 ', aTopicName).
+	^ OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rostopic echo -n 1 ', aTopicName).
 	
 ]
 
 { #category : #topics }
 PhaROSSystemInfo >> publish: data type: topicType onTopic: aTopic [
 
-	^OSProcess thisOSProcess waitForCommandOutput: ('/opt/ros/indigo/bin/rostopic pub ',aTopic, ' ', topicType, ' ', data).
+	^OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rostopic pub ',aTopic, ' ', topicType, ' ', data).
 ]
 
 { #category : #topics }
 PhaROSSystemInfo >> publishingRateOf: aTopicName [
 
-	^ OSProcess thisOSProcess waitForCommandOutput: ('/opt/ros/indigo/bin/rostopic hz ', aTopicName).
+	^ OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rostopic hz ', aTopicName).
 	
+]
+
+{ #category : #accessing }
+PhaROSSystemInfo >> rospath [
+
+	^ path ifNil: [ path := self class perform: self distro ]
 ]
 
 { #category : #run }
 PhaROSSystemInfo >> run: node from: package [
 
-	^ OSProcess thisOSProcess command: ('/opt/ros/indigo/bin/rosrun ', package, ' ', node).
+	^ OSProcess thisOSProcess command: (self rospath,'rosrun ', package, ' ', node).
 	
 ]
 
 { #category : #parameters }
 PhaROSSystemInfo >> saveParametersInFile: aFileName [
 
-	^ OSProcess thisOSProcess waitForCommandOutput: '/opt/ros/indigo/bin/rosparam dump ', aFileName.
+	^ OSProcess thisOSProcess waitForCommandOutput: self rospath,'rosparam dump ', aFileName.
 	
 ]
 
@@ -209,21 +263,21 @@ PhaROSSystemInfo >> saveParametersInFile: aFileName [
 PhaROSSystemInfo >> serviceList [
 
 	|lst|
-	lst := OSProcess thisOSProcess waitForCommandOutput: '/opt/ros/indigo/bin/rosservice list'.
+	lst := OSProcess thisOSProcess waitForCommandOutput: self rospath,'rosservice list'.
 	^ lst subStrings: String lf.
 ]
 
 { #category : #parameters }
 PhaROSSystemInfo >> setParameter: aParam toValue: aValue [
 
-	^ OSProcess thisOSProcess waitForCommandOutput: '/opt/ros/indigo/bin/rosparam set ', aParam, ' ', aValue.
+	^ OSProcess thisOSProcess waitForCommandOutput: self rospath,'rosparam set ', aParam, ' ', aValue.
 	
 ]
 
 { #category : #messages }
 PhaROSSystemInfo >> showMessage: aMessageName [
 
-	^ OSProcess thisOSProcess waitForCommandOutput: ('/opt/ros/indigo/bin/rosmsg show ', aMessageName).
+	^ OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rosmsg show ', aMessageName).
 	
 ]
 
@@ -231,7 +285,7 @@ PhaROSSystemInfo >> showMessage: aMessageName [
 PhaROSSystemInfo >> sourceCodeContainingMessage: aMessageName [
 
 	|lst|
-	lst := OSProcess thisOSProcess waitForCommandOutput: '/opt/ros/indigo/bin/rosmsg users ', aMessageName.
+	lst := OSProcess thisOSProcess waitForCommandOutput: self rospath,'rosmsg users ', aMessageName.
 	^ lst subStrings: String lf.
 ]
 
@@ -239,7 +293,7 @@ PhaROSSystemInfo >> sourceCodeContainingMessage: aMessageName [
 PhaROSSystemInfo >> topicList [
 
 	|lst|
-	lst := OSProcess thisOSProcess waitForCommandOutput: ('/opt/ros/indigo/bin/rostopic list').
+	lst := OSProcess thisOSProcess waitForCommandOutput: (self rospath,'/rostopic list').
 	^ lst subStrings: String lf.
 	
 ]
@@ -247,20 +301,20 @@ PhaROSSystemInfo >> topicList [
 { #category : #services }
 PhaROSSystemInfo >> typeOfService: aServiceName [
 
-	^ OSProcess thisOSProcess waitForCommandOutput: ('/opt/ros/indigo/bin/rosservice type ', aServiceName).
+	^ OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rosservice type ', aServiceName).
 	
 ]
 
 { #category : #topics }
 PhaROSSystemInfo >> typeOfTopic: aTopicName [
 
-	^ OSProcess thisOSProcess waitForCommandOutput: ('/opt/ros/indigo/bin/rostopic type ', aTopicName).
+	^ OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rostopic type ', aTopicName).
 	
 ]
 
 { #category : #services }
 PhaROSSystemInfo >> uriOfService: aServiceName [
 
-	^ OSProcess thisOSProcess waitForCommandOutput: ('/opt/ros/indigo/bin/rosservice uri ', aServiceName).
+	^ OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rosservice uri ', aServiceName).
 	
 ]

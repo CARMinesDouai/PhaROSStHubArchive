@@ -75,6 +75,7 @@ PhaROSManifest class >> cleanUp [
 
 	PhaROSMaster allInstances do: #finalize.
 	PhaROSTransport allInstances do: #finalize.
+	PhaROSNode allSubInstances do: #finalize. 
 	Smalltalk garbageCollectMost.
 ]
 
