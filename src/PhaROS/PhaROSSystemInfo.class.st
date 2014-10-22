@@ -242,7 +242,7 @@ PhaROSSystemInfo >> publishingRateOf: aTopicName [
 { #category : #accessing }
 PhaROSSystemInfo >> rospath [
 
-	^ path ifNil: [ path := self class perform: self distro ]
+	^ path ifNil: [ path := self class perform: self distro asSymbol ]
 ]
 
 { #category : #run }
