@@ -49,7 +49,7 @@ SGPackage >> configureEnvironment: aStarGazer [
 { #category : #private }
 SGPackage >> poseStampedSg [
 	
-	^(controller node buildConnectionFor: '/stargazer/pose') 
+	^(self rosnode buildConnectionFor: '/stargazer/pose') 
 		 typedAs: PureROSRobulabNodelet poseStampedTopicType ;
 		 adapted: #pose \> PhaROSPose  ;
 	  	 connect.
