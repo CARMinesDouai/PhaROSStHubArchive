@@ -82,7 +82,7 @@ PureROSCaire >> rvizFile [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scripts }
 PureROSCaire >> scriptExplorationClient [
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
 		
@@ -100,7 +100,7 @@ PureROSCaire >> scriptExplorationClient [
 	].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scripts }
 PureROSCaire >> scriptExplorationClient2 [
 
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
