@@ -31,7 +31,7 @@ PhaROSOdometryNodelet >> configure: aMessage with: aPosition [
 	aMessage header frame_id: PhaROSOdometryNodelet odomFrame.
 	aMessage child_frame_id: ''.
 	
-	aPosition fillGeometry_msgsPose: aMessage pose pose.
+	aPosition intoGeometry_msgs_Pose:  aMessage pose pose.
 	(self measurePoseDiference: aPosition) intoGeometry_msgs_Twist: aMessage twist twist.
 ]
 
