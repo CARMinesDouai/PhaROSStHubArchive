@@ -14,8 +14,8 @@ Class {
 { #category : #'as yet unclassified' }
 PureROSCaire class >> chunkTypeDefinition [
 	^ ROSType message named: 'Chunks' package: 'caire' defined: {
-		UInt16 named: #to .
-		UInt8 named: #value.
+		#UInt16 asClass named: #to .
+		#UInt8 asClass named: #value.
 	}  
 
 
@@ -167,8 +167,10 @@ PureROSCaire >> scriptMappingForExploration [
 { #category : #'as yet unclassified' }
 PureROSCaire >> scriptSmaJerry [
 
+	"should be removed probably. outdated!"
+	
 	self init.
-	self nodelets use: SMAJerry as: #jerry.
+	self nodelets use: #SMAJerry asClass as: #jerry.
 
 	self clock tickAt: 50 hz on:( { 
 		 self nodelets jerry. 
