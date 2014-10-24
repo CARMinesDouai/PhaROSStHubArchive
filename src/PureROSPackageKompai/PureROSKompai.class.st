@@ -239,7 +239,7 @@ PureROSKompai class >> xml [
 PureROSKompai >> build: aRobotName [
 	| rbl |
 	
-	rbl :=  PhaROSHandleController home.
+	rbl :=  PhaROSHandleController homeWithNodeNamed: 'Driver'.
 	rbl nodelets use: PureROSKompaiNodelet as: #kompai.
 	rbl nodelets kompai initialize: aRobotName. 
 	
@@ -268,7 +268,8 @@ PureROSKompai >> kompaiAbsolutePoseTopic [
 PureROSKompai >> scriptKompai1 [
 	robotName := #kompai1.
 	self controller.		
-
+	
+	self inform: 'scriptKompai1 running...'
 ]
 
 { #category : #scripts }
