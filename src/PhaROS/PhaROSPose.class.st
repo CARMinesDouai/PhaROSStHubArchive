@@ -76,8 +76,7 @@ PhaROSPose >> asDump [
 PhaROSPose >> asGeometry_msgsPose [
 	| gp |
 	gp := Geometry_msgsPose new.
-	self fillGeometry_msgsPose: gp.
-
+	self intoGeometry_msgs_Pose:  gp.
 	^ gp.
 ]
 
