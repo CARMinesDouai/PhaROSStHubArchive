@@ -42,7 +42,7 @@ PureROSCaire class >> types [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialize }
 PureROSCaire >> buildController [ 
 	| ctroler |
 	ctroler :=  PhaROSHandleController home.
@@ -51,7 +51,7 @@ PureROSCaire >> buildController [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 PureROSCaire >> init [
 	x := 0.0.
 	y := 0.0.
@@ -59,7 +59,7 @@ PureROSCaire >> init [
 	ay := 0.0.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #utils }
 PureROSCaire >> registerDelta: aVector [
 	|dxM dyM|
 	
@@ -76,13 +76,13 @@ PureROSCaire >> registerDelta: aVector [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PureROSCaire >> rvizFile [
 	^ self path, '/src/single_robot.rviz'
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scripts }
 PureROSCaire >> scriptExplorationMaster [
 
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
@@ -94,7 +94,7 @@ PureROSCaire >> scriptExplorationMaster [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scripts }
 PureROSCaire >> scriptMapCompressor [
 
 	| publisher |	
@@ -111,7 +111,7 @@ PureROSCaire >> scriptMapCompressor [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scripts }
 PureROSCaire >> scriptMapFusion [
 	| mapFusor out |  
 	
@@ -141,7 +141,7 @@ PureROSCaire >> scriptMapFusion [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scripts }
 PureROSCaire >> scriptMappingForExploration [
 
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
@@ -164,7 +164,7 @@ PureROSCaire >> scriptMappingForExploration [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scripts }
 PureROSCaire >> scriptSmaJerry [
 
 	"should be removed probably. outdated!"
