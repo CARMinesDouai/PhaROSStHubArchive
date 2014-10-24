@@ -281,9 +281,9 @@ PureROSRobulab >> buildController [
 { #category : #private }
 PureROSRobulab >> finalize [
 	super finalize .
-	controller ifNotNil: [ 
-		controller finalize.
-		controller := nil.
+	self controller ifNotNil: [ 
+		self controller finalize.
+		__ctrl := nil.
 		].
 	experiment ifNotNil:[ 
 		experiment finalize.
@@ -299,22 +299,22 @@ PureROSRobulab >> locationRotation [
 	
 	
 	rotation z: 0.0.
-	controller nodelets robulab differentialMove: PhaROSPosition zero  and: rotation.
+	self nodelets robulab differentialMove: PhaROSPosition zero  and: rotation.
 	1 hz wait.
 		
 	rotation z: 1.0.
-	controller nodelets robulab differentialMove: PhaROSPosition zero  and: rotation.
+	self nodelets robulab differentialMove: PhaROSPosition zero  and: rotation.
 	(Delay forMilliseconds: 2000) wait.
 	
 	rotation z: 0.0.
-	controller nodelets robulab differentialMove: PhaROSPosition zero  and: rotation.
+	self nodelets robulab differentialMove: PhaROSPosition zero  and: rotation.
 		
 	rotation z: -1.0.
-	controller nodelets robulab differentialMove: PhaROSPosition zero  and: rotation.
+	self nodelets robulab differentialMove: PhaROSPosition zero  and: rotation.
 	(Delay forMilliseconds: 2000) wait.
 	
 	rotation z: 0.0.
-	controller nodelets robulab differentialMove: PhaROSPosition zero  and: rotation.
+	self nodelets robulab differentialMove: PhaROSPosition zero  and: rotation.
 
 ]
 
@@ -336,7 +336,7 @@ PureROSRobulab >> multipleRobotMapBuildingFor: aRobotName [
 { #category : #'scripts-error' }
 PureROSRobulab >> scriptAbsoluteLandmarkLocator [
 
-	| bot |
+	| bot controller |
 	controller := PhaROSHandleController robulab2.
 	bot := controller nodelets robulab.
 	
@@ -410,6 +410,7 @@ PureROSRobulab >> scriptAmclBasedNoMap [
 
 { #category : #scripts }
 PureROSRobulab >> scriptBaselinkAbsolutePose [
+	|controller|
 	controller  := PhaROSHandleController home.
 	controller nodelets use: PhaROSTransformationNodelet as:#transformation.
 	(controller nodelets transformation between: '/map' and: '/base_link') for: [: p | self kompaiAbsolutePose: p ]. 
@@ -418,7 +419,7 @@ PureROSRobulab >> scriptBaselinkAbsolutePose [
 
 { #category : #'scripts-navigation' }
 PureROSRobulab >> scriptFeedbackCompressor [
-
+	|controller|
 	controller := PhaROSHandleController home.
 	controller nodelets use: PhaROSMoveBaseFeedbackCompressor as:#compressor.
 		
@@ -458,7 +459,7 @@ PureROSRobulab >> scriptLandmarkAutoNavigation [
 { #category : #'scripts-navigation' }
 PureROSRobulab >> scriptLandmarkLocator [
 
-	| bot |
+	| bot controller |
 	controller := PhaROSHandleController robulab2.
 	bot := controller nodelets robulab.
 	
@@ -475,7 +476,7 @@ PureROSRobulab >> scriptLandmarkLocator [
 { #category : #'scripts-navigation' }
 PureROSRobulab >> scriptLandmarkNavigation [
 
-	| bot |
+	| bot controller |
 	experiment := PureROSAMCLBasedPathPlanning robulab2.
 	experiment beginExperiment.	
 
@@ -545,7 +546,7 @@ PureROSRobulab >> scriptMapBuilding [
 { #category : #'scripts-transformers' }
 PureROSRobulab >> scriptOdometry [
 
-	| bot |
+	|  controller|
 	controller := PhaROSHandleController robulab2.
 	controller nodelets odometer transformToOdometry: controller nodelets robulab  poseStamped.
 	
@@ -578,6 +579,9 @@ PureROSRobulab >> scriptOdometryForMappingNoMap [
 
 { #category : #'scripts-error' }
 PureROSRobulab >> scriptOriginFixer [
+
+
+	| controller |
 	controller := PhaROSHandleController robulab2.
 	controller nodelets spaceEvents registerLocalizationSensor: ( 
 			controller nodelets stargazer landmarksAdaptedAs: PhaROSLocalizerMeasure 
@@ -587,8 +591,8 @@ PureROSRobulab >> scriptOriginFixer [
 
 { #category : #'scripts-navigation' }
 PureROSRobulab >> scriptPointNavigation [
-
-	| bot |
+	
+	| bot controller |
 	controller := PhaROSHandleController robulab2.
 	
 
@@ -619,8 +623,8 @@ PureROSRobulab >> scriptPointNavigation [
 
 { #category : #'scripts-points' }
 PureROSRobulab >> scriptPoseRecording [
-
-	| bot |
+ 
+	| bot controller |
 	controller := PhaROSHandleController robulab2. 
 	bot := controller nodelets robulab.
 	
@@ -644,7 +648,7 @@ PureROSRobulab >> scriptPoseRecording [
 { #category : #'scripts-points' }
 PureROSRobulab >> scriptPoseRecordingUpdate [
 
-	| bot |
+	| bot controller | 
 	controller := PhaROSHandleController robulab2. 
 	bot := controller nodelets robulab.
 	
@@ -670,11 +674,11 @@ PureROSRobulab >> scriptPoseRecordingUpdate [
 { #category : #'scripts-points' }
 PureROSRobulab >> scriptRemotePoseRecording [
 
-	| bot |
+	| bot controller |
 	controller := PhaROSHandleController robulab2. 
 	bot := controller nodelets robulab.
 	
-	controller nodelets use: PhaROSPoseTrackerNodelet as: #poseTracker.
+	controller nodelets use: PhaROSPoseTrackerNodelet as: #poseTracker. 
 	
 	controller nodelets use: PhaROSRPCNodelet as: #rpc.
 	
@@ -685,7 +689,7 @@ PureROSRobulab >> scriptRemotePoseRecording [
 { #category : #'scripts-points' }
 PureROSRobulab >> scriptRemotePoseRecordingUpdate [
 
-	| bot |
+	| bot controller |
 	controller := PhaROSHandleController robulab2. 
 	bot := controller nodelets robulab.
 	
@@ -700,8 +704,8 @@ PureROSRobulab >> scriptRemotePoseRecordingUpdate [
 
 { #category : #'scripts-stargazer' }
 PureROSRobulab >> scriptStandAloneMapBuildingStargazer [
-	| bot stream |
-	
+	| bot stream controller |
+	 
 	stream  := FileStream stdout.	
 	controller := PhaROSHandleController robulab2.
 	bot := controller nodelets robulab.
@@ -849,6 +853,8 @@ PureROSRobulab >> scriptStargazerOdometryBasedNoMap [
 
 { #category : #'scripts-transformers' }
 PureROSRobulab >> scriptTf [
+	
+	| controller |
 	controller := PhaROSHandleController robulab2.
 	controller nodelets use: PhaROSPoseToTFNodelet  as: #pose2tf.
 	controller nodelets pose2tf express: controller nodelets robulab poseStamped 
@@ -860,8 +866,9 @@ PureROSRobulab >> scriptTf [
 
 { #category : #private }
 PureROSRobulab >> setAbsolutePoseWith: aLocalizerMeasure [ 
-	| pose |
-
+	| pose  controller |
+ 
+	controller := PhaROSHandleController robulab2. 
 	lastPoseSettedStamp := DateAndTime now.
 	pose := controller nodelets stargazer landmarkToPose: aLocalizerMeasure.
 	controller nodelets initialpose initialPose:  pose.
@@ -870,7 +877,8 @@ PureROSRobulab >> setAbsolutePoseWith: aLocalizerMeasure [
 
 { #category : #private }
 PureROSRobulab >> setOriginAs: aLocalizerMeasure [
-	| pose | 
+	| pose controller | 
+		controller := PhaROSHandleController robulab2. 
 		pose := controller nodelets stargazer landmarkToPose: aLocalizerMeasure.
 		
 		controller nodelets initialpose initialPose:  pose.
@@ -878,10 +886,10 @@ PureROSRobulab >> setOriginAs: aLocalizerMeasure [
 
 { #category : #private }
 PureROSRobulab >> setPoseWith: aLocalizerMeasure [ 
-	| entity pose lp  |
+	| entity pose lp  controller |
 
 		lastPoseSettedStamp := DateAndTime now.
-
+		controller := PhaROSHandleController robulab2. 
 		entity := (controller nodelets localizer entity: aLocalizerMeasure id).
 		pose := entity center.
 		
@@ -908,8 +916,9 @@ PureROSRobulab >> setPoseWith: aLocalizerMeasure [
 { #category : #private }
 PureROSRobulab >> setupAbsolutePoseRecognizer [
 
+	| controller |
 	lastPoseSettedStamp := DateAndTime now - 1 minute.
-	
+	controller := PhaROSHandleController robulab2. 
 	controller  nodelets spaceEvents whenLocalizerMeasure:  [ : lm |  
 		(DateAndTime now - lastPoseSettedStamp ) asSeconds > 2
 	] do: [ : lm | 
@@ -921,7 +930,9 @@ PureROSRobulab >> setupAbsolutePoseRecognizer [
 
 { #category : #private }
 PureROSRobulab >> setupOriginRecognizer [
+	| controller |
 	checked := 0.
+	controller := PhaROSHandleController robulab2. 
 	lastPoseSettedStamp := DateAndTime now - 1 minute.
 	controller  nodelets spaceEvents whenLocalizerMeasure:  [ : lm |  
 		
@@ -945,6 +956,8 @@ PureROSRobulab >> setupOriginRecognizer [
 { #category : #private }
 PureROSRobulab >> setupPoseRecognizer [
 
+	| controller |
+	controller := PhaROSHandleController robulab2. 
 	lastPoseSettedStamp := DateAndTime now - 1 minute.
 	controller  nodelets spaceEvents whenLocalizerMeasure:  [ : lm |  
 
@@ -996,7 +1009,7 @@ PureROSRobulab >> sgMapfile [
 PureROSRobulab >> updatePackages [ 
 	super updatePackages . 
 	
-	(Gofer it url:  'http://car.mines-douai.fr/squeaksource/Pure'
+"	(Gofer it url:  'http://car.mines-douai.fr/squeaksource/Pure'
 		username: 'SPB'
 		password: ''; package: 'PureROS') update.
 	
@@ -1004,8 +1017,7 @@ PureROSRobulab >> updatePackages [
 		username: 'SPB'
 		password: ''; package: 'PureNG') update.
 
-	" Stargazer PAckage "
 	(Gofer it url:  'http://car.mines-douai.fr/squeaksource/Peripherics'
 		username: 'SPB'
-		password: ''; package: 'StarGazer') update.
+		password: ''; package: 'StarGazer') update."
 ]
