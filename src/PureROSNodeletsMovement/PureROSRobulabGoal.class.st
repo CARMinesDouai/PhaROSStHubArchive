@@ -62,7 +62,7 @@ PureROSRobulabGoal >> configureNonRecoverable [
 	self tryAchieveGoal.
 	isRecoverable := false. 
 	goal onAborted: [ 
-		status := #Actionlib_msgsGoalStatus asClass aborted.
+		status := Actionlib_msgsGoalStatus aborted.
 		self cancel.
 		self log: 'Error achiving goal!'.
 	].
@@ -110,7 +110,7 @@ PureROSRobulabGoal >> hasArrived: aLocalizerMeasure [
 		checks := 0.
 	] .
   	^ [(checks > 1 and:[ entity id = aLocalizerMeasure id and: [ self isCloseEnough: aLocalizerMeasure pose ]]) or: [ 
-			self status = #Actionlib_msgsGoalStatus asClass succeeded 
+			self status = Actionlib_msgsGoalStatus succeeded 
 	].] on:Error do: [ self halt. ].
 	
 ]
@@ -121,7 +121,7 @@ PureROSRobulabGoal >> hasReallyArrived [
 
 	pose := robulab nodelets transformation transformBetween: entity frameName and: '/base_link'.
 	
-	((self isCloseEnough: pose) not and: [goal status = #Actionlib_msgsGoalStatus asClass succeeded ]) ifTrue:[
+	((self isCloseEnough: pose) not and: [goal status = Actionlib_msgsGoalStatus succeeded ]) ifTrue:[
 		1 second asDelay wait.
 		pose := robulab nodelets transformation transformBetween: entity frameName and: '/base_link'.
 		(self isCloseEnough: pose) ifFalse: [
@@ -170,14 +170,11 @@ PureROSRobulabGoal >> onAborted: aBlock [
 
 { #category : #event }
 PureROSRobulabGoal >> onArrivalToGoal: aLocalizerMeasure [ 
-	| msgsGoalStatusClass |
-	
-	msgsGoalStatusClass := #Actionlib_msgsGoalStatus asClass.
 	checks := 0. 
 	
 	self hasReallyArrived ifTrue: [
-		goal status: msgsGoalStatusClass  succeeded.
-		status := msgsGoalStatusClass  succeeded .
+		goal status: Actionlib_msgsGoalStatus  succeeded.
+		status := Actionlib_msgsGoalStatus  succeeded .
 		
 		self debug:' REALLY ARRIVED '.
 		[
@@ -205,16 +202,13 @@ PureROSRobulabGoal >> onSucceeded: aBlock [
 
 { #category : #event }
 PureROSRobulabGoal >> recoveryFromAbort [
-	| msgsGoalStatusClass |
 	
-	msgsGoalStatusClass := #Actionlib_msgsGoalStatus asClass.
-	
-	goal status: msgsGoalStatusClass active.
+	goal status: Actionlib_msgsGoalStatus active.
 	
 	self cleanup.
 
 	(self target  position - robulab currentPose position) module2d < self arrivingThreshold ifTrue: [
-		goal status: msgsGoalStatusClass  succeeded . 
+		goal status: Actionlib_msgsGoalStatus  succeeded . 
 		^ self.
 	].
 
@@ -275,14 +269,11 @@ PureROSRobulabGoal >> robulab: aRobulabNodelet [
 
 { #category : #accessing }
 PureROSRobulabGoal >> status [
-	| msgsGoalStatusClass |
-	
-	msgsGoalStatusClass := #Actionlib_msgsGoalStatus asClass.
 	^ status ifNil: [
 		goal ifNil:[ -1 ]
 			ifNotNil: [
-				(isRecoverable and: [ goal status = msgsGoalStatusClass aborted]) ifTrue: [
-					msgsGoalStatusClass active.	
+				(isRecoverable and: [ goal status = Actionlib_msgsGoalStatus aborted]) ifTrue: [
+					Actionlib_msgsGoalStatus active.	
 				] ifFalse:[
 					 goal status
 				]
