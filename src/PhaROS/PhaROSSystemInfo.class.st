@@ -8,8 +8,8 @@ Class {
 		'distro',
 		'path'
 	],
-	#classInstVars : [
-		'instance'
+	#classVars : [
+		'Instance'
 	],
 	#category : #'PhaROS-Util'
 }
@@ -37,7 +37,7 @@ PhaROSSystemInfo class >> indigo [
 { #category : #accessing }
 PhaROSSystemInfo class >> instance [
 
-	^ instance ifNil: [ instance := super new ]
+	^ Instance ifNil: [ Instance := super new ]
 ]
 
 { #category : #'instance creation' }
