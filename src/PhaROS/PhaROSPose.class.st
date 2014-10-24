@@ -75,7 +75,7 @@ PhaROSPose >> asDump [
 { #category : #printing }
 PhaROSPose >> asGeometry_msgsPose [
 	| gp |
-	gp := Geometry_msgsPose new.
+	gp := #Geometry_msgsPose asClass new.
 	self intoGeometry_msgs_Pose:  gp.
 	^ gp.
 ]
