@@ -420,9 +420,10 @@ PureROSRobulab >> scriptBaselinkAbsolutePose [
 { #category : #'scripts-navigation' }
 PureROSRobulab >> scriptFeedbackCompressor [
 	|controller|
-	controller := PhaROSHandleController home.
+	controller := PhaROSHandleController homeWithNodeNamed: 'FeedbackCompressor'.
 	controller nodelets use: PhaROSMoveBaseFeedbackCompressor as:#compressor.
-		
+	
+	self inform: 'scriptFeedbackCompressor running...'.	
 ]
 
 { #category : #'scripts-launchers' }
@@ -546,12 +547,11 @@ PureROSRobulab >> scriptMapBuilding [
 { #category : #'scripts-transformers' }
 PureROSRobulab >> scriptOdometry [
 
-	|  controller|
-	controller := PhaROSHandleController robulab2.
+	| controller |
+	controller := PhaROSHandleController robulab: #kompai1 nodeNamed: 'Odometry'.
 	controller nodelets odometer transformToOdometry: controller nodelets robulab  poseStamped.
 	
-	
-
+	self inform: 'scriptOdometry running...'.
 ]
 
 { #category : #'scripts-launchers-base-nomap' }
@@ -853,15 +853,15 @@ PureROSRobulab >> scriptStargazerOdometryBasedNoMap [
 
 { #category : #'scripts-transformers' }
 PureROSRobulab >> scriptTf [
-	
+
 	| controller |
-	controller := PhaROSHandleController robulab2.
+	controller := PhaROSHandleController robulab: #kompai1 nodeNamed: 'TF'..
 	controller nodelets use: PhaROSPoseToTFNodelet  as: #pose2tf.
 	controller nodelets pose2tf express: controller nodelets robulab poseStamped 
 									    as: PureROSRobulabNodelet baseLinkFrame 
 								   childOf: PureROSRobulabNodelet baseLinkParentFrame.
 
-	
+	self inform: 'scriptTf running...'.
 ]
 
 { #category : #private }
