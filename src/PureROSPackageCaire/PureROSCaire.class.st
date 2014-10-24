@@ -82,6 +82,54 @@ PureROSCaire >> rvizFile [
 
 ]
 
+{ #category : #'as yet unclassified' }
+PureROSCaire >> scriptExplorationClient [
+	process:= PhaROSSystemLauncher  instance launch: [: spec | 
+		
+		spec kompaiTF.
+		spec odometry.
+
+		spec compressor.
+		
+		spec relay: '/raw_command_velocity' to: '/command_velocity' named: 'smoother_by_pass'.
+		spec staticZeroTFFrom: '/base_link'  to: '/laser'.  
+		spec relay: '/kompai2/pose' to: '/pose' named: 'pose_relay'.
+		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'.
+		spec relay: '/pharos/out/tf' to: '/tf' named: 'tf_out_relay'.
+		spec relay: '/tf' to: '/pharos/in/tf' named: 'tf_in_relay'.
+	].
+]
+
+{ #category : #'as yet unclassified' }
+PureROSCaire >> scriptExplorationClient2 [
+
+	process:= PhaROSSystemLauncher  instance launch: [: spec | 
+		
+"		spec kompaiTF.
+		
+		spec odometry.
+		
+		spec compressor."
+		
+		"spec relay: '/raw_command_velocity' to: '/command_velocity' named: 'smoother_by_pass'."
+		
+"		spec staticZeroTFFrom: '/base_link'  to: '/laser'. 
+		spec staticZeroTFFrom: '/base_footprint'  to: '/base_link'."
+		
+		spec staticTFFrom: '/odom' to: '/base_footprint'  of: '1 1 2 20 0 0' rate: 100.	
+		spec staticTFFrom: '/base_footprint' to: '/base_link'  of: '1 1 2 0 0 0' rate: 100.	
+		spec staticTFFrom: '/base_link' to: '/laser'  of: '1 1 2 0 20 0' rate: 100.		
+		
+"		spec relay: '/kompai2/pose' to: '/pose' named: 'pose_relay'.
+		
+		spec relay: '/kompai/scan' to: '/scan' named: 'scan_relay'."
+		
+		spec relay: '/pharos/out/tf' to: '/tf' named: 'tf_out_relay'.
+		
+		spec relay: '/tf' to: '/pharos/in/tf' named: 'tf_in_relay'.
+	].
+]
+
 { #category : #scripts }
 PureROSCaire >> scriptExplorationMaster [
 
