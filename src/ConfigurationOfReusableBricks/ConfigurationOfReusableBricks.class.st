@@ -118,7 +118,8 @@ ConfigurationOfReusableBricks >> baseline01: spec [
 		spec 
 			package: 'Equals';
 			package: 'Concurrency';
-			package: 'BooleanExpressions'. ].
+			package: 'BooleanExpressions';
+			package: #StateMachine. ].
 
 ]
 
