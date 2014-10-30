@@ -193,12 +193,7 @@ PureROSRobulabNodelet >> locationRotation [
 
 { #category : #consume }
 PureROSRobulabNodelet >> poseStamped [
-	"	^( self rosnode buildConnectionFor:  PureROSRobulabNodelet poseStampedTopicForConsume )typedAs: PureROSRobulabNodelet poseStampedTopicType;  adapted: #pose \> PhaROSPose  ; connect."
-
-	^ (self rosnode buildConnectionFor: '/kompai1/pose')
-		typedAs: PureROSRobulabNodelet poseStampedTopicType;
-		adapted: #pose \> PhaROSPose;
-		connect
+	^( self rosnode buildConnectionFor:  PureROSRobulabNodelet poseStampedTopicForConsume )typedAs: PureROSRobulabNodelet poseStampedTopicType;  adapted: #pose \> PhaROSPose  ; connect.
 ]
 
 { #category : #experiments }
