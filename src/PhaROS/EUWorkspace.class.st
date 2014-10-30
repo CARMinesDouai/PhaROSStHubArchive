@@ -7,6 +7,12 @@ Class {
 	#category : #'PhaROS-Util'
 }
 
+{ #category : #'class initialization' }
+EUWorkspace class >> initialize [
+
+	 EUWorkspace open
+]
+
 { #category : #public }
 EUWorkspace class >> open [
 

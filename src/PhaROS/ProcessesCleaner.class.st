@@ -13,7 +13,10 @@ Class {
 { #category : #'as yet unclassified' }
 ProcessesCleaner class >> clean [
 
-	|pb window|
+	|pb window shouldKill |
+	shouldKill := Smalltalk ui confirm: 'Are you sure to terminate all non-critical processes?'.
+	shouldKill ifFalse: [^ self].
+	
 	window := ProcessBrowser open.
 	pb := window model.
 	window close.
