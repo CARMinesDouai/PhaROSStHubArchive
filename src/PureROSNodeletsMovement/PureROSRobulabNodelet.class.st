@@ -193,7 +193,12 @@ PureROSRobulabNodelet >> locationRotation [
 
 { #category : #consume }
 PureROSRobulabNodelet >> poseStamped [
-	^( self rosnode buildConnectionFor:  PureROSRobulabNodelet poseStampedTopicForConsume )typedAs: PureROSRobulabNodelet poseStampedTopicType;  adapted: #pose \> PhaROSPose  ; connect.
+	"	^( self rosnode buildConnectionFor:  PureROSRobulabNodelet poseStampedTopicForConsume )typedAs: PureROSRobulabNodelet poseStampedTopicType;  adapted: #pose \> PhaROSPose  ; connect."
+
+	^ (self rosnode buildConnectionFor: '/kompai1/pose')
+		typedAs: PureROSRobulabNodelet poseStampedTopicType;
+		adapted: #pose \> PhaROSPose;
+		connect
 ]
 
 { #category : #experiments }
@@ -231,10 +236,11 @@ PureROSRobulabNodelet >> relocalize [
 
 { #category : #'as yet unclassified' }
 PureROSRobulabNodelet >> relocalize: abpose with: dlmk [
-| relpose  |
-	
-			relpose := PhaROSPose fromGeometry_msgsPose: dlmk pose.	
-			self nodelets initialpose initialPose: (PhaROSPose position: abpose position + relpose position orientation: relpose orientation ).
+	| relpose |
+	relpose := PhaROSPose fromGeometry_msgsPose: dlmk pose.
+	self nodelets initialpose
+		initialPose: (PhaROSPose position: abpose position + relpose position 
+								  orientation: relpose orientation)
 ]
 
 { #category : #accessing }
@@ -255,7 +261,10 @@ PureROSRobulabNodelet >> saveLandmarks [
 
 { #category : #behavior }
 PureROSRobulabNodelet >> tfpose [
-	^  tfpose ifNil: [ tfpose := self nodelets transformation between: PureROSRobulabNodelet mapFrame and: PureROSRobulabNodelet baseLinkFrame  ]
+	^ tfpose
+		ifNil: [ tfpose := self nodelets transformation 
+										between: PureROSRobulabNodelet mapFrame 
+										and: PureROSRobulabNodelet baseLinkFrame ]
 ]
 
 { #category : #'private-out' }
@@ -269,7 +278,9 @@ PureROSRobulabNodelet >> trajectoryDifferential: aPose [
 
 { #category : #behavior }
 PureROSRobulabNodelet >> trajectoryDifferentialOut [
-	^ trajectoryDifferentialOut ifNil: [
-		trajectoryDifferentialOut := self rosnode topicPublisher: PureROSKompaiNodelet trajectoryDifferentialTopic typedAs: PureROSKompaiNodelet trajectoryDifferentialTopicType. 	
-	]
+	^ trajectoryDifferentialOut
+		ifNil: [ 
+			trajectoryDifferentialOut := self rosnode
+				topicPublisher: '/kompai1/trajectory/differential'
+				typedAs: 'geometry_msgs/PoseStamped' ]
 ]
