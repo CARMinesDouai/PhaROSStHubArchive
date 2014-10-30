@@ -3,9 +3,9 @@ Class {
 	#superclass : #PhaROSStaticNodelet,
 	#instVars : [
 		'previousTime',
-		'odometry',
 		'previousPose',
-		'poseDifference'
+		'poseDifference',
+		'odometryTopicPublisher'
 	],
 	#category : #PhaROSNodeletsOdometry
 }
@@ -31,13 +31,16 @@ PhaROSOdometryNodelet >> configure: aMessage with: aPosition [
 	aMessage header frame_id: PhaROSOdometryNodelet odomFrame.
 	aMessage child_frame_id: ''.
 	
+	"Fill aMessage using aPosition pose"
 	aPosition intoGeometry_msgs_Pose:  aMessage pose pose.
+	
+	"Fill aMessage twist using a computed twist"
 	(self measurePoseDiference: aPosition) intoGeometry_msgs_Twist: aMessage twist twist.
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSOdometryNodelet >> informPositionAsOdometry: aPosition [
-	self odometry send: [ : msg | self configure: msg with: aPosition ].
+	self odometryTopicPublisher send: [ : msg | self configure: msg with: aPosition ].
 ]
 
 { #category : #'as yet unclassified' }
@@ -99,8 +102,12 @@ PhaROSOdometryNodelet >> measurePoseDiference: aPose [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSOdometryNodelet >> odometry [
-	^ odometry ifNil: [ odometry := self rosnode topicPublisher: PhaROSOdometryNodelet odometryTopic typedAs: PhaROSOdometryNodelet odometryTopicType ]
+PhaROSOdometryNodelet >> odometryTopicPublisher [
+	^ odometryTopicPublisher
+		ifNil: [ 
+			odometryTopicPublisher := self rosnode
+				topicPublisher: PhaROSOdometryNodelet odometryTopic
+				typedAs: PhaROSOdometryNodelet odometryTopicType ]
 ]
 
 { #category : #'as yet unclassified' }
