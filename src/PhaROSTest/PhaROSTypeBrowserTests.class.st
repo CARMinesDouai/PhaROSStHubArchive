@@ -1363,7 +1363,7 @@ PhaROSTypeBrowserTests >> testtrajectory_msgs_JointTrajectory [
 		| definition | 
 			definition :=  browser definition: 'trajectory_msgs/JointTrajectory'. 
 			self assert: definition typeName = 'trajectory_msgs/JointTrajectory'.
-			self assert: definition md5Sum = '72214029c6fba47b2135714577dd745e'.
+			self assert: definition md5Sum =  '65b4f94a94d1ed67169da35a02f33d3f'.
 		
 ]
 
@@ -1372,7 +1372,7 @@ PhaROSTypeBrowserTests >> testtrajectory_msgs_JointTrajectoryPoint [
 		| definition | 
 			definition :=  browser definition: 'trajectory_msgs/JointTrajectoryPoint'. 
 			self assert: definition typeName = 'trajectory_msgs/JointTrajectoryPoint'.
-			self assert: definition md5Sum = '84fd2dcf68773c3dc0e9db894f4e8b40'.
+			self assert: definition md5Sum =  'f3cd1e1c4d320c79d6985c904ae5dcd3'.
 		
 ]
 
@@ -1460,9 +1460,9 @@ PhaROSTypeBrowserTests >> testturtlesim_Pose [
 { #category : #'test-turtlesim/' }
 PhaROSTypeBrowserTests >> testturtlesim_Velocity [
 		| definition | 
-			definition :=  browser definition: 'turtlesim/Velocity'. 
-			self assert: definition typeName = 'turtlesim/Velocity'.
-			self assert: definition md5Sum = '9d5c2dcd348ac8f76ce2a4307bd63a13'.
+			definition :=  browser definition: 'geometry_msgs/Twist'. 
+			self assert: definition typeName = 'geometry_msgs/Twist'.
+			self assert: definition md5Sum =  '9f195f881246fdfa2798d1d3eebca84a'.
 		
 ]
 
