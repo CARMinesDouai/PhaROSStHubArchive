@@ -28,7 +28,7 @@ PhaROSPoseTrackerNodelet >> lastEntityRecorded: anInt [
 { #category : #'as yet unclassified' }
 PhaROSPoseTrackerNodelet >> open: aFilePath [
 	self nodelets localizer filein: aFilePath.
-	
+	self lastEntityRecorded:  (self nodelets localizer entities collect: #id) 
 ]
 
 { #category : #'as yet unclassified' }
@@ -41,6 +41,8 @@ PhaROSPoseTrackerNodelet >> recordCurrentPose [
 	
 	self nodelets localizer register: measure.
 	Transcript show: (' Entity {1} recorded pointing to {2}' format: { lastEntityRecorded . currentPose }); cr.
+	
+	^ measure
 ]
 
 { #category : #'as yet unclassified' }
