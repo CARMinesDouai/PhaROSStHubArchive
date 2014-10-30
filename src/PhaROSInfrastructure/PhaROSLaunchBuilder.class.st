@@ -310,7 +310,7 @@ PhaROSLaunchBuilder >> moveBase [
 	conf param: 'clearing_rotation_allowed' value: 'false'.
 	conf param: 'controller_frequency' value: '10.0'.
 	conf param: 'planner_frequency' value: '5.0'.
-	conf param: 'recovery_behavior_enabled' value: 'false'.
+	conf param: 'recovery_behavior_enabled' value: 'false'. "in WORKINGVERSION it is true"
 
 
 	"conf param:'base_global_planner' value:'carrot_planner/CarrotPlanner'."
@@ -323,12 +323,12 @@ PhaROSLaunchBuilder >> moveBase [
 		
 		
 		common name:'expected_update_rate' value: 10.0.
-		common name:'obstacle_range' value: 6.5.
-		common name:'raytrace_range' value: 7.0.
+		common name:'obstacle_range' value: 2.5.
+		common name:'raytrace_range' value: 3.0.
 		common name:'map_update_rate' value: 0.5.
 		common name:'footprint' value: '[[-0.25, 0.225], [0.25, 0.225], [0.25, -0.225], [-0.25, -0.225] ]'.
 		"common name: 'robot_radius' value: 0.25."
-		common name:'inflation_radius' value: 0.5.
+		common name:'inflation_radius' value: 0.6.
 		common name:'unknown_cost_value' value: 255.
 		common name:'observation_sources' value: 'scan'.
 		common set:'scan' with: [ : scan | 
