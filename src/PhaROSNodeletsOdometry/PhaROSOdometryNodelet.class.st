@@ -1,3 +1,7 @@
+"
+Combination of Pose coming from Kompai Driver node (/kompaiX/pose) and Twist. 
+I will publish /odom just if /pose does exist. Otherwise /odom topic is not created.
+"
 Class {
 	#name : #PhaROSOdometryNodelet,
 	#superclass : #PhaROSStaticNodelet,
@@ -77,28 +81,20 @@ PhaROSOdometryNodelet >> initializeMessage: aMessage [
 
 { #category : #'as yet unclassified' }
 PhaROSOdometryNodelet >> measurePoseDiference: aPose [
-
-| time a b deltaTime  | 
-
-
+	| time deltaTime |
 	time := DateAndTime now.
-								
-	
-	
-	previousPose ifNotNil: [
-		deltaTime :=  (time - previousTime ) asMilliSeconds / 1000.0. 
-		
-		deltaTime < 0.15 ifFalse:[
-			poseDifference := (((aPose - previousPose) / deltaTime) abs ) limitedTo: 2.		
+	previousPose
+		ifNotNil: [ 
+			deltaTime := (time - previousTime) asMilliSeconds / 1000.0.
+			deltaTime < 0.15
+				ifFalse: [ 
+					poseDifference := ((aPose - previousPose) / deltaTime) abs limitedTo: 2.
+					previousPose := aPose.
+					previousTime := time ] ]
+		ifNil: [ 
 			previousPose := aPose.
-			previousTime := time.
-		]
-	] ifNil: [
-
-		previousPose := aPose.
-		previousTime := time.
-	].
-	^ poseDifference.
+			previousTime := time ].
+	^ poseDifference
 ]
 
 { #category : #'as yet unclassified' }
