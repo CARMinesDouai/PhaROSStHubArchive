@@ -18,6 +18,11 @@ PhaROSPosition class >> fromTranslation: aTranslation [
 ]
 
 { #category : #converting }
+PhaROSPosition >> asPoint [
+	^ x @ y 
+]
+
+{ #category : #converting }
 PhaROSPosition >> asPose [ 
 	^PhaROSPose position: self orientation: PhaROSQuaternion zero.
 ]
