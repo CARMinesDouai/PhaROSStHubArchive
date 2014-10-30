@@ -66,6 +66,11 @@ PhaROSRPCNodelet >> configure [
 						#currentPosition -> { self -> #currentPosition } .  
 						#parking -> { self -> #parking }.
 						#cancel -> { self -> #cancel }.
+						#stop -> { self -> #stop }.
+						#mapHash -> { self -> #mapHash }.
+						#recordPose -> { self -> #recordPose }.
+						#setIn: -> { self -> #setIn:}
+						
  					} asXMLRPCHttpModule 
 					at:'/rpc' .
 	
@@ -80,7 +85,7 @@ PhaROSRPCNodelet >> currentLandmarkId [
 		
 	^ currentId > path size ifTrue: [
 		path := nil.	
-		5.
+		1.
 	] ifFalse: [
 		currentId = 0 ifTrue: [ 1 ] ifFalse: [ path at: currentId .]
 	].
@@ -89,19 +94,17 @@ PhaROSRPCNodelet >> currentLandmarkId [
 
 { #category : #'as yet unclassified' }
 PhaROSRPCNodelet >> currentPosition [ 
-	self flag: #uncomment.
-	^ 1 @ 1.
-	
-	"^ self nodelets movebase client currentPosition position x @ self nodelets movebase client currentPosition position y." 
+	^ self nodelets robulab currentPose position asPoint.
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSRPCNodelet >> go [
 	| landmark |
 	landmark := self currentLandmarkId.
+	self log: ' GOING-LM- ', landmark asString .
 	self flag: #uncomment.
 	currentGoal := self nodelets robulab goToEntityID: landmark.
-	
+	self log: ' GOING! '.
 	^ landmark.
 ]
 
@@ -119,6 +122,7 @@ PhaROSRPCNodelet >> goToNextId [
 { #category : #'as yet unclassified' }
 PhaROSRPCNodelet >> initPathWithStargazerIds: aCollection [
 	ids := aCollection.
+	status := nil.
 	aCollection size  = 0 ifTrue:[
 		self log: 'ERROR: PhaROSRPCNodelet >> initPathWithStargazerIds:: Collection of IDS should not be empty'.
 		self error: 'ERROR: PhaROSRPCNodelet >> initPathWithStargazerIds:: Collection of IDS should not be empty'.
@@ -132,7 +136,12 @@ PhaROSRPCNodelet >> initPathWithStargazerIds: aCollection [
 PhaROSRPCNodelet >> makeAPath [
 
 	currentId := 0.        
-      path := ids asSet asOrderedCollection.
+      path := ids asOrderedCollection.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSRPCNodelet >> mapHash [
+	^ PureROSRobulab new mapFile asFileReference hash.
 ]
 
 { #category : #'as yet unclassified' }
@@ -150,6 +159,21 @@ PhaROSRPCNodelet >> parkingMark [
 { #category : #'as yet unclassified' }
 PhaROSRPCNodelet >> port [
 	^ 9090
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSRPCNodelet >> recordPose [
+	| measure pose |
+	measure := self nodelets poseTracker recordCurrentPose.
+	pose := measure pose.
+	
+	self nodelets poseTracker save: ( self nodelets robulab landmarksFile).
+	
+	^ { 
+		#point -> (pose position x @ pose position y) .
+		#orientation -> pose orientation as2DOrientation .
+		#id -> measure id.
+	} asDictionary.
 ]
 
 { #category : #'as yet unclassified' }
@@ -207,20 +231,20 @@ PhaROSRPCNodelet >> statusReal [
 	 currentGoal  ifNotNil: [ 
 	
 		({ 
-		  Actionlib_msgsGoalStatus active.
-		  Actionlib_msgsGoalStatus recalled . 
-		   Actionlib_msgsGoalStatus recalling .  
-		   Actionlib_msgsGoalStatus preempted . 
-		   Actionlib_msgsGoalStatus preempting  } includes: currentGoal status) ifTrue: [
+		  #Actionlib_msgsGoalStatus asClass active.
+		  #Actionlib_msgsGoalStatus asClass recalled . 
+		   #Actionlib_msgsGoalStatus asClass recalling .  
+		   #Actionlib_msgsGoalStatus asClass preempted . 
+		   #Actionlib_msgsGoalStatus asClass preempting  } includes: currentGoal status) ifTrue: [
 			^ PhaROSRPCNodelet moving.	
 		].
 	
-		Actionlib_msgsGoalStatus succeeded = currentGoal status ifTrue: [
+		#Actionlib_msgsGoalStatus asClass succeeded = currentGoal status ifTrue: [
 			
 			^ PhaROSRPCNodelet arrived.
 			
 		].
-		Actionlib_msgsGoalStatus pending = currentGoal status ifTrue: [
+		#Actionlib_msgsGoalStatus asClass pending = currentGoal status ifTrue: [
 			^ PhaROSRPCNodelet waiting.
 		].
 	
@@ -237,7 +261,15 @@ PhaROSRPCNodelet >> statusReal [
 
 { #category : #service }
 PhaROSRPCNodelet >> stop [
-	XMLRPCService stop: self port.
+	status := PhaROSRPCNodelet finished.
+	currentGoal ifNotNil: [
+		currentGoal cancel.
+		PureROSRobulabGoal allInstances do:#cancel.
+	].
+	path := nil.
+	
+	currentGoal := nil.
+	^ true.
 ]
 
 { #category : #'as yet unclassified' }
