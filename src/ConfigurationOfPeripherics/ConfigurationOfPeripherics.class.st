@@ -163,6 +163,49 @@ ConfigurationOfPeripherics >> baseline10: spec [
 
 ]
 
+{ #category : #'as yet unclassified' }
+ConfigurationOfPeripherics >> baseline11: spec [
+	<version:'1.1-baseline'>
+	spec for: #common do: [
+			spec blessing: #baseline.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/PhaROSPeripherics/main'.
+			
+			spec project: 'TaskIT' with: [
+				spec 
+					className: 'ConfigurationOfTaskIT';
+					file: 'ConfigurationOfTaskIT' ;
+					repository: 'http://smalltalkhub.com/mc/CAR/TaskIT/main';
+					versionString:  #stable
+			].
+		
+			spec project: 'PhaROS' with: [
+				spec 
+					className: 'ConfigurationOfPhaROS';
+					file: 'ConfigurationOfPhaROS' ;
+					repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main'; 
+					versionString: #bleedingEdge;
+					loads: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSNodeletsTF' 'PhaROSNodeletsMerger').
+			].
+		
+			spec package: 'StarGazer' with: [
+				spec requires: #('TaskIT').
+			].
+			spec package: 'StarGazerTest' with: [
+				spec requires: #('StarGazer').
+			].
+		
+			spec package: 'StarGazerROS' with: [
+				spec requires: #('StarGazer' 'PhaROS').
+			].
+			spec package: 'PeriphericsDirectory'.
+			
+			
+			spec group: 'default'  with: #( 'TaskIT' ).
+	].
+
+
+]
+
 { #category : #accessing }
 ConfigurationOfPeripherics >> project [
 
