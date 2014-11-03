@@ -490,6 +490,11 @@ PhaROSLaunchBuilder >> package: aPackageName type:aType named: aName [
 	^ self addChild: (PhaROSNodeBuilder package: aPackageName type:aType named: aName) 
 ]
 
+{ #category : #'as yet unclassified' }
+PhaROSLaunchBuilder >> package: aPackageName type:aType named: aName args: arguments [
+	^ self addChild: ((PhaROSNodeBuilder package: aPackageName type:aType named: aName)  args: arguments) 
+]
+
 { #category : #util }
 PhaROSLaunchBuilder >> relay: aTopicName to: otherTopicName named: aNodeName [
 	| conf |
