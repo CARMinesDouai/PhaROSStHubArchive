@@ -29,7 +29,7 @@ PhaROSSystemLauncher class >> new [
 
 { #category : #accessing }
 PhaROSSystemLauncher class >> path: aCommand [
-	^ PhaROSSystemInfo instance rospath , '/', aCommand 
+	^ PhaROSSystemInfo instance rospath , aCommand 
 ]
 
 { #category : #types }
