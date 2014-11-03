@@ -20,7 +20,11 @@ PhaROSMoveBaseRandomGoals >> client: aClient [
 { #category : #'as yet unclassified' }
 PhaROSMoveBaseRandomGoals >> complete [
 	self statsFor: currentGoal.
-	(while cull: self) ifTrue: [( Delay forMilliseconds: 1000) wait.  self start ] ifFalse: [ self halt: 'END :)'].
+	(while cull: self)
+		ifTrue: [ 
+			(Delay forMilliseconds: 1000) wait.
+			self start ]
+		ifFalse: [ self halt: 'END :)' ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -43,7 +47,6 @@ PhaROSMoveBaseRandomGoals >> start [
 	
 	currentGoal := client goTo: (poses at:currentPoseIDX).
 	
-
 	currentGoal onSucceeded: [self complete].
 	currentGoal onAborted: [self complete].
 	currentGoal onRejected: [self complete].
@@ -51,7 +54,7 @@ PhaROSMoveBaseRandomGoals >> start [
 
 { #category : #'as yet unclassified' }
 PhaROSMoveBaseRandomGoals >> statsFor: aGoal [
-	^ (stats at: aGoal destination ifAbsentPut: [ OrderedCollection new ]) add: aGoal statusText. 
+	^ (stats at: aGoal destination ifAbsentPut: [ OrderedCollection new ]) add: aGoal statusText
 ]
 
 { #category : #'as yet unclassified' }

@@ -52,20 +52,32 @@ PhaROSMoveBaseNodelet class >> simpleGoalTopicType [
 
 { #category : #'as yet unclassified' }
 PhaROSMoveBaseNodelet >> client [
-	^ client ifNil: [ client := PhaROSMoveBaseClient new configure: self ; yourself  ].
+
+	^ client
+		ifNil: [ 
+			client := PhaROSMoveBaseClient new
+				configure: self;
+				yourself ]
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSMoveBaseNodelet >> goRandomOf: anArrayOfPoses while: aBlock [
- 	^ PhaROSMoveBaseRandomGoals new poses: anArrayOfPoses; while: aBlock; client: self client; start.
+
+	^ PhaROSMoveBaseRandomGoals new
+		poses: anArrayOfPoses;
+		while: aBlock;
+		client: self client;
+		start
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSMoveBaseNodelet >> simpleGoal [
-	^simpleGoal ifNil: [ 
-		simpleGoal := self rosnode topicPublisher: PhaROSMoveBaseNodelet simpleGoalTopic 
-									 typedAs: PhaROSMoveBaseNodelet simpleGoalTopicType 
-	].
+
+	^ simpleGoal
+		ifNil: [ 
+			simpleGoal := self rosnode
+				topicPublisher: PhaROSMoveBaseNodelet simpleGoalTopic
+				typedAs: PhaROSMoveBaseNodelet simpleGoalTopicType ]
 ]
 
 { #category : #'as yet unclassified' }
