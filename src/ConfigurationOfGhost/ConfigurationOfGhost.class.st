@@ -1,3 +1,6 @@
+"
+ConfigurationOfGhost load
+"
 Class {
 	#name : #ConfigurationOfGhost,
 	#superclass : #Object,
@@ -166,6 +169,7 @@ ConfigurationOfGhost >> stable: spec [
 	spec for: #'pharo1.3.x' version: '1.0'.
 	spec for: #'pharo1.4.x' version: '1.0'.
 	spec for: #'pharo2.x' version: '1.1'.
+	spec for: #'pharo3.x' version: '1.2'.
 	
 ]
 
@@ -199,12 +203,33 @@ ConfigurationOfGhost >> version11: spec [
 		spec author: 'Mariano Martinez Peck'.
 		spec description: '
 		- Do not use Marea Simple logger. Lets print to Transcript and in the future use a logger integrated in Pharo.
-		- This version is for Pharo 2.0'
+		- This version is for Pharo 2.0 / 3.0'
 	].
 	
 	spec for: #pharo do: [		
 				
 		spec package: 'GhostProxies' with: 'GhostProxies-MarianoMartinezPeck.32'.
+		spec package: 'GhostProxiesTests' with: 'GhostProxiesTests-MarianoMartinezPeck.15'.
+
+		
+	]
+			
+]
+
+{ #category : #versions }
+ConfigurationOfGhost >> version12: spec [
+	<version: '1.2' imports: #('1.1-baseline')>
+
+	spec for: #common do: [
+		spec blessing: #release.
+		spec author: 'Luc Fabresse'.
+		spec description: '
+		- This version is for Pharo 3.0'
+	].
+	
+	spec for: #pharo do: [		
+				
+		spec package: 'GhostProxies' with: 'GhostProxies-LucFabresse.33'.
 		spec package: 'GhostProxiesTests' with: 'GhostProxiesTests-MarianoMartinezPeck.15'.
 
 		
