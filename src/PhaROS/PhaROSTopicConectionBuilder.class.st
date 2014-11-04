@@ -108,6 +108,8 @@ PhaROSTopicConectionBuilder >> initialize [
 { #category : #accessing }
 PhaROSTopicConectionBuilder >> node: aNode topicName: aTopicName [
 	node := aNode.
+	
+	self assert: topicName isValidROSName.
 	topicName := aTopicName.
 ]
 
