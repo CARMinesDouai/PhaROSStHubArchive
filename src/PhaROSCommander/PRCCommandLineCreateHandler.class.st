@@ -366,15 +366,25 @@ category: pack,'-Nodelets'.
 	publisher := self controller node 
 						topicPublisher: ''/example/string'' 
 						typedAs: ''std_msgs/String''.
-						
-	publisher send:[ : string | string data: ''this is an example'' ].
+
+	"When data is actually sent you''l see a sequence of ping and pong. Otherwise you'' see pong alone"						
+	[
+		1 second wait.
+		publisher send:[ : string | 
+			string data: ''You are receiving data :-)'' 
+			self log: ''ping''
+		].
+		self long: ''  pong''
+	] repeat.
 ' classified: 'scripts'.
 (Smalltalk at: pack asSymbol) compile: 'scriptTopicSubscribingExample
 	
 	"For subscribing to a topic, you just need a subscriber to configure it with a callback (block). You can obtain it asking to the related node like in the following code".
 	(self controller node buildConnectionFor: ''/example/string'' ) 
 								typedAs: ''std_msgs/String''; 
-								for: [ : string |  "this is a callback" Transcript show: string data ];
+								for: [ : string |  "this is a callback" 
+									Transcript show: string data.
+									self log: string data ];
 								connect .
 														
 	"As you can see, buildConnectionFor: aTopicID, returns an object configurable. This is a builder, you can configure it as much as you want, and when you send connect message it will make the proper connection. For better usage of the builder check the documentation "
