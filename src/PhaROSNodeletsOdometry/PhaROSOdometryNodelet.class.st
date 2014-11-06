@@ -15,6 +15,12 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PhaROSOdometryNodelet class >> baseLinkFrame [
+
+	^ '/base_link' 
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSOdometryNodelet class >> odomFrame [ 
 	^ '/odom'
 ]
@@ -33,7 +39,7 @@ PhaROSOdometryNodelet class >> odometryTopicType [
 PhaROSOdometryNodelet >> configure: aMessage with: aPosition [
 	self initializeMessage: aMessage.
 	aMessage header frame_id: PhaROSOdometryNodelet odomFrame.
-	aMessage child_frame_id: ''.
+	aMessage child_frame_id: PhaROSOdometryNodelet baseLinkFrame.
 	
 	"Fill aMessage using aPosition pose"
 	aPosition intoGeometry_msgs_Pose:  aMessage pose pose.
