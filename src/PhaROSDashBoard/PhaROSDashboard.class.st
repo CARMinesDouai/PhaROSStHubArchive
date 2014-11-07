@@ -22,18 +22,25 @@ PhaROSDashboard class >> open [
 
 { #category : #'as yet unclassified' }
 PhaROSDashboard >> createShapeBuilder [ 
-	|sb|
+	|sb myShape |
 	sb := super createShapeBuilder. 
-	sb ellipse size: 100; color: Color gray.
+	"sb ellipse size: 100; color: Color gray."
+	myShape := RTMultiCompositeShape new
+				add: (RTEllipse new color: Color gray; size: 40);
+				add: (RTLabel new);
+				horizontal;
+				yourself.
+	sb shape: myShape.
 	^ sb
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSDashboard >> renderIn: aView [
 
-	| shape elipse deamon nodes topics |	
+	| shape elipse deamon nodes topics model |	
 		
 	deamon := PhaROSDeamonBoard instance.
+	model := PhaROSModel instance.
 
 	aView canvas addMenu: 'speed up' callback: [ 
 		deamon changeRefreshTime: deamon refreshTime / 2.
@@ -56,8 +63,8 @@ PhaROSDashboard >> renderIn: aView [
 	RTActiveAnimation new 
 		inView: aView;
 		blockToExecute: [
-			nodes := PhaROSDeamonBoard instance nodes. 
-			topics := PhaROSDeamonBoard instance topics.
+			nodes := model nodes. 
+			topics := model topics.
 	
 			aView elements do:[:e |
 				(nodes includes: e model) ifFalse:[
