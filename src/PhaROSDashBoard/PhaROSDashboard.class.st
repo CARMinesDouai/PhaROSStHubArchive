@@ -37,7 +37,7 @@ PhaROSDashboard >> createShapeBuilder [
 { #category : #'as yet unclassified' }
 PhaROSDashboard >> renderIn: aView [
 
-	| shape elipse deamon nodes topics model |	
+	| shape elipse deamon nodes topics model edges|	
 		
 	deamon := PhaROSDeamonBoard instance.
 	model := PhaROSModel instance.
@@ -65,6 +65,7 @@ PhaROSDashboard >> renderIn: aView [
 		blockToExecute: [
 			nodes := model nodes. 
 			topics := model topics.
+			edges := model nodeToTopicLink.
 	
 			aView elements do:[:e |
 				(nodes includes: e model) ifFalse:[
@@ -74,10 +75,16 @@ PhaROSDashboard >> renderIn: aView [
 				 	aView removeElement: e
 				]
 			].
-			
+			aView edges do:[:e |
+				(edges anySatisfy: [ :ed | e model key = ed key and:[e model value = ed value]]) ifFalse:[
+				 	aView removeEdge: e
+				]
+			].
+					
 			nodes do: [ :object | |objEl|
 				(aView elements anySatisfy:[:e | e model = object]) ifFalse:[
 					objEl:= (self elementOn: object).
+					objEl @ RTDraggable.
 				"	objEl @ RTDraggable; 
 						+ shape;
 						@ (RTPopup new text: [ :cls | PhaROSSystemInfo instance infoOfNode: cls ]).
@@ -94,6 +101,22 @@ PhaROSDashboard >> renderIn: aView [
 					aView add: el.
 					self setUpInteractionFor: el 
 				]	
+			].
+		
+			
+		
+			edges do: [ :obj |
+				|l elFrom elTo |
+				(aView edges anySatisfy: [ :e | e model key = obj key and:[e model value = obj value]]) ifFalse:[
+					elFrom := (view elementFromModel: obj key).
+					elTo := (view elementFromModel: obj value).
+					self haltOnce.
+					(elTo notNil and:[elFrom notNil and:[elTo ~= elFrom]]) ifTrue:[
+						l := RTEdge from: elFrom to: elTo.
+						l + (RTLine new color: Color red) + (RTSimpleArrowHead new color: Color red).
+						aView add: l.
+					]
+				]
 			].
 	
 			RTCellLayout new
