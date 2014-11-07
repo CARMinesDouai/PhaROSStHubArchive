@@ -219,16 +219,22 @@ PhaROSSystemInfo >> parameterList [
 { #category : #nodes }
 PhaROSSystemInfo >> pingAllNodes [
 
+	^ self pingAllNodesTrace subStrings: String lf.
+]
+
+{ #category : #nodes }
+PhaROSSystemInfo >> pingAllNodesTrace [
+
 	|lst|
 	lst := OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rosnode ping -a').
-	^ lst subStrings: String lf.
+	^ lst
 ]
 
 { #category : #nodes }
 PhaROSSystemInfo >> pingNode: aNodeName [
 
 	|lst|
-	lst := OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rosnode ping -c 10 ', aNodeName).
+	lst := OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rosnode ping -c 1 ', aNodeName).
 	^ lst subStrings: String lf.
 ]
 
