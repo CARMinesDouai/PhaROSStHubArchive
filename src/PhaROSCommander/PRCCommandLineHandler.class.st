@@ -108,7 +108,7 @@ PRCCommandLineHandler >> isAValidCatkinWorkspace: aLocation [
 	 ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #activation }
 PRCCommandLineHandler >> loadNetworkSettings [
 	| currentConfiguration |
 	
@@ -154,7 +154,7 @@ PRCCommandLineHandler >> package [
 	 ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PRCCommandLineHandler >> pharoUser [
 
 	^  (self optionAt: #'pharo-user' ifAbsent: [  'pharos' ] ).
@@ -178,16 +178,6 @@ PRCCommandLineHandler >> realActivate [
 { #category : #resolving }
 PRCCommandLineHandler >> repositoriesFileName [
 	^ 'repositories'
-]
-
-{ #category : #'as yet unclassified' }
-PRCCommandLineHandler >> rosDistro [
-	| val |
-	val := commandLine optionAt: #'ros-distro' ifAbsent:[ 'indigo' ].
-	({ #groovy . #fuerte . #hydro. #indigo } includes: val asSymbol ) ifFalse: [ self error: val, ' Is not a valid ROS distribution' ].
-	^ val. 
-	
-
 ]
 
 { #category : #resolving }

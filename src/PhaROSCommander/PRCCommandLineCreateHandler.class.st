@@ -9,7 +9,6 @@ Options:
                               Default value is true. 
           --version	{ 2.0 | 3.0 }. It indicates the version of pharo to download. It will not count if you are in a not silent session. 
                               Default value is 3.0
-          --ros-distro	Indicates the distribution of ROS that you want to use. By default is indigo { groovy | hydro | fuerte | indigo } 	
           --archetype	Indicates the name of the archetype to use for creating things. 
                               Default is basic-archetype.
           --author	Indicates the name of the author
@@ -447,7 +446,7 @@ PRCCommandLineCreateHandler >> package [
 { #category : #'as yet unclassified' }
 PRCCommandLineCreateHandler >> realActivate [
 
-	| location package archetype archObject version silent deployer sourceFolder author authorEmail maintainer maintainerEmail description rosDistro |
+	| location package archetype archObject version silent deployer sourceFolder author authorEmail maintainer maintainerEmail description |
 	
 	
 	version := self version.
@@ -465,7 +464,6 @@ PRCCommandLineCreateHandler >> realActivate [
 	description := self description.
 	
 	archetype := self archetype.
-	rosDistro := self rosDistro. 
 	
 
 	sourceFolder := location asFileReference / #src.

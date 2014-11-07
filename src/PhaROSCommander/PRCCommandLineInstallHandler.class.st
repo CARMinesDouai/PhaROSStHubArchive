@@ -9,7 +9,6 @@ Options:
                               Default value is true. 
           --version	{ 1.4 | 2.0 | 3.0 }. It indicates the version of pharo to download. It will not count if you are in a not silent session. 
                               Default value is 2.0
-          --ros-distro	Indicates the distribution of ROS that you want to use. By default is groovy { groovy | hydro | fuerte } 	
           --package	Indicates the name of the package to install (If you use <<pharos install aPackage --package=otherPackage>> the one to be installed is otherPackage ).
           --package-version	Indicates the package version. By default it takes the latest one.
           --pharo-user	Indicates the user name for the result image.
@@ -42,7 +41,7 @@ PRCCommandLineInstallHandler >> packageVersion [
 { #category : #'as yet unclassified' }
 PRCCommandLineInstallHandler >> realActivate [
 
-	| location package version silent deployer sourceFolder packageVersion rosDistro |
+	| location package version silent deployer sourceFolder packageVersion |
 	
 	
 	version := self version.
@@ -51,7 +50,6 @@ PRCCommandLineInstallHandler >> realActivate [
 	
 	package := self package.
 	packageVersion := self packageVersion. 
-	rosDistro := self rosDistro. 
 	
 	sourceFolder := location asFileReference / #src.
 	
