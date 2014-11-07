@@ -1,3 +1,10 @@
+"
+PhaROSDashboard open.
+
+PhaROSDeamonBoard start.
+PhaROSDeamonBoard stop.
+
+"
 Class {
 	#name : #PhaROSDashboard,
 	#superclass : #RTBuilder,
@@ -24,7 +31,7 @@ PhaROSDashboard >> createShapeBuilder [
 { #category : #'as yet unclassified' }
 PhaROSDashboard >> renderIn: aView [
 
-	| shape elipse deamon nodes topics refreshTime|	
+	| shape elipse deamon nodes topics |	
 		
 	deamon := PhaROSDeamonBoard instance.
 
@@ -37,7 +44,7 @@ PhaROSDashboard >> renderIn: aView [
 	
 	self interaction popupText; highlightColored: #colorIsPingable; 
 		action: #inspect;
-		item: 'kill node' action: [:evt | PhaROSSystemInfo instance killNode: evt.].
+		item: 'kill node' action: [:string | PhaROSSystemInfo instance killNode: string].
 
 	elipse := RTEllipse new color: Color blue; size: 20; yourself.
 	shape := RTMultiCompositeShape new
@@ -51,7 +58,6 @@ PhaROSDashboard >> renderIn: aView [
 		blockToExecute: [
 			nodes := PhaROSDeamonBoard instance nodes. 
 			topics := PhaROSDeamonBoard instance topics.
-			refreshTime := PhaROSDeamonBoard instance refreshTime.
 	
 			aView elements do:[:e |
 				(nodes includes: e model) ifFalse:[

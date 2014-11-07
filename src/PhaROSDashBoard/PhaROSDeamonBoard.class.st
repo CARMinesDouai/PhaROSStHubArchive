@@ -14,13 +14,6 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PhaROSDeamonBoard class >> initProcesses [
-
-	processes do:[:e | e terminate].
-	processes := OrderedCollection new.
-]
-
-{ #category : #'as yet unclassified' }
 PhaROSDeamonBoard class >> instance [
 
 	^ Instance ifNil: [ Instance := super new ]
@@ -49,7 +42,14 @@ PhaROSDeamonBoard class >> start [
 PhaROSDeamonBoard class >> stop [
 
 	Instance := nil.
-	self initProcesses.
+	self stopProcesses.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSDeamonBoard class >> stopProcesses [
+
+	processes do:[:e | e terminate].
+	processes := OrderedCollection new.
 ]
 
 { #category : #accessing }
