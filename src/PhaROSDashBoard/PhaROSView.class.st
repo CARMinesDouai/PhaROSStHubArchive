@@ -25,10 +25,8 @@ PhaROSView class >> open [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSView >> open [
-	| elipse nodes topics edges aView topicInteraction nodeInteraction square viewEdges addEdges |	
-
-	aView := RTView new.
+PhaROSView >> mainMenuOn: aView. [
+	
 	aView canvas addMenu: 'speed up' callback: [ 
 		PhaROSDeamonBoard instance changeRefreshTime: PhaROSDeamonBoard instance refreshTime / 2.
 	].
@@ -36,37 +34,57 @@ PhaROSView >> open [
 		PhaROSDeamonBoard instance changeRefreshTime: PhaROSDeamonBoard instance refreshTime * 2.
 	].
 	aView canvas addMenu: 'clean view' callback: [ 
-		RTCellLayout new
-				lineItemsCount: nodes size + 1; on: aView elements.
+		RTCellLayout new on: aView elements.
 	].
 	aView canvas addMenu: 'clean view 2' callback: [ 
 		RTClusterLayout new verticalGap: 100; horizontalGap: 100;on: aView elements.
 	].
-	elipse := (RTEllipse new borderColor: Color blue; height: 40; width: 120)+ (RTLabel new).
-	square := (RTBox new borderColor: Color gray;  height: 40; width: 120) + (RTLabel new).
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSView >> nodeInteraction [
+	|nodeInteraction|
 	
-	nodeInteraction := RTInteractionBuilder new.
+	nodeInteraction:= RTInteractionBuilder new.
 	nodeInteraction popupText; highlightColored: #colorIsPingable; 
 				action: #inspect;
 				item: 'kill node' action: [:string | PhaROSSystemInfo instance killNode: string].
 				
-	topicInteraction := RTInteractionBuilder new.
-	topicInteraction popupText; 
-				action: #inspect.	
+	^ nodeInteraction
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSView >> nodeShape [
+
+	^ (RTBox new borderColor: Color gray;  height: 40; width: 120) + (RTLabel new)
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSView >> open [
+	| elipse nodes topics edges aView topicInteraction nodeInteraction square viewEdges addEdges |	
+
+	aView := RTView new.
+	
+	self mainMenuOn: aView.
+	elipse := self topicShape.
+	square := self nodeShape.
+	nodeInteraction := self nodeInteraction.
+				
+	topicInteraction := self topicInteraction.	
 					
-	RTActiveAnimation new 
-		inView: aView;
-		blockToExecute: [
+	RTActiveAnimation new inView: aView; blockToExecute: [
 			nodes := PhaROSModel instance nodes. 
 			topics := PhaROSModel instance topics.
 			edges := PhaROSModel instance nodeToTopicLink.
 		
 			aView elements do:[:e |
-				((nodes union: topics) includes: e model) ifFalse:[
-				 	aView removeElement: e
+				(nodes includes: e model) ifFalse:[
+					(topics includes: e model) ifFalse:[
+					 	aView removeElement: e
+					]
 				].
 			].
-					
+		
 			nodes do: [ :object | 
 				|objEl|
 				(aView elements anySatisfy:[:e | e model = object]) ifFalse:[
@@ -107,4 +125,21 @@ PhaROSView >> open [
 
 	aView @ RTDraggableView.
 	aView open.
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSView >> topicInteraction [
+	|topicInteraction|
+	
+	topicInteraction := RTInteractionBuilder new.
+	topicInteraction popupText; 
+				action: #inspect.
+				
+	^ topicInteraction
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSView >> topicShape [
+
+	^ (RTEllipse new borderColor: Color blue; height: 40; width: 120)+ (RTLabel new)
 ]
