@@ -63,7 +63,7 @@ PhaROSDeamonBoard >> initialize [
 	super initialize.
 	model := PhaROSModel instance.
 	
-	refreshTime := 1.
+	refreshTime := 2.
 	
 	processes := OrderedCollection new.
 	self initializeProcesses.
@@ -74,6 +74,7 @@ PhaROSDeamonBoard >> initialize [
 { #category : #'as yet unclassified' }
 PhaROSDeamonBoard >> initializeProcesses [
 
+	|link|
 	processes do:[:e | e terminate].
 	processes := OrderedCollection new.
 	
@@ -81,11 +82,12 @@ PhaROSDeamonBoard >> initializeProcesses [
 		[
 			model nodes: PhaROSSystemInfo instance nodeList.
 			model topics: PhaROSSystemInfo instance topicList.
-			
+			link := Set new.	
 			model nodes do:[:n |
-				model extractNodeInfo: n.
+				link addAll: (model extractNodeInfo: n).
 			].
-		] valueWithInterval: refreshTime second)
+			model nodeToTopicLink: link.
+		] valueWithInterval: (refreshTime * 1000) milliseconds)
 	
 	
 ]

@@ -13,6 +13,12 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PhaROSModel class >> initInstance [
+
+	Instance := nil
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSModel class >> instance [
 
 	^ Instance ifNil: [ Instance := super new ]
@@ -27,23 +33,24 @@ PhaROSModel class >> new [
 { #category : #'as yet unclassified' }
 PhaROSModel >> extractNodeInfo: nodeString [
 
-	|topicName pubIndex subIndex servIndex aString|
+	|topicName pubIndex subIndex servIndex aString link|
 	
+	link := Set new.
 	aString := PhaROSSystemInfo instance infoOfNode: nodeString.
 	pubIndex := (aString lines) indexOf:'Publications: '.
 	subIndex := (aString lines) indexOf:'Subscriptions: '.
 	servIndex := (aString lines) indexOf:'Services: '.
-
+	
 	(pubIndex + 1) to: (subIndex -2) by: 1 do: [:e | 
 		topicName := (aString lines at: e) substrings at: 2.
-		topics add: topicName.
-		nodeToTopicLink add: (nodeString -> topicName)].
+		"topics add: topicName."
+		link add: (nodeString -> topicName)].
 	(subIndex + 1) to: (servIndex -2) by: 3 do: [:e | 
 		topicName := (aString lines at: e) substrings at: 2.
-		topics add: topicName.
-		nodeToTopicLink add: (topicName -> nodeString)].
+		"topics add: topicName."
+		link add: (topicName -> nodeString)].
 	 
-
+	^ link
 ]
 
 { #category : #'as yet unclassified' }

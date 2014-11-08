@@ -25,11 +25,7 @@ PhaROSDashboard >> createShapeBuilder [
 	|sb myShape |
 	sb := super createShapeBuilder. 
 	"sb ellipse size: 100; color: Color gray."
-	myShape := RTMultiCompositeShape new
-				add: (RTEllipse new color: Color gray; size: 40);
-				add: (RTLabel new);
-				horizontal;
-				yourself.
+	myShape := (RTBox new borderColor: Color gray;  height: 40; width: 120) + (RTLabel new).
 	sb shape: myShape.
 	^ sb
 ]
@@ -53,20 +49,16 @@ PhaROSDashboard >> renderIn: aView [
 		action: #inspect;
 		item: 'kill node' action: [:string | PhaROSSystemInfo instance killNode: string].
 
-	elipse := RTEllipse new color: Color blue; size: 20; yourself.
-	shape := RTMultiCompositeShape new
-				add: elipse;
-				add: (RTLabel new);
-				horizontal;
-				yourself.
-				
+	elipse := RTEllipse new borderColor: Color blue; height: 40; width: 120; yourself.
+	shape := elipse + (RTLabel new).
+		
+	nodes := model nodes. 
+	topics := model topics.
+	edges := model nodeToTopicLink.
+		
 	RTActiveAnimation new 
 		inView: aView;
 		blockToExecute: [
-			nodes := model nodes. 
-			topics := model topics.
-			edges := model nodeToTopicLink.
-	
 			aView elements do:[:e |
 				(nodes includes: e model) ifFalse:[
 				 	aView removeElement: e
@@ -75,22 +67,12 @@ PhaROSDashboard >> renderIn: aView [
 				 	aView removeElement: e
 				]
 			].
-			aView edges do:[:e |
-				(edges anySatisfy: [ :ed | e model key = ed key and:[e model value = ed value]]) ifFalse:[
-				 	aView removeEdge: e
-				]
-			].
 					
 			nodes do: [ :object | |objEl|
 				(aView elements anySatisfy:[:e | e model = object]) ifFalse:[
 					objEl:= (self elementOn: object).
-					objEl @ RTDraggable.
-				"	objEl @ RTDraggable; 
-						+ shape;
-						@ (RTPopup new text: [ :cls | PhaROSSystemInfo instance infoOfNode: cls ]).
-						objEl when: TRMouseRightClick do: [:evt | PhaROSSystemInfo instance killNode: object ]."
 					aView add: objEl.
-					self setUpInteractionFor: objEl 
+					objEl @ RTDraggable.
 				]	
 			].
 			topics do: [ :obj |
@@ -99,28 +81,25 @@ PhaROSDashboard >> renderIn: aView [
 					el := (RTElement on: obj).
 					el + shape.
 					aView add: el.
-					self setUpInteractionFor: el 
+					self setUpInteractionFor: el.
+					el @ RTDraggable. 
 				]	
 			].
 		
-			
-		
-			edges do: [ :obj |
-				|l elFrom elTo |
-				(aView edges anySatisfy: [ :e | e model key = obj key and:[e model value = obj value]]) ifFalse:[
-					elFrom := (view elementFromModel: obj key).
-					elTo := (view elementFromModel: obj value).
-					self haltOnce.
-					(elTo notNil and:[elFrom notNil and:[elTo ~= elFrom]]) ifTrue:[
-						l := RTEdge from: elFrom to: elTo.
-						l + (RTLine new color: Color red) + (RTSimpleArrowHead new color: Color red).
-						aView add: l.
-					]
-				]
+			aView edges do:[:e |
+				"(edges anySatisfy: [ :ed | e model key = ed key and:[e model value = ed value]]) ifFalse:["
+				 	aView removeEdge: e
+				"]"
 			].
-	
-			RTCellLayout new
-				lineItemsCount: nodes size + 1; on: aView elements.	
+			RTEdge 
+				buildEdgesFromObjects: edges
+				from: #key
+				to:  #value 
+				using: ((RTArrowedLine new attachPoint: RTShorterDistanceAttachPoint new; color: Color veryDarkGray)) inView: aView.
+
+			"RTClusterLayout new verticalGap: 100; horizontalGap: 100;on: aView elements.
+			"RTCellLayout new
+				lineItemsCount: nodes size + 1; on: aView elements.
 		].
 	
 	aView @ RTDraggableView
