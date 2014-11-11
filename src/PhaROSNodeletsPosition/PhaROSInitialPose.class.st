@@ -29,17 +29,11 @@ PhaROSInitialPose class >> orientationTopicType [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSInitialPose >> initialPose [	
-	|connector|
-		connector := self rosnode buildConnectionFor: PhaROSInitialPose  initialPoseTopic .
-
-		connector typedAs: PhaROSInitialPose initialPoseTopicType;
-					adapted: #pose \> #pose \> PhaROSPose.
-				
-			
-		^  connector connect.
-
-
+PhaROSInitialPose >> initialPose [
+	^ (self rosnode buildConnectionFor: self class initialPoseTopic)
+			typedAs: self class initialPoseTopicType;
+			adapted: #pose \> #pose \> PhaROSPose;
+			connect
 ]
 
 { #category : #'as yet unclassified' }
@@ -54,25 +48,20 @@ PhaROSInitialPose >> initialPose: aPose [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'topic-publishing' }
 PhaROSInitialPose >> initialPoseOut [
-	
-	^ initialPoseOut ifNil: [
-		initialPoseOut := self rosnode topicPublisher: PhaROSInitialPose  initialPoseTopic  typedAs: PhaROSInitialPose initialPoseTopicType.
-	].
+	^ initialPoseOut
+		ifNil: [ initialPoseOut := self rosnode 
+													topicPublisher: self class initialPoseTopic 
+													typedAs: self class initialPoseTopicType ]
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSInitialPose >> orientation [
-	|connector|
-		connector := self rosnode buildConnectionFor: PhaROSInitialPose  orientationTopic  .
-
-		connector typedAs: PhaROSInitialPose orientationTopicType ;
-					adapted: #data .
-				
-			
-		^  connector connect.
-
+	^	(self rosnode buildConnectionFor: PhaROSInitialPose  orientationTopic) 
+			typedAs: PhaROSInitialPose orientationTopicType ;
+			adapted: #data;
+			connect.	
 
 ]
 
@@ -86,12 +75,12 @@ PhaROSInitialPose >> orientation: anOrientation [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'topic-publishing' }
 PhaROSInitialPose >> orientationOut [
-	
-	^ orientationOut ifNil: [
-		orientationOut := self rosnode topicPublisher: PhaROSInitialPose  orientationTopic  typedAs: PhaROSInitialPose orientationTopicType.
-	].
+	^ orientationOut
+		ifNil: [ orientationOut := self rosnode 
+													topicPublisher: self class orientationTopic 
+													typedAs: self class orientationTopicType ]
 ]
 
 { #category : #'as yet unclassified' }
