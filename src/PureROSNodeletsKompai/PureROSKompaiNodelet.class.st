@@ -1,5 +1,17 @@
 "
-Nodelet that adds the hardware manage of a kompai robot
+I provide the logic for driving the Kompai robot
+
+I publish:
+- /kompaiX/scan
+- /kompaiX/pose
+
+I subscribe:
+- /kompaiX/command_velocity
+- /kompaiX/trajectory/differential
+- /initialpose
+- /orientation
+
+I need PureROSRobulabNodelet and PharosInitialPose
 "
 Class {
 	#name : #PureROSKompaiNodelet,
@@ -19,37 +31,37 @@ Class {
 	#category : #PureROSNodeletsKompai
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #frames }
 PureROSKompaiNodelet class >> baseLinkFrame [ 
 	^ '/base_link'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #frames }
 PureROSKompaiNodelet class >> baseLinkParentFrame [ 	
 	^ self odomFrame.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #topics }
 PureROSKompaiNodelet class >> commandVelocityTopic [ 
 	^ '/command_velocity'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #types }
 PureROSKompaiNodelet class >> commandVelocityTopicType [
 	^ 'geometry_msgs/Twist'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #frames }
 PureROSKompaiNodelet class >> laserFrame [
 	^ '/laser'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #frames }
 PureROSKompaiNodelet class >> mapFrame [
 	^'/map'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #frames }
 PureROSKompaiNodelet class >> odomFrame [ 
 	^ '/odom'
 ]
@@ -59,37 +71,37 @@ PureROSKompaiNodelet class >> pharosPackage [
 	^ PureROSKompai.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #topics }
 PureROSKompaiNodelet class >> poseStampedTopic [
 	^ '/pose'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #topics }
 PureROSKompaiNodelet class >> poseStampedTopicForConsume [
 	^ '/pose'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #types }
 PureROSKompaiNodelet class >> poseStampedTopicType [
 	^  'geometry_msgs/PoseStamped'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #topics }
 PureROSKompaiNodelet class >> scanTopic [
 	^ '/scan'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #types }
 PureROSKompaiNodelet class >> scanTopicType [
 	^ 'sensor_msgs/LaserScan'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #topics }
 PureROSKompaiNodelet class >> trajectoryDifferentialTopic [ 
 	^ '/trajectory/differential'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #types }
 PureROSKompaiNodelet class >> trajectoryDifferentialTopicType [
 	^ 'geometry_msgs/PoseStamped'
 ]
@@ -119,7 +131,7 @@ PureROSKompaiNodelet >> configure [
 	state := PureROSKompaiActionState for: self.
 ]
 
-{ #category : #'private-out' }
+{ #category : #'topic-subscription' }
 PureROSKompaiNodelet >> consumeCommandVelocity [
 
 	
@@ -151,7 +163,7 @@ PureROSKompaiNodelet >> consumeCommandVelocity [
 	]
 ]
 
-{ #category : #'private-out' }
+{ #category : #'topic-subscription' }
 PureROSKompaiNodelet >> consumeInitialPose [
 	self nodelets use: PhaROSInitialPose as:#initialpose.
 	self nodelets initialpose initialPose for: [ : aPhaROSPose | self setPose: (PNGRobotPose fromPhaROSPose: aPhaROSPose )].
@@ -159,7 +171,7 @@ PureROSKompaiNodelet >> consumeInitialPose [
 	
 ]
 
-{ #category : #'private-out' }
+{ #category : #'topic-subscription' }
 PureROSKompaiNodelet >> consumeTrajectoryDifferential [
 	
 	trajectoryDifferentialIn ifNil: [
@@ -210,7 +222,7 @@ PureROSKompaiNodelet >> moveAt: aDifferentialVelocity [
 	^ self state moveAt: aDifferentialVelocity.] on: Error do: [ :e | ].
 ]
 
-{ #category : #'private-out' }
+{ #category : #'topic-subscription' }
 PureROSKompaiNodelet >> poseStamped [
 	^ (self rosnode buildConnectionFor: self class poseStampedTopicForConsume)
 		typedAs: self class poseStampedTopicType;
@@ -218,7 +230,7 @@ PureROSKompaiNodelet >> poseStamped [
 		connect
 ]
 
-{ #category : #'private-out' }
+{ #category : #'topic-publishing' }
 PureROSKompaiNodelet >> poseStamped: aPose [
 	self poseStampedOut
 		send: [ :msg | 
@@ -226,7 +238,7 @@ PureROSKompaiNodelet >> poseStamped: aPose [
 			aPose intoGeometry_msgs_Pose: msg pose ]
 ]
 
-{ #category : #'private-out' }
+{ #category : #'topic-publishing' }
 PureROSKompaiNodelet >> poseStampedOut [
 	^ poseStampedOut
 		ifNil: [ 
@@ -246,7 +258,7 @@ PureROSKompaiNodelet >> robotNamespace [
 	^ '/', robotName asString
 ]
 
-{ #category : #broadcast }
+{ #category : #'topic-publishing' }
 PureROSKompaiNodelet >> scan: aLaserMeasure [
 	self scanOut send: [ : msg | 
 		msg header frame_id: self class laserFrame. 
@@ -255,7 +267,7 @@ PureROSKompaiNodelet >> scan: aLaserMeasure [
 
 ]
 
-{ #category : #'private-out' }
+{ #category : #'topic-publishing' }
 PureROSKompaiNodelet >> scanOut [
 	^ scan ifNil: [ 
 		scan := self rosnode 
