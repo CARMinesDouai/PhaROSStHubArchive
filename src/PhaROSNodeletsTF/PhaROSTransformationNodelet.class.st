@@ -17,8 +17,8 @@ Class {
 	#instVars : [
 		'tfWriter',
 		'tfs',
-		'container',
-		'tfIn'
+		'tfIn',
+		'framesContainer'
 	],
 	#category : #PhaROSNodeletsTF
 }
@@ -41,7 +41,7 @@ PhaROSTransformationNodelet class >> tfTopicType [
 { #category : #'topic-reading' }
 PhaROSTransformationNodelet >> between: aFrameID and: anOtherFrameID [
 	self configureTfCallback.
-	^ container pseudoTopicBetween: aFrameID  and: anOtherFrameID.
+	^ framesContainer pseudoTopicBetween: aFrameID  and: anOtherFrameID.
 ]
 
 { #category : #'topic-reading' }
@@ -51,7 +51,7 @@ PhaROSTransformationNodelet >> between: aFrameID and: anOtherFrameID for: aCallb
 
 { #category : #'topic-reading' }
 PhaROSTransformationNodelet >> betweenFixedFrameAnd: aFrameID [
-	^ self between: container currentFixedFrame name and: aFrameID
+	^ self between: framesContainer currentFixedFrame name and: aFrameID
 
 ]
 
@@ -63,31 +63,32 @@ PhaROSTransformationNodelet >> configureTfCallback. [
 { #category : #'topic-reading' }
 PhaROSTransformationNodelet >> distanceBetween: aFrameID and: anOtherFrameID [
 	self configureTfCallback.
-	^ container pseudoTopicBetween: aFrameID  and: anOtherFrameID.
+	^ framesContainer pseudoTopicBetween: aFrameID  and: anOtherFrameID.
 ]
 
 { #category : #finalization }
 PhaROSTransformationNodelet >> finalize [
 	tfWriter := nil.
 	 tfs := nil .
-	container finalize.
-	container := nil.
+	framesContainer finalize.
+	framesContainer := nil.
 ]
 
 { #category : #'topic-reading' }
 PhaROSTransformationNodelet >> frame: aFrameID [
-	^ container frame: aFrameID 
+	self todo: 'the existence reason of this method is the sender PhaROSLandmarkLocator>>relocate:at:'.
+	^ framesContainer frame: aFrameID 
 ]
 
 { #category : #'initialize-release' }
 PhaROSTransformationNodelet >> initialize [ 
 
-	container := PhaROSFrameContainer new.
+	framesContainer := PhaROSFrameContainer new.
 ]
 
 { #category : #package }
 PhaROSTransformationNodelet >> process: aMessage from: aChn [
-	container process: aMessage from: aChn
+	framesContainer process: aMessage from: aChn
 ]
 
 { #category : #'topic-reading' }
@@ -123,13 +124,13 @@ PhaROSTransformationNodelet >> tfcallback [
 { #category : #'topic-reading' }
 PhaROSTransformationNodelet >> transformBetween: aFrameID and: anOtherFrameID [
 	self configureTfCallback.
-	^ (self frame: aFrameID ) poseRelativeTo:  (self frame: anOtherFrameID)
+	^ (framesContainer frame: aFrameID ) poseRelativeTo:  (self frame: anOtherFrameID)
 ]
 
 { #category : #'topic-reading' }
 PhaROSTransformationNodelet >> transformBetween: aPosition of: aFrameID  to: anOtherFrameID [
 	self configureTfCallback.
-	^ (self frame: aFrameID ) convert: aPosition to: (self frame: anOtherFrameID).
+	^ (framesContainer frame: aFrameID ) convert: aPosition to: (self frame: anOtherFrameID).
 ]
 
 { #category : #'topic-writing' }
@@ -140,8 +141,8 @@ PhaROSTransformationNodelet >> writerFor: aFrame [
 { #category : #'topic-writing' }
 PhaROSTransformationNodelet >> writerFor: aFrameID withParent: aParentFrameID [
 	 | frame parent |
-	frame :=  container at: aFrameID.
-	parent := container at: aParentFrameID.
+	frame :=  framesContainer at: aFrameID.
+	parent := framesContainer at: aParentFrameID.
 	
 	frame parent ifNil: [ frame parent: parent ].
 	
