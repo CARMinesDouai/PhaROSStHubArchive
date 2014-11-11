@@ -57,7 +57,7 @@ PhaROSMoveBaseClient class >> statusTopicType [
 	^ 'actionlib_msgs/GoalStatusArray'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSMoveBaseClient >> cancelGoal: aGoal [
 	cancelGoal send: [ : msg |
 		msg id: aGoal id.
@@ -65,90 +65,115 @@ PhaROSMoveBaseClient >> cancelGoal: aGoal [
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 PhaROSMoveBaseClient >> configure: aPackage [
 	
+	self consumeCompressedFeedbackFor: aPackage.
+	self consumeStatusFor: aPackage.
+	
+	self initializeMovebaseGoalPublisherFor: aPackage.
+	self initializeCancelGoalPublisherFor: aPackage.
+	
+]
+
+{ #category : #'topic-subscription' }
+PhaROSMoveBaseClient >> consumeCompressedFeedbackFor: aPackage [
+
 	(aPackage rosnode buildConnectionFor: PhaROSMoveBaseClient feedbackTopic) 
 		typedAs: PhaROSMoveBaseClient feedbackTopicType;
 		for: [ : msg | self feedback: msg ] ;
-		connect.
+		connect.	
 	
+]
+
+{ #category : #'topic-subscription' }
+PhaROSMoveBaseClient >> consumeStatusFor: aPackage [
+		
 	(aPackage rosnode buildConnectionFor: PhaROSMoveBaseClient statusTopic) 
 		typedAs: PhaROSMoveBaseClient statusTopicType;
 		for: [ : msg | self status: msg ] ; 
 		connect.
-	
-	movebaseGoal := aPackage rosnode topicPublisher: PhaROSMoveBaseClient goalTopic  typedAs: PhaROSMoveBaseClient goalTopicType. 
-	cancelGoal := aPackage rosnode topicPublisher: PhaROSMoveBaseClient cancelGoalTopic  typedAs: PhaROSMoveBaseClient cancelGoalTopicType. 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSMoveBaseClient >> currentPosition [
 	^ currentPosition 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'private actions' }
 PhaROSMoveBaseClient >> feedback: aMoveBaseFeedback [
-
-	currentPosition := (PhaROSPose fromGeometry_msgsPose: aMoveBaseFeedback feedback base_position pose).
-	self registerStatus: aMoveBaseFeedback status.	
-
+	currentPosition := PhaROSPose fromGeometry_msgsPose: aMoveBaseFeedback feedback base_position pose.
+	self registerStatus: aMoveBaseFeedback status
 ]
 
-{ #category : #'as yet unclassified' }
-PhaROSMoveBaseClient >> get: aGoalID [
-	^ goals at: aGoalID ifAbsent: [ nil ]
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #'topic-subscription' }
 PhaROSMoveBaseClient >> goTo: aPose [
-	^ self goToGoal: ((PhaROSMoveBaseGoal for: aPose) stamp: PhaROSTimestamp now; yourself)  .
+	^ self
+		goToGoal:
+			((PhaROSMoveBaseGoal for: aPose)
+				stamp: PhaROSTimestamp now;
+				yourself)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'topic-publishing' }
 PhaROSMoveBaseClient >> goToGoal: aGoal [
 	goals at: aGoal id put: aGoal.
 	aGoal client: self.
-	reachedGoals := reachedGoals +1.
-	movebaseGoal send: [ : msg | 
-		| stmp |
-		msg header frame_id: '/map'.
-		msg goal_id id: aGoal id.
-		msg goal_id stamp: aGoal stamp.
-		  
-		msg goal target_pose header frame_id: '/map'.
-		msg goal target_pose pose: aGoal destination asGeometry_msgsPose.
-	].
-
-	^ aGoal.
+	reachedGoals := reachedGoals + 1.
+	movebaseGoal
+		send: [ :msg | 
+			msg header frame_id: '/map'.
+			msg goal_id id: aGoal id.
+			msg goal_id stamp: aGoal stamp.
+			msg goal target_pose header frame_id: '/map'.
+			msg goal target_pose pose: aGoal destination asGeometry_msgsPose ].
+	^ aGoal
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 PhaROSMoveBaseClient >> initialize [ 
 	currentPosition := PhaROSPose zero.
 	goals := Dictionary new.
 	reachedGoals := 0.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'topic-publishing' }
+PhaROSMoveBaseClient >> initializeCancelGoalPublisherFor: aPackage [
+
+	cancelGoal := aPackage rosnode
+		topicPublisher: PhaROSMoveBaseClient cancelGoalTopic
+		typedAs: PhaROSMoveBaseClient cancelGoalTopicType
+]
+
+{ #category : #'topic-publishing' }
+PhaROSMoveBaseClient >> initializeMovebaseGoalPublisherFor: aPackage [
+	
+	movebaseGoal := aPackage rosnode
+		topicPublisher: PhaROSMoveBaseClient goalTopic
+		typedAs: PhaROSMoveBaseClient goalTopicType
+]
+
+{ #category : #accessing }
 PhaROSMoveBaseClient >> reachedGoals [
-^reachedGoals
+	^ reachedGoals
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSMoveBaseClient >> registerStatus: aGoalStatus [
-	(self get: aGoalStatus goal_id id) ifNotNil: [: goal | 
-		goal status: aGoalStatus status.
-		goal text: aGoalStatus text.	
-	].
+	goals
+		at: aGoalStatus goal_id id
+		ifPresent: [ :goal | 
+			goal status: aGoalStatus status.
+			goal text: aGoalStatus text ]
+		ifAbsent: [ 	"ignore error, do nothing"  ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #removing }
 PhaROSMoveBaseClient >> remove: aGoal [
 	goals removeKey: aGoal id ifAbsent: [].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSMoveBaseClient >> status: goalStatusArray [
 	
 	goalStatusArray status_list do: [

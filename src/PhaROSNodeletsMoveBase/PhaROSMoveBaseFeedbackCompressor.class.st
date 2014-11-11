@@ -15,9 +15,17 @@ Class {
 
 { #category : #'initialize-release' }
 PhaROSMoveBaseFeedbackCompressor >> configure [
+	self consumeFeedback.
+	
+]
+
+{ #category : #'topic-subscription' }
+PhaROSMoveBaseFeedbackCompressor >> consumeFeedback [
+
 	feedbackSubscribedTopic := (self controller node buildConnectionFor: PhaROSMoveBaseClient realFeedbackTopic)
 		typedAs: PhaROSMoveBaseClient feedbackTopicType;
 		for: [ :msg | self relay: msg ]
+	
 ]
 
 { #category : #'topic-publishing' }
