@@ -191,7 +191,7 @@ PureROSRobulabNodelet >> locationRotation [
 
 ]
 
-{ #category : #consume }
+{ #category : #'topic-subscription' }
 PureROSRobulabNodelet >> poseStamped [
 	^( self rosnode buildConnectionFor:  PureROSRobulabNodelet poseStampedTopicForConsume )typedAs: PureROSRobulabNodelet poseStampedTopicType;  adapted: #pose \> PhaROSPose  ; connect.
 ]

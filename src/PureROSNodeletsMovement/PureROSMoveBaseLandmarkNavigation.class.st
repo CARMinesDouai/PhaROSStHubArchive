@@ -13,12 +13,12 @@ PureROSMoveBaseLandmarkNavigation class >> baseLandmarksTopicName [
 	^ '/stargazer/baselink'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'topic-consume' }
 PureROSMoveBaseLandmarkNavigation >> baseLandmark [
 	^ self rosnode topicPublisher: PureROSMoveBaseLandmarkNavigation baseLandmarksTopicName typedAs: SGROSStarGazerNodelet absoluteLandmarkTopicType.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'topic-subscription' }
 PureROSMoveBaseLandmarkNavigation >> baseLandmarks [
 
 	^ (self rosnode buildConnectionFor: PureROSMoveBaseLandmarkNavigation baseLandmarksTopicName  ) 
@@ -27,7 +27,7 @@ PureROSMoveBaseLandmarkNavigation >> baseLandmarks [
 					
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'topic-consume' }
 PureROSMoveBaseLandmarkNavigation >> goTo: anEntity [
 	| destinationPose |
 	
@@ -37,7 +37,7 @@ PureROSMoveBaseLandmarkNavigation >> goTo: anEntity [
 	^ currentGoal.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'topic-consume' }
 PureROSMoveBaseLandmarkNavigation >> robulab:  aRobulabNodelet [
 	robulab := aRobulabNodelet.
 	robulab nodelets use: PhaROSSpaceEventManager as: #spaceEvents.
