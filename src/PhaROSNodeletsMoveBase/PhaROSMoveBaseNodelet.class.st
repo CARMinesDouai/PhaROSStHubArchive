@@ -50,7 +50,7 @@ PhaROSMoveBaseNodelet class >> simpleGoalTopicType [
 	^ 'geometry_msgs/PoseStamped'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSMoveBaseNodelet >> client [
 
 	^ client
@@ -70,7 +70,7 @@ PhaROSMoveBaseNodelet >> goRandomOf: anArrayOfPoses while: aBlock [
 		start
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSMoveBaseNodelet >> simpleGoal [
 
 	^ simpleGoal
@@ -80,7 +80,7 @@ PhaROSMoveBaseNodelet >> simpleGoal [
 				typedAs: PhaROSMoveBaseNodelet simpleGoalTopicType ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSMoveBaseNodelet >> simpleGoal: aPose [
 
 	^ self simpleGoal send: [: msg | 

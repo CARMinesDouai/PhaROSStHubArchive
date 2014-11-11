@@ -12,12 +12,12 @@ Class {
 	#category : #PhaROSNodeletsMoveBase
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSMoveBaseRandomGoals >> client: aClient [
 	client := aClient 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'setting run state' }
 PhaROSMoveBaseRandomGoals >> complete [
 	self statsFor: currentGoal.
 	(while cull: self)
@@ -27,37 +27,38 @@ PhaROSMoveBaseRandomGoals >> complete [
 		ifFalse: [ self halt: 'END :)' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 PhaROSMoveBaseRandomGoals >> initialize [ 
 	stats := Dictionary new
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSMoveBaseRandomGoals >> poses: anArrayOfPoses [ 
-	self assert: anArrayOfPoses size >1. 
+	self assert: anArrayOfPoses size > 1. 
 	poses := anArrayOfPoses 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSMoveBaseRandomGoals >> start [
 	| rnd |
 	
-	[ rnd := (Random new nextInt: poses size)] doWhileTrue: [ rnd = currentPoseIDX ].
+	[ rnd := Random new nextInt: poses size ] doWhileTrue: [ rnd = currentPoseIDX ].
 	currentPoseIDX := rnd.
-	
-	currentGoal := client goTo: (poses at:currentPoseIDX).
-	
+
+	currentGoal := client goTo: (poses at: currentPoseIDX).	
 	currentGoal onSucceeded: [self complete].
 	currentGoal onAborted: [self complete].
 	currentGoal onRejected: [self complete].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSMoveBaseRandomGoals >> statsFor: aGoal [
-	^ (stats at: aGoal destination ifAbsentPut: [ OrderedCollection new ]) add: aGoal statusText
+	^ (stats at: aGoal destination 
+				ifAbsentPut: [ OrderedCollection new ]) 
+			add: aGoal statusText
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSMoveBaseRandomGoals >> while: aBLock [ 
 	while := aBLock 
 ]
