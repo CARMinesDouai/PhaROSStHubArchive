@@ -220,10 +220,10 @@ ConfigurationOfPhaROSCommander >> version104: spec [
 	
 	spec for: #common do: [ 
 		spec blessing: #'v0.1 - after moving most of PhaROS to sthub'.
-		spec author: 'LucFabresse'.
-		spec timestamp: '7/11/2014 12:07'.
+		spec author: 'NouryBouraqadi'.
+		spec timestamp: '12/11/2014 12:07'.
 		spec project: 'ROSCatkinDeployer' with: '1.0-baseline'. "bleeding..."
-		spec package: 'PhaROSCommander' with: 'PhaROSCommander-NouryBouraqadi.69'.
+		spec package: 'PhaROSCommander' with: 'PhaROSCommander-NouryBouraqadi.70'.
 		spec package: 'PhaROSCommanderTests' with: 'PhaROSCommanderTest-SantiagoBragangolo.1'.
 	]
 ]
