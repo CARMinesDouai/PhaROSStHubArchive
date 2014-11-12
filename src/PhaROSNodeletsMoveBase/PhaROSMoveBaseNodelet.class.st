@@ -40,12 +40,12 @@ PhaROSMoveBaseNodelet class >> dependencies [
 	^ [ : spec | spec movebase ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #topics }
 PhaROSMoveBaseNodelet class >> simpleGoalTopic [
 	^ '/move_base_simple/goal'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #types }
 PhaROSMoveBaseNodelet class >> simpleGoalTopicType [
 	^ 'geometry_msgs/PoseStamped'
 ]
