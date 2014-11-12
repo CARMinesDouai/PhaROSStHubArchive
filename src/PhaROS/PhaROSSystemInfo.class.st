@@ -34,6 +34,11 @@ PhaROSSystemInfo class >> indigo [
 	^'/opt/ros/indigo/bin/'
 ]
 
+{ #category : #initialization }
+PhaROSSystemInfo class >> initialize [
+	self instance distro
+]
+
 { #category : #accessing }
 PhaROSSystemInfo class >> instance [
 
@@ -85,7 +90,15 @@ PhaROSSystemInfo >> deleteParameter: aParam [
 { #category : #accessing }
 PhaROSSystemInfo >> distro [
 
-	 ^ distro ifNil:  [ distro := ((OSProcess thisOSProcess waitForCommandOutput: 'rosversion -d') subStrings: String lf) first ].
+	 ^ distro ifNil:  [ distro := self distroFromSystem ].
+]
+
+{ #category : #accessing }
+PhaROSSystemInfo >> distroFromSystem [
+	| distroFromSystem |
+	distroFromSystem := OSProcess thisOSProcess waitForCommandOutput: 'rosversion -d'.
+	distroFromSystem ifEmpty: [ ^nil ].
+	^(distroFromSystem subStrings: String lf) first
 ]
 
 { #category : #services }
