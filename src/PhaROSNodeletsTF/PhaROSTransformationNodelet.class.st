@@ -16,24 +16,23 @@ Class {
 	#superclass : #PhaROSStaticNodelet,
 	#instVars : [
 		'tfWriter',
-		'tfs',
-		'tfIn',
-		'framesContainer'
+		'framesContainer',
+		'tfInTopic'
 	],
 	#category : #PhaROSNodeletsTF
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #topics }
+PhaROSTransformationNodelet class >> tfInTopic [
+	^ '/pharos/in/tf'
+]
+
+{ #category : #topics }
 PhaROSTransformationNodelet class >> tfOutTopic [
 	^ '/pharos/out/tf'
 ]
 
-{ #category : #'as yet unclassified' }
-PhaROSTransformationNodelet class >> tfTopic [
-	^ '/pharos/in/tf'
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #types }
 PhaROSTransformationNodelet class >> tfTopicType [
 	^ 'tf/tfMessage'
 ]
@@ -57,7 +56,7 @@ PhaROSTransformationNodelet >> betweenFixedFrameAnd: aFrameID [
 
 { #category : #package }
 PhaROSTransformationNodelet >> configureTfCallback. [
-	self tf for: self tfcallback.
+	self tfInTopic for: self tfcallback.
 ]
 
 { #category : #'topic-reading' }
@@ -69,7 +68,6 @@ PhaROSTransformationNodelet >> distanceBetween: aFrameID and: anOtherFrameID [
 { #category : #finalization }
 PhaROSTransformationNodelet >> finalize [
 	tfWriter := nil.
-	 tfs := nil .
 	framesContainer finalize.
 	framesContainer := nil.
 ]
@@ -91,19 +89,19 @@ PhaROSTransformationNodelet >> process: aMessage from: aChn [
 	framesContainer process: aMessage from: aChn
 ]
 
-{ #category : #'topic-reading' }
-PhaROSTransformationNodelet >> tf [
-	^ tfIn ifNil: [
-		tfIn :=  (self rosnode buildConnectionFor: PhaROSTransformationNodelet tfTopic)
-		typedAs: 'tf/tfMessage'; 
-		connect 
-	]. 
-	
-]
-
 { #category : #'topic-writing' }
 PhaROSTransformationNodelet >> tf: aMessageConfiguration [
 	^ self tfWriter send: aMessageConfiguration.
+]
+
+{ #category : #'topic-reading' }
+PhaROSTransformationNodelet >> tfInTopic [
+	^ tfInTopic
+		ifNil: [ 
+			tfInTopic := (self rosnode buildConnectionFor: PhaROSTransformationNodelet tfInTopic)
+				typedAs: 'tf/tfMessage';
+				connect 
+		]
 ]
 
 { #category : #package }

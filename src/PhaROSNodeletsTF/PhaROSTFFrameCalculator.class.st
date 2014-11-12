@@ -24,7 +24,7 @@ PhaROSTFFrameCalculator >> accumulateToTarget: aFrame [
     targetToTopQuaternion := aFrame pose orientation * targetToTopQuaternion.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSTFFrameCalculator >> fullPath [
     | quat vec |
     quat := targetToTopQuaternion inverse.
@@ -36,7 +36,7 @@ PhaROSTFFrameCalculator >> fullPath [
     ^ PhaROSPose position: resultVector orientation: resultQuaternion.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 PhaROSTFFrameCalculator >> initialize [ 
 	sourceToTopQuaternion := PhaROSQuaternion zero.
 	sourceToTopVector := PhaROSPosition zero.
