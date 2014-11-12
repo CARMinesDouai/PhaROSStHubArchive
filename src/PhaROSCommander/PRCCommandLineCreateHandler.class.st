@@ -370,10 +370,10 @@ category: pack,'-Nodelets'.
 	[
 		1 second wait.
 		publisher send:[ : string | 
-			string data: ''You are receiving data :-)'' 
+			string data: ''You are receiving data :-)''.
 			self log: ''ping''
 		].
-		self long: ''  pong''
+		self log: ''  pong''
 	] repeat.
 ' classified: 'scripts'.
 (Smalltalk at: pack asSymbol) compile: 'scriptTopicSubscribingExample
