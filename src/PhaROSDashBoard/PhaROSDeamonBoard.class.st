@@ -2,7 +2,8 @@ Class {
 	#name : #PhaROSDeamonBoard,
 	#superclass : #RTBuilder,
 	#instVars : [
-		'model',
+		'nodes',
+		'topics',
 		'refreshTime'
 	],
 	#classVars : [
@@ -61,9 +62,12 @@ PhaROSDeamonBoard >> changeRefreshTime: anObject [
 { #category : #'as yet unclassified' }
 PhaROSDeamonBoard >> initialize [
 	super initialize.
-	model := PhaROSModel instance.
+	nodes := OrderedCollection new.
+	topics := OrderedCollection new.
+	refreshTime := 1.
 	
-	refreshTime := 2.
+	nodes := PhaROSSystemInfo instance nodeList.
+	topics := PhaROSSystemInfo instance topicList.
 	
 	processes := OrderedCollection new.
 	self initializeProcesses.
@@ -74,32 +78,28 @@ PhaROSDeamonBoard >> initialize [
 { #category : #'as yet unclassified' }
 PhaROSDeamonBoard >> initializeProcesses [
 
-	|link|
 	processes do:[:e | e terminate].
 	processes := OrderedCollection new.
 	
 	processes add: (
 		[
-			model nodes: PhaROSSystemInfo instance nodeList.
-			model topics: PhaROSSystemInfo instance topicList.
-			link := Set new.	
-			model nodes do:[:n |
-				link addAll: (model extractNodeInfo: n).
-			].
-			model nodeToTopicLink: link.
-		] valueWithInterval: (refreshTime * 1000) milliseconds)
+			nodes := PhaROSSystemInfo instance nodeList.
+			topics := PhaROSSystemInfo instance topicList.
+		] valueWithInterval: refreshTime second)
 	
 	
 ]
 
 { #category : #accessing }
-PhaROSDeamonBoard >> model [
-	^ model
+PhaROSDeamonBoard >> nodes [
+	
+	^ nodes
 ]
 
 { #category : #accessing }
-PhaROSDeamonBoard >> model: anObject [
-	model := anObject
+PhaROSDeamonBoard >> nodes: anObject [
+	
+	nodes := anObject
 ]
 
 { #category : #accessing }
@@ -112,4 +112,16 @@ PhaROSDeamonBoard >> refreshTime [
 PhaROSDeamonBoard >> refreshTime: anObject [
 	
 	refreshTime := anObject
+]
+
+{ #category : #accessing }
+PhaROSDeamonBoard >> topics [
+	
+	^ topics
+]
+
+{ #category : #accessing }
+PhaROSDeamonBoard >> topics: anObject [
+	
+	topics := anObject
 ]
