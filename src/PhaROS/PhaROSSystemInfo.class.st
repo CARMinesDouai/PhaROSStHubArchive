@@ -34,11 +34,6 @@ PhaROSSystemInfo class >> indigo [
 	^'/opt/ros/indigo/bin/'
 ]
 
-{ #category : #initialization }
-PhaROSSystemInfo class >> initialize [
-	self instance distro
-]
-
 { #category : #accessing }
 PhaROSSystemInfo class >> instance [
 
@@ -90,15 +85,7 @@ PhaROSSystemInfo >> deleteParameter: aParam [
 { #category : #accessing }
 PhaROSSystemInfo >> distro [
 
-	 ^ distro ifNil:  [ distro := self distroFromSystem ].
-]
-
-{ #category : #accessing }
-PhaROSSystemInfo >> distroFromSystem [
-	| distroFromSystem |
-	distroFromSystem := OSProcess thisOSProcess waitForCommandOutput: 'rosversion -d'.
-	distroFromSystem ifEmpty: [ ^nil ].
-	^(distroFromSystem subStrings: String lf) first
+	 ^ distro ifNil:  [ distro :=  'indigo' ].
 ]
 
 { #category : #services }
@@ -219,22 +206,16 @@ PhaROSSystemInfo >> parameterList [
 { #category : #nodes }
 PhaROSSystemInfo >> pingAllNodes [
 
-	^ self pingAllNodesTrace subStrings: String lf.
-]
-
-{ #category : #nodes }
-PhaROSSystemInfo >> pingAllNodesTrace [
-
 	|lst|
 	lst := OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rosnode ping -a').
-	^ lst
+	^ lst subStrings: String lf.
 ]
 
 { #category : #nodes }
 PhaROSSystemInfo >> pingNode: aNodeName [
 
 	|lst|
-	lst := OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rosnode ping -c 1 ', aNodeName).
+	lst := OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rosnode ping -c 10 ', aNodeName).
 	^ lst subStrings: String lf.
 ]
 

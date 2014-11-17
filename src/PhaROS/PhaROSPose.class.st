@@ -13,47 +13,32 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSPose class >> fromGeometry_msgsPose: aPose [
-	^ self 
-		position: (PhaROSPosition from: aPose position) 
-		orientation: (PhaROSQuaternion from: aPose orientation)
+	^ self position: (PhaROSPosition from: aPose position) orientation: (PhaROSQuaternion from: aPose orientation)
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSPose class >> fromTransformation: aTransformation [
-	^ self
-		position: (PhaROSPosition fromTranslation: aTransformation translation)
-		orientation: (PhaROSQuaternion fromRotation: aTransformation rotation)
+	^self position: ( PhaROSPosition fromTranslation: aTransformation translation ) orientation: (PhaROSQuaternion fromRotation: aTransformation rotation )
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSPose class >> fromTurtlesimPose: aPose [
-	^ self 
-		position: (PhaROSPosition x: aPose x y: aPose y z: 0.0) 
-		orientation: (PhaROS2DOrientation z: aPose theta)
+	^ self position: (PhaROSPosition x: aPose x y: aPose y z: 0.0) orientation: (PhaROS2DOrientation z: aPose theta).
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSPose class >> position: aPosition orientation: anOrientation [
-	^ self new
-		position: aPosition;
-		orientation: anOrientation;
-		yourself
+	^ self new  position: aPosition; orientation: anOrientation; yourself .
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSPose class >> x: anX y: anY o: aZOrientation [
-	^ self
-		x: anX
-		y: anY
-		z: 0.0
-		o: aZOrientation
+	^ self x: anX y: anY z: 0.0 o: aZOrientation
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSPose class >> x: anX y: anY z: aZ o: aZOrientation [
-	^ self 
-		position: (PhaROSPosition x: anX y: anY z: aZ) 
-		orientation: (PhaROS2DOrientation z: aZOrientation)
+	^ self position: (PhaROSPosition x: anX y: anY z: aZ )  orientation:( PhaROS2DOrientation z: aZOrientation).
 ]
 
 { #category : #'as yet unclassified' }

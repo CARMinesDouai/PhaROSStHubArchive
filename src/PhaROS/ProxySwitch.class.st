@@ -15,14 +15,6 @@ Class {
 }
 
 { #category : #public }
-ProxySwitch class >> execute [
-
-	NetworkSystemSettings useHTTPProxy
-		ifTrue:  [ self off ]
-		ifFalse: [ self on ]
-]
-
-{ #category : #public }
 ProxySwitch class >> off [
 
 	NetworkSystemSettings useHTTPProxy: false.

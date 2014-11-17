@@ -162,7 +162,7 @@ PhaROSTransport >> processServiceRequest: aServiceID for: aCallerID with: aSocke
 
 { #category : #publishing }
 PhaROSTransport >> publisher: aTopicID typedAs: aTypeID [
-	self assert: aTypeID isValidROSName.
+	
 	^ ((master lookupTopic: aTopicID  typedAs: aTypeID) publishingChannelFor: node throught: self) publisher. 
 ]
 
