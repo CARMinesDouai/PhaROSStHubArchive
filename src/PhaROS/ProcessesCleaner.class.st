@@ -30,3 +30,9 @@ ProcessesCleaner class >> clean [
 	pb updateProcessList.
 	self inform: 'PhaROS processes were terminated.'
 ]
+
+{ #category : #'as yet unclassified' }
+ProcessesCleaner class >> execute [ 
+	
+	self clean
+]
