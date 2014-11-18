@@ -27,7 +27,6 @@ PhaROSFrameRelativePoseWriter >> frame: aFrame [
 { #category : #'as yet unclassified' }
 PhaROSFrameRelativePoseWriter >> pose: aPhaROSPose [
 	frame pose: aPhaROSPose. 
-	frame stamp: DateAndTime now.
 	
 	tfnodelet tf: [ : aTfMessage |
 
