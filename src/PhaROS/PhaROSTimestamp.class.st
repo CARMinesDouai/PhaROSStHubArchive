@@ -87,7 +87,7 @@ PhaROSTimestamp >> seconds: anAmountOfSeconds  nanoSeconds: anAmountOfNSeconds [
 
 { #category : #converting }
 PhaROSTimestamp >> secondsUTC [
-	^ timestamp asUnixTime - (timestamp offset asSeconds).
+	^ timestamp asUnixTime
 ]
 
 { #category : #accessing }
