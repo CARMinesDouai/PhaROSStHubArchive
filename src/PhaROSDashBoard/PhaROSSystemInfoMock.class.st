@@ -1,3 +1,6 @@
+"
+I emulate PhaROSSystemInfo behavior for testing purposes.
+"
 Class {
 	#name : #PhaROSSystemInfoMock,
 	#superclass : #Object,

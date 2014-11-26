@@ -1,11 +1,10 @@
 "
-I represent the node created when you execute
-
-'rosrun turtlesim turtlesim_node'
+I am a fake node that emulate turtlesim node.
+I exist for testing purposes.
 "
 Class {
 	#name : #PDTurtlesimNode,
-	#superclass : #Object,
+	#superclass : #PDNode,
 	#instVars : [
 		'isAlive'
 	],
@@ -54,7 +53,7 @@ Connections:
 '
 ]
 
-{ #category : #initialize }
+{ #category : #'as yet unclassified' }
 PDTurtlesimNode >> initialize [
 
 	super initialize.
@@ -62,7 +61,7 @@ PDTurtlesimNode >> initialize [
 	isAlive := true.
 ]
 
-{ #category : #accessing }
+{ #category : #'as yet unclassified' }
 PDTurtlesimNode >> isAlive [
 	^ isAlive
 ]

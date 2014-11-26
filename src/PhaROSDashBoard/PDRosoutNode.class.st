@@ -1,9 +1,11 @@
 "
-I represent the node '/rosout'.
+I am a fake node that emulate rosout node.
+I exist for testing purposes.
+ 
 "
 Class {
 	#name : #PDRosoutNode,
-	#superclass : #Object,
+	#superclass : #PDNode,
 	#category : #'PhaROSDashBoard-Mocks'
 }
 
