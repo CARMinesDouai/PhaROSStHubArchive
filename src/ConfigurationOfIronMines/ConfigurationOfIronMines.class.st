@@ -121,12 +121,12 @@ ConfigurationOfIronMines >> baseline10: spec [
 
 	spec for: #'common' do: [
 		spec blessing: #'baseline'.
-		spec repository: 'http://smalltalkhub.com/mc/maxmattone/ironmines/main'.
+		spec repository: 'http://smalltalkhub.com/mc/CAR/Ironmines/main'.
 		spec project: 'PhaROS' with: [
 				spec
 					className: #ConfigurationOfPhaROS;
-					versionString: '1.1-Beta1';
-					loads: #('PhaROS' 'PhaROSControllers' 'PhaROSNodeletsTF' );
+					versionString: #'bleedingEdge';
+					loads: #('PhaROS' 'PhaROSControllers' 'PhaROSNodeletsTF');
 					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS' ].
 		spec 
 			package: 'IronMines' with: [
@@ -164,5 +164,29 @@ ConfigurationOfIronMines >> project [
 		project 
 	].
 
+
+]
+
+{ #category : #'symbolic versions' }
+ConfigurationOfIronMines >> stable: spec [
+	<symbolicVersion: #'stable'>
+
+	spec for: #'common' version: '1.0'.
+
+]
+
+{ #category : #versions }
+ConfigurationOfIronMines >> version10: spec [
+	<version: '1.0' imports: #('1.0-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'version 1.0'.
+		spec author: 'NouryBouraqadi'.
+		spec timestamp: '11/27/2014 11:53'.
+		spec project: 'PhaROS' with: '1.1-Beta1'.
+		spec 
+			package: 'IronMines' with: 'IronMines';
+			package: 'IronMinesTest' with: 'IronMinesTest'. ].
 
 ]
