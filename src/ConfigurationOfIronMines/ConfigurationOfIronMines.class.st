@@ -117,28 +117,34 @@ ConfigurationOfIronMines class >> unloadMetacello [
 
 { #category : #baselines }
 ConfigurationOfIronMines >> baseline10: spec [
-	<version:'1.0-baseline'>
-	"BASE LINE WITHOUT KOM"
-	spec for: #common do: [
-			spec blessing: #baseline.
-			spec repository: 'http://smalltalkhub.com/mc/maxmattone/ironmines/main'.		
-			spec project: 'PhaROS' with: [
-				spec 
-					className: 'ConfigurationOfPhaROS';
-					file: 'ConfigurationOfPhaROS' ;
-					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS'; 
-					versionString: #bleedingEdge;
-					loads: #('PhaROS' 'PhaROSControllers' 'PhaROSNodeletsTF' ) 
-			].
-			spec package: 'IronMines' with: [ spec requires: #('PhaROS' ). ].
-		      spec package: 'IronMinesTest' with: [  spec requires: #('IronMines' ). ].
-		
-			spec group: 'default'  with: #( 'IronMines' 'IronMinesTest' ).
-			spec group: 'core'  with: #( 'IronMines' ).
-			spec group: 'core+test'  with: #( 'IronMines' 'IronMinesTest' ).
-			
-	].
+	<version: '1.0-baseline'>
 
+	spec for: #'common' do: [
+		spec blessing: #'baseline'.
+		spec repository: 'http://smalltalkhub.com/mc/maxmattone/ironmines/main'.
+		spec project: 'PhaROS' with: [
+				spec
+					className: #ConfigurationOfPhaROS;
+					versionString: '1.1-Beta1';
+					loads: #('PhaROS' 'PhaROSControllers' 'PhaROSNodeletsTF' );
+					repository: 'http://car.mines-douai.fr/squeaksource/PhaROS' ].
+		spec 
+			package: 'IronMines' with: [
+				spec requires: #('PhaROS' ). ];
+			package: 'IronMinesTest' with: [
+				spec requires: #('IronMines' ). ].
+		spec 
+			group: 'default' with: #('IronMines' 'IronMinesTest' );
+			group: 'core' with: #('IronMines' );
+			group: 'core+test' with: #('IronMines' 'IronMinesTest' ). ].
+
+]
+
+{ #category : #'symbolic versions' }
+ConfigurationOfIronMines >> development: spec [
+	<symbolicVersion: #'development'>
+
+	spec for: #'common' version: '1.0-baseline'.
 
 ]
 
