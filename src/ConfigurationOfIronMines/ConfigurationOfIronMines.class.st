@@ -181,12 +181,12 @@ ConfigurationOfIronMines >> version10: spec [
 
 	spec for: #'common' do: [
 		spec blessing: #'stable'.
-		spec description: 'version 1.0'.
+		spec description: 'version 1.0 used for competition 2014'.
 		spec author: 'NouryBouraqadi'.
 		spec timestamp: '11/27/2014 11:53'.
 		spec project: 'PhaROS' with: '1.1-Beta1'.
 		spec 
-			package: 'IronMines' with: 'IronMines';
-			package: 'IronMinesTest' with: 'IronMinesTest'. ].
+			package: 'IronMines' with: 'IronMines-pharos.185';
+			package: 'IronMinesTest' with: 'IronMinesTest-pharos.13'. ].
 
 ]
