@@ -151,3 +151,28 @@ ConfigurationOfReusableBricks >> project [
 		project loadType: #linear. "change to #atomic if desired"
 		project ]
 ]
+
+{ #category : #'symbolic versions' }
+ConfigurationOfReusableBricks >> stable: spec [
+	<symbolicVersion: #'stable'>
+
+	spec for: #'common' version: '1.0'.
+
+]
+
+{ #category : #versions }
+ConfigurationOfReusableBricks >> version10: spec [
+	<version: '1.0' imports: #('0.1-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'version 1.0'.
+		spec author: 'NouryBouraqadi'.
+		spec timestamp: '11/29/2014 18:47'.
+		spec 
+			package: 'Equals' with: 'Equals-NouryBouraqadi.3';
+			package: 'Concurrency' with: 'Concurrency-NouryBouraqadi.11';
+			package: 'BooleanExpressions' with: 'BooleanExpressions-NouryBouraqadi.1';
+			package: #StateMachine with: 'StateMachine-NouryBouraqadi.1'. ].
+
+]
