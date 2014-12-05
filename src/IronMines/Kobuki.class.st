@@ -203,6 +203,11 @@ Kobuki >> resetOdom [
 ]
 
 { #category : #accessing }
+Kobuki >> resetVelocity [
+	self velocityLin: 0 ang: 0
+]
+
+{ #category : #accessing }
 Kobuki >> setCanonPublisher: anObject [
 	canonPublisher := anObject
 ]
