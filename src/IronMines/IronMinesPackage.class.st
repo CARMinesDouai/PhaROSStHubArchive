@@ -386,3 +386,12 @@ IronMinesPackage >> scriptSomething [
 	self halt.
 	PhaROSManifest cleanUp .
 ]
+
+{ #category : #scripts }
+IronMinesPackage >> scriptTest [
+	| kob |
+	masterUrl := self masterURL.
+	master := PhaROSMaster url: masterUrl.
+	kob := self controller nodelets kobuki kobuki .
+
+]
