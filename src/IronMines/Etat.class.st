@@ -58,7 +58,7 @@ Etat >> kobuki: anObject [
 
 { #category : #'lin&ang' }
 Etat >> linSpeedIncrement [
-^self kobuki speedManager linSpeedIncrementDefaut.
+	^ self kobuki speedManager linSpeedIncrementDefaut
 ]
 
 { #category : #'lin&ang' }

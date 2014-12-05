@@ -178,14 +178,12 @@ EtatFactory class >> createParcoursDemoGauche2 [
 
 { #category : #'as yet unclassified' }
 EtatFactory class >> createParcoursTest1 [
-"parcours dexemple pour tester le robot"
+	"parcours dexemple pour tester le robot"
+
 	| etat |
-	etat := EtatFactory
-				createGoTo: 0.5 @ 0
-				next:
-					(EtatFactory
-						createGoTo: 0.5 @ 0.36
-						next: (EtatFactory createFinish)).
+	etat := EtatFactory createGoTo: 0.5 @ 0 
+	next: (EtatFactory createGoTo: 0.5 @ 0.66 
+	next: EtatFactory createFinish).
 	^ etat
 ]
 

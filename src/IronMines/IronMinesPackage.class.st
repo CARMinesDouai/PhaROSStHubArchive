@@ -298,7 +298,7 @@ IronMinesPackage >> buildController [
 		ctrl := PhaROSHandleController home.
 		ctrl nodelets use: PhaROSTransformationNodelet as: #transformation.
 		ctrl nodelets use: KobukiNodelet  as: #kobuki.
-		ctrl nodelets use: IMArduinoNodelet  as: #arduino.
+		"ctrl nodelets use: IMArduinoNodelet  as: #arduino"
 		^ ctrl
 ]
 

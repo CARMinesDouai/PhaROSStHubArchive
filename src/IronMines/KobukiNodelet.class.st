@@ -130,15 +130,15 @@ KobukiNodelet >> kobukiSansSonar [
 				connect.
 			(self controller node buildConnectionFor: '/odom')
 				typedAs: 'nav_msgs/Odometry';
-				for: [ :msg | kobuki odom: msg ];
+				for: [ :msg | self kobuki odom: msg ];
 				adapted: #pose \> #pose;
 				connect.
 				
-			(self controller node buildConnectionFor: KobukiNodelet startTriggerTopic)
+			"(self controller node buildConnectionFor: KobukiNodelet startTriggerTopic)
 				typedAs: KobukiNodelet startTriggerTopicType;
 				for: [ :msg | 
 					kobuki timerStart.
 					kobuki event:#onStartTrigger ];
 				connect.
-			kobuki changeEtat: KobukiNodelet EtatInitial new ]
+			kobuki changeEtat: KobukiNodelet EtatInitial new" ]
 ]
