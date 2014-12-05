@@ -107,19 +107,13 @@ Kobuki >> carte: aCarte [
 
 { #category : #etat }
 Kobuki >> changeEtat: anEtat [
-|ancienEtat|
-ancienEtat := self etat.
-
-
-self etat: anEtat .
-anEtat kobuki: self.
-self speedManager etat:anEtat.
-self etat action .
-
-
-ancienEtat ifNotNil:[ 
-	ancienEtat terminate.
-].
+	| ancienEtat |
+	ancienEtat := self etat.
+	self etat: anEtat.
+	anEtat kobuki: self.
+	self speedManager etat: anEtat.
+	self etat action.
+	ancienEtat ifNotNil: [ ancienEtat terminate ]
 ]
 
 { #category : #private }
@@ -161,9 +155,7 @@ self log: aSelector.
 
 { #category : #private }
 Kobuki >> fire [
-canonPublisher 
-		send: [ :m | 
-			m data: true ].
+	canonPublisher send: [ :m | m data: true ]
 ]
 
 { #category : #private }
@@ -200,11 +192,6 @@ Kobuki >> odom: anObject [
 { #category : #accessing }
 Kobuki >> resetOdom [
 	odomResetPublisher send: [:m | m]
-]
-
-{ #category : #accessing }
-Kobuki >> resetVelocity [
-	self velocityLin: 0 ang: 0
 ]
 
 { #category : #accessing }
@@ -287,6 +274,11 @@ Kobuki >> speedManager [
 		speedManager kobuki: self.
 	].
 	^speedManager.
+]
+
+{ #category : #accessing }
+Kobuki >> stop [
+	self velocityLin: 0 ang: 0
 ]
 
 { #category : #accessing }
