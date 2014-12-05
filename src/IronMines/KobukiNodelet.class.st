@@ -112,3 +112,33 @@ KobukiNodelet >> kobuki [
 				connect.
 			kobuki changeEtat: KobukiNodelet EtatInitial new ]
 ]
+
+{ #category : #'as yet unclassified' }
+KobukiNodelet >> kobukiSansSonar [
+	^ kobuki
+		ifNil: [ 
+			kobuki := Kobuki
+				for: (self controller node topicPublisher: KobukiNodelet velocityTopic typedAs: KobukiNodelet velocityTopicType)
+				and: (self controller node topicPublisher: KobukiNodelet odomResetTopic typedAs: KobukiNodelet odomResetTopicType)
+				and: (self controller node topicPublisher: KobukiNodelet canonTopic typedAs: KobukiNodelet canonTopicType)
+				and: (self controller node topicPublisher: KobukiNodelet soundTopic typedAs: KobukiNodelet soundTopicType).
+			(self controller node buildConnectionFor: KobukiNodelet bumperTopic)
+				typedAs: KobukiNodelet bumperTopicType;
+				for: [ :msg | 
+							self log: msg asString.
+							kobuki bumper: msg state ];
+				connect.
+			(self controller node buildConnectionFor: '/odom')
+				typedAs: 'nav_msgs/Odometry';
+				for: [ :msg | kobuki odom: msg ];
+				adapted: #pose \> #pose;
+				connect.
+				
+			(self controller node buildConnectionFor: KobukiNodelet startTriggerTopic)
+				typedAs: KobukiNodelet startTriggerTopicType;
+				for: [ :msg | 
+					kobuki timerStart.
+					kobuki event:#onStartTrigger ];
+				connect.
+			kobuki changeEtat: KobukiNodelet EtatInitial new ]
+]
