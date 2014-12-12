@@ -16,6 +16,11 @@ PhaROSPublisher class >> for: aChannel [
 ]
 
 { #category : #'as yet unclassified' }
+PhaROSPublisher >> channel [ 
+	^channel 
+]
+
+{ #category : #'as yet unclassified' }
 PhaROSPublisher >> channel: aChannel [ 
 	channel := aChannel 
 ]

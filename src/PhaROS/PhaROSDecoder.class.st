@@ -49,10 +49,11 @@ PhaROSDecoder >> nextEncodedDuration [
 
 { #category : #'as yet unclassified' }
 PhaROSDecoder >> nextEncodedFloat32 [
-	| n barray |
-	self verifyDataAvailability: (4 ).
-	^( Float fromIEEE32BitByteArray: (stream next:4)) roundUpTo: self minimumPrecision. 
-
+	| rawFloatValue |
+	self verifyDataAvailability: 4.
+	rawFloatValue := Float fromIEEE32BitByteArray: (stream next: 4).
+	(rawFloatValue isNaN) ifTrue: [ ^ rawFloatValue ].
+	^ rawFloatValue roundUpTo: self minimumPrecision
 ]
 
 { #category : #'as yet unclassified' }
