@@ -15,7 +15,7 @@ SpeedManager >> angSpeedIncrementDefaut [
 
 { #category : #minEtMax }
 SpeedManager >> angSpeedIncrementTurn [
-	^0.2
+	^0.12
 ]
 
 { #category : #minEtMax }
@@ -35,7 +35,7 @@ SpeedManager >> angSpeedMinimum [
 
 { #category : #minEtMax }
 SpeedManager >> angSpeedMinimumDefaut [
-	^0.4
+	^0.12
 ]
 
 { #category : #minEtMax }
@@ -75,7 +75,7 @@ kobuki := aKobuki.
 
 { #category : #minEtMax }
 SpeedManager >> linSpeedIncrementDefaut [
-	^0.01
+	^0.003
 ]
 
 { #category : #minEtMax }

@@ -56,14 +56,14 @@ EtatMoveForward >> detectionObstacle [
 
 { #category : #droiteObjectif }
 EtatMoveForward >> droiteNonFranchie [
-|nouvelleValeurDroiteObjectif produit|
-"on définit une ligne d'arrivée qui passe par le point objectif (dest) et qui est perpendiculaire à l'orientation de départ du robot et on recherche quand cette ligne d'arrivée est franchie à l'aide d'un changement de signe"
-nouvelleValeurDroiteObjectif := (((self kobuki x)*((self dest x)-positionDepart x))+((self kobuki y)*((self dest y)-positionDepart y)))-(((self dest x)*((self dest x)-positionDepart x))+((self dest y)*((self dest y)-positionDepart y))).
-produit := nouvelleValeurDroiteObjectif*valeurDroiteObjectif.
-valeurDroiteObjectif := nouvelleValeurDroiteObjectif.
-^(produit>0). 
-
-
+	| nouvelleValeurDroiteObjectif produit |
+	"on définit une ligne d'arrivée qui passe par le point objectif (dest) et qui est perpendiculaire à l'orientation de départ du robot et on recherche quand cette ligne d'arrivée est franchie à l'aide d'un changement de signe"
+	nouvelleValeurDroiteObjectif := self kobuki x * (self dest x - positionDepart x)
+		+ (self kobuki y * (self dest y - positionDepart y))
+		- (self dest x * (self dest x - positionDepart x) + (self dest y * (self dest y - positionDepart y))).
+	produit := nouvelleValeurDroiteObjectif * valeurDroiteObjectif.
+	valeurDroiteObjectif := nouvelleValeurDroiteObjectif.
+	^ produit > 0
 ]
 
 { #category : #droiteObjectif }
