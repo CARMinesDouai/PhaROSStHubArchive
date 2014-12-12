@@ -192,14 +192,33 @@ EtatFactory class >> createParcoursTest1 [
 { #category : #'as yet unclassified' }
 EtatFactory class >> createParcoursTestPrecision [
 "parcours dexemple pour tester la précision de l'odométrie"
+"2 mètres en avant et 1 vers la gauche par rapport au point de départ"
 	| etat |
 	etat := EtatFactory
 				createGoTo: 2 @ 0
 				next:
 					(EtatFactory
-						createGoTo: -1 @ 2
+						createGoTo: 2 @ 1
 						next: (EtatFactory
-						createGoTo: -1 @ 0
+						createGoTo: 0 @ 1
+						next:(EtatFactory
+						createGoTo: 0 @ 0
+						next: EtatFactory createFinish))).
+	^ etat
+]
+
+{ #category : #'as yet unclassified' }
+EtatFactory class >> createParcoursTestPrecision2 [
+"parcours dexemple pour tester la précision de l'odométrie"
+"1 mètre en avant et 1/2 vers la gauche par rapport au point de départ"
+	| etat |
+	etat := EtatFactory
+				createGoTo: 1 @ 0
+				next:
+					(EtatFactory
+						createGoTo: 1 @ 0.5
+						next: (EtatFactory
+						createGoTo: 0 @ 0.5
 						next:(EtatFactory
 						createGoTo: 0 @ 0
 						next: EtatFactory createFinish))).
