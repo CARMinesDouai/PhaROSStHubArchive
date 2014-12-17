@@ -9,7 +9,7 @@ Class {
 		'Instance',
 		'processes'
 	],
-	#category : #PhaROSDashBoard
+	#category : #'PhaROSDashBoard-Process'
 }
 
 { #category : #'as yet unclassified' }
@@ -62,31 +62,30 @@ PhaROSDeamonBoard >> changeRefreshTime: anObject [
 PhaROSDeamonBoard >> initialize [
 	super initialize.
 	model := PhaROSModel instance.
-	
 	refreshTime := 2.
 	
 	processes := OrderedCollection new.
-	self initializeProcesses.
-	
-	
+	self initializeProcesses
 ]
 
 { #category : #'as yet unclassified' }
 PhaROSDeamonBoard >> initializeProcesses [
 
-	|link|
 	processes do:[:e | e terminate].
 	processes := OrderedCollection new.
 	
 	processes add: (
 		[
-			model nodes: PhaROSSystemInfo instance nodeList.
-			model topics: PhaROSSystemInfo instance topicList.
-			link := Set new.	
+			model initializeRealLinks.
+			model nodesFromStrings: PhaROSSystemInfo instance nodeList.
+			model topicsFromStrings: PhaROSSystemInfo instance topicList.
 			model nodes do:[:n |
-				link addAll: (model extractNodeInfo: n).
+				model extractNodeInfo: n.
+				(PhaROSSystemInfo instance pingNode: n rosName) size = 3 
+					ifTrue:[n pingable: true]
+					ifFalse: [n pingable: false]
 			].
-			model nodeToTopicLink: link.
+			model cleanLinks.
 		] valueWithInterval: (refreshTime * 1000) milliseconds)
 	
 	
