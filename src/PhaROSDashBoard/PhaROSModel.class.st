@@ -7,7 +7,8 @@ Class {
 		'nodeToTopicLink',
 		'announcer',
 		'link',
-		'realLinks'
+		'realLinks',
+		'services'
 	],
 	#classVars : [
 		'Instance'
@@ -54,33 +55,56 @@ PhaROSModel >> cleanLinks [
 { #category : #'adding elements' }
 PhaROSModel >> extractNodeInfo: node [
 
-	|topicName pubIndex subIndex servIndex aString topicFound  |
+	|topicName pubIndex subIndex servIndex aString topicFound contIndex serviceName serviceFound msgType myLink msgTypeFormated |
 	
 	aString := PhaROSSystemInfo instance infoOfNode: node rosName.
 	pubIndex := (aString lines) indexOf:'Publications: '.
 	subIndex := (aString lines) indexOf:'Subscriptions: '.
 	servIndex := (aString lines) indexOf:'Services: '.
+	contIndex := (aString lines) indexOf:'Connections:'.
 	
 	(pubIndex + 1) to: (subIndex -2) by: 1 do: [:e | 
 		topicName := (aString lines at: e) substrings at: 2.
 		topicFound := topics detect:[:t | t rosName = topicName].
-		realLinks add: (node -> topicFound).
-		(link noneSatisfy:[:l | (l key = node) and:[l value = topicFound]]) ifTrue:[
-			link add: (node -> topicFound).
-			self announce: (NewLinkEvent new link: (node -> topicFound))
-		].
+		msgType:= ((aString lines at: e) substrings at: 3).
+		msgTypeFormated := msgType copyFrom: 2 to: msgType size-1.
+		
+		myLink := link detect:[:l | (l key = node) and:[l value = topicFound]] 
+			ifNone:[
+				|lk|
+				lk := (PRDLink from: node to: topicFound type: msgTypeFormated).
+				link add: lk.
+				self announce: (NewLinkEvent new link: lk).
+				lk
+				].
+		
+		realLinks add: myLink.
 	].
 	
-	(subIndex + 1) to: (servIndex -2) by: 3 do: [:e | 
+	(subIndex + 1) to: (servIndex -2) by: 1 do: [:e | 
 		topicName := (aString lines at: e) substrings at: 2.
 		topicFound := topics detect:[:t | t rosName = topicName].
-		realLinks add: (topicFound -> node).
-		(link noneSatisfy:[:l | (l key = topicFound) and:[l value = node]]) ifTrue:[
-			link add: (topicFound -> node).
-			self announce: (NewLinkEvent new link: (topicFound -> node))
-		].
+		
+		myLink := link detect:[:l | (l key = topicFound) and:[l value = node]] 
+			ifNone:[
+				|lk|
+				lk := (PRDLink from: topicFound to: node type: (PhaROSSystemInfo instance typeOfTopic: topicFound rosName) allButLast).
+				link add: lk.
+				self announce: (NewLinkEvent new link: lk).
+				lk
+				].
+		
+		realLinks add: myLink.
 	].
 	
+	(servIndex + 1) to: (contIndex -5) by: 1 do: [:e | 
+		serviceName := (aString lines at: e) substrings at: 2.
+		serviceFound := services detect:[:t | t rosName = serviceName] 
+			ifNone:[
+				self services add: (PRDService new rosName: serviceName)
+			].
+		node services add: serviceFound.
+	].
 	
 ]
 
@@ -92,6 +116,7 @@ PhaROSModel >> initialize [
 	link := Set new.
 	nodeToTopicLink := Set new.
 	realLinks := Set new.
+	services := Set new.
 	
 	announcer := Announcer new.
 ]
@@ -148,6 +173,16 @@ PhaROSModel >> nodesFromStrings: aCollectionOfStrings [
 { #category : #accessing }
 PhaROSModel >> realLinks [
 	^ realLinks
+]
+
+{ #category : #accessing }
+PhaROSModel >> services [
+	^ services
+]
+
+{ #category : #accessing }
+PhaROSModel >> services: anObject [
+	services := anObject asSet
 ]
 
 { #category : #accessing }

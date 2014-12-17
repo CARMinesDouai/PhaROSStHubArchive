@@ -29,23 +29,29 @@ PhaROSDashboard class >> open [
 	b open
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #building }
 PhaROSDashboard >> buildView [
 
 	view := RTView new.
 	view @ RTDraggableView.
 	self mainMenuOn: view.
-	RTHorizontalTreeLayout new horizontalGap: 40; verticalGap: 40; on: view elements.
+	RTHorizontalTreeLayout new horizontalGap: self horizontalGap; verticalGap: self verticalGap; on: view elements.
 	view open. 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #building }
+PhaROSDashboard >> horizontalGap [
+	
+	^ 150
+]
+
+{ #category : #shapes }
 PhaROSDashboard >> linkShape [
 
 	^ (RTArrowedLine new attachPoint: RTShorterDistanceAttachPoint new; color: Color veryDarkGray)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #menu }
 PhaROSDashboard >> mainMenuOn: aView. [
 	
 	aView canvas addMenu: 'speed up' callback: [ 
@@ -67,25 +73,31 @@ PhaROSDashboard >> mainMenuOn: aView. [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #interaction }
 PhaROSDashboard >> nodeInteraction [
 	|nodeInteraction|
 	
 	nodeInteraction:= RTInteractionBuilder new.
-	nodeInteraction popupText; highlightColored: [:e | e pingable ifTrue:[Color green] ifFalse:[Color red]]; 
+	nodeInteraction popupText:[:e | 
+					|str|
+					str := 'Services: ', String cr, String cr.
+					e services do:[:i | str := str, i rosName, String cr].
+					str
+				]; 
+				highlightColored: [:e | e pingable ifTrue:[Color green] ifFalse:[Color red]]; 
 				action: #inspect;
 				item: 'kill node' action: [:node | PhaROSSystemInfo instance killNode: node rosName].
 				
 	^ nodeInteraction
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #shapes }
 PhaROSDashboard >> nodeShape [
 
-	^ (RTEllipse new borderColor: Color blue; height: 50; width: 180)+ (RTLabel new text: [:p | p rosName ])
+	^ (RTEllipse new borderColor: Color blue; height: 50; width: 180) + (RTLabel new text: [:p | p rosName ])
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 PhaROSDashboard >> open [
 
 	| dashboard |
@@ -94,7 +106,7 @@ PhaROSDashboard >> open [
 	dashboard buildView.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 PhaROSDashboard >> plugOn: aROSModel [
 
 	model := aROSModel.
@@ -106,18 +118,24 @@ PhaROSDashboard >> plugOn: aROSModel [
 	model when: OldLinkEvent do: [ :evt | self processRemoveLink: evt].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #process }
 PhaROSDashboard >> processNewLink: event [
 
 	"view add: ((RTEdge new from: event link key to: event link value) addShape: self linkShape).
 	"
-	RTEdge buildEdgesFromAssociations: { event link key -> event link value } 
-		using: self linkShape 
+	| lnk |
+	lnk := RTEdge buildEdgesFromObjects: { event link }
+		from: #key
+		to: #value 
+		using: self linkShape
 		inView: view.
-	self refresh
+	lnk do:[:l |
+		l @ (RTLabelled new text: [l model rosMsgType])
+	].
+	self refresh.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #process }
 PhaROSDashboard >> processNewNode: event [
 	|element|
 	element := (self nodeShape elementOn: event node) @ RTDraggable.
@@ -126,7 +144,7 @@ PhaROSDashboard >> processNewNode: event [
 	self refresh
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #process }
 PhaROSDashboard >> processNewTopic: event [
 
 	|element|
@@ -137,7 +155,7 @@ PhaROSDashboard >> processNewTopic: event [
 	self refresh
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #process }
 PhaROSDashboard >> processRemoveLink: event [
 
 	| edgLnk |
@@ -148,42 +166,48 @@ PhaROSDashboard >> processRemoveLink: event [
 	self refresh
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #process }
 PhaROSDashboard >> processRemoveNode: event [
 
 	view removeElement: (view elements detect: [:e | e model = event node]).
 	self refresh
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #process }
 PhaROSDashboard >> processRemoveTopic: event [
 
 	view removeElement: (view elements detect: [:e | e model = event topic]).
 	self refresh
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #refreshing }
 PhaROSDashboard >> refresh [
 
-	RTHorizontalTreeLayout new horizontalGap: 40; verticalGap: 40; on: view elements.
+	RTHorizontalTreeLayout new horizontalGap: self horizontalGap; verticalGap: self verticalGap; on: view elements.
 	view signalUpdate.
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #interaction }
 PhaROSDashboard >> topicInteraction [
 	|topicInteraction|
 	
 	topicInteraction := RTInteractionBuilder new.
-	topicInteraction popupText; 
+	topicInteraction "popupText; "
 				action: #inspect.
 				
 	^ topicInteraction
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #shapes }
 PhaROSDashboard >> topicShape [
 
 	^ (RTBox new borderColor: Color gray;  height: 50; width: 150) + (RTLabel new text: [:p | p rosName ])
 	
+]
+
+{ #category : #building }
+PhaROSDashboard >> verticalGap [
+	
+	^ 50
 ]

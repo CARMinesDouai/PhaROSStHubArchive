@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'pingable',
-		'rosName'
+		'rosName',
+		'services'
 	],
 	#category : #'PhaROSDashBoard-model'
 }
@@ -13,6 +14,7 @@ PRDNode >> initialize [
 
 	rosName:= ''.
 	pingable := false.
+	services := Set new.
 ]
 
 { #category : #accessing }
@@ -33,4 +35,10 @@ PRDNode >> rosName [
 { #category : #accessing }
 PRDNode >> rosName: anObject [
 	rosName := anObject
+]
+
+{ #category : #accessing }
+PRDNode >> services [
+
+	^ services
 ]
