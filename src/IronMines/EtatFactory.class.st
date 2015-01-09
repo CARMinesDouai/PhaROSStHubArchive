@@ -14,7 +14,7 @@ EtatFactory class >> createCarre [
 ^EtatFactory createParcours: { 0.5@0 . 0.5@0.5 . 0@0.5 . 0@0 } next: (EtatFactory createFinish).
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #briques }
 EtatFactory class >> createEtat:aClass events: dictionary [
 | etat |
 "cree un nouvel etat en stockant dans la variable eventDictionary de cet etat les evenements qu'il peut declencher avec sa methode nextTo"
@@ -24,13 +24,13 @@ etat eventDictionary at: #onTimer put: self createFinish .
 ^etat.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #briques }
 EtatFactory class >> createFinish [
 "cree un etat vide qui ne fait rien et represente la fin des actions a effectuer"
 	^ Etat new.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #briques }
 EtatFactory class >> createFireNext: aEtat [
 |etat|
 	etat := EtatFactory
@@ -43,7 +43,7 @@ EtatFactory class >> createFireNext: aEtat [
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #briques }
 EtatFactory class >> createGoTo: aPoint next: aEtat [
 "etat de deplacement vers un point absolu (par rapport au terrain)"
 	| etat|
@@ -176,6 +176,22 @@ EtatFactory class >> createParcoursDemoGauche2 [
 	^ etat
 ]
 
+{ #category : #'parcours utilisé' }
+EtatFactory class >> createParcoursDepartJaune [
+	| etat |
+	etat := EtatFactory
+		createGoTo: 1 @ 0
+		next:
+			(EtatFactory
+				createGoTo: 0 @ -0.75
+				next:
+					(EtatFactory
+						createGoTo: 0.8 @ -0.75
+						next:
+							(EtatFactory createGoTo: 0.75 @ 0.2 next: (EtatFactory createGoTo: 1.2 @ 0.2 next: EtatFactory createFinish)))).
+	^ etat
+]
+
 { #category : #'as yet unclassified' }
 EtatFactory class >> createParcoursTest1 [
 "parcours dexemple pour tester le robot"
@@ -225,7 +241,7 @@ EtatFactory class >> createParcoursTestPrecision2 [
 	^ etat
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #briques }
 EtatFactory class >> createTurn: ang next: anEtat [
 |etat|
 	etat := EtatFactory
@@ -239,7 +255,7 @@ EtatFactory class >> createTurn: ang next: anEtat [
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #briques }
 EtatFactory class >> createWaitingNext: aEtat [
 "cree un etat dattente, il faut un declencheur pour continuer"
 	^ EtatFactory
