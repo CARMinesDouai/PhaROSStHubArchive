@@ -31,7 +31,7 @@ PhaROSFrameRelativePoseWriter >> pose: aPhaROSPose [
 	tfnodelet tf: [ : aTfMessage |
 
 		
-		aTfMessage addTransform:  frame asTransformStamped.
+		aTfMessage transforms add:  frame asTransformStamped.
 		
 	 ].
 
