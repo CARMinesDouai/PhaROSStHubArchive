@@ -14,8 +14,8 @@ Ces vitesses sont calculés ensemble
 exemple: il ne faut pas avancer si on tourne trop vite"
 
 	| lin ang |
-	lin := 0-self linSpeed: trajectory.	"stockée dans kobuki velocity linear x"
-	ang := self angSpeed: trajectory.	"stockée dans kobuki velocity angular z"	"Si la vitesse angulaire est suffisamment grande, on n'avance pas on ne fait que tourner"
+	lin := 0-(self linSpeed: trajectory).	"stockée dans kobuki velocity linear x"
+	ang := 0-( self angSpeed: trajectory).	"stockée dans kobuki velocity angular z"	"Si la vitesse angulaire est suffisamment grande, on n'avance pas on ne fait que tourner"
 	ang > self precisionAng
 		ifTrue: [ lin := 0 ]
 		ifFalse: [ 

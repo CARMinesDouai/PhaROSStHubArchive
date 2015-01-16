@@ -1,5 +1,5 @@
 "
-Une modification del'EtatGoTo pour aller dans l'autre sens.
+Une modification de l'EtatGoTo pour aller dans l'autre sens.
 "
 Class {
 	#name : #EtatGoToBackward,
@@ -12,6 +12,7 @@ EtatGoToBackward >> action [
 	| etatSuivant etatBackward etatTurn |
 	etatSuivant := (self nextTo: #onFinish).
 	etatBackward := (EtatFactory createMoveBackward: (self dest) Next: etatSuivant).
+	Transcript cr; show: (self dest).
 	etatBackward eventDictionary add: (#onColision -> (EtatFactory createMoveForwardNext: etatBackward)).
 	etatTurn := (EtatFactory createTurn: (MathFactory calculateAngleBetween: (self kobuki odom position) and: (self dest)) next: etatBackward).
 	self kobuki changeEtat: (etatBackward).

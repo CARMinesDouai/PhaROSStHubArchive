@@ -59,6 +59,21 @@ EtatFactory class >> createGoTo: aPoint next: aEtat [
 ]
 
 { #category : #briques }
+EtatFactory class >> createGoToBackward: aPoint next: aEtat [
+"etat de deplacement vers un point absolu (par rapport au terrain)"
+	| etat|
+	etat := EtatFactory
+		createEtat: EtatGoToBackward
+		events:(Dictionary newFrom:
+		{ 
+			#onFinish -> aEtat.
+		}
+		).
+	etat dest: aPoint.
+	^ etat
+]
+
+{ #category : #briques }
 EtatFactory class >> createMoveBackward: aPoint Next: aEtat [
 	"etat de deplacement en arrière vers un point absolu (par rapport au terrain)"
 
@@ -216,7 +231,7 @@ EtatFactory class >> createParcoursDepartJaune [
 	^ etat
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'parcours test' }
 EtatFactory class >> createParcoursTest1 [
 "parcours dexemple pour tester le robot"
 	| etat |
@@ -229,7 +244,18 @@ EtatFactory class >> createParcoursTest1 [
 	^ etat
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'parcours test' }
+EtatFactory class >> createParcoursTestBackward [
+	"parcours dexemple pour tester le déplacement en arrière"
+
+	| etat |
+	etat := EtatFactory
+		createGoToBackward: 0 @ 1
+		next: (EtatFactory createGoToBackward: 0.5 @ 0.36 next: EtatFactory createFinish).
+	^ etat
+]
+
+{ #category : #'parcours test' }
 EtatFactory class >> createParcoursTestPrecision [
 "parcours dexemple pour tester la précision de l'odométrie"
 "2 mètres en avant et 1 vers la gauche par rapport au point de départ"
@@ -247,7 +273,7 @@ EtatFactory class >> createParcoursTestPrecision [
 	^ etat
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'parcours test' }
 EtatFactory class >> createParcoursTestPrecision2 [
 "parcours dexemple pour tester la précision de l'odométrie"
 "1 mètre en avant et 1/2 vers la gauche par rapport au point de départ"
