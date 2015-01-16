@@ -76,30 +76,20 @@ valeurDroiteObjectif := (((self kobuki x)*((self dest x)-positionDepart x))+((se
 
 { #category : #'as yet unclassified' }
 EtatMoveForward >> linAngSpeed: trajectory [
-"Cette fonction renvoie un dictionnaire contenant la vitesse linéiare et la vitesse angulaire
+	"Cette fonction renvoie un dictionnaire contenant la vitesse linéiare et la vitesse angulaire
 Ces vitesses sont calculés ensemble 
 exemple: il ne faut pas avancer si on tourne trop vite"
 
-|lin ang|
-
-lin := self linSpeed: trajectory. "stockée dans kobuki velocity linear x"
-ang := self angSpeed: trajectory. "stockée dans kobuki velocity angular z"
-
-"Si la vitesse angulaire est suffisamment grande, on n'avance pas on ne fait que tourner"
-(ang > self precisionAng) ifTrue:[
-		lin :=0.	
-	] 
-	
-	"au contraire si la vitesse angulaire est très petite on avance"
-	ifFalse:[		
-		"Si on devait reculer, on ne recule pas mais on tourne"
-		(lin <0) ifTrue:[
-			lin := 0.			
-		].
-	].
-
-
-^lin@ang.
+	| lin ang |
+	lin := self linSpeed: trajectory.	"stockée dans kobuki velocity linear x"
+	ang := self angSpeed: trajectory.	"stockée dans kobuki velocity angular z"	"Si la vitesse angulaire est suffisamment grande, on n'avance pas on ne fait que tourner"
+	ang > self precisionAng
+		ifTrue: [ lin := 0 ]
+		ifFalse: [ 
+			"Si on devait reculer, on ne recule pas mais on tourne"
+			lin < 0
+				ifTrue: [ lin := 0 ] ].	"au contraire si la vitesse angulaire est très petite on avance"
+	^ lin @ ang
 ]
 
 { #category : #accessing }

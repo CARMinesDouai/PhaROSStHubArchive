@@ -58,12 +58,22 @@ EtatFactory class >> createGoTo: aPoint next: aEtat [
 	^ etat
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #briques }
+EtatFactory class >> createMoveBackward: aPoint Next: aEtat [
+	"etat de deplacement en arrière vers un point absolu (par rapport au terrain)"
+
+	| etat |
+	etat := EtatFactory createEtat: EtatMoveBackward events: (Dictionary newFrom: {(#onFinish -> aEtat)}).
+	etat dest: aPoint.
+	^ etat
+]
+
+{ #category : #briques }
 EtatFactory class >> createMoveBackwardNext: aEtat [
-"etat de deplacement vers un point absolu (par rapport au terrain)"
+"état utilisé pour reculer doucement pendant 1s"
 	| etat |
 	etat := EtatFactory
-		createEtat: EtatMoveBackward
+		createEtat: EtatReculeBackward
 		events:(Dictionary newFrom:
 		{ 
 		#onFinish -> aEtat. 
@@ -72,7 +82,7 @@ EtatFactory class >> createMoveBackwardNext: aEtat [
 	^ etat
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #briques }
 EtatFactory class >> createMoveForward: aPoint next: aEtat [
 "etat de deplacement vers un point absolu (par rapport au terrain)"
 	| etat |
@@ -84,6 +94,20 @@ EtatFactory class >> createMoveForward: aPoint next: aEtat [
 		}
 		).
 	etat dest: aPoint.
+	^ etat
+]
+
+{ #category : #briques }
+EtatFactory class >> createMoveForwardNext: aEtat [
+"état utilisé pour reculer (vers l'avant, en mode backward) doucement pendant 1s"
+	| etat |
+	etat := EtatFactory
+		createEtat: EtatReculeForward
+		events:(Dictionary newFrom:
+		{ 
+		#onFinish -> aEtat.
+		}
+		).
 	^ etat
 ]
 
