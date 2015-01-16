@@ -8,6 +8,11 @@ Class {
 	#category : #'IronMines-Nodelets'
 }
 
+{ #category : #speed }
+SpeedManager >> angSpeed [
+	^ self kobuki velocity angular  
+]
+
 { #category : #minEtMax }
 SpeedManager >> angSpeedIncrementDefaut [
 	^0.07
@@ -73,6 +78,11 @@ SpeedManager >> kobuki: aKobuki [
 kobuki := aKobuki.
 ]
 
+{ #category : #speed }
+SpeedManager >> linSpeed [
+	^ self kobuki velocity linear 
+]
+
 { #category : #minEtMax }
 SpeedManager >> linSpeedIncrementDefaut [
 	^0.003
@@ -94,42 +104,43 @@ SpeedManager >> linSpeedMinimumMoveBackward [
 ]
 
 { #category : #speed }
-SpeedManager >> progressiveLin: lin ang: ang [ 
-
+SpeedManager >> progressiveLin: lin ang: ang [
+	
 	" il faut respecter une accélération linéaire douce"
-	(lin abs - self kobuki velocity linear x > self etat linSpeedIncrement) ifTrue:[
-		lin := self kobuki velocity linear x + self etat linSpeedIncrement.
-	].
-
+	((self linSpeed x > 0) & (lin - self linSpeed x > self etat linSpeedIncrement))
+		ifTrue: [ lin := self kobuki velocity linear x + self etat linSpeedIncrement ].	
+			
+	"idem pour vitesse linéaire négative"
+	((self linSpeed x < 0) & (self linSpeed x - lin > self etat linSpeedIncrement))
+		ifTrue: [ lin := self kobuki velocity linear x - self etat linSpeedIncrement ].	
+			
 	"si on avance, on avance au moins à une vitesse minimum"
-	((lin abs>0) & (lin abs < self etat linSpeedMinimum)) ifTrue:[
-		lin := self etat linSpeedMinimum.
-	].
-
+	lin > 0 & (lin < self etat linSpeedMinimum)
+		ifTrue: [ lin := self etat linSpeedMinimum ].
+		
+	lin < 0 & (lin abs > (0 - self etat linSpeedMinimum))
+		ifTrue: [ lin := 0 - self etat linSpeedMinimum ].	
+			
 	"dans tous les cas il y a une vitesse linéaire maximale"
-	(lin > self etat linSpeedMaximum) ifTrue:[
-		lin := self etat linSpeedMaximum.
-	].
-
-
+	lin > self etat linSpeedMaximum
+		ifTrue: [ lin := self etat linSpeedMaximum ].
+		
+	lin < (0 - self etat linSpeedMaximum)
+		ifTrue: [ lin := 0 - self etat linSpeedMaximum ].	
+			
 	" il faut respecter une accélération rotatoire douce"
-	( (ang - self kobuki velocity angular z) abs > self etat angSpeedIncrement) ifTrue:[
-		(ang - self kobuki velocity angular z > 0) ifTrue:[		
-			ang := self kobuki velocity angular z + self etat angSpeedIncrement.		
-		] ifFalse:[
-			ang := self kobuki velocity angular z - self etat angSpeedIncrement.		
-		].
-	].
-
+	(ang - self kobuki velocity angular z) abs > self etat angSpeedIncrement
+		ifTrue: [ 
+			ang - self kobuki velocity angular z > 0
+				ifTrue: [ ang := self kobuki velocity angular z + self etat angSpeedIncrement ]
+				ifFalse: [ ang := self kobuki velocity angular z - self etat angSpeedIncrement ] ].	
+				
 	"si on tourne, on tourne au moins à une vitesse angulaire minimale"
-	((ang abs>0) & (ang abs < self etat angSpeedMinimum)) ifTrue:[
-		ang := self etat angSpeedMinimum * (ang abs / ang). 
-	].
-
+	ang abs > 0 & (ang abs < self etat angSpeedMinimum)
+		ifTrue: [ ang := self etat angSpeedMinimum * (ang abs / ang) ].	
+			
 	"dans tous les cas il y a une vitesse angulaire maximale"
-	(ang > self etat angSpeedMaximum ) ifTrue:[
-		ang := self etat angSpeedMaximum * (ang abs / ang). 
-	].
-
-	self kobuki velocityLin: lin ang: ang 
+	ang > self etat angSpeedMaximum
+		ifTrue: [ ang := self etat angSpeedMaximum * (ang abs / ang) ].
+	self kobuki velocityLin: lin ang: ang
 ]

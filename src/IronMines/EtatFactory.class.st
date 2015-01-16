@@ -55,21 +55,21 @@ EtatFactory class >> createGoTo: aPoint next: aEtat [
 		}
 		).
 	etat dest: aPoint.
+		Transcript cr; show: 'goto: '; show: aPoint.
 	^ etat
 ]
 
 { #category : #briques }
 EtatFactory class >> createGoToBackward: aPoint next: aEtat [
-"etat de deplacement vers un point absolu (par rapport au terrain)"
-	| etat|
-	etat := EtatFactory
-		createEtat: EtatGoToBackward
-		events:(Dictionary newFrom:
-		{ 
-			#onFinish -> aEtat.
-		}
-		).
+	"etat de deplacement vers un point absolu (par rapport au terrain)"
+
+	| etat |
+	etat := EtatFactory createEtat: EtatGoToBackward events: (Dictionary newFrom: {(#onFinish -> aEtat)}).
 	etat dest: aPoint.
+	Transcript
+		cr;
+		show: 'backward: ';
+		show: aPoint.
 	^ etat
 ]
 
@@ -300,6 +300,7 @@ EtatFactory class >> createTurn: ang next: anEtat [
 			#onFinish -> anEtat.
 		}).
 	etat zdest: (MathFactory modulo2Pi: ang).
+	Transcript cr; show: 'turn: '; show: ang.
 	^etat.
 		 
 		

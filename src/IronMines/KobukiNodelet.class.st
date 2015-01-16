@@ -54,7 +54,7 @@ KobukiNodelet class >> soundTopicType [
 
 { #category : #'as yet unclassified' }
 KobukiNodelet class >> startTriggerTopic [
-	^ '/startTrigger'
+	^ '/depart'
 ]
 
 { #category : #'as yet unclassified' }
