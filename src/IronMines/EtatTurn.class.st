@@ -41,7 +41,7 @@ EtatTurn >> newThread [
 			
 		"test si le thread de mouvement est lancé"
 		(self kobuki velocityThread isSuspended) ifFalse:[		
-			self kobuki speedManager progressivousLin:0 ang: delta.
+			self kobuki speedManager progressiveLin:0 ang: delta.
 		] ifTrue:[
 			self kobuki speedManager instantaneousLin: 0 ang: 0.
 		].

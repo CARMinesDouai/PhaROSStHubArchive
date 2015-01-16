@@ -94,7 +94,7 @@ SpeedManager >> linSpeedMinimumMoveBackward [
 ]
 
 { #category : #speed }
-SpeedManager >> progressivousLin: lin ang: ang [ 
+SpeedManager >> progressiveLin: lin ang: ang [ 
 
 	" il faut respecter une accélération linéaire douce"
 	(lin abs - self kobuki velocity linear x > self etat linSpeedIncrement) ifTrue:[

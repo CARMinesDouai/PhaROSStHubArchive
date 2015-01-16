@@ -117,7 +117,7 @@ EtatMoveForward >> newThread [
 				calculLinAng := self linAngSpeed: trajectoire.
 				lin := calculLinAng x.
 				ang := calculLinAng y.
-				self kobuki speedManager progressivousLin:lin ang: ang.
+				self kobuki speedManager progressiveLin:lin ang: ang.
 			] ifTrue:[
 				self kobuki speedManager instantaneousLin:0 ang: 0.
 			].
