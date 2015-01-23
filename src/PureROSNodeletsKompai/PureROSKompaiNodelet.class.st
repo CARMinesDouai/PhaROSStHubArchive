@@ -26,7 +26,10 @@ Class {
 		'commandVelocity',
 		'poseStampedOut',
 		'trajectoryDifferentialIn',
-		'state'
+		'state',
+		'autoStop',
+		'lastMove',
+		'stopThread'
 	],
 	#category : #PureROSNodeletsKompai
 }
@@ -104,6 +107,16 @@ PureROSKompaiNodelet class >> trajectoryDifferentialTopic [
 { #category : #types }
 PureROSKompaiNodelet class >> trajectoryDifferentialTopicType [
 	^ 'geometry_msgs/PoseStamped'
+]
+
+{ #category : #accessing }
+PureROSKompaiNodelet >> autoStop [
+	^ autoStop
+]
+
+{ #category : #accessing }
+PureROSKompaiNodelet >> autoStop: anObject [
+	autoStop := anObject
 ]
 
 { #category : #'as yet unclassified' }
@@ -198,6 +211,14 @@ PureROSKompaiNodelet >> goTo: aDeltaPose [
 	]
 ]
 
+{ #category : #initialization }
+PureROSKompaiNodelet >> initialize [
+	
+	"for autostop behavior"
+	self autoStop: true.
+	stopThread := self spawnStopThread.
+]
+
 { #category : #'private-out' }
 PureROSKompaiNodelet >> initialize: aRobot [
 	robot := aRobot value: PNGRobulabDiscoveryFactory.
@@ -214,12 +235,24 @@ PureROSKompaiNodelet >> initialize: aRobot [
 	
 ]
 
+{ #category : #accessing }
+PureROSKompaiNodelet >> lastMove [
+	"A lazy accessor such that the first time this is checked it's right now"
+	lastMove ifNil: [ lastMove := DateAndTime now ].
+	^ lastMove
+]
+
+{ #category : #accessing }
+PureROSKompaiNodelet >> lastMove: anObject [
+	lastMove := anObject
+]
+
 { #category : #'private-out' }
 PureROSKompaiNodelet >> moveAt: aDifferentialVelocity [ 
-	self flag: #whatDoweDo.
 
-[
-	^ self state moveAt: aDifferentialVelocity.] on: Error do: [ :e | ].
+	[self lastMove: DateAndTime now.
+		^ self state moveAt: aDifferentialVelocity.
+	] on: Error do: [ :e | ].
 ]
 
 { #category : #'topic-subscription' }
@@ -290,6 +323,27 @@ PureROSKompaiNodelet >> setPose: aPNGRobotPose [
 	[
 		robot localizationService pose: aPNGRobotPose.  
 	] on: Error do:  [ :e | self halt. ].
+]
+
+{ #category : #initialization }
+PureROSKompaiNodelet >> spawnStopThread [
+	| behavior stopVelocity |
+	" if delta T > 200 then we send a stop command
+	 we say this happened tomorrow so that we do not keep sending stop commands every iteration "
+	
+	stopVelocity := PNGDifferentialVelocity new.
+	stopVelocity linear: 0; angular: 0.
+	
+	behavior := [[true] whileTrue: [ | deltaT |
+			self autoStop ifTrue: [ 
+				deltaT := ((DateAndTime now) - self lastMove) asMilliSeconds.
+				deltaT > 200 ifTrue: [
+					self lastMove: DateAndTime tomorrow.
+					self state moveAt: stopVelocity.]].
+			(Delay forMilliseconds: 50) wait. 
+			]] fork.
+	behavior name: 'Kompai Stop Thread'.
+	^behavior. 
 ]
 
 { #category : #'private-out' }
