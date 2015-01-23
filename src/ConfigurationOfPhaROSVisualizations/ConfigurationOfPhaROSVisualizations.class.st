@@ -115,13 +115,7 @@ ConfigurationOfPhaROSVisualizations >> baseline01: spec [
 	spec for: #'common' do: [
 		spec blessing: #'baseline'.
 		spec repository: 'http://smalltalkhub.com/mc/CAR/PhaROS-Tools/main/'.
-		spec 
-			project: 'PhaROS' with: [
-				spec
-					className: #ConfigurationOfPhaROS;
-					versionString: #'stable';
-					repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main/' ];
-			project: 'Roassal2' with: [
+		spec project: 'Roassal2' with: [
 				spec
 					className: #ConfigurationOfRoassal2;
 					versionString: #'stable';
