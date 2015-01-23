@@ -16,7 +16,7 @@ Class {
 	#category : #'IronMines-Nodelets'
 }
 
-{ #category : #action }
+{ #category : #'as yet unclassified' }
 EtatMoveForward >> action [
 "cette methode redemarre ou demarre le thread de mouvement qui etait en pause ou pas encore demarre"
 self initialiserObjectif.
@@ -74,24 +74,32 @@ valeurDroiteObjectif := (((self kobuki x)*((self dest x)-positionDepart x))+((se
 
 ]
 
-{ #category : #action }
+{ #category : #'as yet unclassified' }
 EtatMoveForward >> linAngSpeed: trajectory [
-	"Cette fonction renvoie un dictionnaire contenant la vitesse linéiare et la vitesse angulaire
+"Cette fonction renvoie un dictionnaire contenant la vitesse linéiare et la vitesse angulaire
 Ces vitesses sont calculés ensemble 
 exemple: il ne faut pas avancer si on tourne trop vite"
 
-	| lin ang |
-	lin := self linSpeed: trajectory.	"stockée dans kobuki velocity linear x"
-	ang := self angSpeed: trajectory.	"stockée dans kobuki velocity angular z"	
-			
-	"Si la vitesse angulaire est suffisamment grande, on n'avance pas on ne fait que tourner"
-	ang abs > self precisionAng
-		ifTrue: [ lin := 0 ]
-		ifFalse: [ 
-			"Si on devait reculer, on ne recule pas mais on tourne"
-			lin < 0
-				ifTrue: [ lin := 0 ] ].	"au contraire si la vitesse angulaire est très petite on avance"
-	^ lin @ ang
+|lin ang|
+
+lin := self linSpeed: trajectory. "stockée dans kobuki velocity linear x"
+ang := self angSpeed: trajectory. "stockée dans kobuki velocity angular z"
+
+"Si la vitesse angulaire est suffisamment grande, on n'avance pas on ne fait que tourner"
+(ang > self precisionAng) ifTrue:[
+		lin :=0.	
+	] 
+	
+	"au contraire si la vitesse angulaire est très petite on avance"
+	ifFalse:[		
+		"Si on devait reculer, on ne recule pas mais on tourne"
+		(lin <0) ifTrue:[
+			lin := 0.			
+		].
+	].
+
+
+^lin@ang.
 ]
 
 { #category : #accessing }
@@ -110,7 +118,9 @@ EtatMoveForward >> newThread [
 	| trajectoire delta lin ang calculLinAng|
 	^ [ 
 	self kobuki makeSound: 2.
-	[ trajectoire := dest - (self kobuki x @ self kobuki y).
+	[ 
+		
+			trajectoire := dest - (self kobuki x @ self kobuki y).
 			delta := (trajectoire x * trajectoire x + (trajectoire y * trajectoire y)) sqrt.
 			
 			(self kobuki velocityThread isSuspended) ifFalse:[
@@ -135,7 +145,7 @@ les vitesses angulaires et lineaires "
 	self kobuki event:#onFinish. ] newProcess
 ]
 
-{ #category : #action }
+{ #category : #'as yet unclassified' }
 EtatMoveForward >> terminate [
 "cette methode termine le thread de mouvement en cours (s'il existe)
 cette methode est censee etre appellee depuis Kobuki>>changeEtat"

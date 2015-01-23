@@ -55,40 +55,15 @@ EtatFactory class >> createGoTo: aPoint next: aEtat [
 		}
 		).
 	etat dest: aPoint.
-		Transcript cr; show: 'goto: '; show: aPoint.
 	^ etat
 ]
 
-{ #category : #briques }
-EtatFactory class >> createGoToBackward: aPoint next: aEtat [
-	"etat de deplacement vers un point absolu (par rapport au terrain)"
-
-	| etat |
-	etat := EtatFactory createEtat: EtatGoToBackward events: (Dictionary newFrom: {(#onFinish -> aEtat)}).
-	etat dest: aPoint.
-	Transcript
-		cr;
-		show: 'backward: ';
-		show: aPoint.
-	^ etat
-]
-
-{ #category : #briques }
-EtatFactory class >> createMoveBackward: aPoint Next: aEtat [
-	"etat de deplacement en arrière vers un point absolu (par rapport au terrain)"
-
-	| etat |
-	etat := EtatFactory createEtat: EtatMoveBackward events: (Dictionary newFrom: {(#onFinish -> aEtat)}).
-	etat dest: aPoint.
-	^ etat
-]
-
-{ #category : #briques }
+{ #category : #'as yet unclassified' }
 EtatFactory class >> createMoveBackwardNext: aEtat [
-"état utilisé pour reculer doucement pendant 1s"
+"etat de deplacement vers un point absolu (par rapport au terrain)"
 	| etat |
 	etat := EtatFactory
-		createEtat: EtatReculeBackward
+		createEtat: EtatMoveBackward
 		events:(Dictionary newFrom:
 		{ 
 		#onFinish -> aEtat. 
@@ -97,7 +72,7 @@ EtatFactory class >> createMoveBackwardNext: aEtat [
 	^ etat
 ]
 
-{ #category : #briques }
+{ #category : #'as yet unclassified' }
 EtatFactory class >> createMoveForward: aPoint next: aEtat [
 "etat de deplacement vers un point absolu (par rapport au terrain)"
 	| etat |
@@ -109,20 +84,6 @@ EtatFactory class >> createMoveForward: aPoint next: aEtat [
 		}
 		).
 	etat dest: aPoint.
-	^ etat
-]
-
-{ #category : #briques }
-EtatFactory class >> createMoveForwardNext: aEtat [
-"état utilisé pour reculer (vers l'avant, en mode backward) doucement pendant 1s"
-	| etat |
-	etat := EtatFactory
-		createEtat: EtatReculeForward
-		events:(Dictionary newFrom:
-		{ 
-		#onFinish -> aEtat.
-		}
-		).
 	^ etat
 ]
 
@@ -231,7 +192,7 @@ EtatFactory class >> createParcoursDepartJaune [
 	^ etat
 ]
 
-{ #category : #'parcours test' }
+{ #category : #'as yet unclassified' }
 EtatFactory class >> createParcoursTest1 [
 "parcours dexemple pour tester le robot"
 	| etat |
@@ -244,18 +205,7 @@ EtatFactory class >> createParcoursTest1 [
 	^ etat
 ]
 
-{ #category : #'parcours test' }
-EtatFactory class >> createParcoursTestBackward [
-	"parcours dexemple pour tester le déplacement en arrière"
-
-	| etat |
-	etat := EtatFactory
-		createGoToBackward: 0 @ 1
-		next: (EtatFactory createGoToBackward: 0.5 @ 0.36 next: EtatFactory createFinish).
-	^ etat
-]
-
-{ #category : #'parcours test' }
+{ #category : #'as yet unclassified' }
 EtatFactory class >> createParcoursTestPrecision [
 "parcours dexemple pour tester la précision de l'odométrie"
 "2 mètres en avant et 1 vers la gauche par rapport au point de départ"
@@ -273,7 +223,7 @@ EtatFactory class >> createParcoursTestPrecision [
 	^ etat
 ]
 
-{ #category : #'parcours test' }
+{ #category : #'as yet unclassified' }
 EtatFactory class >> createParcoursTestPrecision2 [
 "parcours dexemple pour tester la précision de l'odométrie"
 "1 mètre en avant et 1/2 vers la gauche par rapport au point de départ"
@@ -300,7 +250,6 @@ EtatFactory class >> createTurn: ang next: anEtat [
 			#onFinish -> anEtat.
 		}).
 	etat zdest: (MathFactory modulo2Pi: ang).
-	Transcript cr; show: 'turn: '; show: ang.
 	^etat.
 		 
 		

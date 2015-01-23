@@ -75,8 +75,8 @@ Etat >> linSpeedMinimum [
 
 { #category : #thread }
 Etat >> loopDelay [
-"duree de reactualisation du thread de calcul des vitesses (origine : 50)"
-	^ 100
+"duree de reactualisation du thread de calcul des vitesses"
+	^ 50
 ]
 
 { #category : #accessing }

@@ -11,7 +11,7 @@ Class {
 	#category : #'IronMines-Nodelets'
 }
 
-{ #category : #action }
+{ #category : #'as yet unclassified' }
 EtatGoTo >> action [
 |etatSuivant etatForward etatTurn |
 	etatSuivant := (self nextTo: #onFinish ).
@@ -32,7 +32,7 @@ EtatGoTo >> dest: anObject [
 	dest := anObject
 ]
 
-{ #category : #action }
+{ #category : #'as yet unclassified' }
 EtatGoTo >> terminate [
 " ne fait rien car pas de thread"
 ]

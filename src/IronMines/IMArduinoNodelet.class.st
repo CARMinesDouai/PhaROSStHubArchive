@@ -1,3 +1,13 @@
+"
+An IMArduinoNodelet is xxxxxxxxx.
+
+Instance Variables
+	led:		<Object>
+
+led
+	- xxxxx
+
+"
 Class {
 	#name : #IMArduinoNodelet,
 	#superclass : #PhaROSStaticNodelet,
