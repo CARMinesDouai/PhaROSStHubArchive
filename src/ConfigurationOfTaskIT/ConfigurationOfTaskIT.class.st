@@ -198,12 +198,12 @@ ConfigurationOfTaskIT >> baseline20: spec [
 	<version:'2.0-baseline'>
 	spec for: #common do: [
 			spec blessing: #baseline.
-			spec repository: 'http://smalltalkhub.com/mc/sbragagnolo/TaskIT/main'.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/TaskIT/main'.
 			spec project: 'Ghost' with: [
 				spec 
 					className: 'ConfigurationOfGhost';
 					file: 'ConfigurationOfGhost' ;
-					repository: 'http://ss3.gemstone.com/ss/Ghost'
+					repository: 'http://smalltalkhub.com/mc/CAR/Ghost/main'
 			].
 			spec project: 'OSProcess' with: [
 				spec 
