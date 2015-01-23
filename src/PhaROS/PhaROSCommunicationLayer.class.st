@@ -19,6 +19,11 @@ PhaROSCommunicationLayer class >> xmlAt: aPort tcpAt: otherPort of: anIP delegat
 
 { #category : #'as yet unclassified' }
 PhaROSCommunicationLayer >> configure [
+	"
+		http://wiki.ros.org/ROS/Slave_API
+		so far, only 5 callbacks of the API are implemented out of 10
+	"
+
 	XMLRPCService atPort: xml 
 					serve: {
 						#getBusInfo -> {self -> #getBusInfo: } .
