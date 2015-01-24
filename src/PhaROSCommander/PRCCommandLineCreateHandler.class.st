@@ -68,7 +68,7 @@ PRCCommandLineCreateHandler >> description [
 	^  (self optionAt: #'description' ifAbsent: [  ' A PhaROS package '  ] ).
 ]
 
-{ #category : #generating }
+{ #category : #'generating - scripts' }
 PRCCommandLineCreateHandler >> editScriptForPhaROSPackageNamed: packageName [
 
 ^('#!/usr/bin/env bash
@@ -77,7 +77,7 @@ DIR=`rospack find {1}`
 $DIR/vm/pharo $DIR/image/{1}.image' format: { packageName }) withUnixLineEndings
 ]
 
-{ #category : #generating }
+{ #category : #'generating - classes' }
 PRCCommandLineCreateHandler >> generatePhaROSClassesCodeIn: stream forPhaROSPackageNamed: phaROSPackageClassName andNodeletNamed: phaROSNodeletClassName [
 
 	stream <<	
@@ -126,79 +126,7 @@ PRCCommandLineCreateHandler >> generatePhaROSClassesCodeIn: stream forPhaROSPack
 		
 ]
 
-{ #category : #old }
-PRCCommandLineCreateHandler >> generatePhaROSScriptsExampleMethodsInClassNamed: phaROSPackageClassName [
-	phaROSPackageClassName asClass
-		compile:
-			'scriptExample
-	"Any method that starts with a script is deployed as script Here you can start doing stuff".
-'
-		classified: 'scripts'.
-		
-	phaROSPackageClassName asClass
-		compile:
-			'scriptTopicPublishingExample
-	| publisher |
-	"For publishing into a topic,you just need a publisher object. You can obtain it asking to the related node like in the following code".
-	
-	publisher := self controller node 
-						topicPublisher: ''/example/string'' 
-						typedAs: ''std_msgs/String''.
-						
-	publisher send:[ : string | string data: ''this is an example'' ].
-'
-		classified: 'scripts'.
-	phaROSPackageClassName asClass
-		compile:
-			'scriptTopicSubscribingExample
-	
-	"For subscribing to a topic, you just need a subscriber to configure it with a callback (block). You can obtain it asking to the related node like in the following code".
-	(self controller node buildConnectionFor: ''/example/string'' ) 
-								typedAs: ''std_msgs/String''; 
-								for: [ : string |  "this is a callback" Transcript show: string data ];
-								connect .
-														
-	"As you can see, buildConnectionFor: aTopicID, returns an object configurable. This is a builder, you can configure it as much as you want, and when you send connect message it will make the proper connection. For better usage of the builder check the documentation "
-'
-		classified: 'scripts'.
-	phaROSPackageClassName asClass
-		compile:
-			'scriptServiceDefining
-	"In ROS we do have services. A Service is an async computation that has related a request and a response types. In order to make available a service in ROS world you should execute the following code"
-	self controller node serve: [ :req :rsp | 
-		"this block will be executed when any one calls for this service" 
-		Transcript show: ''Service has been called.''; cr.  
-	] at: ''/pharos/service'' typedAs:''roscpp/Empty''.
-	
-'
-		classified: 'scripts'.
-	phaROSPackageClassName asClass
-		compile:
-			'scriptServiceInvoking
-	| service |
-	"In order ask for a service to be executed, you need to ask to the attached node for a service call object. For doing this you should type the following code"
-	service := self controller node service: ''/rosout/get_loggers''.
-	service call.
-	
-	"This service call will ask for the loggers"
-'
-		classified: 'scripts'.
-	phaROSPackageClassName asClass
-		compile:
-			'scriptParameterBinding
-	| integer |
-	"A parameter is a value registered in the master. The idea is to give the chance to 3rd agents to change the value of this parameter. In order to ask for a parameter instance we call the following code"
-	
-	integer := self controller node parameter: ''integer'' initialized: 1. 
-	
-	" The variable integer now points to a binding. This binding understands #set: and #get messages. Is related with the ROS running environment. "
-	
-	
-'
-		classified: 'scripts'
-]
-
-{ #category : #generating }
+{ #category : #'generating - scripts' }
 PRCCommandLineCreateHandler >> headlessScriptForPhaROSPackageNamed: packageName [
 
 ^('#!/usr/bin/env bash
@@ -219,7 +147,7 @@ PRCCommandLineCreateHandler >> maintainerEmail [
 	^  (self optionAt: #'maintainer-email' ifAbsent: [  self authorEmail  ] ).
 ]
 
-{ #category : #resolving }
+{ #category : #accessing }
 PRCCommandLineCreateHandler >> package [
 	| p |
 	p := (self argumentAt: 1).
@@ -227,12 +155,12 @@ PRCCommandLineCreateHandler >> package [
 	^ p.
 ]
 
-{ #category : #generating }
+{ #category : #utilities }
 PRCCommandLineCreateHandler >> pharosClassNameForCatkinPackageNamed: catkinPackageName [
 	^ catkinPackageName capitalized , 'Package'
 ]
 
-{ #category : #generating }
+{ #category : #'generating - scripts' }
 PRCCommandLineCreateHandler >> pharosScriptForPhaROSPackageNamed: packageName [
 
 ^('#!/usr/bin/env bash
@@ -290,6 +218,7 @@ PRCCommandLineCreateHandler >> realActivate [
 	loadingScript := WriteStream on: (String new: 200).
 	
 	loadingScript << 'Smalltalk saveAs: ''' << package asString << '''.'; lf. 
+	loadingScript << 'SystemWindow allInstances do: #close.';lf.
 	loadingScript << 'Author fullName: ''' << author asString<< '''.'; lf. 
 
 	"Load PhaROS project"
@@ -346,17 +275,13 @@ catkin_package()' ].
 "same here we should generate: ROSCatkinDeployer installAnnoucementsToAutomaticallyGenerateScripts"	
 
 	loadingScript lf ; << 'FileStream stdout lf; nextPutAll: ''Prepare windows '', String lf.';lf.
-	loadingScript << 'SystemWindow allInstances do: #close.';lf.
+	
 	"Open browser on newly created PhaROS package class"
-	loadingScript  << ('#{1} browse.' format: { self pharosClassNameForCatkinPackageNamed: package });lf.
+	loadingScript  << ('#{1} asClass browse.' format: { self pharosClassNameForCatkinPackageNamed: package });lf.
 	
 	self flag: #todo.
-	"loadingScript  << (
-'workspace := Workspace new. 
-window := workspace openLabel: ''PhaROS - Cheatsheet''.
-window maximize.
-workspace contents: {1}; changed: #contents. ' format: { self stringDoc }) withUnixLineEndings; lf."
-			
+	loadingScript  << 'Smalltalk at: #PhaROSDoc ifPresent: [ :doc | doc open ].';lf.
+
 	loadingScript lf ; << 'Smalltalk snapshot: true andQuit: true.' ; lf.
 
 	"save the script"
@@ -383,231 +308,4 @@ workspace contents: {1}; changed: #contents. ' format: { self stringDoc }) withU
 	
 
 
-]
-
-{ #category : #help }
-PRCCommandLineCreateHandler >> stringDoc [
-^' 
-''
-"
-	Welcome to PhaROS! 
-	Remember always to check for updates in http://car.mines-douai.fr/PhaROS. 	
-
-	-----------------------------------------------------------
-	Running the generated package
-	-----------------------------------------------------------
-	
-	The generated package has implemented some scripts to show you the basic usage of PhaROS. In PhaROS a package has scripts. Each scripts represents a Node. Each of these nodes share the same class and code. So, take that in count when you implement a new script. 
-	
-	-----------------------------------------------------------------------------
-	Basic ROS commands for your generated package
-	-----------------------------------------------------------------------------
-	
-	For browse your package trough command line.
-	
-		roscd name-of-your-package 
-	
-	For editing the image
-	
-		rosrun name-of-your-package edit 
-		
-	For running a script with graphical interface 
-	
-		rosrun name-of-your-package pharos script-name 
-	
-	 For running a script without graphical interface 
-	
-		rosrun name-of-your-package headless script-name 
-	
-	For listing your scripts
-	
-		rosls name-of-your-package/image/scripts
-	
-	-----------------------------------------------------------
-	Inside a package object 
-	-----------------------------------------------------------
-	
-	Creating a new Script
-	--------------------------------
-	
-		For creating a new script you need to add to your package class a method named script{NameOfYourScript}. Inside this method you will have available a controller, which is an object that gives construction facilities and access to an already built  node. 
-		self controller node. 
-		
-		Inside this method you configure the given node and trigger all the logic of your node. (So, from ROS point of view, each script is a node)
-		
-		In order to make this script available for execution you have two possibilties:
-				
-				- write a text file that executes this method ( PackageName new script{NameOfYourScript}. ) and save it into packageFolder/image/scripts 
-				- commit all your code and use the pharos tool to install it back, this will generate all the needed files. (we are working for making this step easier)
-				
-		For examples of what an script is, browse the generated example package and match names with the names available in the script folder. (roscd {package-name}/image/scripts).
-		
-		
-	
-	Publish topic 
-	-------------------
-	
-	| publisher |
-	publisher := self controller node 
-						topicPublisher: ''''/example/string'''' 
-						typedAs: ''''std_msgs/String''''.
-						
-	publisher send:[ : string | string data: ''''this is an example'''' ].
-	
-	
-	Subscribe topic
-	------------------------
-	
-	(self controller node buildConnectionFor: ''''/example/string'''' ) 
-			typedAs: ''''std_msgs/String''''; 
-			for: [ : string |  Transcript show: string data ];
-			connect .
-	
-	
-	Call service 
-	------------------
-	| service |
-	service := self controller node service: ''''/rosout/get_loggers''''.
-	service call.
-	
-	
-	Define service 
-	------------------------
-	
-	self controller node serve: [ :req :rsp | 
-		 Transcript show: ''''Service has been called.''''; cr.  
-	] at: ''''/pharos/service'''' typedAs:''''roscpp/Empty''''.
-	
-	
-	
-	
-	Inject/install a nodelet 
-	----------------------------------
-	
-	self controller nodelets use: YourNodeletClass as:#nameToBeInvoked.
-	
-	
-	Specifying controller configuration 
-	-----------------------------------------------------
-	
-	In the package object implement the message #buildController. Build controller has the responsibility to build the controller and return it. 
-	
-	For building your own controller 
-	
-	buildController
-		^ MyController build	
-	
-	For building same controller but configure things (like nodelets, or configuring)
-	
-	buildController
-		^ self myControllerConfigurationMethod: super buildController.
-	
-	myControllerConfigurationMethod: aController
-		<< Make here your configurations >>
-		^ aController
-		
-		
-		
-		
-	-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	-----------------------------------------------------------
-	Inside a nodelet object 
-	-----------------------------------------------------------
-	
-	
-	Define a new type
-	-----------------------------
-	Define as class method a method with a cool name, as myCoolTypeDefinition
-	
-	myCoolTypeDefinition
-	
-	^ PhaROSCompositeType named: ''''anStandarROS/TypeName'''' definedBy: {
-		#header -> (PhaROSTypeBrowser instance definition: ''''std_msgs/Header''''). 
-		#auint8 -> (PhaROSUInt8Type new).
-		#auint16 -> (PhaROSUInt16Type new).
-		#aint32 -> (PhaROSInt32Type new).
-		#afloat32 -> (PhaROSFloat32Type new).
-		#afloat64 -> (PhaROSFloat64Type new).
-		#astring ->( PhaROSStringType new ) .
-		#atime -> (PhaROSTimeType new ). 
-	}  withConstants: {
-		#CONSTANT -> ASimpleObjectValue
-	}.
-	
-	As shown in the definition you give an array of associations with (#nameOfTheField -> Type new). 
-	For checking all the available types, just browse any of this classes to go to the package. Or check the reference.
-	
-	Constants values cannot be complex. Just numbers, strings, booleans. 
-	
-	
-	
-	Register a type 
-	------------------------
-	
-	Define in class side of your nodelet the method #types 
-
-	types
-		^ super types, { #YourTypeName -> self myCoolTypeDefinition }.
-	
-	In order to deploy the type into ROS you will need to commit all your work and install it through the pharos command (as shown in the shell commands section). 
-	We are working to enhance this step. 
-	
-	
-	-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	-----------------------------------------------------------
-	Shell commands
-	-----------------------------------------------------------
-
-	Install PhaROS based Package
-	---------------------------------------------
-		pharos install PACKAGE [OPTIONS]
-		
-		Example 
-			pharos install esug --location=/home/user/ros/workspace --version=2.0
-		Help 
-			pharos install --help
-
-	Create	PhaROS based Package		
-	------------------------------------------------
-		pharos create PACKAGE [OPTIONS]
-		
-		Example
-			pharos create --location=/home/user/ros/workspace --version=2.0 --author=YourName --author-email=YourEmail 
-			Tip: Be sure the email is a correct one. If is not a correctly spelled one you will notice during last step. 
-		Help 
-			pharos create --help
-		
-	Register Repository of packages  
-	---------------------------------------------------
-		pharos register-repository --url=anUrl --package=aPackage [ OPTIONS ]
-		
-		Example 
-			pharos register-repository --url=http://smalltalkhub.com/mc/user/YourProject/main --package=YourProjectDirectory --directory=YourProjectDirectory 
-			Tip: If your repository requires user/password for reading add --user=User --password=Password to the example. 
-			Disclaimer: User/Password will be stored in a text file without any security. 
-		Help 
-			pharos register-repository --help
-		
-	Listing registered repositories
-	------------------------------------------------
-	
-		pharos list-repositories
-		
-		
-	Creating a directory for your own project repository
-	-----------------------------------------------------------------------------------
-		pharos create-repository PACKAGENAME [ OPTIONS ]
-
-		Example 
-			pharos create-repository example --user=UserName > directory.st
-			pharos create-repository example --user=UserName  --output= directory.st
-		
-		Help 
-			pharos create-repository --help 
-			
-"
-''
-'
 ]
