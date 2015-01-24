@@ -246,10 +246,11 @@ and we should only generate: ROSCatkinDeployer generateCMakeListsTxt
 "
 
 (catkinPackageDirectory / 'CMakeLists.txt') writeStreamDo: [ :stream |
-		stream nextPutAll: 'cmake_minimum_required(VERSION 2.8.3)
-project(testpackage)
+		stream nextPutAll:( '
+cmake_minimum_required(VERSION 2.8.3)
+project({1})
 find_package(catkin REQUIRED)
-catkin_package()' ].
+catkin_package()' format: {package})withUnixLineEndings ].
 
 "we should only generate: ROSCatkinDeployer generatePackageXml"
 (catkinPackageDirectory / 'package.xml') writeStreamDo: [ :stream |
