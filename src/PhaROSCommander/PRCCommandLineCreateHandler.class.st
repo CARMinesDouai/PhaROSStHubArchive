@@ -2,24 +2,22 @@
 usage: pharos create PACKAGE [OPTIONS]
  
 Options:
-          --help	Shows this text
-          --location	Absolute path to a valid catkin workspace (not source folder. The workspace. By example /home/user/workspace ). 
-                              Default value is the current directory.		
-          --silent	{ true | false }. If silent is false you will be able to see the installation of the output image. 
+   --help                     Shows this text
+   --location=...             Absolute path to a valid catkin workspace (not source folder. 
+                              The workspace. By example /home/user/workspace ). 
+                              Default value is ~/Pharo-ws/
+   --silent={true|false}      If silent is false you will be able to see the installation of the output image 
                               Default value is true. 
-          --version	{ 20 | 30 | 40 | Stable | Alpha}.  pharo version to use. 
-                              Default value is Stable
-          --author	Indicates the name of the author
-          --maintainer	Indicates the name of the maintainer
-                              Default value is the indicated in author
-
-          --author-email	Indicates the email  of the author
-          --maintainer-email	Indicates the email of the maintainer 
-                              Default value is the indicated in author-email
-          --description	Indicates the description of the package
-	    --pharo-user	Indicates the user name for the result image.
-          --force-new	DELETE the package if it exists in the pointed location. 
-          --dev            Load the bleedingEdge version of PhaROS
+   --version={ 20 | 30 | 40 | Stable | Alpha}  Pharo version to use. 
+                                               Default value is Stable
+   --author=...               Indicates the name of the author. Default is <pharos>
+   --maintainer=...           Indicates the name of the maintainer. Default value is the one of author
+   --author-email=...         Indicates the email  of the author
+   --maintainer-email=...     Indicates the email of the maintainer 
+   --description=...          Indicates the description of the package
+   --pharo-user=...           Indicates the user name for the result image.
+   --force-new                DELETE the package if it exists in the pointed location. 
+   --dev                      Load the bleedingEdge version of PhaROS
 "
 Class {
 	#name : #PRCCommandLineCreateHandler,
@@ -157,10 +155,8 @@ $DIR/vm/pharo --nodisplay  $DIR/image/{1}.image st $DIR/scripts/$1.st' format: {
 
 { #category : #accessing }
 PRCCommandLineCreateHandler >> loadBleedingEdge [
-	| loadDev |
-	loadDev := true.
-	(self optionAt: #dev ifAbsent: [ loadDev := false ] ).
-	^ loadDev
+	^ self hasOption: 'dev'
+	
 ]
 
 { #category : #accessing }
@@ -209,7 +205,7 @@ PRCCommandLineCreateHandler >> realActivate [
 	self loadBleedingEdge 
 		ifTrue: [ versionToLoad := 'loadBleedingEdgeFromCommander' ] 
 		ifFalse: [ versionToLoad := 'loadStableFromCommander' ].
-
+	
 	"remove silent"
 	silent := self silent. "true or false"
 	
@@ -291,8 +287,6 @@ catkin_package()' format: {package})withUnixLineEndings ].
 	loadingScript  << ('#{1} asClass browse.' format: { self pharosClassNameForCatkinPackageNamed: package });lf.
 	
 	self flag: #todo.
-	loadingScript  << 'Smalltalk at: #PhaROSDoc ifPresent: [ :doc | doc open ].';lf.
-
 	loadingScript lf ; << 'Smalltalk snapshot: true andQuit: true.' ; lf.
 
 	"save the script"
