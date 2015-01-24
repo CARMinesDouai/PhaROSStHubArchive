@@ -146,6 +146,32 @@ ConfigurationOfPhaROSCommander >> baseline10: spec [
 
 ]
 
+{ #category : #baselines }
+ConfigurationOfPhaROSCommander >> baseline11: spec [
+	<version:'1.-baseline'>
+	spec for: #common do: [
+			spec blessing: #baseline.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main'.
+			
+			spec project: 'OSProcess' with: [
+				spec 
+					className: 'ConfigurationOfOSProcess';
+					file: 'ConfigurationOfOSProcess' ;
+					repository: 'http://smalltalkhub.com/mc/Pharo/MetaRepoForPharo30/main'; 
+					versionString: #stable.
+			].
+		
+			spec package: 'PhaROSCommander' with: [ spec requires: #('OSProcess' ) ].
+			spec package: 'PhaROSCommanderTests' with: [ spec requires: #('PhaROSCommander' ) ].
+			spec group: 'default'  with: #( 'PhaROSCommander' ).
+			spec group: 'core'  with: #( 'PhaROSCommander' ).
+			spec group: 'core+tests'  with: #( 'PhaROSCommanderTests' ).
+			
+	].
+
+
+]
+
 { #category : #accessing }
 ConfigurationOfPhaROSCommander >> project [
 
