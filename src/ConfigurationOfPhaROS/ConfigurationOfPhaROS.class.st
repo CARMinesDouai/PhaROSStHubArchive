@@ -122,7 +122,7 @@ ConfigurationOfPhaROS class >> loadStable [
 
 { #category : #'loading from PhaROSCommander' }
 ConfigurationOfPhaROS class >> loadStableFromCommander [
-	^ (self project version: #stable) load: 'all'
+	^ (self project version: #stable) load: 'basic-archetype'
 ]
 
 { #category : #'metacello tool support' }
@@ -580,7 +580,7 @@ ConfigurationOfPhaROS >> baseline13: spec [
 			spec 
 				group: 'default' with: #('PhaROS'  'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSNodeletsAction' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition'   'PhaROSNodeletsLocalizer' 'PhaROSNodeletsMerger' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsRPC' );
 				
-				group: 'examples' with: #( PhaROS-PackageExample 'PhaROSNodeletsTurtlesim' 'PhaROS-Doc' );
+				group: 'examples' with: #( 'PhaROS-PackageExample' 'PhaROSNodeletsTurtlesim' 'PhaROS-Doc' );
 					
 				group: 'tests' with: #('PhaROSTest'  'PhaROSTestROS') ;
 				
