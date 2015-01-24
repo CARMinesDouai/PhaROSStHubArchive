@@ -105,6 +105,11 @@ ConfigurationOfPhaROS class >> loadBleedingEdgeForTest [
 	(self project version: #bleedingEdge) load:'default+tests'.
 ]
 
+{ #category : #'loading from PhaROSCommander' }
+ConfigurationOfPhaROS class >> loadBleedingEdgeFromCommander [
+	^ (self project version: #bleedingEdge) load: 'all'
+]
+
 { #category : #loading }
 ConfigurationOfPhaROS class >> loadESUG [
 	(self project version: #'1.0-Beta3') load.
@@ -113,6 +118,11 @@ ConfigurationOfPhaROS class >> loadESUG [
 { #category : #loading }
 ConfigurationOfPhaROS class >> loadStable [
 	(self project version: #stable) load.
+]
+
+{ #category : #'loading from PhaROSCommander' }
+ConfigurationOfPhaROS class >> loadStableFromCommander [
+	^ (self project version: #stable) load: 'all'
 ]
 
 { #category : #'metacello tool support' }
@@ -575,7 +585,7 @@ ConfigurationOfPhaROS >> baseline13: spec [
 				group: 'tests' with: #('PhaROSTest'  'PhaROSTestROS') ;
 				
 				"this group is currently used by the pharos commander"
-				group: 'basic-archetype' with: #( 'default' 'examples' 'tests').
+				group: 'all' with: #( 'default' 'examples' 'tests').
 	].
 	
 		
