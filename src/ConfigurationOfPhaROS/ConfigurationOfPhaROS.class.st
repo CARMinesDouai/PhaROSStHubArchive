@@ -533,7 +533,6 @@ ConfigurationOfPhaROS >> baseline13: spec [
 			spec package: 'PhaROSTest' with: [ spec requires: #('PhaROS')].
 			spec package: 'PhaROSTestROS' with: [ spec requires: #('PhaROS')].
 			
-			"Cool tools"
 			spec package: 'PhaROSControllers' with: [ spec requires: #('PhaROS')].
 			spec package: 'PhaROSExperiments' with: [ spec requires: #('PhaROS')].
 			
@@ -555,6 +554,9 @@ ConfigurationOfPhaROS >> baseline13: spec [
 			spec package: 'PhaROSNodeletsTurtlesim' with: [ spec requires: #('PhaROS')].
 			spec package: 'PhaROS-PackageExample' with: [ spec requires: #('PhaROS')].
 			
+			"doc"
+			spec package: 'PhaROS-Doc'.
+			
 			spec package: 'PhaROSNodeletsPoseTracker' with: [
 				spec requires: #('PhaROS' 'PhaROSNodeletsLocalizer')	
 			].
@@ -564,17 +566,16 @@ ConfigurationOfPhaROS >> baseline13: spec [
 				spec requires: #('XMLRPC' 'CommonTraits' 'Equals' 'PaulLePoulpe' 'OSProcess' 'TaskITProject').
 			].
 	
-			"PhaROSInfrastructure is deprecated? but ROSLaunch still used?"
+			"groups"
 			spec 
 				group: 'default' with: #('PhaROS'  'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSNodeletsAction' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition'   'PhaROSNodeletsLocalizer' 'PhaROSNodeletsMerger' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsRPC' );
 				
-				group: 'examples' with: #( PhaROS-PackageExample 'PhaROSNodeletsTurtlesim'  );
+				group: 'examples' with: #( PhaROS-PackageExample 'PhaROSNodeletsTurtlesim' 'PhaROS-Doc' );
 					
-				group: 'tests' with: #('PhaROSTest'  'PhaROSTestROS').
+				group: 'tests' with: #('PhaROSTest'  'PhaROSTestROS') ;
 				
-			spec group: 'basic-archetype' with: #( 'default' 'examples' 'tests').
-			
-			
+				"this group is currently used by the pharos commander"
+				group: 'basic-archetype' with: #( 'default' 'examples' 'tests').
 	].
 	
 		
