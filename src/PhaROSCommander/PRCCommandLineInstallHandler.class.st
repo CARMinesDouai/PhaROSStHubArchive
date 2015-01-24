@@ -56,9 +56,9 @@ PRCCommandLineInstallHandler >> realActivate [
 	self forceNewIfNeededAt: sourceFolder / package.
 	
 	deployer := silent ifTrue: [
-		RCDDeployerFactory silentDeployerFor:  sourceFolder pathString withPharoVersion:  version.
+		#RCDDeployerFactory asClass silentDeployerFor:  sourceFolder pathString withPharoVersion:  version.
 	] ifFalse:[
-		RCDDeployerFactory interactiveDeployerFor: sourceFolder pathString  withPharoVersion:  version.
+		#RCDDeployerFactory asClass interactiveDeployerFor: sourceFolder pathString  withPharoVersion:  version.
 	].
 	deployer codeGenerator registerPreProcess: (' Author fullName: ''{1}'' ' format:{ self pharoUser }).
 	
