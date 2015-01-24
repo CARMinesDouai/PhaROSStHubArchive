@@ -92,7 +92,7 @@ ConfigurationOfPhaROS class >> load [
 
 { #category : #loading }
 ConfigurationOfPhaROS class >> load: aPackage [
-	(self project version: #bleedingEdge) load: aPackage.
+	(self project version: #stable) load: aPackage.
 ]
 
 { #category : #loading }
