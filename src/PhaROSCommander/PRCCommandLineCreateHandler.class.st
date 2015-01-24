@@ -9,8 +9,6 @@ Options:
                               Default value is true. 
           --version	{ 20 | 30 | 40 | Stable | Alpha}.  pharo version to use. 
                               Default value is Stable
-          --archetype	Indicates the name of the archetype to use for creating things. 
-                              Default is basic-archetype.
           --author	Indicates the name of the author
           --maintainer	Indicates the name of the maintainer
                               Default value is the indicated in author
@@ -21,7 +19,7 @@ Options:
           --description	Indicates the description of the package
 	    --pharo-user	Indicates the user name for the result image.
           --force-new	DELETE the package if it exists in the pointed location. 
-
+          --dev            Load the bleedingEdge version of PhaROS
 "
 Class {
 	#name : #PRCCommandLineCreateHandler,
@@ -37,12 +35,6 @@ PRCCommandLineCreateHandler class >> commandName [
 { #category : #help }
 PRCCommandLineCreateHandler class >> shortHelpText [
 	^ 'Creates a new package based on an archetype'
-]
-
-{ #category : #accessing }
-PRCCommandLineCreateHandler >> archetype [
-
-	^ (self optionAt: #archetype ifAbsent: [  'basic-archetype' ] )
 ]
 
 { #category : #accessing }
@@ -164,6 +156,14 @@ $DIR/vm/pharo --nodisplay  $DIR/image/{1}.image st $DIR/scripts/$1.st' format: {
 ]
 
 { #category : #accessing }
+PRCCommandLineCreateHandler >> loadBleedingEdge [
+	| loadDev |
+	loadDev := true.
+	(self optionAt: #dev ifAbsent: [ loadDev := false ] ).
+	^ loadDev
+]
+
+{ #category : #accessing }
 PRCCommandLineCreateHandler >> maintainer [
 
 	^  (self optionAt: #'maintainer' ifAbsent: [ self author] ).
@@ -200,14 +200,17 @@ $DIR/vm/pharo $DIR/image/{1}.image st $DIR/scripts/$1.st' format: { packageName 
 { #category : #activation }
 PRCCommandLineCreateHandler >> realActivate [
 
-	| location package archetype  version silent   author authorEmail maintainer maintainerEmail description    pharoImage loadingScriptName loadingScript phaROSPackageClassName phaROSNodeletClassName catkinWorskpaceDirectory catkinPackageDirectory    |
+	| location package  version silent   author authorEmail maintainer maintainerEmail description    pharoImage loadingScriptName loadingScript phaROSPackageClassName phaROSNodeletClassName catkinWorskpaceDirectory catkinPackageDirectory    versionToLoad |
 	
 	package := self package. "name of the catkin package to create"
 	location := self location. "catkinWorskpaceDirectory (~/PhaROS-ws)"
 	version := self version. "version of Pharo to use (Stable)"
 	
-	"remove these 2"
-	archetype := self archetype. "name of the group to load in the ConfigurationOfPhaROS (basic-archetype)"
+	self loadBleedingEdge 
+		ifTrue: [ versionToLoad := 'loadBleedingEdgeFromCommander' ] 
+		ifFalse: [ versionToLoad := 'loadStableFromCommander' ].
+
+	"remove silent"
 	silent := self silent. "true or false"
 	
 	author := self author.
@@ -230,10 +233,10 @@ PRCCommandLineCreateHandler >> realActivate [
 	loadingScript << 'Author fullName: ''' << author asString<< '''.'; lf. 
 
 	"Load PhaROS project"
-	loadingScript lf ; << 'FileStream stdout nextPutAll: ''Loading ConfigOfPhaROS load: basic-archetype'', String lf.' ; lf.
 	loadingScript << '(Gofer it url: ''http://smalltalkhub.com/mc/CAR/PhaROS/main''; package: ''ConfigurationOfPhaROS'') load.' ; lf.	
-	loadingScript << ('#ConfigurationOfPhaROS asClass load: ''{1}'' .' format: {archetype}); lf.
-	
+	loadingScript lf ; <<('FileStream stdout nextPutAll: ''Loading ConfigOfPhaROS {1}'', String lf.' format: { versionToLoad }) ; lf.
+	loadingScript << ('#ConfigurationOfPhaROS asClass {1}.' format: {versionToLoad}); lf.
+			
 	loadingScript lf ; << ('FileStream stdout nextPutAll: ''Generating classes for {1}'', String lf.' format: { package }) ; lf;lf.
 	phaROSPackageClassName := self pharosClassNameForCatkinPackageNamed: package.	
 	phaROSNodeletClassName := package capitalized , 'Nodelets'.	"nodelet"	
