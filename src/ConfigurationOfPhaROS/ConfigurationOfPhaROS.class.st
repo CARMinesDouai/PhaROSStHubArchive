@@ -553,7 +553,7 @@ ConfigurationOfPhaROS >> baseline13: spec [
 			
 			"examples"
 			spec package: 'PhaROSNodeletsTurtlesim' with: [ spec requires: #('PhaROS')].
-			spec package: 'PhaROS-BasicExamples' with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROS-PackageExample' with: [ spec requires: #('PhaROS')].
 			
 			spec package: 'PhaROSNodeletsPoseTracker' with: [
 				spec requires: #('PhaROS' 'PhaROSNodeletsLocalizer')	
@@ -568,7 +568,7 @@ ConfigurationOfPhaROS >> baseline13: spec [
 			spec 
 				group: 'default' with: #('PhaROS'  'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSNodeletsAction' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition'   'PhaROSNodeletsLocalizer' 'PhaROSNodeletsMerger' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsRPC' );
 				
-				group: 'examples' with: #( PhaROS-BasicExamples 'PhaROSNodeletsTurtlesim'  );
+				group: 'examples' with: #( PhaROS-PackageExample 'PhaROSNodeletsTurtlesim'  );
 					
 				group: 'tests' with: #('PhaROSTest'  'PhaROSTestROS').
 				
