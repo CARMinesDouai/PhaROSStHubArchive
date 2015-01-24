@@ -4,12 +4,19 @@ Class {
 	#category : #'PhaROS-Doc'
 }
 
+{ #category : #'class initialization' }
+PhaROSDoc class >> initialize [
+	self open
+]
+
 { #category : #open }
 PhaROSDoc class >> open [
 	| workspace window |
 	workspace := Workspace new. 
 	window := workspace openLabel: 'PhaROS - Cheatsheet'.
-	window maximize.
+	window 
+		position: 0@20;
+		extent: 700@800.
 	workspace 
 		toggleStylingActive;
 		contents: self stringDoc withUnixLineEndings; 
@@ -26,7 +33,9 @@ PhaROSDoc class >> stringDoc [
 	Running the generated package
 	-----------------------------------------------------------
 	
-	The generated package has implemented some scripts to show you the basic usage of PhaROS. In PhaROS a package has scripts. Each scripts represents a Node. Each of these nodes share the same class and code. So, take that in count when you implement a new script. 
+	The generated package has implemented some scripts to show you the basic usage of PhaROS. 
+	 In PhaROS a package has scripts. Each scripts represents a Node. Each of these nodes share the same 
+	class and code. So, take that in count when you implement a new script. 
 	
 	-----------------------------------------------------------------------------
 	Basic ROS commands for your generated package
@@ -59,17 +68,23 @@ PhaROSDoc class >> stringDoc [
 	Creating a new Script
 	--------------------------------
 	
-		For creating a new script you need to add to your package class a method named script{NameOfYourScript}. Inside this method you will have available a controller, which is an object that gives construction facilities and access to an already built  node. 
+		For creating a new script you need to add to your package class a method 
+		named script{NameOfYourScript}. Inside this method you will have available a 
+		controller, which is an object that gives construction facilities and access to an already built  node. 
 		self controller node. 
 		
-		Inside this method you configure the given node and trigger all the logic of your node. (So, from ROS point of view, each script is a node)
+		Inside this method you configure the given node and trigger all the logic of your node. 
+		(So, from ROS point of view, each script is a node)
 		
 		In order to make this script available for execution you have two possibilties:
 				
-				- write a text file that executes this method ( PackageName new script{NameOfYourScript}. ) and save it into packageFolder/image/scripts 
-				- commit all your code and use the pharos tool to install it back, this will generate all the needed files. (we are working for making this step easier)
+				- write a text file that executes this method ( PackageName new script{NameOfYourScript}. ) 
+				and save it into packageFolder/image/scripts 
+				- commit all your code and use the pharos tool to install it back, this will generate all 
+				the needed files. (we are working for making this step easier)
 				
-		For examples of what an script is, browse the generated example package and match names with the names available in the script folder. (roscd {package-name}/image/scripts).
+		For examples of what an script is, browse the generated example package and match names 
+		with the names available in the script folder. (roscd {package-name}/image/scripts).
 		
 		
 	
@@ -119,7 +134,8 @@ PhaROSDoc class >> stringDoc [
 	Specifying controller configuration 
 	-----------------------------------------------------
 	
-	In the package object implement the message #buildController. Build controller has the responsibility to build the controller and return it. 
+	In the package object implement the message #buildController. Build controller has 
+	the responsibility to build the controller and return it. 
 	
 	For building your own controller 
 	
@@ -134,11 +150,6 @@ PhaROSDoc class >> stringDoc [
 	myControllerConfigurationMethod: aController
 		<< Make here your configurations >>
 		^ aController
-		
-		
-		
-		
-	-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	-----------------------------------------------------------
 	Inside a nodelet object 
@@ -165,7 +176,8 @@ PhaROSDoc class >> stringDoc [
 	}.
 	
 	As shown in the definition you give an array of associations with (#nameOfTheField -> Type new). 
-	For checking all the available types, just browse any of this classes to go to the package. Or check the reference.
+	For checking all the available types, just browse any of this classes to go to the package. 
+	Or check the reference.
 	
 	Constants values cannot be complex. Just numbers, strings, booleans. 
 	
@@ -179,24 +191,13 @@ PhaROSDoc class >> stringDoc [
 	types
 		^ super types, { #YourTypeName -> self myCoolTypeDefinition }.
 	
-	In order to deploy the type into ROS you will need to commit all your work and install it through the pharos command (as shown in the shell commands section). 
+	In order to deploy the type into ROS you will need to commit all your work and install it through 
+	the pharos command (as shown in the shell commands section). 
 	We are working to enhance this step. 
-	
-	
-	-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	
+		
 	-----------------------------------------------------------
 	Shell commands
 	-----------------------------------------------------------
-
-	Install PhaROS based Package
-	---------------------------------------------
-		pharos install PACKAGE [OPTIONS]
-		
-		Example 
-			pharos install esug --location=/home/user/ros/workspace --version=2.0
-		Help 
-			pharos install --help
 
 	Create	PhaROS based Package		
 	------------------------------------------------
@@ -204,36 +205,9 @@ PhaROSDoc class >> stringDoc [
 		
 		Example
 			pharos create --location=/home/user/ros/workspace --version=2.0 --author=YourName --author-email=YourEmail 
-			Tip: Be sure the email is a correct one. If is not a correctly spelled one you will notice during last step. 
+			
 		Help 
 			pharos create --help
-		
-	Register Repository of packages  
-	---------------------------------------------------
-		pharos register-repository --url=anUrl --package=aPackage [ OPTIONS ]
-		
-		Example 
-			pharos register-repository --url=http://smalltalkhub.com/mc/user/YourProject/main --package=YourProjectDirectory --directory=YourProjectDirectory 
-			Tip: If your repository requires user/password for reading add --user=User --password=Password to the example. 
-			Disclaimer: User/Password will be stored in a text file without any security. 
-		Help 
-			pharos register-repository --help
-		
-	Listing registered repositories
-	------------------------------------------------
-	
-		pharos list-repositories
-		
-		
-	Creating a directory for your own project repository
-	-----------------------------------------------------------------------------------
-		pharos create-repository PACKAGENAME [ OPTIONS ]
 
-		Example 
-			pharos create-repository example --user=UserName > directory.st
-			pharos create-repository example --user=UserName  --output= directory.st
-		
-		Help 
-			pharos create-repository --help 
 '
 ]
