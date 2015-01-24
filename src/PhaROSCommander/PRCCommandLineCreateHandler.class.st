@@ -77,6 +77,34 @@ DIR=`rospack find {1}`
 $DIR/vm/pharo $DIR/image/{1}.image' format: { packageName }) withUnixLineEndings
 ]
 
+{ #category : #'generation - catkin directory' }
+PRCCommandLineCreateHandler >> generateCatkinDirectoryNamed: package atLocation: catkinPackageDirectory [
+
+	| editScript headlessScript pharosScript |
+	FileStream stdout nextPutAll: ('Generating catkin package for {1}' format: { package }) ; lf.
+	self forceNewIfNeededAt: catkinPackageDirectory.
+	{ 'bin' . 'image' . 'image/scripts'  . 'build' . 'include' . 'msg' . 'srv' } do: [  :dirName |
+		(catkinPackageDirectory / dirName) createDirectory ].	
+	
+	editScript := catkinPackageDirectory / 'bin' / 'edit'.
+	editScript writeStreamDo:
+		[:stream | stream << (self editScriptForPhaROSPackageNamed: package) ].
+	
+	headlessScript := catkinPackageDirectory / 'bin' / 'headless'.
+	headlessScript writeStreamDo:
+		[:stream | stream << (self headlessScriptForPhaROSPackageNamed: package) ].
+
+	pharosScript := catkinPackageDirectory / 'bin' / 'pharos'.
+	pharosScript writeStreamDo:
+		[:stream | stream << (self pharosScriptForPhaROSPackageNamed: package) ].
+	
+	FileStream stdout nextPutAll: ('Copying pharo vm from {1} to {2}' format: { (Smalltalk imageDirectory / 'pharo-vm') pathString.  (catkinPackageDirectory / 'vm' ) pathString}) ; lf.
+	(Smalltalk imageDirectory / 'pharo-vm') copyAllTo: (catkinPackageDirectory / 'vm' ).
+	
+	{editScript .  headlessScript . pharosScript. catkinPackageDirectory / 'vm' / 'pharo'} do: [ :f |
+		self chmod: '775' ofFile: f pathString ].
+]
+
 { #category : #'generating - classes' }
 PRCCommandLineCreateHandler >> generatePhaROSClassesCodeIn: stream forPhaROSPackageNamed: phaROSPackageClassName andNodeletNamed: phaROSNodeletClassName [
 
@@ -172,12 +200,14 @@ $DIR/vm/pharo $DIR/image/{1}.image st $DIR/scripts/$1.st' format: { packageName 
 { #category : #activation }
 PRCCommandLineCreateHandler >> realActivate [
 
-	| location package archetype  version silent   author authorEmail maintainer maintainerEmail description    pharoImage loadingScriptName loadingScript phaROSPackageClassName phaROSNodeletClassName catkinWorskpaceDirectory catkinPackageDirectory editScript headlessScript pharosScript |
+	| location package archetype  version silent   author authorEmail maintainer maintainerEmail description    pharoImage loadingScriptName loadingScript phaROSPackageClassName phaROSNodeletClassName catkinWorskpaceDirectory catkinPackageDirectory    |
 	
 	package := self package. "name of the catkin package to create"
 	location := self location. "catkinWorskpaceDirectory (~/PhaROS-ws)"
-	archetype := self archetype. "name of the group to load in the ConfigurationOfPhaROS (basic-archetype)"
 	version := self version. "version of Pharo to use (Stable)"
+	
+	"remove these 2"
+	archetype := self archetype. "name of the group to load in the ConfigurationOfPhaROS (basic-archetype)"
 	silent := self silent. "true or false"
 	
 	author := self author.
@@ -186,36 +216,14 @@ PRCCommandLineCreateHandler >> realActivate [
 	maintainerEmail := self maintainerEmail.
 	description := self description.
 	
-"Create the catkin package structure and files"
-	FileStream stdout nextPutAll: ('Generating catkin package for {1}' format: { package }) ; lf.
 	catkinWorskpaceDirectory := location asFileReference. 
 	catkinPackageDirectory :=  catkinWorskpaceDirectory / 'src' / package.
-	self forceNewIfNeededAt: catkinPackageDirectory.
 	
-	{ 'bin' . 'image' . 'image/scripts'  . 'build' . 'include' . 'msg' . 'srv' } do: [  :dirName |
-		(catkinPackageDirectory / dirName) createDirectory ].	
-	
-	editScript := catkinPackageDirectory / 'bin' / 'edit'.
-	editScript writeStreamDo:
-		[:stream | stream << (self editScriptForPhaROSPackageNamed: package) ].
-	
-	headlessScript := catkinPackageDirectory / 'bin' / 'headless'.
-	headlessScript writeStreamDo:
-		[:stream | stream << (self headlessScriptForPhaROSPackageNamed: package) ].
-
-	pharosScript := catkinPackageDirectory / 'bin' / 'pharos'.
-	pharosScript writeStreamDo:
-		[:stream | stream << (self pharosScriptForPhaROSPackageNamed: package) ].
-	
-	FileStream stdout nextPutAll: ('Copying pharo vm from {1} to {2}' format: { (Smalltalk imageDirectory / 'pharo-vm') pathString.  (catkinPackageDirectory / 'vm' ) pathString}) ; lf.
-	(Smalltalk imageDirectory / 'pharo-vm') copyAllTo: (catkinPackageDirectory / 'vm' ).
-	
-	{editScript .  headlessScript . pharosScript. catkinPackageDirectory / 'vm' / 'pharo'} do: [ :f |
-		self chmod: '775' ofFile: f pathString ].
- 
+"Create the catkin package structure and files"
+	self generateCatkinDirectoryNamed: package atLocation: catkinPackageDirectory.
 	
 "Create the PhaROSimage for this new package"
-	loadingScript := WriteStream on: (String new: 200).
+	loadingScript := WriteStream on: (String new: 500).
 	
 	loadingScript << 'Smalltalk saveAs: ''' << package asString << '''.'; lf. 
 	loadingScript << 'SystemWindow allInstances do: #close.';lf.
@@ -224,13 +232,12 @@ PRCCommandLineCreateHandler >> realActivate [
 	"Load PhaROS project"
 	loadingScript lf ; << 'FileStream stdout nextPutAll: ''Loading ConfigOfPhaROS load: basic-archetype'', String lf.' ; lf.
 	loadingScript << '(Gofer it url: ''http://smalltalkhub.com/mc/CAR/PhaROS/main''; package: ''ConfigurationOfPhaROS'') load.' ; lf.	
-	loadingScript << '#ConfigurationOfPhaROS asClass load: ''basic-archetype'' .'; lf.
+	loadingScript << ('#ConfigurationOfPhaROS asClass load: ''{1}'' .' format: {archetype}); lf.
 	
 	loadingScript lf ; << ('FileStream stdout nextPutAll: ''Generating classes for {1}'', String lf.' format: { package }) ; lf;lf.
 	phaROSPackageClassName := self pharosClassNameForCatkinPackageNamed: package.	
 	phaROSNodeletClassName := package capitalized , 'Nodelets'.	"nodelet"	
 	self generatePhaROSClassesCodeIn: loadingScript forPhaROSPackageNamed: phaROSPackageClassName andNodeletNamed: phaROSNodeletClassName.
-
 
 self flag: #todo.
 "CMakeLists.txt MUST contain the ros types of the PhaROS packages"
