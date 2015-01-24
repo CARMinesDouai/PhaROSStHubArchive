@@ -188,7 +188,7 @@ PRCCommandLineHandler >> silent [
 { #category : #resolving }
 PRCCommandLineHandler >> version [
 	
-	^ self checkVersion: (self optionAt: #version ifAbsent: [ #'30' ]).
+	^ self checkVersion: (self optionAt: #version ifAbsent: [ 'Stable' ]).
 ]
 
 { #category : #accessing }

@@ -7,8 +7,8 @@ Options:
                               Default value is the current directory.		
           --silent	{ true | false }. If silent is false you will be able to see the installation of the output image. 
                               Default value is true. 
-          --version	{ 2.0 | 3.0 }. It indicates the version of pharo to download. It will not count if you are in a not silent session. 
-                              Default value is 3.0
+          --version	{ 20 | 30 | 40 | Stable | Alpha}.  pharo version to use. 
+                              Default value is Stable
           --archetype	Indicates the name of the archetype to use for creating things. 
                               Default is basic-archetype.
           --author	Indicates the name of the author
@@ -39,7 +39,7 @@ PRCCommandLineCreateHandler class >> shortHelpText [
 	^ 'Creates a new package based on an archetype'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PRCCommandLineCreateHandler >> archetype [
 
 	^ self checkPackage: (commandLine optionAt: #archetype ifAbsent:[ 'basic-archetype' ]) ifFail: [ 
@@ -49,35 +49,343 @@ PRCCommandLineCreateHandler >> archetype [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PRCCommandLineCreateHandler >> author [
 
 	^  (self optionAt: #author ifAbsent: [  'author name' ] ).
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PRCCommandLineCreateHandler >> authorEmail [
 
 	^  (self optionAt: #'author-email' ifAbsent: [  'author@mail.com' ] ).
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #utilities }
+PRCCommandLineCreateHandler >> chmod: rights ofFile: stringPath [
+	^ #OSProcess asClass command: ('chmod {1} {2}' format: { rights . stringPath }).
+]
+
+{ #category : #accessing }
 PRCCommandLineCreateHandler >> description [
 
 	^  (self optionAt: #'description' ifAbsent: [  ' A PhaROS package '  ] ).
 ]
 
-{ #category : #'as yet unclassified' }
-PRCCommandLineCreateHandler >> docGenerator [
+{ #category : #generating }
+PRCCommandLineCreateHandler >> editScriptForPhaROSPackageNamed: packageName [
 
-^  [ :deploymentUnit |
+^'#!/usr/bin/env bash
+DIR=`rospack find {1}`
+	
+$DIR/vm/pharo $DIR/{1}.image' format: { packageName }
+]
 
-| workspace window contents |
+{ #category : #generating }
+PRCCommandLineCreateHandler >> generatePhaROSClassesCodeIn: stream forPhaROSPackageNamed: phaROSPackageClassName andNodeletNamed: phaROSNodeletClassName [
 
-SystemWindow allInstances do:#close.
+	stream <<	
+		'#PhaROSPackage asClass
+			subclass: {1}
+			instanceVariableNames: ''''
+			classVariableNames: ''''
+			poolDictionaries: ''''
+			category: phaROSPackageClassName.' format: {phaROSPackageClassName asSymbol} ; lf;lf.
+	
+	stream <<
+		'#PhaROSStaticNodelet asClass
+			subclass: {1}
+			instanceVariableNames: ''
+			classVariableNames: ''
+			poolDictionaries: ''
+			category: {2}' format: { phaROSNodeletClassName asSymbol .  phaROSPackageClassName , '-Nodelets'} ; lf ;lf.
+	
+	stream <<	
+		'{1} asClass
+		compile:
+			''buildController
+	"''This message is called by the accessor controller when the variable that stores the controller is pointing to nil.
+	 If you want to make some specific configuration, as injecting nodelets, for package level, this is the place to do it. 
+	Remember to not call #controller from this method, or inner this method, because #controller is the caller of this message.
+	"''
+	^ self nodeletInjectionExample: super buildController. ''
+ 		classified: ''private - configuration''.' format: { phaROSPackageClassName }; lf;lf.
+		
+	stream <<	
+		'{1}  asClass
+		compile:
+			(''nodeletInjectionExample: aController
+	"''
+		Nodelets are units objects responsible for solving common problems, meaning that there are reusable. 
+	In order to access to a nodelet from a package we use a simple mechanism of dependency injection, so we 
+	can easily change one implementation for other. 
+		The main problem is the management of name for registration. Try to be clean and obvious with names. Comment and make them visible.
+	For know more about nodelets go to the reference or check subclasses (PhaROSTransformationNodelet is a cool place to go)"''
+
+	aController nodelets use: {2} as:#example.
+	aController nodelets example isKindOf: {2}.
+	^ aController. '')
+		classified: ''private - configuration''.' format: {phaROSPackageClassName . phaROSNodeletClassName};lf;lf
+
+		
+]
+
+{ #category : #old }
+PRCCommandLineCreateHandler >> generatePhaROSScriptsExampleMethodsInClassNamed: phaROSPackageClassName [
+	phaROSPackageClassName asClass
+		compile:
+			'scriptExample
+	"Any method that starts with a script is deployed as script Here you can start doing stuff".
+'
+		classified: 'scripts'.
+		
+	phaROSPackageClassName asClass
+		compile:
+			'scriptTopicPublishingExample
+	| publisher |
+	"For publishing into a topic,you just need a publisher object. You can obtain it asking to the related node like in the following code".
+	
+	publisher := self controller node 
+						topicPublisher: ''/example/string'' 
+						typedAs: ''std_msgs/String''.
+						
+	publisher send:[ : string | string data: ''this is an example'' ].
+'
+		classified: 'scripts'.
+	phaROSPackageClassName asClass
+		compile:
+			'scriptTopicSubscribingExample
+	
+	"For subscribing to a topic, you just need a subscriber to configure it with a callback (block). You can obtain it asking to the related node like in the following code".
+	(self controller node buildConnectionFor: ''/example/string'' ) 
+								typedAs: ''std_msgs/String''; 
+								for: [ : string |  "this is a callback" Transcript show: string data ];
+								connect .
+														
+	"As you can see, buildConnectionFor: aTopicID, returns an object configurable. This is a builder, you can configure it as much as you want, and when you send connect message it will make the proper connection. For better usage of the builder check the documentation "
+'
+		classified: 'scripts'.
+	phaROSPackageClassName asClass
+		compile:
+			'scriptServiceDefining
+	"In ROS we do have services. A Service is an async computation that has related a request and a response types. In order to make available a service in ROS world you should execute the following code"
+	self controller node serve: [ :req :rsp | 
+		"this block will be executed when any one calls for this service" 
+		Transcript show: ''Service has been called.''; cr.  
+	] at: ''/pharos/service'' typedAs:''roscpp/Empty''.
+	
+'
+		classified: 'scripts'.
+	phaROSPackageClassName asClass
+		compile:
+			'scriptServiceInvoking
+	| service |
+	"In order ask for a service to be executed, you need to ask to the attached node for a service call object. For doing this you should type the following code"
+	service := self controller node service: ''/rosout/get_loggers''.
+	service call.
+	
+	"This service call will ask for the loggers"
+'
+		classified: 'scripts'.
+	phaROSPackageClassName asClass
+		compile:
+			'scriptParameterBinding
+	| integer |
+	"A parameter is a value registered in the master. The idea is to give the chance to 3rd agents to change the value of this parameter. In order to ask for a parameter instance we call the following code"
+	
+	integer := self controller node parameter: ''integer'' initialized: 1. 
+	
+	" The variable integer now points to a binding. This binding understands #set: and #get messages. Is related with the ROS running environment. "
+	
+	
+'
+		classified: 'scripts'
+]
+
+{ #category : #generating }
+PRCCommandLineCreateHandler >> headlessScriptForPhaROSPackageNamed: packageName [
+
+^'#!/usr/bin/env bash
+DIR=`rospack find {1}`
+	
+$DIR/vm/pharo --nodisplay  $DIR/{1}.image st scripts/$1.st' format: { packageName }
+]
+
+{ #category : #accessing }
+PRCCommandLineCreateHandler >> maintainer [
+
+	^  (self optionAt: #'maintainer' ifAbsent: [ self author] ).
+]
+
+{ #category : #accessing }
+PRCCommandLineCreateHandler >> maintainerEmail [
+
+	^  (self optionAt: #'maintainer-email' ifAbsent: [  self authorEmail  ] ).
+]
+
+{ #category : #resolving }
+PRCCommandLineCreateHandler >> package [
+	| p |
+	p := (self argumentAt: 1).
+	(p indexOf: '-') = 1 ifTrue: [ self error: 'The package name is not optional and it must be the first parameter' ].
+	^ p.
+]
+
+{ #category : #generating }
+PRCCommandLineCreateHandler >> pharosClassNameForCatkinPackageNamed: catkinPackageName [
+	^ catkinPackageName capitalized , 'Package'
+]
+
+{ #category : #generating }
+PRCCommandLineCreateHandler >> pharosScriptForPhaROSPackageNamed: packageName [
+
+^'#!/usr/bin/env bash
+DIR=`rospack find {1}`
+	
+$DIR/vm/pharo $DIR/{1}.image st scripts/$1.st' format: { packageName }
+]
+
+{ #category : #activation }
+PRCCommandLineCreateHandler >> realActivate [
+
+	| location package archetype  version silent   author authorEmail maintainer maintainerEmail description    pharoImage loadingScriptName loadingScript phaROSPackageClassName phaROSNodeletClassName catkinWorskpaceDirectory catkinPackageDirectory editScript headlessScript pharosScript |
+	
+	package := self package. "name of the catkin package to create"
+	location := self location. "catkinWorskpaceDirectory (~/PhaROS-ws)"
+	archetype := self archetype. "name of the group to load in the ConfigurationOfPhaROS (basic-archetype)"
+	version := self version. "version of Pharo to use (Stable)"
+	silent := self silent. "true or false"
+	
+	author := self author.
+	authorEmail := self authorEmail.
+	maintainer := self maintainer.
+	maintainerEmail := self maintainerEmail.
+	description := self description.
+	
+"Create the catkin package structure and files"
+	FileStream stdout nextPutAll: ('Generating catkin package for {1}' format: { package }) ; lf.
+	catkinWorskpaceDirectory := location asFileReference. 
+	catkinPackageDirectory :=  catkinWorskpaceDirectory / 'src' / package.
+	self forceNewIfNeededAt: catkinPackageDirectory.
+	{ 'bin' . 'image' . 'image/scripts'  . 'build' . 'include' . 'msg' . 'srv' } do: [  :dirName |
+		(catkinPackageDirectory / dirName) createDirectory ].	
+	
+	editScript := catkinPackageDirectory / 'bin' / 'edit'.
+	editScript writeStreamDo:
+		[:stream | stream << self editScriptForPhaROSPackageNamed: package ].
+	
+	headlessScript := catkinPackageDirectory / 'bin' / 'headless'.
+	headlessScript writeStreamDo:
+		[:stream | stream << self headlessScriptForPhaROSPackageNamed: package ].
+
+	pharosScript := catkinPackageDirectory / 'bin' / 'pharos'.
+	pharosScript writeStreamDo:
+		[:stream | stream << self pharosScriptForPhaROSPackageNamed: package ].
+	
+	{editScript .  headlessScript . pharosScript} do: [ :f |
+		self chmod: '777' ofFile: f pathString ].
+
+	FileStream stdout nextPutAll: ('Copying pharo vm from {1} to {2}' format: { (Smalltalk imageDirectory / 'pharo-vm') pathString.  (catkinPackageDirectory / 'vm' ) pathString}) ; lf.
+	(Smalltalk imageDirectory / 'pharo-vm') copyAllTo: (catkinPackageDirectory / 'vm' ).
+	 
+	
+"Create the PhaROSimage for this new package"
+	loadingScript := WriteStream on: (String new: 200).
+	
+	loadingScript << 'Smalltalk saveAs: ' << package asString; lf. 
+	loadingScript << 'Author fullName:' << author asString; lf. 
+
+	"Load PhaROS project"
+	loadingScript lf ; << 'FileStream stdout nextPutAll: ''Loading ConfigOfPhaROS load: basic-archetype'', String lf.' ; lf.
+	loadingScript << '(Gofer it url: ''http://smalltalkhub.com/mc/CAR/PhaROS/main''; package: ''ConfigurationOfPhaROS'') load.' ; lf.	
+	loadingScript << '#ConfigurationOfPhaROS asClass load: ''basic-archetype'' '; lf.
+	
+	loadingScript lf ; << ('FileStream stdout nextPutAll: ''Generating classes for '' , {1} , String lf.' format: { package }) ; lf.
+	phaROSPackageClassName := self pharosClassNameForCatkinPackageNamed: package.	
+	phaROSNodeletClassName := package capitalized , 'Nodelets'.	"nodelet"	
+	self generatePhaROSClassesCodeIn: loadingScript forPhaROSPackageNamed: phaROSPackageClassName andNodeletNamed: phaROSNodeletClassName.
 
 
-contents := '
+self flag: #todo.
+"CMakeLists.txt MUST contain the ros types of the PhaROS packages"
+"move RCDLifeCycle to PhaROS and rename it: ROSCatkinDeployer
+and we should only generate: ROSCatkinDeployer generateCMakeListsTxt
+"
+
+(catkinWorskpaceDirectory / 'CMakeLists.txt') writeStreamDo: [ :stream |
+		stream nextPutAll: 'cmake_minimum_required(VERSION 2.8.3)
+project(testpackage)
+find_package(catkin REQUIRED)
+catkin_package()' ].
+
+"we should only generate: ROSCatkinDeployer generatePackageXml"
+(catkinWorskpaceDirectory / 'package.xml') writeStreamDo: [ :stream |
+		stream nextPutAll:  ('<?xml version="1.0"?>
+<package>
+<name>{1}</name>
+  <version>{2}</version>
+  <description>{3}</description>
+  <maintainer email="{4}">{5}</maintainer>
+  <license>{6}</license>
+  <author email="{7}">{8}</author> 
+  <buildtool_depend>catkin</buildtool_depend>
+</package>' format: { 
+	package. 
+	version.
+	description.
+	maintainerEmail.
+	maintainer.
+	'MIT'.
+	authorEmail.
+	author.
+ }) ].
+
+#OSProcess asClass command: ('cd {1} && catkin_make' format: { catkinWorskpaceDirectory pathString }).
+
+"	RCDLifeCycle>>installAllScripts"
+"same here we should generate: ROSCatkinDeployer generateScriptsForAllPackages"	
+	
+"	RCDLifeCycle>>installResident"
+"same here we should generate: ROSCatkinDeployer installAnnoucementsToAutomaticallyGenerateScripts"	
+
+	loadingScript lf ; << 'FileStream stdout nextPutAll: ''Prepare windows '', String lf.';lf.
+	loadingScript << 'SystemWindow allInstances do: #close.';lf.
+	"Open browser on newly created PhaROS package class"
+	loadingScript  << ('{1} asSymbol browse.' format: { self pharosClassNameForCatkinPackageNamed: package });lf.
+	loadingScript  << (
+'workspace := Workspace new. 
+window := workspace openLabel: ''PhaROS - Cheatsheet''.
+window maximize.
+workspace contents: {1}; changed: #contents. ' format: { self stringDoc }); lf.
+			
+	loadingScript lf ; << 'Smalltalk snapshot: true andQuit: true.' ; lf.
+
+	"save the script"
+	loadingScriptName := Smalltalk imageDirectory / 'loadingScript.st'.
+	loadingScriptName ensureDelete.
+	loadingScriptName	writeStreamDo: [ :stream |
+		stream nextPutAll: loadingScript contents ].
+	
+	"download Pharo<version>.image  if needed"
+	pharoImage := Smalltalk imageDirectory / ('Pharo', version asString, '.image').
+	pharoImage exists ifFalse: [ 
+		"download it" 
+		self flag: #todo.
+	].
+
+	"make the <package>.image execute the loadingScriptName"
+	FileStream stdout lf ; nextPutAll: ('Executing the loading script') ; lf.
+	#OSProcess asClass command: ('./pharo {1} st {2}' format: {pharoImage pathString. loadingScriptName pathString}).
+	
+	"copy/move pharoImage to the imageFolder of the catkin package"
+	#OSProcess asClass command: ('mv {1}.image {1}.changes {2}/image/' format: { package asString. catkinPackageDirectory pathString })
+
+
+]
+
+{ #category : #help }
+PRCCommandLineCreateHandler >> stringDoc [
+^'
 "
 	Welcome to PhaROS! 
 	Remember always to check for updates in http://car.mines-douai.fr/PhaROS. 	
@@ -297,211 +605,5 @@ contents := '
 			pharos create-repository --help 
 			
 "	
-'.
-
-(Smalltalk at: (deploymentUnit packageName capitalized,'Package') asSymbol ) browse.
-
-workspace := Workspace new. 
-window := workspace openLabel: 'PhaROS - Cheatsheet'.
-window maximize.
-workspace contents: contents; changed: #contents. 
-
- ].
-
-]
-
-{ #category : #'as yet unclassified' }
-PRCCommandLineCreateHandler >> exampleGenerator [
-
-self flag: 'MUST be externalized in PhaROS-Example'.
-
-^  [ 
-: deploymentUnit |
-| pack nodelet |
-pack := deploymentUnit packageName capitalized,'Package'.
-nodelet:= deploymentUnit packageName capitalized,'Nodelets'.
-
-(Smalltalk at: #PhaROSPackage) subclass: pack asSymbol
-instanceVariableNames: ''
-classVariableNames: ''
-poolDictionaries: ''
-category: pack.
-
-(Smalltalk at: #PhaROSStaticNodelet) subclass: nodelet asSymbol
-instanceVariableNames: ''
-classVariableNames: ''
-poolDictionaries: ''
-category: pack,'-Nodelets'.
-
-
-(Smalltalk at: pack asSymbol) compile: 'buildController
-	"This message is called by the accessor controller when the variable that stores the controller is pointing to nil.
-	 If you want to make some specific configuration, as injecting nodelets, for package level, this is the place to do it. 
-	Remember to not call #controller from this method, or inner this method, because #controller is the caller of this message.
-	"
-	^ self nodeletInjectionExample: super buildController.
-' classified: 'private - configuration'.
-(Smalltalk at: pack asSymbol) compile: ('nodeletInjectionExample: aController
-	"
-		Nodelets are units objects responsible for solving common problems, meaning that there are reusable. 
-	In order to access to a nodelet from a package we use a simple mechanism of dependency injection, so we 
-	can easily change one implementation for other. 
-		The main problem is the management of name for registration. Try to be clean and obvious with names. Comment and make them visible.
-	For know more about nodelets go to the reference or check subclasses (PhaROSTransformationNodelet is a cool place to go)"
-
-	aController nodelets use: {1} as:#example.
-	aController nodelets example isKindOf: {1}.
-	^ aController.
-	
-' format: {nodelet}) classified: 'private - configuration'.
-
-(Smalltalk at: pack asSymbol) compile: 'scriptExample
-	"Any method that starts with a script is deployed as script Here you can start doing stuff".
-' classified: 'scripts'.
-(Smalltalk at: pack asSymbol) compile: 'scriptTopicPublishingExample
-	| publisher |
-	"For publishing into a topic,you just need a publisher object. You can obtain it asking to the related node like in the following code".
-	
-	publisher := self controller node 
-						topicPublisher: ''/example/string'' 
-						typedAs: ''std_msgs/String''.
-
-	"When data is actually sent you''l see a sequence of ping and pong. Otherwise you'' see pong alone"						
-	[
-		1 second wait.
-		publisher send:[ : string | 
-			string data: ''You are receiving data :-)''.
-			self log: ''ping''
-		].
-		self log: ''  pong''
-	] repeat.
-' classified: 'scripts'.
-(Smalltalk at: pack asSymbol) compile: 'scriptTopicSubscribingExample
-	
-	"For subscribing to a topic, you just need a subscriber to configure it with a callback (block). You can obtain it asking to the related node like in the following code".
-	(self controller node buildConnectionFor: ''/example/string'' ) 
-								typedAs: ''std_msgs/String''; 
-								for: [ : string |  "this is a callback" 
-									Transcript show: string data.
-									self log: string data ];
-								connect .
-														
-	"As you can see, buildConnectionFor: aTopicID, returns an object configurable. This is a builder, you can configure it as much as you want, and when you send connect message it will make the proper connection. For better usage of the builder check the documentation "
-' classified: 'scripts'.
-(Smalltalk at: pack asSymbol) compile: 'scriptServiceDefining
-	"In ROS we do have services. A Service is an async computation that has related a request and a response types. In order to make available a service in ROS world you should execute the following code"
-	self controller node serve: [ :req :rsp | 
-		"this block will be executed when any one calls for this service" 
-		Transcript show: ''Service has been called.''; cr.  
-	] at: ''/pharos/service'' typedAs:''roscpp/Empty''.
-	
-' classified: 'scripts'.
-
-(Smalltalk at: pack asSymbol) compile: 'scriptServiceInvoking
-	| service |
-	"In order ask for a service to be executed, you need to ask to the attached node for a service call object. For doing this you should type the following code"
-	service := self controller node service: ''/rosout/get_loggers''.
-	service call.
-	
-	"This service call will ask for the loggers"
-' classified: 'scripts'.
-
-
-(Smalltalk at: pack asSymbol) compile: 'scriptParameterBinding
-	| integer |
-	"A parameter is a value registered in the master. The idea is to give the chance to 3rd agents to change the value of this parameter. In order to ask for a parameter instance we call the following code"
-	
-	integer := self controller node parameter: ''integer'' initialized: 1. 
-	
-	" The variable integer now points to a binding. This binding understands #set: and #get messages. Is related with the ROS running environment. "
-	
-	
-' classified: 'scripts'.
-
-
- ].
-
-]
-
-{ #category : #'as yet unclassified' }
-PRCCommandLineCreateHandler >> maintainer [
-
-	^  (self optionAt: #'maintainer' ifAbsent: [ self author] ).
-]
-
-{ #category : #'as yet unclassified' }
-PRCCommandLineCreateHandler >> maintainerEmail [
-
-	^  (self optionAt: #'maintainer-email' ifAbsent: [  self authorEmail  ] ).
-]
-
-{ #category : #'as yet unclassified' }
-PRCCommandLineCreateHandler >> package [
-	| p |
-	p := (self argumentAt: 1).
-	(p indexOf: '-') = 1 ifTrue: [ self error: 'The package name is not optional and it must be the first parameter' ].
-	^ p.
-]
-
-{ #category : #'as yet unclassified' }
-PRCCommandLineCreateHandler >> realActivate [
-
-	| location package archetype archObject version silent deployer sourceFolder author authorEmail maintainer maintainerEmail description |
-	
-	
-	version := self version.
-	location := self location.
-	silent := self silent.
-	
-	package := self package.
-	
-	author := self author.
-	authorEmail := self authorEmail.
-	
-	maintainer := self maintainer.
-	maintainerEmail := self maintainerEmail.
-	
-	description := self description.
-	
-	archetype := self archetype.
-	
-
-	sourceFolder := location asFileReference / #src.
-	
-	self forceNewIfNeededAt: sourceFolder / package.
-	
-	deployer := silent ifTrue: [
-		RCDDeployerFactory silentDeployerFor:  sourceFolder pathString withPharoVersion:  version.
-	] ifFalse:[
-		RCDDeployerFactory interactiveDeployerFor: sourceFolder pathString  withPharoVersion:  version.
-	].
-	
-	deployer codeGenerator registerPreProcess: (' Author fullName: ''{1}'' ' format:{ self pharoUser }).
-	
-	deployer codeGenerator registerPostProcess: self exampleGenerator.
-	deployer codeGenerator registerPostProcess: self docGenerator.
-
-	archObject := PRCCommandPackageRegistry  deployUnitForPackage:  archetype.
-	
-	self assert: archObject isArchetype description:'You cannot install a package that is not archetype for creating packages'.
-	
-	archObject packageDescription: description. 
-	
-	archObject packageMaintainer: maintainer .
-	archObject packageMaintainerEmail: maintainerEmail .
-	
-	archObject packageAuthor: author  .
-	archObject packageAuthorEmail: authorEmail .
-	archObject packageName: package.
-		
-	deployer deploy: archObject.
-
-
-
-
-
-
-
-
-
+'
 ]
