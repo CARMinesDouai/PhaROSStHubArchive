@@ -71,12 +71,15 @@ PRCCommandLineHandler >> checkSilent: aBoolean [
 { #category : #validation }
 PRCCommandLineHandler >> checkVersion: aByteSymbol [ 
 	
-	^ (({ #'1.4' . #'2.0' . #'3.0' } detect: [: t | t = aByteSymbol] ifNone: [ 
-		{ #'14' . #'20' . #'30' } detect: [: t | t = aByteSymbol] ifNone: [ 
+	^ (({ #'1.4' . #'2.0' . #'3.0' . #'4.0'} detect: [: t | t = aByteSymbol] ifNone: [ 
+		{ #'14' . #'20' . #'30' . #'40' . #'Stable' . #'Alpha' } detect: [: t | t = aByteSymbol] ifNone: [ 
 			self error: aByteSymbol asString, ' is not a valid Pharo version. 
 				--version 1.4 => Pharo 1.4
 				--version 2.0 => Pharo 2.0
 				--version 3.0 => Pharo 3.0
+				--version 4.0 => Pharo 4.0
+				--version Stable => Pharo 3.0
+				--version Alpha => Pharo 4.0
 			'
 		]
 	]) asString copyReplaceAll: '.' with: '') asSymbol .
@@ -85,15 +88,14 @@ PRCCommandLineHandler >> checkVersion: aByteSymbol [
 
 { #category : #accessing }
 PRCCommandLineHandler >> forceNewIfNeededAt: aPackageFileReference [
-	self forceNewPackage ifTrue: [
-		(aPackageFileReference) exists ifTrue: [ 
-			(aPackageFileReference) deleteRecursively.		
-		]
-	] ifFalse: [
-		(aPackageFileReference) exists ifTrue: [ 
-			self error: ' The package already exists in the source folder. Add --force-new for deleting the existant package'	.
-		]
+	(aPackageFileReference) exists ifTrue: [ 
+		self forceNewPackage ifTrue: [
+			(aPackageFileReference) deleteRecursively 
+		] ifFalse: [
+			^ self error: ' The package already exists in the source folder. Add --force-new for deleting the existant package' 
+		].
 	].
+	aPackageFileReference createDirectory
 ]
 
 { #category : #resolving }
