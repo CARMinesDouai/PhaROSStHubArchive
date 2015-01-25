@@ -40,7 +40,7 @@ TurtleHandle >> color [
 { #category : #utilties }
 TurtleHandle >> convertToGeometryVector3: aTriplet [
 
-	^ Geometry_msgsVector3 new
+	^ #Geometry_msgsVector3 asClass new
 		x: aTriplet first;
 		y: aTriplet second;
 		z: aTriplet third;
