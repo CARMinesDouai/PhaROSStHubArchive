@@ -95,8 +95,23 @@ PRCCommandLineCreateHandler >> generateCatkinDirectoryNamed: package atLocation:
 		self chmod: '775' ofFile: f pathString ].
 ]
 
+{ #category : #'generating - classes - not used' }
+PRCCommandLineCreateHandler >> generatePackageInfosCodeIn: stream forPhaROSPackageNamed: phaROSPackageClassName andCatkinPackageNamed: catkinPackageNameString [
+		
+	"add meta infos of the package on class side"
+	stream <<	
+		('#{1} asClass class
+			compile:
+			''catkinPackageName
+			
+^ {2}	
+	 ''
+ 		classified: ''meta infos''.' format: { phaROSPackageClassName.  catkinPackageNameString}) withUnixLineEndings; lf;lf.
+			
+]
+
 { #category : #'generating - classes' }
-PRCCommandLineCreateHandler >> generatePhaROSClassesCodeIn: stream forPhaROSPackageNamed: phaROSPackageClassName andNodeletNamed: phaROSNodeletClassName [
+PRCCommandLineCreateHandler >> generatePhaROSClassCodeIn: stream forPhaROSPackageNamed: phaROSPackageClassName [
 
 	stream <<	
 		('#PhaROSPackage asClass
@@ -106,13 +121,39 @@ PRCCommandLineCreateHandler >> generatePhaROSClassesCodeIn: stream forPhaROSPack
 			poolDictionaries: ''''
 			category: ''{1}''.' format: {phaROSPackageClassName}) withUnixLineEndings ; lf;lf.
 	
+	"a script method as an example"
+	stream <<	
+		('#{1} asClass
+		compile:
+			''scriptRun
+	"This is just a topic subscribing example. 
+	  How to use:
+	  1) in PhaROS, execute: {1} new scriptRun
+	  2) in a terminal, execute:   rostopic pub -r 10 my_topic std_msgs/String "hello there"       
+	
+	 cf. PhaROSExamplePackage for more scripts example"
+	
+		(self controller node buildConnectionFor: ''/example'' ) 
+								typedAs: ''std_msgs/String''; 
+								for: [ : string |  "this is a callback" 
+									Transcript show: string data.
+									self log: string data ];
+								connect . ''
+ 		classified: ''scripts''.' format: { phaROSPackageClassName }) withUnixLineEndings; lf;lf.
+
+			
+]
+
+{ #category : #'generating - classes - not used' }
+PRCCommandLineCreateHandler >> generatePhaROSStaticNodeletExampleClassCodeIn: stream forPhaROSPackageNamed: phaROSPackageClassName andNodeletNamed: phaROSNodeletClassName [
+	
 	stream <<
 		('#PhaROSStaticNodelet asClass
 			subclass: #{1}
 			instanceVariableNames: ''''
 			classVariableNames: ''''
 			poolDictionaries: ''''
-			category: ''{2}-Nodelets''.' format: { phaROSNodeletClassName .  phaROSPackageClassName}) withUnixLineEndings ; lf ;lf.
+			category: ''{2}''.' format: { phaROSNodeletClassName .  phaROSPackageClassName}) withUnixLineEndings ; lf ;lf.
 	
 	stream <<	
 		('#{1} asClass
@@ -196,24 +237,25 @@ $DIR/vm/pharo $DIR/image/{1}.image st $DIR/scripts/$1.st' format: { packageName 
 { #category : #activation }
 PRCCommandLineCreateHandler >> realActivate [
 
-	| location package  version silent   author authorEmail maintainer maintainerEmail description    pharoImage loadingScriptName loadingScript phaROSPackageClassName phaROSNodeletClassName catkinWorskpaceDirectory catkinPackageDirectory    versionToLoad |
+	| location package  version silent   author authorEmail maintainer maintainerEmail description    pharoImage loadingScriptName loadingScript phaROSPackageClassName phaROSNodeletClassName catkinWorskpaceDirectory catkinPackageDirectory    versionToLoad pharoUser |
 	
 	package := self package. "name of the catkin package to create"
-	location := self location. "catkinWorskpaceDirectory (~/PhaROS-ws)"
+	location := self location. "catkinWorskpaceDirectory (~/PhaROS-ws by default)"
 	version := self version. "version of Pharo to use (Stable)"
 	
 	self loadBleedingEdge 
 		ifTrue: [ versionToLoad := 'loadBleedingEdgeFromCommander' ] 
 		ifFalse: [ versionToLoad := 'loadStableFromCommander' ].
 	
-	"remove silent"
+	"remove all below"
 	silent := self silent. "true or false"
-	
-	author := self author.
+	author := self author. 
 	authorEmail := self authorEmail.
 	maintainer := self maintainer.
 	maintainerEmail := self maintainerEmail.
 	description := self description.
+	
+	pharoUser := self pharoUser.
 	
 	catkinWorskpaceDirectory := location asFileReference. 
 	catkinPackageDirectory :=  catkinWorskpaceDirectory / 'src' / package.
@@ -226,7 +268,7 @@ PRCCommandLineCreateHandler >> realActivate [
 	
 	loadingScript << 'Smalltalk saveAs: ''' << package asString << '''.'; lf. 
 	loadingScript << 'SystemWindow allInstances do: #close.';lf.
-	loadingScript << 'Author fullName: ''' << author asString<< '''.'; lf. 
+	loadingScript << 'Author fullName: ''' << pharoUser asString<< '''.'; lf. 
 
 	"Load PhaROS project"
 	loadingScript << '(Gofer it url: ''http://smalltalkhub.com/mc/CAR/PhaROS/main''; package: ''ConfigurationOfPhaROS'') load.' ; lf.	
@@ -236,57 +278,20 @@ PRCCommandLineCreateHandler >> realActivate [
 	loadingScript lf ; << ('FileStream stdout nextPutAll: ''Generating classes for {1}'', String lf.' format: { package }) ; lf;lf.
 	phaROSPackageClassName := self pharosClassNameForCatkinPackageNamed: package.	
 	phaROSNodeletClassName := package capitalized , 'Nodelets'.	"nodelet"	
-	self generatePhaROSClassesCodeIn: loadingScript forPhaROSPackageNamed: phaROSPackageClassName andNodeletNamed: phaROSNodeletClassName.
 
-self flag: #todo.
-"CMakeLists.txt MUST contain the ros types of the PhaROS packages"
-"move RCDLifeCycle to PhaROS and rename it: ROSCatkinDeployer
-and we should only generate: ROSCatkinDeployer generateCMakeListsTxt
-"
+	self flag: 'compile all infos the catkin package on the class side of the PhaROSPackage class. These infos will then be used by the PhaROSCatkinDeployer'.
+	self generatePhaROSClassCodeIn: loadingScript forPhaROSPackageNamed: phaROSPackageClassName.
+"	self generatePackageInfosCodeIn: loadingScript forPhaROSPackageNamed:  phaROSPackageClassName andCatkinPackageNamed: package."
+"	self generatePhaROSStaticNodeletExampleClassCodeIn: loadingScript forPhaROSPackageNamed: phaROSPackageClassName andNodeletNamed: phaROSNodeletClassName."
 
-(catkinPackageDirectory / 'CMakeLists.txt') writeStreamDo: [ :stream |
-		stream nextPutAll:( '
-cmake_minimum_required(VERSION 2.8.3)
-project({1})
-find_package(catkin REQUIRED)
-catkin_package()' format: {package})withUnixLineEndings ].
-
-"we should only generate: ROSCatkinDeployer generatePackageXml"
-(catkinPackageDirectory / 'package.xml') writeStreamDo: [ :stream |
-		stream nextPutAll:  ('<?xml version="1.0"?>
-<package>
-<name>{1}</name>
-  <version>{2}</version>
-  <description>{3}</description>
-  <maintainer email="{4}">{5}</maintainer>
-  <license>{6}</license>
-  <author email="{7}">{8}</author> 
-  <buildtool_depend>catkin</buildtool_depend>
-</package>' format: { 
-	package. 
-	'0.1.0'. "Stable is not allowed by catkin"
-	description.
-	maintainerEmail.
-	maintainer.
-	'MIT'.
-	authorEmail.
-	author.
- }) withUnixLineEndings].
-
-#OSProcess asClass command: ('cd {1} && catkin_make' format: { catkinWorskpaceDirectory pathString }).
-
-"	RCDLifeCycle>>installAllScripts"
-"same here we should generate: ROSCatkinDeployer generateScriptsForAllPackages"	
-	
-"	RCDLifeCycle>>installResident"
-"same here we should generate: ROSCatkinDeployer installAnnoucementsToAutomaticallyGenerateScripts"	
+	loadingScript lf ; << ('FileStream stdout nextPutAll: ''Generating catkin files: package.xml, CMakeFileLists.txt...'', String lf.' format: { package }) ; lf;lf.
+	loadingScript lf ; << ('#PhaROSCatkinDeployer asClass new phaROSPackageClass: ''{1}'' ; installAllTypes ; installAllScripts ; installResident.' format: { phaROSPackageClassName asString }) ; lf ; lf.
 
 	loadingScript lf ; << 'FileStream stdout lf; nextPutAll: ''Prepare windows '', String lf.';lf.
 	
 	"Open browser on newly created PhaROS package class"
 	loadingScript  << ('#{1} asClass browse.' format: { self pharosClassNameForCatkinPackageNamed: package });lf.
 	
-	self flag: #todo.
 	loadingScript lf ; << 'Smalltalk snapshot: true andQuit: true.' ; lf.
 
 	"save the script"
