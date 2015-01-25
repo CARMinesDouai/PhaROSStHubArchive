@@ -84,6 +84,8 @@ PhaROSCatkinDeployer class >> generateBinScripts [
 	pharosScript writeStreamDo:
 		[:stream | stream << (self pharosScriptForPhaROSPackageNamed: package) ].
 
+	OSProcess command: ('chmod 755 {1}/*' format: { (catkinPackageDirectory / 'bin') pathString }).
+	
 ]
 
 { #category : #'generating - PhaROSPackage' }
