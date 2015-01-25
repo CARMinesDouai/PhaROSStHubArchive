@@ -71,17 +71,15 @@ PRCCommandLineHandler >> checkSilent: aBoolean [
 { #category : #validation }
 PRCCommandLineHandler >> checkVersion: aByteSymbol [ 
 	
-	^ (({ #'1.4' . #'2.0' . #'3.0' . #'4.0'} detect: [: t | t = aByteSymbol] ifNone: [ 
-		{ #'14' . #'20' . #'30' . #'40' . #'Stable' . #'Alpha' } detect: [: t | t = aByteSymbol] ifNone: [ 
-			self error: aByteSymbol asString, ' is not a valid Pharo version. 
-				--version 1.4 => Pharo 1.4
-				--version 2.0 => Pharo 2.0
-				--version 3.0 => Pharo 3.0
-				--version 4.0 => Pharo 4.0
-				--version Stable => Pharo 3.0
-				--version Alpha => Pharo 4.0
+	^ (({ #'14' . #'20' . #'30' . #'40' . #'Stable' . #'Alpha' } detect: [: t | t = aByteSymbol] ifNone: [ 
+			self error: aByteSymbol asString, ' is not a valid Pharo version. Allowed versions are:
+				--version=14
+				--version=20
+				--version=30
+				--version=40
+				--version=Stable
+				--version=Alpha
 			'
-		]
 	]) asString copyReplaceAll: '.' with: '') asSymbol .
 
 ]

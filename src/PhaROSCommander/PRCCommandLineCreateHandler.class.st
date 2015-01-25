@@ -35,7 +35,7 @@ PRCCommandLineCreateHandler >> chmod: rights ofFile: stringPath [
 	^ #OSProcess asClass command: ('chmod {1} {2}' format: { rights . stringPath }).
 ]
 
-{ #category : #'generation - catkin directory' }
+{ #category : #utilities }
 PRCCommandLineCreateHandler >> generateCatkinDirectoryNamed: package atLocation: catkinPackageDirectory [
 	"
 		create this structure:
@@ -77,7 +77,7 @@ PRCCommandLineCreateHandler >> pharosClassNameForCatkinPackageNamed: catkinPacka
 { #category : #activation }
 PRCCommandLineCreateHandler >> realActivate [
 
-	| location package  version silent  pharoImage loadingScriptName loadingScript   catkinWorskpaceDirectory catkinPackageDirectory    versionToLoad pharoUser catkinPackageImageDirectory |
+	| location package  version silent  pharoImage loadingScriptName loadingScript   catkinWorskpaceDirectory catkinPackageDirectory    versionToLoad pharoUser catkinPackageImageDirectory  |
 	
 	package := self package. "name of the catkin package to create"
 	location := self location. "catkinWorskpaceDirectory (~/PhaROS-ws by default)"
@@ -132,14 +132,13 @@ PRCCommandLineCreateHandler >> realActivate [
 	"download Pharo<version>.image  if needed"
 	pharoImage := Smalltalk imageDirectory / ('Pharo', version asString, '.image').
 	pharoImage exists ifFalse: [ 
-		"download it" 
-		self flag: #todo.
+		OSProcess waitForCommand: ('curl get.pharo.org/{1} | bash && mv Pharo.image Pharo{1}.image && mv Pharo.changes Pharo{1}.changes &&' format: {version asString})
 	].
 
 	"make the <package>.image execute the loadingScriptName and move the resulting image"
 	FileStream stdout lf ; nextPutAll: ('Executing the ImageCreationScript.st script') ; lf.
-	#OSProcess asClass 
-		command: ('./pharo {1} st {2} ; rm -f {3}.image {3}.changes ' 
-		format: {pharoImage pathString. loadingScriptName pathString. package asString}).
+	OSProcess 
+		waitForCommand: ('./pharo {1} st {2} ; rm -f {3}.image {3}.changes ' 
+							format: {pharoImage pathString. loadingScriptName pathString. package asString}).
 
 ]
