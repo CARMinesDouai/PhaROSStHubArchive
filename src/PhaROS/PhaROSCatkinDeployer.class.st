@@ -181,7 +181,8 @@ PhaROSCatkinDeployer class >> setupImageForCurrentCatkinPackage [
 	self generateDirectoryStructure.
 	self generateBinScripts.
 	
-	self basicNew initialize 
+	instance := self basicNew initialize.
+	instance 
 		phaROSPackageClass: phaROSPackageClass;
 		generateAllCatkinArtefacts.
 	
