@@ -157,53 +157,6 @@ PhaROSCatkinDeployer >> filenameFor: selector inClass: aPackageClass [
 	^ (aPackageClass name asString asLowercase, '_' , filename, '.st' )
 ]
 
-{ #category : #'future refactoring' }
-PhaROSCatkinDeployer >> generateCMakeListsTxt [
-
-	| catkinPackageDirectory |
-	
-	self flag: #ideaOfRefactoring.
-	
-	catkinPackageDirectory := Smalltalk imageDirectory parent.
-	(catkinPackageDirectory / 'CMakeLists.txt') writeStreamDo: [ :stream |
-		stream nextPutAll:( '
-cmake_minimum_required(VERSION 2.8.3)
-project({1})
-find_package(catkin REQUIRED)
-catkin_package()' format: {package})withUnixLineEndings ].
-
-]
-
-{ #category : #'future refactoring' }
-PhaROSCatkinDeployer >> generatePackageXml [
-
-	| catkinPackageDirectory |
-	
-	self flag: #ideaOfRefactoring.
-		
-	catkinPackageDirectory := Smalltalk imageDirectory parent.
-	(catkinPackageDirectory / 'package.xml') writeStreamDo: [ :stream |
-		stream nextPutAll:  ('<?xml version="1.0"?>
-<package>
-<name>{1}</name>
-  <version>{2}</version>
-  <description>{3}</description>
-  <maintainer email="{4}">{5}</maintainer>
-  <license>{6}</license>
-  <author email="{7}">{8}</author> 
-  <buildtool_depend>catkin</buildtool_depend>
-</package>' format: { 
-	'toto'. 
-	'0.1.0'. "Stable is not allowed by catkin"
-	''.
-	''.
-	''.
-	'MIT'.
-	''.
-	''
- }) withUnixLineEndings].
-]
-
 { #category : #'initialize-release' }
 PhaROSCatkinDeployer >> initialize [
 	deployedTypes := OrderedCollection new.
