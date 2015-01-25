@@ -108,11 +108,11 @@ PRCCommandLineCreateHandler >> realActivate [
 	loadingScript << ('#ConfigurationOfPhaROS asClass {1}.' format: {versionToLoad}); lf.
 
 	"save the image in the catkin directory"
-	loadingScript << 'Smalltalk saveAs: ''' << catkinPackageImageDirectory pathString, '/' package asString << '''.'; lf. 
+	loadingScript << 'Smalltalk saveAs: ''' << (catkinPackageImageDirectory pathString, '/', package asString) << '''.'; lf. 
 
 	loadingScript lf ; << ('FileStream stdout nextPutAll: ''Generating catkin files: package.xml, CMakeFileLists.txt...'', String lf.' format: { package }) ; lf;lf.
 	"setup image for the catkin package in which the Pharo image is saved"
-	loadingScript lf ; << '#PhaROSCatkinDeployer asClass setupImageForCurrentCatkinPackage' ; lf ; lf.
+	loadingScript lf ; << '#PhaROSCatkinDeployer asClass setupImageForCurrentCatkinPackage.' ; lf ; lf.
 	
 	loadingScript lf ; << 'Smalltalk snapshot: true andQuit: true.' ; lf.
 
@@ -120,7 +120,7 @@ PRCCommandLineCreateHandler >> realActivate [
 	self generateCatkinDirectoryNamed: package atLocation: catkinPackageDirectory.
 
 	"save the script in the catkin directory"
-	loadingScriptName := catkinPackageImageDirectory / package, 'ImageCreationScript.st'.
+	loadingScriptName := catkinPackageImageDirectory / (package, 'ImageCreationScript.st').
 "	loadingScriptName ensureDelete."
 	loadingScriptName	writeStreamDo: [ :stream |
 		stream nextPutAll: loadingScript contents ].
