@@ -119,7 +119,7 @@ PhaROSCatkinDeployer class >> generatePhaROSPackageClassForCatkinName: catkinPac
 		"please load the package PhaROS-PackageExample from PhaROS repository "'.
 	
 	Smalltalk globals at: #PhaROSExamplePackage ifPresent: [ :exampleClass | 
-		codeExample := (PhaROSExamplePackage>>#scriptTopicSubscribingExample) sourceCode ].
+		codeExample := (exampleClass>>#scriptTopicSubscribingExample) sourceCode ].
 	
 	newPhaROSPackageClassName asClass
 		compile: codeExample
