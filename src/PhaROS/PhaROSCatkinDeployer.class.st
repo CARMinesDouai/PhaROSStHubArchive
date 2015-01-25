@@ -30,12 +30,18 @@ Class {
 	#category : #'PhaROS-Catkin'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+PhaROSCatkinDeployer class >> instance [
+	^ instance
+	
+]
+
+{ #category : #'instance creation' }
 PhaROSCatkinDeployer class >> new [ 
 	^ instance ifNil: [ instance := super new. ] 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 PhaROSCatkinDeployer class >> uninstall [
 	instance := nil.
 ]
@@ -254,7 +260,7 @@ catkin_package(
 )
 		' format: { 
 			self makeVersion . 
-			aPackage packageName .
+			aPackage catkinPackageName .
 			self dependenciesForMake inject:'' into: [ :acc :type | acc, ' find_package (',type,')', String lf ] .
 			deployedTypes inject:'' into: [ :acc :type | acc, type,'.msg', String lf ] .
 			deployedServices inject:'' into: [ :acc :type | acc, type,'.srv', String lf ] .
@@ -266,7 +272,7 @@ cmake_minimum_required({1})
 project({2})
 find_package(catkin REQUIRED)
 catkin_package()
-' format:{ self makeVersion . aPackage packageName }.
+' format:{ self makeVersion . aPackage catkinPackageName }.
 	
 
  ]
@@ -350,14 +356,14 @@ PhaROSCatkinDeployer >> packagexmlContentFor: aPackage [
   <buildtool_depend>catkin</buildtool_depend>
   <export>
   </export>' format:{ 
-	aPackage packageName. 
-	aPackage packageVersion.
-	aPackage packageDescription.
-	aPackage packageMaintainerEmail.
-	aPackage packageMaintainer.
-	aPackage packageLicense.
-	aPackage packageAuthorEmail.
-	aPackage packageAuthor.
+	aPackage catkinPackageName. 
+	aPackage catkinPackageVersion.
+	aPackage catkinPackageDescription.
+	aPackage catkinPackageMaintainerEmail.
+	aPackage catkinPackageMaintainer.
+	aPackage catkinPackageLicense.
+	aPackage catkinPackageAuthorEmail.
+	aPackage catkinPackageAuthor.
  }
 ]
 
