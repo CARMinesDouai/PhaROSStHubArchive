@@ -104,7 +104,7 @@ PhaROSPose >> asPose [
 PhaROSPose >> asTransform [ 
 
 	| transform |
-	transform := Geometry_msgsTransform new .
+	transform := #Geometry_msgsTransform asClass new .
 	
 	transform translation x: self  position x.
 	transform translation y: self  position y.

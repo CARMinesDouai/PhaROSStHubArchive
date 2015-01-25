@@ -101,7 +101,7 @@ PhaROSCatkinDeployer class >> generateDirectoryStructure [
 { #category : #'generating - PhaROSPackage' }
 PhaROSCatkinDeployer class >> generatePhaROSPackageClassForCatkinName: catkinPackageName [
 
-	| newPhaROSPackageClassName |
+	| newPhaROSPackageClassName codeExample |
 	
 	newPhaROSPackageClassName := catkinPackageName capitalized, 'Package'.
 	
@@ -112,9 +112,15 @@ PhaROSCatkinDeployer class >> generatePhaROSPackageClassForCatkinName: catkinPac
 			poolDictionaries: ''
 			category: newPhaROSPackageClassName.
 	
-	"a script method as an example"
+	"add a script method as an example"
+	codeExample := 'scriptExample
+		"please load the package PhaROS-PackageExample from PhaROS repository "'.
+	
+	Smalltalk globals at: #PhaROSExamplePackage ifPresent: [ :exampleClass | 
+		codeExample := (PhaROSExamplePackage>>#scriptTopicSubscribingExample) sourceCode ].
+	
 	newPhaROSPackageClassName asClass
-		compile: (PhaROSExamplePackage>>#scriptTopicSubscribingExample) sourceCode
+		compile: codeExample
  		classified: 'scripts'. 
 
 	^ newPhaROSPackageClassName asClass
@@ -175,7 +181,10 @@ PhaROSCatkinDeployer class >> setupImageForCurrentCatkinPackage [
 	
 	self basicNew initialize 
 		phaROSPackageClass: phaROSPackageClass;
-		generateAllCatkinArtefacts
+		generateAllCatkinArtefacts.
+	
+	Smalltalk globals at: #PhaROSDoc ifPresent: [ :doc | doc open  ].
+	Smalltalk globals at: #EUWorkspace ifPresent: [ :workspace | workspace open  ].
 ]
 
 { #category : #actions }
