@@ -11,9 +11,8 @@ To automatically generate scripts files for script methods added in the PhaROSPa
 
 A singleton instance of this class is created and configured by the PhaROSCommander when the PhaROS image is set up. The commander execute the following code:
 
-PhaROSCatkinDeployer new 
-	phaROSPackageClass: TotoPackage ; 
-	generateAllCatkinArtefacts
+PhaROSCatkinDeployer setupImageForCurrentCatkinPackage
+
 "
 Class {
 	#name : #PhaROSCatkinDeployer,
@@ -30,24 +29,8 @@ Class {
 	#category : #'PhaROS-Catkin'
 }
 
-{ #category : #accessing }
-PhaROSCatkinDeployer class >> instance [
-	^ instance
-	
-]
-
-{ #category : #'instance creation' }
-PhaROSCatkinDeployer class >> new [ 
-	^ instance ifNil: [ instance := super new. ] 
-]
-
-{ #category : #actions }
-PhaROSCatkinDeployer class >> uninstall [
-	instance := nil.
-]
-
-{ #category : #'initialize-release' }
-PhaROSCatkinDeployer >> assertThisPhaROSImageIsStoredInACatkinWorkspace [
+{ #category : #private }
+PhaROSCatkinDeployer class >> assertThisPhaROSImageIsStoredInACatkinWorkspace [
 
 	"Ensure that we are inside the known directory layout of a catkin package. The image must be stored inside the image folder.
 		
@@ -66,11 +49,149 @@ PhaROSCatkinDeployer >> assertThisPhaROSImageIsStoredInACatkinWorkspace [
 	"all assertions below must be statisfied"
 	self assert: (({  
 			currentDirectory basename = 'image'.
-			(currentDirectory / #scripts) isDirectory.
 			currentDirectory parent parent basename = 'src'
 			} asSet includes: false) not)   
 		description: errorText.
 		
+]
+
+{ #category : #'generating - PhaROSPackage' }
+PhaROSCatkinDeployer class >> editScriptForPhaROSPackageNamed: packageName [
+
+^('#!/usr/bin/env bash
+DIR=`rospack find {1}`
+	
+$DIR/vm/pharo $DIR/image/{1}.image' format: { packageName }) withUnixLineEndings
+]
+
+{ #category : #'generating - PhaROSPackage' }
+PhaROSCatkinDeployer class >> generateBinScripts [
+	|catkinPackageDirectory package editScript headlessScript pharosScript |
+	
+	catkinPackageDirectory := Smalltalk imageDirectory parent.
+	package := catkinPackageDirectory basename.
+	
+	editScript := catkinPackageDirectory / 'bin' / 'edit'.
+	editScript writeStreamDo:
+		[:stream | stream << (self editScriptForPhaROSPackageNamed: package) ].
+	
+	headlessScript := catkinPackageDirectory / 'bin' / 'headless'.
+	headlessScript writeStreamDo:
+		[:stream | stream << (self headlessScriptForPhaROSPackageNamed: package) ].
+
+	pharosScript := catkinPackageDirectory / 'bin' / 'pharos'.
+	pharosScript writeStreamDo:
+		[:stream | stream << (self pharosScriptForPhaROSPackageNamed: package) ].
+
+]
+
+{ #category : #'generating - PhaROSPackage' }
+PhaROSCatkinDeployer class >> generateDirectoryStructure [
+	|catkinPackageDirectory|
+	
+	catkinPackageDirectory := Smalltalk imageDirectory parent.
+	
+	{ 'bin' . 'image/scripts'  . 'build' . 'include' . 'msg' . 'srv' } do: [  :dirName |
+		(catkinPackageDirectory / dirName) ensureCreateDirectory ].	
+	
+
+]
+
+{ #category : #'generating - PhaROSPackage' }
+PhaROSCatkinDeployer class >> generatePhaROSPackageClassForCatkinName: catkinPackageName [
+
+	| newPhaROSPackageClassName |
+	
+	newPhaROSPackageClassName := catkinPackageName capitalized, 'Package'.
+	
+	PhaROSPackage 
+			subclass: newPhaROSPackageClassName asSymbol 
+			instanceVariableNames: ''
+			classVariableNames: ''
+			poolDictionaries: ''
+			category: newPhaROSPackageClassName.
+	
+	"a script method as an example"
+	newPhaROSPackageClassName asClass
+		compile:
+			'scriptRun
+	"This is just a topic subscribing example. 
+	  How to use:
+	  1) in PhaROS, execute: {1} new scriptRun
+	  2) in a terminal, execute:   rostopic pub -r 10 my_topic std_msgs/String ''hello there''
+	
+	 cf. PhaROSExamplePackage for more scripts example"
+	
+		(self controller node buildConnectionFor: ''/example''
+								typedAs: ''std_msgs/String''; 
+								for: [ : string |  "this is a callback"
+									Transcript show: string data.
+									self log: string data ];
+								connect . '
+ 		classified: 'scripts'. 
+
+	^ newPhaROSPackageClassName asClass
+
+]
+
+{ #category : #'generating - PhaROSPackage' }
+PhaROSCatkinDeployer class >> headlessScriptForPhaROSPackageNamed: packageName [
+
+^('#!/usr/bin/env bash
+DIR=`rospack find {1}`
+	
+$DIR/vm/pharo --nodisplay  $DIR/image/{1}.image st $DIR/scripts/$1.st' format: { packageName }) withUnixLineEndings
+]
+
+{ #category : #accessing }
+PhaROSCatkinDeployer class >> instance [
+	^ instance
+	
+]
+
+{ #category : #'instance creation' }
+PhaROSCatkinDeployer class >> new [ 
+	"use the singleton #instance or create a new one using #setupImageForCurrentCatkinPackage"
+	self shouldNotImplement 
+]
+
+{ #category : #'generating - PhaROSPackage' }
+PhaROSCatkinDeployer class >> pharosScriptForPhaROSPackageNamed: packageName [
+
+^('#!/usr/bin/env bash
+DIR=`rospack find {1}`
+	
+$DIR/vm/pharo $DIR/image/{1}.image st $DIR/scripts/$1.st' format: { packageName }) withUnixLineEndings
+]
+
+{ #category : #'API for PhaROSCommander' }
+PhaROSCatkinDeployer class >> setupImageForCurrentCatkinPackage [
+
+	| phaROSPackageClass catkinPackageImageDirectory catkinPackageDirectory catkinPackageName |
+	
+	self assertThisPhaROSImageIsStoredInACatkinWorkspace.
+	
+	catkinPackageImageDirectory := Smalltalk imageDirectory.
+	catkinPackageDirectory := catkinPackageImageDirectory parent.
+	catkinPackageName := catkinPackageDirectory basename.
+		
+	SystemWindow allInstances do: #close.
+	
+	phaROSPackageClass := self generatePhaROSPackageClassForCatkinName: catkinPackageName.
+	
+	phaROSPackageClass browse.
+	
+	self generateDirectoryStructure.
+	self generateBinScripts.
+	
+	self basicNew initialize 
+		phaROSPackageClass: phaROSPackageClass;
+		generateAllCatkinArtefacts
+]
+
+{ #category : #actions }
+PhaROSCatkinDeployer class >> uninstall [
+	instance := nil.
 ]
 
 { #category : #'generating - CMakeListsTxt' }
@@ -176,7 +297,7 @@ PhaROSCatkinDeployer >> initialize [
 	deployedTypes := OrderedCollection new.
 	deployedServices := OrderedCollection new. 
 	dependencies := Set new .
-	self assertThisPhaROSImageIsStoredInACatkinWorkspace
+	
 ]
 
 { #category : #'public api' }
