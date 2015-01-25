@@ -73,7 +73,9 @@ PhaROSExamplePackage >> scriptServiceInvoking [
 { #category : #scripts }
 PhaROSExamplePackage >> scriptTopicPublishingExample [
 	| publisher |
-	"For publishing into a topic,you just need a publisher object. You can obtain it asking to the related node like in the following code".
+
+	"For publishing into a topic,you just need a publisher object. 
+	You can obtain it asking to the related node like in the following code".
 	
 	publisher := self controller node 
 						topicPublisher: '/example/string'
@@ -93,8 +95,20 @@ PhaROSExamplePackage >> scriptTopicPublishingExample [
 
 { #category : #scripts }
 PhaROSExamplePackage >> scriptTopicSubscribingExample [
+"
+	This example shows how to subscribe to a ROS topic.
 	
-	"For subscribing to a topic, you just need a subscriber to configure it with a callback (block). You can obtain it asking to the related node like in the following code".
+	How to use:
+	  1) in PhaROS, execute: 	self class new scriptRun
+	  2) in a terminal, execute:   rostopic pub -r 10 my_topic std_msgs/String ''hello there''
+	
+	
+	You just need a subscriber object (created using buildConnectionFor: aTopicID) and configure it with a callback (block).
+	Then, when you send it the #connect message it will make the proper connections. 
+
+	cf. PhaROSExamplePackage for more scripts example
+"
+	
 	(self controller node buildConnectionFor: '/example/string' ) 
 								typedAs: 'std_msgs/String'; 
 								for: [ : string |  "this is a callback" 
@@ -102,6 +116,5 @@ PhaROSExamplePackage >> scriptTopicSubscribingExample [
 									self log: string data ];
 								connect .
 														
-	"As you can see, buildConnectionFor: aTopicID, returns an object configurable. This is a builder, you can configure it as much as you want, and when you send connect message it will make the proper connection. For better usage of the builder check the documentation "
 
 ]
