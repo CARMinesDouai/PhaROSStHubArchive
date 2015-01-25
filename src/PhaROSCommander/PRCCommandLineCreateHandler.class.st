@@ -111,7 +111,8 @@ PRCCommandLineCreateHandler >> realActivate [
 	loadingScript << 'Smalltalk saveAs: ''' << catkinPackageImageDirectory pathString, '/' package asString << '''.'; lf. 
 
 	loadingScript lf ; << ('FileStream stdout nextPutAll: ''Generating catkin files: package.xml, CMakeFileLists.txt...'', String lf.' format: { package }) ; lf;lf.
-	loadingScript lf ; << ('#PhaROSCatkinDeployer asClass setupImageForANewCatkinPackageNamed: ''{1}''' format: { package asString }) ; lf ; lf.
+	"setup image for the catkin package in which the Pharo image is saved"
+	loadingScript lf ; << '#PhaROSCatkinDeployer asClass setupImageForCurrentCatkinPackage' ; lf ; lf.
 	
 	loadingScript lf ; << 'Smalltalk snapshot: true andQuit: true.' ; lf.
 
