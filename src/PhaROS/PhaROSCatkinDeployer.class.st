@@ -113,21 +113,7 @@ PhaROSCatkinDeployer class >> generatePhaROSPackageClassForCatkinName: catkinPac
 	
 	"a script method as an example"
 	newPhaROSPackageClassName asClass
-		compile:
-			'scriptRun
-	"This is just a topic subscribing example. 
-	  How to use:
-	  1) in PhaROS, execute: {1} new scriptRun
-	  2) in a terminal, execute:   rostopic pub -r 10 my_topic std_msgs/String ''hello there''
-	
-	 cf. PhaROSExamplePackage for more scripts example"
-	
-		(self controller node buildConnectionFor: ''/example''
-								typedAs: ''std_msgs/String''; 
-								for: [ : string |  "this is a callback"
-									Transcript show: string data.
-									self log: string data ];
-								connect . '
+		compile: (PhaROSExamplePackage>>#scriptTopicSubscribingExample) sourceCode
  		classified: 'scripts'. 
 
 	^ newPhaROSPackageClassName asClass
