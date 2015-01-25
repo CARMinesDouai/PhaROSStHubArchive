@@ -13,7 +13,7 @@ A singleton instance of this class is created and configured by the PhaROSComman
 
 PhaROSCatkinDeployer new 
 	phaROSPackageClass: TotoPackage ; 
-	installAllTypes ; installAllScripts ; installResident.
+	generateAllCatkinArtefacts
 "
 Class {
 	#name : #PhaROSCatkinDeployer,
@@ -161,6 +161,14 @@ PhaROSCatkinDeployer >> filenameFor: selector inClass: aPackageClass [
 		filename := filename copyReplaceAll: upper with: '_', upper asLowercase .
 	].
 	^ (aPackageClass name asString asLowercase, '_' , filename, '.st' )
+]
+
+{ #category : #'public api' }
+PhaROSCatkinDeployer >> generateAllCatkinArtefacts [
+	self 
+		installAllTypes ; 
+		installAllScripts ; 
+		installResident.
 ]
 
 { #category : #'initialize-release' }
