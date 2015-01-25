@@ -48,18 +48,6 @@ PRCCommandLineHandler >> checkLocation: aLocation [
 ]
 
 { #category : #validation }
-PRCCommandLineHandler >> checkPackage: aPackageName [ 
-	^ self checkPackage: aPackageName  ifFail: [ self error: aPackageName, ' is not a valid package.'  ]
-]
-
-{ #category : #validation }
-PRCCommandLineHandler >> checkPackage: aPackageName ifFail: aBlock [
-	^ (PRCCommandPackageRegistry existsPackageNamed: aPackageName ) ifTrue: [  aPackageName  ] ifFalse: [  
-		aBlock cull: aPackageName.
-	].
-]
-
-{ #category : #validation }
 PRCCommandLineHandler >> checkSilent: aBoolean [
 	^ self checkBoolean: aBoolean ifFail: [ 
 		 self error: aBoolean asString, ' is not a valid value for --silent. It should be true or false'.
@@ -129,29 +117,10 @@ PRCCommandLineHandler >> loadNetworkSettings [
 
 ]
 
-{ #category : #resolving }
-PRCCommandLineHandler >> loadRepositories [
-	
-	self readRepositories do:[
-		:repo | 
-		" We load the package, and register the directory class to the package registry "
-			Gofer it url: (repo at:'url') username: (repo at:'user') password: (repo at:'password') ; package: (repo at:'repository'); load.
-			PRCCommandPackageRegistry register: (Smalltalk at: (repo at: 'directory') asSymbol) 
-	].
-]
-
 { #category : #accessing }
 PRCCommandLineHandler >> location [
 
 	^ (self checkLocation: (self optionAt: #location ifAbsent: [  self workingDirectory ] ) asFileReference ) pathString.
-]
-
-{ #category : #resolving }
-PRCCommandLineHandler >> package [
-	^ self checkPackage: (commandLine optionAt: #package ifAbsent:[ commandLine argumentAt: 1 ]) ifFail: [ 
-		self loadRepositories.
-		self checkPackage: (commandLine optionAt: #package ifAbsent:[ commandLine argumentAt: 1 ])
-	 ].
 ]
 
 { #category : #accessing }
@@ -160,24 +129,9 @@ PRCCommandLineHandler >> pharoUser [
 	^  (self optionAt: #'pharo-user' ifAbsent: [  'pharos' ] ).
 ]
 
-{ #category : #resolving }
-PRCCommandLineHandler >> readRepositories [
-	| repos |
-	repos := OrderedCollection new.
-	
-	repos add: {'directory'->'PhaROSDeploymentDirectory' . 'password'->'' .  'repository' -> 'PhaROSDeploymentDirectory' . 'url'->'http://smalltalkhub.com/mc/CAR/PhaROS/main' . 'user' ->'' } asDictionary.
-	repos add: {'directory'->'PeriphericsDirectory' . 'password' ->'' . 'repository'->'PeriphericsDirectory' . 'url'->'http://smalltalkhub.com/mc/CAR/PhaROSPeripherics/main' . 'user'->''} asDictionary.
-	^ repos
-]
-
 { #category : #activation }
 PRCCommandLineHandler >> realActivate [
 	self subclassResponsibility 
-]
-
-{ #category : #resolving }
-PRCCommandLineHandler >> repositoriesFileName [
-	^ 'repositories'
 ]
 
 { #category : #resolving }

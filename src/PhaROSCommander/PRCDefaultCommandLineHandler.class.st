@@ -1,15 +1,8 @@
 "
 pharos usage
-
 	
-	
-	pharos install			- Installs a package 
-	pharos create 			- Creates a new package based on an archetype
-	pharos create-repository	- Creates a smalltalk script for creating your own repository
-	pharos register-repository	- Register a new package repositry
-	pharos list-repositories	- List registered repostiries
-	pharos update-tool	      - check if there is any update of the tool, and it update it.
-	pharos ros-install		- installs a ros
+	pharos create 			- Creates a new package
+	pharos update	      	- check if there is any update of the tool, and it update it.
 		
 	
 "
