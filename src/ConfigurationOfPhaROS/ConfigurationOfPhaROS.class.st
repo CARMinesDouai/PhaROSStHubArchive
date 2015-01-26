@@ -537,7 +537,7 @@ ConfigurationOfPhaROS >> baseline13: spec [
 					className: 'ConfigurationOfTaskIT';
 					file: 'ConfigurationOfTaskIT' ;
 					repository: 'http://smalltalkhub.com/mc/CAR/TaskIT/main';
-					versionString:  #stable
+					versionString: '2.2'
 			].
 		
 			"Testing"
@@ -774,7 +774,6 @@ ConfigurationOfPhaROS >> version131: spec [
 		spec project: 'XMLRPC' with: '1.01'.
 		spec project: 'PaulLePoulpe' with: '1.0.1'.
 		spec package: 'PhaROS' with: 'PhaROS-pharos.742'.
-		spec project: 'TaskIT' with: '2.2'
 	]
 ]
 
