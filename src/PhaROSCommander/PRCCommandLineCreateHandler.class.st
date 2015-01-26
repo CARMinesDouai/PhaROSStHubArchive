@@ -102,6 +102,10 @@ PRCCommandLineCreateHandler >> realActivate [
 	loadingScript << 'Smalltalk saveAs: ''' << package asString << '''.'; lf. 
 	loadingScript << 'Author fullName: ''' << pharoUser asString<< '''.'; lf. 
 
+	OSEnvironment default at: 'http_proxy' ifPresent: [ : httpProxyString | 
+		loadingScript <<  ('NetworkSystemSettings useHTTPProxy: true; httpProxyServer: ''{1}''; httpProxyPort: {2}.' format: (('http://10.1.1.3:8080/' subStrings: '/') second   subStrings: ':')) ;lf.
+	].
+
 	"Load PhaROS project"
 	loadingScript << '(Gofer it url: ''http://smalltalkhub.com/mc/CAR/PhaROS/main''; package: ''ConfigurationOfPhaROS'') load.' ; lf.	
 	loadingScript lf ; <<('FileStream stdout nextPutAll: ''Loading ConfigOfPhaROS {1}'', String lf.' format: { versionToLoad }) ; lf.
