@@ -122,7 +122,8 @@ ConfigurationOfPhaROS class >> loadStable [
 
 { #category : #'loading from PhaROSCommander' }
 ConfigurationOfPhaROS class >> loadStableFromCommander [
-	^ (self project version: #stable) load: 'basic-archetype'
+	^ (self project version: '1.3.1') load: 'all'
+
 ]
 
 { #category : #'metacello tool support' }
@@ -638,8 +639,7 @@ ConfigurationOfPhaROS >> project [
 { #category : #'symbolic versions' }
 ConfigurationOfPhaROS >> stable: spec [
 	<symbolicVersion: #'stable'>
-	spec for: #'common' version: '1.2.3' "version loaded by the pharos commandline tool"
-	
+
 ]
 
 { #category : #'old fixed versions' }
@@ -760,6 +760,21 @@ ConfigurationOfPhaROS >> version123: spec [
 		spec project: 'PaulLePoulpe' with: '1.0.1'.
 		spec package: 'PhaROS' with: 'PhaROS-pharos.730'.
 		spec project: 'TaskIT' with: '2.1' 
+	]
+]
+
+{ #category : #versions }
+ConfigurationOfPhaROS >> version131: spec [ 
+	<version: '1.3.1' imports: #('1.3-baseline') >
+	
+	spec for: #common do: [ 
+		spec blessing: #'v1.3.1'.
+		spec author: 'LucFabresse'.
+		spec timestamp: '26/01/2015 16:00'.
+		spec project: 'XMLRPC' with: '1.01'.
+		spec project: 'PaulLePoulpe' with: '1.0.1'.
+		spec package: 'PhaROS' with: 'PhaROS-pharos.742'.
+		spec project: 'TaskIT' with: '2.2'
 	]
 ]
 
