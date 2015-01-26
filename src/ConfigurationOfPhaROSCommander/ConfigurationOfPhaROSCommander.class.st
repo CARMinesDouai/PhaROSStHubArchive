@@ -260,6 +260,6 @@ ConfigurationOfPhaROSCommander >> version110: spec [
 		spec blessing: #'After big refactor/rewrite to reduce it'.
 		spec author: 'LucFabresse'.
 		spec timestamp: '26/1/2015 12:07'.
-		spec package: 'PhaROSCommander' with: 'PhaROSCommander-LucFabresse.85'.
+		spec package: 'PhaROSCommander' with: 'PhaROSCommander-LucFabresse.86'.
 	]
 ]
