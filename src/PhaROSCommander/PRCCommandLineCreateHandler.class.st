@@ -138,7 +138,8 @@ PRCCommandLineCreateHandler >> realActivate [
 	pharoVersionString := version asString translateToLowercase.
 	pharoImage := Smalltalk imageDirectory / ('Pharo',pharoVersionString, '.image').
 	((pharoImage exists not) or: [ pharoVersionString = 'alpha' ]) ifTrue: [ 
-		OSProcess waitForCommand: ('curl get.pharo.org/{1} | bash && mv Pharo.image Pharo{1}.image && mv Pharo.changes Pharo{1}.changes' format: {pharoVersionString})
+		OSProcess waitForCommand: ('cd {1} && curl get.pharo.org/{2} | bash && mv Pharo.image Pharo{2}.image && mv Pharo.changes Pharo{2}.changes' 
+										format: {Smalltalk imageDirectory pathString . pharoVersionString})
 	].
 
 	"make the <package>.image execute the loadingScriptName and move the resulting image"
@@ -147,7 +148,7 @@ PRCCommandLineCreateHandler >> realActivate [
 		waitForCommand: ('{1}/pharo {2} st {3} ; rm -f {1}/{4}.image {1}/{4}.changes' 
 							format: {Smalltalk imageDirectory pathString . pharoImage pathString. loadingScriptName pathString. package asString}).
 	
-	4 seconds wait.
-	OSProcess waitForCommand: 'echo "Press ENTER now for happyness..."'
+	4 seconds wait. "here we wait for OSProcess commands executing in background to finish"
+"	OSProcess waitForCommand: 'echo ""Press ENTER now for happyness...""'"
 		
 ]
