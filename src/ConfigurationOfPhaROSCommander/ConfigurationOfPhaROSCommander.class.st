@@ -192,7 +192,7 @@ ConfigurationOfPhaROSCommander >> project [
 { #category : #'symbolic versions' }
 ConfigurationOfPhaROSCommander >> stable: spec [
 	<symbolicVersion: #'stable'>
-	spec for: #'common' version: '1.0.4'
+	spec for: #'common' version: '1.1.0'
 	
 ]
 
@@ -249,5 +249,17 @@ ConfigurationOfPhaROSCommander >> version104: spec [
 		spec project: 'ROSCatkinDeployer' with: '1.0-baseline'. "bleeding..."
 		spec package: 'PhaROSCommander' with: 'PhaROSCommander-NouryBouraqadi.70'.
 		spec package: 'PhaROSCommanderTests' with: 'PhaROSCommanderTest-SantiagoBragangolo.1'.
+	]
+]
+
+{ #category : #versions }
+ConfigurationOfPhaROSCommander >> version110: spec [ 
+	<version: '1.1.0' imports: #('1.1-baseline') >
+	
+	spec for: #common do: [ 
+		spec blessing: #'After big refactor/rewrite to reduce it'.
+		spec author: 'LucFabresse'.
+		spec timestamp: '26/1/2015 12:07'.
+		spec package: 'PhaROSCommander' with: 'PhaROSCommander-LucFabresse.85'.
 	]
 ]
