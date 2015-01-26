@@ -371,3 +371,21 @@ ConfigurationOfTaskIT >> version21: spec [
 
 
 ]
+
+{ #category : #versions }
+ConfigurationOfTaskIT >> version22: spec [ 
+	<version: '2.2' imports: #('2.0-baseline') >
+	
+	spec for: #common do: [
+		spec blessing: #stable.
+		spec author: 'LucFabresse'.
+		spec timestamp: '26/01/2015 12:00'.
+		spec package:'TaskIT' with: 'TaskIT-johanfabry.78'.
+		spec package:'ForkIT' with: 'ForkIT-SantiagoBragagnolo.4'.
+		spec package:'ActIT' with: 'ActIT-GuillermoPolito.3'.
+		spec package:'PlanIT' with: 'PlanIT-SantiagoBragagnolo.1'.
+		spec package:'PoolIT' with: 'PoolIT-SantiagoBragagnolo.1'.
+	].
+
+
+]
