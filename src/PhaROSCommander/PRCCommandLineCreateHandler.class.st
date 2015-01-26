@@ -138,7 +138,7 @@ PRCCommandLineCreateHandler >> realActivate [
 	"make the <package>.image execute the loadingScriptName and move the resulting image"
 	FileStream stdout lf ; nextPutAll: ('Executing the ImageCreationScript.st script') ; lf.
 	OSProcess 
-		waitForCommand: ('./pharo {1} st {2} ; rm -f {3}.image {3}.changes ' 
-							format: {pharoImage pathString. loadingScriptName pathString. package asString}).
+		waitForCommand: ('{1}/pharo {2} st {3} ; rm -f {1}/{4}.image {1}/{4}.changes ' 
+							format: {Smalltalk imageDirectory pathString . pharoImage pathString. loadingScriptName pathString. package asString}).
 
 ]
