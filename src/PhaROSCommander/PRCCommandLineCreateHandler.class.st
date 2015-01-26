@@ -8,8 +8,8 @@ Options:
                               Default value is ~/Pharo-ws/
    --silent={true|false}      If silent is false you will be able to see the installation of the output image 
                               Default value is true. 
-   --version={ 20 | 30 | 40 | Stable | Alpha}  Pharo version to use. 
-                                               Default value is Stable
+   --version={ 20 | 30 | 40 | stable | alpha}  Pharo version to use. 
+                                               Default value is stable
    --pharo-user=...           Indicates the user name for the result image.
    --force-new                DELETE the package if it exists in the pointed location. 
    --dev                      Load the bleedingEdge version of PhaROS
@@ -77,7 +77,7 @@ PRCCommandLineCreateHandler >> pharosClassNameForCatkinPackageNamed: catkinPacka
 { #category : #activation }
 PRCCommandLineCreateHandler >> realActivate [
 
-	| location package  version silent  pharoImage loadingScriptName loadingScript   catkinWorskpaceDirectory catkinPackageDirectory    versionToLoad pharoUser catkinPackageImageDirectory  |
+	| location package  version silent  pharoImage loadingScriptName loadingScript   catkinWorskpaceDirectory catkinPackageDirectory    versionToLoad pharoUser catkinPackageImageDirectory  pharoVersionString |
 	
 	package := self package. "name of the catkin package to create"
 	location := self location. "catkinWorskpaceDirectory (~/PhaROS-ws by default)"
@@ -133,16 +133,21 @@ PRCCommandLineCreateHandler >> realActivate [
 	(Smalltalk imageDirectory / package, '.image') ensureDelete.
 	(Smalltalk imageDirectory / package, '.changes') ensureDelete.
 	
+	
 	"download Pharo<version>.image  if needed"
-	pharoImage := Smalltalk imageDirectory / ('Pharo', version asString, '.image').
-	pharoImage exists ifFalse: [ 
-		OSProcess waitForCommand: ('curl get.pharo.org/{1} | bash && mv Pharo.image Pharo{1}.image && mv Pharo.changes Pharo{1}.changes &&' format: {version asString})
+	pharoVersionString := version asString translateToLowercase.
+	pharoImage := Smalltalk imageDirectory / ('Pharo',pharoVersionString, '.image').
+	((pharoImage exists not) or: [ pharoVersionString = 'alpha' ]) ifTrue: [ 
+		OSProcess waitForCommand: ('curl get.pharo.org/{1} | bash && mv Pharo.image Pharo{1}.image && mv Pharo.changes Pharo{1}.changes' format: {pharoVersionString})
 	].
 
 	"make the <package>.image execute the loadingScriptName and move the resulting image"
 	FileStream stdout lf ; nextPutAll: ('Executing the ImageCreationScript.st script') ; lf.
 	OSProcess 
-		waitForCommand: ('{1}/pharo {2} st {3} ; rm -f {1}/{4}.image {1}/{4}.changes ' 
+		waitForCommand: ('{1}/pharo {2} st {3} ; rm -f {1}/{4}.image {1}/{4}.changes' 
 							format: {Smalltalk imageDirectory pathString . pharoImage pathString. loadingScriptName pathString. package asString}).
-
+	
+	4 seconds wait.
+	OSProcess waitForCommand: 'echo "Press ENTER now for happyness..."'
+		
 ]
