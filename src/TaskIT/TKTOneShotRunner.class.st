@@ -14,7 +14,9 @@ Class {
 	#name : #TKTOneShotRunner,
 	#superclass : #TKTOwnProcessRunner,
 	#instVars : [
-		'future'
+		'future',
+		'result',
+		'finishingSemaphore'
 	],
 	#category : #'TaskIT-Kernel'
 }
@@ -37,21 +39,22 @@ TKTOneShotRunner >> afterDeployValue: aValue intoFuture: aFuture [
 TKTOneShotRunner >> basicDeployError: anError intoFuture: aFuture [
 
 	super basicDeployError: anError intoFuture: aFuture.
-	self currentTask result: (TKTErrorResult new setError: anError).
+	result := TKTErrorResult new setError: anError.
 ]
 
 { #category : #running }
 TKTOneShotRunner >> basicDeployValue: aValue intoFuture: aFuture [
 
 	super basicDeployValue: aValue intoFuture: aFuture.
-	self currentTask result: (TKTSuccessResult new setValue: aValue; yourself).
+	result := TKTSuccessResult new setValue: aValue.
 ]
 
 { #category : #running }
 TKTOneShotRunner >> cancel [
 
 	super cancel.
-	self currentTask result: TKTCancelledExecutionResult new.
+	result := TKTCancelledExecutionResult new.
+	self clearProcess.
 ]
 
 { #category : #running }
@@ -60,7 +63,6 @@ TKTOneShotRunner >> cancel: aFuture [
 	aFuture == future ifFalse: [ 
 		self error: 'The given future is not the related with the runner. I cannot cancel it'.
 	].
-	self cancel.
 	super cancel: aFuture.
 	
 ]
@@ -77,21 +79,56 @@ TKTOneShotRunner >> defaultProcessName [
 	^ 'One Shot runner'
 ]
 
-{ #category : #accessing }
-TKTOneShotRunner >> result [
-	
-	^ self currentTask result
+{ #category : #'initialize - release' }
+TKTOneShotRunner >> initialize [
+
+	super initialize.
+	finishingSemaphore := Semaphore new.
+	result := nil.
 ]
 
 { #category : #running }
-TKTOneShotRunner >> run: aJob [
+TKTOneShotRunner >> noteFutureHasFinished: aFuture [
+	future == aFuture ifTrue: [ 
+		self clearProcess.	
+	 ]
+]
 
-	currentTask := aJob asTKTJob asTask.
+{ #category : #accessing }
+TKTOneShotRunner >> result [
+	
+	^ result ifNil: [ self error: 'Result is not yet available' ]
+]
+
+{ #category : #running }
+TKTOneShotRunner >> run: aTKTTask [
+
+	| task ctx |
+	
+	future := self newFuture.
+	task := aTKTTask asTask.
 	process := TKTPharoProcess new.
 	process executable: [
-		currentTask runOnRunner: self withFuture: nil.
+		task runOnRunner: self withFuture: future.
 	].
-	process name: 'A TKTTask'.
-	process priority: currentTask priority.
+
+	ctx := aTKTTask block outerContext.
+	ctx asString = 'TKTLoopingTask>>block:'
+		ifTrue: [ process name: 'A TKTLoopingTask oneShot execution of ', (ctx arguments at: 1) outerContext asString. ]
+		ifFalse: [process name: 'TKTOneShot for ', ctx asString].
+	process priority: task priority.
 	process execute.
+	^ future.
+]
+
+{ #category : #running }
+TKTOneShotRunner >> wait [
+
+	finishingSemaphore wait.
+	self clearProcess.
+]
+
+{ #category : #accessing }
+TKTOneShotRunner >> workingFuture [
+	^ future.
 ]

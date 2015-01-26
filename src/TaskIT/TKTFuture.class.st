@@ -121,11 +121,11 @@ TKTFuture >> deployValue: aValue [
 	] ifTrue: [  
 		cancelCallbacks  get do: [ : c  | c cull: aValue ].
 	].
+	
 ]
 
 { #category : #finalization }
 TKTFuture >> finalize [
-
 	self isValueAvailable ifFalse: [
 		self cancel
 	].

@@ -11,33 +11,30 @@ Task runners contract is based on the following messages:
 Class {
 	#name : #TKTRunner,
 	#superclass : #Object,
-	#instVars : [
-		'currentTask'
-	],
 	#category : #'TaskIT-Kernel'
 }
 
 { #category : #running }
 TKTRunner >> afterDeployError: anError intoFuture: aFuture [
-	"aFuture signal."
+	aFuture signal.
 ]
 
 { #category : #running }
 TKTRunner >> afterDeployValue: aValue intoFuture: aFuture [
-	"aFuture signal."
+	aFuture signal.
 ]
 
 { #category : #running }
 TKTRunner >> basicDeployError: anError intoFuture: aFuture [
 
 	anError freeze.
-	"aFuture deployError: anError."
+	aFuture deployError: anError.
 ]
 
 { #category : #running }
 TKTRunner >> basicDeployValue: aValue intoFuture: aFuture [
 	
-	"aFuture deployValue: aValue."
+	aFuture deployValue: aValue.
 ]
 
 { #category : #cancelling }
@@ -51,13 +48,8 @@ TKTRunner >> cancel: aTKTFuture [
 	aTKTFuture isCancelled ifFalse: [
 		aTKTFuture isValueAvailable ifTrue: [ self error: 'this future was already deployed' ].
 		aTKTFuture deployValue: TKTCancelledFutureValue new.
+		self noteFutureHasFinished: aTKTFuture.
 	]
-]
-
-{ #category : #'as yet unclassified' }
-TKTRunner >> currentTask [
-
-	^ currentTask
 ]
 
 { #category : #running }
@@ -74,12 +66,6 @@ TKTRunner >> deployValue: aValue intoFuture: aFuture [
 	self afterDeployValue: aValue intoFuture: aFuture.
 ]
 
-{ #category : #finalization }
-TKTRunner >> finalize [
-
-	self stop.
-]
-
 { #category : #testing }
 TKTRunner >> isRunning [
 	^ self isTerminated not
@@ -91,14 +77,21 @@ TKTRunner >> isTerminated [
 	self subclassResponsibility
 ]
 
+{ #category : #private }
+TKTRunner >> newFuture [
+
+	^ TKTFuture new
+			runner: self;
+			yourself
+]
+
+{ #category : #running }
+TKTRunner >> noteFutureHasFinished: aFuture [
+	self subclassResponsibility.
+]
+
 { #category : #running }
 TKTRunner >> run: aTKTTask [
 
 	self subclassResponsibility
-]
-
-{ #category : #running }
-TKTRunner >> stop [
-
-	self cancel.
 ]

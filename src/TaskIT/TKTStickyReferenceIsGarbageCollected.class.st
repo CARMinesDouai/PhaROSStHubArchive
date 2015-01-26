@@ -7,27 +7,24 @@ Class {
 { #category : #'as yet unclassified' }
 TKTStickyReferenceIsGarbageCollected >> setUp [
 
-	| reference |
 	super setUp.
-	reference := (runner run: [ (Delay forMilliseconds: 1000) wait ]) asStickyReference.
-	reference := nil.
+	future := (runner run: [ (Delay forMilliseconds: 1000) wait ] asTask) asStickyReference.
+	future := nil.
 	5 timesRepeat: [ Smalltalk garbageCollect ].
 ]
 
 { #category : #'as yet unclassified' }
 TKTStickyReferenceIsGarbageCollected >> testFutureHasBeenCancelled [
-
-	self assert: runner currentTask isCancelled.
+	self assert: runner workingFuture  isCancelled.
 ]
 
 { #category : #'as yet unclassified' }
 TKTStickyReferenceIsGarbageCollected >> testFutureIsNotError [
-
-	self deny: runner currentTask isError.
+	self deny: runner workingFuture isError.
 ]
 
 { #category : #'as yet unclassified' }
 TKTStickyReferenceIsGarbageCollected >> testProcessHasFinished [
 
-	self assert: runner isTerminated
+	self assert: runner isTerminated 
 ]

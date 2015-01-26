@@ -9,13 +9,11 @@ Class {
 
 { #category : #'as yet unclassified' }
 TKTWitness class >> cleanup: aTarget [
-
 	aTarget finalize.
 ]
 
 { #category : #'as yet unclassified' }
 TKTWitness class >> for: aTarget [
-
 	^ self new target: aTarget; yourself.
 ]
 

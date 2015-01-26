@@ -21,7 +21,15 @@ TKTSameProcessRunner >> isTerminated [
 ]
 
 { #category : #running }
-TKTSameProcessRunner >> run: aJob [
+TKTSameProcessRunner >> noteFutureHasFinished: aFuture [
+	
+]
 
-	aJob asTKTJob asTask runOnRunner: self withFuture: nil.
+{ #category : #running }
+TKTSameProcessRunner >> run: aTKTTask [
+
+	| future |
+	future := self newFuture.				
+	aTKTTask asTask runOnRunner: self withFuture: future.
+	^ future.
 ]

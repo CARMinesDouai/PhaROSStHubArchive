@@ -6,8 +6,7 @@ Class {
 	#superclass : #TKTRunner,
 	#instVars : [
 		'process',
-		'processName',
-		'finishingSemaphore'
+		'processName'
 	],
 	#category : #'TaskIT-Kernel'
 }
@@ -20,7 +19,7 @@ TKTOwnProcessRunner class >> isAbstract [
 { #category : #running }
 TKTOwnProcessRunner >> cancel [
 
-	self terminateProcess.
+	self clearProcess.
 
 ]
 
@@ -30,17 +29,23 @@ TKTOwnProcessRunner >> cancelFutures [
 	self subclassResponsibility
 ]
 
+{ #category : #private }
+TKTOwnProcessRunner >> clearProcess [
+
+	"We remove the reference to the process to allow it to be garbage collected. Don't know if this is proper expected behavior, but it works."
+	
+	process ifNotNil: [
+		process terminate.
+		process := nil.
+	] ifNil: [ 
+		FileStream stdout nextPutAll: 'The runner is not running', String lf.
+	 ]
+]
+
 { #category : #accessing }
 TKTOwnProcessRunner >> defaultProcessName [
 
 	self subclassResponsibility
-]
-
-{ #category : #'initialize-release' }
-TKTOwnProcessRunner >> initialize [
-
-	super initialize.
-	finishingSemaphore := Semaphore new.
 ]
 
 { #category : #testing }
@@ -65,23 +70,4 @@ TKTOwnProcessRunner >> processName [
 TKTOwnProcessRunner >> processName: aName [
 
 	processName := aName
-]
-
-{ #category : #private }
-TKTOwnProcessRunner >> terminateProcess [
-
-	"We remove the reference to the process to allow it to be garbage collected. Don't know if this is proper expected behavior, but it works."
-	process ifNotNil: [
-		process terminate.
-		process := nil.
-	] ifNil: [ 
-		FileStream stdout nextPutAll: 'The runner is not running', String lf.
-	 ]
-]
-
-{ #category : #running }
-TKTOwnProcessRunner >> wait [
-
-	finishingSemaphore wait.
-	self terminateProcess.
 ]

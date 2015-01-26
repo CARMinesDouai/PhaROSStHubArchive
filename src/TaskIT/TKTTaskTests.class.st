@@ -9,7 +9,7 @@ TKTTaskTests >> testExecuteTask [
 	| task shouldBeTrue |
 	
 	shouldBeTrue := false.
-	task := [ shouldBeTrue := true ] asTKTJob.
+	task := [ shouldBeTrue := true ] asTask.
 	task value. 
 	
 	self assert: shouldBeTrue.
@@ -24,7 +24,7 @@ TKTTaskTests >> testExecuteTask [
 TKTTaskTests >> testNewTask [
 	| task |
 	
-	task := TKTJob for: []. 
+	task := TKTTask for: []. 
 	self assert: (task priority = Processor userBackgroundPriority).
 
 	
@@ -37,7 +37,7 @@ TKTTaskTests >> testNewTask [
 TKTTaskTests >> testNewTaskWithAsTask [
 	| task |
 	
-	task := [] asTKTJob.
+	task := [] asTask.
 	self assert: (task priority = Processor userBackgroundPriority).
 
 ]
@@ -60,7 +60,7 @@ TKTTaskTests >> testNewTaskWithPriority [
 	| task |
 	
 	
-	task := TKTJob for: [] at: Processor highIOPriority. 	
+	task := TKTTask for: [] at: Processor highIOPriority. 	
 	self assert: (task priority = Processor highIOPriority).
 	
 	
@@ -75,7 +75,7 @@ TKTTaskTests >> testTaskAssertOrderedByPriority [
 	
 	
 	taskHighPriority  := [] asTaskAt: Processor highIOPriority. 	
-	taskLowPriority := [ ] asTKTJob.
+	taskLowPriority := [ ] asTask.
 	self assert: ( taskHighPriority > taskLowPriority ).
 	self assert: ( taskLowPriority < taskHighPriority ).
 		
@@ -91,7 +91,7 @@ TKTTaskTests >> testTaskDenialOrderedByPriority [
 	
 	
 	taskHighPriority  := [] asTaskAt: Processor highIOPriority. 	
-	taskLowPriority := [ ] asTKTJob.
+	taskLowPriority := [ ] asTask.
 	self deny: ( taskHighPriority < taskLowPriority ).
 	self deny: ( taskLowPriority > taskHighPriority ).
 		
@@ -109,7 +109,7 @@ TKTTaskTests >> testTaskOrderInASortedCollection [
 	collection := SortedCollection sortBlock: [ :w1 :w2 | w1 > w2 ].
 	taskHighPriority  := [] asTaskAt: Processor highIOPriority. 	
 	taskMiddlePriority := [] asTaskAt: Processor lowIOPriority.
-	taskLowPriority := [] asTKTJob.
+	taskLowPriority := [] asTask.
 	
 	collection add: taskLowPriority.
 	collection add: taskHighPriority.

@@ -7,18 +7,18 @@ Class {
 	#category : #'TaskIT-Sugar'
 }
 
-{ #category : #'instance creation' }
+{ #category : #'as yet unclassified' }
 TKTStickyReference class >> for: anObject [
-
 	| handler |
-	handler := TKTProxyHandler new.	
+	handler := TKTProxyHandler new.
+"	handler methodsNotToIntercept at: #printStringLimitedTo: put:#handlePrintStringLimitedTo:."
+	
 	^ self createProxyFor:anObject handler: handler.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'*TaskIT' }
 TKTStickyReference >> asStickyReference [ 
-
-	^ self
+	^ self .
 ]
 
 { #category : #hash }

@@ -60,7 +60,7 @@ TKTQueue >> peekAll [
 	
 	ord := OrderedCollection new.
 	
-	[ (current := self peek) notNil ] whileTrue: [ ord addFirst: current ].
+	[ (current := self peek) notNil ] whileTrue: [ ord add: current ].
 
 	^ ord.
 ]

@@ -1,16 +1,16 @@
 Extension { #name : #BlockClosure }
 
 { #category : #'*TaskIT' }
-BlockClosure >> asTKTJob [
-	^ TKTJob for: self.
+BlockClosure >> asTask [
+	^ TKTTask for: self.
 ]
 
 { #category : #'*TaskIT' }
 BlockClosure >> asTaskAt: aPriority [
-	^ TKTJob for: self at: aPriority.
+	^ TKTTask for: self at: aPriority.
 ]
 
 { #category : #'*TaskIT' }
 BlockClosure >> shootIt [
-	^ self asTKTJob shootIt.
+	^ self asTask shootIt.
 ]

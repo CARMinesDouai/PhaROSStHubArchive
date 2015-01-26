@@ -1,12 +1,11 @@
-"
-I'm a persistent worker that handlers receiving tasks requests
-"
 Class {
 	#name : #TKTWorker,
 	#superclass : #TKTPersistentRunner,
 	#instVars : [
+		'keepRunning',
 		'workingQueue',
 		'onIdleTime',
+		'currentTask',
 		'doneTasks'
 	],
 	#category : #'TaskIT-PersistentRunners'
@@ -14,8 +13,7 @@ Class {
 
 { #category : #'instance creation' }
 TKTWorker class >> spawn [
-
-	^ self with: Processor userBackgroundPriority
+	^ self with: Processor userBackgroundPriority usingQueue: TKTPriorityQueue new.
 ]
 
 { #category : #'instance creation' }
@@ -24,15 +22,8 @@ TKTWorker class >> spawn: aQueue [
 ]
 
 { #category : #'instance creation' }
-TKTWorker class >> suspended [
-
-	^ self spawn suspend; yourself
-]
-
-{ #category : #'instance creation' }
 TKTWorker class >> with: aPriority [
-
-	^ self with: aPriority usingQueue: TKTQueue new.
+	^ self with: aPriority  usingQueue: TKTPriorityQueue new.
 ]
 
 { #category : #'instance creation' }
@@ -44,28 +35,14 @@ TKTWorker class >> with: aPriority usingQueue: aQueue [
 		yourself
 ]
 
-{ #category : #scheduling }
-TKTWorker >> afterRunTask: aTask [
-
-	doneTasks add: aTask.
-	currentTask := nil
-]
-
-{ #category : #scheduling }
-TKTWorker >> beforeRunTask: aTask [
-
-	currentTask := aTask
-]
-
-{ #category : #scheduling }
+{ #category : #cancelling }
 TKTWorker >> cancelFutures [
 
 	"We will have many futures"
 ]
 
-{ #category : #'idle time' }
+{ #category : #scheduling }
 TKTWorker >> cleanupTasks [
-
 	doneTasks do: #cleanup.
 	doneTasks removeAll.
 ]
@@ -77,11 +54,24 @@ TKTWorker >> defaultProcessName [
 ]
 
 { #category : #'initialize-release' }
-TKTWorker >> initialize [
-
+TKTWorker >> initialize [ 
 	super initialize.
-	onIdleTime := [ [ self cleanupTasks ] asTKTJob ].
+	
+	"We return nil in here because we use it as a marker when asking for the next task"
+	onIdleTime := [ [ self cleanupTasks ] asTask -> self newFuture ].
+
 	self onStart.
+]
+
+{ #category : #running }
+TKTWorker >> interruptCurrentTask [
+
+	currentTask ifNotNil: [ 
+		currentTask value isProcessFinished ifFalse: [
+			currentTask  priority: 10.
+			workingQueue do: currentTask.
+		].
+	].
 ]
 
 { #category : #testing }
@@ -90,20 +80,29 @@ TKTWorker >> isWorkingWith: aFuture [
 ]
 
 { #category : #scheduling }
+TKTWorker >> next [
+	^ workingQueue nextIfTimeOut: onIdleTime
+]
+
+{ #category : #scheduling }
 TKTWorker >> nextTask [
 
-	^ workingQueue nextIfTimeOut: onIdleTime
+	^ self next value
+]
+
+{ #category : #scheduling }
+TKTWorker >> noteFutureHasFinished: aFuture [
+	
 ]
 
 { #category : #accessing }
 TKTWorker >> onIdleTime: aBlockOrWork [
 
-	onIdleTime := [ aBlockOrWork asTKTJob ].
+	onIdleTime := aBlockOrWork asTask.
 ]
 
 { #category : #running }
-TKTWorker >> onStart [
-
+TKTWorker >> onStart [ 
 	keepRunning := TKTExclusiveAccessVariable initialValue: false.
 	doneTasks := Set new.
 ]
@@ -111,31 +110,63 @@ TKTWorker >> onStart [
 { #category : #accessing }
 TKTWorker >> pendingTasks [
 
-	^ self workingQueue asOrderedCollection
+	^ self workingQueue collect: #key
 ]
 
 { #category : #running }
 TKTWorker >> restart [
 	 
-	self halt: 'What should we do with the task that was running???'.
-	self suspend.
+	self interruptCurrentTask.
 	self onStart.
 	self start.
 ]
 
 { #category : #running }
+TKTWorker >> run [
+
+	keepRunning set: true.
+	[ keepRunning get ] whileTrue: [ | task taskFuture | 
+		(currentTask := self next) ifNotNil: [ 
+			task := currentTask key.
+			taskFuture := currentTask value.
+			
+			task runOnRunner: self withFuture: taskFuture.
+
+			doneTasks add: task.
+			currentTask := nil.
+		]
+	]
+]
+
+{ #category : #scheduling }
 TKTWorker >> run: aTask [
 
-	^ self scheduleTask: aTask asTKTJob
+	^ self scheduleTask: aTask asTask
 ]
 
 { #category : #scheduling }
-TKTWorker >> scheduleTask: aJob [
-
-	workingQueue add: aJob
+TKTWorker >> schedule: aTaskFutureAssoc [ 
+	" aTaskFutureAssoc is an association that match the task to run with a future related with this processing instance"
+	workingQueue add: aTaskFutureAssoc
 ]
 
 { #category : #scheduling }
+TKTWorker >> scheduleTask: aTask [
+
+	| future |
+	future := self newFuture.
+	self schedule: aTask -> future.
+	^ future
+]
+
+{ #category : #running }
+TKTWorker >> stop [
+	self scheduleTask: [ keepRunning set: false ] asTask.
+	(Delay forMilliseconds: 500) wait.
+	super stop.
+]
+
+{ #category : #running }
 TKTWorker >> stopWorkingOnThat [ 
 
 	self cancel: currentTask value.
@@ -144,8 +175,7 @@ TKTWorker >> stopWorkingOnThat [
 ]
 
 { #category : #accessing }
-TKTWorker >> timeout: aSmallInteger [
-
+TKTWorker >> timeout: aSmallInteger [ 
 	^ workingQueue timeout: aSmallInteger 
 ]
 
@@ -155,8 +185,7 @@ TKTWorker >> workingQueue [
 	^ workingQueue
 ]
 
-{ #category : #accessing }
+{ #category : #running }
 TKTWorker >> workingQueue: aQueue [
-
-	workingQueue := aQueue
+	workingQueue := aQueue.
 ]

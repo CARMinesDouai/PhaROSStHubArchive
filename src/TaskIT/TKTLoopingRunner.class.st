@@ -6,9 +6,9 @@ Class {
 	#superclass : #TKTPersistentRunner,
 	#instVars : [
 		'future',
+		'taskToRun',
 		'loopsRun',
-		'maxLoops',
-		'jobToLoop'
+		'maxLoops'
 	],
 	#category : #'TaskIT-PersistentRunners'
 }
@@ -56,14 +56,16 @@ TKTLoopingRunner >> loopTimes: someTimes [
 { #category : #running }
 TKTLoopingRunner >> nextTask [
 
-	^ jobToLoop
+	^ taskToRun
 ]
 
 { #category : #running }
-TKTLoopingRunner >> run: aJob [ 
+TKTLoopingRunner >> run: aTask [ 
 
-	jobToLoop := aJob asTKTJob.
+	future := self newFuture.
+	taskToRun := aTask asTask.
 	self start.
+	^ future.
 ]
 
 { #category : #running }
