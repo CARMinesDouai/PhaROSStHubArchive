@@ -334,7 +334,11 @@ PureROSKompaiNodelet >> spawnStopThread [
 	stopVelocity := PNGDifferentialVelocity new.
 	stopVelocity linear: 0; angular: 0.
 	
-	behavior := [[true] whileTrue: [ | deltaT |
+	behavior := [
+		"First check that state has been initialized"
+		[ self state isNil ] whileTrue: [ (Delay forMilliseconds: 100) wait. ].
+  		"so that we can access it here without problems"
+		[true] whileTrue: [ | deltaT |
 			self autoStop ifTrue: [ 
 				deltaT := ((DateAndTime now) - self lastMove) asMilliSeconds.
 				deltaT > 200 ifTrue: [
