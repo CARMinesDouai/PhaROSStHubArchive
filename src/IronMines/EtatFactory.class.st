@@ -58,6 +58,19 @@ EtatFactory class >> createGoTo: aPoint next: aEtat [
 	^ etat
 ]
 
+{ #category : #briques }
+EtatFactory class >> createLongerMurSur: dist enAvant: boolAvant next: anEtat [
+	| etat |
+	etat := EtatFactory createEtat: EtatLongerMur
+		events:(Dictionary newFrom:
+		{ 
+		#onFinish -> anEtat. 
+		}
+		).
+		etat sens: boolAvant.
+		etat distance: dist.
+]
+
 { #category : #'as yet unclassified' }
 EtatFactory class >> createMoveBackwardNext: aEtat [
 "etat de deplacement vers un point absolu (par rapport au terrain)"

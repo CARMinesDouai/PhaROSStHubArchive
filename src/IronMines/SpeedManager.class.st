@@ -48,6 +48,68 @@ SpeedManager >> angSpeedMinimumTurn [
 	^0.7
 ]
 
+{ #category : #speed }
+SpeedManager >> backwardProgressiveLin: lin [
+
+	" il faut respecter une accélération linéaire douce"
+	(lin abs - self kobuki velocity linear x > self etat linSpeedIncrement) ifTrue:[
+		lin := self kobuki velocity linear x - self etat linSpeedIncrement.
+	].
+
+	"si on avance, on avance au moins à une vitesse minimum"
+	((lin abs>0) & (lin abs < self etat linSpeedMinimum)) ifTrue:[
+		lin := 0 - self etat linSpeedMinimum.
+	].
+
+	"dans tous les cas il y a une vitesse linéaire maximale"
+	(lin > self etat linSpeedMaximum) ifTrue:[
+		lin := 0 - self etat linSpeedMaximum.
+	].
+
+	self kobuki velocityLin: lin ang: 0 
+]
+
+{ #category : #speed }
+SpeedManager >> backwardProgressiveLin: lin ang: ang [ 
+
+	" il faut respecter une accélération linéaire douce"
+	(lin abs - self kobuki velocity linear x > self etat linSpeedIncrement) ifTrue:[
+		lin := self kobuki velocity linear x - self etat linSpeedIncrement.
+	].
+
+	"si on avance, on avance au moins à une vitesse minimum"
+	((lin abs>0) & (lin abs < self etat linSpeedMinimum)) ifTrue:[
+		lin := 0 - self etat linSpeedMinimum.
+	].
+
+	"dans tous les cas il y a une vitesse linéaire maximale"
+	(lin > self etat linSpeedMaximum) ifTrue:[
+		lin := 0 - self etat linSpeedMaximum.
+	].
+
+
+	" il faut respecter une accélération rotatoire douce"
+	( (ang - self kobuki velocity angular z) abs > self etat angSpeedIncrement) ifTrue:[
+		(ang - self kobuki velocity angular z > 0) ifTrue:[		
+			ang := self kobuki velocity angular z + self etat angSpeedIncrement.		
+		] ifFalse:[
+			ang := self kobuki velocity angular z - self etat angSpeedIncrement.		
+		].
+	].
+
+	"si on tourne, on tourne au moins à une vitesse angulaire minimale"
+	((ang abs>0) & (ang abs < self etat angSpeedMinimum)) ifTrue:[
+		ang := self etat angSpeedMinimum * (ang abs / ang). 
+	].
+
+	"dans tous les cas il y a une vitesse angulaire maximale"
+	(ang > self etat angSpeedMaximum ) ifTrue:[
+		ang := self etat angSpeedMaximum * (ang abs / ang). 
+	].
+
+	self kobuki velocityLin: lin ang: ang 
+]
+
 { #category : #accessing }
 SpeedManager >> etat [
 ^etat.
