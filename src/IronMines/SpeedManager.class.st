@@ -52,7 +52,7 @@ SpeedManager >> angSpeedMinimumTurn [
 SpeedManager >> backwardProgressiveLin: lin [
 
 	" il faut respecter une accélération linéaire douce"
-	(lin abs - self kobuki velocity linear x > self etat linSpeedIncrement) ifTrue:[
+	(lin abs - self kobuki velocity linear x abs > self etat linSpeedIncrement) ifTrue:[
 		lin := self kobuki velocity linear x - self etat linSpeedIncrement.
 	].
 
@@ -62,7 +62,7 @@ SpeedManager >> backwardProgressiveLin: lin [
 	].
 
 	"dans tous les cas il y a une vitesse linéaire maximale"
-	(lin > self etat linSpeedMaximum) ifTrue:[
+	(lin abs > self etat linSpeedMaximum) ifTrue:[
 		lin := 0 - self etat linSpeedMaximum.
 	].
 

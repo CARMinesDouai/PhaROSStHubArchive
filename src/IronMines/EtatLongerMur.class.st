@@ -17,29 +17,37 @@ EtatLongerMur >> action [
 	self thread resume
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 EtatLongerMur >> arriere [
 	enAvant := false
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 EtatLongerMur >> avant [
 	enAvant := true
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 EtatLongerMur >> distance: dist [ 
 	distance := dist
 ]
 
 { #category : #position }
 EtatLongerMur >> distanceParcourue [
-	^((positionDepart x - self kobuki x) squared + (positionDepart y - self kobuki y)) sqrt
+	^((positionDepart x - self kobuki x) squared + (positionDepart y - self kobuki y) squared) sqrt
 ]
 
 { #category : #position }
 EtatLongerMur >> initialiserOrigine [
+	"resetOdom parce que sinon ça marche pas (bug pas encore trouvé)"
+	"self kobuki resetOdom."
+	
 	positionDepart:= self kobuki odom position.
+]
+
+{ #category : #action }
+EtatLongerMur >> loopDelay [
+	^10
 ]
 
 { #category : #action }
@@ -49,11 +57,26 @@ EtatLongerMur >> newThread [
 	[ 
 	self kobuki velocityThread isSuspended
 		ifTrue: [ self kobuki speedManager instantaneousLin: 0 ang: 0 ]
-		ifFalse: [ self kobuki speedManager progressiveLin: self vitesse ang: 0 ].
-	(Delay forMilliseconds: self loopDelay) wait ] doWhileTrue: self distanceParcourue < distance ] newProcess
+		ifFalse: [ 
+			enAvant
+				ifTrue: [ self kobuki speedManager progressiveLin: distance - self distanceParcourue ang: 0 ]
+				ifFalse: [ self kobuki speedManager backwardProgressiveLin: self distanceParcourue - distance ] ].
+	(Delay forMilliseconds: self loopDelay) wait ] doWhileTrue: [ distance - self distanceParcourue > self precision ].
+	Transcript
+		cr;
+		show: distance;
+		tab;
+		show: self distanceParcourue.
+	self kobuki speedManager instantaneousLin: 0 ang: 0.
+	self kobuki makeSound: 3 ] newProcess
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
+EtatLongerMur >> precision [
+	^ 0.001
+]
+
+{ #category : #accessing }
 EtatLongerMur >> sens: aBool [
 	enAvant := aBool 
 ]
@@ -73,9 +96,4 @@ EtatLongerMur >> thread [
 { #category : #action }
 EtatLongerMur >> thread: anObject [
 	thread := anObject
-]
-
-{ #category : #action }
-EtatLongerMur >> vitesse [
-	enAvant ifTrue: [ ^(distance - self distanceParcourue) ] ifFalse:  [ ^(self distanceParcourue - distance) ]
 ]
