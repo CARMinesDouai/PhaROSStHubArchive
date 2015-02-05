@@ -72,13 +72,18 @@ PhaROSExamplePackage >> scriptServiceInvoking [
 
 { #category : #scripts }
 PhaROSExamplePackage >> scriptTopicPublishingExample [
+"	
+	How to use:
+	  1) in PhaROS, execute: 	self new scriptTopicPublishingExample
+	  2) in a terminal, execute:   rostopic echo /example 
+"
 	| publisher |
 
 	"For publishing into a topic,you just need a publisher object. 
 	You can obtain it asking to the related node like in the following code".
 	
 	publisher := self controller node 
-						topicPublisher: '/example/string'
+						topicPublisher: '/example'
 						typedAs: 'std_msgs/String'.
 
 	"When data is actually sent you''l see a sequence of ping and pong. Otherwise you'' see pong alone"						
@@ -99,8 +104,8 @@ PhaROSExamplePackage >> scriptTopicSubscribingExample [
 	This example shows how to subscribe to a ROS topic.
 	
 	How to use:
-	  1) in PhaROS, execute: 	self class new scriptRun
-	  2) in a terminal, execute:   rostopic pub -r 10 my_topic std_msgs/String ''hello there''
+	  1) in PhaROS, execute: 	self new scriptTopicSubscribingExample
+	  2) in a terminal, execute:   rostopic pub -r 10 /example std_msgs/String ''hello there''
 	
 	
 	You just need a subscriber object (created using buildConnectionFor: aTopicID) and configure it with a callback (block).
@@ -109,7 +114,7 @@ PhaROSExamplePackage >> scriptTopicSubscribingExample [
 	cf. PhaROSExamplePackage for more scripts example
 "
 	
-	(self controller node buildConnectionFor: '/example/string' ) 
+	(self controller node buildConnectionFor: '/example' ) 
 								typedAs: 'std_msgs/String'; 
 								for: [ : string |  "this is a callback" 
 									Transcript show: string data.
