@@ -1,5 +1,5 @@
 Class {
-	#name : #EtatLongerMur,
+	#name : #EtatToutDroit,
 	#superclass : #Etat,
 	#instVars : [
 		'thread',
@@ -11,34 +11,34 @@ Class {
 }
 
 { #category : #action }
-EtatLongerMur >> action [
+EtatToutDroit >> action [
 	self initialiserOrigine.
 	self thread: self newThread.
 	self thread resume
 ]
 
 { #category : #accessing }
-EtatLongerMur >> arriere [
+EtatToutDroit >> arriere [
 	enAvant := false
 ]
 
 { #category : #accessing }
-EtatLongerMur >> avant [
+EtatToutDroit >> avant [
 	enAvant := true
 ]
 
 { #category : #accessing }
-EtatLongerMur >> distance: dist [ 
+EtatToutDroit >> distance: dist [ 
 	distance := dist
 ]
 
 { #category : #position }
-EtatLongerMur >> distanceParcourue [
+EtatToutDroit >> distanceParcourue [
 	^((positionDepart x - self kobuki x) squared + (positionDepart y - self kobuki y) squared) sqrt
 ]
 
 { #category : #position }
-EtatLongerMur >> initialiserOrigine [
+EtatToutDroit >> initialiserOrigine [
 	"resetOdom parce que sinon ça marche pas (bug pas encore trouvé)"
 	"self kobuki resetOdom."
 	
@@ -46,12 +46,12 @@ EtatLongerMur >> initialiserOrigine [
 ]
 
 { #category : #action }
-EtatLongerMur >> loopDelay [
+EtatToutDroit >> loopDelay [
 	^10
 ]
 
 { #category : #action }
-EtatLongerMur >> newThread [
+EtatToutDroit >> newThread [
 	^ [ 
 	self kobuki makeSound: 5.
 	[ 
@@ -72,28 +72,28 @@ EtatLongerMur >> newThread [
 ]
 
 { #category : #accessing }
-EtatLongerMur >> precision [
+EtatToutDroit >> precision [
 	^ 0.001
 ]
 
 { #category : #accessing }
-EtatLongerMur >> sens: aBool [
+EtatToutDroit >> sens: aBool [
 	enAvant := aBool 
 ]
 
 { #category : #action }
-EtatLongerMur >> terminate [
+EtatToutDroit >> terminate [
 	self thread terminate
 ]
 
 { #category : #action }
-EtatLongerMur >> thread [
+EtatToutDroit >> thread [
 	^ thread ifNil: [
 		thread := self newThread.
 		].
 ]
 
 { #category : #action }
-EtatLongerMur >> thread: anObject [
+EtatToutDroit >> thread: anObject [
 	thread := anObject
 ]

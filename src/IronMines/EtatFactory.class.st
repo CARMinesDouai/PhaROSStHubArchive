@@ -62,7 +62,7 @@ EtatFactory class >> createGoTo: aPoint next: aEtat [
 EtatFactory class >> createLongerMurSur: dist enAvant: boolAvant next: anEtat [
 	| etat |
 	etat := EtatFactory 
-		createEtat: EtatLongerMur 
+		createEtat: EtatToutDroit
 		events: (Dictionary newFrom: {(#onFinish -> anEtat)}).
 	etat sens: boolAvant.
 	etat distance: dist.
