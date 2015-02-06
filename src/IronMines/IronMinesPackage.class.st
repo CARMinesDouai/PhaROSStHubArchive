@@ -394,4 +394,5 @@ IronMinesPackage >> scriptTest [
 	master := PhaROSMaster url: masterUrl.
 	kob := self controller nodelets kobuki kobukiSansSonar.
 
+
 ]

@@ -54,7 +54,7 @@ KobukiNodelet class >> soundTopicType [
 
 { #category : #'as yet unclassified' }
 KobukiNodelet class >> startTriggerTopic [
-	^ '/startTrigger'
+	^ '/depart'
 ]
 
 { #category : #'as yet unclassified' }
@@ -72,6 +72,11 @@ KobukiNodelet class >> velocityTopicType [
 	^ 'geometry_msgs/Twist'
 ]
 
+{ #category : #'initialize-release' }
+KobukiNodelet >> initialize [
+	super initialize
+]
+
 { #category : #'as yet unclassified' }
 KobukiNodelet >> kobuki [
 	^ kobuki
@@ -79,7 +84,8 @@ KobukiNodelet >> kobuki [
 			kobuki := Kobuki
 				for: (self controller node topicPublisher: KobukiNodelet velocityTopic typedAs: KobukiNodelet velocityTopicType)
 				and: (self controller node topicPublisher: KobukiNodelet odomResetTopic typedAs: KobukiNodelet odomResetTopicType)
-				and: (self controller node topicPublisher: KobukiNodelet canonTopic typedAs: KobukiNodelet canonTopicType)
+				"and: (self controller node topicPublisher: KobukiNodelet canonTopic typedAs: KobukiNodelet canonTopicType)"
+				and:(self controller node topicPublisher: KobukiNodelet departTopic typedAs: KobukiNodelet departTopicType)
 				and: (self controller node topicPublisher: KobukiNodelet soundTopic typedAs: KobukiNodelet soundTopicType).
 			(self controller node buildConnectionFor: KobukiNodelet bumperTopic)
 				typedAs: KobukiNodelet bumperTopicType;
@@ -132,13 +138,13 @@ KobukiNodelet >> kobukiSansSonar [
 				typedAs: 'nav_msgs/Odometry';
 				for: [ :msg | self kobuki odom: msg ];
 				adapted: #pose \> #pose;
-				connect.
-				
-			"(self controller node buildConnectionFor: KobukiNodelet startTriggerTopic)
+				connect.	
+			
+			(self controller node buildConnectionFor: KobukiNodelet startTriggerTopic)
 				typedAs: KobukiNodelet startTriggerTopicType;
-				for: [ :msg | 
+				for: [ :msg | Transcript cr;show:msg. 
 					kobuki timerStart.
 					kobuki event:#onStartTrigger ];
 				connect.
-			kobuki changeEtat: KobukiNodelet EtatInitial new" ]
+			kobuki changeEtat: KobukiNodelet EtatInitial new ]
 ]
