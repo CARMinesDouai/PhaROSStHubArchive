@@ -139,12 +139,13 @@ KobukiNodelet >> kobukiSansSonar [
 				for: [ :msg | self kobuki odom: msg ];
 				adapted: #pose \> #pose;
 				connect.	
-			
+			"pour lire un subscriber-->depart"
 			(self controller node buildConnectionFor: KobukiNodelet startTriggerTopic)
 				typedAs: KobukiNodelet startTriggerTopicType;
-				for: [ :msg | Transcript cr;show:msg. 
+				for: [ :msg | Transcript cr;show:msg data. 
 					kobuki timerStart.
 					kobuki event:#onStartTrigger ];
 				connect.
-			kobuki changeEtat: KobukiNodelet EtatInitial new ]
+			kobuki changeEtat: KobukiNodelet EtatInitial new.
+			 ]
 ]
