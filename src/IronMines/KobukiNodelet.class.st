@@ -143,6 +143,7 @@ KobukiNodelet >> kobukiSansSonar [
 			(self controller node buildConnectionFor: KobukiNodelet startTriggerTopic)
 				typedAs: KobukiNodelet startTriggerTopicType;
 				for: [ :msg | Transcript cr;show:msg data. 
+					msg data ifTrue: [ Transcript show: 'GO !' ]
 					kobuki timerStart.
 					kobuki event:#onStartTrigger ];
 				connect.

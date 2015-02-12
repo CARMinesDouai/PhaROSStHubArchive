@@ -15,13 +15,13 @@ EtatFactory class >> createCarre [
 ]
 
 { #category : #briques }
-EtatFactory class >> createEtat:aClass events: dictionary [
-| etat |
-"cree un nouvel etat en stockant dans la variable eventDictionary de cet etat les evenements qu'il peut declencher avec sa methode nextTo"
-etat := aClass new.
-etat eventDictionary addAll: dictionary.
-etat eventDictionary at: #onTimer put: self createFinish .
-^etat.
+EtatFactory class >> createEtat: aClass events: dictionary [
+	| etat |
+	"cree un nouvel etat en stockant dans la variable eventDictionary de cet etat les evenements qu'il peut declencher avec sa methode nextTo"
+	etat := aClass new.
+	etat eventDictionary addAll: dictionary.
+	etat eventDictionary at: #onTimer put: self createFinish.
+	^ etat
 ]
 
 { #category : #briques }
@@ -55,6 +55,17 @@ EtatFactory class >> createGoTo: aPoint next: aEtat [
 		}
 		).
 	etat dest: aPoint.
+	^ etat
+]
+
+{ #category : #briques }
+EtatFactory class >> createLongerMurSur: dist enAvant: boolAvant next: anEtat [
+	| etat |
+	etat := EtatFactory 
+		createEtat: EtatToutDroit
+		events: (Dictionary newFrom: {(#onFinish -> anEtat)}).
+	etat sens: boolAvant.
+	etat distance: dist.
 	^ etat
 ]
 
@@ -186,9 +197,21 @@ EtatFactory class >> createParcoursDepartJaune [
 				createGoTo: 0 @ -0.75
 				next:
 					(EtatFactory
-						createGoTo: 0.8 @ -0.75
+						createTurn: 0
 						next:
-							(EtatFactory createGoTo: 0.75 @ 0.2 next: (EtatFactory createGoTo: 1.2 @ 0.2 next: EtatFactory createFinish)))).
+							(EtatFactory
+								createLongerMurSur: 0.3
+								enAvant: true
+								next:
+									(EtatFactory
+										createLongerMurSur: 0.3
+										enAvant: true
+										next:
+											(EtatFactory
+												createLongerMurSur: 0.3
+												enAvant: true
+												next:
+													(EtatFactory createGoTo: 0.75 @ 0.2 next: (EtatFactory createGoTo: 1.2 @ 0.2 next: EtatFactory createFinish))))))).
 	^ etat
 ]
 
@@ -262,6 +285,6 @@ EtatFactory class >> createWaitingNext: aEtat [
 		createEtat: Etat
 		events: (Dictionary newFrom:
 		{
-		#onStartTrigger -> aEtat.
+			#onStartTrigger -> aEtat.
 		}).
 ]

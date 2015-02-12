@@ -22,12 +22,21 @@ self thread resume .
 
 { #category : #accessing }
 EtatTurn >> angSpeedIncrement [
-^self kobuki speedManager angSpeedIncrementTurn.
+	"^self kobuki speedManager angSpeedIncrementTurn."
+
+	^ 0.03
 ]
 
 { #category : #accessing }
 EtatTurn >> angSpeedMinimum [
-^self kobuki speedManager angSpeedMinimumTurn.
+	"^self kobuki speedManager angSpeedMinimumTurn."
+
+	^ 0.2
+]
+
+{ #category : #'as yet unclassified' }
+EtatTurn >> loopDelay [
+	^20
 ]
 
 { #category : #accessing }
@@ -41,7 +50,7 @@ EtatTurn >> newThread [
 			
 		"test si le thread de mouvement est lancé"
 		(self kobuki velocityThread isSuspended) ifFalse:[		
-			self kobuki speedManager progressiveLin:0 ang: delta.
+			self kobuki speedManager progressiveLin:0 ang: delta/5.
 		] ifTrue:[
 			self kobuki speedManager instantaneousLin: 0 ang: 0.
 		].
@@ -53,6 +62,11 @@ les vitesses angulaires et lineaires "
 	self kobuki speedManager instantaneousLin: 0 ang: 0.
 	self kobuki makeSound: 3.
 	self kobuki event:#onFinish. ] newProcess
+]
+
+{ #category : #'as yet unclassified' }
+EtatTurn >> precisionAng [
+	^0.02
 ]
 
 { #category : #'as yet unclassified' }
