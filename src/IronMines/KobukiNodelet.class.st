@@ -43,6 +43,56 @@ KobukiNodelet class >> odomResetTopicType [
 ]
 
 { #category : #'as yet unclassified' }
+KobukiNodelet class >> sonar0Topic [
+	^ '/sonar0'
+]
+
+{ #category : #'as yet unclassified' }
+KobukiNodelet class >> sonar0TopicType [
+	^ 'std_msgs/UInt16'
+]
+
+{ #category : #'as yet unclassified' }
+KobukiNodelet class >> sonar1Topic [
+	^ '/sonar1'
+]
+
+{ #category : #'as yet unclassified' }
+KobukiNodelet class >> sonar1TopicType [
+	^ 'std_msgs/UInt16'
+]
+
+{ #category : #'as yet unclassified' }
+KobukiNodelet class >> sonar2Topic [
+	^ '/sonar2'
+]
+
+{ #category : #'as yet unclassified' }
+KobukiNodelet class >> sonar2TopicType [
+	^ 'std_msgs/UInt16'
+]
+
+{ #category : #'as yet unclassified' }
+KobukiNodelet class >> sonar3Topic [
+	^ '/sonar3'
+]
+
+{ #category : #'as yet unclassified' }
+KobukiNodelet class >> sonar3TopicType [
+	^ 'std_msgs/UInt16'
+]
+
+{ #category : #'as yet unclassified' }
+KobukiNodelet class >> sonar4Topic [
+	^ '/sonar4'
+]
+
+{ #category : #'as yet unclassified' }
+KobukiNodelet class >> sonar4TopicType [
+	^ 'std_msgs/UInt16'
+]
+
+{ #category : #'as yet unclassified' }
 KobukiNodelet class >> soundTopic [
 	^ '/mobile_base/commands/sound'
 ]
@@ -143,10 +193,21 @@ KobukiNodelet >> kobukiSansSonar [
 			(self controller node buildConnectionFor: KobukiNodelet startTriggerTopic)
 				typedAs: KobukiNodelet startTriggerTopicType;
 				for: [ :msg | Transcript cr;show:msg data. 
-					msg data ifTrue: [ Transcript show: 'GO !' ]
-					kobuki timerStart.
-					kobuki event:#onStartTrigger ];
+					msg data ifTrue: [ kobuki timerStart.
+					kobuki event:#onStartTrigger.
+					"Faire demarrer le kobuki"
+					kobuki demarrer.
+					"Test de faire un parcoure de carre"
+					kobuki changeEtat: (EtatFactory createCarre).
+					]
+					];
+				connect.
+			"pour lire un subscriber-->sonar0"
+			(self controller node buildConnectionFor: KobukiNodelet sonar0Topic)
+				typedAs: KobukiNodelet sonar0TopicType;
+				for: [ :msg | Transcript cr;show:msg data. 
+					];
 				connect.
 			kobuki changeEtat: KobukiNodelet EtatInitial new.
-			 ]
+			 ] 
 ]
