@@ -33,16 +33,6 @@ KobukiNodelet class >> canonTopicType [
 ]
 
 { #category : #'as yet unclassified' }
-KobukiNodelet class >> departTopic [
-	^ '/depart'
-]
-
-{ #category : #'as yet unclassified' }
-KobukiNodelet class >> departTopicType [
-	^ 'std_msgs/Bool'
-]
-
-{ #category : #'as yet unclassified' }
 KobukiNodelet class >> odomResetTopic [
 	^ '/mobile_base/commands/reset_odometry'
 ]
@@ -50,6 +40,16 @@ KobukiNodelet class >> odomResetTopic [
 { #category : #'as yet unclassified' }
 KobukiNodelet class >> odomResetTopicType [
 	^ 'std_msgs/Empty'
+]
+
+{ #category : #'as yet unclassified' }
+KobukiNodelet class >> servoTopic [
+	^ '/servo'
+]
+
+{ #category : #'as yet unclassified' }
+KobukiNodelet class >> servoTopicType [
+	^ 'std_msgs/UInt16'
 ]
 
 { #category : #'as yet unclassified' }
@@ -145,7 +145,7 @@ KobukiNodelet >> kobuki [
 				for: (self controller node topicPublisher: KobukiNodelet velocityTopic typedAs: KobukiNodelet velocityTopicType)
 				and: (self controller node topicPublisher: KobukiNodelet odomResetTopic typedAs: KobukiNodelet odomResetTopicType)
 				"and: (self controller node topicPublisher: KobukiNodelet canonTopic typedAs: KobukiNodelet canonTopicType)"
-				"and:(self controller node topicPublisher: KobukiNodelet departTopic typedAs: KobukiNodelet departTopicType)"
+				and:(self controller node topicPublisher: KobukiNodelet departTopic typedAs: KobukiNodelet departTopicType)
 				and: (self controller node topicPublisher: KobukiNodelet soundTopic typedAs: KobukiNodelet soundTopicType).
 			(self controller node buildConnectionFor: KobukiNodelet bumperTopic)
 				typedAs: KobukiNodelet bumperTopicType;
@@ -158,7 +158,7 @@ KobukiNodelet >> kobuki [
 				for: [ :msg | kobuki odom: msg ];
 				adapted: #pose \> #pose;
 				connect.
-			"(self controller node buildConnectionFor: '/sonnars/0')
+			(self controller node buildConnectionFor: '/sonnars/0')
 				typedAs: 'std_msgs/UInt16';
 				for: [ :msg | kobuki sonnar0: msg data ];
 				connect.
@@ -169,13 +169,13 @@ KobukiNodelet >> kobuki [
 			(self controller node buildConnectionFor: '/sonnars/2')
 				typedAs: 'std_msgs/UInt16';
 				for: [ :msg | kobuki sonnar2: msg data ];
-				connect."
-			"(self controller node buildConnectionFor: KobukiNodelet startTriggerTopic)
+				connect.
+			(self controller node buildConnectionFor: KobukiNodelet startTriggerTopic)
 				typedAs: KobukiNodelet startTriggerTopicType;
 				for: [ :msg | 
 					kobuki timerStart.
 					kobuki event:#onStartTrigger ];
-				connect."
+				connect.
 			kobuki changeEtat: KobukiNodelet EtatInitial new ]
 ]
 
@@ -216,6 +216,27 @@ KobukiNodelet >> kobukiSansSonar [
 			(self controller node buildConnectionFor: KobukiNodelet sonar0Topic)
 				typedAs: KobukiNodelet sonar0TopicType;
 				for: [ :msg | Transcript cr;show:msg data. 
+					];
+				connect.
+			"pour lire un subscriber-->sonar1"
+			(self controller node buildConnectionFor: KobukiNodelet sonar1Topic)
+				typedAs: KobukiNodelet sonar1TopicType;
+				for: [ :msg | Transcript cr;show:'sonar1:';show:msg data. 
+					 (msg data <100) ifTrue: [ kobuki makeSound: 1 ]
+					];
+				connect.
+			"pour lire un subscriber-->sonar2"
+			(self controller node buildConnectionFor: KobukiNodelet sonar2Topic)
+				typedAs: KobukiNodelet sonar2TopicType;
+				for: [ :msg | Transcript cr;show:'sonar2';show:msg data. 
+					 (msg data <100) ifTrue: [ kobuki makeSound: 2 ]
+					];
+				connect.
+			"pour lire un subscriber-->sonar3"
+			(self controller node buildConnectionFor: KobukiNodelet sonar3Topic)
+				typedAs: KobukiNodelet sonar3TopicType;
+				for: [ :msg | Transcript cr;show:'sonar3';show:msg data. 
+					 (msg data <100) ifTrue: [ kobuki makeSound: 3 ]
 					];
 				connect.
 			kobuki changeEtat: KobukiNodelet EtatInitial new.

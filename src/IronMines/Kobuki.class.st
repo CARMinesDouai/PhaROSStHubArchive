@@ -5,6 +5,7 @@ Class {
 		'afficheur',
 		'bumper',
 		'velocity',
+		'servoPublisher',
 		'canonPublisher',
 		'soundPublisher',
 		'velocityPublisher',
@@ -49,14 +50,6 @@ Kobuki class >> carteDepartGuauche [
 	[:point | ((0.88@0-0.68) dist: point )< 0.09].
 	[:point | ((1.28@0-0.68) dist: point )< 0.16].
 }
-]
-
-{ #category : #'as yet unclassified' }
-Kobuki class >> for: aTopicPublisher and: anotherTopicPublisher and: soundTopicPublisher [
-	^ self new setVelocityPublisher: aTopicPublisher; 
-		setOdomResetPublisher: anotherTopicPublisher;
-		setSoundPublisher: soundTopicPublisher ;
-		yourself.
 ]
 
 { #category : #'as yet unclassified' }
@@ -210,6 +203,11 @@ Kobuki >> setCanonPublisher: anObject [
 { #category : #private }
 Kobuki >> setOdomResetPublisher: aPublisher [
 	odomResetPublisher  := aPublisher .
+]
+
+{ #category : #accessing }
+Kobuki >> setServoPublisher: anObject [
+	servoPublisher := anObject
 ]
 
 { #category : #private }

@@ -304,16 +304,6 @@ IronMinesPackage >> buildController [
 
 { #category : #scripts }
 IronMinesPackage >> launchKobuki [
-	'<node pkg="rosserial_python" type="serial_node.py" name="ardui1" >
-    			<param name="~port" value="/dev/ttyACM0" />
-   			<param name="~baud" value="57600" />
-  		</node>
-		
-		<node pkg="rosserial_python" type="serial_node.py" name="ardui2" >
-    			<param name="~port" value="/dev/ttyACM1" />
-   			<param name="~baud" value="57600" />
-  		</node>'.
-
 	process := PhaROSSystemLauncher instance roslaunchForTests: '<launch>
  	 	<node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
   		<node pkg="nodelet" type="nodelet" name="mobile_base" args="load kobuki_node/KobukiNodelet mobile_base_nodelet_manager">
@@ -326,9 +316,16 @@ IronMinesPackage >> launchKobuki [
     			<rosparam command="load" file="$(find kobuki_node)/param/diagnostics.yaml" />
   		</node>
 		
+		<node pkg="rosserial_python" type="serial_node.py" name="ardui1" >
+    			<param name="~port" value="/dev/ttyACM0" />
+   			<param name="~baud" value="57600" />
+  		</node>
 		
-	</launch>'.
-	
+		<node pkg="rosserial_python" type="serial_node.py" name="ardui2" >
+    			<param name="~port" value="/dev/ttyACM1" />
+   			<param name="~baud" value="57600" />
+  		</node>
+	</launch>'
 ]
 
 { #category : #scripts }
@@ -342,7 +339,7 @@ IronMinesPackage >> scriptKobuki [
 	masterUrl := self masterURL.
 	PhaROSManifest cleanUp.
 	master := PhaROSMaster url: masterUrl.
-	"self launchKobuki."
+	self launchKobuki.
 	kob := self controller nodelets kobuki kobuki .
 
 ]
