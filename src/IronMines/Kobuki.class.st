@@ -52,6 +52,14 @@ Kobuki class >> carteDepartGuauche [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki class >> for: aTopicPublisher and: anotherTopicPublisher and: soundTopicPublisher [
+	^ self new setVelocityPublisher: aTopicPublisher; 
+		setOdomResetPublisher: anotherTopicPublisher;
+		setSoundPublisher: soundTopicPublisher ;
+		yourself.
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki class >> for: aTopicPublisher and: anotherTopicPublisher and:canonTopicPublisher and: soundTopicPublisher [
 	^ self new setVelocityPublisher: aTopicPublisher; 
 		setOdomResetPublisher: anotherTopicPublisher;
