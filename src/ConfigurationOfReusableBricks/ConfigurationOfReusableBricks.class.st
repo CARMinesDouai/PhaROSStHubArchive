@@ -156,7 +156,7 @@ ConfigurationOfReusableBricks >> project [
 ConfigurationOfReusableBricks >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '1.0'.
+	spec for: #'common' version: '1.1'.
 
 ]
 
@@ -172,6 +172,23 @@ ConfigurationOfReusableBricks >> version10: spec [
 		spec 
 			package: 'Equals' with: 'Equals-NouryBouraqadi.3';
 			package: 'Concurrency' with: 'Concurrency-NouryBouraqadi.11';
+			package: 'BooleanExpressions' with: 'BooleanExpressions-NouryBouraqadi.1';
+			package: #StateMachine with: 'StateMachine-NouryBouraqadi.1'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfReusableBricks >> version11: spec [
+	<version: '1.1' imports: #('0.1-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'version 1.1'.
+		spec author: 'NouryBouraqadi'.
+		spec timestamp: '2/13/2015 17:16'.
+		spec 
+			package: 'Equals' with: 'Equals-NouryBouraqadi.3';
+			package: 'Concurrency' with: 'Concurrency-NouryBouraqadi.12';
 			package: 'BooleanExpressions' with: 'BooleanExpressions-NouryBouraqadi.1';
 			package: #StateMachine with: 'StateMachine-NouryBouraqadi.1'. ].
 
