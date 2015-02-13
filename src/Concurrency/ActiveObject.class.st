@@ -105,6 +105,24 @@ ActiveObject class >> do: initBlock thenRepeat: stepBlock every: aDuration ensur
 ]
 
 { #category : #'instance-creation' }
+ActiveObject class >> do: initBlock thenRepeat:  taskBlock every: aDuration while: conditionBlock [ 
+	^self 
+		do:[
+			initBlock value. 
+			(self blockForRepeating: taskBlock every: aDuration while: conditionBlock) value]
+
+]
+
+{ #category : #'instance-creation' }
+ActiveObject class >> do: initBlock thenRepeat:  taskBlock every: aDuration while: conditionBlock ensure: cleanupBlock [
+	^self 
+		do:[
+			initBlock value. 
+			(self blockForRepeating: taskBlock every: aDuration while: conditionBlock) value]
+		ensure: cleanupBlock
+]
+
+{ #category : #'instance-creation' }
 ActiveObject class >> repeat: taskBlock [
 	^self do: [ taskBlock repeat ]
 ]
