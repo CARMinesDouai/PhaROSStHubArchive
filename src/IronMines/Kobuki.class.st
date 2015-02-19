@@ -53,11 +53,11 @@ Kobuki class >> carteDepartGuauche [
 ]
 
 { #category : #'as yet unclassified' }
-Kobuki class >> for: aTopicPublisher and: anotherTopicPublisher and:canonTopicPublisher and: soundTopicPublisher [
+Kobuki class >> for: aTopicPublisher and: anotherTopicPublisher and:servoTopicPublisher and: soundTopicPublisher [
 	^ self new setVelocityPublisher: aTopicPublisher; 
 		setOdomResetPublisher: anotherTopicPublisher;
 		setSoundPublisher: soundTopicPublisher ;
-		setCanonPublisher: canonTopicPublisher ;
+		setServoPublisher: servoTopicPublisher ;
 		yourself.
 ]
 
@@ -160,10 +160,21 @@ Kobuki >> fire [
 ]
 
 { #category : #private }
+Kobuki >> makeServo: i [
+servoPublisher 
+		send: [ :m | 
+			m data: i .
+			self log: 'servo : ', i asString ].
+			
+"pour envoyer un publisher-->par exemple: envoyer chiffre 1 vers servomoteur"
+]
+
+{ #category : #private }
 Kobuki >> makeSound: i [
 soundPublisher 
 		send: [ :m | 
-			m value: i ].
+			m value: i .
+			].
 ]
 
 { #category : #private }

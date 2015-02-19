@@ -144,8 +144,7 @@ KobukiNodelet >> kobuki [
 			kobuki := Kobuki
 				for: (self controller node topicPublisher: KobukiNodelet velocityTopic typedAs: KobukiNodelet velocityTopicType)
 				and: (self controller node topicPublisher: KobukiNodelet odomResetTopic typedAs: KobukiNodelet odomResetTopicType)
-				"and: (self controller node topicPublisher: KobukiNodelet canonTopic typedAs: KobukiNodelet canonTopicType)"
-				and:(self controller node topicPublisher: KobukiNodelet departTopic typedAs: KobukiNodelet departTopicType)
+				and: (self controller node topicPublisher: KobukiNodelet canonTopic typedAs: KobukiNodelet canonTopicType)
 				and: (self controller node topicPublisher: KobukiNodelet soundTopic typedAs: KobukiNodelet soundTopicType).
 			(self controller node buildConnectionFor: KobukiNodelet bumperTopic)
 				typedAs: KobukiNodelet bumperTopicType;
@@ -186,7 +185,7 @@ KobukiNodelet >> kobukiSansSonar [
 			kobuki := Kobuki
 				for: (self controller node topicPublisher: KobukiNodelet velocityTopic typedAs: KobukiNodelet velocityTopicType)
 				and: (self controller node topicPublisher: KobukiNodelet odomResetTopic typedAs: KobukiNodelet odomResetTopicType)
-				and: (self controller node topicPublisher: KobukiNodelet canonTopic typedAs: KobukiNodelet canonTopicType)
+				and: (self controller node topicPublisher: KobukiNodelet servoTopic typedAs: KobukiNodelet servoTopicType)
 				and: (self controller node topicPublisher: KobukiNodelet soundTopic typedAs: KobukiNodelet soundTopicType).
 			(self controller node buildConnectionFor: KobukiNodelet bumperTopic)
 				typedAs: KobukiNodelet bumperTopicType;
@@ -206,12 +205,13 @@ KobukiNodelet >> kobukiSansSonar [
 					msg data ifTrue: [ kobuki timerStart.
 					kobuki event:#onStartTrigger.
 					"Faire demarrer le kobuki"
-					kobuki demarrer.
+				      kobuki demarrer.	
 					"Test de faire un parcoure de carre"
 					kobuki changeEtat: (EtatFactory createCarre).
 					]
 					];
 				connect.
+
 			"pour lire un subscriber-->sonar0"
 			(self controller node buildConnectionFor: KobukiNodelet sonar0Topic)
 				typedAs: KobukiNodelet sonar0TopicType;
