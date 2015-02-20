@@ -16,11 +16,6 @@ PhaROSProxy class >> url: urlString [
 		yourself
 ]
 
-{ #category : #bla }
-PhaROSProxy >> destroy [
-	self stop.
-]
-
 { #category : #invoking }
 PhaROSProxy >> invokeMethod: method withArgs: args [
 	| returnArray |
@@ -33,9 +28,4 @@ PhaROSProxy >> invokeMethod: method withArgs: args [
 { #category : #invoking }
 PhaROSProxy >> responseClass [
 	^PhaROSXmlRpcResponse
-]
-
-{ #category : #service }
-PhaROSProxy >> stop [
-	self flag: #GTFO.
 ]
