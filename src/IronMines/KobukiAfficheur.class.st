@@ -37,7 +37,7 @@ KobukiAfficheur >> circle: anObject [
 KobukiAfficheur >> demarrerAffichage [ 
 self circle openInWorld .
 self sonnar1 openInWorld .
-self sonnar2 openInWorld .
+self sonar2 openInWorld .
 self ux openInWorld .
 
 ]
@@ -76,15 +76,7 @@ KobukiAfficheur >> newThread [
 ]
 
 { #category : #accessing }
-KobukiAfficheur >> sonnar1 [
-	^ sonnar1 ifNil: [
-		sonnar1 := CircleMorph new .
-		sonnar1 extent: 10@10.
-		]
-]
-
-{ #category : #accessing }
-KobukiAfficheur >> sonnar2 [
+KobukiAfficheur >> sonar2 [
 	^ sonnar2 ifNil: [
 		sonnar2 := CircleMorph new .
 		sonnar2 extent: 10@10.
@@ -92,8 +84,16 @@ KobukiAfficheur >> sonnar2 [
 ]
 
 { #category : #accessing }
-KobukiAfficheur >> sonnar2: anObject [
+KobukiAfficheur >> sonar2: anObject [
 	sonnar2 := anObject
+]
+
+{ #category : #accessing }
+KobukiAfficheur >> sonnar1 [
+	^ sonnar1 ifNil: [
+		sonnar1 := CircleMorph new .
+		sonnar1 extent: 10@10.
+		]
 ]
 
 { #category : #accessing }
@@ -111,7 +111,7 @@ KobukiAfficheur >> thread: anObject [
 KobukiAfficheur >> update: aKobuki [
 self circle position: ((aKobuki   x * 200) @ (aKobuki  y * 200)).
 self sonnar1 position: ((aKobuki sonnar1 * 200) + ((aKobuki   x * 200) @ (aKobuki  y * 200))).
-self sonnar2 position: ((aKobuki sonnar2 * 200) + ((aKobuki   x * 200) @ (aKobuki  y * 200))).
+self sonar2 position: ((aKobuki sonar2 * 200) + ((aKobuki   x * 200) @ (aKobuki  y * 200))).
 self ux setVertices:{
 	((aKobuki   x * 200) @ (aKobuki  y * 200))+(25@25). 
 	((aKobuki   x * 200) @ (aKobuki  y * 200))+ ((aKobuki ux)*100)+(25@25)

@@ -26,5 +26,5 @@ self kobuki event: #onFinish.
 
 { #category : #'as yet unclassified' }
 EtatCommandeServo >> numero: n [
-	numeroAction=n
+	numeroAction:=n
 ]

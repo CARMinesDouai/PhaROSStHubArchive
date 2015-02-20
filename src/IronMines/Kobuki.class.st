@@ -14,9 +14,11 @@ Class {
 		'odomResetPublisher',
 		'etat',
 		'speedManager',
-		'sonnar2',
-		'sonnar0',
-		'sonnar1',
+		'sonar2',
+		'sonar0',
+		'sonar1',
+		'sonar3',
+		'sonar4',
 		'carte',
 		'timer'
 	],
@@ -201,6 +203,11 @@ Kobuki >> odom: anObject [
 	self changed.
 ]
 
+{ #category : #sonars }
+Kobuki >> positionDetectee1 [
+	^(self x @ self y) + ((0.18 + sonar1/1000) * self z cos) @ ((0.18 + sonar1/1000) * self z sin).
+]
+
 { #category : #accessing }
 Kobuki >> resetOdom [
 	odomResetPublisher send: [:m | m]
@@ -231,57 +238,81 @@ Kobuki >> setVelocityPublisher: aPublisher [
 	velocityPublisher  := aPublisher .
 ]
 
-{ #category : #accessing }
-Kobuki >> sonnar0 [
-	^ sonnar0
-]
-
-{ #category : #accessing }
-Kobuki >> sonnar0: anObject [
-	sonnar0 := anObject.
-	(sonnar0 < self colisionLimit) ifTrue: [ 
+{ #category : #sonars }
+Kobuki >> sonar0: anObject [
+	sonar0 := anObject.
+	(sonar0 < self colisionLimit) ifTrue: [ 
 		self event: #detectOn0.
 		self carte do: [:ea |
-			(ea value: self sonnar1) ifTrue: [^ self].
+			(ea value: self sonar1) ifTrue: [^ self].
 			 ].
 		self event: #onColision.
 		 ]
 ]
 
-{ #category : #accessing }
-Kobuki >> sonnar1 [
-	^  self ux * ((sonnar1/1000) + 0.2) + (self x @ self y)
+{ #category : #sonars }
+Kobuki >> sonar1 [
+	^  self ux * ((sonar1/1000) + 0.2) + (self x @ self y)
 ]
 
-{ #category : #accessing }
-Kobuki >> sonnar1: anObject [
-	sonnar1 := anObject.
-	(sonnar1 < self colisionLimit) ifTrue: [ 
+{ #category : #sonars }
+Kobuki >> sonar1: anObject [
+	sonar1 := anObject.
+	(sonar1 < self colisionLimit) ifTrue: [ 
 		self event: #detectOn1.
 		self carte do: [:ea |
-			(ea value: self sonnar1) ifTrue: [^ self].
+			(ea value: self sonar1) ifTrue: [^ self].
 			 ].
 		self event: #onColision.
 		 ]
 ]
 
-{ #category : #accessing }
-Kobuki >> sonnar2 [
+{ #category : #sonars }
+Kobuki >> sonar2 [
 	| temp |
-	temp := (0.013@0-0.015) + ((0.013@0-0.015) normalized * sonnar2/1000).
-	^ (temp dotProduct: self ux) @  (temp dotProduct: self uy)
+	temp := (0.013@0-0.015) + ((0.013@0-0.015) normalized * sonar2/1000).
+	^ (temp dotProduct: self ux) @ (temp dotProduct: self uy)
 ]
 
-{ #category : #accessing }
-Kobuki >> sonnar2: anObject [
-	sonnar2 := anObject.
-	(sonnar2 < self colisionLimit) ifTrue: [ 
+{ #category : #sonars }
+Kobuki >> sonar2: anObject [
+	sonar2 := anObject.
+	(sonar2 < self colisionLimit) ifTrue: [ 
 		self event: #detectOn2.
 		self carte do: [:ea |
-			(ea value: self sonnar1) ifTrue: [^ self].
+			(ea value: self sonar1) ifTrue: [^ self].
 			 ].
 		self event: #onColision.
 		 ]
+]
+
+{ #category : #sonars }
+Kobuki >> sonar3: anObject [
+	sonar3 := anObject.
+	(sonar3 < self colisionLimit) ifTrue: [ 
+		self event: #detectOn4.
+		self carte do: [:ea |
+			(ea value: self sonar1) ifTrue: [^ self].
+			 ].
+		self event: #onColision.
+		 ]
+]
+
+{ #category : #sonars }
+Kobuki >> sonar4: anObject [
+	sonar4 := anObject.
+	(sonar4 < self colisionLimit) ifTrue: [ 
+		self event: #detectOn4.
+		self carte do: [:ea |
+			(ea value: self sonar1) ifTrue: [^ self].
+			 ].
+		self event: #onColision.
+		 ]
+]
+
+{ #category : #sonars }
+Kobuki >> sonnar0 [
+	^ sonar0
 ]
 
 { #category : #accessing }
