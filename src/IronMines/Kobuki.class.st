@@ -160,21 +160,21 @@ Kobuki >> fire [
 ]
 
 { #category : #private }
-Kobuki >> makeServo: i [
+Kobuki >> makeSound: i [
+soundPublisher 
+		send: [ :m | 
+			m value: i .
+			].
+]
+
+{ #category : #private }
+Kobuki >> moveServo: i [
 servoPublisher 
 		send: [ :m | 
 			m data: i .
 			self log: 'servo : ', i asString ].
 			
 "pour envoyer un publisher-->par exemple: envoyer chiffre 1 vers servomoteur"
-]
-
-{ #category : #private }
-Kobuki >> makeSound: i [
-soundPublisher 
-		send: [ :m | 
-			m value: i .
-			].
 ]
 
 { #category : #private }

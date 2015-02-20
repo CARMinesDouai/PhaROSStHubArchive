@@ -31,19 +31,6 @@ EtatFactory class >> createFinish [
 ]
 
 { #category : #'création d\'états' }
-EtatFactory class >> createFireNext: aEtat [
-|etat|
-	etat := EtatFactory
-		createEtat: EtatFire
-		events: (Dictionary newFrom:{
-			#onFinish -> aEtat.
-		}).
-	^etat.
-		 
-		
-]
-
-{ #category : #'création d\'états' }
 EtatFactory class >> createGoTo: aPoint next: aEtat [
 "etat de deplacement vers un point absolu (par rapport au terrain)"
 	| etat|
@@ -132,7 +119,7 @@ EtatFactory class >> createParcoursDemoDroit [
 				next:
 					(EtatFactory
 						createGoTo: 1 @ 0.66
-						next: (EtatFactory createGoTo: 0.7 @ 0.2 next: (EtatFactory createFireNext: EtatFactory createFinish)))).
+						next: (EtatFactory createGoTo: 0.7 @ 0.2 next: (EtatFactory moveServo: 1 Next: EtatFactory createFinish)))).
 	^ etat
 ]
 
@@ -144,7 +131,7 @@ EtatFactory class >> createParcoursDemoDroit2 [
 				createParcours: {0.375@0 . 0.375@0.875 }
 				next: (EtatFactory
 						createTurn: (MathFactory degresToRadians: 0-150)
-						next: (EtatFactory createFireNext:
+						next: (EtatFactory moveServo: 2 Next:
 							(EtatFactory createParcours: {0.375@0.175 . 
 															1.1@0.175 . 
 															1.1@1 .
@@ -165,7 +152,7 @@ EtatFactory class >> createParcoursDemoGauche [
 				next:
 					(EtatFactory
 						createGoTo: 1 @ -0.66
-						next: (EtatFactory createGoTo: 0.7 @ -0.25 next: (EtatFactory createFireNext: EtatFactory createFinish)))).
+						next: (EtatFactory createGoTo: 0.7 @ -0.25 next: (EtatFactory moveServo: 3 Next: EtatFactory createFinish)))).
 	^ etat
 ]
 
@@ -177,7 +164,7 @@ EtatFactory class >> createParcoursDemoGauche2 [
 				createParcours: {0.375@0 . 0.375@(0-0.875) }
 				next: (EtatFactory
 						createTurn: (MathFactory degresToRadians: 150)
-						next: (EtatFactory createFireNext:
+						next: (EtatFactory moveServo: 0 Next:
 							(EtatFactory createParcours: {0.375@(0-0.175) . 
 															1.1@(0-0.175) . 
 															1.1@(0-1) .
@@ -225,6 +212,22 @@ EtatFactory class >> createParcoursTest1 [
 					(EtatFactory
 						createGoTo: 0.5 @ 0.36
 						next: (EtatFactory createFinish)).
+	^ etat
+]
+
+{ #category : #'as yet unclassified' }
+EtatFactory class >> createParcoursTestComplet [
+	"parcours dexemple pour tester le robot"
+
+	| etat |
+	etat := EtatFactory
+		createWaitingNext:
+			(EtatFactory
+				createGoTo: 0.5 @ 0
+				next:
+					(EtatFactory
+						moveServo: 1
+						Next: (EtatFactory createGoTo: 0.5 @ 0.36 next: (EtatFactory moveServo: 0 Next: EtatFactory createFinish)))).
 	^ etat
 ]
 
@@ -291,6 +294,10 @@ EtatFactory class >> createWaitingNext: aEtat [
 
 { #category : #'création d\'états' }
 EtatFactory class >> moveServo: aNumber Next: aEtat [
+"0 : lever bras
+1 : baisser bras
+2 : libérer catapulte 1
+3 : libérer catapulte 2"
 |etat|
 	etat := EtatFactory
 		createEtat: EtatCommandeServo

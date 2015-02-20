@@ -201,13 +201,10 @@ KobukiNodelet >> kobukiSansSonar [
 			"pour lire un subscriber-->depart"
 			(self controller node buildConnectionFor: KobukiNodelet startTriggerTopic)
 				typedAs: KobukiNodelet startTriggerTopicType;
-				for: [ :msg | Transcript cr;show:msg data. 
+				for: [ :msg | 
 					msg data ifTrue: [ kobuki timerStart.
 					kobuki event:#onStartTrigger.
-					"Faire demarrer le kobuki"
-				      kobuki demarrer.	
-					"Test de faire un parcoure de carre"
-					kobuki changeEtat: (EtatFactory createCarre).
+					Transcript cr;show:msg.
 					]
 					];
 				connect.
