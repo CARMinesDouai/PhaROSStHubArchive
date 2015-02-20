@@ -1,6 +1,5 @@
 "
-Cette classe herite de Etat et est un Etat de mouvement vers un certain point
-Elle comporte un thread (methode newThread) qui se termine quand le mouvement est terminé
+Cette sert seulement à créer un EtatTurn suivi d'un EtatMoveForward pour faire un déplacement vers un point donné.
 "
 Class {
 	#name : #EtatGoTo,

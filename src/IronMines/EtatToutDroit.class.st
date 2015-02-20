@@ -1,3 +1,7 @@
+"
+Pour undéplacement en ligne droite, en avant (enAvant=true) ou en arrière (false).
+Prévu pour pouvoir utiliser les capteurs pour longer le mur à distance constante...
+"
 Class {
 	#name : #EtatToutDroit,
 	#superclass : #Etat,

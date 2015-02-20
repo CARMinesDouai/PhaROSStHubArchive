@@ -14,7 +14,7 @@ EtatFactory class >> createCarre [
 ^EtatFactory createParcours: { 0.5@0 . 0.5@0.5 . 0@0.5 . 0@0 } next: (EtatFactory createFinish).
 ]
 
-{ #category : #briques }
+{ #category : #'création d\'états' }
 EtatFactory class >> createEtat: aClass events: dictionary [
 	| etat |
 	"cree un nouvel etat en stockant dans la variable eventDictionary de cet etat les evenements qu'il peut declencher avec sa methode nextTo"
@@ -24,13 +24,13 @@ EtatFactory class >> createEtat: aClass events: dictionary [
 	^ etat
 ]
 
-{ #category : #briques }
+{ #category : #'création d\'états' }
 EtatFactory class >> createFinish [
 "cree un etat vide qui ne fait rien et represente la fin des actions a effectuer"
 	^ Etat new.
 ]
 
-{ #category : #briques }
+{ #category : #'création d\'états' }
 EtatFactory class >> createFireNext: aEtat [
 |etat|
 	etat := EtatFactory
@@ -43,7 +43,7 @@ EtatFactory class >> createFireNext: aEtat [
 		
 ]
 
-{ #category : #briques }
+{ #category : #'création d\'états' }
 EtatFactory class >> createGoTo: aPoint next: aEtat [
 "etat de deplacement vers un point absolu (par rapport au terrain)"
 	| etat|
@@ -58,7 +58,7 @@ EtatFactory class >> createGoTo: aPoint next: aEtat [
 	^ etat
 ]
 
-{ #category : #briques }
+{ #category : #'création d\'états' }
 EtatFactory class >> createLongerMurSur: dist enAvant: boolAvant next: anEtat [
 	| etat |
 	etat := EtatFactory 
@@ -264,7 +264,7 @@ EtatFactory class >> createParcoursTestPrecision2 [
 	^ etat
 ]
 
-{ #category : #briques }
+{ #category : #'création d\'états' }
 EtatFactory class >> createTurn: ang next: anEtat [
 |etat|
 	etat := EtatFactory
@@ -278,7 +278,7 @@ EtatFactory class >> createTurn: ang next: anEtat [
 		
 ]
 
-{ #category : #briques }
+{ #category : #'création d\'états' }
 EtatFactory class >> createWaitingNext: aEtat [
 "cree un etat dattente, il faut un declencheur pour continuer"
 	^ EtatFactory
@@ -287,4 +287,18 @@ EtatFactory class >> createWaitingNext: aEtat [
 		{
 			#onStartTrigger -> aEtat.
 		}).
+]
+
+{ #category : #'création d\'états' }
+EtatFactory class >> moveServo: aNumber Next: aEtat [
+|etat|
+	etat := EtatFactory
+		createEtat: EtatCommandeServo
+		events: (Dictionary newFrom:{
+			#onFinish -> aEtat.
+		}).
+	etat numero: aNumber.
+	^etat.
+		 
+		
 ]
