@@ -211,27 +211,27 @@ KobukiNodelet >> kobukiSansSonar [
 			"pour lire un subscriber-->sonar0"
 			(self controller node buildConnectionFor: KobukiNodelet sonar0Topic)
 				typedAs: KobukiNodelet sonar0TopicType;
-				for: [ :msg | Transcript cr;show:msg data. 
+				for: [ :msg | Kobuki sonar0: msg data. 
 					];
 				connect.
 			"pour lire un subscriber-->sonar1"
 			(self controller node buildConnectionFor: KobukiNodelet sonar1Topic)
 				typedAs: KobukiNodelet sonar1TopicType;
-				for: [ :msg | Transcript cr;show:'sonar1:';show:msg data. 
+				for: [ :msg | Kobuki sonar1: msg data. 
 					 (msg data <100) ifTrue: [ kobuki makeSound: 1 ]
 					];
 				connect.
 			"pour lire un subscriber-->sonar2"
 			(self controller node buildConnectionFor: KobukiNodelet sonar2Topic)
 				typedAs: KobukiNodelet sonar2TopicType;
-				for: [ :msg | Transcript cr;show:'sonar2';show:msg data. 
+				for: [ :msg | Kobuki sonar2: msg data. 
 					 (msg data <100) ifTrue: [ kobuki makeSound: 2 ]
 					];
 				connect.
 			"pour lire un subscriber-->sonar3"
 			(self controller node buildConnectionFor: KobukiNodelet sonar3Topic)
 				typedAs: KobukiNodelet sonar3TopicType;
-				for: [ :msg | Transcript cr;show:'sonar3';show:msg data. 
+				for: [ :msg | Kobuki sonar3: msg data. 
 					 (msg data <100) ifTrue: [ kobuki makeSound: 3 ]
 					];
 				connect.

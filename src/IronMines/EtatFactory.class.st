@@ -195,55 +195,59 @@ EtatFactory class >> createParcoursDemoGauche2 [
 EtatFactory class >> createParcoursDepartJaune [
 	| etat |
 	etat := EtatFactory
-		createGoTo: 1 @ 0
-		next:
-			(EtatFactory
-				createGoTo: 0 @ -0.75
+		createWaitingNext:
+			(self
+				createGoTo: 1 @ 0
 				next:
 					(EtatFactory
-						createTurn: 0
+						createGoTo: 0 @ -0.75
 						next:
 							(EtatFactory
-								createPousserClapSur: 0.3
+								createTurn: 0
 								next:
 									(EtatFactory
-										createLongerMurSur: 0.3
-										enAvant: true
+										createPousserClapSur: 0.3
 										next:
 											(EtatFactory
-												createPousserClapSur: 0.3
+												createLongerMurSur: 0.3
+												enAvant: true
 												next:
 													(EtatFactory
-														createGoTo: 0.75 @ 0.2
-														next: (self createTurn: 0 next: (self createFireCoté: 'jaune' next: EtatFactory createFinish)))))))).
+														createPousserClapSur: 0.3
+														next:
+															(EtatFactory
+																createGoTo: 0.75 @ 0.2
+																next: (self createTurn: 0 next: (self createFireCoté: 'jaune' next: EtatFactory createFinish))))))))).
 	^ etat
 ]
 
 { #category : #'parcours utilisé' }
 EtatFactory class >> createParcoursDepartVert [
 	| etat |
-	etat := EtatFactory
-		createGoTo: 1 @ 0
-		next:
+	etat := self
+		createWaitingNext:
 			(EtatFactory
-				createGoTo: 0 @ 0.75
+				createGoTo: 1 @ 0
 				next:
 					(EtatFactory
-						createTurn: MathFactory pi
+						createGoTo: 0 @ 0.75
 						next:
 							(EtatFactory
-								createPousserClapSur: -0.3
+								createTurn: MathFactory pi
 								next:
 									(EtatFactory
-										createLongerMurSur: 0.3
-										enAvant: false
+										createPousserClapSur: -0.3
 										next:
 											(EtatFactory
-												createPousserClapSur: -0.3
+												createLongerMurSur: 0.3
+												enAvant: false
 												next:
 													(EtatFactory
-														createGoTo: 0.75 @ -0.2
-														next: (self createTurn: 0 next: (self createFireCoté: 'vert' next: EtatFactory createFinish)))))))).
+														createPousserClapSur: -0.3
+														next:
+															(EtatFactory
+																createGoTo: 0.75 @ -0.2
+																next: (self createTurn: 0 next: (self createFireCoté: 'vert' next: EtatFactory createFinish))))))))).
 	^ etat
 ]
 
