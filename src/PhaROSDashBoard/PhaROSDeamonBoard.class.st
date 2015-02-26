@@ -51,6 +51,46 @@ PhaROSDeamonBoard class >> stopProcesses [
 	processes := OrderedCollection new.
 ]
 
+{ #category : #'as yet unclassified' }
+PhaROSDeamonBoard class >> testProcess [
+
+|thread process output err|
+thread := nil.
+process:= nil.
+output := nil.
+"thread := [process := (PipeableOSProcess command: 'ping localhost').] fork.
+"thread := [process := (PipeableOSProcess command: 'rostopic bw /turtle1/pose &').] fork.
+1 second wait.
+"process processProxy sigint.
+process processProxy terminate.
+"
+process processProxy sigint.
+
+"[output isNil or: [output isEmpty]] whileTrue:["
+output := process upToEnd.
+err:= process errorUpToEnd.
+"]."
+
+"process close. "
+1 second wait.
+
+	
+Transcript show: '==='.
+Transcript show: output.
+Transcript show: '==='.
+Transcript show: err.
+Transcript show: process.
+
+process processProxy terminate.
+process close.
+thread terminate.
+
+
+thread := nil.
+process:= nil.
+output := nil.
+]
+
 { #category : #accessing }
 PhaROSDeamonBoard >> changeRefreshTime: anObject [
 	
