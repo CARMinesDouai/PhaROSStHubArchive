@@ -30,6 +30,23 @@ EtatFactory class >> createFinish [
 	^ Etat new.
 ]
 
+{ #category : #'parcours utilisé' }
+EtatFactory class >> createFireCoté: jauneVert next: next [
+	| etat distance enAvant |
+	distance := 0.4.
+	jauneVert = 'jaune'
+		ifTrue: [ 
+			enAvant := true.
+			distance := 0.53 ]
+		ifFalse: [ 
+			enAvant := false.
+			distance := 0.27 ].
+	etat := self
+		moveServo: 2
+		Next: (self createLongerMurSur: distance enAvant: enAvant next: (self moveServo: 3 Next: next)).
+	^ etat
+]
+
 { #category : #'création d\'états' }
 EtatFactory class >> createGoTo: aPoint next: aEtat [
 "etat de deplacement vers un point absolu (par rapport au terrain)"
@@ -56,7 +73,7 @@ EtatFactory class >> createLongerMurSur: dist enAvant: boolAvant next: anEtat [
 	^ etat
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'création d\'états' }
 EtatFactory class >> createMoveBackwardNext: aEtat [
 "etat de deplacement vers un point absolu (par rapport au terrain)"
 	| etat |
@@ -70,7 +87,7 @@ EtatFactory class >> createMoveBackwardNext: aEtat [
 	^ etat
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'création d\'états' }
 EtatFactory class >> createMoveForward: aPoint next: aEtat [
 "etat de deplacement vers un point absolu (par rapport au terrain)"
 	| etat |
@@ -91,7 +108,7 @@ EtatFactory class >> createParcourDepartDroit [
 ^EtatFactory createParcours: { 0.43@0 . 0.43@1.18 . 0@1.18 . 0.43@1.18 . 0.43@2.43 . 1.43@2.43 } next: (EtatFactory createFinish).
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'parcours utilisé' }
 EtatFactory class >> createParcours: desPoints next: etatSuivant [
 |etatsStockes|
 etatsStockes := etatSuivant.
@@ -187,22 +204,50 @@ EtatFactory class >> createParcoursDepartJaune [
 						createTurn: 0
 						next:
 							(EtatFactory
-								createLongerMurSur: 0.3
-								enAvant: true
+								createPousserClapSur: 0.3
 								next:
 									(EtatFactory
 										createLongerMurSur: 0.3
 										enAvant: true
 										next:
 											(EtatFactory
-												createLongerMurSur: 0.3
-												enAvant: true
+												createPousserClapSur: 0.3
 												next:
-													(EtatFactory createGoTo: 0.75 @ 0.2 next: (EtatFactory createGoTo: 1.2 @ 0.2 next: EtatFactory createFinish))))))).
+													(EtatFactory
+														createGoTo: 0.75 @ 0.2
+														next: (self createTurn: 0 next: (self createFireCoté: 'jaune' next: EtatFactory createFinish)))))))).
 	^ etat
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'parcours utilisé' }
+EtatFactory class >> createParcoursDepartVert [
+	| etat |
+	etat := EtatFactory
+		createGoTo: 1 @ 0
+		next:
+			(EtatFactory
+				createGoTo: 0 @ 0.75
+				next:
+					(EtatFactory
+						createTurn: MathFactory pi
+						next:
+							(EtatFactory
+								createPousserClapSur: -0.3
+								next:
+									(EtatFactory
+										createLongerMurSur: 0.3
+										enAvant: false
+										next:
+											(EtatFactory
+												createPousserClapSur: -0.3
+												next:
+													(EtatFactory
+														createGoTo: 0.75 @ -0.2
+														next: (self createTurn: 0 next: (self createFireCoté: 'vert' next: EtatFactory createFinish)))))))).
+	^ etat
+]
+
+{ #category : #'parcours test' }
 EtatFactory class >> createParcoursTest1 [
 "parcours dexemple pour tester le robot"
 	| etat |
@@ -215,7 +260,7 @@ EtatFactory class >> createParcoursTest1 [
 	^ etat
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'parcours test' }
 EtatFactory class >> createParcoursTestComplet [
 	"parcours dexemple pour tester le robot"
 
@@ -231,7 +276,7 @@ EtatFactory class >> createParcoursTestComplet [
 	^ etat
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'parcours test' }
 EtatFactory class >> createParcoursTestPrecision [
 "parcours dexemple pour tester la précision de l'odométrie"
 "2 mètres en avant et 1 vers la gauche par rapport au point de départ"
@@ -249,7 +294,7 @@ EtatFactory class >> createParcoursTestPrecision [
 	^ etat
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'parcours test' }
 EtatFactory class >> createParcoursTestPrecision2 [
 "parcours dexemple pour tester la précision de l'odométrie"
 "1 mètre en avant et 1/2 vers la gauche par rapport au point de départ"
@@ -264,6 +309,19 @@ EtatFactory class >> createParcoursTestPrecision2 [
 						next:(EtatFactory
 						createGoTo: 0 @ 0
 						next: EtatFactory createFinish))).
+	^ etat
+]
+
+{ #category : #'parcours utilisé' }
+EtatFactory class >> createPousserClapSur: distance next: etatSuivant [
+	| etat enAvant |
+	enAvant:=true.
+	(distance<0) ifTrue: [ distance:=(0-distance). enAvant:=false ].
+	etat := self
+		moveServo: 1
+		Next: 
+			(self createLongerMurSur: distance enAvant: enAvant next: 
+			(self moveServo: 0 Next: etatSuivant)).
 	^ etat
 ]
 
