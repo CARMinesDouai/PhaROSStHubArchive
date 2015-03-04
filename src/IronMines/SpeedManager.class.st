@@ -3,7 +3,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'etat',
-		'kobuki'
+		'kobuki',
+		'velocityThread',
+		'velocityPublisher'
 	],
 	#category : #'IronMines-Nodelets'
 }
@@ -110,9 +112,14 @@ SpeedManager >> backwardProgressiveLin: lin ang: ang [
 	self kobuki velocityLin: lin ang: ang 
 ]
 
+{ #category : #speed }
+SpeedManager >> demarrer [
+	self velocityThread resume.
+]
+
 { #category : #accessing }
 SpeedManager >> etat [
-^etat.
+^ kobuki etat
 ]
 
 { #category : #accessing }
@@ -156,6 +163,18 @@ SpeedManager >> linSpeedMinimumMoveBackward [
 ]
 
 { #category : #speed }
+SpeedManager >> newVelocityThread [
+	velocityThread ifNotNil: [ velocityThread terminate. ].
+	velocityThread := [ 
+	[ 
+	velocityPublisher
+		send: [ :m | 
+			m linear: self velocity linear.
+			m angular: self velocity angular ].
+	(Delay forMilliseconds: 200) wait ] repeat ] newProcess
+]
+
+{ #category : #speed }
 SpeedManager >> progressiveLin: lin ang: ang [ 
 
 	" il faut respecter une accélération linéaire douce"
@@ -194,4 +213,9 @@ SpeedManager >> progressiveLin: lin ang: ang [
 	].
 
 	self kobuki velocityLin: lin ang: ang 
+]
+
+{ #category : #accessing }
+SpeedManager >> velocityPublisher: aPub [
+	velocityPublisher := aPub
 ]

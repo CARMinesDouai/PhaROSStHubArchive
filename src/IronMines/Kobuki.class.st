@@ -114,7 +114,6 @@ Kobuki >> changeEtat: anEtat [
 	ancienEtat := self etat.
 	self etat: anEtat.
 	anEtat kobuki: self.
-	self speedManager etat: anEtat.
 	self etat action.
 	ancienEtat ifNotNil: [ ancienEtat terminate ]
 ]
@@ -126,7 +125,7 @@ Kobuki >> colisionLimit [
 
 { #category : #accessing }
 Kobuki >> demarrer [
-	self velocityThread resume.
+	speedManager demarrer
 ]
 
 { #category : #affichage }
