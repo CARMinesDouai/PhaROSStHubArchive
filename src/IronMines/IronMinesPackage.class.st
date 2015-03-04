@@ -344,7 +344,7 @@ IronMinesPackage >> scriptKobuki [
 
 ]
 
-{ #category : #scripts }
+{ #category : #'anciens scripts' }
 IronMinesPackage >> scriptKobukiDroite [
 	| kob |
 	masterUrl := self masterURL.
@@ -360,7 +360,7 @@ IronMinesPackage >> scriptKobukiDroite [
 
 ]
 
-{ #category : #scripts }
+{ #category : #'anciens scripts' }
 IronMinesPackage >> scriptKobukiGauche [
 	| kob |
 	masterUrl := self masterURL.
@@ -377,6 +377,38 @@ IronMinesPackage >> scriptKobukiGauche [
 ]
 
 { #category : #scripts }
+IronMinesPackage >> scriptKobukiJaune [
+	| kob |
+	masterUrl := self masterURL.
+	PhaROSManifest cleanUp.
+	master := PhaROSMaster url: masterUrl.
+	"self launchKobuki." "contient l'initialisation de ROS et rosserial, to be tested"
+	kob := self controller nodelets kobuki kobuki .
+	kob := Kobuki allInstances last.
+	kob resetOdom.
+	kob demarrer.
+	"kob carte: Kobuki carteDepartDroite." "à faire"
+	kob changeEtat: (EtatFactory createParcoursDepartJaune)
+
+]
+
+{ #category : #scripts }
+IronMinesPackage >> scriptKobukiVert [
+	| kob |
+	masterUrl := self masterURL.
+	PhaROSManifest cleanUp.
+	master := PhaROSMaster url: masterUrl.
+	"self launchKobuki."
+	kob := self controller nodelets kobuki kobuki .
+	kob := Kobuki allInstances last.
+	kob resetOdom.
+	kob demarrer.
+	"kob carte: Kobuki carteDepartDroite."
+	kob changeEtat: (EtatFactory createParcoursDepartVert)
+
+]
+
+{ #category : #'anciens scripts' }
 IronMinesPackage >> scriptSomething [
  	| led |
 	led := self controller nodelets arduino led.
