@@ -169,8 +169,8 @@ SpeedManager >> newVelocityThread [
 	[ 
 	velocityPublisher
 		send: [ :m | 
-			m linear: self velocity linear.
-			m angular: self velocity angular ].
+			m linear: self kobuki velocity linear.
+			m angular: self kobuki velocity angular ].
 	(Delay forMilliseconds: 200) wait ] repeat ] newProcess
 ]
 
@@ -218,4 +218,11 @@ SpeedManager >> progressiveLin: lin ang: ang [
 { #category : #accessing }
 SpeedManager >> velocityPublisher: aPub [
 	velocityPublisher := aPub
+]
+
+{ #category : #accessing }
+SpeedManager >> velocityThread [
+	velocityThread ifNil: [ self newVelocityThread ].
+	velocityThread isTerminated ifTrue: [ self newVelocityThread ].
+	^ velocityThread.
 ]

@@ -125,7 +125,7 @@ Kobuki >> colisionLimit [
 
 { #category : #accessing }
 Kobuki >> demarrer [
-	speedManager demarrer
+	self speedManager demarrer
 ]
 
 { #category : #affichage }
@@ -234,7 +234,8 @@ Kobuki >> setSoundPublisher: aPublisher [
 
 { #category : #private }
 Kobuki >> setVelocityPublisher: aPublisher [
-	velocityPublisher  := aPublisher .
+	velocityPublisher := aPublisher.
+	self speedManager velocityPublisher: aPublisher 
 ]
 
 { #category : #sonars }
