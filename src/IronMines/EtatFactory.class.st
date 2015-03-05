@@ -197,27 +197,27 @@ EtatFactory class >> createParcoursDepartJaune [
 	etat := EtatFactory
 		createWaitingNext:
 			(self
-				createGoTo: 1 @ 0
+				createGoTo: 0.75 @ 0.15
 				next:
-					(EtatFactory
-						createGoTo: 0 @ -0.75
+					(self
+						createTurn: 0
 						next:
-							(EtatFactory
-								createTurn: 0
+							(self
+								createFireCoté: 'jaune'
 								next:
 									(EtatFactory
-										createPousserClapSur: 0.3
+										createGoTo: 0 @ -0.75
 										next:
 											(EtatFactory
-												createLongerMurSur: 0.3
-												enAvant: true
+												createTurn: 0
 												next:
 													(EtatFactory
 														createPousserClapSur: 0.3
 														next:
 															(EtatFactory
-																createGoTo: 0.75 @ 0.2
-																next: (self createTurn: 0 next: (self createFireCoté: 'jaune' next: EtatFactory createFinish))))))))).
+																createLongerMurSur: 0.3
+																enAvant: true
+																next: (EtatFactory createPousserClapSur: 0.3 next: EtatFactory createFinish)))))))).
 	^ etat
 ]
 
@@ -227,27 +227,27 @@ EtatFactory class >> createParcoursDepartVert [
 	etat := self
 		createWaitingNext:
 			(EtatFactory
-				createGoTo: 1 @ 0
+				createGoTo: 0.75 @ -0.15
 				next:
-					(EtatFactory
-						createGoTo: 0 @ 0.75
+					(self
+						createTurn: MathFactory pi
 						next:
-							(EtatFactory
-								createTurn: MathFactory pi
+							(self
+								createFireCoté: 'vert'
 								next:
 									(EtatFactory
-										createPousserClapSur: -0.3
+										createGoTo: 0 @ 0.75
 										next:
 											(EtatFactory
-												createLongerMurSur: 0.3
-												enAvant: false
+												createTurn: MathFactory pi
 												next:
 													(EtatFactory
 														createPousserClapSur: -0.3
 														next:
 															(EtatFactory
-																createGoTo: 0.75 @ -0.2
-																next: (self createTurn: 0 next: (self createFireCoté: 'vert' next: EtatFactory createFinish))))))))).
+																createLongerMurSur: 0.3
+																enAvant: false
+																next: (EtatFactory createPousserClapSur: -0.3 next: EtatFactory createFinish)))))))).
 	^ etat
 ]
 
