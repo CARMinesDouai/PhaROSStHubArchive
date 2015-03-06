@@ -355,8 +355,7 @@ Kobuki >> uy [
 
 { #category : #accessing }
 Kobuki >> velocity [
-
-	^ velocity ifNil: [velocity := Geometry_msgsTwistForTest new.]
+	^ velocity ifNil: [velocity := Geometry_msgsTwist new.]
 ]
 
 { #category : #accessing }

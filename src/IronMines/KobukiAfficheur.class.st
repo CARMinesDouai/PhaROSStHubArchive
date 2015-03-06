@@ -6,9 +6,9 @@ Class {
 		'circle',
 		'ux',
 		'thread',
-		'elements',
-		'sonar1',
-		'sonar2'
+		'sonnar1',
+		'sonnar2',
+		'elements'
 	],
 	#category : #'IronMines-Nodelets'
 }
@@ -95,6 +95,14 @@ KobukiAfficheur >> sonar2 [
 { #category : #accessing }
 KobukiAfficheur >> sonar2: anObject [
 	sonar2 := anObject
+]
+
+{ #category : #accessing }
+KobukiAfficheur >> sonnar1 [
+	^ sonnar1 ifNil: [
+		sonnar1 := CircleMorph new .
+		sonnar1 extent: 10@10.
+		]
 ]
 
 { #category : #accessing }
