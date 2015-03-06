@@ -59,11 +59,11 @@ EtatToutDroit >> newThread [
 	^ [ 
 	self kobuki makeSound: 5.
 	[ 
-	self kobuki velocityThread isSuspended
+	self kobuki speedManager velocityThread isSuspended
 		ifTrue: [ self kobuki speedManager instantaneousLin: 0 ang: 0 ]
 		ifFalse: [ 
 			enAvant
-				ifTrue: [ self kobuki speedManager progressiveLin: distance - self distanceParcourue ang: 0 ]
+				ifTrue: [ self kobuki speedManager progressiveLin: (distance - self distanceParcourue)  ang: 0 ]
 				ifFalse: [ self kobuki speedManager backwardProgressiveLin: self distanceParcourue - distance ] ].
 	(Delay forMilliseconds: self loopDelay) wait ] doWhileTrue: [ distance - self distanceParcourue > self precision ].
 	Transcript

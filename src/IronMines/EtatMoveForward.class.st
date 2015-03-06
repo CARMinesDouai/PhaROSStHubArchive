@@ -122,7 +122,7 @@ EtatMoveForward >> newThread [
 	[ 
 	trajectoire := dest - (self kobuki x @ self kobuki y).
 	delta := (trajectoire x * trajectoire x + (trajectoire y * trajectoire y)) sqrt.
-	self kobuki velocityThread isSuspended
+	self kobuki speedManager velocityThread isSuspended
 		ifFalse: [ 
 			calculLinAng := self linAngSpeed: trajectoire.
 			lin := calculLinAng x.

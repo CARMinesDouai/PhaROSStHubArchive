@@ -114,7 +114,7 @@ SpeedManager >> backwardProgressiveLin: lin ang: ang [
 
 { #category : #speed }
 SpeedManager >> demarrer [
-	self velocityThread resume.
+	self velocityThread resume. 
 ]
 
 { #category : #accessing }
