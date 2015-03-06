@@ -17,7 +17,7 @@ EtatGoTo >> action [
 	"cette methode redemarre ou demarre le thread de mouvement qui etait en pause ou pas encore demarre"
 	etatForward := (EtatFactory createMoveForward: (self dest) next: etatSuivant).
 	etatForward eventDictionary add: (#onColision -> (EtatFactory createMoveBackwardNext: etatForward)).
-	etatTurn := (EtatFactory createTurn: (MathFactory calculateAngleBetween: (self kobuki odom position) and: (self dest)) next: etatForward).
+	etatTurn := (EtatFactory createTurn: (MathFactory calculateAngleBetween: (self kobuki pos) and: (self dest)) next: etatForward).
 	self kobuki changeEtat: (etatForward).
 ]
 

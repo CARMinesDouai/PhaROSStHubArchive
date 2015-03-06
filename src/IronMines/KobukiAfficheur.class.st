@@ -6,9 +6,9 @@ Class {
 		'circle',
 		'ux',
 		'thread',
-		'sonnar1',
-		'sonnar2',
-		'elements'
+		'elements',
+		'sonar1',
+		'sonar2'
 	],
 	#category : #'IronMines-Nodelets'
 }
@@ -36,7 +36,7 @@ KobukiAfficheur >> circle: anObject [
 { #category : #accessing }
 KobukiAfficheur >> demarrerAffichage [ 
 self circle openInWorld .
-self sonnar1 openInWorld .
+self sonar1 openInWorld .
 self sonar2 openInWorld .
 self ux openInWorld .
 
@@ -59,7 +59,8 @@ KobukiAfficheur >> kobuki [
 
 { #category : #accessing }
 KobukiAfficheur >> kobuki: anObject [
-	kobuki := anObject
+	kobuki := anObject.
+	kobuki addDependent: self.
 ]
 
 { #category : #accessing }
@@ -75,25 +76,25 @@ KobukiAfficheur >> newThread [
 
 ]
 
+{ #category : #'as yet unclassified' }
+KobukiAfficheur >> sonar1 [
+	^ sonar1 ifNil: [
+		sonar1 := CircleMorph new .
+		sonar1 extent: 10@10.
+		]
+]
+
 { #category : #accessing }
 KobukiAfficheur >> sonar2 [
-	^ sonnar2 ifNil: [
-		sonnar2 := CircleMorph new .
-		sonnar2 extent: 10@10.
+	^ sonar2 ifNil: [
+		sonar2 := CircleMorph new .
+		sonar2 extent: 10@10.
 		]
 ]
 
 { #category : #accessing }
 KobukiAfficheur >> sonar2: anObject [
-	sonnar2 := anObject
-]
-
-{ #category : #accessing }
-KobukiAfficheur >> sonnar1 [
-	^ sonnar1 ifNil: [
-		sonnar1 := CircleMorph new .
-		sonnar1 extent: 10@10.
-		]
+	sonar2 := anObject
 ]
 
 { #category : #accessing }
@@ -110,7 +111,7 @@ KobukiAfficheur >> thread: anObject [
 { #category : #accessing }
 KobukiAfficheur >> update: aKobuki [
 self circle position: ((aKobuki   x * 200) @ (aKobuki  y * 200)).
-self sonnar1 position: ((aKobuki sonnar1 * 200) + ((aKobuki   x * 200) @ (aKobuki  y * 200))).
+self sonar1 position: ((aKobuki sonar1 * 200) + ((aKobuki   x * 200) @ (aKobuki  y * 200))).
 self sonar2 position: ((aKobuki sonar2 * 200) + ((aKobuki   x * 200) @ (aKobuki  y * 200))).
 self ux setVertices:{
 	((aKobuki   x * 200) @ (aKobuki  y * 200))+(25@25). 

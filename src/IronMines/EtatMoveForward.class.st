@@ -69,7 +69,7 @@ EtatMoveForward >> droiteNonFranchie [
 { #category : #droiteObjectif }
 EtatMoveForward >> initialiserObjectif [
 "au début du mouvement on stocke la position et la distance à la ligne d'arrivée"
-positionDepart:= self kobuki odom position.
+positionDepart:= self kobuki pos.
 valeurDroiteObjectif := (((self kobuki x)*((self dest x)-positionDepart x))+((self kobuki y)*((self dest y)-positionDepart y)))-(((self dest x)*((self dest x)-positionDepart x))+((self dest y)*((self dest y)-positionDepart y))).
 
 ]

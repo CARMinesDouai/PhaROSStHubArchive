@@ -202,6 +202,11 @@ Kobuki >> odom: anObject [
 	self changed.
 ]
 
+{ #category : #accessing }
+Kobuki >> pos [
+	^ self x @ self y
+]
+
 { #category : #sonars }
 Kobuki >> positionDetectee1 [
 	^(self x @ self y) + ((0.18 + sonar1/1000) * self z cos) @ ((0.18 + sonar1/1000) * self z sin).
@@ -350,7 +355,8 @@ Kobuki >> uy [
 
 { #category : #accessing }
 Kobuki >> velocity [
-	^ velocity ifNil: [velocity := Geometry_msgsTwist new.]
+
+	^ velocity ifNil: [velocity := Geometry_msgsTwistForTest new.]
 ]
 
 { #category : #accessing }
