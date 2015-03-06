@@ -16,10 +16,10 @@ KobukiEtatTest >> setUp [
 	kobuki
 		changeEtat:
 			(EtatFactory
-				createWaitingnext:
+				createWaitingNext:
 					(EtatFactory
-						creategoto: 1 @ 1
-						next: (EtatFactory createWaitingnext: (EtatFactory creategoto: 0 @ 1 next: EtatFactory createFinish)))).
+						createGoTo: 1 @ 1
+						next: (EtatFactory createWaitingNext: (EtatFactory createGoTo: 0 @ 1 next: EtatFactory createFinish)))).
 	kobuki
 		resetOdom;
 		demarrer
