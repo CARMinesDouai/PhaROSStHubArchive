@@ -48,12 +48,8 @@ EtatTurn >> newThread [
 	[ 
 		delta := MathFactory modulo2Pi: (self zdest - kobuki z).
 			
-		"test si le thread de mouvement est lancé"
-		(self kobuki velocityThread isSuspended) ifFalse:[		
-			self kobuki speedManager progressiveLin:0 ang: delta/5.
-		] ifTrue:[
-			self kobuki speedManager instantaneousLin: 0 ang: 0.
-		].
+		"test si le thread de mouvement est lancé"		
+		self kobuki speedManager progressiveLin:0 ang: delta/5.
 		(Delay forMilliseconds: self loopDelay) wait.
 	] doWhileTrue: [ delta abs > self precisionAng]. 
 "tant que la distance restante a parcourir (delta) est superieure a la precision et que closureBlock est vrai on recalcule

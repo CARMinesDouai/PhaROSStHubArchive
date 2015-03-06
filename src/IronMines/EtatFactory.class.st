@@ -264,6 +264,33 @@ EtatFactory class >> createParcoursTest1 [
 	^ etat
 ]
 
+{ #category : #'parcours utilisé' }
+EtatFactory class >> createParcoursTestComp [
+	| etat |
+	etat := self createGoTo: 0.75 @ 0.15
+				next:
+					(self
+						createTurn: 0
+						next:
+							(self
+								createFireCoté: 'jaune'
+								next:
+									(EtatFactory
+										createGoTo: 0 @ -0.75
+										next:
+											(EtatFactory
+												createTurn: 0
+												next:
+													(EtatFactory
+														createPousserClapSur: 0.3
+														next:
+															(EtatFactory
+																createLongerMurSur: 0.3
+																enAvant: true
+																next: (EtatFactory createPousserClapSur: 0.3 next: EtatFactory createFinish))))))).
+	^ etat
+]
+
 { #category : #'parcours test' }
 EtatFactory class >> createParcoursTestComplet [
 	"parcours dexemple pour tester le robot"

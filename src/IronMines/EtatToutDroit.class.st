@@ -72,12 +72,13 @@ EtatToutDroit >> newThread [
 		tab;
 		show: self distanceParcourue.
 	self kobuki speedManager instantaneousLin: 0 ang: 0.
-	self kobuki makeSound: 3 ] newProcess
+	self kobuki makeSound: 3.
+	self kobuki event: #onFinish. ] newProcess
 ]
 
 { #category : #accessing }
 EtatToutDroit >> precision [
-	^ 0.001
+	^ 0.004
 ]
 
 { #category : #accessing }

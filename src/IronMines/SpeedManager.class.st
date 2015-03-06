@@ -144,12 +144,12 @@ kobuki := aKobuki.
 
 { #category : #minEtMax }
 SpeedManager >> linSpeedIncrementDefaut [
-	^0.003
+	^0.03
 ]
 
 { #category : #minEtMax }
 SpeedManager >> linSpeedMaximumDefaut [
-	^0.6
+	^0.06
 ]
 
 { #category : #minEtMax }
