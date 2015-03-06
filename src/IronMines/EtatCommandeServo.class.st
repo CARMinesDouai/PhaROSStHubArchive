@@ -1,16 +1,11 @@
 "
-envoie l'ordre numeroAction, qui correspond à un mouvement de servo
-
-0 : lever bras
-1 : baisser bras
-2 : libérer catapulte 1
-3 : libérer catapulte 2
+envoie l'ordre de positionner le servo à l'angle défini par 'valeur'
 "
 Class {
 	#name : #EtatCommandeServo,
 	#superclass : #Etat,
 	#instVars : [
-		'numeroAction'
+		'valeur'
 	],
 	#category : #'IronMines-Nodelets'
 }
@@ -18,13 +13,13 @@ Class {
 { #category : #'as yet unclassified' }
 EtatCommandeServo >> action [ 
 "envoie l'ordre numeroAction, qui correspond à un mouvement de servo"
-self kobuki moveServo: numeroAction.
-self kobuki makeSound:numeroAction.
-(Delay forSeconds: 2) wait.
+self kobuki moveServo: valeur.
+self kobuki makeSound: 1.
+(Delay forSeconds: 1.5) wait.
 self kobuki event: #onFinish.
 ]
 
 { #category : #'as yet unclassified' }
-EtatCommandeServo >> numero: n [
-	numeroAction:=n
+EtatCommandeServo >> valeur: a [
+	valeur=a
 ]

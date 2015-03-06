@@ -63,6 +63,24 @@ Kobuki class >> for: aTopicPublisher and: anotherTopicPublisher and:servoTopicPu
 		yourself.
 ]
 
+{ #category : #mouvements }
+Kobuki >> BaisserBras [
+	"changement : on envoie directement l'angle désiré, pour faciliter le réglage"
+	self moveServo: 180.
+]
+
+{ #category : #mouvements }
+Kobuki >> LibérerCatapulte1 [
+	"changement : on envoie directement l'angle désiré, pour faciliter le réglage"
+	self moveServo: 90.
+]
+
+{ #category : #mouvements }
+Kobuki >> LibérerCatapulte2 [
+	"changement : on envoie directement l'angle désiré, pour faciliter le réglage"
+	self moveServo: 180.
+]
+
 { #category : #accessing }
 Kobuki >> afficheur [
 	^ afficheur
@@ -160,7 +178,12 @@ Kobuki >> fire [
 	canonPublisher send: [ :m | m data: true ]
 ]
 
-{ #category : #private }
+{ #category : #mouvements }
+Kobuki >> leverBras [
+	self moveServo: 0.
+]
+
+{ #category : #mouvements }
 Kobuki >> makeSound: i [
 soundPublisher 
 		send: [ :m | 
@@ -168,7 +191,7 @@ soundPublisher
 			].
 ]
 
-{ #category : #private }
+{ #category : #mouvements }
 Kobuki >> moveServo: i [
 servoPublisher 
 		send: [ :m | 

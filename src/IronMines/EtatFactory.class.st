@@ -8,6 +8,20 @@ Class {
 	#category : #'IronMines-Nodelets'
 }
 
+{ #category : #'création d\'états' }
+EtatFactory class >> createBaisserBrasNext: aEtat [
+|etat|
+	etat := EtatFactory
+		createEtat: EtatCommandeServo
+		events: (Dictionary newFrom:{
+			#onFinish -> aEtat.
+		}).
+	etat valeur: 180.
+	^etat.
+		 
+		
+]
+
 { #category : #'as yet unclassified' }
 EtatFactory class >> createCarre [
 "parcours dexemple en carre pour tester le robot"
@@ -42,8 +56,7 @@ EtatFactory class >> createFireCoté: jauneVert next: next [
 			enAvant := false.
 			distance := 0.27 ].
 	etat := self
-		moveServo: 2
-		Next: (self createLongerMurSur: distance enAvant: enAvant next: (self moveServo: 3 Next: next)).
+		createLibererCatapulte1Next: (self createLongerMurSur: distance enAvant: enAvant next: (self createBaisserBrasNext: next)).
 	^ etat
 ]
 
@@ -60,6 +73,34 @@ EtatFactory class >> createGoTo: aPoint next: aEtat [
 		).
 	etat dest: aPoint.
 	^ etat
+]
+
+{ #category : #'création d\'états' }
+EtatFactory class >> createLeverBrasNext: aEtat [
+|etat|
+	etat := EtatFactory
+		createEtat: EtatCommandeServo
+		events: (Dictionary newFrom:{
+			#onFinish -> aEtat.
+		}).
+	etat valeur: 0.
+	^etat.
+		 
+		
+]
+
+{ #category : #'création d\'états' }
+EtatFactory class >> createLibererCatapulte1Next: aEtat [
+|etat|
+	etat := EtatFactory
+		createEtat: EtatCommandeServo
+		events: (Dictionary newFrom:{
+			#onFinish -> aEtat.
+		}).
+	etat valeur: 90.
+	^etat.
+		 
+		
 ]
 
 { #category : #'création d\'états' }
@@ -136,7 +177,7 @@ EtatFactory class >> createParcoursDemoDroit [
 				next:
 					(EtatFactory
 						createGoTo: 1 @ 0.66
-						next: (EtatFactory createGoTo: 0.7 @ 0.2 next: (EtatFactory moveServo: 1 Next: EtatFactory createFinish)))).
+						next: (EtatFactory createGoTo: 0.7 @ 0.2 next: (EtatFactory createBaisserBrasNext: EtatFactory createFinish)))).
 	^ etat
 ]
 
@@ -148,7 +189,7 @@ EtatFactory class >> createParcoursDemoDroit2 [
 				createParcours: {0.375@0 . 0.375@0.875 }
 				next: (EtatFactory
 						createTurn: (MathFactory degresToRadians: 0-150)
-						next: (EtatFactory moveServo: 2 Next:
+						next: (EtatFactory createLibererCatapulte1Next: 
 							(EtatFactory createParcours: {0.375@0.175 . 
 															1.1@0.175 . 
 															1.1@1 .
@@ -169,7 +210,7 @@ EtatFactory class >> createParcoursDemoGauche [
 				next:
 					(EtatFactory
 						createGoTo: 1 @ -0.66
-						next: (EtatFactory createGoTo: 0.7 @ -0.25 next: (EtatFactory moveServo: 3 Next: EtatFactory createFinish)))).
+						next: (EtatFactory createGoTo: 0.7 @ -0.25 next: (EtatFactory createBaisserBrasNext: EtatFactory createFinish)))).
 	^ etat
 ]
 
@@ -181,7 +222,7 @@ EtatFactory class >> createParcoursDemoGauche2 [
 				createParcours: {0.375@0 . 0.375@(0-0.875) }
 				next: (EtatFactory
 						createTurn: (MathFactory degresToRadians: 150)
-						next: (EtatFactory moveServo: 0 Next:
+						next: (EtatFactory createLeverBrasNext: 
 							(EtatFactory createParcours: {0.375@(0-0.175) . 
 															1.1@(0-0.175) . 
 															1.1@(0-1) .
@@ -302,8 +343,7 @@ EtatFactory class >> createParcoursTestComplet [
 				createGoTo: 0.5 @ 0
 				next:
 					(EtatFactory
-						moveServo: 1
-						Next: (EtatFactory createGoTo: 0.5 @ 0.36 next: (EtatFactory moveServo: 0 Next: EtatFactory createFinish)))).
+						createBaisserBrasNext: (EtatFactory createGoTo: 0.5 @ 0.36 next: (EtatFactory createLeverBrasNext: EtatFactory createFinish)))).
 	^ etat
 ]
 
@@ -349,10 +389,9 @@ EtatFactory class >> createPousserClapSur: distance next: etatSuivant [
 	enAvant:=true.
 	(distance<0) ifTrue: [ distance:=(0-distance). enAvant:=false ].
 	etat := self
-		moveServo: 1
-		Next: 
+		createBaisserBrasNext: 
 			(self createLongerMurSur: distance enAvant: enAvant next: 
-			(self moveServo: 0 Next: etatSuivant)).
+			(self createLeverBrasNext: etatSuivant)).
 	^ etat
 ]
 
@@ -379,22 +418,4 @@ EtatFactory class >> createWaitingNext: aEtat [
 		{
 			#onStartTrigger -> aEtat.
 		}).
-]
-
-{ #category : #'création d\'états' }
-EtatFactory class >> moveServo: aNumber Next: aEtat [
-"0 : lever bras
-1 : baisser bras
-2 : libérer catapulte 1
-3 : libérer catapulte 2"
-|etat|
-	etat := EtatFactory
-		createEtat: EtatCommandeServo
-		events: (Dictionary newFrom:{
-			#onFinish -> aEtat.
-		}).
-	etat numero: aNumber.
-	^etat.
-		 
-		
 ]
