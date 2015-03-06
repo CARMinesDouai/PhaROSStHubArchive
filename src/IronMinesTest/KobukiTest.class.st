@@ -39,6 +39,11 @@ KobukiTest >> newVelocityThread [
 ]
 
 { #category : #accessing }
+KobukiTest >> odom [
+	^ odom ifNil: [ odom := Geometry_msgsPoseForTests new]
+]
+
+{ #category : #accessing }
 KobukiTest >> resetOdom [ 
 	self x: 0.
 	self y: 0.
@@ -52,6 +57,11 @@ KobukiTest >> speedManager [
 		speedManager kobuki: self.
 	].
 	^speedManager.
+]
+
+{ #category : #accessing }
+KobukiTest >> velocity [
+	^ velocity ifNil: [velocity := Geometry_msgsTwistForTest new.]
 ]
 
 { #category : #accessing }
