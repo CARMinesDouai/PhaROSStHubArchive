@@ -58,8 +58,8 @@ SmTransition >> isActionable [
 
 { #category : #stepping }
 SmTransition >> perform [
-	self sourceState desactivate.
-	self targetState activate
+	self sourceState disable.
+	self targetState enable
 ]
 
 { #category : #accessing }

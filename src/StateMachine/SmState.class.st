@@ -11,10 +11,10 @@ automaton
 	- The automaton to which belongs this state
 
 entryActionBlock
-	- Action performed when the state is activated, i.e. when it becomes the current state of the automaton.
+	- Action performed when the state is enabled, i.e. when it becomes the current state of the automaton.
 
 exitActionBlock
-	- Action performed when the the state is desactivated, i.e. when the state is not the current state of the automaton anymore.
+	- Action performed when the the state is disabled, i.e. when the state is not the current state of the automaton anymore.
 
 transitions
 	- Transitions outgoing from this state
@@ -46,12 +46,6 @@ SmState class >> entryAction: entryActionBlock exitAction: exitActionBlock [
 
 ]
 
-{ #category : #stepping }
-SmState >> activate [
-	self automaton currentState: self.
-	self entryActionBlock value
-]
-
 { #category : #accessing }
 SmState >> automaton [
 	^automaton
@@ -63,8 +57,14 @@ SmState >> automaton: anAutomaton [
 ]
 
 { #category : #stepping }
-SmState >> desactivate [
+SmState >> disable [
 	self exitActionBlock value
+]
+
+{ #category : #stepping }
+SmState >> enable [
+	self automaton currentState: self.
+	self entryActionBlock value
 ]
 
 { #category : #accessing }
