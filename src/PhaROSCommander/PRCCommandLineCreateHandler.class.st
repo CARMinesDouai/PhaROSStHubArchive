@@ -103,7 +103,7 @@ PRCCommandLineCreateHandler >> realActivate [
 	loadingScript << 'Author fullName: ''' << pharoUser asString<< '''.'; lf. 
 
 	OSEnvironment default at: 'http_proxy' ifPresent: [ : httpProxyString | 
-		loadingScript <<  ('NetworkSystemSettings useHTTPProxy: true; httpProxyServer: ''{1}''; httpProxyPort: {2}.' format: (('http://10.1.1.3:8080/' subStrings: '/') second   subStrings: ':')) ;lf.
+		loadingScript <<  ('NetworkSystemSettings useHTTPProxy: true; httpProxyServer: ''{1}''; httpProxyPort: {2}.' format: ((httpProxyString subStrings: '/') second   subStrings: ':')) ;lf.
 	].
 
 	"Load PhaROS project"
