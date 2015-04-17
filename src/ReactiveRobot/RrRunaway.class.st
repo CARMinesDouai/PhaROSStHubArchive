@@ -36,15 +36,13 @@ RrRunaway >> inplaceRotationSpeed: anObject [
 
 { #category : #acting }
 RrRunaway >> newOutputFrom: obstacleForceVector [
-	| correctedForceVector deltaAngle correctedLength |
-	self speedVector = obstacleForceVector ifTrue: [ 
-		^RrVector angle: Float pi / 10].
-	deltaAngle :=  obstacleForceVector angle - self speedVector angle.
-	correctedLength := (deltaAngle cos * obstacleForceVector length) abs.
-	correctedForceVector := RrVector
-		length: correctedLength 
-		angle: obstacleForceVector angle.
-	^self speedVector - correctedForceVector 
+	| rawRotationSpeed rotationSpeed |
+	obstacleForceVector angle abs > Float halfPi ifTrue: [ ^self speedVector ].
+	rawRotationSpeed := ((Float halfPi - obstacleForceVector angle abs) min: (Float pi / 4)) * obstacleForceVector angle sign negated. 
+	rotationSpeed := rawRotationSpeed *  obstacleForceVector length.
+	^RrVector 
+		length: self speedVector length - (obstacleForceVector x)
+		angle: rotationSpeed
 ]
 
 { #category : #accessing }

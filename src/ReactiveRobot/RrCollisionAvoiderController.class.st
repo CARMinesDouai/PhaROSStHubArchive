@@ -4,27 +4,29 @@ Class {
 	#instVars : [
 		'runaway',
 		'forceFusion',
-		'sonarForceBuilder'
+		'sonarForceBuilder',
+		'vectorDisplay'
 	],
 	#category : #'ReactiveRobot-CollisionAvoidance'
 }
 
 { #category : #'initialize-release' }
 RrCollisionAvoiderController >> initialize [
-	| pi leftAngles rightAngles |
+	| pi   |
 	super initialize.
+	vectorDisplay := VectorDisplay start.
 	sonarForceBuilder := RrForceVectorsBuilder new.
 	pi := Float pi.
-	leftAngles := {pi/12. pi/4. pi/2. 3*pi/4}.
-	rightAngles := leftAngles collect: [ :angle| angle negated ].
 	sonarForceBuilder 
-		sensorAngles: leftAngles, rightAngles, { pi };
+		sensorAngles: {pi/12. pi/4. pi/2. 3*pi/4. pi.  -3*pi/4. -1*pi/2. -1*pi/4 . -1*pi/12};
 		distanceThreshold: 0.5.
 	forceFusion := RrForceIntegrator new.
 	runaway := RrRunaway new.
 	runaway forwardSpeed: 0.1.
 	sonarForceBuilder => forceFusion.
 	forceFusion => runaway.
+	forceFusion connect: #outputPort to: #drawObstacle:  of: vectorDisplay.
+	runaway connect: #outputPort to: #drawSpeed:  of: vectorDisplay 
 
 ]
 

@@ -10,10 +10,18 @@ Class {
 
 { #category : #accessing }
 RrCartesianVector >> angle [
-	(self x closeTo: 0) ifFalse: [
-		^(self y / self x) arcTan].
-	(self y closeTo: 0) ifTrue: [ ^0 ].
-	^Float halfPi
+	(x closeTo: 0) ifTrue: [ 
+		y = 0 ifTrue: [ ^0 ].
+		y < 0 ifTrue: [ ^Float halfPi negated ].
+		^Float halfPi
+	]. 
+	x > 0 ifTrue: [
+		^(y/x) arcTan
+	].
+	y < 0 ifTrue: [
+		^(y/x) arcTan - Float pi
+	].
+	^Float pi + (y/x) arcTan
 ]
 
 { #category : #converting }

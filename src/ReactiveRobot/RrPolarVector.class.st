@@ -25,12 +25,11 @@ RrPolarVector >> length [
 
 { #category : #'initialize-release' }
 RrPolarVector >> length: newLength angle: newAngle [
-	newLength < 0 ifTrue: [
-		^self 
-			length: newLength negated 
-			angle: newAngle + Float pi].
 	length := newLength.
-	angle := newAngle 
+	newAngle abs > Float pi ifFalse: [ ^angle := newAngle  ].
+	newAngle < 0 
+		ifTrue: [^ angle := 2 * Float pi + newAngle ].
+	angle := newAngle - 2 * Float pi
 ]
 
 { #category : #printing }

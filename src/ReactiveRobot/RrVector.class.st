@@ -17,7 +17,7 @@ RrVector class >> length: length [
 { #category : #'instance creation' }
 RrVector class >> length: newLength angle: newAngle [
 	^RrPolarVector new
-		length: newLength angle: newAngle
+		length: newLength angle: newAngle;
 		yourself
 ]
 
@@ -57,6 +57,11 @@ RrVector >> = otherVector [
 { #category : #converting }
 RrVector >> asCartesianVector [
 	^self
+]
+
+{ #category : #converting }
+RrVector >> asPoint [
+	^self x @ self y
 ]
 
 { #category : #converting }

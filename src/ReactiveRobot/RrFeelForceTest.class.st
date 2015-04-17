@@ -21,6 +21,8 @@ RrFeelForceTest >> distancesAnglesAndExpectedVector [
 	^{
 	{#(). #(). RrVector zero}.
 	{#(0.5). #(0). RrVector length: 0.5 angle: 0}.
+	{#(0.1). #(0). RrVector length: 0.9 angle: 0}.
+	{#(0.9). #(0). RrVector length: 0.1 angle: 0}.
 	{#(0.5). {Float pi/4}. RrVector length: 0.5 angle: Float pi/4}.
 	{#(0.5). {Float pi/3}. RrVector length: 0.5 angle: Float pi/3}.
 	{#(0.5). {Float pi/2}. RrVector length: 0.5 angle: Float pi/2}.

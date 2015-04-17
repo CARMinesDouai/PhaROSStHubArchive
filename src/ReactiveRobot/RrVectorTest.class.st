@@ -14,6 +14,26 @@ RrVectorTest >> assert: vect1 plus: vect2 equals: expectedResult [
 ]
 
 { #category : #testing }
+RrVectorTest >> assertCartesian: vect1 convertsToPolar: vect2 [ 
+	<testParametersSelector: #cartesianAndExpectedPolar>
+	
+	self assert: vect1 asPolarVector equals: vect2 
+]
+
+{ #category : #testing }
+RrVectorTest >> cartesianAndExpectedPolar [
+	^{
+	{RrVector x: 1 y: 1. RrVector length: 2 sqrt angle: Float pi /4}.
+	{RrVector x: 1 y: -1. RrVector length: 2 sqrt angle: Float pi / -4}.
+	{RrVector x: -1 y: 1. RrVector length: 2 sqrt angle: Float pi * 3/4}.
+	{RrVector x: -1 y: -1. RrVector length: 2 sqrt angle: Float pi * 3/ -4}.
+	{RrVector x: 0 y: 1. RrVector length: 1 angle: Float halfPi}.
+	{RrVector x: 0 y: -1. RrVector length: 1 angle: Float halfPi negated}.
+	{RrVector x: 0 y: 0. RrVector length: 0 angle: 0}.
+	}
+]
+
+{ #category : #testing }
 RrVectorTest >> twoVectorsAndExpectedAddition [
 	| polarVector cartesianVector |
 	polarVector := RrVector length: 0.5 angle: Float halfPi.
