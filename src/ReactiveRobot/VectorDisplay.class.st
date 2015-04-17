@@ -22,7 +22,7 @@ VectorDisplay >> draw: aVector withColor: aColor [
 	center := self extent // 2.
 	correctedAngle := aVector angle .
 	correctedVector := RrVector
-		length: aVector length * 100
+		length: aVector length * 1000
 		angle: correctedAngle.
 	vectorPoint := correctedVector asPoint.
 	extremite := (center x + vectorPoint x) @ (center y - vectorPoint y).

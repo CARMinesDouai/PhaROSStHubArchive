@@ -19,10 +19,13 @@ RrRunawayTest >> assertSpeed: initialSpeed obstacleForce: obstacleVector resultI
 RrRunawayTest >> initialSpeedObstacleVectorAndResultingSpeed [
 	^{
 		{ RrVector zero. RrVector zero. RrVector zero}.
-		{ RrVector length: 1. RrVector length: 1. RrVector angle: Float pi/10}.
+		{ RrVector length: 1. RrVector length: 1. RrVector angle: Float halfPi}.
 		{ RrVector length: 1. RrVector length: 1 angle: Float halfPi. RrVector length: 1}.
-		{ RrVector length: 1. RrVector length: 1 angle: Float pi/4. RrVector x: 0.5 y: -0.5}.
-		{ RrVector length: 1. RrVector length: 1 angle: Float pi * 3/4. RrVector x: 1.5 y: -0.5}.
+		{ RrVector length: 1. RrVector length: 1 angle: Float halfPi negated. RrVector length: 1}.
+		{ RrVector length: 1. RrVector length: 1 angle: Float pi/4. RrVector length:   0.2928932188134524 angle: Float pi/4 negated}.
+		{ RrVector length: 0.1. RrVector length: 1 angle: Float pi/4. RrVector length:   0 angle: Float pi/4 negated}.
+		{ RrVector length: 1. RrVector length: 1 angle: Float pi/4 negated. RrVector length: 0.2928932188134524 angle: Float pi/4}.
+		{ RrVector length: 0.1. RrVector length: 1 angle: Float pi/4 negated. RrVector length: 0 angle: Float pi/4}.
 	}
 ]
 

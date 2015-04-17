@@ -34,6 +34,13 @@ RrVector class >> zero [
 ]
 
 { #category : #arithmetics }
+RrVector >> * aNumber [
+	^RrVector 
+		x: self x * aNumber
+		y: self y * aNumber
+]
+
+{ #category : #arithmetics }
 RrVector >> + aVector [
 	^RrVector 
 		x: self x + aVector x
@@ -45,6 +52,13 @@ RrVector >> - aVector [
 	^RrVector 
 		x: self x - aVector x
 		y: self y - aVector y
+]
+
+{ #category : #arithmetics }
+RrVector >> / aNumber [
+	^RrVector 
+		x: self x / aNumber
+		y: self y / aNumber
 ]
 
 { #category : #comparing }
