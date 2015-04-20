@@ -1,3 +1,13 @@
+"
+A VeAngle is a reified angle value. Its values is always between Pi and -Pi.
+
+Instance Variables
+	radians:		<Number>
+
+radians
+	- this is the angle value in radians
+
+"
 Class {
 	#name : #VeAngle,
 	#superclass : #Number,

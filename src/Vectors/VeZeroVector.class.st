@@ -1,6 +1,10 @@
+"
+A VeZeroVector is a null 2D vector.
+
+"
 Class {
-	#name : #RrZeroVector,
-	#superclass : #RrVector,
+	#name : #VeZeroVector,
+	#superclass : #VeVector,
 	#classInstVars : [
 		'defaultInstance'
 	],
@@ -8,31 +12,31 @@ Class {
 }
 
 { #category : #'instance creation' }
-RrZeroVector class >> defaultInstance [
+VeZeroVector class >> defaultInstance [
 	^defaultInstance ifNil: [ defaultInstance := super new ]
 ]
 
 { #category : #arithmetics }
-RrZeroVector >> + aVector [
+VeZeroVector >> + aVector [
 	^aVector
 ]
 
 { #category : #accessing }
-RrZeroVector >> angle [
+VeZeroVector >> angle [
 	^0
 ]
 
 { #category : #accessing }
-RrZeroVector >> length [
+VeZeroVector >> length [
 	^0
 ]
 
 { #category : #accessing }
-RrZeroVector >> x [
+VeZeroVector >> x [
 	^0
 ]
 
 { #category : #accessing }
-RrZeroVector >> y [
+VeZeroVector >> y [
 	^0
 ]

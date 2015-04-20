@@ -1,6 +1,20 @@
+"
+A VePolarVector is a polar representation of a 2D vector.
+
+Instance Variables
+	angle:		<VeAngle>
+	length:		<Number>
+
+angle
+	- angle with the X axis
+
+length
+	- distance to the point 0@0
+
+"
 Class {
-	#name : #RrPolarVector,
-	#superclass : #RrVector,
+	#name : #VePolarVector,
+	#superclass : #VeVector,
 	#instVars : [
 		'length',
 		'angle'
@@ -9,28 +23,28 @@ Class {
 }
 
 { #category : #accessing }
-RrPolarVector >> angle [
+VePolarVector >> angle [
 	^ angle
 ]
 
 { #category : #converting }
-RrPolarVector >> asCartesianVector [
-	^ RrVector x: self x y: self y
+VePolarVector >> asCartesianVector [
+	^ VeVector x: self x y: self y
 ]
 
 { #category : #accessing }
-RrPolarVector >> length [
+VePolarVector >> length [
 	^ length
 ]
 
 { #category : #'initialize-release' }
-RrPolarVector >> length: newLength angle: newAngle [
+VePolarVector >> length: newLength angle: newAngle [
 	length := newLength.
 	angle := newAngle
 ]
 
 { #category : #printing }
-RrPolarVector >> printOn: aStream [
+VePolarVector >> printOn: aStream [
 	aStream
 		nextPutAll: '[length = ';
 		print: self length;
@@ -41,11 +55,11 @@ RrPolarVector >> printOn: aStream [
 ]
 
 { #category : #accessing }
-RrPolarVector >> x [
+VePolarVector >> x [
 	^ self length * self angle cos
 ]
 
 { #category : #accessing }
-RrPolarVector >> y [
+VePolarVector >> y [
 	^ self length * self angle sin
 ]

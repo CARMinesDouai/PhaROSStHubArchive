@@ -1,95 +1,101 @@
+"
+This is the main class to use as an entry point for 2D vectors. It's class methods allow creating vectos either through cartesian or polar representation (see class sides). 
+
+The two kinds of vectors are represented by subsclasses and support conversion from one to the other. So, user should not care about them.
+
+"
 Class {
-	#name : #RrVector,
+	#name : #VeVector,
 	#superclass : #Object,
 	#category : #Vectors
 }
 
 { #category : #'instance-creation' }
-RrVector class >> angle: anAngle [ 
+VeVector class >> angle: anAngle [ 
 	^self length: 0 angle: anAngle
 ]
 
 { #category : #'instance creation' }
-RrVector class >> length: length [
+VeVector class >> length: length [
 	^self length: length angle: 0
 ]
 
 { #category : #'instance creation' }
-RrVector class >> length: newLength angle: newAngle [
-	^RrPolarVector new
+VeVector class >> length: newLength angle: newAngle [
+	^VePolarVector new
 		length: newLength angle: newAngle;
 		yourself
 ]
 
 { #category : #'instance creation' }
-RrVector class >> x: newX y: newY [
-	^RrCartesianVector new
+VeVector class >> x: newX y: newY [
+	^VeCartesianVector new
 		x: newX y: newY;
 		yourself
 ]
 
 { #category : #'instance creation' }
-RrVector class >> zero [
-	^RrZeroVector defaultInstance 
+VeVector class >> zero [
+	^VeZeroVector defaultInstance 
 ]
 
 { #category : #arithmetics }
-RrVector >> * aNumber [
-	^RrVector 
+VeVector >> * aNumber [
+	^VeVector 
 		x: self x * aNumber
 		y: self y * aNumber
 ]
 
 { #category : #arithmetics }
-RrVector >> + aVector [
-	^RrVector 
+VeVector >> + aVector [
+	^VeVector 
 		x: self x + aVector x
 		y: self y + aVector y
 ]
 
 { #category : #arithmetics }
-RrVector >> - aVector [
-	^RrVector 
+VeVector >> - aVector [
+	^VeVector 
 		x: self x - aVector x
 		y: self y - aVector y
 ]
 
 { #category : #arithmetics }
-RrVector >> / aNumber [
-	^RrVector 
+VeVector >> / aNumber [
+	^VeVector 
 		x: self x / aNumber
 		y: self y / aNumber
 ]
 
 { #category : #comparing }
-RrVector >> = otherVector [
+VeVector >> = otherVector [
 	(self x closeTo: otherVector x) ifFalse: [ ^false ].
 	(self y closeTo: otherVector y) ifFalse: [ ^false ].
 	^true
 ]
 
 { #category : #converting }
-RrVector >> asCartesianVector [
+VeVector >> asCartesianVector [
 	^self
 ]
 
 { #category : #converting }
-RrVector >> asPoint [
+VeVector >> asPoint [
 	^self x @ self y
 ]
 
 { #category : #converting }
-RrVector >> asPolarVector [
+VeVector >> asPolarVector [
 	^self
 ]
 
 { #category : #comparing }
-RrVector >> hash [
+VeVector >> hash [
 	^self x hash bitXor: self y hash
 ]
 
 { #category : #printing }
-RrVector >> printOn: aStream [
+VeVector >> printOn: aStream [
 	aStream
 		nextPutAll: '[x = ';
 		print: self x;
@@ -100,8 +106,8 @@ RrVector >> printOn: aStream [
 ]
 
 { #category : #arithmetics }
-RrVector >> rotateBy: radians [
-	^RrVector 
+VeVector >> rotateBy: radians [
+	^VeVector 
 		length: self length
 		angle: self angle - radians
 ]

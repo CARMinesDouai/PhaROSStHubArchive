@@ -1,6 +1,20 @@
+"
+A VeCartesianVector is a cartesian representation of a 2D vector.
+
+Instance Variables
+	x:		<Number>
+	y:		<Number>
+
+x
+	- abscissa
+
+y
+	- ordinate
+
+"
 Class {
-	#name : #RrCartesianVector,
-	#superclass : #RrVector,
+	#name : #VeCartesianVector,
+	#superclass : #VeVector,
 	#instVars : [
 		'x',
 		'y'
@@ -9,12 +23,12 @@ Class {
 }
 
 { #category : #accessing }
-RrCartesianVector >> angle [
+VeCartesianVector >> angle [
 	^VeAngle radians: self angleRadians
 ]
 
 { #category : #accessing }
-RrCartesianVector >> angleRadians [
+VeCartesianVector >> angleRadians [
 	(x closeTo: 0) ifTrue: [ 
 		y = 0 ifTrue: [ ^0 ].
 		y < 0 ifTrue: [ ^Float halfPi negated ].
@@ -30,27 +44,27 @@ RrCartesianVector >> angleRadians [
 ]
 
 { #category : #converting }
-RrCartesianVector >> asPolarVector [
-	^RrVector length: self length angle: self angle
+VeCartesianVector >> asPolarVector [
+	^VeVector length: self length angle: self angle
 ]
 
 { #category : #accessing }
-RrCartesianVector >> length [
+VeCartesianVector >> length [
 	^(x squared + y squared) sqrt
 ]
 
 { #category : #accessing }
-RrCartesianVector >> x [
+VeCartesianVector >> x [
 	^ x
 ]
 
 { #category : #'initailize-release' }
-RrCartesianVector >> x: newX y: newY [
+VeCartesianVector >> x: newX y: newY [
 	x := newX.
 	y := newY
 ]
 
 { #category : #accessing }
-RrCartesianVector >> y [
+VeCartesianVector >> y [
 	^ y
 ]
