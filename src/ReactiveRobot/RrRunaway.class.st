@@ -15,7 +15,7 @@ RrRunaway >> defaultInplaceRotationSpeed [
 
 { #category : #accessing }
 RrRunaway >> forwardSpeed: forwardSpeed [
-	self speedVector: (RrVector length: forwardSpeed)
+	self speedVector: (VeVector length: forwardSpeed)
 ]
 
 { #category : #'initialize-release' }
@@ -36,11 +36,16 @@ RrRunaway >> inplaceRotationSpeed: anObject [
 
 { #category : #acting }
 RrRunaway >> newOutputFrom: obstacleForceVector [
+	| rawLinearSpeed breakSpeed obstacleAngle rotationSpeedSign |
 	obstacleForceVector angle abs >= Float halfPi ifTrue: [ 
 		^self speedVector].
-	^RrVector 
-		length: ((self speedVector length - (obstacleForceVector length * obstacleForceVector angle cos)) max: 0)
-		angle: (Float halfPi - obstacleForceVector angle abs) * obstacleForceVector angle sign negated
+	rawLinearSpeed := self speedVector length.
+	breakSpeed := obstacleForceVector length * obstacleForceVector angle cos * rawLinearSpeed.
+	obstacleAngle := obstacleForceVector angle.
+	rotationSpeedSign := obstacleAngle < 0 ifTrue: [ 1 ] ifFalse: [ -1 ].
+	^VeVector 
+		length: rawLinearSpeed - breakSpeed
+		angle: (VeAngle halfPi -  obstacleAngle abs) * obstacleForceVector length * rotationSpeedSign
 ]
 
 { #category : #acting }
@@ -52,7 +57,7 @@ RrRunaway >> newOutputFromOld: obstacleForceVector [
 		rotationSpeed :=  (Float halfPi - obstacleForceVector angle abs) * rotationRatio * obstacleForceVector angle sign negated  
 	].
 "	linearSpeed := 0.2 - (obstacleForceVector length min: 0.1).
-	^RrVector 
+	^VeVector 
 		length: linearSpeed
 		angle: rotationSpeed
 ]

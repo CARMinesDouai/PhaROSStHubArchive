@@ -7,11 +7,11 @@ Class {
 { #category : #'initialize-release' }
 RrForceIntegrator >> initialize [
 	super initialize.
-	outputPort set: RrVector zero
+	outputPort set: VeVector zero
 ]
 
 { #category : #acting }
 RrForceIntegrator >> newOutputFrom: vectors [
-	vectors ifEmpty: [^RrVector zero].
+	vectors ifEmpty: [^VeVector zero].
 	^vectors sum
 ]

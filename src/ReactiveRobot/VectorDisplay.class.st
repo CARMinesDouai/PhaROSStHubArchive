@@ -21,7 +21,7 @@ VectorDisplay >> draw: aVector withColor: aColor [
 	| extremite center correctedVector vectorPoint correctedAngle |
 	center := self extent // 2.
 	correctedAngle := aVector angle .
-	correctedVector := RrVector
+	correctedVector := VeVector
 		length: aVector length * 1000
 		angle: correctedAngle.
 	vectorPoint := correctedVector asPoint.
@@ -46,6 +46,6 @@ VectorDisplay >> drawSpeed: aVector [
 { #category : #initialization }
 VectorDisplay >> initialize [
 	super initialize.
-	speedVector := RrVector zero.
-	obstacleVector := RrVector zero
+	speedVector := VeVector zero.
+	obstacleVector := VeVector zero
 ]

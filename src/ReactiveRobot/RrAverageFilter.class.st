@@ -1,10 +1,13 @@
+"
+A RrAverageFilter is a filter that receives a collection of values as input and produces as output a collection of averages for each value.  
+"
 Class {
 	#name : #RrAverageFilter,
 	#superclass : #ChaDefaultInOutComponent,
 	#instVars : [
 		'averages'
 	],
-	#category : #'ReactiveRobot-CollisionAvoidance'
+	#category : #'ReactiveRobot-Kernel'
 }
 
 { #category : #acting }

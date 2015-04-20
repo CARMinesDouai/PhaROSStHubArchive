@@ -12,8 +12,8 @@ Class {
 RrForceVectorsBuilder >> addForceVectorTo: vectors forObstacleAt: distanceToObstacle angle: angle [
 	| forceVector |
 	distanceToObstacle >= self distanceThreshold ifTrue: [ ^self].
-	forceVector := RrVector 
-		length: self distanceThreshold - distanceToObstacle
+	forceVector := VeVector 
+		length: (self distanceThreshold - distanceToObstacle)/self distanceThreshold
 		angle: angle.
 	vectors add: forceVector
 ]
@@ -31,7 +31,7 @@ RrForceVectorsBuilder >> distanceThreshold: anObject [
 { #category : #acting }
 RrForceVectorsBuilder >> newOutputFrom: distances [
 	| vectors |
-	vectors := Set new: distances size.
+	vectors := OrderedCollection new: distances size.
 	distances with: self sensorAngles do: [ :distanceToObstacle :angle|
 		self addForceVectorTo: vectors forObstacleAt: distanceToObstacle angle: angle
 	].

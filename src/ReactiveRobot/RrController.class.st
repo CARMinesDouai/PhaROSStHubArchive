@@ -31,6 +31,6 @@ RrController >> start [
 { #category : #acting }
 RrController >> stop [
 	self robot 
-		stopAllSensors.
-	
+		stop;
+		stopAllSensors
 ]

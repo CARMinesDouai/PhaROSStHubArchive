@@ -18,10 +18,10 @@ RrCollisionAvoiderController >> initialize [
 	vectorDisplay := VectorDisplay new.
 	sonarValuesFilter := RrAverageFilter new.
 	sonarForceBuilder := RrForceVectorsBuilder new.
-	pi := Float pi.
+	pi := VeAngle pi.
 	sonarForceBuilder 
 		sensorAngles: {pi/12. pi/4. pi/2. 3*pi/4. pi.  -3*pi/4. -1*pi/2. -1*pi/4 . -1*pi/12};
-		distanceThreshold: 0.4.
+		distanceThreshold: 0.3.
 	forceFusion := RrForceIntegrator new.
 	runaway := RrRunaway new.
 	runaway forwardSpeed: 0.1.

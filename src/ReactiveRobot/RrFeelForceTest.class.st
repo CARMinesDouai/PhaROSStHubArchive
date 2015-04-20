@@ -19,20 +19,20 @@ RrFeelForceTest >> assertScan: distances from: angles resultInto: expectedVector
 { #category : #testing }
 RrFeelForceTest >> distancesAnglesAndExpectedVector [
 	^{
-	{#(). #(). RrVector zero}.
-	{#(0.5). #(0). RrVector length: 0.5 angle: 0}.
-	{#(0.1). #(0). RrVector length: 0.9 angle: 0}.
-	{#(0.9). #(0). RrVector length: 0.1 angle: 0}.
-	{#(0.5). {Float pi/4}. RrVector length: 0.5 angle: Float pi/4}.
-	{#(0.5). {Float pi/3}. RrVector length: 0.5 angle: Float pi/3}.
-	{#(0.5). {Float pi/2}. RrVector length: 0.5 angle: Float pi/2}.
-	{#(0.5). {Float pi}. RrVector length: 0.5 angle: Float pi}.
-	{#(2 3 4). {0. Float pi/3. Float pi / -3}. RrVector zero}.
-	{#(0.5 2 3). {0. Float pi/3. Float pi / -3}. RrVector length: 0.5 angle: 0}.
-	{#(2 0.5 3). {0. Float pi/3. Float pi / -3}. RrVector length: 0.5 angle: Float pi/3}.
-	{#(2 3 0.5). {0. Float pi/3. Float pi / -3}. RrVector length: 0.5 angle: Float pi / -3}.
-	{#(2 0.5 0.5). {0. Float pi/3. Float pi / -3}. RrVector length: (Float pi / 3) cos angle: 0}.
-	{#(2 0.5 0.5). {0. Float pi/2. Float pi / -2}. RrVector zero}.
+	{#(). #(). VeVector zero}.
+	{#(0.5). #(0). VeVector length: 0.5 angle: 0}.
+	{#(0.1). #(0). VeVector length: 0.9 angle: 0}.
+	{#(0.9). #(0). VeVector length: 0.1 angle: 0}.
+	{#(0.5). {VeAngle quarterPi}. VeVector length: 0.5 angle: VeAngle quarterPi}.
+	{#(0.5). {VeAngle pi/3}. VeVector length: 0.5 angle: VeAngle pi/3}.
+	{#(0.5). {VeAngle halfPi}. VeVector length: 0.5 angle: VeAngle halfPi}.
+	{#(0.5). {VeAngle pi}. VeVector length: 0.5 angle: VeAngle pi}.
+	{#(2 3 4). {0. VeAngle pi/3. VeAngle pi / -3}. VeVector zero}.
+	{#(0.5 2 3). {0. VeAngle pi/3. VeAngle pi / -3}. VeVector length: 0.5 angle: 0}.
+	{#(2 0.5 3). {0. VeAngle pi/3. VeAngle pi / -3}. VeVector length: 0.5 angle: VeAngle pi/3}.
+	{#(2 3 0.5). {0. VeAngle pi/3. VeAngle pi / -3}. VeVector length: 0.5 angle: VeAngle pi / -3}.
+	{#(2 0.5 0.5). {0. VeAngle pi/3. VeAngle pi / -3}. VeVector length: (VeAngle pi / 3) cos angle: 0}.
+	{#(2 0.5 0.5). {0. VeAngle pi/2. VeAngle pi / -2}. VeVector zero}.
 	}
 ]
 

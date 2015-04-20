@@ -1,11 +1,21 @@
 Class {
 	#name : #RrRunawayTest,
-	#superclass : #RrFeelForceTest,
+	#superclass : #ParameterizedTestCase,
 	#instVars : [
+		'builder',
+		'integrator',
 		'runaway'
 	],
 	#category : #'ReactiveRobot-CollisionAvoidance'
 }
+
+{ #category : #testing }
+RrRunawayTest >> assertObstacleForce: obstacleVector resultInto: resultingSpeed [
+	<testParametersSelector: #obstacleVectorAndResultingSpeed>
+	runaway speedVector: (VeVector length: 1).
+	runaway input: obstacleVector. 
+	self assert: runaway dataOnOutputPort equals: resultingSpeed 
+]
 
 { #category : #testing }
 RrRunawayTest >> assertSpeed: initialSpeed obstacleForce: obstacleVector resultInto: resultingSpeed [
@@ -18,14 +28,29 @@ RrRunawayTest >> assertSpeed: initialSpeed obstacleForce: obstacleVector resultI
 { #category : #testing }
 RrRunawayTest >> initialSpeedObstacleVectorAndResultingSpeed [
 	^{
-		{ RrVector zero. RrVector zero. RrVector zero}.
-		{ RrVector length: 1. RrVector length: 1. RrVector angle: Float halfPi}.
-		{ RrVector length: 1. RrVector length: 1 angle: Float halfPi. RrVector length: 1}.
-		{ RrVector length: 1. RrVector length: 1 angle: Float halfPi negated. RrVector length: 1}.
-		{ RrVector length: 1. RrVector length: 1 angle: Float pi/4. RrVector length:   0.2928932188134524 angle: Float pi/4 negated}.
-		{ RrVector length: 0.1. RrVector length: 1 angle: Float pi/4. RrVector length:   0 angle: Float pi/4 negated}.
-		{ RrVector length: 1. RrVector length: 1 angle: Float pi/4 negated. RrVector length: 0.2928932188134524 angle: Float pi/4}.
-		{ RrVector length: 0.1. RrVector length: 1 angle: Float pi/4 negated. RrVector length: 0 angle: Float pi/4}.
+		{ VeVector zero. VeVector zero. VeVector zero}.
+		{ VeVector length: 1. VeVector length: 1. VeVector angle: VeAngle halfPi}.
+		{ VeVector length: 1. VeVector length: 1 angle: VeAngle halfPi. VeVector length: 1}.
+		{ VeVector length: 1. VeVector length: 1 angle: VeAngle halfPi negated. VeVector length: 1}.
+		{ VeVector length: 1. VeVector length: 1 angle: VeAngle pi/4. VeVector length: 0.2928932188134524 angle: VeAngle pi/4 negated}.
+		{ VeVector length: 0.1. VeVector length: 1 angle: VeAngle pi/4. VeVector length:   0.02928932188134524 angle: VeAngle pi/4 negated}.
+		{ VeVector length: 1. VeVector length: 1 angle: VeAngle pi/4 negated. VeVector length: 0.2928932188134524 angle: VeAngle pi/4}.
+		{ VeVector length: 0.1. VeVector length: 1 angle: VeAngle pi/4 negated. VeVector length: 0.02928932188134524 angle: VeAngle pi/4}.
+	}
+]
+
+{ #category : #testing }
+RrRunawayTest >> obstacleVectorAndResultingSpeed [
+	^{
+		{VeVector zero. VeVector length: 1}.
+		{VeVector length: 1. VeVector angle: VeAngle halfPi}.
+		{VeVector length: 0.1. VeVector length: 0.9 angle: VeAngle halfPiNegated/10}.
+		{VeVector length: 1 angle: VeAngle halfPi. VeVector length: 1}.
+		{VeVector length: 1 angle: VeAngle halfPiNegated. VeVector length: 1}.
+		{VeVector length: 1 angle: VeAngle quarterPi . VeVector length: 0.2928932188134524 angle: VeAngle quarterPiNegated}.
+		{VeVector length: 0.1 angle: VeAngle quarterPi . VeVector length:  0.9292893218813453 angle: VeAngle quarterPiNegated/10}.
+		{VeVector length: 1 angle: VeAngle quarterPiNegated. VeVector length: 0.2928932188134524 angle: VeAngle quarterPi}.
+		{VeVector length: 0.1 angle: VeAngle quarterPiNegated. VeVector length:  0.9292893218813453 angle: VeAngle quarterPi/10}.
 	}
 ]
 
@@ -33,6 +58,5 @@ RrRunawayTest >> initialSpeedObstacleVectorAndResultingSpeed [
 RrRunawayTest >> setUp [
 	super setUp.
 	runaway := RrRunaway new.
-	integrator => runaway.
-	runaway speedVector: (RrVector length: 1)
+
 ]
