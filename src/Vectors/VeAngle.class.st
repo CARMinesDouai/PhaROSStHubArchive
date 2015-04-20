@@ -70,7 +70,7 @@ VeAngle class >> zero [
 VeAngle >> * aNumber [
 	"Answer the result of multiplying the receiver by aNumber."
 
-	^self shouldBeImplemented
+	^self newWithRadians: self radians * aNumber
 ]
 
 { #category : #arithmetic }
