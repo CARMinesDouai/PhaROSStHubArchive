@@ -6,7 +6,7 @@ Class {
 		'forceFusion',
 		'sonarForceBuilder',
 		'vectorDisplay',
-		'sonarValuesFilter'
+		'irForceBuilder'
 	],
 	#category : #'ReactiveRobot-CollisionAvoidance'
 }
@@ -16,17 +16,19 @@ RrCollisionAvoiderController >> initialize [
 	| pi |
 	super initialize.
 	vectorDisplay := VectorDisplay new.
-	sonarValuesFilter := RrAverageFilter new.
-	sonarForceBuilder := RrForceVectorsBuilder new.
+	sonarForceBuilder := RrFilteredForceVectorsBuilder new.
+	irForceBuilder := RrFilteredForceVectorsBuilder new.
 	pi := VeAngle pi.
 	sonarForceBuilder 
-		sensorAngles: {pi/12. pi/4. pi/2. 3*pi/4. pi.  -3*pi/4. -1*pi/2. -1*pi/4 . -1*pi/12};
-		distanceThreshold: 0.3.
+		sensorAngles: {pi/12. pi/4. pi/2. 3*pi/4. pi.  -3*pi/4. -1*pi/2. -1*pi/4 . -1*pi/12}.
+	irForceBuilder 
+		sensorAngles: {pi/12. pi/4. 3*pi/8. pi/2.  5*pi/8. 3*pi/4. 11*pi/12. 
+						pi.
+						 -11*pi/12. -3*pi/4. -5*pi/8. -1*pi/2. -3*pi/8. -1*pi/4.  -1*pi/12.}.
 	forceFusion := RrForceIntegrator new.
 	runaway := RrRunaway new.
-	runaway forwardSpeed: 0.1.
+	self forwardSpeed: 0.1.
 	
-	sonarValuesFilter => sonarForceBuilder.
 	sonarForceBuilder => forceFusion.
 	forceFusion => runaway.
 	forceFusion connect: #outputPort to: #drawObstacle:  of: vectorDisplay.
@@ -40,13 +42,20 @@ RrCollisionAvoiderController >> robot: aRobot [
 	runaway connect: #outputPort to: #speedVector: of: aRobot
 ]
 
+{ #category : #'initialize-release' }
+RrCollisionAvoiderController >> speedVector: aVector [
+	runaway speedVector: aVector.
+	sonarForceBuilder distanceThreshold: (aVector length min: 0.3).
+	
+]
+
 { #category : #acting }
 RrCollisionAvoiderController >> start [
 	vectorDisplay start.
 	self robot
-		scanSonarsEvery: 0 
+		scanIrEvery: 0 
 		do: [ :distances| 
-			sonarValuesFilter input: distances]
+			sonarForceBuilder input: distances]
 
 ]
 

@@ -31,11 +31,15 @@ RrRunawayTest >> initialSpeedObstacleVectorAndResultingSpeed [
 		{ VeVector zero. VeVector zero. VeVector zero}.
 		{ VeVector length: 1. VeVector length: 1. VeVector angle: VeAngle halfPi}.
 		{ VeVector length: 1. VeVector length: 1 angle: VeAngle halfPi. VeVector length: 1}.
-		{ VeVector length: 1. VeVector length: 1 angle: VeAngle halfPi negated. VeVector length: 1}.
+		{ VeVector length: 1 angle: VeAngle halfPi. VeVector length: 1. VeVector length: 1  angle: VeAngle halfPi}.
+		{ VeVector length: 1. VeVector length: 1 angle: VeAngle halfPiNegated. VeVector length: 1}.
+		{ VeVector length: 1 angle: VeAngle halfPiNegated. VeVector length: 1. VeVector length: 1  angle: VeAngle halfPiNegated}.
 		{ VeVector length: 1. VeVector length: 1 angle: VeAngle pi/4. VeVector length: 0.2928932188134524 angle: VeAngle pi/4 negated}.
-		{ VeVector length: 0.1. VeVector length: 1 angle: VeAngle pi/4. VeVector length:   0.02928932188134524 angle: VeAngle pi/4 negated}.
-		{ VeVector length: 1. VeVector length: 1 angle: VeAngle pi/4 negated. VeVector length: 0.2928932188134524 angle: VeAngle pi/4}.
-		{ VeVector length: 0.1. VeVector length: 1 angle: VeAngle pi/4 negated. VeVector length: 0.02928932188134524 angle: VeAngle pi/4}.
+		{ VeVector length: 1 angle: VeAngle pi/4. VeVector length: 1 angle: VeAngle pi/4. VeVector angle: VeAngle pi / -4}.
+		{ VeVector length: 0.1. VeVector length: 1 angle: VeAngle pi/4. VeVector length:   0.02928932188134524 angle: VeAngle pi/ -4}.
+		{ VeVector length: 1. VeVector length: 1 angle: VeAngle pi/ -4. VeVector length: 0.2928932188134524 angle: VeAngle pi/4}.
+		{ VeVector length: 0.1. VeVector length: 1 angle: VeAngle pi/ -4. VeVector length: 0.02928932188134524 angle: VeAngle pi/4}.
+		{ VeVector length: 1 angle: VeAngle pi/ -4. VeVector length: 1 angle: VeAngle pi/ -4. VeVector angle: VeAngle pi/4}.
 	}
 ]
 
