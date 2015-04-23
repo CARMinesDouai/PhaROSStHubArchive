@@ -23,9 +23,7 @@ PRRosCalloutAPI class >> call: aService withArgs: someArguments [
 
 { #category : #'publish-subscribe' }
 PRRosCalloutAPI class >> peek: aTopic [
-	| command process result id |
-	"Slow and not very reliable because it just waits some time,
-	instead of waiting until it sees the message separators '---' "
+	| command result id |
 	
 	"Unique id for today"
 	id := 'PRRosCalloutAPIPeek', Time now asNanoSeconds asString.
@@ -36,10 +34,7 @@ PRRosCalloutAPI class >> peek: aTopic [
 			nextPutAll: ' __name:=';
 			nextPutAll: id].
 	
-	[	process := (PipeableOSProcess  command: command).
-		800 milliSeconds wait.
-		result :=  (process upToEnd readStream upToAll: '---').
-	]
+	[result :=  self readMessageFrom:  (PipeableOSProcess  command: command).]
 		ensure: [ OSProcess command: 'rosnode kill /',id].
 	^result.
 
@@ -61,6 +56,22 @@ PRRosCalloutAPI class >> publish: aMessage ofType: aType on: aTopic [
 	OSProcess waitForCommand: command.
 ]
 
+{ #category : #utility }
+PRRosCalloutAPI class >> readMessageFrom: aProcess [
+	| output char  |
+	
+	output := WriteStream on: (String new: 100).
+	[true] whileTrue: [ |contents|
+		"read while not hogging the CPU"
+		[(char := aProcess next) isNil] whileTrue: [Processor yield].
+		output nextPut: char.
+		"slightly clever testing for end of message"
+		((char = $-) and: [contents := output contents. contents endsWith: '---']) ifTrue: [
+			"swallow the newline"
+			[aProcess next isNil] whileTrue: [Processor yield].
+			^(contents copyFrom: 1 to: contents size - 3)]].
+]
+
 { #category : #'publish-subscribe' }
 PRRosCalloutAPI class >> subscribeTo: aTopic [
 	"Returns an association with 
@@ -80,24 +91,11 @@ PRRosCalloutAPI class >> subscribeTo: aTopic [
 			nextPutAll: key].
 	
 	thread := [| process |
-		process := (PipeableOSProcess command: command).
-		[true] whileTrue: [ | output char complete |
-			output := WriteStream on: (String new: 10).
-			complete := false.
-			[complete] whileFalse: [ 
-				"read while not hogging the CPU"
-				[(char := process next) isNil] whileTrue: [Processor yield].
-				output nextPut: char.
-				"slightly clever testing for end of message"
-				((char = $-) and: [output contents endsWith: '---']) ifTrue: [|contents|
-					contents := output contents.
-					retval value: (contents copyFrom: 1 to: contents size - 3).
-					complete := true.
-					"swallow the newline"
-					[process next isNil] whileTrue: [Processor yield]].
-				]]] fork.
-	retval key: { key . thread }.
+			process := (PipeableOSProcess command: command).
+			[true] whileTrue: [ retval value: (self readMessageFrom: process).]
+		] fork.
 
+	retval key: { key . thread }.
 	^ retval.
 ]
 

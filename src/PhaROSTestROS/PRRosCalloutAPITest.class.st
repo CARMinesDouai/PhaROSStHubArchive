@@ -104,7 +104,6 @@ angular:
 
 	self isTurtleAt: { 6.60281658173 . 6.93898963928 .  1.81439995766 . 0.0 . 0.0 }.
 
-	PRRosCalloutAPI call: '/reset'.
 ]
 
 { #category : #'publish-subscribe' }
@@ -125,5 +124,5 @@ PRRosCalloutAPITest >> testSubscribe [
 	self isTurtleAt: { 1.0 . 2.0 . 3.0 . 0.0 . 0.0 } forPeekString: subscription value.
 	
 	PRRosCalloutAPI unsubscribe: subscription.
-	PRRosCalloutAPI call: '/reset'.
+
 ]

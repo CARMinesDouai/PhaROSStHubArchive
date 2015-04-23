@@ -27,7 +27,7 @@ PRRosCalloutTest >> testEcho [
 	
 	"No dependencies on other tests"
 	
-	[	[process := (PipeableOSProcess  command: 'rostopic echo /turtle1/pose __name:=echo3') ] fork. 
+	[	process := (PipeableOSProcess  command: 'rostopic echo /turtle1/pose __name:=echo3'). 
 		3 seconds wait.
 		result :=  (process upToEnd readStream upToAll: '---').
 	]
@@ -89,8 +89,8 @@ angular:
   y: 0.0
   z: 1.8"'.
 
-	[	[process := (PipeableOSProcess  command: 'rostopic echo /turtle1/pose __name:=echo3') ] fork. 
-		2 seconds wait.
+	[	process := (PipeableOSProcess  command: 'rostopic echo /turtle1/pose __name:=echo3'). 
+		1 seconds wait.
 		result :=  (process upToEnd readStream upToAll: '---').
 	]
 		ensure: [ OSProcess command: 'rosnode kill /echo3'].	
@@ -112,7 +112,6 @@ angular:
 	self assert: (assocs at: 5 ) key = 'angular_velocity:'.
 	self assert: (Float readFrom: ((assocs at: 5 ) value)) = 0.0.
 
-	OSProcess waitForCommand: ' rosservice call /reset'.
 ]
 
 { #category : #services }
@@ -122,8 +121,8 @@ PRRosCalloutTest >> testServiceCall [
 	
 	OSProcess waitForCommand: ' rosservice call /turtle1/teleport_absolute "x: 1.0 \y: 2.0 \theta: 3.0 " ' withCRs.
 
-	[	[process := (PipeableOSProcess  command: 'rostopic echo /turtle1/pose __name:=echo3') ] fork. 
-		2 seconds wait.
+	[	process := (PipeableOSProcess  command: 'rostopic echo /turtle1/pose __name:=echo3'). 
+		1 seconds wait.
 		result :=  (process upToEnd readStream upToAll: '---').
 	]
 		ensure: [ OSProcess command: 'rosnode kill /echo3'].	
@@ -143,8 +142,6 @@ PRRosCalloutTest >> testServiceCall [
 	
 	self assert: (assocs at: 5 ) key = 'angular_velocity:'.
 	self assert: (Float readFrom: ((assocs at: 5 ) value)) = 0.0.
-
-	OSProcess waitForCommand: ' rosservice call /reset'.
 ]
 
 { #category : #services }
