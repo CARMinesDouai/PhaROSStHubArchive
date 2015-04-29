@@ -3,19 +3,18 @@ Class {
 	#superclass : #PhaROSPackage,
 	#instVars : [
 		'robotName',
-		'process',
-		'kompaiAbsolutePoseTopic'
+		'process'
 	],
 	#category : #PureROSPackageKompai
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PureROSKompai class >> author [
 	^ 'SantiagoBragagnolo'
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'writing catkin files' }
 PureROSKompai class >> cmake [
 		^ 'cmake_minimum_required(VERSION 2.8.3)
 project(kompai)
@@ -151,22 +150,22 @@ include_directories(include
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PureROSKompai class >> description [
 	^'Kompai package. PureNG wrapper for ROS'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PureROSKompai class >> packageName [ 
 	^ 'kompai'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PureROSKompai class >> version [
 	^ '0.1.0'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'writing markup' }
 PureROSKompai class >> xml [
 		^ '<?xml version="1.0"?>
 <package>
@@ -239,7 +238,7 @@ PureROSKompai class >> xml [
 PureROSKompai >> build: aRobotName [
 	| rbl |
 	
-	rbl :=  PhaROSHandleController homeWithNodeNamed: 'Driver'.
+	rbl :=  PhaROSHandleController homeWithNodeNamed: aRobotName, '_driver'.
 	rbl nodelets use: PureROSKompaiNodelet as: #kompai.
 	rbl nodelets kompai initialize: aRobotName. 
 	
@@ -250,18 +249,6 @@ PureROSKompai >> build: aRobotName [
 PureROSKompai >> buildController [ 
 	^ self build: robotName.
 	
-]
-
-{ #category : #private }
-PureROSKompai >> kompaiAbsolutePose: aPose [
-	self kompaiAbsolutePoseTopic send: [ : msg | msg pose: aPose asGeometry_msgsPose ].
-]
-
-{ #category : #private }
-PureROSKompai >> kompaiAbsolutePoseTopic [
-	^ kompaiAbsolutePoseTopic ifNil: [
-		kompaiAbsolutePoseTopic := self controller node topicPublisher: '/kompai/map/pose' typedAs: 'geometry_msgs/PoseStamped'.	
-	]
 ]
 
 { #category : #scripts }
@@ -279,8 +266,9 @@ PureROSKompai >> scriptKompai2 [
 
 ]
 
-{ #category : #scripts }
+{ #category : #'scripts launching' }
 PureROSKompai >> scriptLaunchKompai1 [
+	"generate a launch file and use OSProcess to roslaunch it"
 	
 	process := PhaROSSystemLauncher  instance launch: [: spec | 
 		spec kompai1.
@@ -289,7 +277,7 @@ PureROSKompai >> scriptLaunchKompai1 [
 
 ]
 
-{ #category : #scripts }
+{ #category : #'scripts launching' }
 PureROSKompai >> scriptLaunchKompai2 [
 	
 	process:= PhaROSSystemLauncher  instance launch: [: spec | 
