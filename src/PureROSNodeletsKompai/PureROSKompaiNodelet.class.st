@@ -109,26 +109,25 @@ PureROSKompaiNodelet class >> trajectoryDifferentialTopicType [
 	^ 'geometry_msgs/PoseStamped'
 ]
 
-{ #category : #accessing }
+{ #category : #'autostop thread' }
 PureROSKompaiNodelet >> autoStop [
 	^ autoStop
 ]
 
-{ #category : #accessing }
+{ #category : #'autostop thread' }
 PureROSKompaiNodelet >> autoStop: anObject [
 	autoStop := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'topic-publishing' }
 PureROSKompaiNodelet >> broadcastSensors [
 	notificationController notificateLaserTo: [ : laser | self scan: laser ].
 	notificationController notificateMovementTo: [ 	: notification |   
-		self poseStamped: notification position asPhaROSPose.	
-	 ] .
+		self poseStamped: notification position asPhaROSPose ]
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'topic-publishing' }
 PureROSKompaiNodelet >> broadcastTF [
 	self nodelets pose2tf
 		express: self poseStamped
@@ -136,7 +135,7 @@ PureROSKompaiNodelet >> broadcastTF [
 		childOf: self class baseLinkParentFrame
 ]
 
-{ #category : #'private-out' }
+{ #category : #initialization }
 PureROSKompaiNodelet >> configure [
 	"This nodelet is for basic hardware broadcasting, avoid to consume topics, specially massive broadcaster"
 	self nodelets use: PhaROSTransformationNodelet as: #transformation.
@@ -198,7 +197,7 @@ PureROSKompaiNodelet >> consumeTrajectoryDifferential [
 	]
 ]
 
-{ #category : #'private-out' }
+{ #category : #'public API - moving' }
 PureROSKompaiNodelet >> goTo: aDeltaPose [ 
 	self flag: #Whatdowedohere.
 	
@@ -212,15 +211,8 @@ PureROSKompaiNodelet >> goTo: aDeltaPose [
 ]
 
 { #category : #initialization }
-PureROSKompaiNodelet >> initialize [
-	
-	"for autostop behavior"
-	self autoStop: true.
-	stopThread := self spawnStopThread.
-]
-
-{ #category : #'private-out' }
 PureROSKompaiNodelet >> initialize: aRobot [
+
 	robot := aRobot value: PNGRobulabDiscoveryFactory.
 	robotName := aRobot.
 		
@@ -231,7 +223,11 @@ PureROSKompaiNodelet >> initialize: aRobot [
 	self broadcastSensors.
 	
 	self consumeCommandVelocity.
-	self consumeTrajectoryDifferential .
+	self consumeTrajectoryDifferential.
+	
+	self autoStop: true.
+	self autoStop ifTrue: [ stopThread := self spawnStopThread ]
+	
 	
 ]
 
@@ -247,7 +243,7 @@ PureROSKompaiNodelet >> lastMove: anObject [
 	lastMove := anObject
 ]
 
-{ #category : #'private-out' }
+{ #category : #'public API - moving' }
 PureROSKompaiNodelet >> moveAt: aDifferentialVelocity [ 
 
 	[self lastMove: DateAndTime now.
@@ -267,7 +263,7 @@ PureROSKompaiNodelet >> poseStamped [
 PureROSKompaiNodelet >> poseStamped: aPose [
 	self poseStampedOut
 		send: [ :msg | 
-			msg header frame_id: self class mapFrame.
+			msg header frame_id:  self robotNamespace , self class odomFrame.
 			aPose intoGeometry_msgs_Pose: msg pose ]
 ]
 
@@ -280,12 +276,12 @@ PureROSKompaiNodelet >> poseStampedOut [
 				typedAs: self class poseStampedTopicType ]
 ]
 
-{ #category : #'private-out' }
+{ #category : #accessing }
 PureROSKompaiNodelet >> robot [
 	^ robot 
 ]
 
-{ #category : #'private-out' }
+{ #category : #accessing }
 PureROSKompaiNodelet >> robotNamespace [
 
 	^ '/', robotName asString
@@ -308,7 +304,7 @@ PureROSKompaiNodelet >> scanOut [
 			typedAs: self class scanTopicType ]
 ]
 
-{ #category : #'private-out' }
+{ #category : #'public API - moving' }
 PureROSKompaiNodelet >> setOrientation: anOrientation [
 	[
 		| position |
@@ -318,16 +314,22 @@ PureROSKompaiNodelet >> setOrientation: anOrientation [
 	] on: Error do:  [ :e | self halt. ].
 ]
 
-{ #category : #'private-out' }
+{ #category : #'public API - moving' }
 PureROSKompaiNodelet >> setPose: aPNGRobotPose [ 
 	[
 		robot localizationService pose: aPNGRobotPose.  
 	] on: Error do:  [ :e | self halt. ].
 ]
 
-{ #category : #initialization }
+{ #category : #'autostop thread' }
 PureROSKompaiNodelet >> spawnStopThread [
 	| behavior stopVelocity |
+	
+	"autostop behavior i.e. force ROS behavior at the PURE level.
+	 When we send a command through PURE, this command is maintained. 
+	 But in ROS, we must keep sending a command to maintain it.
+	 So this thread, send a stop command if it is not send within 200ms"
+	
 	" if delta T > 200 then we send a stop command
 	 we say this happened tomorrow so that we do not keep sending stop commands every iteration "
 	
@@ -350,12 +352,12 @@ PureROSKompaiNodelet >> spawnStopThread [
 	^behavior. 
 ]
 
-{ #category : #'private-out' }
+{ #category : #accessing }
 PureROSKompaiNodelet >> state [
-	^ state.
+	^ state
 ]
 
-{ #category : #'private-out' }
+{ #category : #accessing }
 PureROSKompaiNodelet >> state: aState [
 	state := aState
 ]
