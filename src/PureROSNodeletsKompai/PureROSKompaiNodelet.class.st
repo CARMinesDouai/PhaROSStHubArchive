@@ -294,7 +294,7 @@ PureROSKompaiNodelet >> robotNamespace [
 { #category : #'topic-publishing' }
 PureROSKompaiNodelet >> scan: aLaserMeasure [
 	self scanOut send: [ : msg | 
-		msg header frame_id: self class laserFrame. 
+		msg header frame_id: self robotNamespace, self class laserFrame. 
 		aLaserMeasure intoSensor_msgs_LaserScan: msg.
 	].
 
