@@ -251,38 +251,16 @@ PureROSKompai >> buildController [
 	
 ]
 
-{ #category : #scripts }
-PureROSKompai >> scriptKompai1 [
+{ #category : #'scripts - /pose and /scan' }
+PureROSKompai >> scriptPublishPoseAndScanForKompai1 [
 	robotName := #kompai1.
 	self controller.		
-	
-	self inform: 'scriptKompai1 running...'
+	self inform: 'scriptPublishPoseAndScanForKompai1 running...'
 ]
 
-{ #category : #scripts }
-PureROSKompai >> scriptKompai2 [
+{ #category : #'scripts - /pose and /scan' }
+PureROSKompai >> scriptPublishPoseAndScanForKompai2 [
 	robotName := #kompai2.
 	self controller.		
-
-]
-
-{ #category : #'scripts launching' }
-PureROSKompai >> scriptLaunchKompai1 [
-	"generate a launch file and use OSProcess to roslaunch it"
-	
-	process := PhaROSSystemLauncher  instance launch: [: spec | 
-		spec kompai1.
-	].
-	
-
-]
-
-{ #category : #'scripts launching' }
-PureROSKompai >> scriptLaunchKompai2 [
-	
-	process:= PhaROSSystemLauncher  instance launch: [: spec | 
-		spec kompai2.
-	].
-	
-
+	self inform: 'scriptPublishPoseAndScanForKompai1 running...'
 ]
