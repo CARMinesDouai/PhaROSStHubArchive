@@ -1,8 +1,7 @@
 "
-ConfigurationOfPureROS loadBleedingEdge
-
+""EVERYTHING to control a Robulab from ROS""
 (ConfigurationOfPureROS project version: #bleedingEdge)
-	load: { 'kompai' }.
+	load: { 'kompai+robulab' }.
 "
 Class {
 	#name : #ConfigurationOfPureROS,
@@ -293,12 +292,10 @@ ConfigurationOfPureROS >> baseline12: spec [
 					file: 'ConfigurationOfPeripherics' ;
 					versionString: #bleedingEdge;
 					repository: 'http://smalltalkhub.com/mc/CAR/PhaROSPeripherics/main';
-					loads:#('StarGazerROS').
-			].		
+					loads:#('StarGazerROS') ].		
 		
 			spec package: 'PureROS' with: [
-				spec requires: #('PhaROS' 'PureNG').
-			].
+				spec requires: #('PhaROS' 'PureNG') ].
 		
 			spec package: 'PureROSExperiments'.
 			
@@ -306,21 +303,19 @@ ConfigurationOfPureROS >> baseline12: spec [
 			spec package: 'PureROSNodeletsKompai'.
 			spec package: 'PureROSNodeletsCaire'.
 			
-			
 			spec package: 'PureROSPackageKompai' with:[
 				spec requires: #('PureROSNodeletsKompai' 'PureROS').	
 			]. 
 			spec package: 'PureROSPackageRobulab' with:[
-				spec requires: #( 'PureROS' 'PureROSNodeletsMovement' 'StarGazer').	
-			]. 
+				spec requires: #( 'PureROS' 'PureROSNodeletsMovement' 'StarGazer') ]. 
+			
 			spec package: 'PureROSPackageCaire' with:[
-				spec requires: #('PureROSNodeletsCaire' 'PureROS').	
-			]. 
+				spec requires: #('PureROSNodeletsCaire' 'PureROS') ]. 
 			
 			spec group: 'core' with: #( 'PureROS' ).
-			
 			spec group: 'kompai' with: #('core' 'PureROSNodeletsKompai' 'PureROSNodeletsMovement' 'PureROSPackageKompai' ).
-			spec group: 'robulab' with: #('core' 'PureROSPackageRobulab' )
+			spec group: 'robulab' with: #('core' 'PureROSPackageRobulab' ).
+			spec group: 'kompai+robulab' with: #( 'kompai' 'robulab') 
 	].
 
 ]
@@ -344,7 +339,7 @@ ConfigurationOfPureROS >> project [
 
 ]
 
-{ #category : #versions }
+{ #category : #'deprecated - to remove' }
 ConfigurationOfPureROS >> version100Beta: spec [ 
 	<version: '1.0-Beta1' imports: #('1.0-baseline') >
 	
@@ -363,7 +358,7 @@ ConfigurationOfPureROS >> version100Beta: spec [
 
 ]
 
-{ #category : #demo }
+{ #category : #'deprecated - to remove' }
 ConfigurationOfPureROS >> version100Kompai: spec [ 
 	<version: 'kompai' imports: #('1.0-baseline') >
 	"Demo for kompai node"
@@ -383,7 +378,7 @@ ConfigurationOfPureROS >> version100Kompai: spec [
 
 ]
 
-{ #category : #demo }
+{ #category : #'deprecated - to remove' }
 ConfigurationOfPureROS >> version100Robulab: spec [ 
 	<version: 'robulab' imports: #('1.0-baseline') >
 	"Demo for kompai node"
@@ -403,7 +398,7 @@ ConfigurationOfPureROS >> version100Robulab: spec [
 
 ]
 
-{ #category : #demo }
+{ #category : #'deprecated - to remove' }
 ConfigurationOfPureROS >> version100Stargazer: spec [ 
 	<version: 'robulab' imports: #('1.0-baseline') >
 	"Demo for kompai node"
@@ -423,7 +418,7 @@ ConfigurationOfPureROS >> version100Stargazer: spec [
 
 ]
 
-{ #category : #'versions - demos' }
+{ #category : #'deprecated - to remove' }
 ConfigurationOfPureROS >> versionDemo2: spec [ 
 	<version: 'Demo-2' imports: #('1.0-baseline') >
 	
