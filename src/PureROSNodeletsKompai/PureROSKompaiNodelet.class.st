@@ -211,6 +211,12 @@ PureROSKompaiNodelet >> goTo: aDeltaPose [
 ]
 
 { #category : #initialization }
+PureROSKompaiNodelet >> initialize [
+	super initialize.
+	self autoStop: true
+]
+
+{ #category : #initialization }
 PureROSKompaiNodelet >> initialize: aRobot [
 
 	robot := aRobot value: PNGRobulabDiscoveryFactory.
@@ -225,7 +231,6 @@ PureROSKompaiNodelet >> initialize: aRobot [
 	self consumeCommandVelocity.
 	self consumeTrajectoryDifferential.
 	
-	self autoStop: true.
 	self autoStop ifTrue: [ stopThread := self spawnStopThread ]
 	
 	
