@@ -140,11 +140,6 @@ PhaROSRPCNodelet >> makeAPath [
 ]
 
 { #category : #'as yet unclassified' }
-PhaROSRPCNodelet >> mapHash [
-	^ PureROSRobulab new mapFile asFileReference hash.
-]
-
-{ #category : #'as yet unclassified' }
 PhaROSRPCNodelet >> parking [ 	
 	currentGoal := self nodelets robulab goToEntityID: self parkingMark.
 	^ self parkingMark .
