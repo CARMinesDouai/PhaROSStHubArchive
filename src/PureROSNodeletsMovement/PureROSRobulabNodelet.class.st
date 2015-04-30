@@ -15,64 +15,39 @@ Class {
 	#category : #PureROSNodeletsMovement
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #frames }
 PureROSRobulabNodelet class >> baseLinkFrame [ 
 	^ '/base_link'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #frames }
 PureROSRobulabNodelet class >> baseLinkParentFrame [ 	
-	^ self odomFrame.
+	^ self odomFrame
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PureROSRobulabNodelet class >> dependencies [ 
 	^ [ : spec |  
 		spec rviz. 
 	] 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #frames }
 PureROSRobulabNodelet class >> laserFrame [
 	^ '/laser'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #frames }
 PureROSRobulabNodelet class >> mapFrame [
 	^'/map'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #frames }
 PureROSRobulabNodelet class >> odomFrame [ 
 	^ '/odom'
 ]
 
-{ #category : #'as yet unclassified' }
-PureROSRobulabNodelet class >> odometryTopic [
-	^ '/odom'
-]
-
-{ #category : #'as yet unclassified' }
-PureROSRobulabNodelet class >> poseStampedTopic [
-	^ '/kompai2/pose'
-]
-
-{ #category : #'as yet unclassified' }
-PureROSRobulabNodelet class >> poseStampedTopicForConsume [
-	^ '/pose'
-]
-
-{ #category : #'as yet unclassified' }
-PureROSRobulabNodelet class >> poseStampedTopicType [
-	^  'geometry_msgs/PoseStamped'
-]
-
-{ #category : #'as yet unclassified' }
-PureROSRobulabNodelet class >> scanTopic [
-	^ '/kompai/scan'
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #frames }
 PureROSRobulabNodelet class >> stargazerFrame [ 
 	^ '/stargazer'
 ]
@@ -94,16 +69,16 @@ PureROSRobulabNodelet >> commonNavigation [
 PureROSRobulabNodelet >> configure [
 
 	self nodelets use: PhaROSTransformationNodelet as: #transformation.
-"	self nodelets use: SGROSStarGazerNodelet as: #stargazer."
-	self nodelets use: PhaROSLocalizerNodelet as: #localizer.
-	self nodelets use: PhaROSMoveBaseNodelet as: #movebase.
-	self nodelets use: PhaROSOdometryNodelet as: #odometer.
-	self nodelets use: PureROSMoveBaseLandmarkNavigation as: #navigator.
-	self nodelets use: PhaROSInitialPose as: #initialpose.
-	self nodelets navigator robulab: self.
-	
-	
 	self nodelets transformation configureTfCallback.
+
+"	self nodelets use: SGROSStarGazerNodelet as: #stargazer."
+"	self nodelets use: PhaROSLocalizerNodelet as: #localizer."
+"	self nodelets use: PhaROSMoveBaseNodelet as: #movebase."
+	self nodelets use: PhaROSOdometryNodelet as: #odometer.
+"	self nodelets use: PureROSMoveBaseLandmarkNavigation as: #navigator."
+"	self nodelets navigator robulab: self."
+"	self nodelets use: PhaROSInitialPose as: #initialpose."
+		
 	self trajectoryDifferentialOut.
 ]
 
@@ -193,7 +168,7 @@ PureROSRobulabNodelet >> locationRotation [
 
 { #category : #'topic-subscription' }
 PureROSRobulabNodelet >> poseStamped [
-	^( self rosnode buildConnectionFor:  PureROSRobulabNodelet poseStampedTopicForConsume )typedAs: PureROSRobulabNodelet poseStampedTopicType;  adapted: #pose \> PhaROSPose  ; connect.
+	^( self rosnode buildConnectionFor:  self robotNamespace , PureROSKompaiNodelet poseStampedTopic)typedAs: PureROSKompaiNodelet poseStampedTopicType;  adapted: #pose \> PhaROSPose  ; connect.
 ]
 
 { #category : #experiments }
@@ -240,7 +215,14 @@ PureROSRobulabNodelet >> relocalize: abpose with: dlmk [
 
 { #category : #accessing }
 PureROSRobulabNodelet >> robotName: aRobotName [
-	robotName := aRobotName 
+	robotName := aRobotName.
+	self nodelets odometer robotName: aRobotName
+]
+
+{ #category : #accessing }
+PureROSRobulabNodelet >> robotNamespace [
+
+	^ '/', robotName asString
 ]
 
 { #category : #service }
@@ -276,6 +258,6 @@ PureROSRobulabNodelet >> trajectoryDifferentialOut [
 	^ trajectoryDifferentialOut
 		ifNil: [ 
 			trajectoryDifferentialOut := self rosnode
-				topicPublisher: '/kompai1/trajectory/differential'
+				topicPublisher: self robotNamespace , PureROSKompaiNodelet trajectoryDifferentialTopic
 				typedAs: 'geometry_msgs/PoseStamped' ]
 ]
