@@ -101,7 +101,7 @@ PhaROSPackage >> log: aString [
 
 { #category : #accessing }
 PhaROSPackage >> node [
-	^ self controller node.
+	^ self controller node
 ]
 
 { #category : #accessing }

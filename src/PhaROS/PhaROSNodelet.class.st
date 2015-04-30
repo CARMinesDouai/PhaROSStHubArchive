@@ -96,7 +96,7 @@ PhaROSNodelet >> name [
 
 { #category : #accessing }
 PhaROSNodelet >> nodelets [
-	^ self controller nodelets.
+	^ self controller nodelets
 ]
 
 { #category : #accessing }
