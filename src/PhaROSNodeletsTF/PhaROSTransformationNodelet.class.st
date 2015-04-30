@@ -24,12 +24,12 @@ Class {
 
 { #category : #topics }
 PhaROSTransformationNodelet class >> tfInTopic [
-	^ '/pharos/in/tf'
+	^ '/tf'
 ]
 
 { #category : #topics }
 PhaROSTransformationNodelet class >> tfOutTopic [
-	^ '/pharos/out/tf'
+	^ '/tf'
 ]
 
 { #category : #types }
@@ -55,7 +55,7 @@ PhaROSTransformationNodelet >> betweenFixedFrameAnd: aFrameID [
 ]
 
 { #category : #package }
-PhaROSTransformationNodelet >> configureTfCallback. [
+PhaROSTransformationNodelet >> configureTfCallback [
 	self tfInTopic for: self tfcallback.
 ]
 
