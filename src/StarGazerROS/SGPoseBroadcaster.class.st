@@ -43,7 +43,7 @@ SGPoseBroadcaster >> poseStampedSg: aPose withFrame: aFrameID [
 SGPoseBroadcaster >> poseStampedSgOut [
 	
 	^ poseStampedSgOut ifNil: [
-		poseStampedSgOut := controller node topicPublisher: '/stargazer/pose'  typedAs: PureROSRobulabNodelet poseStampedTopicType 
+		poseStampedSgOut := controller node topicPublisher: '/stargazer/pose'  typedAs: PureROSKompaiNodelet poseStampedTopicType 
 	].
 
 ]
