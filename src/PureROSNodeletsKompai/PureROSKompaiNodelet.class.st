@@ -69,18 +69,13 @@ PureROSKompaiNodelet class >> odomFrame [
 	^ '/odom'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #dependencies }
 PureROSKompaiNodelet class >> pharosPackage [
-	^ PureROSKompai.
+	^ PureROSKompai
 ]
 
 { #category : #topics }
 PureROSKompaiNodelet class >> poseStampedTopic [
-	^ '/pose'
-]
-
-{ #category : #topics }
-PureROSKompaiNodelet class >> poseStampedTopicForConsume [
 	^ '/pose'
 ]
 
@@ -125,14 +120,6 @@ PureROSKompaiNodelet >> broadcastSensors [
 	notificationController notificateMovementTo: [ 	: notification |   
 		self poseStamped: notification position asPhaROSPose ]
 		
-]
-
-{ #category : #'topic-publishing' }
-PureROSKompaiNodelet >> broadcastTF [
-	self nodelets pose2tf
-		express: self poseStamped
-		as: self class baseLinkFrame
-		childOf: self class baseLinkParentFrame
 ]
 
 { #category : #initialization }
@@ -256,19 +243,11 @@ PureROSKompaiNodelet >> moveAt: aDifferentialVelocity [
 	] on: Error do: [ :e | ].
 ]
 
-{ #category : #'topic-subscription' }
-PureROSKompaiNodelet >> poseStamped [
-	^ (self rosnode buildConnectionFor: self class poseStampedTopicForConsume)
-		typedAs: self class poseStampedTopicType;
-		adapted: #pose \> PhaROSPose;
-		connect
-]
-
 { #category : #'topic-publishing' }
 PureROSKompaiNodelet >> poseStamped: aPose [
 	self poseStampedOut
 		send: [ :msg | 
-			msg header frame_id:  self robotNamespace , self class odomFrame.
+			msg header frame_id:  self robotNamespace , self class mapFrame.
 			aPose intoGeometry_msgs_Pose: msg pose ]
 ]
 
