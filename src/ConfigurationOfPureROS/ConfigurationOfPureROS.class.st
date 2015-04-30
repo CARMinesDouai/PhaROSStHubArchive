@@ -1,7 +1,6 @@
 "
 ""EVERYTHING to control a Robulab from ROS""
-(ConfigurationOfPureROS project version: #bleedingEdge)
-	load: { 'kompai+robulab' }.
+(ConfigurationOfPureROS project version: #bleedingEdge) load: { 'robulab' }
 "
 Class {
 	#name : #ConfigurationOfPureROS,
@@ -28,19 +27,6 @@ ConfigurationOfPureROS class >> bootstrapPackage: aString from: aPath [
 			version := reader version.
 			version load.
 			version workingCopy repositoryGroup addRepository: repository]
-]
-
-{ #category : #private }
-ConfigurationOfPureROS class >> configurationOfLog [
-	<logConfiguration>
-	^ [
-	     :builder |
-	     builder forClass: LoggedExampleCustomized 
-			     useLevel:#info 
-			     showingLogAs: ('%tag #%class >> %selector [%log]' asPatternFormatter) 
-			     into: LogStdoutWriter instance.
-	].
-
 ]
 
 { #category : #private }
@@ -105,17 +91,12 @@ ConfigurationOfPureROS class >> load [
 
 { #category : #load }
 ConfigurationOfPureROS class >> load: aByteString [ 
-	(self project version: #bleedingEdge) load: aByteString .
+	(self project version: #bleedingEdge) load: aByteString
 ]
 
 { #category : #loading }
 ConfigurationOfPureROS class >> loadBleedingEdge [
 	(self project version: #bleedingEdge) load.
-]
-
-{ #category : #loading }
-ConfigurationOfPureROS class >> loadDemo [
-	(self project version: #'1.0-Beta1') load.
 ]
 
 { #category : #'metacello tool support' }
@@ -130,12 +111,6 @@ ConfigurationOfPureROS class >> metacelloVersion: versionString loads: anArrayOr
 ConfigurationOfPureROS class >> project [
 
 	^self new project
-]
-
-{ #category : #'unloading metacello' }
-ConfigurationOfPureROS class >> testCategoriesForJenkins [
-	self flag: #weMustInstallARosInJenkinsServer. 
-	^ #( 'RoSt-Kernel-Tcp-Test' 'RoSt-Kernel-Types-Test').
 ]
 
 { #category : #'unloading metacello' }
@@ -268,23 +243,20 @@ ConfigurationOfPureROS >> baseline12: spec [
 			spec blessing: #baseline.
 			spec repository: 'http://smalltalkhub.com/mc/CAR/Robulab/main'.
 			
-			
 			spec project: 'PhaROS' with: [
 				spec 
 					className: 'ConfigurationOfPhaROS';
 					file: 'ConfigurationOfPhaROS' ;
 					repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main'; 
 					versionString: #bleedingEdge;
-					loads: #( 'default' 'tests' ).
-			].
+					loads: #( 'default' 'tests' ) ].
 			
-		      spec project: 'PureNG' with: [
+		   spec project: 'PureNG' with: [
 				spec 
 					className: 'ConfigurationOfPureNG';
 					file: 'ConfigurationOfPureNG' ;
 					versionString: #bleedingEdge;
-					repository: 'http://smalltalkhub.com/mc/CAR/Robulab/main'.
-			].
+					repository: 'http://smalltalkhub.com/mc/CAR/Robulab/main' ].
 		
 			spec project: 'StarGazer' with: [
 				spec 
@@ -296,26 +268,23 @@ ConfigurationOfPureROS >> baseline12: spec [
 		
 			spec package: 'PureROS' with: [
 				spec requires: #('PhaROS' 'PureNG') ].
-		
 			spec package: 'PureROSExperiments'.
 			
 			spec package: 'PureROSNodeletsMovement'.
-			spec package: 'PureROSNodeletsKompai'.
-			spec package: 'PureROSNodeletsCaire'.
-			
+			spec package: 'PureROSNodeletsKompai'.			
 			spec package: 'PureROSPackageKompai' with:[
-				spec requires: #('PureROSNodeletsKompai' 'PureROS').	
-			]. 
-			spec package: 'PureROSPackageRobulab' with:[
-				spec requires: #( 'PureROS' 'PureROSNodeletsMovement' 'StarGazer') ]. 
+				spec requires: #('PureROS' 'PureROSNodeletsKompai' 'PureROSNodeletsMovement') ]. 
 			
+			spec package: 'PureROSPackageRobulab' with:[
+				spec requires: #( 'PureROSPackageKompai'  'StarGazer') ]. 
+
+			spec package: 'PureROSNodeletsCaire'.			
 			spec package: 'PureROSPackageCaire' with:[
-				spec requires: #('PureROSNodeletsCaire' 'PureROS') ]. 
+				spec requires: #('PureROSPackageRobulab' 'PureROSNodeletsCaire') ]. 
 			
 			spec group: 'core' with: #( 'PureROS' ).
-			spec group: 'kompai' with: #('core' 'PureROSNodeletsKompai' 'PureROSNodeletsMovement' 'PureROSPackageKompai' ).
-			spec group: 'robulab' with: #('core' 'PureROSPackageRobulab' ).
-			spec group: 'kompai+robulab' with: #( 'kompai' 'robulab') 
+			spec group: 'kompai' with: #('core' 'PureROSNodeletsKompai').
+			spec group: 'robulab' with: #('kompai' 'PureROSPackageRobulab' )
 	].
 
 ]
@@ -335,104 +304,6 @@ ConfigurationOfPureROS >> project [
 		project loadType: #linear. "change to #atomic if desired"
 		project 
 	].
-
-
-]
-
-{ #category : #'deprecated - to remove' }
-ConfigurationOfPureROS >> version100Beta: spec [ 
-	<version: '1.0-Beta1' imports: #('1.0-baseline') >
-	
-	spec for: #common do: [
-		spec blessing: #alpha.
-		spec author: 'SantiagoBragagnolo'.
-		spec timestamp: '12/09/2013 12:00'.
-		spec 
-			project: 'PhaROS' with: '1.0-Beta3';
-			project: 'PureNG' with: '1.0-Beta';
-			package: 'TaskIT' with: 'TaskIT-SantiagoBragagnolo.16';
-			package: 'StarGazer' with: 'StarGazer-SantiagoBragagnolo.53'.
-
-		].
-
-
-]
-
-{ #category : #'deprecated - to remove' }
-ConfigurationOfPureROS >> version100Kompai: spec [ 
-	<version: 'kompai' imports: #('1.0-baseline') >
-	"Demo for kompai node"
-	spec for: #common do: [
-		spec blessing: #demo.
-		spec author: 'SantiagoBragagnolo'.
-		spec timestamp: '26/02/2014 12:00'.
-		spec 
-			project: 'PhaROS' with: 'Demo';
-			project: 'PureNG' with: '1.0-Beta';
-			package: 'TaskIT' with: 'TaskIT-SantiagoBragagnolo.16';
-			package: 'StarGazer' with: 'StarGazer-SantiagoBragagnolo.79';
-			package: 'PureROS' with: 'PureROS-SantiagoBragagnolo.144'.
-
-		].
-
-
-]
-
-{ #category : #'deprecated - to remove' }
-ConfigurationOfPureROS >> version100Robulab: spec [ 
-	<version: 'robulab' imports: #('1.0-baseline') >
-	"Demo for kompai node"
-	spec for: #common do: [
-		spec blessing: #demo.
-		spec author: 'SantiagoBragagnolo'.
-		spec timestamp: '26/02/2014 12:00'.
-		spec 
-			project: 'PhaROS' with: 'DemoRobulab';
-			project: 'PureNG' with: '1.0-Beta';
-			package: 'TaskIT' with: 'TaskIT-SantiagoBragagnolo.16';
-			package: 'StarGazer' with: 'StarGazer-SantiagoBragagnolo.79';
-			package: 'PureROS' with: 'PureROS-SantiagoBragagnolo.666'.
-
-		].
-
-
-]
-
-{ #category : #'deprecated - to remove' }
-ConfigurationOfPureROS >> version100Stargazer: spec [ 
-	<version: 'robulab' imports: #('1.0-baseline') >
-	"Demo for kompai node"
-	spec for: #common do: [
-		spec blessing: #demo.
-		spec author: 'SantiagoBragagnolo'.
-		spec timestamp: '26/02/2014 12:00'.
-		spec 
-			project: 'PhaROS' with: 'Demo';
-			project: 'PureNG' with: '1.0-Beta';
-			package: 'TaskIT' with: 'TaskIT-SantiagoBragagnolo.16';
-			package: 'StarGazer' with: 'StarGazer-SantiagoBragagnolo.demo';
-			package: 'PureROS' with: 'PureROS-SantiagoBragagnolo.144'.
-
-		].
-
-
-]
-
-{ #category : #'deprecated - to remove' }
-ConfigurationOfPureROS >> versionDemo2: spec [ 
-	<version: 'Demo-2' imports: #('1.0-baseline') >
-	
-	spec for: #common do: [
-		spec blessing: #demoCon.
-		spec author: 'SantiagoBragagnolo'.
-		spec timestamp: '17/10/2013 15:15'.
-		spec 
-			project: 'PhaROS' with: 'Demo-2';
-			project: 'PureNG' with: '1.0-Beta';
-			package: 'TaskIT' with: 'TaskIT-SantiagoBragagnolo.20';
-			package: 'StarGazer' with: 'StarGazer-SantiagoBragagnolo.79'.
-
-		].
 
 
 ]
