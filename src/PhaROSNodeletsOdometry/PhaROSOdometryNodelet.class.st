@@ -9,7 +9,8 @@ Class {
 		'previousTime',
 		'previousPose',
 		'poseDifference',
-		'odometryTopicPublisher'
+		'odometryTopicPublisher',
+		'robotName'
 	],
 	#category : #PhaROSNodeletsOdometry
 }
@@ -35,11 +36,11 @@ PhaROSOdometryNodelet class >> odometryTopicType [
 	^  'nav_msgs/Odometry' 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 PhaROSOdometryNodelet >> configure: aMessage with: aPosition [
 	self initializeMessage: aMessage.
-	aMessage header frame_id: PhaROSOdometryNodelet odomFrame.
-	aMessage child_frame_id: PhaROSOdometryNodelet baseLinkFrame.
+	aMessage header frame_id: self robotNamespace , PhaROSOdometryNodelet odomFrame.
+	aMessage child_frame_id: self robotNamespace , PhaROSOdometryNodelet baseLinkFrame.
 	
 	"Fill aMessage using aPosition pose"
 	aPosition intoGeometry_msgs_Pose:  aMessage pose pose.
@@ -53,7 +54,7 @@ PhaROSOdometryNodelet >> informPositionAsOdometry: aPosition [
 	self odometryTopicPublisher send: [ : msg | self configure: msg with: aPosition ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 PhaROSOdometryNodelet >> initialize [ 
 	poseDifference := PhaROSPose zero.
 ]
@@ -108,8 +109,19 @@ PhaROSOdometryNodelet >> odometryTopicPublisher [
 	^ odometryTopicPublisher
 		ifNil: [ 
 			odometryTopicPublisher := self rosnode
-				topicPublisher: PhaROSOdometryNodelet odometryTopic
+				topicPublisher: self robotNamespace , PhaROSOdometryNodelet odometryTopic
 				typedAs: PhaROSOdometryNodelet odometryTopicType ]
+]
+
+{ #category : #accessing }
+PhaROSOdometryNodelet >> robotName: aRobotName [
+	robotName := aRobotName 
+]
+
+{ #category : #accessing }
+PhaROSOdometryNodelet >> robotNamespace [
+
+	^ '/', robotName asString
 ]
 
 { #category : #'as yet unclassified' }
