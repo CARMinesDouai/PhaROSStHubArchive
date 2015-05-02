@@ -10,13 +10,12 @@ Class {
 	#category : #'PhaROS-Util'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #ui }
 ProcessesCleaner class >> clean [
 
 	|pb window shouldKill |
-	shouldKill := Smalltalk ui confirm: 'Are you sure to terminate all non-critical processes?'.
-	shouldKill ifFalse: [^ self].
-	
+	shouldKill := true.
+
 	window := ProcessBrowser open.
 	pb := window model.
 	window close.
@@ -31,7 +30,7 @@ ProcessesCleaner class >> clean [
 	self inform: 'PhaROS processes were terminated.'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #execute }
 ProcessesCleaner class >> execute [ 
 	
 	self clean
