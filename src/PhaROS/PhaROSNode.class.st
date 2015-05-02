@@ -2,7 +2,7 @@
 PhaROSNode represent a basic execution node in the ROS environment. Each PhaROSNode is related with a XMLRPC Server and client, in order to make all the process of connection with other nodes and a TCP server, for incoming connections. 
 In terms os usage, PhaROSNode is thinked to be subclassed, and specialized for each case. 
 
-In order to reduce the sources needed by a node, the responsibilities are slipted in to other objects, PhaROSPublisher and PhaROSSubscriber, which are lazy initialized, and are the responsibles of spawning server processes.
+In order to reduce the sources needed by a node, the responsibilities are slipted into other objects, PhaROSPublisher and PhaROSSubscriber, which are lazy initialized, and are the responsibles of spawning server processes.
 	
 In order to relate with other nodes through topics, It counts with messages for publishing and subscribing:
 	
