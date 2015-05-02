@@ -10,8 +10,7 @@ Options:
                               Default value is true. 
    --version={ 20 | 30 | 40 | stable | alpha}  Pharo version to use. 
                                                Default value is stable
-   --pharo-user=...           Indicates the user name for the result image.
-   --force-new                DELETE the package if it exists in the pointed location. 
+    --force-new                DELETE the package if it exists in the pointed location. 
    --dev                      Load the bleedingEdge version of PhaROS
 "
 Class {
@@ -56,12 +55,6 @@ PRCCommandLineCreateHandler >> generateCatkinDirectoryNamed: package atLocation:
 ]
 
 { #category : #accessing }
-PRCCommandLineCreateHandler >> loadBleedingEdge [
-	^ self hasOption: 'dev'
-	
-]
-
-{ #category : #accessing }
 PRCCommandLineCreateHandler >> package [
 	| p |
 	p := (self argumentAt: 1).
@@ -76,79 +69,82 @@ PRCCommandLineCreateHandler >> pharosClassNameForCatkinPackageNamed: catkinPacka
 
 { #category : #activation }
 PRCCommandLineCreateHandler >> realActivate [
-
-	| location package  version silent  pharoImage loadingScriptName loadingScript   catkinWorskpaceDirectory catkinPackageDirectory    versionToLoad pharoUser catkinPackageImageDirectory  pharoVersionString |
-	
-	package := self package. "name of the catkin package to create"
-	location := self location. "catkinWorskpaceDirectory (~/PhaROS-ws by default)"
-	version := self version. "version of Pharo to use (Stable)"
-	pharoUser := self pharoUser.
-		
-	self loadBleedingEdge 
-		ifTrue: [ versionToLoad := 'loadBleedingEdgeFromCommander' ] 
-		ifFalse: [ versionToLoad := 'loadStableFromCommander' ].
-	
-	"remove all below"
-	silent := self silent. "true or false"
-
-	catkinWorskpaceDirectory := location asFileReference. 
-	catkinPackageDirectory :=  catkinWorskpaceDirectory / 'src' / package.
-	catkinPackageImageDirectory := catkinPackageDirectory / 'image'.
-	
-	"Create the PhaROSimage for this new package"
-	loadingScript := WriteStream on: (String new: 500).
-	
-	"rename the image to not pollute the cached one"
-	loadingScript << 'Smalltalk saveAs: ''' << package asString << '''.'; lf. 
-	loadingScript << 'Author fullName: ''' << pharoUser asString<< '''.'; lf. 
-
-	OSEnvironment default at: 'http_proxy' ifPresent: [ : httpProxyString | 
-		loadingScript <<  ('NetworkSystemSettings useHTTPProxy: true; httpProxyServer: ''{1}''; httpProxyPort: {2}.' format: ((httpProxyString subStrings: '/') second   subStrings: ':')) ;lf.
-	].
-
-	"Load PhaROS project"
-	loadingScript << '(Gofer it url: ''http://smalltalkhub.com/mc/CAR/PhaROS/main''; package: ''ConfigurationOfPhaROS'') load.' ; lf.	
-	loadingScript lf ; <<('FileStream stdout nextPutAll: ''Loading ConfigOfPhaROS {1}'', String lf.' format: { versionToLoad }) ; lf.
-	loadingScript << ('#ConfigurationOfPhaROS asClass {1}.' format: {versionToLoad}); lf.
-
-	"save the image in the catkin directory"
-	loadingScript << 'Smalltalk saveAs: ''' << (catkinPackageImageDirectory pathString, '/', package asString) << '''.'; lf. 
-
-	loadingScript lf ; << ('FileStream stdout nextPutAll: ''Generating catkin files: package.xml, CMakeFileLists.txt...'', String lf.' format: { package }) ; lf;lf.
-	"setup image for the catkin package in which the Pharo image is saved"
-	loadingScript lf ; << '#PhaROSCatkinDeployer asClass setupImageForCurrentCatkinPackage.' ; lf ; lf.
-	
-	loadingScript lf ; << 'Smalltalk snapshot: true andQuit: true.' ; lf.
-
-	"Create the catkin package structure and files"
-	self generateCatkinDirectoryNamed: package atLocation: catkinPackageDirectory.
-
-	"save the script in the catkin directory"
-	loadingScriptName := catkinPackageImageDirectory / (package, 'ImageCreationScript.st').
-"	loadingScriptName ensureDelete."
-	loadingScriptName	writeStreamDo: [ :stream |
-		stream nextPutAll: loadingScript contents ].
-	
-	"remove <packageName>.image <packageName>.changes if exists"
-	(Smalltalk imageDirectory / package, '.image') ensureDelete.
-	(Smalltalk imageDirectory / package, '.changes') ensureDelete.
-	
-	
-	"download Pharo<version>.image  if needed"
+	| location package version silent pharoImage loadingScriptName loadingScript catkinWorskpaceDirectory catkinPackageDirectory versionToLoad  catkinPackageImageDirectory pharoVersionString |
+	package := self package.	"name of the catkin package to create"
+	location := self location.	"catkinWorskpaceDirectory (~/PhaROS-ws by default)"
+	version := self version.	"version of Pharo to use (Stable)"
+	versionToLoad := self versionNameToLoad.	
+	silent := self silent.	"true or false"
+	catkinWorskpaceDirectory := location asFileReference.
+	catkinPackageDirectory := catkinWorskpaceDirectory / 'src' / package.
+	catkinPackageImageDirectory := catkinPackageDirectory / 'image'.	"Create the PhaROSimage for this new package"
+	loadingScript := WriteStream on: (String new: 500).	"rename the image to not pollute the cached one"
+	(loadingScript << 'Smalltalk saveAs: ''' << package asString)
+		<< '''.';
+		lf.
+	OSEnvironment default
+		at: 'http_proxy'
+		ifPresent: [ :httpProxyString | 
+			loadingScript
+				<<
+						('NetworkSystemSettings useHTTPProxy: true; httpProxyServer: ''{1}''; httpProxyPort: {2}.'
+								format: ((httpProxyString subStrings: '/') second subStrings: ':'));
+				lf ].	"Load PhaROS project"
+	loadingScript
+		<< '(Gofer it url: ''http://smalltalkhub.com/mc/CAR/PhaROS/main''; package: ''ConfigurationOfPhaROS'') load.';
+		lf.
+	loadingScript
+		lf;
+		<< ('FileStream stdout nextPutAll: ''Loading ConfigOfPhaROS {1}'', String lf.' format: {versionToLoad});
+		lf.
+	loadingScript
+		<< ('#ConfigurationOfPhaROS asClass {1}.' format: {versionToLoad});
+		lf.	"save the image in the catkin directory"
+	(loadingScript << 'Smalltalk saveAs: ''' << (catkinPackageImageDirectory pathString , '/' , package asString))
+		<< '''.';
+		lf.
+	loadingScript
+		lf;
+		<<
+				('FileStream stdout nextPutAll: ''Generating catkin files: package.xml, CMakeFileLists.txt...'', String lf.'
+						format: {package});
+		lf;
+		lf.	"setup image for the catkin package in which the Pharo image is saved"
+	loadingScript
+		lf;
+		<< '#PhaROSCatkinDeployer asClass setupImageForCurrentCatkinPackage.';
+		lf;
+		lf.
+	loadingScript
+		lf;
+		<< 'Smalltalk snapshot: true andQuit: true.';
+		lf.	"Create the catkin package structure and files"
+	self generateCatkinDirectoryNamed: package atLocation: catkinPackageDirectory.	"save the script in the catkin directory"
+	loadingScriptName := catkinPackageImageDirectory / (package , 'ImageCreationScript.st').	"	loadingScriptName ensureDelete."
+	loadingScriptName writeStreamDo: [ :stream | stream nextPutAll: loadingScript contents ].	"remove <packageName>.image <packageName>.changes if exists"
+	(Smalltalk imageDirectory / package , '.image') ensureDelete.
+	(Smalltalk imageDirectory / package , '.changes') ensureDelete.	"download Pharo<version>.image  if needed"
 	pharoVersionString := version asString translateToLowercase.
-	pharoImage := Smalltalk imageDirectory / ('Pharo',pharoVersionString, '.image').
-	((pharoImage exists not) or: [ pharoVersionString = 'alpha' ]) ifTrue: [ 
-		OSProcess waitForCommand: ('cd {1} && curl get.pharo.org/{2} | bash && mv Pharo.image Pharo{2}.image && mv Pharo.changes Pharo{2}.changes' 
-										format: {Smalltalk imageDirectory pathString . pharoVersionString})
-	].
-
-	"make the <package>.image execute the loadingScriptName and move the resulting image"
-	FileStream stdout lf ; nextPutAll: ('Executing the ImageCreationScript.st script') ; lf.
-	OSProcess 
-		waitForCommand: ('{1}/pharo {2} st {3} ; rm -f {1}/{4}.image {1}/{4}.changes' 
-							format: {Smalltalk imageDirectory pathString . pharoImage pathString. loadingScriptName pathString. package asString}).
-	
-	4 seconds wait. "here we wait for OSProcess commands executing in background to finish"
-"	OSProcess waitForCommand: 'echo ""Press ENTER now for happyness...""'"
-		
+	pharoImage := Smalltalk imageDirectory / ('Pharo' , pharoVersionString , '.image').
+	(pharoImage exists not or: [ pharoVersionString = 'alpha' ])
+		ifTrue: [ 
+			OSProcess
+				waitForCommand:
+					('cd {1} && curl get.pharo.org/{2} | bash && mv Pharo.image Pharo{2}.image && mv Pharo.changes Pharo{2}.changes'
+						format:
+							{(Smalltalk imageDirectory pathString).
+							pharoVersionString}) ].	"make the <package>.image execute the loadingScriptName and move the resulting image"
+	FileStream stdout
+		lf;
+		nextPutAll: 'Executing the ImageCreationScript.st script';
+		lf.
+	OSProcess
+		waitForCommand:
+			('{1}/pharo {2} st {3} ; rm -f {1}/{4}.image {1}/{4}.changes'
+				format:
+					{(Smalltalk imageDirectory pathString).
+					(pharoImage pathString).
+					(loadingScriptName pathString).
+					(package asString)}).
+	4 seconds wait	"here we wait for OSProcess commands executing in background to finish"	"	OSProcess waitForCommand: 'echo "	"Press ENTER now for happyness..."	"'"
 ]

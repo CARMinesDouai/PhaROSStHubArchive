@@ -123,15 +123,15 @@ PRCCommandLineHandler >> location [
 	^ (self checkLocation: (self optionAt: #location ifAbsent: [  self workingDirectory ] ) asFileReference ) pathString.
 ]
 
-{ #category : #accessing }
-PRCCommandLineHandler >> pharoUser [
-
-	^  (self optionAt: #'pharo-user' ifAbsent: [  'pharos' ] ).
-]
-
 { #category : #activation }
 PRCCommandLineHandler >> realActivate [
 	self subclassResponsibility 
+]
+
+{ #category : #accessing }
+PRCCommandLineHandler >> shouldLoadBleedingEdge [
+	^ self hasOption: 'dev'
+	
 ]
 
 { #category : #resolving }
@@ -143,6 +143,15 @@ PRCCommandLineHandler >> silent [
 PRCCommandLineHandler >> version [
 	
 	^ self checkVersion: (self optionAt: #version ifAbsent: [ 'stable' ]).
+]
+
+{ #category : #activation }
+PRCCommandLineHandler >> versionNameToLoad [
+	| versionToLoad |
+	self shouldLoadBleedingEdge
+		ifTrue: [ versionToLoad := 'loadBleedingEdgeFromCommander' ]
+		ifFalse: [ versionToLoad := 'loadStableFromCommander' ].
+	^ versionToLoad
 ]
 
 { #category : #accessing }

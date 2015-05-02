@@ -1,29 +1,35 @@
+"
+usage: pharos update [OPTIONS]
+ 
+Options:
+   --help                     Shows this text
+   --dev                      Load the bleedingEdge version of PhaROSCommander
+"
 Class {
 	#name : #PRCCommandLineUpdate,
-	#superclass : #PRCDisabledCommandLineHandler,
+	#superclass : #PRCCommandLineHandler,
 	#category : #PhaROSCommander
 }
 
 { #category : #accessing }
 PRCCommandLineUpdate class >> commandName [
-	^ 'update-tool'
+	^ 'update'
 ]
 
 { #category : #help }
 PRCCommandLineUpdate class >> shortHelpText [
-	^ 'check if there is any update of the tool, and it update it'
+	^ 'update the PhaROS commander tool'
 ]
 
 { #category : #'as yet unclassified' }
-PRCCommandLineUpdate >> activate [ 	
-
-	self activateHelp.
-	self loadNetworkSettings.
-	[ 
-		ConfigurationOfPhaROSCommander loadBleedingEdge.
-	 ] on: Error do: [ :e |
-		self stderr nextPutAll: e messageText, String lf.
-		self exitFailure.
-	].
+PRCCommandLineUpdate >> exitSuccess [
 	Smalltalk snapshot: true andQuit: true.
+	super exitSuccess 
+]
+
+{ #category : #'as yet unclassified' }
+PRCCommandLineUpdate >> realActivate [ 	
+
+	ConfigurationOfPhaROSCommander perform: self versionNameToLoad asSelector
+
 ]
