@@ -20,7 +20,7 @@ PhaROSTopicMock >> initialize [
 { #category : #'as yet unclassified' }
 PhaROSTopicMock >> newMessage [ 
 	| msg |
-	msg := Geometry_msgsPoseStamped new. 
+	msg := 'geometry_msgs/PoseStamped' asPhaROSTypeClass new. 
 	messages add: msg. 
 	^ msg.
 ]
