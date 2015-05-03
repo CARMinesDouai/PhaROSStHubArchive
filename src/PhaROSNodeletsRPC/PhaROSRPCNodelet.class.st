@@ -220,26 +220,26 @@ PhaROSRPCNodelet >> status [
 { #category : #'as yet unclassified' }
 PhaROSRPCNodelet >> statusReal [
 	
-	 self flag: #cleanThisMess.
-	
+	 |GoalStatusClass|
+	 GoalStatusClass := 'Actionlib_msgs/GoalStatus' asPhaROSTypeClass.
 		
 	 currentGoal  ifNotNil: [ 
 	
 		({ 
-		  #Actionlib_msgsGoalStatus asClass active.
-		  #Actionlib_msgsGoalStatus asClass recalled . 
-		   #Actionlib_msgsGoalStatus asClass recalling .  
-		   #Actionlib_msgsGoalStatus asClass preempted . 
-		   #Actionlib_msgsGoalStatus asClass preempting  } includes: currentGoal status) ifTrue: [
+		  GoalStatusClass active.
+		  GoalStatusClass recalled . 
+		   GoalStatusClass recalling .  
+		   GoalStatusClass preempted . 
+		   GoalStatusClass preempting  } includes: currentGoal status) ifTrue: [
 			^ PhaROSRPCNodelet moving.	
 		].
 	
-		#Actionlib_msgsGoalStatus asClass succeeded = currentGoal status ifTrue: [
+		GoalStatusClass succeeded = currentGoal status ifTrue: [
 			
 			^ PhaROSRPCNodelet arrived.
 			
 		].
-		#Actionlib_msgsGoalStatus asClass pending = currentGoal status ifTrue: [
+		GoalStatusClass pending = currentGoal status ifTrue: [
 			^ PhaROSRPCNodelet waiting.
 		].
 	
