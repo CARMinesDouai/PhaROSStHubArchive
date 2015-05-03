@@ -21,17 +21,20 @@ PRCCommandLineUpdate class >> shortHelpText [
 	^ 'update the PhaROS commander tool'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #utility }
 PRCCommandLineUpdate >> exitSuccess [
 	Smalltalk snapshot: true andQuit: true.
 	super exitSuccess 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #activation }
 PRCCommandLineUpdate >> realActivate [ 	
 	
+	self stdout: 'Update the PhaROSCommander code'.
 	self shouldLoadBleedingEdge
 		ifTrue: [ ConfigurationOfPhaROSCommander loadBleedingEdge ]
 		ifFalse: [ ConfigurationOfPhaROSCommander loadStable ].
-		
+	
+	self stdout: 'Remove cached images'.
+	OSProcess command: ('OSProcess waitForCommand: ''cd {1} && rm -fr '' Pharo*-PhaROS-*.{image,changes}' format: { Smalltalk imageDirectory pathString.  })
 ]

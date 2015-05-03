@@ -20,10 +20,14 @@ PRCCommandLineHandler >> activate [
 	self activateHelp.
 	self loadNetworkSettings.
 	[ self realActivate ] on: Error do: [ :e |
-		self stderr nextPutAll: e messageText, String lf.
-		self exitFailure.
+		self exitFailure: e messageText, String lf.
 	].
 	self exitSuccess.
+]
+
+{ #category : #accessing }
+PRCCommandLineHandler >> allowedPharoVersionNames [
+	^ { #'14' . #'20' . #'30' . #'40' . #'stable' . #'alpha' }
 ]
 
 { #category : #validation }
@@ -43,14 +47,14 @@ PRCCommandLineHandler >> checkLocation: aLocation [
 	]) ifTrue:[ 
 		aLocation 
 	] ifFalse: [ 
-		self error: aLocation pathString , ' is not a valid catkin workspace'
+		self exitFailure: aLocation pathString , ' is not a valid catkin workspace'
 	] .
 ]
 
 { #category : #validation }
 PRCCommandLineHandler >> checkSilent: aBoolean [
 	^ self checkBoolean: aBoolean ifFail: [ 
-		 self error: aBoolean asString, ' is not a valid value for --silent. It should be true or false'.
+		 self exitFailure: aBoolean asString, ' is not a valid value for --silent. It should be true or false'.
 	].
 	
 	 
@@ -59,8 +63,8 @@ PRCCommandLineHandler >> checkSilent: aBoolean [
 { #category : #validation }
 PRCCommandLineHandler >> checkVersion: aByteSymbol [ 
 	
-	^ (({ #'14' . #'20' . #'30' . #'40' . #'stable' . #'alpha' } detect: [: t | t = aByteSymbol] ifNone: [ 
-			self error: aByteSymbol asString, ' is not a valid Pharo version. Allowed versions are:
+	^ ((self allowedPharoVersionNames detect: [: t | t = aByteSymbol] ifNone: [ 
+			self exitFailure: aByteSymbol asString, ' is not a valid Pharo version. Allowed versions are:
 				--version=14
 				--version=20
 				--version=30
@@ -78,7 +82,7 @@ PRCCommandLineHandler >> forceNewIfNeededAt: aPackageFileReference [
 		self forceNewPackage ifTrue: [
 			(aPackageFileReference) deleteRecursively 
 		] ifFalse: [
-			^ self error: ' The package already exists in the source folder. Add --force-new for deleting the existant package' 
+			^ self exitFailure: 'The package already exists in the source folder. Add --force-new for deleting the existant package' 
 		].
 	].
 	aPackageFileReference createDirectory
@@ -87,6 +91,12 @@ PRCCommandLineHandler >> forceNewIfNeededAt: aPackageFileReference [
 { #category : #resolving }
 PRCCommandLineHandler >> forceNewPackage [
 	^ self hasOption: 'force-new'
+]
+
+{ #category : #'i/o' }
+PRCCommandLineHandler >> initializeStderr [
+	super initializeStderr.
+	stderr red
 ]
 
 { #category : #validation }
@@ -137,6 +147,11 @@ PRCCommandLineHandler >> shouldLoadBleedingEdge [
 { #category : #resolving }
 PRCCommandLineHandler >> silent [
 	^ self checkSilent: (commandLine optionAt: #silent ifAbsent: [ 'true' ]).
+]
+
+{ #category : #'i/o' }
+PRCCommandLineHandler >> stdout: aString [	
+	super stdout yellow: aString ; lf
 ]
 
 { #category : #resolving }
