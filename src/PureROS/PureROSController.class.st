@@ -161,7 +161,7 @@ PureROSController >> notificateTransformationOn: aFrameID withParent: aParentFra
 	" Add transformations to be broadcasted in TF topic. "
 	| transformStamped |
 	 
-	transformStamped := #Geometry_msgsTransformStamped asClass new.
+	transformStamped := 'geometry_msgs/TransformStamped' asPhaROSTypeClass new.
 	transformStamped child_frame_id: aFrameID.
 	transformStamped header frame_id: aParentFrameID.
 	transformStamped transform translation x: aPNGRobotPose x.
