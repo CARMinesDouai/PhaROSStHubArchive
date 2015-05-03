@@ -84,6 +84,14 @@ PhaROSPackage >> askUserFor: aString [
 	^ self nodelets io askUserFor: aString.
 ]
 
+{ #category : #initialization }
+PhaROSPackage >> buildController [
+	| controller |
+	controller := PhaROSHandleController home.
+	controller nodelets use: PhaROSStdIONodelet as: #io. 
+	^ controller 
+]
+
 { #category : #scripts }
 PhaROSPackage >> controller [
 	^ __ctrl ifNil: [ __ctrl := self buildController ].

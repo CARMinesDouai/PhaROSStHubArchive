@@ -21,7 +21,7 @@ Class {
 		'topicHandle',
 		'subscribingHandle'
 	],
-	#category : #'PhaROS-Kernel-Nodes'
+	#category : #'PhaROS-Kernel-InternalNodes'
 }
 
 { #category : #events }

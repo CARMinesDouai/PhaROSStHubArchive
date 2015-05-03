@@ -12,10 +12,10 @@ PhaROSStdIONodelet >> askUserFor: aLegend [
 
 { #category : #stdio }
 PhaROSStdIONodelet >> stdin [
-	^  FileStream stdin.
+	^  FileStream stdin
 ]
 
 { #category : #stdio }
 PhaROSStdIONodelet >> stdout [ 
-	^  FileStream stdout.
+	^  FileStream stdout
 ]

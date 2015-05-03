@@ -5,7 +5,7 @@ Class {
 		'channel',
 		'xmlurl'
 	],
-	#category : #'PhaROS-Kernel-Nodes'
+	#category : #'PhaROS-Kernel-InternalNodes'
 }
 
 { #category : #'as yet unclassified' }

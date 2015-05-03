@@ -1,10 +1,10 @@
 Class {
 	#name : #PhaROSDelegateNode,
-	#superclass : #PhaROSNode,
+	#superclass : #PhaROSInternalNode,
 	#instVars : [
 		'receiverDelegate'
 	],
-	#category : #'PhaROS-Kernel'
+	#category : #'PhaROS-Kernel-InternalNodes'
 }
 
 { #category : #accessing }

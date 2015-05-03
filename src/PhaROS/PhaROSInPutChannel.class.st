@@ -6,7 +6,7 @@ Class {
 		'publishers',
 		'processResult'
 	],
-	#category : #'PhaROS-Kernel-Channels'
+	#category : #'PhaROS-Kernel'
 }
 
 { #category : #'as yet unclassified' }

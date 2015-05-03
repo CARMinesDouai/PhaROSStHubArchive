@@ -26,7 +26,7 @@ Class {
 	#classInstVars : [
 		'instance'
 	],
-	#category : #'PhaROS-Catkin'
+	#category : #'PhaROS-Package'
 }
 
 { #category : #private }

@@ -8,9 +8,8 @@ Is important to take in care that in this architecture, for each incoming conect
 "
 Class {
 	#name : #PhaROSExternalNode,
-	#superclass : #Object,
+	#superclass : #PhaROSNode,
 	#instVars : [
-		'name',
 		'topic',
 		'socket'
 	],
@@ -30,17 +29,6 @@ PhaROSExternalNode >> finalize [
 	[
 		socket closeAndDestroy:20 .
 	]  on: Error do:[ ].
-]
-
-{ #category : #accessing }
-PhaROSExternalNode >> name [
-	^ name
-]
-
-{ #category : #accessing }
-PhaROSExternalNode >> name: aName [
-	name := aName.
-	
 ]
 
 { #category : #accessing }

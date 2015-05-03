@@ -6,7 +6,7 @@ Class {
 		'mutex',
 		'xmlurl'
 	],
-	#category : #'PhaROS-Kernel-Channels'
+	#category : #'PhaROS-Kernel'
 }
 
 { #category : #'as yet unclassified' }
