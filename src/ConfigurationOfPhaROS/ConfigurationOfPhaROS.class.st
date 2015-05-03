@@ -91,28 +91,13 @@ ConfigurationOfPhaROS class >> load [
 ]
 
 { #category : #loading }
-ConfigurationOfPhaROS class >> load: aPackage [
-	(self project version: #stable) load: aPackage.
-]
-
-{ #category : #loading }
 ConfigurationOfPhaROS class >> loadBleedingEdge [
 	(self project version: #bleedingEdge) load.
-]
-
-{ #category : #loading }
-ConfigurationOfPhaROS class >> loadBleedingEdgeForTest [
-	(self project version: #bleedingEdge) load:'default+tests'.
 ]
 
 { #category : #'loading from PhaROSCommander' }
 ConfigurationOfPhaROS class >> loadBleedingEdgeFromCommander [
 	^ (self project version: #bleedingEdge) load: 'all'
-]
-
-{ #category : #loading }
-ConfigurationOfPhaROS class >> loadESUG [
-	(self project version: #'1.0-Beta3') load.
 ]
 
 { #category : #loading }
@@ -122,7 +107,7 @@ ConfigurationOfPhaROS class >> loadStable [
 
 { #category : #'loading from PhaROSCommander' }
 ConfigurationOfPhaROS class >> loadStableFromCommander [
-	^ (self project version: '1.3.2') load: 'all'
+	^ (self project version: #stable) load: 'all'
 
 ]
 
@@ -544,7 +529,6 @@ ConfigurationOfPhaROS >> baseline13: spec [
 			spec package: 'PhaROSTest' with: [ spec requires: #('PhaROS')].
 			spec package: 'PhaROSTestROS' with: [ spec requires: #('PhaROS')].
 			
-			spec package: 'PhaROSControllers' with: [ spec requires: #('PhaROS')].
 			spec package: 'PhaROSExperiments' with: [ spec requires: #('PhaROS')].
 			
 			"Infrastructure: deployment and generation of code"
@@ -579,7 +563,7 @@ ConfigurationOfPhaROS >> baseline13: spec [
 	
 			"groups"
 			spec 
-				group: 'default' with: #('PhaROS'  'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSNodeletsAction' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition'   'PhaROSNodeletsLocalizer' 'PhaROSNodeletsMerger' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsRPC' );
+				group: 'default' with: #('PhaROS' 'PhaROSInfrastructure' 'PhaROSNodeletsAction' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition'   'PhaROSNodeletsLocalizer' 'PhaROSNodeletsMerger' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsRPC' );
 				
 				group: 'examples' with: #( 'PhaROS-PackageExample' 'PhaROSNodeletsTurtlesim' 'PhaROS-Doc' );
 					
@@ -640,6 +624,7 @@ ConfigurationOfPhaROS >> project [
 ConfigurationOfPhaROS >> stable: spec [
 	<symbolicVersion: #'stable'>
 
+		spec for: #'pharo4.x' version: '1.3.2'
 ]
 
 { #category : #'old fixed versions' }
