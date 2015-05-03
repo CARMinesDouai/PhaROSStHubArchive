@@ -30,6 +30,6 @@ PRCCommandLineUpdate >> exitSuccess [
 { #category : #'as yet unclassified' }
 PRCCommandLineUpdate >> realActivate [ 	
 
-	ConfigurationOfPhaROSCommander perform: self versionNameToLoad asSelector
+	ConfigurationOfPhaROSCommander perform: self versionNameToLoad asSymbol
 
 ]
