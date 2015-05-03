@@ -85,7 +85,8 @@ PRCCommandLineCreateHandler >> generateCatkinDirectoryNamed: package atLocation:
 			|-vm/
 				|- pharo
 	"
-	self stdout lf ; stdout: ('Generating catkin package for {1}' format: { package }).
+	self stdout lf.
+	self stdout: ('Generating catkin package for {1}' format: { package }).
 	self forceNewIfNeededAt: catkinPackageDirectory.
 	(catkinPackageDirectory / 'image' ) createDirectory.
 		
