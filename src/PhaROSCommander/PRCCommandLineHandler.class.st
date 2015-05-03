@@ -145,15 +145,6 @@ PRCCommandLineHandler >> version [
 	^ self checkVersion: (self optionAt: #version ifAbsent: [ 'stable' ]).
 ]
 
-{ #category : #activation }
-PRCCommandLineHandler >> versionNameToLoad [
-	| versionToLoad |
-	self shouldLoadBleedingEdge
-		ifTrue: [ versionToLoad := 'loadBleedingEdgeFromCommander' ]
-		ifFalse: [ versionToLoad := 'loadStableFromCommander' ].
-	^ versionToLoad
-]
-
 { #category : #accessing }
 PRCCommandLineHandler >> workingDirectory [
 	^ (FileLocator home / 'PhaROS-ws') pathString

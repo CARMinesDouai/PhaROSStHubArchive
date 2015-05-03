@@ -62,6 +62,15 @@ PRCCommandLineCreateHandler >> package [
 	^ p.
 ]
 
+{ #category : #activation }
+PRCCommandLineCreateHandler >> phaROSVersionNameToLoad [
+	| versionToLoad |
+	self shouldLoadBleedingEdge
+		ifTrue: [ versionToLoad := 'loadBleedingEdgeFromCommander' ]
+		ifFalse: [ versionToLoad := 'loadStableFromCommander' ].
+	^ versionToLoad
+]
+
 { #category : #utilities }
 PRCCommandLineCreateHandler >> pharosClassNameForCatkinPackageNamed: catkinPackageName [
 	^ catkinPackageName capitalized , 'Package'
@@ -73,7 +82,7 @@ PRCCommandLineCreateHandler >> realActivate [
 	package := self package.	"name of the catkin package to create"
 	location := self location.	"catkinWorskpaceDirectory (~/PhaROS-ws by default)"
 	version := self version.	"version of Pharo to use (Stable)"
-	versionToLoad := self versionNameToLoad.	
+	versionToLoad := self phaROSVersionNameToLoad.	
 	silent := self silent.	"true or false"
 	catkinWorskpaceDirectory := location asFileReference.
 	catkinPackageDirectory := catkinWorskpaceDirectory / 'src' / package.

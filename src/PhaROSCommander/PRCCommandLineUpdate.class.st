@@ -29,7 +29,9 @@ PRCCommandLineUpdate >> exitSuccess [
 
 { #category : #'as yet unclassified' }
 PRCCommandLineUpdate >> realActivate [ 	
-
-	ConfigurationOfPhaROSCommander perform: self versionNameToLoad asSymbol
-
+	
+	self shouldLoadBleedingEdge
+		ifTrue: [ ConfigurationOfPhaROSCommander loadBleedingEdge ]
+		ifFalse: [ ConfigurationOfPhaROSCommander loadStable ].
+		
 ]
