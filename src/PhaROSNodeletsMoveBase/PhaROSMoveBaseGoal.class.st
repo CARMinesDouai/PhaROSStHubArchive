@@ -20,17 +20,20 @@ PhaROSMoveBaseGoal class >> for: aPose [
 
 { #category : #'as yet unclassified' }
 PhaROSMoveBaseGoal class >> texts [
+	|GoalStatusClass|
+	GoalStatusClass := 'actionlib_msgs/GoalStatus' asPhaROSTypeClass.
+
 	^ {
-		#Actionlib_msgsGoalStatus asClass aborted -> 'Aborted' .
-		#Actionlib_msgsGoalStatus asClass active -> 'Active' .		
-		#Actionlib_msgsGoalStatus asClass lost -> 'Lost' .
-		#Actionlib_msgsGoalStatus asClass pending -> 'Pending' .
-		#Actionlib_msgsGoalStatus asClass preempted -> 'Preempted' .
-		#Actionlib_msgsGoalStatus asClass preempting  -> 'Preempting' .
-		#Actionlib_msgsGoalStatus asClass recalled -> 'Recalled' .
-		#Actionlib_msgsGoalStatus asClass recalling -> 'Recalling' .
-		#Actionlib_msgsGoalStatus asClass rejected -> 'Rejected' .
-		#Actionlib_msgsGoalStatus asClass succeeded  -> 'Succeded' .
+		GoalStatusClass aborted -> 'Aborted' .
+		GoalStatusClass active -> 'Active' .		
+		GoalStatusClass lost -> 'Lost' .
+		GoalStatusClass pending -> 'Pending' .
+		GoalStatusClass preempted -> 'Preempted' .
+		GoalStatusClass preempting  -> 'Preempting' .
+		GoalStatusClass recalled -> 'Recalled' .
+		GoalStatusClass recalling -> 'Recalling' .
+		GoalStatusClass rejected -> 'Rejected' .
+		GoalStatusClass succeeded  -> 'Succeded' .
 	} asDictionary 
 ]
 
@@ -65,7 +68,7 @@ PhaROSMoveBaseGoal >> initialize [
 	super initialize.
 	id := DateAndTime now asUnixTime asString.
 	callbacks := Dictionary new. 
-	status := #Actionlib_msgsGoalStatus asClass pending.
+	status := 'actionlib_msgs/GoalStatus' asPhaROSTypeClass pending.
 	stop := [ self stopTracking ].
 	
 	self onSucceeded: stop.
@@ -84,57 +87,57 @@ PhaROSMoveBaseGoal >> on: aStatus do: aCallback [
 { #category : #events }
 PhaROSMoveBaseGoal >> onAborted: aBlock [
 	^ self 
-		on: #Actionlib_msgsGoalStatus asClass aborted 
+		on: 'actionlib_msgs/GoalStatus' asPhaROSTypeClass aborted 
 		do: aBlock .
 ]
 
 { #category : #events }
 PhaROSMoveBaseGoal >> onActive: aBlock [
 	^ self 
-		on: #Actionlib_msgsGoalStatus asClass active 
+		on: 'actionlib_msgs/GoalStatus' asPhaROSTypeClass active 
 		do: aBlock .
 ]
 
 { #category : #events }
 PhaROSMoveBaseGoal >> onLost: aBlock [
 	^ self 
-		on: #Actionlib_msgsGoalStatus asClass lost 
+		on: 'actionlib_msgs/GoalStatus' asPhaROSTypeClass lost 
 		do: aBlock .
 ]
 
 { #category : #events }
 PhaROSMoveBaseGoal >> onPending: aBlock [
-	^ self on: #Actionlib_msgsGoalStatus asClass pending do: aBlock .
+	^ self on: 'actionlib_msgs/GoalStatus' asPhaROSTypeClass pending do: aBlock .
 ]
 
 { #category : #events }
 PhaROSMoveBaseGoal >> onPreempted: aBlock [
-	^ self on: #Actionlib_msgsGoalStatus asClass preempted  do: aBlock .
+	^ self on: 'actionlib_msgs/GoalStatus' asPhaROSTypeClass preempted  do: aBlock .
 ]
 
 { #category : #events }
 PhaROSMoveBaseGoal >> onPreempting: aBlock [
-	^ self on: #Actionlib_msgsGoalStatus asClass preempting  do: aBlock .
+	^ self on: 'actionlib_msgs/GoalStatus' asPhaROSTypeClass preempting  do: aBlock .
 ]
 
 { #category : #events }
 PhaROSMoveBaseGoal >> onRecalled: aBlock [
-	^ self on: #Actionlib_msgsGoalStatus asClass recalled  do: aBlock .
+	^ self on: 'actionlib_msgs/GoalStatus' asPhaROSTypeClass recalled  do: aBlock .
 ]
 
 { #category : #events }
 PhaROSMoveBaseGoal >> onRecalling: aBlock [
-	^ self on: #Actionlib_msgsGoalStatus asClass recalling  do: aBlock .
+	^ self on: 'actionlib_msgs/GoalStatus' asPhaROSTypeClass recalling  do: aBlock .
 ]
 
 { #category : #events }
 PhaROSMoveBaseGoal >> onRejected: aBlock [
-	^ self on: #Actionlib_msgsGoalStatus asClass rejected  do: aBlock .
+	^ self on: 'actionlib_msgs/GoalStatus' asPhaROSTypeClass rejected  do: aBlock .
 ]
 
 { #category : #events }
 PhaROSMoveBaseGoal >> onSucceeded: aBlock [
-	^ self on: #Actionlib_msgsGoalStatus asClass succeeded  do: aBlock .
+	^ self on: 'actionlib_msgs/GoalStatus' asPhaROSTypeClass succeeded  do: aBlock .
 ]
 
 { #category : #printing }
