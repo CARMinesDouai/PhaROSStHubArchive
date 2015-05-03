@@ -249,7 +249,7 @@ ConfigurationOfPureROS >> baseline12: spec [
 					file: 'ConfigurationOfPhaROS' ;
 					repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main'; 
 					versionString: #bleedingEdge;
-					loads: #( 'default' 'tests' ) ].
+					loads: #( 'default' 'tests' 'examples' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsPosition' 'PhaROSNodeletsRPC' 'PhaROSNodeletsTF' 'PhaROSNodeletsMerger') ].
 			
 		   spec project: 'PureNG' with: [
 				spec 
