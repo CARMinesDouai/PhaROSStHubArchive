@@ -163,7 +163,7 @@ ConfigurationOfPeripherics >> baseline10: spec [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #baselines }
 ConfigurationOfPeripherics >> baseline11: spec [
 	<version:'1.1-baseline'>
 	spec for: #common do: [
@@ -184,7 +184,7 @@ ConfigurationOfPeripherics >> baseline11: spec [
 					file: 'ConfigurationOfPhaROS' ;
 					repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main'; 
 					versionString: #bleedingEdge;
-					loads: #( 'PhaROS' 'PhaROSControllers' 'PhaROSInfrastructure' 'PhaROSNodeletsTF' 'PhaROSNodeletsMerger').
+					loads: #( 'PhaROS' 'PhaROSInfrastructure' 'PhaROSNodeletsTF' 'PhaROSNodeletsMerger').
 			].
 		
 			spec package: 'StarGazer' with: [
