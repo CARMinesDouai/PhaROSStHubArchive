@@ -90,7 +90,7 @@ PhaROSPose >> asDump [
 { #category : #printing }
 PhaROSPose >> asGeometry_msgsPose [
 	| gp |
-	gp := #Geometry_msgsPose asClass new.
+	gp := 'geometry_msgs/Pose' asPhaROSTypeClass new.
 	self intoGeometry_msgs_Pose:  gp.
 	^ gp.
 ]
@@ -104,7 +104,7 @@ PhaROSPose >> asPose [
 PhaROSPose >> asTransform [ 
 
 	| transform |
-	transform := #Geometry_msgsTransform asClass new .
+	transform := 'geometry_msgs/Transform' asPhaROSTypeClass new .
 	
 	transform translation x: self  position x.
 	transform translation y: self  position y.
