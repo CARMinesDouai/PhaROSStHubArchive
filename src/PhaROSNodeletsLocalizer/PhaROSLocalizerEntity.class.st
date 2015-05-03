@@ -66,7 +66,7 @@ PhaROSLocalizerEntity >> asGeometry_msgsPointCollection [
 	
 	a x to: b x by: 0.05 do: [ : x  | 
 		a y to: b y by: 0.05 do: [ : y  | 
-			points add: (#Geometry_msgsPoint asClass new x: x ; y: y; z: (center z * -1)).
+			points add: ('geometry_msgs/Point' asPhaROSTypeClass new x: x ; y: y; z: (center z * -1)).
 		]
 	].
 
@@ -88,7 +88,7 @@ PhaROSLocalizerEntity >> asTransformStampedRelativeTo: aFrameParentID [
 
 	| transformStamped | 
 	
-		transformStamped := #Geometry_msgsTransformStamped asClass new.
+		transformStamped := 'geometry_msgs/TransformStamped' asPhaROSTypeClass new.
 		
 		transformStamped child_frame_id:  self frameName.
 		transformStamped header frame_id:  aFrameParentID.
