@@ -62,7 +62,7 @@ PureROSRobulabGoal >> configureNonRecoverable [
 	self tryAchieveGoal.
 	isRecoverable := false. 
 	goal onAborted: [ 
-		status := 'Actionlib_msgs/GoalStatus' asPhaROSTypeClass aborted.
+		status := #Actionlib_msgsGoalStatus asClass aborted.
 		self cancel.
 		self log: 'Error achiving goal!'.
 	].
@@ -110,7 +110,7 @@ PureROSRobulabGoal >> hasArrived: aLocalizerMeasure [
 		checks := 0.
 	] .
   	^ [(checks > 1 and:[ entity id = aLocalizerMeasure id and: [ self isCloseEnough: aLocalizerMeasure pose ]]) or: [ 
-			self status = 'Actionlib_msgs/GoalStatus' asPhaROSTypeClass succeeded 
+			self status = #Actionlib_msgsGoalStatus asClass succeeded 
 	].] on:Error do: [ self halt. ].
 	
 ]
@@ -121,7 +121,7 @@ PureROSRobulabGoal >> hasReallyArrived [
 
 	pose := robulab nodelets transformation transformBetween: entity frameName and: '/base_link'.
 	
-	((self isCloseEnough: pose) not and: [goal status = 'Actionlib_msgs/GoalStatus' asPhaROSTypeClass succeeded ]) ifTrue:[
+	((self isCloseEnough: pose) not and: [goal status = #Actionlib_msgsGoalStatus asClass succeeded ]) ifTrue:[
 		1 second asDelay wait.
 		pose := robulab nodelets transformation transformBetween: entity frameName and: '/base_link'.
 		(self isCloseEnough: pose) ifFalse: [
@@ -172,7 +172,7 @@ PureROSRobulabGoal >> onAborted: aBlock [
 PureROSRobulabGoal >> onArrivalToGoal: aLocalizerMeasure [ 
 	| msgsGoalStatusClass |
 	
-	msgsGoalStatusClass := 'actionlib_msgs/GoalStatus' asPhaROSTypeClass.
+	msgsGoalStatusClass := #Actionlib_msgsGoalStatus asClass.
 	checks := 0. 
 	
 	self hasReallyArrived ifTrue: [
@@ -207,7 +207,7 @@ PureROSRobulabGoal >> onSucceeded: aBlock [
 PureROSRobulabGoal >> recoveryFromAbort [
 	| msgsGoalStatusClass |
 	
-	msgsGoalStatusClass := 'actionlib_msgs/GoalStatus' asPhaROSTypeClass.
+	msgsGoalStatusClass := #Actionlib_msgsGoalStatus asClass.
 	
 	goal status: msgsGoalStatusClass active.
 	
@@ -277,7 +277,7 @@ PureROSRobulabGoal >> robulab: aRobulabNodelet [
 PureROSRobulabGoal >> status [
 	| msgsGoalStatusClass |
 	
-	msgsGoalStatusClass := 'actionlib_msgs/GoalStatus' asPhaROSTypeClass.
+	msgsGoalStatusClass := #Actionlib_msgsGoalStatus asClass.
 	^ status ifNil: [
 		goal ifNil:[ -1 ]
 			ifNotNil: [

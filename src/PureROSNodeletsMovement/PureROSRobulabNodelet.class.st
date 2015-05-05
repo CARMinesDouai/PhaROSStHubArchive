@@ -34,17 +34,17 @@ PureROSRobulabNodelet class >> dependencies [
 
 { #category : #frames }
 PureROSRobulabNodelet class >> laserFrame [
-	^ '/laser'
+	^ 'laser'
 ]
 
 { #category : #frames }
 PureROSRobulabNodelet class >> mapFrame [
-	^'/map'
+	^'map'
 ]
 
 { #category : #frames }
 PureROSRobulabNodelet class >> odomFrame [ 
-	^ '/odom'
+	^ 'odom'
 ]
 
 { #category : #frames }
@@ -168,7 +168,10 @@ PureROSRobulabNodelet >> locationRotation [
 
 { #category : #'topic-subscription' }
 PureROSRobulabNodelet >> poseStamped [
-	^( self rosnode buildConnectionFor:  self robotNamespace , PureROSKompaiNodelet poseStampedTopic)typedAs: PureROSKompaiNodelet poseStampedTopicType;  adapted: #pose \> PhaROSPose  ; connect.
+	^( self rosnode buildConnectionFor:  PureROSKompaiNodelet poseStampedTopic) 
+		typedAs: PureROSKompaiNodelet poseStampedTopicType;  
+		adapted: #pose \> PhaROSPose  ; 
+		connect.
 ]
 
 { #category : #experiments }
@@ -219,12 +222,6 @@ PureROSRobulabNodelet >> robotName: aRobotName [
 	self nodelets odometer robotName: aRobotName
 ]
 
-{ #category : #accessing }
-PureROSRobulabNodelet >> robotNamespace [
-
-	^ '/', robotName asString
-]
-
 { #category : #service }
 PureROSRobulabNodelet >> rpc [
 	self nodelets use: PhaROSRPCNodelet as: #rpc.
@@ -258,6 +255,6 @@ PureROSRobulabNodelet >> trajectoryDifferentialOut [
 	^ trajectoryDifferentialOut
 		ifNil: [ 
 			trajectoryDifferentialOut := self rosnode
-				topicPublisher: self robotNamespace , PureROSKompaiNodelet trajectoryDifferentialTopic
+				topicPublisher: PureROSKompaiNodelet trajectoryDifferentialTopic
 				typedAs: 'geometry_msgs/PoseStamped' ]
 ]
