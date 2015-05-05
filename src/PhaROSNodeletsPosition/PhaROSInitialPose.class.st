@@ -10,7 +10,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhaROSInitialPose class >> initialPoseTopic [
-	^  '/initialpose'
+	^  'initialpose'
 ]
 
 { #category : #'as yet unclassified' }
@@ -20,7 +20,7 @@ PhaROSInitialPose class >> initialPoseTopicType [
 
 { #category : #'as yet unclassified' }
 PhaROSInitialPose class >> orientationTopic [
-	^  '/orientation'
+	^  'orientation'
 ]
 
 { #category : #'as yet unclassified' }
