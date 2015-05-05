@@ -210,7 +210,6 @@ PhaROSTransport >> remotePublisherNode: anURL to: aTopic [
 PhaROSTransport >> resolvePublishersFor: aTopic [
 	| urls channel |
 	
-	
 	urls := (master registerSubscriber: node name to: aTopic name with: aTopic type andCallerUri: self comm url) asSet.
 	
 	channel := aTopic subscribingChannelFor: node.
@@ -257,7 +256,6 @@ PhaROSTransport >> service: aServiceName [
 { #category : #publishing }
 PhaROSTransport >> subscribe: aNodeName with: aSocket to: aTopicID [ 
 	| topic extNode handshakeMessage channel |
-	
 	
 	topic := master lookupTopic: aTopicID.
 	channel := (topic  publishingChannelFor: node).

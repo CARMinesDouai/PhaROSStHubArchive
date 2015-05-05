@@ -1,11 +1,6 @@
 Extension { #name : #String }
 
 { #category : #'*PhaROS' }
-String >> asPhaROSTypeClass [
-	^ (PhaROSTypeBrowser instance type: self) relatedClass 
-]
-
-{ #category : #'*PhaROS' }
 String class >> constant: aName value: aValue [  
 	
 	^ PhaROSStringType constant: aName value: aValue  

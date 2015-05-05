@@ -323,7 +323,7 @@ PhaROSCatkinDeployer >> installAllTypes [
 	deployedServices removeAll.
 	dependencies removeAll.
 	
-	allTypes := PhaROSPackage allSubclasses flatCollect: [ :pharosPackageClass | pharosPackageClass types ].
+	allTypes := #PhaROSPackage asClass allSubclasses flatCollect: [ :pharosPackageClass | pharosPackageClass types ].
 	allTypes do: [ : definition | self manageType: definition] .
 		
 	self newFile: 'package.xml' at: self catkinPackageDirectory with: self packageXml ; 
@@ -416,7 +416,7 @@ PhaROSCatkinDeployer >> makeVersion [
 
 { #category : #'announcements on methods' }
 PhaROSCatkinDeployer >> manageEvent: anEvent [
-	((anEvent methodClass inheritsFrom: PhaROSPackage) and: [ anEvent  selector = #types]) ifTrue: [
+	((anEvent methodClass inheritsFrom: #PhaROSPackage asClass) and: [ anEvent  selector = #types]) ifTrue: [
 		self reinstallAllTypes.	
 	]. 
 ]
@@ -434,7 +434,7 @@ PhaROSCatkinDeployer >> manageType: definition [
 { #category : #'announcements on methods' }
 PhaROSCatkinDeployer >> methodAdded: anEvent [
 	
-	((anEvent methodClass inheritsFrom: PhaROSPackage) and: [ (anEvent selector beginsWith: 'script')]) ifTrue:[
+	((anEvent methodClass inheritsFrom: #PhaROSPackage asClass) and: [ (anEvent selector beginsWith: 'script')]) ifTrue:[
 		self installScriptFor: anEvent selector ofPhaROSPackageClass: anEvent methodClass
 	].
 
@@ -451,7 +451,7 @@ PhaROSCatkinDeployer >> methodModified: anEvent [
 { #category : #'announcements on methods' }
 PhaROSCatkinDeployer >> methodRemoved: anEvent [
 
-	((anEvent methodClass inheritsFrom: PhaROSPackage) and: [ (anEvent selector beginsWith: 'script')]) ifTrue:[
+	((anEvent methodClass inheritsFrom: #PhaROSPackage asClass) and: [ (anEvent selector beginsWith: 'script')]) ifTrue:[
 		self removeScriptFor: anEvent selector ofPhaROSPackageClass: anEvent methodClass
 	].
 

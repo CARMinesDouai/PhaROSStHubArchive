@@ -9,23 +9,23 @@ Class {
 
 { #category : #accessing }
 PhaROSDelegateNode >> initialize [ 
-	receiverDelegate := [].
+	receiverDelegate := []
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'topic-consume' }
 PhaROSDelegateNode >> interestedIn: aTopicName typedAs: aTypeId [
-	^ self subscriber: aTopicName typedAs: aTypeId.
+	^ self subscriber: aTopicName typedAs: aTypeId
 ]
 
 { #category : #service }
 PhaROSDelegateNode >> receive: aMessage from: aChannel [
-	^ receiverDelegate receive: aMessage from: aChannel.
+	^ receiverDelegate receive: aMessage from: aChannel
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSDelegateNode >> receiverDelegate: aReceiverDelegateOrBlock [
-	receiverDelegate := aReceiverDelegateOrBlock. 
+	receiverDelegate := aReceiverDelegateOrBlock
 	
 ]

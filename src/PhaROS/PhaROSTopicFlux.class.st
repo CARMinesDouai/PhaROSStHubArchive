@@ -77,6 +77,11 @@ PhaROSTopicFlux >> adapter: anAdaption [
 ]
 
 { #category : #accessing }
+PhaROSTopicFlux >> condition [
+	^condition
+]
+
+{ #category : #accessing }
 PhaROSTopicFlux >> condition: aCondition [
 	condition := aCondition.
 ]

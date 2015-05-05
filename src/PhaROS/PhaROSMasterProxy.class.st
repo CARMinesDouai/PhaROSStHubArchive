@@ -149,6 +149,7 @@ PhaROSMasterProxy >> registerService: serviceName at: aROSRPCUrl for: aXMLRPCUrl
 
 { #category : #'API-Registration' }
 PhaROSMasterProxy >> registerSubscriber: aCallerId to: aTopicName with: aTopicMessageType andCallerUri: anUri [
+
 	^ self  invokeMethod: 'registerSubscriber' withArgs: { aCallerId . aTopicName . aTopicMessageType . anUri}.
 
 ]

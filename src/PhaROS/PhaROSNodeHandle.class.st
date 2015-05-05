@@ -31,7 +31,7 @@ PhaROSNodeHandle >> atSubscribing: aTopicID do: aBlock [
 
 { #category : #building }
 PhaROSNodeHandle >> buildConnectionFor: aTopicID [
-	^ PhaROSTopicConectionBuilder node: self topicName: aTopicID.
+	^ PhaROSTopicConectionBuilder node: self topicName: (self resolveName: aTopicID).
 ]
 
 { #category : #dispatching }
@@ -49,6 +49,7 @@ PhaROSNodeHandle >> initialize [
 	subscribingHandle := Dictionary new.
 	topicHandle := Dictionary new.
 	receiverDelegate := [: msg :chn | self dispatch: msg for: chn ].
+
 ]
 
 { #category : #banished }
@@ -100,5 +101,5 @@ PhaROSNodeHandle >> register: aCallback for: aChannel [
 { #category : #building }
 PhaROSNodeHandle >> topicPublisher: aTopicName typedAs: aTypeId [
 	
-	^ self publisher: aTopicName typedAs: aTypeId.
+	^ self publisher: (self resolveName: aTopicName) typedAs: aTypeId.
 ]

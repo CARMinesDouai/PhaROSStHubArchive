@@ -103,3 +103,8 @@ PhaROSNodelet >> nodelets [
 PhaROSNodelet >> rosnode [
 	^ self controller node.
 ]
+
+{ #category : #accessing }
+PhaROSNodelet >> rosnodeResolveName: aName [
+	^ self rosnode resolveName: aName
+]

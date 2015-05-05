@@ -185,7 +185,7 @@ PhaROSMaster >> lookupServiceExposer: aServiceID [
 { #category : #'API-Data-Accessors' }
 PhaROSMaster >> lookupTopic: aTopicName [
 
-	^ topics at: aTopicName .
+	^ topics at: aTopicName
 ]
 
 { #category : #'as yet unclassified' }
@@ -239,6 +239,7 @@ PhaROSMaster >> registerNode: aNode [
 
 { #category : #'API-Registration' }
 PhaROSMaster >> registerPublisher: aCallerId to: aTopicName with: aTopicMessageType andCallerUri: anUri [
+	
 	^ masterXmlRpc registerPublisher: aCallerId to: aTopicName with: aTopicMessageType andCallerUri: anUri.
 
 ]

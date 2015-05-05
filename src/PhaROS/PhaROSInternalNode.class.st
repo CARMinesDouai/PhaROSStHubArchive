@@ -135,7 +135,7 @@ PhaROSInternalNode >> service: aServiceName [
 
 { #category : #'as yet unclassified' }
 PhaROSInternalNode >> subscriber: aTopicID typedAs: aTypeID [
-	^ transport subscriber: aTopicID typedAs: aTypeID
+	^ transport subscriber: (self resolveName: aTopicID) typedAs: aTypeID
 	
 ]
 

@@ -16,7 +16,8 @@ Class {
 		'handleName',
 		'nodelets',
 		'tcpPort',
-		'xmlPort'
+		'xmlPort',
+		'handleNamespace'
 	],
 	#category : #'PhaROS-NodeControllers'
 }
@@ -47,7 +48,27 @@ PhaROSHandleController >> configureDependencies: aLaunchSpec [
 
 { #category : #'initialize-release' }
 PhaROSHandleController >> configureNode [ 
+	| handleNameParam handleNameRawParam|
+	
+	handleNameRawParam := Smalltalk arguments detect: [ :p | p beginsWith: '__name:=' ].
+	handleNameParam := handleNameRawParam copyFrom: 9 to: handleNameRawParam size.
+	
+	self configureNodeNamed: handleNameParam
+
+
+]
+
+{ #category : #'initialize-release' }
+PhaROSHandleController >> configureNodeNamed: nodeName [
+
 	| handle |
+	
+	"always a / in front"
+	"never a / at the end"
+	handleNamespace := OSEnvironment default at: 'ROS_NAMESPACE' ifAbsent: [  '' ].
+
+	"nodeName never contains a /"
+	handleName := handleNamespace, '/', nodeName.	
 	
 	handle := (PhaROSMasiveNodeController for: master) 
 				create: PhaROSNodeHandle  
@@ -56,17 +77,15 @@ PhaROSHandleController >> configureNode [
 				tcpPort:  self tcpPort 
 				xmlRpcPort: self xmlRpcPort .
 				
-	self installHandleNode: handle. 
+	self installHandleNode: handle
 	
-
 ]
 
-{ #category : #'initialize-release' }
-PhaROSHandleController >> configureNodeNamed: nodeName [
+{ #category : #accessing }
+PhaROSHandleController >> defaultNodeName [
+	
 
-	handleName := '/PharoHandle-' , nodeName.	
-	self configureNode.
-
+	^ '/PharoHandle-' ,  DateAndTime now asUnixTime asString
 ]
 
 { #category : #accessing }
@@ -88,7 +107,7 @@ PhaROSHandleController >> finalize [
 
 { #category : #accessing }
 PhaROSHandleController >> handleName [
-	^ handleName ifNil: [ handleName := '/PharoHandle-' ,  DateAndTime now asUnixTime asString  ]. 
+	^ handleName ifNil: [ handleName := self defaultNodeName  ]. 
 ]
 
 { #category : #accessing }
