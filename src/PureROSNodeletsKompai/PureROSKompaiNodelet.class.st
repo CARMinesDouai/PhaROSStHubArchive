@@ -46,7 +46,7 @@ PureROSKompaiNodelet class >> baseLinkParentFrame [
 
 { #category : #topics }
 PureROSKompaiNodelet class >> commandVelocityTopic [ 
-	^ '/command_velocity'
+	^ 'command_velocity'
 ]
 
 { #category : #types }
@@ -56,17 +56,17 @@ PureROSKompaiNodelet class >> commandVelocityTopicType [
 
 { #category : #frames }
 PureROSKompaiNodelet class >> laserFrame [
-	^ '/laser'
+	^ 'laser'
 ]
 
 { #category : #frames }
 PureROSKompaiNodelet class >> mapFrame [
-	^'/map'
+	^'map'
 ]
 
 { #category : #frames }
 PureROSKompaiNodelet class >> odomFrame [ 
-	^ '/odom'
+	^ 'odom'
 ]
 
 { #category : #dependencies }
@@ -76,7 +76,7 @@ PureROSKompaiNodelet class >> pharosPackage [
 
 { #category : #topics }
 PureROSKompaiNodelet class >> poseStampedTopic [
-	^ '/pose'
+	^ 'pose'
 ]
 
 { #category : #types }
@@ -86,7 +86,7 @@ PureROSKompaiNodelet class >> poseStampedTopicType [
 
 { #category : #topics }
 PureROSKompaiNodelet class >> scanTopic [
-	^ '/scan'
+	^ 'scan'
 ]
 
 { #category : #types }
@@ -96,7 +96,7 @@ PureROSKompaiNodelet class >> scanTopicType [
 
 { #category : #topics }
 PureROSKompaiNodelet class >> trajectoryDifferentialTopic [ 
-	^ '/trajectory/differential'
+	^ 'trajectory/differential'
 ]
 
 { #category : #types }
@@ -135,7 +135,7 @@ PureROSKompaiNodelet >> consumeCommandVelocity [
 
 	
 	commandVelocity ifNil: [
-	commandVelocity := self rosnode buildConnectionFor: self robotNamespace , self class commandVelocityTopic.
+	commandVelocity := self rosnode buildConnectionFor: self class commandVelocityTopic.
 	commandVelocity 
 			typedAs: self class commandVelocityTopicType;
 			adapted: PNGDifferentialVelocity;
@@ -174,7 +174,7 @@ PureROSKompaiNodelet >> consumeInitialPose [
 PureROSKompaiNodelet >> consumeTrajectoryDifferential [
 	
 	trajectoryDifferentialIn ifNil: [
-		trajectoryDifferentialIn := self rosnode buildConnectionFor: self robotNamespace , self class trajectoryDifferentialTopic.
+		trajectoryDifferentialIn := self rosnode buildConnectionFor: self class trajectoryDifferentialTopic.
 		trajectoryDifferentialIn 
 				typedAs: 'geometry_msgs/PoseStamped';
 				adapted: #pose \> PNGRobotPose;
@@ -247,7 +247,7 @@ PureROSKompaiNodelet >> moveAt: aDifferentialVelocity [
 PureROSKompaiNodelet >> poseStamped: aPose [
 	self poseStampedOut
 		send: [ :msg | 
-			msg header frame_id:  self robotNamespace , self class mapFrame.
+			msg header frame_id: (self rosnodeResolveName: self class mapFrame).
 			aPose intoGeometry_msgs_Pose: msg pose ]
 ]
 
@@ -256,7 +256,7 @@ PureROSKompaiNodelet >> poseStampedOut [
 	^ poseStampedOut
 		ifNil: [ 
 			poseStampedOut := self rosnode
-				topicPublisher: self robotNamespace , self class poseStampedTopic
+				topicPublisher: self class poseStampedTopic
 				typedAs: self class poseStampedTopicType ]
 ]
 
@@ -265,16 +265,10 @@ PureROSKompaiNodelet >> robot [
 	^ robot 
 ]
 
-{ #category : #accessing }
-PureROSKompaiNodelet >> robotNamespace [
-
-	^ '/', robotName asString
-]
-
 { #category : #'topic-publishing' }
 PureROSKompaiNodelet >> scan: aLaserMeasure [
 	self scanOut send: [ : msg | 
-		msg header frame_id: self robotNamespace, self class laserFrame. 
+		msg header frame_id: (self rosnodeResolveName: self class laserFrame). 
 		aLaserMeasure intoSensor_msgs_LaserScan: msg.
 	].
 
@@ -284,7 +278,7 @@ PureROSKompaiNodelet >> scan: aLaserMeasure [
 PureROSKompaiNodelet >> scanOut [
 	^ scan ifNil: [ 
 		scan := self rosnode 
-			topicPublisher: self robotNamespace , self class scanTopic 
+			topicPublisher: self class scanTopic
 			typedAs: self class scanTopicType ]
 ]
 
