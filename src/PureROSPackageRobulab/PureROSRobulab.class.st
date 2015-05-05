@@ -31,7 +31,7 @@ PureROSRobulab class >> catkinPackageName [
 { #category : #private }
 PureROSRobulab >> buildController [
 	| controller |
-	controller := PhaROSHandleController homeWithNodeNamed: rosNodeName.
+	controller := PhaROSHandleController home.
 	controller nodelets use: PureROSRobulabNodelet as: #robulab.
 	controller nodelets robulab robotName: robotName. 
 	^ controller
@@ -42,6 +42,7 @@ PureROSRobulab >> publishOdomFor: aRobotName [
 	robotName := aRobotName.
 	rosNodeName := robotName, '_odom'.
 	2 seconds wait. "important because /pose must be available for subscritption"
+
 	self controller nodelets odometer transformToOdometry: self controller nodelets robulab  poseStamped.
 	self inform: ('scriptPublishOdomFor{1} running...' format: { aRobotName asString })
 ]
