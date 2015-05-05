@@ -27,7 +27,7 @@ PureROSKompai class >> catkinPackageName [
 
 { #category : #private }
 PureROSKompai >> buildController [ 
-	^ PhaROSHandleController homeWithNodeNamed: rosNodeName
+	^ PhaROSHandleController home
 	
 ]
 
@@ -37,6 +37,7 @@ PureROSKompai >> publishPoseAndScanFor: aRobotName [
 	rosNodeName := robotName, '_driver'.
 	self controller nodelets use: PureROSKompaiNodelet as: #kompai.
 	self controller nodelets kompai initialize: robotName. 	
+
 	self inform: ('scriptPublishPoseAndScanFor{1} running...' format: { aRobotName asString})
 ]
 
