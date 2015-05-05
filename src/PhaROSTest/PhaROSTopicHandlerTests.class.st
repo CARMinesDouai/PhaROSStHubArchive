@@ -21,7 +21,7 @@ PhaROSTopicHandlerTests >> testTopicAdaptedAndTypedBuilder [
 	self assert: flux condition  = PhaROSTopicFlux defaultConditional.
 	self assert: (flux imInterestedIn: nil from: nil).
 	 
-	flux callback: [ : msg | rslt := msg ].
+	flux for: [ : msg | rslt := msg ].
 	flux  receive: [ 1+ 2 ] from: nil. 
 	
 	self assert: rslt = '3'.
@@ -47,7 +47,7 @@ PhaROSTopicHandlerTests >> testTopicAdaptedBuilder [
 	self assert: flux condition  = PhaROSTopicFlux defaultConditional.
 	self assert: (flux imInterestedIn: nil from: nil).
 	 
-	flux callback: [ : msg | rslt := msg ].
+	flux for: [ : msg | rslt := msg ].
 	flux  receive: [ 1+ 2 ] from: nil. 
 	
 	self assert: rslt = '3'.
@@ -75,7 +75,7 @@ PhaROSTopicHandlerTests >> testTopicConditionAdaptedAndTypedBuilder [
 	self assert: flux condition  = conditional.
 	self deny: (flux imInterestedIn: nil from: nil).
 	 
-	flux callback: [ : msg | rslt := msg ].
+	flux for: [ : msg | rslt := msg ].
 
 	flux  receive: [ 4 + 2 ] from: nil. 
 
@@ -108,7 +108,7 @@ PhaROSTopicHandlerTests >> testTopicConditionAndTypedBuilder [
 	self assert: flux condition  = conditional.
 	self deny: (flux imInterestedIn: nil from: nil).
 	 
-	flux callback: [ : msg | rslt := msg ].
+	flux for: [ : msg | rslt := msg ].
 	flux  receive: [ 1+ 2 ] from: nil. 
 	
 	self assert: rslt isNil.
@@ -136,7 +136,7 @@ PhaROSTopicHandlerTests >> testTopicConditionBuilder [
 	self assert: flux condition  = conditional.
 	self deny: (flux imInterestedIn: nil from: nil).
 	 
-	flux callback: [ : msg | rslt := msg ].
+	flux for: [ : msg | rslt := msg ].
 	flux  receive: [ 1+ 2 ] from: nil. 
 	
 	self assert: rslt isNil.
@@ -162,7 +162,7 @@ PhaROSTopicHandlerTests >> testTopicDefaultBuilder [
 	self assert: flux condition  = PhaROSTopicFlux defaultConditional.
 	self assert: (flux imInterestedIn: nil from: nil).
 	 
-	flux callback: [ : msg | rslt := msg ].
+	flux for: [ : msg | rslt := msg ].
 	flux  receive: [ 1+ 2 ] from: nil. 
 	
 	self assert: rslt = 3.
@@ -206,7 +206,7 @@ PhaROSTopicHandlerTests >> testTopicTypedBuilder [
 	self assert: flux condition  = PhaROSTopicFlux defaultConditional.
 	self assert: (flux imInterestedIn: nil from: nil).
 	 
-	flux callback: [ : msg | rslt := msg ].
+	flux for: [ : msg | rslt := msg ].
 	flux  receive: [ 1+ 2 ] from: nil. 
 	
 	self assert: rslt = 3.
