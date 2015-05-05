@@ -27,7 +27,9 @@ PhaROSBaseCase >> defaultMasterPort [
 
 { #category : #accessing }
 PhaROSBaseCase >> masterURL [
-	^ masterURL ifNil: [ masterURL := 'http://', self defaultMasterIp, ':', self defaultMasterPort asString ] 
+	^ masterURL ifNil: [ 
+			masterURL := OSEnvironment default at: 'ROS_MASTER_URI' 
+								ifAbsent: [ 'http://', self defaultMasterIp, ':', self defaultMasterPort asString ] ]
 ]
 
 { #category : #accessing }
