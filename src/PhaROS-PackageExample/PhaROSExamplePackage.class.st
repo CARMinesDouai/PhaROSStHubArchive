@@ -83,18 +83,18 @@ PhaROSExamplePackage >> scriptTopicPublishingExample [
 	You can obtain it asking to the related node like in the following code".
 	
 	publisher := self controller node 
-						topicPublisher: '/example'
+						topicPublisher: 'example'
 						typedAs: 'std_msgs/String'.
 
 	"When data is actually sent you''l see a sequence of ping and pong. Otherwise you'' see pong alone"						
-	[
-		1 second wait.
+	[[
+		2 second wait.
 		publisher send:[ : string | 
 			string data: 'You are receiving data :-)'.
 			self log: 'ping'
 		].
 		self log: '  pong'
-	] repeat.
+	] repeat] forkAt: Processor userBackgroundPriority.
 
 ]
 
@@ -114,7 +114,7 @@ PhaROSExamplePackage >> scriptTopicSubscribingExample [
 	cf. PhaROSExamplePackage for more scripts example
 "
 	
-	(self controller node buildConnectionFor: '/example' ) 
+	(self controller node buildConnectionFor: 'example' ) 
 								typedAs: 'std_msgs/String'; 
 								for: [ : string |  "this is a callback" 
 									Transcript show: string data.
