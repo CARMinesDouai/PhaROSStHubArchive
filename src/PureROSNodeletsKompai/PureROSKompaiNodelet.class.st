@@ -36,12 +36,12 @@ Class {
 
 { #category : #frames }
 PureROSKompaiNodelet class >> baseLinkFrame [ 
-	^ '/base_link'
+	^ 'base_link'
 ]
 
 { #category : #frames }
 PureROSKompaiNodelet class >> baseLinkParentFrame [ 	
-	^ self odomFrame.
+	^ self odomFrame
 ]
 
 { #category : #topics }
@@ -247,7 +247,7 @@ PureROSKompaiNodelet >> moveAt: aDifferentialVelocity [
 PureROSKompaiNodelet >> poseStamped: aPose [
 	self poseStampedOut
 		send: [ :msg | 
-			msg header frame_id: (self rosnodeResolveName: self class mapFrame).
+			msg header frame_id: (self rosnodeResolveName: self class odomFrame).
 			aPose intoGeometry_msgs_Pose: msg pose ]
 ]
 
