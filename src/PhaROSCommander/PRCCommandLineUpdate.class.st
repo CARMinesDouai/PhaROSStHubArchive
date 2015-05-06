@@ -34,6 +34,7 @@ PRCCommandLineUpdate >> exitSuccess [
 { #category : #activation }
 PRCCommandLineUpdate >> realActivate [ 	
 	
+	| rmCommand |
 	self stdout: 'Update the PhaROSCommander code'.
 	
 	Gofer it
@@ -42,5 +43,7 @@ PRCCommandLineUpdate >> realActivate [
 		update.
 	
 	self stdout: 'Remove cached images'.
-	OSProcess command: ('OSProcess waitForCommand: ''cd {1} && rm -fr '' Pharo*-PhaROS-*.\{image,changes\}' format: { Smalltalk imageDirectory pathString.  })
+	rmCommand :=  ('rm -fr {1}/Pharo*-PhaROS-*.image {1}/Pharo*-PhaROS-*.changes' 
+							format: { Smalltalk imageDirectory pathString }).
+	OSProcess command: rmCommand
 ]
