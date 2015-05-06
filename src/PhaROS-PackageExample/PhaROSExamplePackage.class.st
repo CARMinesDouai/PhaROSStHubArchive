@@ -24,8 +24,7 @@ PhaROSExamplePackage >> nodeletInjectionExample: aController [
 	For know more about nodelets go to the reference or check subclasses (PhaROSTransformationNodelet is a cool place to go)"
 
 	aController nodelets use: PhaROSExampleNodelets as: #example.
-	aController nodelets example isKindOf: PhaROSExampleNodelets.
-	^ aController.
+	^ aController
 	
 
 ]
