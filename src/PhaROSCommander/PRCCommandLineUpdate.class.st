@@ -1,9 +1,13 @@
 "
-usage: pharos update [OPTIONS]
- 
+usage: pharos update
+
+Effects:
+1. 	update the PhaROSCommander code to the latest version (bleedingEdge) 
+2.	removed cached PhaROS images 
+
 Options:
    --help                     Shows this text
-   --dev                      Load the bleedingEdge version of PhaROSCommander
+
 "
 Class {
 	#name : #PRCCommandLineUpdate,
@@ -31,9 +35,11 @@ PRCCommandLineUpdate >> exitSuccess [
 PRCCommandLineUpdate >> realActivate [ 	
 	
 	self stdout: 'Update the PhaROSCommander code'.
-	self shouldLoadBleedingEdge
-		ifTrue: [ ConfigurationOfPhaROSCommander loadBleedingEdge ]
-		ifFalse: [ ConfigurationOfPhaROSCommander loadStable ].
+	
+	Gofer it
+		smalltalkhubUser: 'CAR' project: 'PhaROS';
+		package: 'PhaROSCommander' ;
+		update.
 	
 	self stdout: 'Remove cached images'.
 	OSProcess command: ('OSProcess waitForCommand: ''cd {1} && rm -fr '' Pharo*-PhaROS-*.{image,changes}' format: { Smalltalk imageDirectory pathString.  })
