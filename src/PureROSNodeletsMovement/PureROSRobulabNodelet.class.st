@@ -17,7 +17,7 @@ Class {
 
 { #category : #frames }
 PureROSRobulabNodelet class >> baseLinkFrame [ 
-	^ '/base_link'
+	^ 'base_link'
 ]
 
 { #category : #frames }
