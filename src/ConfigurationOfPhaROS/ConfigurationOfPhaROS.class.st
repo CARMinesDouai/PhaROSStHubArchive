@@ -892,7 +892,7 @@ ConfigurationOfPhaROS >> version141: spec [
 		spec timestamp: '06/05/2015 16:00'.
 		spec project: 'XMLRPC' with: '1.01'.
 		spec project: 'PaulLePoulpe' with: '1.0.1'.
-		spec package: 'PhaROS' with: 'PhaROS-LucFabresse.754'.
+		spec package: 'PhaROS' with: 'PhaROS-robulabdriver.754'.
 		spec package: 'PhaROS-Doc' with: 'PhaROS-Doc-LucFabresse.4'.
 		spec package: 'PhaROS-PackageExample' with: 'PhaROS-PackageExample-LucFabresse.6'.
 		spec package: 'PhaROSNodeletsMerger' with: 'PhaROSNodeletsMerger-LucFabresse.2'.
