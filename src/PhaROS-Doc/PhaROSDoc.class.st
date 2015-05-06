@@ -27,15 +27,13 @@ PhaROSDoc class >> open [
 PhaROSDoc class >> stringDoc [
 ^' 
 	Welcome to PhaROS! 
-	Remember always to check for updates in http://car.mines-douai.fr/PhaROS. 	
 
 	-----------------------------------------------------------
 	Running the generated package
 	-----------------------------------------------------------
 	
 	The generated package has implemented some scripts to show you the basic usage of PhaROS. 
-	 In PhaROS a package has scripts. Each scripts represents a Node. Each of these nodes share the same 
-	class and code. So, take that in count when you implement a new script. 
+	In PhaROS a package has scripts. Each scripts represents a Node. Each of these nodes share the same class and code. So, take that in count when you implement a new script. 
 	
 	-----------------------------------------------------------------------------
 	Basic ROS commands for your generated package
@@ -204,7 +202,7 @@ PhaROSDoc class >> stringDoc [
 		pharos create PACKAGE [OPTIONS]
 		
 		Example
-			pharos create --location=/home/user/ros/workspace --version=2.0 --author=YourName --author-email=YourEmail 
+			pharos create myPackage
 			
 		Help 
 			pharos create --help
