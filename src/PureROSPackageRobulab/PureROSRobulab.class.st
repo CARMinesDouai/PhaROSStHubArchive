@@ -6,7 +6,6 @@ Class {
 	#name : #PureROSRobulab,
 	#superclass : #PhaROSPackage,
 	#instVars : [
-		'rosNodeName',
 		'robotName'
 	],
 	#category : #PureROSPackageRobulab
@@ -40,7 +39,6 @@ PureROSRobulab >> buildController [
 { #category : #'scripts /odom' }
 PureROSRobulab >> publishOdomFor: aRobotName [
 	robotName := aRobotName.
-	rosNodeName := robotName, '_odom'.
 	2 seconds wait. "important because /pose must be available for subscritption"
 
 	self controller nodelets odometer transformToOdometry: self controller nodelets robulab  poseStamped.
@@ -49,16 +47,15 @@ PureROSRobulab >> publishOdomFor: aRobotName [
 
 { #category : #'script /tf' }
 PureROSRobulab >> publishOdomToBaseLinkTfFor: aRobotName [
-	| namespace |
+	
 	4 seconds wait. "important because /pose must be available for subscritption and the /odom frame should be known in tf"
 	robotName := aRobotName.
-	rosNodeName := robotName, '_tf_odom_to_base_link'.
-	namespace := '/', robotName asString.
+	
 	self controller nodelets use: PhaROSPoseToTFNodelet  as: #pose2tf.
 	self controller nodelets pose2tf 
 		express: self controller nodelets robulab poseStamped 
-		as: namespace, PureROSRobulabNodelet baseLinkFrame 
-		childOf: namespace, PureROSRobulabNodelet baseLinkParentFrame.
+		as: PureROSRobulabNodelet baseLinkFrame 
+		childOf: PureROSRobulabNodelet baseLinkParentFrame.
 	self inform: ('scriptPublishOdomToBaseLinkTfFor{1} running...' format: { aRobotName asString })
 ]
 
