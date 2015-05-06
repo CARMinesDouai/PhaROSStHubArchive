@@ -50,8 +50,13 @@ PhaROSHandleController >> configureDependencies: aLaunchSpec [
 PhaROSHandleController >> configureNode [ 
 	| handleNameParam handleNameRawParam|
 	
-	handleNameRawParam := Smalltalk arguments detect: [ :p | p beginsWith: '__name:=' ].
-	handleNameParam := handleNameRawParam copyFrom: 9 to: handleNameRawParam size.
+	handleNameRawParam := Smalltalk arguments 
+									detect: [ :p | p beginsWith: '__name:=' ] 
+									ifNone: [ '' ].
+	
+	handleNameRawParam isEmpty 
+		ifTrue: [ handleNameParam := self defaultNodeName ] 
+		ifFalse: [ handleNameParam := handleNameRawParam copyFrom: 9 to: handleNameRawParam size ].
 	
 	self configureNodeNamed: handleNameParam
 
@@ -66,9 +71,10 @@ PhaROSHandleController >> configureNodeNamed: nodeName [
 	"always a / in front"
 	"never a / at the end"
 	handleNamespace := OSEnvironment default at: 'ROS_NAMESPACE' ifAbsent: [  '' ].
-
-	"nodeName never contains a /"
-	handleName := handleNamespace, '/', nodeName.	
+	
+	nodeName first = $/ 
+		ifTrue: [ handleName := handleNamespace, nodeName ] 
+		ifFalse: [ handleName := handleNamespace, '/', nodeName ].
 	
 	handle := (PhaROSMasiveNodeController for: master) 
 				create: PhaROSNodeHandle  
@@ -85,7 +91,7 @@ PhaROSHandleController >> configureNodeNamed: nodeName [
 PhaROSHandleController >> defaultNodeName [
 	
 
-	^ '/PharoHandle-' ,  DateAndTime now asUnixTime asString
+	^ 'PharoHandle-' ,  DateAndTime now asUnixTime asString
 ]
 
 { #category : #accessing }
