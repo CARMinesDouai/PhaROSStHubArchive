@@ -18,7 +18,7 @@ Class {
 { #category : #'as yet unclassified' }
 PhaROSOdometryNodelet class >> baseLinkFrame [
 
-	^ '/base_link' 
+	^ 'base_link' 
 ]
 
 { #category : #'as yet unclassified' }
