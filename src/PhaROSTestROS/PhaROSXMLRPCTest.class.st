@@ -92,7 +92,7 @@ PhaROSXMLRPCTest >> testLookupService [
 	|service expectedServiceName|
 	expectedServiceName := '/rosout/get_loggers'.
 	service :=  master lookupService: expectedServiceName with: self callerId.
-	self assert: service host = masterUrl asUrl host.
+	self assert: service uri host = masterUrl asUrl host.
 	self assert: service serviceName = expectedServiceName 
 ]
 
