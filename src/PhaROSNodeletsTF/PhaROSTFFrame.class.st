@@ -24,7 +24,7 @@ PhaROSTFFrame class >> id: aFrameID parent: aParent [
 { #category : #converting }
 PhaROSTFFrame >> asTransform [
 	| transform | 
-	transform := 'geometry_msgs/Transform' asPhaROSTypeClass new .
+	transform := #Geometry_msgsTransform asClass new .
 	
 	transform translation x: self pose position x.
 	transform translation y: self pose position y.
@@ -42,7 +42,7 @@ PhaROSTFFrame >> asTransform [
 PhaROSTFFrame >> asTransformStamped [
 	| transformStamped | 
 	
-		transformStamped := 'geometry_msgs/TransformStamped' asPhaROSTypeClass new.
+		transformStamped := #Geometry_msgsTransformStamped asClass new.
 		
 		transformStamped child_frame_id:  name.
 		transformStamped header frame_id:  (parent ifNil: [''] ifNotNil: [ parent name ]).

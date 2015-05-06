@@ -36,7 +36,8 @@ PhaROSPoseToTFNodelet >> express: aPoseTopic as: aFrameID childOf: aParentFrameI
 
 { #category : #'as yet unclassified' }
 PhaROSPoseToTFNodelet >> initialize [
-	writer := Dictionary new. 
+	writer := Dictionary new
+
 ]
 
 { #category : #'as yet unclassified' }
