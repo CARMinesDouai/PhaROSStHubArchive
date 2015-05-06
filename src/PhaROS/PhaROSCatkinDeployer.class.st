@@ -61,7 +61,7 @@ PhaROSCatkinDeployer class >> editScriptForPhaROSPackageNamed: packageName [
 ^('#!/usr/bin/env bash
 DIR=`rospack find {1}`
 	
-$DIR/vm/pharo $DIR/image/{1}.image
+$DIR/vm/pharo $DIR/image/{1}.image $@
 ' format: { packageName }) withUnixLineEndings
 ]
 
@@ -135,7 +135,7 @@ PhaROSCatkinDeployer class >> headlessScriptForPhaROSPackageNamed: packageName [
 ^('#!/usr/bin/env bash
 DIR=`rospack find {1}`
 	
-$DIR/vm/pharo --nodisplay  $DIR/image/{1}.image st $DIR/image/scripts/$1.st
+$DIR/vm/pharo --nodisplay  $DIR/image/{1}.image st $DIR/image/scripts/$1.st $@
 ' format: { packageName }) withUnixLineEndings
 ]
 
@@ -157,7 +157,7 @@ PhaROSCatkinDeployer class >> pharosScriptForPhaROSPackageNamed: packageName [
 ^('#!/usr/bin/env bash
 DIR=`rospack find {1}`
 	
-$DIR/vm/pharo $DIR/image/{1}.image st $DIR/image/scripts/$1.st
+$DIR/vm/pharo $DIR/image/{1}.image st $DIR/image/scripts/$1.st $@
 ' format: { packageName }) withUnixLineEndings
 ]
 
