@@ -77,14 +77,14 @@ PhaROSXMLRPCTest >> testGetTopicTypes [
 
 { #category : #testing }
 PhaROSXMLRPCTest >> testGetUri [
-	self assert: ( master getUri: self callerId) =  (masterUrl, '/')
+	self assert: ( master getUri: self callerId) = (masterUrl, '/')
 ]
 
 { #category : #testing }
 PhaROSXMLRPCTest >> testLookupNode [
 	|node|
 	node :=  master lookupNode: '/rosout' with: self callerId.
-	self assert: (node url host  = masterUrl asUrl host )
+	self assert: (node url  host  = masterUrl asUrl host)
 ]
 
 { #category : #testing }
@@ -150,7 +150,6 @@ PhaROSXMLRPCTest >> testRegisterSubscriber [
 { #category : #testing }
 PhaROSXMLRPCTest >> testUnregisterPublisher [
 	| currentData callerURI |
-	
 	self testRegisterPublisher.
 	
 	callerURI :=  'http://127.0.0.1:9090/'.

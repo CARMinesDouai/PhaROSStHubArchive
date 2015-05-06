@@ -54,7 +54,7 @@ PhaROSNodeTest >> testPublisherNode [
 	
 	publisherNode := PhaROSBlockNode name: '/PublisherTestNode' domain: '127.0.0.1' tcpPort:  9456  xmlRpcPort:  6098 master: master soul: [
 		: me |
-		me sendTo: '/turtle1/command_velocity' typedAs:'turtlesim/Velocity' a: [ :msg |
+		me sendTo: '/turtle1/cmd_vel' typedAs:'geometry_msgs/Twist' a: [ :msg |
 			msg linear: 1.0. 
 			msg angular: 1.1. 
 		].
@@ -64,8 +64,8 @@ PhaROSNodeTest >> testPublisherNode [
 	
 	node subscriberBehavior: [
 		:aMessage :aChannel  |
-		asserts at:1 put: ( aChannel topic name = '/turtle1/command_velocity').
-		asserts at:2 put: ( aMessage value isKindOf: ( Smalltalk at:#TurtlesimVelocity ) ).
+		asserts at:1 put: ( aChannel topic name = '/turtle1/cmd_vel').
+		asserts at:2 put: ( aMessage value isKindOf: 'geometry_msgs/Twist' asPhaROSTypeClass ).
 		asserts at:3 put: ( aChannel isKindOf: PhaROSInPutChannel ).
 		asserts at:4 put: (
 			aMessage value linear = 1.0 and: [
@@ -78,7 +78,7 @@ PhaROSNodeTest >> testPublisherNode [
 
 	publisherNode execute.
 
-	node subscriber: '/turtle1/command_velocity' typedAs: 'turtlesim/Velocity' .	
+	node subscriber: '/turtle1/cmd_vel' typedAs: 'geometry_msgs/Twist' asPhaROSTypeClass .	
 
 	1 second asDelay wait.	
 
