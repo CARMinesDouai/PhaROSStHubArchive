@@ -42,5 +42,5 @@ PRCCommandLineUpdate >> realActivate [
 		update.
 	
 	self stdout: 'Remove cached images'.
-	OSProcess command: ('OSProcess waitForCommand: ''cd {1} && rm -fr '' Pharo*-PhaROS-*.{image,changes}' format: { Smalltalk imageDirectory pathString.  })
+	OSProcess command: ('OSProcess waitForCommand: ''cd {1} && rm -fr '' Pharo*-PhaROS-*.\{image,changes\}' format: { Smalltalk imageDirectory pathString.  })
 ]
