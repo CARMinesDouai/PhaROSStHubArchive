@@ -17,7 +17,7 @@ Object >> asRoStByteArray [
 
 { #category : #'*PhaROS' }
 Object >> debug: aLog [
-	PhaROSManifest debug ifTrue: [
+	PhaROSConstant debugMode ifTrue: [
 		self log: aLog]
 ]
 
