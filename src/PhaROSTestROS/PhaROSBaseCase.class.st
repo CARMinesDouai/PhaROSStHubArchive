@@ -3,7 +3,6 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'masterUrl',
-		'masterURL',
 		'master',
 		'process'
 	],
@@ -26,22 +25,17 @@ PhaROSBaseCase >> defaultMasterPort [
 ]
 
 { #category : #accessing }
-PhaROSBaseCase >> masterURL [
-	^ masterURL ifNil: [ 
-			masterURL := OSEnvironment default at: 'ROS_MASTER_URI' 
+PhaROSBaseCase >> masterUrl [
+	^ masterUrl ifNil: [ 
+			masterUrl := OSEnvironment default at: 'ROS_MASTER_URI' 
 								ifAbsent: [ 'http://', self defaultMasterIp, ':', self defaultMasterPort asString ] ]
-]
-
-{ #category : #accessing }
-PhaROSBaseCase >> masterURL: aString [
-	masterURL := aString
 ]
 
 { #category : #'setup / teardown' }
 PhaROSBaseCase >> setUp [
-	masterUrl := self masterURL.
 	PhaROSManifest cleanUp.
-	master := PhaROSMaster url: masterUrl
+	master := PhaROSMaster url: self masterUrl
+	
 ]
 
 { #category : #accessing }

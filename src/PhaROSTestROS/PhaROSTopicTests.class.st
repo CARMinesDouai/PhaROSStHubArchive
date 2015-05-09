@@ -23,12 +23,10 @@ publisherNode := PhaROSBlockNode name: '/PublisherTestNode' domain: 'localhost' 
 	pub := publisherNode publisher:  '/turtle1/cmd_vel'  typedAs: 'geometry_msgs/Twist' .
 	
 	pub send: [ : msg |
-			self halt.
 			type := msg class
 	].
 	(Delay forMilliseconds: 1500) wait.
 	pub send: [ : msg |
-			self halt.
 			type := msg class
 	].
 	
