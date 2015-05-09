@@ -7,7 +7,12 @@ Class {
 	#category : #'PhaROSTest-Types'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+PhaROSCompositeTypeTest >> expectedFailures [
+	^ #( testFailSerialize testSerialize testUnserialize )
+]
+
+{ #category : #'tests - parametrization' }
 PhaROSCompositeTypeTest >> invalidByteArrays [
 	^ {
 		 #[] .
@@ -19,7 +24,7 @@ PhaROSCompositeTypeTest >> invalidByteArrays [
 	}.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSCompositeTypeTest >> invalidValues [ 
 	^ {
 		-128 .   'a string' .  -1 . 4294967296 . (Duration seconds: 4294967298) 
@@ -27,17 +32,17 @@ PhaROSCompositeTypeTest >> invalidValues [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSCompositeTypeTest >> newTestedClassInstance [
-	^ type
+	^ self relatedClass new 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSCompositeTypeTest >> relatedClass [ 
-	^ PhaROSCompositeType.
+	^ type relatedClass.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 PhaROSCompositeTypeTest >> setUp [ 
 
 	type := PhaROSType composite: {
@@ -46,7 +51,9 @@ PhaROSCompositeTypeTest >> setUp [
 				#int8 -> PhaROSInt8Type new .
 				#uint64Array -> (PhaROSArrayType of: PhaROSUInt64Type ).
 				#int64FixedArray -> (PhaROSArrayFixedLenghtType of: 3 of: PhaROSInt64Type ). 
-			} named: 'testedType' withConstants:{}..
+			} named: 'testedType' withConstants:{}.
+	
+	type relatedClass: (PhaROSCompositeType named: 'testedType').
 
 	validValues := self validValues collect: [
 		:assoc |
@@ -63,37 +70,33 @@ PhaROSCompositeTypeTest >> setUp [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 PhaROSCompositeTypeTest >> tearDown [
 	PhaROSCompositeType remove: 'testedType'.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSCompositeTypeTest >> testFailSerialize [
 	^ super baseFailSerialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSCompositeTypeTest >> testSerialize [
 	^ super baseSerialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSCompositeTypeTest >> testUnserialize [
 	^ super baseUnserialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSCompositeTypeTest >> validValues [ 	
-	
-	| instance |
-	
-	
 	^{
-		(type newInstance float32: 2.0; int32: 1; int8: -1; uint64Array: { 0 . 0 };  int64FixedArray: { -1 . 0 . 1 }; yourself ) -> 
+		(self newTestedClassInstance float32: 2.0; int32: 1; int8: -1; uint64Array: { 0 . 0 };  int64FixedArray: { -1 . 0 . 1 }; yourself ) -> 
 		#[53 0 0 0 0 0 0 64 1 0 0 0 255 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0]
 	
 	}

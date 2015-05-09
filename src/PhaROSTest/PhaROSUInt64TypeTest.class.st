@@ -4,7 +4,7 @@ Class {
 	#category : #'PhaROSTest-Types'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSUInt64TypeTest >> invalidByteArrays [
 	^ {
 		 #[] .
@@ -14,7 +14,7 @@ PhaROSUInt64TypeTest >> invalidByteArrays [
 	}.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSUInt64TypeTest >> invalidValues [ 
 	^ {
 		-128 .   'a string' .  -1 . 18446744073709551616
@@ -23,36 +23,36 @@ PhaROSUInt64TypeTest >> invalidValues [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSUInt64TypeTest >> relatedClass [
 	^ PhaROSUInt64Type.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSUInt64TypeTest >> testFailSerialize [
 				^ super baseFailSerialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSUInt64TypeTest >> testSerialize [
 				^ super baseSerialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSUInt64TypeTest >> testUnserialize [
 				^ super baseUnserialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSUInt64TypeTest >> testUnserializeFail [
 				^ super baseUnserializeFail.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSUInt64TypeTest >> validValues [ 
 	^ {
 		1 -> #[ 8 0 0 0  1 0 0 0 0 0 0 0] .

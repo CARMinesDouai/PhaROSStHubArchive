@@ -4,49 +4,49 @@ Class {
 	#category : #'PhaROSTest-Types'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSBoolTypeTest >> invalidByteArrays [ 
 	^ {
 		#[25 6] . #[ 10 10 ] . 'anString' asByteArray 
 	}.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSBoolTypeTest >> invalidValues [ 
 	^ { True . False . 'anString' }.
 	 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSBoolTypeTest >> relatedClass [
 	^ PhaROSBoolType.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSBoolTypeTest >> testFailSerialize [
 				^ super baseFailSerialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSBoolTypeTest >> testSerialize [
 				^ super baseSerialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSBoolTypeTest >> testUnserialize [
 				^ super baseUnserialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSBoolTypeTest >> testUnserializeFail [
 				^ super baseUnserializeFail.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSBoolTypeTest >> validValues [ 
 	^
 	{

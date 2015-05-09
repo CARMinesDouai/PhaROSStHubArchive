@@ -4,7 +4,7 @@ Class {
 	#category : #'PhaROSTest-Util'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSGeometryTransformationsTests >> testPositionRotation [
 	| position rotation |
 	position := PhaROSPosition x: 1 y: 1  z:0.
@@ -20,7 +20,7 @@ PhaROSGeometryTransformationsTests >> testPositionRotation [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSGeometryTransformationsTests >> testQuaternionAsRPY [
 	| ang |
 	<expectedFailure>
@@ -43,7 +43,7 @@ PhaROSGeometryTransformationsTests >> testQuaternionAsRPY [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSGeometryTransformationsTests >> testRPYAsQuaternion [
 	| ang |
 	
@@ -64,7 +64,7 @@ PhaROSGeometryTransformationsTests >> testRPYAsQuaternion [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSGeometryTransformationsTests >> testTransformation [
 	| util |
 	util := PhaROSGeometryTransformations new.
@@ -81,7 +81,7 @@ PhaROSGeometryTransformationsTests >> testTransformation [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSGeometryTransformationsTests >> testTransformationBack [
 	| util |
 	<expectedFailure>

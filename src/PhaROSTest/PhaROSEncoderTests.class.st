@@ -7,13 +7,6 @@ Class {
 	#category : #'PhaROSTest-Encoding'
 }
 
-{ #category : #tests }
-PhaROSEncoderTests >> expectedFailures [ 
-	^ #(testEncodeTime)
-	 
-		
-]
-
 { #category : #setup }
 PhaROSEncoderTests >> setUp [
 	encoder := PhaROSEncoder new.
@@ -209,22 +202,21 @@ PhaROSEncoderTests >> testEncodeString [
 
 { #category : #tests }
 PhaROSEncoderTests >> testEncodeTime [
-	 
-			| buffer |
-			buffer := ByteArray new: 8.
-			encoder stream: (WriteStream on: buffer).
+	| buffer |
+
+	buffer := ByteArray new: 8.
+	encoder stream: (WriteStream on: buffer).
 			
-			encoder encodeTime:  PhaROSTimestamp new.
-			encoder flush.
-			self assert: (buffer = #[0 0 0 0 0 0 0 0]).
+	encoder encodeTime:  PhaROSTimestamp new.
+	encoder flush.
+	self assert: (buffer = #[0 0 0 0 0 0 0 0]).
 		
-	
-			buffer := ByteArray new: 8.
-			encoder stream: (WriteStream on: buffer).
+	buffer := ByteArray new: 8.
+	encoder stream: (WriteStream on: buffer).
 		
-			encoder encodeTime:  (PhaROSTimestamp new + (Duration seconds: 99999999)).
-			encoder flush.
-			self assert: (buffer = #[255 224 245 5 0 0 0 0]).
+	encoder encodeTime:  (PhaROSTimestamp new + (Duration seconds: 99999999)).
+	encoder flush.
+	self assert: (buffer = #[255 224 245 5 0 0 0 0]).
 		
 ]
 

@@ -7,13 +7,13 @@ Class {
 	#category : #'PhaROSTest-Encoding'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 PhaROSDecoderTests >> setUp [
 	decoder := PhaROSDecoder new.
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSDecoderTests >> testNextEncodedByte [
 	 decoder stream: (ReadStream on: #[ 0 1 ] ).
 	 self assert: (decoder nextEncodedByte= 0). 
@@ -21,7 +21,7 @@ PhaROSDecoderTests >> testNextEncodedByte [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSDecoderTests >> testNextEncodedDuration [
 	"in the stream  { time . time . 1 . 0} "
 	 decoder stream: (ReadStream on: #[0 0 0 0 0 0 0 0 160 134 1 0 0 0 0 0 1 0] ).
@@ -31,7 +31,7 @@ PhaROSDecoderTests >> testNextEncodedDuration [
 	self should: [ decoder nextEncodedDuration ] raise: Error.  
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSDecoderTests >> testNextEncodedFloat32 [
 	" in the stream { float . float . float . float . 1 . 0}"
 	decoder stream: (ReadStream on: #[0 0 128 63 0 0 128 191 0 0 0 0 0 0 64 64 1 0] ).
@@ -45,7 +45,7 @@ PhaROSDecoderTests >> testNextEncodedFloat32 [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSDecoderTests >> testNextEncodedFloat32NaN [
 	" in the stream { float . float . nan . float . 1 . 0}
 	A nan value is 0 0 192 127"
@@ -61,7 +61,7 @@ PhaROSDecoderTests >> testNextEncodedFloat32NaN [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSDecoderTests >> testNextEncodedFloat64 [
 	
 	" in the stream { float . float . float . float . 1 . 0 . 0 . 0}"
@@ -78,7 +78,7 @@ PhaROSDecoderTests >> testNextEncodedFloat64 [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSDecoderTests >> testNextEncodedInt16 [
 	" in stream { int16 . int16. int16.  1}".
 	
@@ -92,7 +92,7 @@ PhaROSDecoderTests >> testNextEncodedInt16 [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSDecoderTests >> testNextEncodedInt32 [
 	" in the stream { int32 . int32 . int32 . 1 . 0 . 0}"
 	 decoder stream: (ReadStream on: #[ 1 0 0 0 0 0 0 0 255 255 255 255 1 0 0 ] ).
@@ -105,7 +105,7 @@ PhaROSDecoderTests >> testNextEncodedInt32 [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSDecoderTests >> testNextEncodedInt64 [
 	" in the stream { int32 . int32 . int32 . 1 . 0 . 0}"
 	 decoder stream: (ReadStream on: #[ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 255 255 255 255 255 255 255 255 1 0 0 ] ).
@@ -118,7 +118,7 @@ PhaROSDecoderTests >> testNextEncodedInt64 [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSDecoderTests >> testNextEncodedInt8 [
 	decoder stream: (ReadStream on: #[ 1 2 3 4] ).
 	self assert: (decoder nextEncodedInt8= 1). 
@@ -129,7 +129,7 @@ PhaROSDecoderTests >> testNextEncodedInt8 [
 	 self should: [decoder nextEncodedInt8] raise: Error.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSDecoderTests >> testNextEncodedString [
 	" in the stream { string([size|content]) . 6 0 0 0 }"
 	 decoder stream: (ReadStream on: #[6 0 0 0 83 84 82 73 78 71] ).
@@ -137,7 +137,7 @@ PhaROSDecoderTests >> testNextEncodedString [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSDecoderTests >> testNextEncodedTime [
 	| val | 
 	 decoder stream: (ReadStream on: #[0 0 0 0 0 0 0 0 255 224 245 5 0 0 0 0] ).
@@ -150,7 +150,7 @@ PhaROSDecoderTests >> testNextEncodedTime [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSDecoderTests >> testNextEncodedUint16 [
 	 decoder stream: (ReadStream on: #[1 0 0 0 255 255] ).
 	
@@ -160,7 +160,7 @@ PhaROSDecoderTests >> testNextEncodedUint16 [
 	 self should: [decoder nextEncodedUint16] raise: Error.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSDecoderTests >> testNextEncodedUint32 [
        decoder stream: (ReadStream on: #[1 0 0 0 0 0 0 0 255 255 255 255 ] ).
 	
@@ -171,7 +171,7 @@ PhaROSDecoderTests >> testNextEncodedUint32 [
 	 self should: [decoder nextEncodedUint32] raise: Error.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSDecoderTests >> testNextEncodedUint64 [
       decoder stream: (ReadStream on: #[1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 255 255 255 255 255 255 255 255] ).
 	
@@ -181,7 +181,7 @@ PhaROSDecoderTests >> testNextEncodedUint64 [
 	 self should: [decoder nextEncodedUint64] raise: Error.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSDecoderTests >> testNextEncodedUint8 [
 	 decoder stream: (ReadStream on: #[ 0 1 ] ).
 	 self assert: (decoder nextEncodedUint8= 0). 

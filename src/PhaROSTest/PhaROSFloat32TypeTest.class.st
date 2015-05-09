@@ -4,7 +4,7 @@ Class {
 	#category : #'PhaROSTest-Types'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSFloat32TypeTest >> invalidByteArrays [ 
 	^ {
 		 'anString' asByteArray . #[0 0 0 0 0 0 0 0 0]
@@ -12,7 +12,7 @@ PhaROSFloat32TypeTest >> invalidByteArrays [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSFloat32TypeTest >> invalidValues [ 
 	^ {
 		 'a string' . 4294967295654.232654 . 4299497.32 
@@ -20,36 +20,36 @@ PhaROSFloat32TypeTest >> invalidValues [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSFloat32TypeTest >> relatedClass [ 
 	^PhaROSFloat32Type.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSFloat32TypeTest >> testFailSerialize [
 				^ super baseFailSerialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSFloat32TypeTest >> testSerialize [
 				^ super baseSerialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSFloat32TypeTest >> testUnserialize [
 				^ super baseUnserialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSFloat32TypeTest >> testUnserializeFail [
 				^ super baseUnserializeFail.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSFloat32TypeTest >> validValues [ 
 	^ {
 	

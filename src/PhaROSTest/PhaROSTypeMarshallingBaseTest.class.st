@@ -26,7 +26,7 @@ PhaROSTypeMarshallingBaseTest class >> writeTestIfNeed: aSelector [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - support' }
 PhaROSTypeMarshallingBaseTest >> baseFailSerialize [
 
 	invalidValues do: [
@@ -37,7 +37,7 @@ PhaROSTypeMarshallingBaseTest >> baseFailSerialize [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - support' }
 PhaROSTypeMarshallingBaseTest >> baseSerialize [
 		validValues do: [
 			:val |
@@ -47,7 +47,7 @@ PhaROSTypeMarshallingBaseTest >> baseSerialize [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - support' }
 PhaROSTypeMarshallingBaseTest >> baseUnserialize [
 
 	validValues do: [
@@ -62,7 +62,7 @@ PhaROSTypeMarshallingBaseTest >> baseUnserialize [
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - support' }
 PhaROSTypeMarshallingBaseTest >> baseUnserializeFail [
 	
 	self invalidByteArrays do: [
@@ -77,39 +77,36 @@ PhaROSTypeMarshallingBaseTest >> expectedSize [
 	^ self relatedClass dataTypeSize.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSTypeMarshallingBaseTest >> invalidByteArrays [
 	self subclassResponsibility.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSTypeMarshallingBaseTest >> invalidValues [ 
 	self subclassResponsibility.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSTypeMarshallingBaseTest >> newTestedClassInstance [
 	^ self relatedClass new.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSTypeMarshallingBaseTest >> relatedClass [
 	^ self subclassResponsibility.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 PhaROSTypeMarshallingBaseTest >> setUp [
 	super setUp.
 	PhaROSTimestamp initialize.
 	
-
-	validValues := self validValues collect: [
-		:assoc |
+	validValues := self validValues collect: [ :assoc |
 		(self newTestedClassInstance newPacket value: assoc key; yourself  )-> assoc value.
 	].
 
-	invalidValues := self invalidValues collect: [
-		:value |
+	invalidValues := self invalidValues collect: [ :value |
 		self newTestedClassInstance newPacket value: value ; yourself.
 	].
 	
@@ -126,7 +123,7 @@ PhaROSTypeMarshallingBaseTest >> setUp [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSTypeMarshallingBaseTest >> validValues [ 
 	self subclassResponsibility.
 ]

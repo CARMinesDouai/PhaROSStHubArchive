@@ -4,7 +4,7 @@ Class {
 	#category : #'PhaROSTest-Types'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 PhaROSFloat64TypeTest >> expectedFailures [
 	" Must be implemented first "
 	^#(
@@ -15,25 +15,25 @@ PhaROSFloat64TypeTest >> expectedFailures [
 	)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSFloat64TypeTest >> testFailSerialize [
 				^ super baseFailSerialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSFloat64TypeTest >> testSerialize [
 				^ super baseSerialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSFloat64TypeTest >> testUnserialize [
 				^ super baseUnserialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSFloat64TypeTest >> testUnserializeFail [
 				^ super baseUnserializeFail.
 		

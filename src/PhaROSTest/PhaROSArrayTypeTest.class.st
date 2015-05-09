@@ -4,7 +4,7 @@ Class {
 	#category : #'PhaROSTest-Types'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSArrayTypeTest >> invalidByteArrays [
 	^ {
 		 #[] .
@@ -16,7 +16,7 @@ PhaROSArrayTypeTest >> invalidByteArrays [
 	}.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSArrayTypeTest >> invalidValues [ 
 	^ {
 		 65536 . 'a string' .   32768 . -32769 . {-32769} .  { 32768 } .  { 'str' } 
@@ -24,41 +24,41 @@ PhaROSArrayTypeTest >> invalidValues [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSArrayTypeTest >> newTestedClassInstance [
 	^ self relatedClass of: PhaROSInt16Type.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSArrayTypeTest >> relatedClass [
 	^PhaROSArrayType 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSArrayTypeTest >> testFailSerialize [
 				^ super baseFailSerialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSArrayTypeTest >> testSerialize [
 				^ super baseSerialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSArrayTypeTest >> testUnserialize [
 				^ super baseUnserialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSArrayTypeTest >> testUnserializeFail [
 				^ super baseUnserializeFail.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSArrayTypeTest >> validValues [ 
 	^ {
 		{ 32767 } -> #[ 6 0 0 0 1 0 0 0 255 127 ] .

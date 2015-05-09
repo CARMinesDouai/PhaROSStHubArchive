@@ -7,7 +7,7 @@ Class {
 	#category : #'PhaROSTest-Util'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSTransformationTests >> testNormalizeFrame [
 	self assert: '/frame' normalizeFrame = 'frame'.
 	self assert: 'frame' normalizeFrame = 'frame'.

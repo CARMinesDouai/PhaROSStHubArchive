@@ -4,7 +4,7 @@ Class {
 	#category : #'PhaROSTest-Types'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSDurationTypeTest >> invalidByteArrays [
 	^ {
 		 #[] .
@@ -16,7 +16,7 @@ PhaROSDurationTypeTest >> invalidByteArrays [
 	}.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSDurationTypeTest >> invalidValues [ 
 	^ {
 		-128 .   'a string' .  -1 . 4294967296 . (Duration seconds: 4294967298) 
@@ -24,36 +24,36 @@ PhaROSDurationTypeTest >> invalidValues [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSDurationTypeTest >> relatedClass [ 
 	^PhaROSDurationType 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSDurationTypeTest >> testFailSerialize [
 				^ super baseFailSerialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSDurationTypeTest >> testSerialize [
 		^ super baseSerialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSDurationTypeTest >> testUnserialize [
 				^ super baseUnserialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSDurationTypeTest >> testUnserializeFail [
 				^ super baseUnserializeFail.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSDurationTypeTest >> validValues [ 
 	^ {
 		(Duration new seconds: 1 nanoSeconds: 0; yourself)  -> #[ 8 0 0 0 1 0 0 0 0 0 0 0 ] .

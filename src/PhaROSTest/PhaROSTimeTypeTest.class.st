@@ -4,14 +4,7 @@ Class {
 	#category : #'PhaROSTest-Types'
 }
 
-{ #category : #'as yet unclassified' }
-PhaROSTimeTypeTest >> expectedFailures [
-	^ #(testSerialize)
-
-
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSTimeTypeTest >> invalidByteArrays [
 	^ {
 		 #[] .
@@ -23,7 +16,7 @@ PhaROSTimeTypeTest >> invalidByteArrays [
 	}.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSTimeTypeTest >> invalidValues [ 
 	^ {
 		-128 .   'a string' .  -1 . 4294967296 . (Time new seconds: 4294967298; yourself) .  (Time new seconds:0 nanoSeconds: 4294967298; yourself)
@@ -31,37 +24,37 @@ PhaROSTimeTypeTest >> invalidValues [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSTimeTypeTest >> relatedClass [ 
 	^ PhaROSTimeType 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSTimeTypeTest >> testFailSerialize [
 				^ super baseFailSerialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSTimeTypeTest >> testSerialize [
 	
 		^ super baseSerialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSTimeTypeTest >> testUnserialize [
 	^ super baseUnserialize.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 PhaROSTimeTypeTest >> testUnserializeFail [
 				^ super baseUnserializeFail.
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - parametrization' }
 PhaROSTimeTypeTest >> validValues [ 
 	^ {
 		(PhaROSTimestamp new)  -> #[8 0 0 0 0 0 0 0 0 0 0 0] .
