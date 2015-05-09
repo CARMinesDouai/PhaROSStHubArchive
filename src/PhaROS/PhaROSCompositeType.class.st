@@ -30,7 +30,7 @@ PhaROSCompositeType class >> initialize [
 
 { #category : #construction }
 PhaROSCompositeType class >> named: aByteString [
-	self flag: #whatMustIDoInThisCase.
+
 	types at:aByteString asSymbol ifPresent:[ :p | ^ p ].
 	
 	^ types at: aByteString asSymbol put:  (super new typeName: aByteString ; yourself).
@@ -239,7 +239,7 @@ PhaROSCompositeType >> useConstants: aConstantsArray [
 PhaROSCompositeType >> useTypeDefinition: anArrayOfFields [
 	anArrayOfFields do: [ : field |
 		
-		typeDefinition at: field name put: field type.
+		typeDefinition at: field name put: field value.
 	]
 	
 ]

@@ -84,6 +84,7 @@ PhaROSTypeBrowser >> definition: aTypeId [
 
 	| firstLevel |
 
+	(aTypeId isNil or: [ aTypeId isEmpty ]) ifTrue: [ PhaROSTypeError signal: 'Type error' ].
 	
 	^ (self browser at: aTypeId ifAbsentPut: [
 	
