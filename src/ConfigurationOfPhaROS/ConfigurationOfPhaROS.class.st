@@ -730,7 +730,7 @@ ConfigurationOfPhaROS >> project [
 ConfigurationOfPhaROS >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-		spec for: #'pharo4.x' version: '1.4.1'
+		spec for: #'pharo4.x' version: '1.4.2'
 ]
 
 { #category : #'old fixed versions' }
