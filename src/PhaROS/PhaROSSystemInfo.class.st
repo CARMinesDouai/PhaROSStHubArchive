@@ -6,7 +6,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'distro',
-		'path'
+		'path',
+		'masterProcess'
 	],
 	#classVars : [
 		'Instance'
@@ -152,6 +153,15 @@ PhaROSSystemInfo >> killNode: aNodeName [
 
 	^ OSProcess thisOSProcess waitForCommandOutput: (self rospath,'rosnode kill ', aNodeName).
 	
+]
+
+{ #category : #run }
+PhaROSSystemInfo >> launchExternalROSMaster [
+	masterProcess ifNil: [  
+		masterProcess := ExternalUnixOSProcess forkAndExec: PhaROSSystemInfo instance rospath,'roscore'.
+		500 milliSeconds wait ]
+
+
 ]
 
 { #category : #parameters }
@@ -306,6 +316,15 @@ PhaROSSystemInfo >> sourceCodeContainingMessage: aMessageName [
 	|lst|
 	lst := OSProcess thisOSProcess waitForCommandOutput: self rospath,'rosmsg users ', aMessageName.
 	^ lst subStrings: String lf.
+]
+
+{ #category : #run }
+PhaROSSystemInfo >> stopExternalROSMaster [
+	masterProcess ifNotNil: [  
+		masterProcess sigint.
+		masterProcess := nil ]
+
+
 ]
 
 { #category : #topics }

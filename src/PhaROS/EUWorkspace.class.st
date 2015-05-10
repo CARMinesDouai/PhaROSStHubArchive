@@ -20,10 +20,10 @@ EUWorkspace class >> open [
 	workspace := Workspace new contents: '
 "
 # Commands
-ProcessesCleaner clean
+PhaROSSystem cleanAll.
 
-ProxySwitch on
-ProxySwitch off
+ProxySwitch on.
+ProxySwitch off.
 
 "'.
 	workspace open.

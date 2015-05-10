@@ -114,9 +114,9 @@ PhaROSSystemLauncher >> rosSrv: anArrayOfArguments tmpFile: aTempFileName [
 							arguments: anArrayOfArguments 
 							environment:  nil 
 							descriptors: { FileStream stdin . outstream . errstream } .  
-		
+							
 	[ rosmsg isComplete not ] whileTrue: [
-		(Delay forMilliseconds: 100) wait.
+		100 milliSeconds wait.
 	].
 	
 	rosmsg succeeded ifTrue: [
@@ -150,8 +150,7 @@ PhaROSSystemLauncher >> rosSrvMd5: aTypeId [
 
 { #category : #types }
 PhaROSSystemLauncher >> rosSrvShow: aTypeId [
-
-	^  self rosSrv: 'show' with: aTypeId. 
+	^  self rosSrv: 'show' with: aTypeId
 ]
 
 { #category : #launching }

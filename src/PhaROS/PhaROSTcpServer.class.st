@@ -14,13 +14,13 @@ Class {
 	#category : #'PhaROS-Network-Tcp'
 }
 
-{ #category : #constructors }
+{ #category : #'class initialization' }
 PhaROSTcpServer class >> initialize [ 
 	RoStTcpServers := Dictionary new.
 
 ]
 
-{ #category : #constructors }
+{ #category : #running }
 PhaROSTcpServer class >> startOn: aPort named: aName for: aNode [
 	
 
@@ -34,11 +34,18 @@ PhaROSTcpServer class >> startOn: aPort named: aName for: aNode [
 
 ]
 
-{ #category : #service }
+{ #category : #running }
 PhaROSTcpServer class >> stop: aRoStTcpServer [ 
-[
 	RoStTcpServers removeKey: aRoStTcpServer portNumber ifAbsent:[].
-	 ] on: Error do: []
+
+]
+
+{ #category : #running }
+PhaROSTcpServer class >> stopAll [
+
+	RoStTcpServers keysAndValuesDo: [ :portNumber :aTcpServer|
+		aTcpServer finalize.
+		self stop: aTcpServer	].
 ]
 
 { #category : #server }
@@ -69,12 +76,9 @@ PhaROSTcpServer >> serve: aSocket [
 	
 	stream := SocketStream on: aSocket.
 	stream binary.
-	
-	self flag:#makeUpToThisThing.
 	message := PhaROSHSMessageDecoder decodeUnknownMessageHeader:  stream.
-	
 	PhaROSHeaderVerifier new verify: message. 
-	self owner manageIncomingConnection: (message becomeKnown) with: stream.
+	self owner manageIncomingConnection: message becomeKnown with: stream.
 	
 	
 ]
