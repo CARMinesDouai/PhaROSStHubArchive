@@ -7,11 +7,16 @@ Class {
 	#category : #'PhaROSTestROS-Kernel'
 }
 
+{ #category : #accessing }
+PhaROSXMLRPCTest class >> resources [
+	 ^{ PhaROSMasterResource }
+]
+
 { #category : #testing }
 PhaROSXMLRPCTest >> expectedFailures [
 	" Must be implemented first "
 	^#(
-		testRegisterService 
+		testRegisterService
 		testUnregisterService 
 	)
 ]
@@ -26,10 +31,9 @@ PhaROSXMLRPCTest >> expectedTopicTypes [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'setup / teardown' }
 PhaROSXMLRPCTest >> setUp [ 
 	super setUp.
-	self startUpMaster.
 	
 	expectedSystemState := PhaROSSystemState new.
 	expectedSystemState
@@ -40,10 +44,10 @@ PhaROSXMLRPCTest >> setUp [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'setup / teardown' }
 PhaROSXMLRPCTest >> tearDown [ 
 	super tearDown.
-	self spin: 5.
+	
 ]
 
 { #category : #testing }

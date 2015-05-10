@@ -33,25 +33,14 @@ PhaROSBaseCase >> masterUrl [
 
 { #category : #'setup / teardown' }
 PhaROSBaseCase >> setUp [
-	PhaROSManifest cleanUp.
+	PhaROSSystem cleanAll.
 	master := PhaROSMaster url: self masterUrl
-	
-]
-
-{ #category : #accessing }
-PhaROSBaseCase >> spin: times [
-	times timesRepeat: [
-		(times * 100) timesRepeat: [].
-		(Delay forMilliseconds: 100) wait.
-	]
-
 	
 ]
 
 { #category : #actions }
 PhaROSBaseCase >> startUpMaster [
-	process := PhaROSSystemLauncher instance roslaunchForTests: '<launch></launch>'.
-	
+	PhaROSSystemInfo instance launchExternalROSMaster
 
 ]
 
@@ -67,7 +56,7 @@ PhaROSBaseCase >> startUpTurtle [
 { #category : #'setup / teardown' }
 PhaROSBaseCase >> tearDown [ 
 
-	PhaROSManifest cleanUp.
-	process finalize.
+	PhaROSSystem cleanAll.
+	process ifNotNil: [ process finalize ].
 	process := nil.
 ]
