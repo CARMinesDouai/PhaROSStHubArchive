@@ -239,7 +239,7 @@ PhaROSCompositeType >> useConstants: aConstantsArray [
 PhaROSCompositeType >> useTypeDefinition: anArrayOfFields [
 	anArrayOfFields do: [ : field |
 		
-		typeDefinition at: field name put: field value.
+		typeDefinition at: field name put: field type.
 	]
 	
 ]
