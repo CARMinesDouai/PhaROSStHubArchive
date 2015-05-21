@@ -12,18 +12,6 @@ Class {
 	#category : #ImusensorsPackage
 }
 
-{ #category : #scripts }
-ImusensorsPackage >> broadcastImuSensorValues [
-	[ 
-		[
-			self receiveSmartphoneData.
-			self extractImuData.
-			self publishImuData 
-		]ensure: [ 
-			self releaseResources ]
-	] repeat
-]
-
 { #category : #extracting }
 ImusensorsPackage >> dataVectorAt: sensorId [
 	sensorId = 3 ifTrue: [  ^accelerometerVector ].
@@ -41,12 +29,12 @@ ImusensorsPackage >> dataVectorAt: sensorId [
 ImusensorsPackage >> extractImuData [
 	| substrings numbers vector |
 	substrings := dataString substrings: ','.
-	numbers := substrings collect: [ : each | each trim asNumber ].
-	(2 to: numbers size by: 4) do: [:startIndex|
-		vector := self dataVectorAt: startIndex.
-		vector x: (numbers at: startIndex + 1).
-		vector y: (numbers at: startIndex + 2).
-		vector z: (numbers at: startIndex + 3).
+	numbers := substrings collect: [ : each | each trim asNumber asFloat ].
+	(2 to: numbers size by: 4) do: [ : deviceIdIndex|
+		vector := self dataVectorAt: (numbers at: deviceIdIndex).
+		vector x: (numbers at: deviceIdIndex + 1).
+		vector y: (numbers at: deviceIdIndex + 2).
+		vector z: (numbers at: deviceIdIndex + 3).
 	].
 	
 "The app sends the measurements from the phone inertial sensors via UDP as CSV (Comma-Separated Values).
@@ -104,17 +92,17 @@ ImusensorsPackage >> publishRawData [
 									y: 0;
 									z: 0;
 									w: 1.
-								imuData orientation_covariance: 0.0001.
-								imuData angular_velocity: gyroVector.
-"									x: gyroX;
-									y: gyroY;
-									z: gyroZ.
-"								imuData angular_velocity_covariance: 0.0001.
-								imuData linear_acceleration: accelerometerVector.
-"									x: accelerometerX;
-									y: accelerometerY;
-									z: accelerometerZ.
-"								imuData linear_acceleration_covariance: 0.0001
+								imuData orientation_covariance: #(0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0).
+								imuData angular_velocity
+									x: gyroVector x;
+									y: gyroVector y;
+									z: gyroVector z.
+								imuData angular_velocity_covariance: #(0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0).
+								imuData linear_acceleration
+									x: accelerometerVector x;
+									y: accelerometerVector y;
+									z: accelerometerVector z.
+								imuData linear_acceleration_covariance: #(0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0).
 									].
 
 "geometry_msgs/Quaternion orientation
@@ -146,4 +134,17 @@ ImusensorsPackage >> receiveSmartphoneData [
 { #category : #'initialize-release' }
 ImusensorsPackage >> releaseResources [
 	socket closeAndDestroy 
+]
+
+{ #category : #scripts }
+ImusensorsPackage >> scriptBroadcastImuSensorValues [
+	[ 
+		[
+			self receiveSmartphoneData.
+			self extractImuData.
+			self publishImuData 
+		] repeat		
+	]ensure: [ 
+		self releaseResources ]
+
 ]
