@@ -66,9 +66,9 @@ ImusensorsPackage >> initialize [
 	rawDataPublisher := self controller node 
 			topicPublisher: '/imu/data_raw' 
 			typedAs: 'sensor_msgs/Imu'.
-	accelerometerVector := PhaROS3DVector zero.
-	gyroVector := PhaROS3DVector zero.
-	magnetometerVector := PhaROS3DVector zero.
+	accelerometerVector := self vectorClass new.
+	gyroVector := self vectorClass new.
+	magnetometerVector := self vectorClass new.
 
 ]
 
@@ -97,12 +97,12 @@ ImusensorsPackage >> publishRawData [
 									x: gyroVector x;
 									y: gyroVector y;
 									z: gyroVector z.
-								imuData angular_velocity_covariance: #(0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0).
+								imuData angular_velocity_covariance: gyroVector covarianceFloatArray.
 								imuData linear_acceleration
 									x: accelerometerVector x;
 									y: accelerometerVector y;
 									z: accelerometerVector z.
-								imuData linear_acceleration_covariance: #(0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0).
+								imuData linear_acceleration_covariance: accelerometerVector covarianceFloatArray.
 									].
 
 "geometry_msgs/Quaternion orientation
@@ -147,4 +147,9 @@ ImusensorsPackage >> scriptBroadcastImuSensorValues [
 	]ensure: [ 
 		self releaseResources ]
 
+]
+
+{ #category : #'initialize-release' }
+ImusensorsPackage >> vectorClass [
+	^Imu3DVector
 ]

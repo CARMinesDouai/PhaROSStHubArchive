@@ -15,6 +15,18 @@ Imu3DVector class >> new [
 		yourself
 ]
 
+{ #category : #'instance-creation' }
+Imu3DVector class >> x: x y: y z: z [
+	^self new
+		x: x y: y z: z;
+		yourself
+]
+
+{ #category : #'instance-creation' }
+Imu3DVector class >> zero [
+	^self x: 0 y: 0 z: 0
+]
+
 { #category : #accessing }
 Imu3DVector >> covarianceFloatArray [
 	| array arrayIndex |
