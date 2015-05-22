@@ -1,9 +1,9 @@
 Extension { #name : #PhaROS3DVector }
 
 { #category : #'*ImusensorsPackage' }
-PhaROS3DVector >> x: aNumber y: aNumber2 z: aNumber3 [ 
+PhaROS3DVector >> x: newX y: newY z: newZ [ 
 	self 
-		x: aNumber;
-		y: aNumber;
-		z: aNumber
+		x: newX;
+		y: newY;
+		z: newZ
 ]
