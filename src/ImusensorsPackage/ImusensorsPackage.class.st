@@ -33,9 +33,10 @@ ImusensorsPackage >> extractImuData [
 	numbers := substrings collect: [ : each | each trim asNumber asFloat ].
 	(2 to: numbers size by: 4) do: [ : deviceIdIndex|
 		vector := self dataVectorAt: (numbers at: deviceIdIndex).
-		vector x: (numbers at: deviceIdIndex + 1).
-		vector y: (numbers at: deviceIdIndex + 2).
-		vector z: (numbers at: deviceIdIndex + 3).
+		vector 
+			x: (numbers at: deviceIdIndex + 1)
+			y: (numbers at: deviceIdIndex + 2)
+			z: (numbers at: deviceIdIndex + 3).
 	].
 	
 "The app sends the measurements from the phone inertial sensors via UDP as CSV (Comma-Separated Values).
