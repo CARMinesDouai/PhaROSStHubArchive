@@ -87,7 +87,10 @@ ImusensorsPackage >> publishImuData [
 { #category : #communicating }
 ImusensorsPackage >> publishMagnetometerData [
 	magnetometerDataPublisher send: [ : magData |
-		magData vector: magnetometerVector]
+		magData vector
+			x: magnetometerVector x;
+			y: magnetometerVector y;
+			z: magnetometerVector z ]
 ]
 
 { #category : #communicating }
