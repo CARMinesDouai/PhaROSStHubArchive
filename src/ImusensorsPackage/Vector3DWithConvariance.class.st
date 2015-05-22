@@ -1,5 +1,5 @@
 Class {
-	#name : #Imu3DVector,
+	#name : #Vector3DWithConvariance,
 	#superclass : #Array,
 	#type : #variable,
 	#instVars : [
@@ -9,26 +9,26 @@ Class {
 }
 
 { #category : #'instance-creation' }
-Imu3DVector class >> new [
+Vector3DWithConvariance class >> new [
 	^(self new: 3)
 		initialize;
 		yourself
 ]
 
 { #category : #'instance-creation' }
-Imu3DVector class >> x: x y: y z: z [
+Vector3DWithConvariance class >> x: x y: y z: z [
 	^self new
 		x: x y: y z: z;
 		yourself
 ]
 
 { #category : #'instance-creation' }
-Imu3DVector class >> zero [
+Vector3DWithConvariance class >> zero [
 	^self x: 0 y: 0 z: 0
 ]
 
 { #category : #accessing }
-Imu3DVector >> covarianceFloatArray [
+Vector3DWithConvariance >> covarianceFloatArray [
 	| array arrayIndex |
 	array := Array new: 9.
 	arrayIndex := 1.
@@ -42,23 +42,23 @@ Imu3DVector >> covarianceFloatArray [
 ]
 
 { #category : #accessing }
-Imu3DVector >> covarianceMatrix [
+Vector3DWithConvariance >> covarianceMatrix [
 	^covarianceAccumulator covarianceMatrix
 ]
 
 { #category : #'initialize - release' }
-Imu3DVector >> initialize [
+Vector3DWithConvariance >> initialize [
 	super initialize.
 	covarianceAccumulator := DhbCovarianceAccumulator new: 3
 ]
 
 { #category : #accessing }
-Imu3DVector >> x [
+Vector3DWithConvariance >> x [
 	^self at: 1
 ]
 
 { #category : #accessing }
-Imu3DVector >> x: newX y: newY z: newZ [
+Vector3DWithConvariance >> x: newX y: newY z: newZ [
 	self at: 1 put: newX.
 	self at: 2 put: newY.
 	self at: 3 put: newZ.
@@ -66,11 +66,11 @@ Imu3DVector >> x: newX y: newY z: newZ [
 ]
 
 { #category : #accessing }
-Imu3DVector >> y [
+Vector3DWithConvariance >> y [
 	^self at: 2
 ]
 
 { #category : #accessing }
-Imu3DVector >> z [
+Vector3DWithConvariance >> z [
 	^self at: 3
 ]

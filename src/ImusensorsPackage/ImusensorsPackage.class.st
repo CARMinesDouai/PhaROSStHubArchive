@@ -7,7 +7,8 @@ Class {
 		'dataString',
 		'gyroVector',
 		'accelerometerVector',
-		'magnetometerVector'
+		'magnetometerVector',
+		'magnetometerDataPublisher'
 	],
 	#category : #ImusensorsPackage
 }
@@ -66,9 +67,12 @@ ImusensorsPackage >> initialize [
 	rawDataPublisher := self controller node 
 			topicPublisher: '/imu/data_raw' 
 			typedAs: 'sensor_msgs/Imu'.
-	accelerometerVector := self vectorClass new.
-	gyroVector := self vectorClass new.
-	magnetometerVector := self vectorClass new.
+	magnetometerDataPublisher := self controller node 
+			topicPublisher: 'imu/mag' 
+			typedAs: 'geometry_msgs/Vector3Stamped'.
+	accelerometerVector := Vector3DWithConvariance new.
+	gyroVector := Vector3DWithConvariance new.
+	magnetometerVector := PhaROS3DVector new.
 
 ]
 
@@ -81,7 +85,11 @@ ImusensorsPackage >> publishImuData [
 
 { #category : #communicating }
 ImusensorsPackage >> publishMagnetometerData [
-
+	magnetometerDataPublisher send: [ : magData |
+		magData 
+			x: magnetometerVector x;
+			y: magnetometerVector y;
+			z: magnetometerVector z ]
 ]
 
 { #category : #communicating }
@@ -126,7 +134,7 @@ float64[9] linear_acceleration_covariance
 ]
 
 { #category : #communicating }
-ImusensorsPackage >> receiveSmartphoneData [
+ImusensorsPackage >> receiveSensorData [
 	socket waitForData.
 	socket receiveUDPDataInto: dataString
 ]
@@ -140,16 +148,11 @@ ImusensorsPackage >> releaseResources [
 ImusensorsPackage >> scriptBroadcastImuSensorValues [
 	[ 
 		[
-			self receiveSmartphoneData.
+			self receiveSensorData.
 			self extractImuData.
 			self publishImuData 
 		] repeat		
 	]ensure: [ 
 		self releaseResources ]
 
-]
-
-{ #category : #'initialize-release' }
-ImusensorsPackage >> vectorClass [
-	^Imu3DVector
 ]
