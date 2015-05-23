@@ -11,10 +11,22 @@ Class {
 		'x',
 		'y',
 		'xSpeed',
-		'ySpeed'
+		'ySpeed',
+		'elpasedSeconds',
+		'previousTimeStamp',
+		'elapsedSeconds'
 	],
 	#category : #OdomPackage
 }
+
+{ #category : #scripts }
+OdomPackage >> elapsedSecondsFrom: newTimeStamp [
+	previousTimeStamp ifNil: [ ^0 ].
+	^(newTimeStamp sec - previousTimeStamp sec) 
+		+ (1000000000 
+			* (newTimeStamp nsec - previousTimeStamp nsec))
+
+]
 
 { #category : #'initalize-release' }
 OdomPackage >> initialize [
@@ -50,10 +62,18 @@ OdomPackage >> scriptImuToOdom [
 ]
 
 { #category : #scripts }
+OdomPackage >> updateElapsedSecondsFrom: newTimeStamp [
+	elapsedSeconds := self elapsedSecondsFrom: newTimeStamp.
+	previousTimeStamp := newTimeStamp.
+
+]
+
+{ #category : #scripts }
 OdomPackage >> updatePositionFrom: imuData [
-	xSpeed := xSpeed + imuData linear_acceleration x.
-	x := x + xSpeed.
-	ySpeed := ySpeed + imuData linear_acceleration y.
-	y := y + ySpeed
+	self updateElapsedSecondsFrom: imuData header stamp.
+	xSpeed := xSpeed + (imuData linear_acceleration x * elpasedSeconds).
+	x := x + (xSpeed * elpasedSeconds).
+	ySpeed := (ySpeed + imuData linear_acceleration y * elpasedSeconds).
+	y := y + (ySpeed * elpasedSeconds)
 
 ]
