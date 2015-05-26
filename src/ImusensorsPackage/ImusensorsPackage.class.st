@@ -96,8 +96,11 @@ ImusensorsPackage >> publishMagnetometerData [
 { #category : #communicating }
 ImusensorsPackage >> publishRawData [
 	rawDataPublisher send:[ : imuData | 
+								imuData header frame_id: 'imu_frame'.
+"We don't estimate the orientation. We are publishing raw data! 
+It is the responsibility of the IMU filter to compute the orientation."
 								imuData orientation 
-									x: 1;
+									x: 0;
 									y: 0;
 									z: 0;
 									w: 1.
