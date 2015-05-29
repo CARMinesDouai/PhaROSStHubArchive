@@ -3,7 +3,7 @@ Class {
 	#superclass : #RrVectorDisplayController,
 	#traits : 'TChaDefaultInputComponent',
 	#classTraits : 'TChaDefaultInputComponent classTrait',
-	#category : #'ReactiveRobot-Demo'
+	#category : #'ReactiveRobot-Display'
 }
 
 { #category : #acting }

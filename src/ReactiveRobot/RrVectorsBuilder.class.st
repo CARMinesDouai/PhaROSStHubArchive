@@ -2,8 +2,7 @@ Class {
 	#name : #RrVectorsBuilder,
 	#superclass : #ChaDefaultInOutComponent,
 	#instVars : [
-		'sensorAngles',
-		'distanceThreshold'
+		'sensorAngles'
 	],
 	#category : #'ReactiveRobot-Kernel'
 }

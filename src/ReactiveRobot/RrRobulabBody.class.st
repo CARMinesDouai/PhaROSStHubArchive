@@ -50,12 +50,39 @@ RrRobulabBody >> forwardAt: linearSpeed rotateAt: angularSpeed [
 	self differentialService moveAt: linearSpeed and: angularSpeed 
 ]
 
+{ #category : #'robot structure' }
+RrRobulabBody >> irAngles [
+	| pi |
+	pi := VeAngle pi.
+	^ {(pi / 12).
+	(pi / 4).
+	(3 * pi / 8).
+	(pi / 2).
+	(5 * pi / 8).
+	(3 * pi / 4).
+	(11 * pi / 12).
+	pi.
+	(-11 * pi / 12).
+	(-3 * pi / 4).
+	(-5 * pi / 8).
+	(-1 * pi / 2).
+	(-3 * pi / 8).
+	(-1 * pi / 4).
+	(-1 * pi / 12).
+	(0 radians)}
+]
+
 { #category : #'forwarding-generated' }
 RrRobulabBody >> irTelemeterService [
 	"Generated method. If you edit it please remove this comment and the pragma below"
 	<forwardToIv: #driver>
 
 	^driver irTelemeterService
+]
+
+{ #category : #'robot structure' }
+RrRobulabBody >> laserAngles [
+	^ (-135 to: 135) collect: [ :degree | degree degreesToRadians radians ]
 ]
 
 { #category : #'forwarding-generated' }
@@ -120,6 +147,21 @@ RrRobulabBody >> scanSonarsEvery: cycles do: aBlock [
 { #category : #'initialize-release' }
 RrRobulabBody >> shutdown [
 	driver finalize
+]
+
+{ #category : #'robot structure' }
+RrRobulabBody >> sonarAngles [
+	| pi |
+	pi := VeAngle pi.
+	^ {(pi / 12).
+	(pi / 4).
+	(pi / 2).
+	(3 * pi / 4).
+	pi.
+	(-3 * pi / 4).
+	(-1 * pi / 2).
+	(-1 * pi / 4).
+	(-1 * pi / 12)}
 ]
 
 { #category : #'forwarding-generated' }

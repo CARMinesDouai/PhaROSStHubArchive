@@ -1,6 +1,6 @@
 Class {
 	#name : #RrController,
-	#superclass : #Object,
+	#superclass : #ChaComponent,
 	#instVars : [
 		'robot'
 	],
@@ -12,7 +12,7 @@ RrController >> robot [
 	^ robot
 ]
 
-{ #category : #accessing }
+{ #category : #'initialize-release' }
 RrController >> robot: aRobot [
 	robot := aRobot.
 
@@ -25,12 +25,16 @@ RrController >> shutdown [
 
 { #category : #acting }
 RrController >> start [
-	self subclassResponsibility 
+	self subComponents do: [ :each | each start ] 
 ]
 
 { #category : #acting }
 RrController >> stop [
-	self robot 
-		stop;
-		stopAllSensors
+	self robot stop.
+	self subComponents do: [ :each | each stop ] 
+]
+
+{ #category : #acting }
+RrController >> subComponents [
+	^#()
 ]

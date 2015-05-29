@@ -5,7 +5,7 @@ Class {
 		'layers',
 		'display'
 	],
-	#category : #'ReactiveRobot-Demo'
+	#category : #'ReactiveRobot-Display'
 }
 
 { #category : #'instance creation' }
@@ -39,6 +39,11 @@ RrVectorLayersDisplayController >> draw: aVector onLayer: layerIndex [
 RrVectorLayersDisplayController >> drawAll: vectors onLayer: layerIndex [
 	(self layerAt: layerIndex) vectors: vectors.
 	self redraw
+]
+
+{ #category : #drawing }
+RrVectorLayersDisplayController >> eraseLayer: layerIndex [
+	self drawAll: #() onLayer: layerIndex
 ]
 
 { #category : #'initialize-release' }

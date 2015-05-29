@@ -25,5 +25,5 @@ RrDemo class >> emergencyStop [
 
 { #category : #demo }
 RrDemo class >> showObstacleSensors [
-	^self demo: RrShowObstacleSensorsController
+	^self demo: RrObstacleSensingController
 ]

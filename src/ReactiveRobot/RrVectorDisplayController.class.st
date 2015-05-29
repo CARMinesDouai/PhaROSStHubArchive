@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'display'
 	],
-	#category : #'ReactiveRobot-Demo'
+	#category : #'ReactiveRobot-Display'
 }
 
 { #category : #accessing }

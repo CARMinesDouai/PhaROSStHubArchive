@@ -9,7 +9,7 @@ Class {
 	#classVars : [
 		'DefaultColors'
 	],
-	#category : #'ReactiveRobot-Demo'
+	#category : #'ReactiveRobot-Display'
 }
 
 { #category : #initializing }
