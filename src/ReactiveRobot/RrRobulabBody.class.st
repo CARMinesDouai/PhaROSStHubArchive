@@ -1,6 +1,8 @@
 Class {
 	#name : #RrRobulabBody,
 	#superclass : #MfForwarder,
+	#traits : 'TRrRobotBody',
+	#classTraits : 'TRrRobotBody classTrait',
 	#instVars : [
 		'driver'
 	],
@@ -177,6 +179,33 @@ RrRobulabBody >> speedVector: aVector [
 	self forwardAt: aVector length rotateAt: aVector angle
 ]
 
+{ #category : #'sensor activity' }
+RrRobulabBody >> startIr: aSensor [
+	self
+		scanIrEvery: aSensor refreshPeriod 
+		do: [ : distances| 
+			aSensor input: distances.
+		]
+]
+
+{ #category : #'sensor activity' }
+RrRobulabBody >> startLaser: aSensor [
+	self
+		scanLaserEvery: aSensor refreshPeriod 
+		do: [ : distances| 
+			aSensor input: distances.
+		]
+]
+
+{ #category : #'sensor activity' }
+RrRobulabBody >> startSonar: aSensor [
+	self
+		scanSonarsEvery: aSensor refreshPeriod 
+		do: [ : distances| 
+			aSensor input: distances.
+		]
+]
+
 { #category : #moving }
 RrRobulabBody >> stop [
 	self forwardAt: 0 rotateAt: 0
@@ -192,9 +221,24 @@ RrRobulabBody >> stopIr [
 	self notificationService delete: self irTelemeterService 
 ]
 
+{ #category : #'sensor activity' }
+RrRobulabBody >> stopIr: aSensor [
+	self stopIr
+]
+
 { #category : #sensing }
 RrRobulabBody >> stopLaser [
 	self notificationService delete: self laserService 
+]
+
+{ #category : #'sensor activity' }
+RrRobulabBody >> stopLaser: aSensor [
+	self stopLaser
+]
+
+{ #category : #'sensor activity' }
+RrRobulabBody >> stopSonar: aSensor [
+	self stopSonars
 ]
 
 { #category : #sensing }

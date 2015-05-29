@@ -40,7 +40,7 @@ RrFeelForceTest >> distancesAnglesAndExpectedVector [
 RrFeelForceTest >> setUp [
 	super setUp.
 	builder := RrForceVectorsBuilder new.
-	builder distanceThreshold: 1.
+	builder threshold: 1.
 	integrator := RrForceIntegrator new.
 	builder => integrator 
 ]

@@ -10,7 +10,7 @@ Class {
 
 { #category : #'initialize-release' }
 RrFilteredForceVectorsBuilder >> builderClass [
-	^RrForceVectorsBuilder  
+	^RrForceVectorsBuilder
 ]
 
 { #category : #'forwarding-generated' }

@@ -2,7 +2,9 @@ Class {
 	#name : #RrObstacleSensingController,
 	#superclass : #RrController,
 	#instVars : [
-		'sensor',
+		'irSensor',
+		'laserSensor',
+		'sonarSensor',
 		'viewer'
 	],
 	#category : #'ReactiveRobot-Demo'
@@ -35,19 +37,26 @@ RrObstacleSensingController >> hideSonar [
 { #category : #'initialize-release' }
 RrObstacleSensingController >> initialize [
 	super initialize.
-	sensor := RrObstacleMultiSensor new.
 	viewer := RrObstacleSensorsViewer new.
-	sensor connect: #irDistancesPort to: #irVectors: of: viewer.
-	sensor connect: #sonarDistancesPort to: #sonarVectors: of: viewer.
-	sensor connect: #laserDistancesPort to: #laserVectors: of: viewer.
 	
  
 ]
 
 { #category : #'initialize-release' }
+RrObstacleSensingController >> obstacleSensorClass [
+	^RrObstacleSensor 
+]
+
+{ #category : #'initialize-release' }
 RrObstacleSensingController >> robot: robotBody [
 	super robot: robotBody.
-	sensor robot: robotBody
+	irSensor := robotBody irSensorFrom: self obstacleSensorClass.
+	laserSensor := robotBody laserSensorFrom: self obstacleSensorClass.
+	sonarSensor := robotBody sonarSensorFrom: self obstacleSensorClass.
+	irSensor connectTo: #irVectors: of: viewer.
+	sonarSensor connectTo: #sonarVectors: of: viewer.
+	laserSensor connectTo: #laserVectors: of: viewer.
+
 ]
 
 { #category : #'forwarding-generated' }

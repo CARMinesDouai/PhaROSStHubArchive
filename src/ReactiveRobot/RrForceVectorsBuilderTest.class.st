@@ -4,14 +4,14 @@ Class {
 	#instVars : [
 		'builder'
 	],
-	#category : #'ReactiveRobot-CollisionAvoidance'
+	#category : #'ReactiveRobot-Kernel'
 }
 
 { #category : #testing }
 RrForceVectorsBuilderTest >> assert: threashold andValues: values leadTo: expectedVectors [
 	<testParametersSelector: #withThresholdValuesLeadToVectors> 
 	
-	builder distanceThreshold: threashold.
+	builder threshold: threashold.
 	builder input: values.
 	self assert: builder dataOnOutputPort asArray equals: expectedVectors
 ]

@@ -8,10 +8,10 @@ Class {
 }
 
 { #category : #acting }
-RrVectorsBuilder >> addVectorTo: vectors forObstacleAt: distanceToObstacle angle: angle [
+RrVectorsBuilder >> addVectorTo: vectors length: length angle: angle [
 	| distanceVector |
 	distanceVector := VeVector 
-		length: distanceToObstacle
+		length: length
 		angle: angle.
 	vectors add: distanceVector
 ]
@@ -20,8 +20,8 @@ RrVectorsBuilder >> addVectorTo: vectors forObstacleAt: distanceToObstacle angle
 RrVectorsBuilder >> newOutputFrom: distances [
 	| vectors |
 	vectors := OrderedCollection new: distances size.
-	distances with: self sensorAngles do: [ :distanceToObstacle :angle|
-		self addVectorTo: vectors forObstacleAt: distanceToObstacle angle: angle
+	distances with: self sensorAngles do: [ : distance : angle|
+		self addVectorTo: vectors length: distance angle: angle
 	].
 	^vectors
 ]

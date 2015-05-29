@@ -1,49 +1,27 @@
 Class {
 	#name : #RrForceVectorsBuilder,
-	#superclass : #ChaDefaultInOutComponent,
+	#superclass : #RrVectorsBuilder,
 	#instVars : [
-		'sensorAngles',
-		'distanceThreshold'
+		'threshold'
 	],
-	#category : #'ReactiveRobot-CollisionAvoidance'
+	#category : #'ReactiveRobot-Kernel'
 }
 
 { #category : #acting }
-RrForceVectorsBuilder >> addForceVectorTo: vectors forObstacleAt: distanceToObstacle angle: angle [
-	| forceVector |
-	distanceToObstacle >= self distanceThreshold ifTrue: [ ^self].
-	forceVector := VeVector 
-		length: (self distanceThreshold - distanceToObstacle)/self distanceThreshold
-		angle: angle.
-	vectors add: forceVector
+RrForceVectorsBuilder >> addVectorTo: vectors length: length angle: angle [
+	| force |
+	length >= self threshold ifTrue: [ ^self ].
+	force := (self threshold - length) / self threshold.
+	super addVectorTo: vectors length: force angle: angle
+
 ]
 
 { #category : #accessing }
-RrForceVectorsBuilder >> distanceThreshold [
-	^ distanceThreshold
+RrForceVectorsBuilder >> threshold [
+	^ threshold
 ]
 
 { #category : #'initialize-release' }
-RrForceVectorsBuilder >> distanceThreshold: anObject [
-	distanceThreshold := anObject
-]
-
-{ #category : #acting }
-RrForceVectorsBuilder >> newOutputFrom: distances [
-	| vectors |
-	vectors := OrderedCollection new: distances size.
-	distances with: self sensorAngles do: [ :distanceToObstacle :angle|
-		self addForceVectorTo: vectors forObstacleAt: distanceToObstacle angle: angle
-	].
-	^vectors
-]
-
-{ #category : #accessing }
-RrForceVectorsBuilder >> sensorAngles [
-	^sensorAngles
-]
-
-{ #category : #'initialize-release' }
-RrForceVectorsBuilder >> sensorAngles: radians [
-	sensorAngles := radians
+RrForceVectorsBuilder >> threshold: anObject [
+	threshold := anObject
 ]
