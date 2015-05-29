@@ -10,7 +10,7 @@ Class {
 
 { #category : #'initialize-release' }
 RrRunaway >> defaultInplaceRotationSpeed [
-	^Float pi / 10
+	^Float pi / 20
 ]
 
 { #category : #accessing }
@@ -36,7 +36,7 @@ RrRunaway >> inplaceRotationSpeed: anObject [
 
 { #category : #acting }
 RrRunaway >> newOutputFrom: obstacleForceVector [
-	| rawLinearSpeed breakSpeed obstacleRelativeAngle rotationSpeedSign rotationSpeed |
+	| rawLinearSpeed breakSpeed obstacleRelativeAngle rotationSpeedSign rotationSpeed  correctedLinearSpeed correctedRotationSpeed slowDownRatio  |
 	rotationSpeed := self speedVector angle.
 	obstacleRelativeAngle := obstacleForceVector angle - self speedVector angle.
 	obstacleRelativeAngle abs >= VeAngle halfPi ifTrue: [ 
@@ -44,9 +44,17 @@ RrRunaway >> newOutputFrom: obstacleForceVector [
 	rawLinearSpeed := self speedVector length.
 	breakSpeed := obstacleForceVector length * obstacleRelativeAngle cos * rawLinearSpeed.
 	rotationSpeedSign := obstacleRelativeAngle < 0 ifTrue: [ 1 ] ifFalse: [ -1 ].
+	correctedLinearSpeed := (rawLinearSpeed - breakSpeed) max: 0.
+	rawLinearSpeed = 0 
+		ifTrue: [ slowDownRatio := 1 ]
+		ifFalse: [ 
+			slowDownRatio := correctedLinearSpeed / rawLinearSpeed. 
+		].
+	correctedRotationSpeed := (VeAngle halfPi -  obstacleRelativeAngle abs) * rotationSpeedSign * slowDownRatio.
+	(correctedRotationSpeed = 0 & correctedRotationSpeed  = 0) ifTrue: [ correctedRotationSpeed := inplaceRotationSpeed]. "When robot stops moving allow it to rotate in place slowly"
 	^VeVector 
-		length: rawLinearSpeed - breakSpeed
-		angle: (VeAngle halfPi -  obstacleRelativeAngle abs) * obstacleForceVector length * rotationSpeedSign
+		length: correctedLinearSpeed
+		angle: correctedRotationSpeed
 ]
 
 { #category : #accessing }

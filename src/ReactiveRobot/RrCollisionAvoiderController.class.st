@@ -12,10 +12,15 @@ Class {
 }
 
 { #category : #'initialize-release' }
+RrCollisionAvoiderController >> forwardSpeed: aNumber [
+	self speedVector: (VeVector length: aNumber)
+]
+
+{ #category : #'initialize-release' }
 RrCollisionAvoiderController >> initialize [
 	| pi |
 	super initialize.
-	vectorDisplay := VectorDisplay new.
+	vectorDisplay := RrVectorDisplay new.
 	sonarForceBuilder := RrFilteredForceVectorsBuilder new.
 	irForceBuilder := RrFilteredForceVectorsBuilder new.
 	pi := VeAngle pi.
@@ -45,7 +50,7 @@ RrCollisionAvoiderController >> robot: aRobot [
 { #category : #'initialize-release' }
 RrCollisionAvoiderController >> speedVector: aVector [
 	runaway speedVector: aVector.
-	sonarForceBuilder distanceThreshold: (aVector length min: 0.3).
+	sonarForceBuilder distanceThreshold: ((2* aVector length) max: 0.3).
 	
 ]
 
@@ -53,7 +58,7 @@ RrCollisionAvoiderController >> speedVector: aVector [
 RrCollisionAvoiderController >> start [
 	vectorDisplay start.
 	self robot
-		scanIrEvery: 0 
+		scanSonarsEvery: 0 
 		do: [ :distances| 
 			sonarForceBuilder input: distances]
 
