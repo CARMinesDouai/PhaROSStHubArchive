@@ -26,6 +26,11 @@ RrVectorDisplay >> defaultBackgroundColor [
 	^Color white
 ]
 
+{ #category : #'initialize-release' }
+RrVectorDisplay >> defaultExtent [
+	^400@400
+]
+
 { #category : #drawing }
 RrVectorDisplay >> draw: aVector [
 	| extremite center correctedVector vectorPoint correctedAngle |
@@ -49,6 +54,7 @@ RrVectorDisplay >> erase [
 { #category : #'initialize-release' }
 RrVectorDisplay >> initialize [
 	super initialize.
+	self extent: self defaultExtent.
 	self backgroundColor: self defaultBackgroundColor.
 	self erase
 ]

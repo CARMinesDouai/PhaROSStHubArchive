@@ -22,3 +22,8 @@ RrDemo class >> demo: aControllerClass [
 RrDemo class >> emergencyStop [
 	^self demo:  RrEmergencyStopController
 ]
+
+{ #category : #demo }
+RrDemo class >> showObstacleSensors [
+	^self demo: RrShowObstacleSensorsController
+]

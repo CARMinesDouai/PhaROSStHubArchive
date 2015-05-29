@@ -98,6 +98,16 @@ RrRobulabBody >> scanIrEvery: cycles do: aBlock [
 ]
 
 { #category : #sensing }
+RrRobulabBody >> scanLaserEvery: cycles do: aBlock [
+	self stopLaser.
+	self laserService 
+		enableNotificationsEvery: cycles;
+		onNotificationDo: [ :notif| 
+			aBlock cull: notif distances
+		]
+]
+
+{ #category : #sensing }
 RrRobulabBody >> scanSonarsEvery: cycles do: aBlock [
 	self stopSonars.
 	self sonarTelemeterService 
@@ -138,6 +148,11 @@ RrRobulabBody >> stopAllSensors [
 { #category : #sensing }
 RrRobulabBody >> stopIr [
 	self notificationService delete: self irTelemeterService 
+]
+
+{ #category : #sensing }
+RrRobulabBody >> stopLaser [
+	self notificationService delete: self laserService 
 ]
 
 { #category : #sensing }
