@@ -2,7 +2,7 @@ Class {
 	#name : #RrVectorsBuilder,
 	#superclass : #ChaDefaultInOutComponent,
 	#instVars : [
-		'sensorAngles'
+		'vectorAngles'
 	],
 	#category : #'ReactiveRobot-Kernel'
 }
@@ -20,18 +20,18 @@ RrVectorsBuilder >> addVectorTo: vectors length: length angle: angle [
 RrVectorsBuilder >> newOutputFrom: distances [
 	| vectors |
 	vectors := OrderedCollection new: distances size.
-	distances with: self sensorAngles do: [ : distance : angle|
+	distances with: self vectorAngles do: [ : distance : angle|
 		self addVectorTo: vectors length: distance angle: angle
 	].
 	^vectors
 ]
 
 { #category : #accessing }
-RrVectorsBuilder >> sensorAngles [
-	^sensorAngles
+RrVectorsBuilder >> vectorAngles [
+	^vectorAngles
 ]
 
 { #category : #'initialize-release' }
-RrVectorsBuilder >> sensorAngles: radians [
-	sensorAngles := radians
+RrVectorsBuilder >> vectorAngles: radians [
+	vectorAngles := radians
 ]

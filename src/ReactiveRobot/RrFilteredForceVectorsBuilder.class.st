@@ -45,9 +45,9 @@ RrFilteredForceVectorsBuilder >> input: a1 [
 ]
 
 { #category : #'forwarding-generated' }
-RrFilteredForceVectorsBuilder >> sensorAngles: a1 [ 
+RrFilteredForceVectorsBuilder >> vectorAngles: a1 [ 
 	"Generated method. If you edit it please remove this comment and the pragma below"
 	<forwardToIv: #builder>
 
-	^builder sensorAngles: a1 
+	^builder vectorAngles: a1 
 ]

@@ -30,11 +30,10 @@ RrController >> start [
 
 { #category : #acting }
 RrController >> stop [
-	self robot stop.
 	self subComponents do: [ :each | each stop ] 
 ]
 
 { #category : #acting }
 RrController >> subComponents [
-	^#()
+	^{self robot}
 ]

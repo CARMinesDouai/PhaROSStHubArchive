@@ -23,13 +23,7 @@ RrEmergencyStopController >> initialize [
 { #category : #acting }
 RrEmergencyStopController >> start [
 	motor robot: self robot.
-	self robot 
-"		scanIrEvery: 0 
-		do: [ :distances| 
-			emergencyStop distanceToObstacles: distances];
-"		scanSonarsEvery: 0 
-		do: [ :distances| 
-			emergencyStop distanceToObstacles: distances].
+	self robot startAllSensors. "emergencyStop distanceToObstacles: distances"
 	motor run
 ]
 

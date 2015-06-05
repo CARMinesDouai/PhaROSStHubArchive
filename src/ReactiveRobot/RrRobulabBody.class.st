@@ -1,10 +1,11 @@
 Class {
 	#name : #RrRobulabBody,
-	#superclass : #MfForwarder,
-	#traits : 'TRrRobotBody',
-	#classTraits : 'TRrRobotBody classTrait',
+	#superclass : #ChaComponent,
 	#instVars : [
-		'driver'
+		'driver',
+		'laserPort',
+		'irPort',
+		'sonarsPort'
 	],
 	#category : #'ReactiveRobot-Robulab'
 }
@@ -126,33 +127,21 @@ RrRobulabBody >> scanIrEvery: cycles do: aBlock [
 		]
 ]
 
-{ #category : #sensing }
-RrRobulabBody >> scanLaserEvery: cycles do: aBlock [
-	self stopLaser.
-	self laserService 
-		enableNotificationsEvery: cycles;
-		onNotificationDo: [ :notif| 
-			aBlock cull: notif distances
-		]
-]
-
-{ #category : #sensing }
-RrRobulabBody >> scanSonarsEvery: cycles do: aBlock [
-	self stopSonars.
-	self sonarTelemeterService 
-		enableNotificationsEvery: cycles;
-		onNotificationDo: [ :notif| 
-			aBlock cull: notif distances
-		]
-]
-
 { #category : #'initialize-release' }
 RrRobulabBody >> shutdown [
 	driver finalize
 ]
 
+{ #category : #'forwarding-generated' }
+RrRobulabBody >> sonarTelemeterService [
+	"Generated method. If you edit it please remove this comment and the pragma below"
+	<forwardToIv: #driver>
+
+	^driver sonarTelemeterService
+]
+
 { #category : #'robot structure' }
-RrRobulabBody >> sonarAngles [
+RrRobulabBody >> sonarsAngles [
 	| pi |
 	pi := VeAngle pi.
 	^ {(pi / 12).
@@ -166,43 +155,65 @@ RrRobulabBody >> sonarAngles [
 	(-1 * pi / 12)}
 ]
 
-{ #category : #'forwarding-generated' }
-RrRobulabBody >> sonarTelemeterService [
-	"Generated method. If you edit it please remove this comment and the pragma below"
-	<forwardToIv: #driver>
-
-	^driver sonarTelemeterService
-]
-
 { #category : #moving }
 RrRobulabBody >> speedVector: aVector [
 	self forwardAt: aVector length rotateAt: aVector angle
 ]
 
-{ #category : #'sensor activity' }
-RrRobulabBody >> startIr: aSensor [
-	self
-		scanIrEvery: aSensor refreshPeriod 
-		do: [ : distances| 
-			aSensor input: distances.
+{ #category : #sensing }
+RrRobulabBody >> start [
+	self startAllSensors
+]
+
+{ #category : #sensing }
+RrRobulabBody >> startAllSensors [
+	self startSonars.
+	self startIr.
+	self startLaser
+]
+
+{ #category : #sensing }
+RrRobulabBody >> startIr [
+	self startIrNotifyEvery: 0
+]
+
+{ #category : #sensing }
+RrRobulabBody >> startIrNotifyEvery: cycles [
+	self stopIr.
+	self irTelemeterService 
+		enableNotificationsEvery: cycles;
+		onNotificationDo: [ :notif| 
+			irPort set: notif distances
 		]
 ]
 
-{ #category : #'sensor activity' }
-RrRobulabBody >> startLaser: aSensor [
-	self
-		scanLaserEvery: aSensor refreshPeriod 
-		do: [ : distances| 
-			aSensor input: distances.
+{ #category : #sensing }
+RrRobulabBody >> startLaser [
+	self startLaserNotifyEvery: 0
+]
+
+{ #category : #sensing }
+RrRobulabBody >> startLaserNotifyEvery: cycles [
+	self stopLaser.
+	self laserService 
+		enableNotificationsEvery: cycles;
+		onNotificationDo: [ : notif | 
+			laserPort set: notif distances
 		]
 ]
 
-{ #category : #'sensor activity' }
-RrRobulabBody >> startSonar: aSensor [
-	self
-		scanSonarsEvery: aSensor refreshPeriod 
-		do: [ : distances| 
-			aSensor input: distances.
+{ #category : #sensing }
+RrRobulabBody >> startSonars [
+	self startSonarsNotifyEvery: 0
+]
+
+{ #category : #sensing }
+RrRobulabBody >> startSonarsNotifyEvery: cycles [
+	self stopSonars.
+	self sonarTelemeterService 
+		enableNotificationsEvery: cycles;
+		onNotificationDo: [ :notif| 
+			sonarsPort set: notif distances
 		]
 ]
 
@@ -221,24 +232,9 @@ RrRobulabBody >> stopIr [
 	self notificationService delete: self irTelemeterService 
 ]
 
-{ #category : #'sensor activity' }
-RrRobulabBody >> stopIr: aSensor [
-	self stopIr
-]
-
 { #category : #sensing }
 RrRobulabBody >> stopLaser [
 	self notificationService delete: self laserService 
-]
-
-{ #category : #'sensor activity' }
-RrRobulabBody >> stopLaser: aSensor [
-	self stopLaser
-]
-
-{ #category : #'sensor activity' }
-RrRobulabBody >> stopSonar: aSensor [
-	self stopSonars
 ]
 
 { #category : #sensing }

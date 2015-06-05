@@ -11,7 +11,7 @@ Class {
 { #category : #testing }
 RrFeelForceTest >> assertScan: distances from: angles resultInto: expectedVector [
 	<testParametersSelector: #distancesAnglesAndExpectedVector>
-	builder sensorAngles: angles.
+	builder vectorAngles: angles.
 	builder input: distances.
 	self assert: integrator dataOnOutputPort equals: expectedVector 
 ]

@@ -20,7 +20,7 @@ RrForceVectorsBuilderTest >> assert: threashold andValues: values leadTo: expect
 RrForceVectorsBuilderTest >> setUp [
 	super setUp.
 	builder := RrForceVectorsBuilder new.
-	builder sensorAngles: #(0 0 0) 
+	builder vectorAngles: #(0 0 0) 
 ]
 
 { #category : #testing }

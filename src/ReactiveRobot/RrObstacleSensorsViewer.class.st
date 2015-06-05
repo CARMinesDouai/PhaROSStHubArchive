@@ -1,8 +1,6 @@
 Class {
 	#name : #RrObstacleSensorsViewer,
 	#superclass : #Object,
-	#traits : 'TRrControllerComponent',
-	#classTraits : 'TRrControllerComponent classTrait',
 	#instVars : [
 		'sensorsDisplay',
 		'sensorsDisplayController',
