@@ -5,7 +5,10 @@ Class {
 		'driver',
 		'laserPort',
 		'irPort',
-		'sonarsPort'
+		'sonarsPort',
+		'forwardSpeed',
+		'rotationSpeed',
+		'canMove'
 	],
 	#category : #'ReactiveRobot-Robulab'
 }
@@ -49,8 +52,17 @@ RrRobulabBody >> forwardAt: linearSpeed [
 ]
 
 { #category : #moving }
-RrRobulabBody >> forwardAt: linearSpeed rotateAt: angularSpeed [
-	self differentialService moveAt: linearSpeed and: angularSpeed 
+RrRobulabBody >> forwardAt: metersPerSecond rotateAt: radiansPerSecond [
+	forwardSpeed := metersPerSecond.
+	rotationSpeed := radiansPerSecond.
+]
+
+{ #category : #'initialize-release' }
+RrRobulabBody >> initialize [
+	super initialize.
+	forwardSpeed := 0.
+	rotationSpeed := 0.
+	canMove := false
 ]
 
 { #category : #'robot structure' }
@@ -85,7 +97,10 @@ RrRobulabBody >> irTelemeterService [
 
 { #category : #'robot structure' }
 RrRobulabBody >> laserAngles [
-	^ (-135 to: 135) collect: [ :degree | degree degreesToRadians radians ]
+	"The actual range is (-135 to: 135) but since some values are faulty, we work with a smaller range.
+	See method #startLaserNotifyEvery:
+	"
+	^ (-130 to: 130) collect: [ :degree | degree degreesToRadians radians ]
 ]
 
 { #category : #'forwarding-generated' }
@@ -198,8 +213,14 @@ RrRobulabBody >> startLaserNotifyEvery: cycles [
 	self laserService 
 		enableNotificationsEvery: cycles;
 		onNotificationDo: [ : notif | 
-			laserPort set: notif distances
+			laserPort set: (notif distances copyFrom: 6 to: notif distances size - 5) "We filter out some values that are faulty due to the robot structure"
 		]
+]
+
+{ #category : #moving }
+RrRobulabBody >> startMotion [
+	canMove := true.
+	self differentialService moveAt: forwardSpeed and: rotationSpeed 
 ]
 
 { #category : #sensing }
@@ -217,9 +238,10 @@ RrRobulabBody >> startSonarsNotifyEvery: cycles [
 		]
 ]
 
-{ #category : #moving }
+{ #category : #sensing }
 RrRobulabBody >> stop [
-	self forwardAt: 0 rotateAt: 0
+	self stopMotion.
+	self stopAllSensors
 ]
 
 { #category : #sensing }
@@ -237,7 +259,22 @@ RrRobulabBody >> stopLaser [
 	self notificationService delete: self laserService 
 ]
 
+{ #category : #moving }
+RrRobulabBody >> stopMotion [
+	self differentialService moveAt: 0 and: 0.
+	canMove := false.
+
+]
+
 { #category : #sensing }
 RrRobulabBody >> stopSonars [
 	self notificationService delete: self sonarTelemeterService 
+]
+
+{ #category : #moving }
+RrRobulabBody >> toggleMotion: aBoolean [
+"	aBoolean == canMove ifTrue: [ ^self ].
+"self logCr: aBoolean.
+	aBoolean ifTrue: [ ^self startMotion ].
+	self stopMotion
 ]

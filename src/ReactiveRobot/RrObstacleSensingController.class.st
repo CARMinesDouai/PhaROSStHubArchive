@@ -2,9 +2,6 @@ Class {
 	#name : #RrObstacleSensingController,
 	#superclass : #RrController,
 	#instVars : [
-		'irSensor',
-		'laserSensor',
-		'sonarSensor',
 		'viewer',
 		'irVectorsBuilder',
 		'sonarVectorsBuilder',
@@ -12,6 +9,13 @@ Class {
 	],
 	#category : #'ReactiveRobot-Demo'
 }
+
+{ #category : #'initialize-release' }
+RrObstacleSensingController >> connectVectorBuilderInputs [
+	self robot connect: #irPort to: #input: of: irVectorsBuilder.
+	self robot connect: #sonarsPort to: #input: of: sonarVectorsBuilder.
+	self robot connect: #laserPort to: #input: of: laserVectorsBuilder
+]
 
 { #category : #'forwarding-generated' }
 RrObstacleSensingController >> hideIr [
@@ -46,19 +50,22 @@ RrObstacleSensingController >> initialize [
 	laserVectorsBuilder := self vectorsBuilderClass new.
 	irVectorsBuilder connectTo: #irVectors: of: viewer.
 	sonarVectorsBuilder connectTo: #sonarVectors: of: viewer.
-	laserVectorsBuilder  connectTo: #laserVectors: of: viewer.
+	laserVectorsBuilder connectTo: #laserVectors: of: viewer.
  
 ]
 
 { #category : #'initialize-release' }
 RrObstacleSensingController >> robot: robotBody [
 	super robot: robotBody.
-	robot connect: #irPort to: #input: of: irVectorsBuilder.
+	self setVectorAngles.
+	self connectVectorBuilderInputs
+]
+
+{ #category : #'initialize-release' }
+RrObstacleSensingController >> setVectorAngles [
 	irVectorsBuilder vectorAngles: robot irAngles.
-	robot connect: #sonarsPort to: #input: of: sonarVectorsBuilder.
 	sonarVectorsBuilder vectorAngles: robot sonarsAngles.
-	robot connect: #laserPort to: #input: of: laserVectorsBuilder.
-	laserVectorsBuilder vectorAngles: robot laserAngles.
+	laserVectorsBuilder vectorAngles: robot laserAngles
 ]
 
 { #category : #'forwarding-generated' }
@@ -90,7 +97,7 @@ RrObstacleSensingController >> subComponents [
 	^super subComponents copyWith: viewer
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'initialize-release' }
 RrObstacleSensingController >> vectorsBuilderClass [
 	^RrVectorsBuilder 
 ]
