@@ -128,6 +128,13 @@ ActiveObject class >> repeat: taskBlock [
 ]
 
 { #category : #'instance-creation' }
+ActiveObject class >> repeat: taskBlock  ensure: cleanupBlock [
+	^self 
+		do: [ taskBlock repeat ]
+		ensure: cleanupBlock
+]
+
+{ #category : #'instance-creation' }
 ActiveObject class >> repeat: taskBlock every: aDuration [
 	^ self do: (self blockForRepeating: taskBlock every: aDuration)
 ]
@@ -148,6 +155,18 @@ ActiveObject class >> repeat: taskBlock every: aDuration while: conditionBlock [
 ActiveObject class >> repeat: taskBlock every: aDuration while: conditionBlock ensure: cleanupBlock [
 	^self 
 		do: (self blockForRepeating: taskBlock every: aDuration while: conditionBlock)
+		ensure: cleanupBlock
+]
+
+{ #category : #'instance-creation' }
+ActiveObject class >> repeat: taskBlock while: conditionBlock [
+	^self do: [ conditionBlock whileTrue: taskBlock ]
+]
+
+{ #category : #'instance-creation' }
+ActiveObject class >> repeat: taskBlock while: conditionBlock  ensure: cleanupBlock [
+	^self 
+		do: [ conditionBlock whileTrue: taskBlock ]
 		ensure: cleanupBlock
 ]
 
