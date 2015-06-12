@@ -1,10 +1,8 @@
 Class {
 	#name : #RrMotionSwitch,
 	#superclass : #ChaDefaultInOutComponent,
-	#traits : 'TChaDefaultInputComponent',
-	#classTraits : 'TChaDefaultInputComponent classTrait',
 	#instVars : [
-		'emergencyDistance'
+		'stopDistance'
 	],
 	#category : #'ReactiveRobot-EmergencyStop'
 }
@@ -12,26 +10,21 @@ Class {
 { #category : #'instance creation' }
 RrMotionSwitch class >> at: distance [
 	^self new
-		turnOffDistance: distance;
+		stopDistance: distance;
 		yourself
 ]
 
 { #category : #acting }
-RrMotionSwitch >> input: distances [
-	distances 
-		detect: [ :aDistance| 
-			aDistance < self turnOffDistance]
-		ifFound: [ : dist |
-			^outputPort set: false].
-	outputPort set: true
+RrMotionSwitch >> newOutputFrom: distances [
+	^distances noneSatisfy: [ :aDistance| aDistance <= self stopDistance]
 ]
 
 { #category : #accessing }
-RrMotionSwitch >> turnOffDistance [
-	^emergencyDistance
+RrMotionSwitch >> stopDistance [
+	^stopDistance
 ]
 
 { #category : #accessing }
-RrMotionSwitch >> turnOffDistance: meters [
-	emergencyDistance := meters
+RrMotionSwitch >> stopDistance: meters [
+	stopDistance := meters
 ]

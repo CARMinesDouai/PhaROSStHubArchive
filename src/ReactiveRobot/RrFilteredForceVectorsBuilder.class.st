@@ -1,6 +1,6 @@
 Class {
 	#name : #RrFilteredForceVectorsBuilder,
-	#superclass : #ChaSingleOutputComponent,
+	#superclass : #ChaDefaultOutputComponent,
 	#instVars : [
 		'filter',
 		'builder'

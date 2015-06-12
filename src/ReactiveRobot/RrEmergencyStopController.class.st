@@ -2,9 +2,10 @@ Class {
 	#name : #RrEmergencyStopController,
 	#superclass : #RrObstacleSensingController,
 	#instVars : [
-		'averageSonarDistances',
-		'averageIrDistances',
-		'emergencyStop'
+		'irStopTrigger',
+		'sonarStopTrigger',
+		'stopTrigger',
+		'laserStopTrigger'
 	],
 	#category : #'ReactiveRobot-EmergencyStop'
 }
@@ -15,61 +16,59 @@ RrEmergencyStopController >> averageFilterClass [
 ]
 
 { #category : #'initialize-release' }
-RrEmergencyStopController >> connectVectorBuilderInputs [
-	averageIrDistances => irVectorsBuilder.
-	averageSonarDistances => sonarVectorsBuilder.
-	self robot connect: #laserPort to: #input: of: laserVectorsBuilder
+RrEmergencyStopController >> forwardAt: forwardSpeed [
+	^self forwardAt: forwardSpeed rotateAt: 0
 ]
 
-{ #category : #'forwarding-generated' }
-RrEmergencyStopController >> forwardAt: a1 [ 
-	"Generated method. If you edit it please remove this comment and the pragma below"
-	<forwardToIv: #robot>
-
-	^robot forwardAt: a1 
-]
-
-{ #category : #'forwarding-generated' }
-RrEmergencyStopController >> forwardAt: a1 rotateAt: a2 [ 
-	"Generated method. If you edit it please remove this comment and the pragma below"
-	<forwardToIv: #robot>
-
-	^robot forwardAt: a1 rotateAt: a2 
+{ #category : #'initialize-release' }
+RrEmergencyStopController >> forwardAt: linearSpeed rotateAt: rotationSpeed [
+	self safetyDistance: (linearSpeed max: rotationSpeed).
+	robot forwardAt: linearSpeed rotateAt: rotationSpeed 
 ]
 
 { #category : #'initialize-release' }
 RrEmergencyStopController >> initialize [
 	super initialize.
-	emergencyStop  := RrMotionSwitch at: 0.1. "10 cm"
-	averageSonarDistances := self averageFilterClass new.
-	averageIrDistances := self averageFilterClass new.
-	averageSonarDistances => emergencyStop.
-	averageIrDistances => emergencyStop.
+	irStopTrigger  := RrMotionSwitch at: self minSafetyDistance.
+	sonarStopTrigger  := RrMotionSwitch at: self minSafetyDistance.
+	laserStopTrigger := RrMotionSwitch at: self minSafetyDistance.
+	stopTrigger := ChaAnd on: {irStopTrigger. sonarStopTrigger. laserStopTrigger}.
+]
+
+{ #category : #'initialize-release' }
+RrEmergencyStopController >> minSafetyDistance [
+	^0.26
 ]
 
 { #category : #'initialize-release' }
 RrEmergencyStopController >> robot: aRobot [
 	super robot: aRobot.
-	"emergencyStop connectTo: #toggleMotion: of: self robot."
-	"robot connect: #irPort to: #input: of: averageIrDistances.
-	robot connect: #sonarsPort to: #input: of: averageSonarDistances."
-	robot connect: #laserPort to: #input: of: emergencyStop.
-
+	stopTrigger connectTo: #enableMotion: of: self robot.
+	robot connect: #irPort to: #input: of: irStopTrigger.
+	robot connect: #sonarsPort to: #input: of: sonarStopTrigger.
+	robot connect: #laserPort to: #input: of: laserStopTrigger.
 	
 ]
 
-{ #category : #'forwarding-generated' }
-RrEmergencyStopController >> rotateAt: a1 [ 
-	"Generated method. If you edit it please remove this comment and the pragma below"
-	<forwardToIv: #robot>
+{ #category : #'initialize-release' }
+RrEmergencyStopController >> rotateAt: rotationSpeed [
+	^self forwardAt: 0 rotateAt: rotationSpeed 
+]
 
-	^robot rotateAt: a1 
+{ #category : #'initialize-release' }
+RrEmergencyStopController >> safetyDistance: meters [
+	| safetyDistance |
+	safetyDistance := meters max: self minSafetyDistance.
+	irStopTrigger stopDistance: safetyDistance.
+	sonarStopTrigger stopDistance: safetyDistance.
+	laserStopTrigger stopDistance: safetyDistance.
+
 ]
 
 { #category : #acting }
 RrEmergencyStopController >> start [
 	super start.
-	self robot forwardAt: 0.2 rotateAt: 0
+	self forwardAt: 0.2 rotateAt: 0
 ]
 
 { #category : #'forwarding-generated' }

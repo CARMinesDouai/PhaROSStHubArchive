@@ -47,6 +47,12 @@ RrRobulabBody >> driver: robotDriver [
 ]
 
 { #category : #moving }
+RrRobulabBody >> enableMotion: aBoolean [
+	aBoolean ifTrue: [ ^self startMotion ].
+	self stopMotion
+]
+
+{ #category : #moving }
 RrRobulabBody >> forwardAt: linearSpeed [ 
 	self forwardAt: linearSpeed rotateAt: 0
 ]
@@ -175,7 +181,7 @@ RrRobulabBody >> speedVector: aVector [
 	self forwardAt: aVector length rotateAt: aVector angle
 ]
 
-{ #category : #sensing }
+{ #category : #acting }
 RrRobulabBody >> start [
 	self startAllSensors
 ]
@@ -238,7 +244,7 @@ RrRobulabBody >> startSonarsNotifyEvery: cycles [
 		]
 ]
 
-{ #category : #sensing }
+{ #category : #acting }
 RrRobulabBody >> stop [
 	self stopMotion.
 	self stopAllSensors
@@ -269,12 +275,4 @@ RrRobulabBody >> stopMotion [
 { #category : #sensing }
 RrRobulabBody >> stopSonars [
 	self notificationService delete: self sonarTelemeterService 
-]
-
-{ #category : #moving }
-RrRobulabBody >> toggleMotion: aBoolean [
-"	aBoolean == canMove ifTrue: [ ^self ].
-"self logCr: aBoolean.
-	aBoolean ifTrue: [ ^self startMotion ].
-	self stopMotion
 ]
