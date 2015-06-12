@@ -11,21 +11,18 @@ PBCommunicationTest >> giveFinalizationSomeChanceToPerform. [
 
 { #category : #testing }
 PBCommunicationTest >> testBridgeFinalization [	
-	| bridgeInstancesCount bridgeProcess bridgeSocket |
+	| bridgeInstancesCount  bridgeSocket |
 	bridgeInstancesCount := PNGNetworkBridge allInstances size.
 	bridgeSocket := robot bridge socket.
-	bridgeProcess := robot bridge activeObject process. "Get the process of the activeObject"
 	
 	self assert: bridgeSocket isConnected.
-	self deny: bridgeProcess isTerminated.
+	self assert: robot bridge activeObject isStarted.
 	robot := nil.
 	Smalltalk garbageCollect.
 	self giveFinalizationSomeChanceToPerform.
 	
 	self assert: (bridgeInstancesCount > PNGNetworkBridge allInstances size).
 	self deny: bridgeSocket isValid.
-	self assert: bridgeProcess isTerminated. 
-	
 	
 	
 
@@ -33,18 +30,14 @@ PBCommunicationTest >> testBridgeFinalization [
 
 { #category : #testing }
 PBCommunicationTest >> testDispatcherFinalization [	
-	| dispatcherInstancesCount dispatcherProcess |
+	| dispatcherInstancesCount |
 	dispatcherInstancesCount := PNGMessageDispatcher allInstances size.
-	dispatcherProcess := robot dispatcher activeObject process. "Get the process of the activeObject"
-	
-	self deny: dispatcherProcess isTerminated.
+	self assert: robot dispatcher activeObject isStarted.
+
 	robot := nil.
 	Smalltalk garbageCollect.
 	
 	self assert: (dispatcherInstancesCount > PNGMessageDispatcher allInstances size).
-	(Delay forMilliseconds: 100) wait. "Give dispatcher process a chance to terminate"
-	self assert: dispatcherProcess isTerminated. 
-	
 	
 	
 
