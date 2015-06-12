@@ -27,6 +27,11 @@ PNGController class >> kompai2 [
 ]
 
 { #category : #services }
+PNGController >> differentialDriveService [ 
+	^self robot differentialService
+]
+
+{ #category : #services }
 PNGController >> localizationService [ 
 	^self robot localizationService
 ]
