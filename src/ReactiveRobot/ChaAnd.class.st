@@ -1,6 +1,6 @@
 Class {
 	#name : #ChaAnd,
-	#superclass : #ChaMultiPortWatcher,
+	#superclass : #ChaPrimitiveMultiPortWatcher,
 	#category : #'ReactiveRobot-EmergencyStop'
 }
 

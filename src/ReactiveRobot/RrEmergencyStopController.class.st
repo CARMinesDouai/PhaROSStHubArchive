@@ -5,7 +5,8 @@ Class {
 		'irStopTrigger',
 		'sonarStopTrigger',
 		'stopTrigger',
-		'laserStopTrigger'
+		'laserStopTrigger',
+		'changeNotifier'
 	],
 	#category : #'ReactiveRobot-EmergencyStop'
 }
@@ -15,12 +16,12 @@ RrEmergencyStopController >> averageFilterClass [
 	^RrAverageFilter 
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #motion }
 RrEmergencyStopController >> forwardAt: forwardSpeed [
 	^self forwardAt: forwardSpeed rotateAt: 0
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #motion }
 RrEmergencyStopController >> forwardAt: linearSpeed rotateAt: rotationSpeed [
 	self safetyDistance: (linearSpeed max: rotationSpeed).
 	robot forwardAt: linearSpeed rotateAt: rotationSpeed 
@@ -29,36 +30,31 @@ RrEmergencyStopController >> forwardAt: linearSpeed rotateAt: rotationSpeed [
 { #category : #'initialize-release' }
 RrEmergencyStopController >> initialize [
 	super initialize.
-	irStopTrigger  := RrMotionSwitch at: self minSafetyDistance.
-	sonarStopTrigger  := RrMotionSwitch at: self minSafetyDistance.
-	laserStopTrigger := RrMotionSwitch at: self minSafetyDistance.
+	irStopTrigger  := RrMotionSwitch new.
+	sonarStopTrigger  := RrMotionSwitch new.
+	laserStopTrigger := RrMotionSwitch new.
 	stopTrigger := ChaAnd on: {irStopTrigger. sonarStopTrigger. laserStopTrigger}.
-]
-
-{ #category : #'initialize-release' }
-RrEmergencyStopController >> minSafetyDistance [
-	^0.26
+	changeNotifier := ChaChangeNotifier new.
+	stopTrigger => changeNotifier
 ]
 
 { #category : #'initialize-release' }
 RrEmergencyStopController >> robot: aRobot [
 	super robot: aRobot.
-	stopTrigger connectTo: #enableMotion: of: self robot.
+	changeNotifier connectTo: #enableMotion: of: self robot.
 	robot connect: #irPort to: #input: of: irStopTrigger.
 	robot connect: #sonarsPort to: #input: of: sonarStopTrigger.
 	robot connect: #laserPort to: #input: of: laserStopTrigger.
 	
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #motion }
 RrEmergencyStopController >> rotateAt: rotationSpeed [
 	^self forwardAt: 0 rotateAt: rotationSpeed 
 ]
 
-{ #category : #'initialize-release' }
-RrEmergencyStopController >> safetyDistance: meters [
-	| safetyDistance |
-	safetyDistance := meters max: self minSafetyDistance.
+{ #category : #motion }
+RrEmergencyStopController >> safetyDistance: safetyDistance [
 	irStopTrigger stopDistance: safetyDistance.
 	sonarStopTrigger stopDistance: safetyDistance.
 	laserStopTrigger stopDistance: safetyDistance.

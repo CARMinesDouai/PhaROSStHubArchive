@@ -14,6 +14,17 @@ RrMotionSwitch class >> at: distance [
 		yourself
 ]
 
+{ #category : #'initialization-release' }
+RrMotionSwitch >> defaultStopDistance [
+	^0
+]
+
+{ #category : #'initialization-release' }
+RrMotionSwitch >> initialize [
+	super initialize.
+	self stopDistance: self defaultStopDistance
+]
+
 { #category : #acting }
 RrMotionSwitch >> newOutputFrom: distances [
 	^distances noneSatisfy: [ :aDistance| aDistance <= self stopDistance]
