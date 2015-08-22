@@ -41,7 +41,7 @@ BGSSlowedDownSimulation >> runLoop [
 
 { #category : #accessing }
 BGSSlowedDownSimulation >> stepDelay [
-	(stepDelay isNil or: [stepDelay beingWaitedOn]) ifTrue: [self resetStepDelay].
+	(stepDelay isNil or: [stepDelay schedulerBeingWaitedOn]) ifTrue: [self resetStepDelay].
 	^stepDelay
 ]
 

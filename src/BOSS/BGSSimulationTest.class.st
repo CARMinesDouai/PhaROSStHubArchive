@@ -45,7 +45,7 @@ BGSSimulationTest >> testIsRunning [
 BGSSimulationTest >> testRemoveRobot [
 	simulation removeRobot: robot.
 	self deny: (simulation robots includes: robot).
-	self assert: (simulation robot: #robot1) isNil
+	self should: [ simulation robot: #robot1 ] raise: KeyNotFound
 ]
 
 { #category : #testing }

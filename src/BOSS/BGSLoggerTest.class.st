@@ -56,10 +56,9 @@ BGSLoggerTest >> simulationClass [
 ]
 
 { #category : #'setUp-tearDown' }
-BGSLoggerTest >> tearDown [ 
+BGSLoggerTest >> tearDown [
 	super tearDown.
-	FileDirectory default deleteFileNamed: logger fileName
-
+	logger fileName asFileReference ensureDelete
 ]
 
 { #category : #testing }

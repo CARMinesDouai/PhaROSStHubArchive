@@ -28,10 +28,10 @@ Class {
 
 { #category : #'instance creation' }
 BGSLogger class >> on: aBGSSimulation [
-	|fileName|
-	fileName := aBGSSimulation className, TimeStamp current printString, '.txt'.
-	^self on: aBGSSimulation logInto: fileName
-
+	| fileName timestampString |
+	timestampString := String streamContents: [ :stream | DateAndTime now printSeparateDateAndTimeOn: stream ].
+	fileName := aBGSSimulation className , timestampString , '.txt'.
+	^ self on: aBGSSimulation logInto: fileName
 ]
 
 { #category : #'instance creation' }

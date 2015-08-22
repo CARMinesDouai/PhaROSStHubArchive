@@ -21,7 +21,8 @@ BGSDirectionalRangeSensor class >> botBody: robotBody name: sensorName range: ma
 
 { #category : #visiting }
 BGSDirectionalRangeSensor >> acceptVisitor: aVisitor [
-	aVisitor visitDirectionalRangeSensor: self
+	aVisitor visitDirectionalRangeSensor: self 
+	
 ]
 
 { #category : #'initialize-release' }
