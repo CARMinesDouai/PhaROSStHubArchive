@@ -119,7 +119,7 @@ ConfigurationOfBotController >> baseline01: spec [
 			project: 'ChainableComponents' with: [
 				spec
 					className: #ConfigurationOfChainableComponents;
-					versionString: #'stable';
+					versionString: #'bleedingEdge';
 					repository: 'http://smalltalkhub.com/mc/noury/ChainableComponents/main/' ];
 			project: 'MorphicApp' with: [
 				spec
