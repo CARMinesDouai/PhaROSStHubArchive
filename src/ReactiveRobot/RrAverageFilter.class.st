@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'averages'
 	],
-	#category : #'ReactiveRobot-Kernel'
+	#category : #'ReactiveRobot-Generic'
 }
 
 { #category : #acting }

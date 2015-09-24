@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'threshold'
 	],
-	#category : #'ReactiveRobot-Kernel'
+	#category : #'ReactiveRobot-Generic'
 }
 
 { #category : #acting }

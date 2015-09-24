@@ -3,64 +3,48 @@ Class {
 	#superclass : #RrController,
 	#instVars : [
 		'runaway',
-		'forceFusion',
-		'sonarForceBuilder',
-		'vectorDisplay',
-		'irForceBuilder'
+		'sonarFeelForce',
+		'irFeelForce'
 	],
 	#category : #'ReactiveRobot-02-CollisionAvoidance'
 }
 
-{ #category : #'initialize-release' }
-RrCollisionAvoiderController >> forwardAt: aNumber [
-	self speedVector: (VeVector length: aNumber)
+{ #category : #accessing }
+RrCollisionAvoiderController >> forwardAt: linearSpeed rotateAt: rotationSpeed [
+	runaway speedVector: (VeVector length: linearSpeed angle: rotationSpeed)
 ]
 
 { #category : #'initialize-release' }
 RrCollisionAvoiderController >> initialize [
 	| pi |
 	super initialize.
-	sonarForceBuilder := RrFilteredForceVectorsBuilder new.
-	irForceBuilder := RrFilteredForceVectorsBuilder new.
+	sonarFeelForce := RrFeelForce new.
+	irFeelForce := RrFeelForce new.
 	pi := VeAngle pi.
-	sonarForceBuilder 
+	sonarFeelForce 
 		vectorAngles: {pi/12. pi/4. pi/2. 3*pi/4. pi.  -3*pi/4. -1*pi/2. -1*pi/4 . -1*pi/12}.
-	irForceBuilder 
-		vectorAngles: {pi/12. pi/4. 3*pi/8. pi/2.  5*pi/8. 3*pi/4. 11*pi/12. 
+	irFeelForce 
+		vectorAngles: {0.
+						pi/12. pi/4. 3*pi/8. pi/2.  5*pi/8. 3*pi/4. 11*pi/12. 
 						pi.
 						 -11*pi/12. -3*pi/4. -5*pi/8. -1*pi/2. -3*pi/8. -1*pi/4.  -1*pi/12.}.
-	forceFusion := RrForceIntegrator new.
 	runaway := RrRunaway new.
-	self forwardAt: 0.1.
-	
-	sonarForceBuilder => forceFusion.
-	forceFusion => runaway.
-	forceFusion connect: #outputPort to: #drawObstacle:  of: vectorDisplay.
-	runaway connect: #outputPort to: #drawSpeed:  of: vectorDisplay 
+	irFeelForce => runaway.	
+	runaway connectTo: #speedVector: of: self.
 
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #accessing }
 RrCollisionAvoiderController >> robot: aRobot [
 	super robot: aRobot.
-	self robot connect: #sonarsPort to: #input: of: sonarForceBuilder
+	robot connect: #irPort to: #input: of: irFeelForce.
+"	robot connect: #sonarsPort to: #input: of: sonarStopTrigger.
+	robot connect: #laserPort to: #input: of: laserStopTrigger.
+"	
 ]
 
-{ #category : #'initialize-release' }
-RrCollisionAvoiderController >> speedVector: aVector [
-	runaway speedVector: aVector.
-	sonarForceBuilder threshold: ((2* aVector length) max: 0.3).
-	
-]
-
-{ #category : #acting }
-RrCollisionAvoiderController >> start [
-	vectorDisplay start.
-	self robot startAllSensors
-]
-
-{ #category : #acting }
-RrCollisionAvoiderController >> stop [
-	super stop.
-	vectorDisplay stop
+{ #category : #accessing }
+RrCollisionAvoiderController >> speedVector: speedVector [
+	super forwardAt: speedVector length rotateAt: speedVector angle.
+	self startMotion.
 ]

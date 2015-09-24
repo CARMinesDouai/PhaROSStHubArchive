@@ -2,8 +2,7 @@ Class {
 	#name : #RrFeelForceTest,
 	#superclass : #ParameterizedTestCase,
 	#instVars : [
-		'builder',
-		'integrator'
+		'feelForce'
 	],
 	#category : #'ReactiveRobot-02-CollisionAvoidance'
 }
@@ -11,9 +10,9 @@ Class {
 { #category : #testing }
 RrFeelForceTest >> assertScan: distances from: angles resultInto: expectedVector [
 	<testParametersSelector: #distancesAnglesAndExpectedVector>
-	builder vectorAngles: angles.
-	builder input: distances.
-	self assert: integrator dataOnOutputPort equals: expectedVector 
+	feelForce vectorAngles: angles.
+	feelForce input: distances.
+	self assert: feelForce dataOnOutputPort equals: expectedVector 
 ]
 
 { #category : #testing }
@@ -39,8 +38,5 @@ RrFeelForceTest >> distancesAnglesAndExpectedVector [
 { #category : #testing }
 RrFeelForceTest >> setUp [
 	super setUp.
-	builder := RrForceVectorsBuilder new.
-	builder threshold: 1.
-	integrator := RrForceIntegrator new.
-	builder => integrator 
+	feelForce := RrFeelForce new
 ]

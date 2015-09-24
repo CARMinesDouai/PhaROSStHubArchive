@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'builder'
 	],
-	#category : #'ReactiveRobot-Kernel'
+	#category : #'ReactiveRobot-Generic'
 }
 
 { #category : #testing }

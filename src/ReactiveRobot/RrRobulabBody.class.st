@@ -14,18 +14,23 @@ Class {
 }
 
 { #category : #'instance creation' }
+RrRobulabBody class >> botDriverFactory [
+	^PNGRobulabHandcodedFactory
+]
+
+{ #category : #'instance creation' }
 RrRobulabBody class >> for: aRobot [
 	^ self new driver: aRobot ; yourself.
 ]
 
 { #category : #'instance creation' }
 RrRobulabBody class >> kompai1 [
-	^self for: PNGRobulabHandcodedFactory kompai1
+	^self for: self botDriverFactory kompai1
 ]
 
 { #category : #'instance creation' }
 RrRobulabBody class >> kompai2 [
-	^self for: PNGRobulabHandcodedFactory kompai2
+	^self for: self botDriverFactory kompai2
 ]
 
 { #category : #'forwarding-generated' }

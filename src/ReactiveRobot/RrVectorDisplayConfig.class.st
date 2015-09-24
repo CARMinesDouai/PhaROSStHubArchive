@@ -16,7 +16,7 @@ Class {
 RrVectorDisplayConfig class >> initDefaultColor [
 	| defaultColorsSelectors |
 	DefaultColors := Set new.
-	defaultColorsSelectors := Color registeredColorNames reject: [ : colorName | {'very'. 'pale'. 'light'} anySatisfy: [: prefix |colorName beginsWith: prefix]].
+	defaultColorsSelectors := Color registeredColorNames reject: [ : colorName | {'very'. 'pale'. 'light'. 'brick'} anySatisfy: [: prefix |colorName beginsWith: prefix]].
 	defaultColorsSelectors do: [ : selector | 
 		DefaultColors add: (Color perform: selector asSymbol).
 	].

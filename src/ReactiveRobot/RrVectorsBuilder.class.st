@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'vectorAngles'
 	],
-	#category : #'ReactiveRobot-Kernel'
+	#category : #'ReactiveRobot-Generic'
 }
 
 { #category : #acting }

@@ -6,7 +6,7 @@ Class {
 
 { #category : #demo }
 RrDemo class >> collisionAvoider [
-	^self demo: RrCollisionAvoiderController
+	^self demo: RrCollisionAvoiderController0
 ]
 
 { #category : #demo }

@@ -10,19 +10,24 @@ Class {
 }
 
 { #category : #testing }
-RrRunawayTest >> assertObstacleForce: obstacleVector resultInto: resultingSpeed [
+RrRunawayTest >> assertObstacleForce: obstacleVector resultInto: expectedSpeedVector [
 	<testParametersSelector: #obstacleVectorAndResultingSpeed>
+	| actualVector |
 	runaway speedVector: (VeVector length: 1).
 	runaway input: obstacleVector. 
-	self assert: runaway dataOnOutputPort equals: resultingSpeed 
+	actualVector := runaway dataOnOutputPort.
+	self assert: actualVector equals: expectedSpeedVector.
+
 ]
 
 { #category : #testing }
-RrRunawayTest >> assertSpeed: initialSpeed obstacleForce: obstacleVector resultInto: resultingSpeed [
+RrRunawayTest >> assertSpeed: initialSpeed obstacleForce: obstacleVector resultInto: expectedVector [
 	<testParametersSelector: #initialSpeedObstacleVectorAndResultingSpeed>
+	| actualVector |
 	runaway speedVector: initialSpeed.
 	runaway input: obstacleVector. 
-	self assert: runaway dataOnOutputPort equals: resultingSpeed 
+	actualVector := runaway dataOnOutputPort.
+	self assert: actualVector equals: expectedVector
 ]
 
 { #category : #testing }

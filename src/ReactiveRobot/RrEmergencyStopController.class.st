@@ -11,23 +11,16 @@ Class {
 }
 
 { #category : #'initialize-release' }
-RrEmergencyStopController >> averageFilterClass [
-	^RrAverageFilter 
-]
-
-{ #category : #'initialize-release' }
 RrEmergencyStopController >> defaultSafetyDistance [
 	^0.3
 ]
 
 { #category : #motion }
-RrEmergencyStopController >> forwardAt: forwardSpeed [
-	^self forwardAt: forwardSpeed rotateAt: 0
-]
-
-{ #category : #motion }
 RrEmergencyStopController >> forwardAt: linearSpeed rotateAt: rotationSpeed [
-	robot forwardAt: linearSpeed rotateAt: rotationSpeed 
+	| newSafetyDistance |
+	newSafetyDistance := linearSpeed max: rotationSpeed.
+	self safetyDistance: newSafetyDistance.
+	super forwardAt: linearSpeed rotateAt: rotationSpeed 
 ]
 
 { #category : #'initialize-release' }
@@ -52,36 +45,9 @@ RrEmergencyStopController >> robot: aRobot [
 ]
 
 { #category : #motion }
-RrEmergencyStopController >> rotateAt: rotationSpeed [
-	^self forwardAt: 0 rotateAt: rotationSpeed 
-]
-
-{ #category : #motion }
 RrEmergencyStopController >> safetyDistance: safetyDistance [
 	irStopTrigger stopDistance: safetyDistance.
 	sonarStopTrigger stopDistance: safetyDistance.
 	laserStopTrigger stopDistance: safetyDistance.
 
-]
-
-{ #category : #acting }
-RrEmergencyStopController >> start [
-	super start.
-	self forwardAt: 0.2 rotateAt: 0
-]
-
-{ #category : #'forwarding-generated' }
-RrEmergencyStopController >> startMotion [
-	"Generated method. If you edit it please remove this comment and the pragma below"
-	<forwardToIv: #robot>
-
-	^robot startMotion
-]
-
-{ #category : #'forwarding-generated' }
-RrEmergencyStopController >> stopMotion [
-	"Generated method. If you edit it please remove this comment and the pragma below"
-	<forwardToIv: #robot>
-
-	^robot stopMotion
 ]
