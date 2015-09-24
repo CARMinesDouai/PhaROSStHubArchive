@@ -9,7 +9,7 @@ Class {
 	#classVars : [
 		'DefaultColors'
 	],
-	#category : #'ReactiveRobot-Display'
+	#category : #'ReactiveRobot-00-SensorViewer'
 }
 
 { #category : #initializing }

@@ -5,7 +5,7 @@ Class {
 		'component',
 		'portSetters'
 	],
-	#category : #'ReactiveRobot-EmergencyStop'
+	#category : #'ReactiveRobot-Experiments'
 }
 
 { #category : #testing }

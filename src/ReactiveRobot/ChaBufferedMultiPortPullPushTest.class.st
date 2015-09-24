@@ -1,7 +1,7 @@
 Class {
 	#name : #ChaBufferedMultiPortPullPushTest,
 	#superclass : #ChaMultiPortComponentTest,
-	#category : #'ReactiveRobot-EmergencyStop'
+	#category : #'ReactiveRobot-Experiments'
 }
 
 { #category : #testing }

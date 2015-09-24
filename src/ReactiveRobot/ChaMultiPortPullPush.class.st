@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'thread'
 	],
-	#category : #'ReactiveRobot-EmergencyStop'
+	#category : #'ReactiveRobot-Experiments'
 }
 
 { #category : #'initialize-release' }

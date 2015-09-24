@@ -5,20 +5,12 @@ Class {
 		'filter',
 		'builder'
 	],
-	#category : #'ReactiveRobot-CollisionAvoidance'
+	#category : #'ReactiveRobot-02-CollisionAvoidance'
 }
 
 { #category : #'initialize-release' }
 RrFilteredForceVectorsBuilder >> builderClass [
 	^RrForceVectorsBuilder
-]
-
-{ #category : #'forwarding-generated' }
-RrFilteredForceVectorsBuilder >> distanceThreshold: a1 [ 
-	"Generated method. If you edit it please remove this comment and the pragma below"
-	<forwardToIv: #builder>
-
-	^builder distanceThreshold: a1 
 ]
 
 { #category : #'initialize-release' }
@@ -42,6 +34,14 @@ RrFilteredForceVectorsBuilder >> input: a1 [
 	<forwardToIv: #filter>
 
 	^filter input: a1 
+]
+
+{ #category : #'forwarding-generated' }
+RrFilteredForceVectorsBuilder >> threshold: a1 [ 
+	"Generated method. If you edit it please remove this comment and the pragma below"
+	<forwardToIv: #builder>
+
+	^builder threshold: a1 
 ]
 
 { #category : #'forwarding-generated' }

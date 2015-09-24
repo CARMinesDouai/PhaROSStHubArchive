@@ -3,7 +3,7 @@ Class {
 	#superclass : #ChaDefaultOutputComponent,
 	#traits : 'TChaDefaultInputComponent',
 	#classTraits : 'TChaDefaultInputComponent classTrait',
-	#category : #'ReactiveRobot-EmergencyStop'
+	#category : #'ReactiveRobot-Experiments'
 }
 
 { #category : #acting }

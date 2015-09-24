@@ -7,7 +7,7 @@ Class {
 		'pullPush',
 		'switch'
 	],
-	#category : #'ReactiveRobot-EmergencyStop'
+	#category : #'ReactiveRobot-Experiments'
 }
 
 { #category : #'instance creation' }

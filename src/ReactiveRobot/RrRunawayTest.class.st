@@ -6,7 +6,7 @@ Class {
 		'integrator',
 		'runaway'
 	],
-	#category : #'ReactiveRobot-CollisionAvoidance'
+	#category : #'ReactiveRobot-02-CollisionAvoidance'
 }
 
 { #category : #testing }

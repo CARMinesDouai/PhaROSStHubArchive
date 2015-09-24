@@ -1,19 +1,23 @@
 Class {
 	#name : #RrEmergencyStopController,
-	#superclass : #RrObstacleSensingController,
+	#superclass : #RrController,
 	#instVars : [
 		'irStopTrigger',
 		'sonarStopTrigger',
 		'stopTrigger',
-		'laserStopTrigger',
-		'changeNotifier'
+		'laserStopTrigger'
 	],
-	#category : #'ReactiveRobot-EmergencyStop'
+	#category : #'ReactiveRobot-01-EmergencyStop'
 }
 
 { #category : #'initialize-release' }
 RrEmergencyStopController >> averageFilterClass [
 	^RrAverageFilter 
+]
+
+{ #category : #'initialize-release' }
+RrEmergencyStopController >> defaultSafetyDistance [
+	^0.3
 ]
 
 { #category : #motion }
@@ -23,7 +27,6 @@ RrEmergencyStopController >> forwardAt: forwardSpeed [
 
 { #category : #motion }
 RrEmergencyStopController >> forwardAt: linearSpeed rotateAt: rotationSpeed [
-	self safetyDistance: (linearSpeed max: rotationSpeed).
 	robot forwardAt: linearSpeed rotateAt: rotationSpeed 
 ]
 
@@ -34,14 +37,14 @@ RrEmergencyStopController >> initialize [
 	sonarStopTrigger  := RrMotionSwitch new.
 	laserStopTrigger := RrMotionSwitch new.
 	stopTrigger := ChaAnd on: {irStopTrigger. sonarStopTrigger. laserStopTrigger}.
-	changeNotifier := ChaChangeNotifier new.
-	stopTrigger => changeNotifier
+	self safetyDistance: self defaultSafetyDistance.
+
 ]
 
 { #category : #'initialize-release' }
 RrEmergencyStopController >> robot: aRobot [
 	super robot: aRobot.
-	changeNotifier connectTo: #enableMotion: of: self robot.
+	stopTrigger connectTo: #enableMotion: of: self robot.
 	robot connect: #irPort to: #input: of: irStopTrigger.
 	robot connect: #sonarsPort to: #input: of: sonarStopTrigger.
 	robot connect: #laserPort to: #input: of: laserStopTrigger.

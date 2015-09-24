@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'queue'
 	],
-	#category : #'ReactiveRobot-EmergencyStop'
+	#category : #'ReactiveRobot-Experiments'
 }
 
 { #category : #'reflective operations' }

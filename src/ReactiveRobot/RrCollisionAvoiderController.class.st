@@ -8,11 +8,11 @@ Class {
 		'vectorDisplay',
 		'irForceBuilder'
 	],
-	#category : #'ReactiveRobot-CollisionAvoidance'
+	#category : #'ReactiveRobot-02-CollisionAvoidance'
 }
 
 { #category : #'initialize-release' }
-RrCollisionAvoiderController >> forwardSpeed: aNumber [
+RrCollisionAvoiderController >> forwardAt: aNumber [
 	self speedVector: (VeVector length: aNumber)
 ]
 
@@ -20,7 +20,6 @@ RrCollisionAvoiderController >> forwardSpeed: aNumber [
 RrCollisionAvoiderController >> initialize [
 	| pi |
 	super initialize.
-	vectorDisplay := RrVectorDisplay new.
 	sonarForceBuilder := RrFilteredForceVectorsBuilder new.
 	irForceBuilder := RrFilteredForceVectorsBuilder new.
 	pi := VeAngle pi.
@@ -32,7 +31,7 @@ RrCollisionAvoiderController >> initialize [
 						 -11*pi/12. -3*pi/4. -5*pi/8. -1*pi/2. -3*pi/8. -1*pi/4.  -1*pi/12.}.
 	forceFusion := RrForceIntegrator new.
 	runaway := RrRunaway new.
-	self forwardSpeed: 0.1.
+	self forwardAt: 0.1.
 	
 	sonarForceBuilder => forceFusion.
 	forceFusion => runaway.
@@ -50,7 +49,7 @@ RrCollisionAvoiderController >> robot: aRobot [
 { #category : #'initialize-release' }
 RrCollisionAvoiderController >> speedVector: aVector [
 	runaway speedVector: aVector.
-	sonarForceBuilder distanceThreshold: ((2* aVector length) max: 0.3).
+	sonarForceBuilder threshold: ((2* aVector length) max: 0.3).
 	
 ]
 

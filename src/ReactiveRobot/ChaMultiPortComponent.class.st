@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'portsDict'
 	],
-	#category : #'ReactiveRobot-EmergencyStop'
+	#category : #'ReactiveRobot-Experiments'
 }
 
 { #category : #'instance creation' }

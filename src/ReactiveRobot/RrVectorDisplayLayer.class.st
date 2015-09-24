@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'vectors'
 	],
-	#category : #'ReactiveRobot-Display'
+	#category : #'ReactiveRobot-00-SensorViewer'
 }
 
 { #category : #displaying }

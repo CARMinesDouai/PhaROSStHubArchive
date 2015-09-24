@@ -7,7 +7,7 @@ Class {
 		'pullPush',
 		'and'
 	],
-	#category : #'ReactiveRobot-EmergencyStop'
+	#category : #'ReactiveRobot-Experiments'
 }
 
 { #category : #'initialize-release' }

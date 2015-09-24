@@ -5,7 +5,7 @@ Class {
 		'dataDict',
 		'dataDictLock'
 	],
-	#category : #'ReactiveRobot-EmergencyStop'
+	#category : #'ReactiveRobot-Experiments'
 }
 
 { #category : #'reflective operations' }
@@ -24,12 +24,12 @@ ChaOverwritingMultiPortPullPush >> initialize [
 
 { #category : #acting }
 ChaOverwritingMultiPortPullPush >> pullPush [
-	| dataDictCopy |
+	| oldDataDict |
 	dataDictLock critical: [
-		dataDictCopy := dataDict.
+		oldDataDict := dataDict.
 		self resetDataDict
 	]. 
-	dataDictCopy keysAndValuesDo: [ : port : newData | 
+	oldDataDict keysAndValuesDo: [ : port : newData | 
 		port set: newData
 	].
 

@@ -1,7 +1,7 @@
 Class {
 	#name : #RrForceIntegrator,
 	#superclass : #ChaDefaultInOutComponent,
-	#category : #'ReactiveRobot-CollisionAvoidance'
+	#category : #'ReactiveRobot-02-CollisionAvoidance'
 }
 
 { #category : #'initialize-release' }

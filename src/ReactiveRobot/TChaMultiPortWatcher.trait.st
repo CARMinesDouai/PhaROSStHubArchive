@@ -1,6 +1,6 @@
 Trait {
 	#name : #TChaMultiPortWatcher,
-	#category : #'ReactiveRobot-EmergencyStop'
+	#category : #'ReactiveRobot-01-EmergencyStop'
 }
 
 { #category : #'instance creation' }

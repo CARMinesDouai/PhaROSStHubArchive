@@ -1,7 +1,7 @@
 Class {
 	#name : #RrDemo,
 	#superclass : #Object,
-	#category : #'ReactiveRobot-Demo'
+	#category : #'ReactiveRobot-Kernel'
 }
 
 { #category : #demo }
@@ -20,10 +20,15 @@ RrDemo class >> demo: aControllerClass [
 
 { #category : #demo }
 RrDemo class >> emergencyStop [
-	^self demo:  RrEmergencyStopController
+	^self demo:  RrEmergencyStopController 
 ]
 
 { #category : #demo }
 RrDemo class >> showObstacleSensors [
-	^self demo: RrObstacleSensingController
+	| controller viewer |
+	controller := self demo: RrController.
+	viewer := RrRobulabObstacleSensorsViewerDecorator on: controller.
+	UIManager default alert: 'Click to stop'.
+	controller stop; shutdown. 
+	viewer stop.
 ]

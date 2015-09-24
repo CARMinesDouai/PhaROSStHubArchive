@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'stopDistance'
 	],
-	#category : #'ReactiveRobot-EmergencyStop'
+	#category : #'ReactiveRobot-01-EmergencyStop'
 }
 
 { #category : #'instance creation' }
@@ -27,7 +27,7 @@ RrMotionSwitch >> initialize [
 
 { #category : #acting }
 RrMotionSwitch >> newOutputFrom: distances [
-	^distances noneSatisfy: [ :aDistance| aDistance <= self stopDistance]
+	^distances allSatisfy: [ :aDistance| aDistance > self stopDistance]
 ]
 
 { #category : #accessing }

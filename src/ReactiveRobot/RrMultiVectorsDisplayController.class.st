@@ -1,7 +1,7 @@
 Class {
 	#name : #RrMultiVectorsDisplayController,
 	#superclass : #RrSingleVectorDisplayController,
-	#category : #'ReactiveRobot-Display'
+	#category : #'ReactiveRobot-00-SensorViewer'
 }
 
 { #category : #acting }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'display'
 	],
-	#category : #'ReactiveRobot-Display'
+	#category : #'ReactiveRobot-00-SensorViewer'
 }
 
 { #category : #accessing }

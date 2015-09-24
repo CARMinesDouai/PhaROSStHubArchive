@@ -1,7 +1,7 @@
 Class {
 	#name : #RrContourVectorDisplay,
 	#superclass : #RrVectorDisplay,
-	#category : #'ReactiveRobot-Display'
+	#category : #'ReactiveRobot-00-SensorViewer'
 }
 
 { #category : #drawing }

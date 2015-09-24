@@ -5,7 +5,7 @@ Class {
 		'speedVector',
 		'inplaceRotationSpeed'
 	],
-	#category : #'ReactiveRobot-CollisionAvoidance'
+	#category : #'ReactiveRobot-02-CollisionAvoidance'
 }
 
 { #category : #'initialize-release' }
@@ -14,7 +14,7 @@ RrRunaway >> defaultInplaceRotationSpeed [
 ]
 
 { #category : #accessing }
-RrRunaway >> forwardSpeed: forwardSpeed [
+RrRunaway >> forwardAt: forwardSpeed [
 	self speedVector: (VeVector length: forwardSpeed)
 ]
 

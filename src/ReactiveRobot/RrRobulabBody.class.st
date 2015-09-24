@@ -10,7 +10,7 @@ Class {
 		'rotationSpeed',
 		'canMove'
 	],
-	#category : #'ReactiveRobot-Robulab'
+	#category : #'ReactiveRobot-Kernel'
 }
 
 { #category : #'instance creation' }
