@@ -11,7 +11,7 @@ Class {
 RrForceVectorsBuilder >> addVectorTo: vectors length: length angle: angle [
 	| force |
 	length >= self threshold ifTrue: [ ^self ].
-	force := (self threshold - length) / self threshold.
+	force := self threshold - length.
 	super addVectorTo: vectors length: force angle: angle
 
 ]

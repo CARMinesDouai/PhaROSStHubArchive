@@ -5,7 +5,7 @@ Class {
 		'filter',
 		'builder'
 	],
-	#category : #'ReactiveRobot-02-CollisionAvoidance'
+	#category : #'ReactiveRobot-Experiments'
 }
 
 { #category : #'initialize-release' }

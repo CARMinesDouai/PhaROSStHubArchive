@@ -3,10 +3,20 @@ Class {
 	#superclass : #ChaDefaultInOutComponent,
 	#instVars : [
 		'speedVector',
-		'inplaceRotationSpeed'
+		'blockedRobotSpeed'
 	],
 	#category : #'ReactiveRobot-02-CollisionAvoidance'
 }
+
+{ #category : #accessing }
+RrRunaway >> blockedRobotSpeed [
+	^blockedRobotSpeed
+]
+
+{ #category : #accessing }
+RrRunaway >> blockedRobotSpeed: aSpeedVector [
+	blockedRobotSpeed := aSpeedVector
+]
 
 { #category : #'initialize-release' }
 RrRunaway >> defaultInplaceRotationSpeed [
@@ -25,27 +35,25 @@ RrRunaway >> initialize [
 ]
 
 { #category : #accessing }
-RrRunaway >> inplaceRotationSpeed [
-	^ inplaceRotationSpeed
-]
-
-{ #category : #accessing }
-RrRunaway >> inplaceRotationSpeed: anObject [
-	inplaceRotationSpeed := anObject
+RrRunaway >> inplaceRotationSpeed: radiansPerSeconds [
+	self blockedRobotSpeed: (VeVector angle: radiansPerSeconds)
 ]
 
 { #category : #acting }
 RrRunaway >> newOutputFrom: obstacleForceVector [
-	| rawRotationSpeed obstacleRelativeAngle correctedSpeedVector rotationSpeedSign |
-	rawRotationSpeed := self speedVector angle.
-	obstacleRelativeAngle := obstacleForceVector angle - rawRotationSpeed.
-	obstacleRelativeAngle abs >= VeAngle halfPi ifTrue: [ 
-		^self speedVector].
-	correctedSpeedVector := self speedVector - obstacleForceVector.
-	(correctedSpeedVector = VeZeroVector defaultInstance) ifTrue: [ 
-		rotationSpeedSign := obstacleRelativeAngle < 0 ifTrue: [ 1 ] ifFalse: [ -1 ].
-		^VeVector angle: inplaceRotationSpeed * rotationSpeedSign]. "When robot stops moving allow it to rotate in place slowly"
-	^correctedSpeedVector
+	"obstacleForceVector is the sum of vectors pointing from the robot to obstacles"
+	| relativeAngle absRelativeAngle  correctionAngle |
+	self speedVector ifNil: [^self blockedRobotSpeed].
+	obstacleForceVector = VeZeroVector defaultInstance ifTrue: [ ^self speedVector ].
+	relativeAngle := self speedVector angle - obstacleForceVector angle.
+	relativeAngle = 0 ifTrue: [ ^self blockedRobotSpeed ].
+	absRelativeAngle := relativeAngle abs min: 0.01 radians.
+	absRelativeAngle < VeAngle halfPi ifFalse: [ ^self speedVector ]. 
+	correctionAngle := (VeAngle halfPi - absRelativeAngle) * relativeAngle sign.
+	obstacleForceVector length < 0.3 ifTrue: [ ^VeVector angle: correctionAngle ].
+	^VeVector
+		length: self speedVector length - obstacleForceVector length
+		angle: self speedVector angle + correctionAngle.
 ]
 
 { #category : #accessing }

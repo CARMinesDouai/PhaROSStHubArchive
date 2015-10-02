@@ -2,8 +2,8 @@ Class {
 	#name : #RrFeelForce,
 	#superclass : #ChaDefaultOutputComponent,
 	#instVars : [
-		'forceBuilder',
-		'forceIntegrator'
+		'obstacleVectorsBuilder',
+		'vectorsIntegrator'
 	],
 	#category : #'ReactiveRobot-02-CollisionAvoidance'
 }
@@ -14,37 +14,45 @@ RrFeelForce >> defaultDistanceForForceZero [
 ]
 
 { #category : #'initialize-release' }
-RrFeelForce >> forceBuilderClass [
-	^ RrForceVectorsBuilder
-]
-
-{ #category : #'initialize-release' }
-RrFeelForce >> forceIntegratorClass [
-	^ RrForceIntegrator
-]
-
-{ #category : #'initialize-release' }
 RrFeelForce >> initialize [
 	super initialize.
-	forceBuilder := self forceBuilderClass new.
-	forceBuilder threshold: self defaultDistanceForForceZero.
-	forceIntegrator := self forceIntegratorClass new.
-	forceBuilder => forceIntegrator.
-	outputPort := forceIntegrator outputPort
+	obstacleVectorsBuilder := self obstacleVectorsBuilderClass new.
+	self threshold: self defaultDistanceForForceZero.
+	vectorsIntegrator := self vectorsIntegratorClass new.
+	obstacleVectorsBuilder => vectorsIntegrator.
+	outputPort := vectorsIntegrator outputPort
 ]
 
 { #category : #'forwarding-generated' }
 RrFeelForce >> input: a1 [ 
 	"Generated method. If you edit it please remove this comment and the pragma below"
-	<forwardToIv: #forceBuilder>
+	<forwardToIv: #obstacleVectorsBuilder>
 
-	^forceBuilder input: a1 
+	^obstacleVectorsBuilder input: a1 
+]
+
+{ #category : #'initialize-release' }
+RrFeelForce >> obstacleVectorsBuilderClass [
+	^ RrMaxThresholdVectorsBuilder
+]
+
+{ #category : #'forwarding-generated' }
+RrFeelForce >> threshold: a1 [ 
+	"Generated method. If you edit it please remove this comment and the pragma below"
+	<forwardToIv: #obstacleVectorsBuilder>
+
+	^obstacleVectorsBuilder threshold: a1 
 ]
 
 { #category : #'forwarding-generated' }
 RrFeelForce >> vectorAngles: a1 [ 
 	"Generated method. If you edit it please remove this comment and the pragma below"
-	<forwardToIv: #forceBuilder>
+	<forwardToIv: #obstacleVectorsBuilder>
 
-	^forceBuilder vectorAngles: a1 
+	^obstacleVectorsBuilder vectorAngles: a1 
+]
+
+{ #category : #'initialize-release' }
+RrFeelForce >> vectorsIntegratorClass [
+	^ RrMinVectorFilter
 ]
