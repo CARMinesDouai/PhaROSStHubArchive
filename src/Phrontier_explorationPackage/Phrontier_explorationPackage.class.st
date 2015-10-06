@@ -33,7 +33,7 @@ self log: 'Updates queue: ',  updatesQueue size asString.
 { #category : #scripts }
 Phrontier_explorationPackage >> extractAndPublishFrontiersAccessible [
 self log: 'extractAndPublishFrontiersBis'.
-	self map ifNil: [ 
+	self map map ifNil: [ 
 		self log: 'No map available'.
 		^500 milliSeconds wait].
 self log: 'Processing map'.
@@ -49,7 +49,7 @@ self log: 'Processing map'.
 { #category : #scripts }
 Phrontier_explorationPackage >> extractAndPublishFrontiersBis [
 self log: 'extractAndPublishFrontiersBis'.
-	self map ifNil: [ 
+	self map map ifNil: [ 
 		self log: 'No map available'.
 		^500 milliSeconds wait].
 self log: 'Processing map'.
@@ -89,6 +89,7 @@ Phrontier_explorationPackage >> initialize [
 	super initialize.
 	mapLock := Mutex new.
 	updatesQueue := SharedQueue new.
+	map := MapWrapper new.
 ]
 
 { #category : #accessing }
@@ -153,7 +154,7 @@ Phrontier_explorationPackage >> scriptExtractFrontiersAccessibles [
 								for: [ : aMap |  "this is a callback" 
 									"for some reason... the resolution is miss-decoded"
 									aMap info resolution: 0.05. 
-									self map: aMap.
+									self map map: aMap.
 									self log: 'Received map'.
 									self extractAndPublishFrontiersAccessible.
 									];
@@ -176,7 +177,7 @@ Phrontier_explorationPackage >> scriptExtractFrontiersBis [
 								for: [ : aMap |  "this is a callback" 
 									"for some reason... the resolution is miss-decoded"
 									aMap info resolution: 0.05. 
-									self map: aMap.
+									self map map: aMap.
 									self log: 'Received map'.
 									self extractAndPublishFrontiersBis.
 									];
