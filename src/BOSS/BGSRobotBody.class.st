@@ -94,6 +94,11 @@ BGSRobotBody >> initialize [
 	
 ]
 
+{ #category : #testing }
+BGSRobotBody >> isRobotBody [
+	^ true
+]
+
 { #category : #'initialize-release' }
 BGSRobotBody >> jumpTo: aPoint in: aBGSTerrain [ 
 	aBGSTerrain put: self inCellAt: aPoint 

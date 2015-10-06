@@ -15,6 +15,11 @@ BGSCellContent >> cell:  aCell [
 	^self
 ]
 
+{ #category : #testing }
+BGSCellContent >> isRobotBody [
+	^ false
+]
+
 { #category : #accessing }
 BGSCellContent >> part: aSymbol [
 	^nil
