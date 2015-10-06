@@ -37,7 +37,7 @@ self log: 'extractAndPublishFrontiersBis'.
 		self log: 'No map available'.
 		^500 milliSeconds wait].
 self log: 'Processing map'.
-	frontierPoints := self map findReachableFrontiersFrom: (map info width / 2) rounded @ (map info height / 2) rounded.		
+	frontierPoints := self map findReachableFrontiersFrom: (map map info width / 2) rounded @ (map  map info height / 2) rounded.		
 	pointPublisher send:[ : pointCloud | 
 		self log: 'frontiers found: ', frontierPoints size asString.
 		pointCloud header frame_id: 'map'. "I need the same tf"
