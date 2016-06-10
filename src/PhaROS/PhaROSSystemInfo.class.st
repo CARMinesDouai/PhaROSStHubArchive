@@ -99,7 +99,7 @@ PhaROSSystemInfo >> distroFromSystem [
 	| distroFromSystem |
 	distroFromSystem := OSProcess thisOSProcess waitForCommandOutput: 'rosversion -d'.
 	distroFromSystem ifEmpty: [ ^nil ].
-	^(distroFromSystem subStrings: String lf) first
+	^(distroFromSystem substrings: String lf) first
 ]
 
 { #category : #services }

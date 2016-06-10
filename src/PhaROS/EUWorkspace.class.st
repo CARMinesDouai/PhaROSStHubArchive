@@ -17,7 +17,7 @@ EUWorkspace class >> initialize [
 EUWorkspace class >> open [
 
 	|workspace|
-	workspace := Workspace new contents: '
+	workspace := Workspace openContents: '
 "
 # Commands
 PhaROSSystem cleanAll.
@@ -26,7 +26,6 @@ ProxySwitch on.
 ProxySwitch off.
 
 "'.
-	workspace open.
 	workspace label: 'CAR Utils'.
 	
 ]
