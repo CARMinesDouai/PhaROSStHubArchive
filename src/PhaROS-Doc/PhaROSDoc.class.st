@@ -4,11 +4,6 @@ Class {
 	#category : #'PhaROS-Doc'
 }
 
-{ #category : #'class initialization' }
-PhaROSDoc class >> initialize [
-	self open
-]
-
 { #category : #open }
 PhaROSDoc class >> open [
 	(Workspace openContents:self stringDoc withUnixLineEndings)label: 'PhaROS - Cheatsheet'
