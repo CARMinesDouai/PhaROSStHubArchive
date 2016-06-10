@@ -48,6 +48,7 @@ MapWrapper >> findReachableFrontiersFrom: aPoint [
 					point32 := Geometry_msgsPoint32 new.
 					point32 x: metricPoint x; y: metricPoint y; z: 0.0.
 					frontiers add: point32.
+					(frontiers size > 100) ifTrue: [^ frontiers].
 		 		].
 			pointsToExplore addAll: (neighbors select: [: aNeighbor | self isFreePixelAt: aNeighbor]).
 			exploredPoints add: currentPoint.
@@ -111,7 +112,7 @@ MapWrapper >> metricOrigin [
 
 { #category : #accessing }
 MapWrapper >> pixelOrigin [
-	^ (map metricOrigin / map info resolution) rounded
+	^ (self metricOrigin / map info resolution) rounded
 
 ]
 
