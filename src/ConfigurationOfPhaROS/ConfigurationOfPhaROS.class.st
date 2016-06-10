@@ -958,7 +958,7 @@ ConfigurationOfPhaROS >> version150: spec [
 		spec package: 'PhaROSNodeletsRPC' with: 'PhaROSNodeletsRPC-LucFabresse.4'.
 		spec package: 'PhaROSNodeletsTF' with: 'PhaROSNodeletsTF-robulabdriver.11'.
 		spec package: 'PhaROSNodeletsTurtlesim' with: 'PhaROSNodeletsTurtlesim-LucFabresse.6'.
-		spec package: 'PhaROSTest' with: 'PhaROSTest-Luc.10'.
+		spec package: 'PhaROSTest' with: 'PhaROSTest-LucFabresse.11'.
 		spec package: 'PhaROSTestROS' with: 'PhaROSTestROS-LucFabresse.16'.
 	]
 ]
