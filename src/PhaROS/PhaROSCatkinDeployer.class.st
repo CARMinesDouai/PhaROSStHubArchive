@@ -274,7 +274,7 @@ PhaROSCatkinDeployer >> filenameFor: selector inClass: aPackageClass [
 
 	|filename|
 	 
-	filename := selector copyReplaceAll: 'script' with: '' .
+	filename := selector asString copyReplaceAll: 'script' with: '' .
 	filename at:1 put: ((filename at:1) asLowercase).
 	
 	[filename indexOfFirstUppercaseCharacter = 0] whileFalse: [
