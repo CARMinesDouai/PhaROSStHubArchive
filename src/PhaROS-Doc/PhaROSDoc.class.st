@@ -11,16 +11,7 @@ PhaROSDoc class >> initialize [
 
 { #category : #open }
 PhaROSDoc class >> open [
-	| workspace window |
-	workspace := Workspace new. 
-	window := workspace openLabel: 'PhaROS - Cheatsheet'.
-	window 
-		position: 0@20;
-		extent: 700@800.
-	workspace 
-		toggleStylingActive;
-		contents: self stringDoc withUnixLineEndings; 
-		changed: #contents. 
+	(Workspace openContents:self stringDoc withUnixLineEndings)label: 'PhaROS - Cheatsheet'
 ]
 
 { #category : #documentation }
