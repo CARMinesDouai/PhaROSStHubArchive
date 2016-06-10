@@ -125,5 +125,5 @@ PhaROSTypeMarshallingBaseTest >> setUp [
 
 { #category : #'tests - parametrization' }
 PhaROSTypeMarshallingBaseTest >> validValues [ 
-	self subclassResponsibility.
+	self subclassResponsibility
 ]
