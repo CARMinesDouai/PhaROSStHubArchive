@@ -1,6 +1,9 @@
 Class {
 	#name : #PhaROSExamplePackage,
 	#superclass : #PhaROSPackage,
+	#instVars : [
+		'messageCount'
+	],
 	#category : #'PhaROS-PackageExample'
 }
 
@@ -12,6 +15,12 @@ PhaROSExamplePackage >> buildController [
 	"
 	^ self nodeletInjectionExample: super buildController.
 
+]
+
+{ #category : #'as yet unclassified' }
+PhaROSExamplePackage >> initialize [
+	super initialize.
+	messageCount := 0
 ]
 
 { #category : #'private - configuration' }
@@ -47,6 +56,25 @@ PhaROSExamplePackage >> scriptParameterBinding [
 
 ]
 
+{ #category : #'scripts-publish/subscribe' }
+PhaROSExamplePackage >> scriptPublishExample [
+	| publisher |
+	
+	publisher := self controller node 
+						topicPublisher: 'example'
+						typedAs: 'std_msgs/String'.	
+	[[
+		|message| 
+		message := 'msg ', messageCount asString.
+		1 second wait.
+		publisher send:[ : string | 
+			string data: message.
+		].
+		self log: 'Toto sent: ',message, String lf.
+		messageCount := messageCount + 1.
+	] repeat] forkAt: Processor userBackgroundPriority.
+]
+
 { #category : #scripts }
 PhaROSExamplePackage >> scriptServiceDefining [
 	"In ROS we do have services. A Service is an async computation that has related a request and a response types. In order to make available a service in ROS world you should execute the following code"
@@ -66,6 +94,18 @@ PhaROSExamplePackage >> scriptServiceInvoking [
 	service call.
 	
 	"This service call will ask for the loggers"
+
+]
+
+{ #category : #'scripts-publish/subscribe' }
+PhaROSExamplePackage >> scriptSubscribingExample [
+
+	(self controller node buildConnectionFor: 'example' ) 
+								typedAs: 'std_msgs/String'; 
+								for: [ : string |  "this is a callback" 
+									self log: 'Loulou received: ',string data,String lf ];
+								connect .
+														
 
 ]
 
