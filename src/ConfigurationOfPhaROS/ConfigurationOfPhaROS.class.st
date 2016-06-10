@@ -946,7 +946,7 @@ ConfigurationOfPhaROS >> version150: spec [
 		spec timestamp: '9 juin 2016'.
 		spec project: 'XMLRPC' with: '1.02'.
 		spec project: 'PaulLePoulpe' with: '1.0.1'.
-		spec package: 'PhaROS' with: 'PhaROS-LucFabresse.760'.
+		spec package: 'PhaROS' with: 'PhaROS-LucFabresse.761'.
 		spec package: 'PhaROSInfrastructure' with: 'PhaROSInfrastructure-pharos.41'.
 		spec package: 'PhaROS-Doc' with: 'PhaROS-Doc-LucFabresse.7'.
 		spec package: 'PhaROS-PackageExample' with: 'PhaROS-PackageExample-LucFabresse.6'.
