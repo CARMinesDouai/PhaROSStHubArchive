@@ -123,6 +123,22 @@ ConfigurationOfReusableBricks >> baseline01: spec [
 
 ]
 
+{ #category : #baselines }
+ConfigurationOfReusableBricks >> baseline02: spec [
+	<version: '0.2-baseline'>
+
+	spec for: #'common' do: [
+		spec blessing: #'baseline'.
+		spec repository: 'http://smalltalkhub.com/mc/CAR/ReusableBricks/main/'.
+		spec 
+			package: 'Equals';
+			package: 'Concurrency';
+			package: 'BooleanExpressions';
+			package: #StateMachine;
+			package: 'MulticastSocket'. ].
+
+]
+
 { #category : #accessing }
 ConfigurationOfReusableBricks >> customProjectAttributes [
 	 "Edit to return a collection of any custom attributes e.g. for conditional loading: Array with: #'Condition1' with: #'Condition2.
@@ -135,7 +151,7 @@ ConfigurationOfReusableBricks >> customProjectAttributes [
 ConfigurationOfReusableBricks >> development: spec [
 	<symbolicVersion: #'development'>
 
-	spec for: #'common' version: '0.1-baseline'.
+	spec for: #'common' version: '0.2-baseline'.
 
 ]
 
