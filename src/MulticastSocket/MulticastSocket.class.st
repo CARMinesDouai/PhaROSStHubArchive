@@ -9,7 +9,8 @@ Class {
 	#superclass : #Socket,
 	#instVars : [
 		'groupAddress',
-		'multicastPort'
+		'multicastPort',
+		'receptionBuffer'
 	],
 	#category : #MulticastSocket
 }
@@ -39,6 +40,11 @@ MulticastSocket >> closeAndDestroy [
 	
 	self leaveGroup.
 	super closeAndDestroy
+]
+
+{ #category : #'initialize-destroy' }
+MulticastSocket >> defaultBufferSize [
+	^10000
 ]
 
 { #category : #accessing }
@@ -92,6 +98,13 @@ MulticastSocket >> inaddrAny [
 	"mp 4/10/2006 16:17"
 	
 	^ #(0 0 0 0)
+]
+
+{ #category : #'initialize-destroy' }
+MulticastSocket >> initialize: socketType [
+	super initialize: socketType.
+	receptionBuffer := ByteArray new: self defaultBufferSize.
+
 ]
 
 { #category : #'group membership' }
@@ -162,17 +175,16 @@ MulticastSocket >> multicastPort: anInteger [
 	multicastPort  := anInteger
 ]
 
-{ #category : #receiving }
+{ #category : #communicating }
 MulticastSocket >> receive [
 	"mp 2/13/2006 11:05"
 
-	| buffer bytesRead |
-	buffer := String new: 256.
-	bytesRead := self receiveDataInto: buffer.
-	^ buffer copyFrom: 1 to: bytesRead
+	| bytesRead |
+	bytesRead := self receiveDataInto: receptionBuffer.
+	^ receptionBuffer copyFrom: 1 to: bytesRead
 ]
 
-{ #category : #sending }
+{ #category : #communicating }
 MulticastSocket >> send: aString [
 	"mp 2/10/2006 12:23"
 	"Send a UDP packet containing the given data to the specified host/port."

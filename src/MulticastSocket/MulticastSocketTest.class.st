@@ -35,18 +35,25 @@ MulticastSocketTest >> tearDown [
 MulticastSocketTest >> testInterface [
 	"mp 4/10/2006 15:55"
 	
-	self assert: socket getInterface = #(0 0).
+	self assert: socket getInterface equals: #(0 0).
 	socket setInterfaceTo: '0.0.0.0'.
-	self assert: socket getInterface = #(0 0)
+	self assert: socket getInterface equals: #(0 0)
 ]
 
 { #category : #Running }
 MulticastSocketTest >> testLoopbackMode [
 	"mp 4/10/2006 15:55"
 	
-	self assert: socket getLoopbackMode = #(0 1).
+	| sentData |
+	self assert: socket getLoopbackMode equals: #(0 1).
+	sentData := 'hello'.
+	socket send: sentData.
+	self assert: socket receive asString equals: sentData.
+	
 	socket setLoopbackModeTo: false.
-	self assert: socket getLoopbackMode = #(0 0)
+	self assert: socket getLoopbackMode equals: #(0 0).
+	socket send: sentData.
+	self assert: (socket receiveDataTimeout: 1) isEmpty
 ]
 
 { #category : #Running }
@@ -54,13 +61,14 @@ MulticastSocketTest >> testSendReceive [
 	"mp 4/10/2006 15:55"
 	
 	| sender receiver |
-	receiver := socket.
-	sender := MulticastSocket 
+	[	receiver := socket.
+		sender := MulticastSocket 
 				group: '226.0.0.12'
 				port: multicastPort.
-	sender send: 'Hello'.
-	self assert: receiver receive = 'Hello'.
-	sender closeAndDestroy
+		sender send: 'Hello'.
+		self assert: receiver receive asString equals: 'Hello'
+	] ensure: [
+		sender closeAndDestroy]
 ]
 
 { #category : #Running }
@@ -68,11 +76,11 @@ MulticastSocketTest >> testTimeToLive [
 	"mp 4/10/2006 15:55"
 	
 	| setTTLResult expectedResult getTTLResult |
-	self assert: socket getTimeToLive = #(0 1).
+	self assert: socket getTimeToLive equals: #(0 1).
 	(2 to: 255) do: [:timeToLive|
 		expectedResult := {0. timeToLive}.
 		setTTLResult := socket setTimeToLiveTo: timeToLive.
 		getTTLResult := socket getTimeToLive.
-		self assert: setTTLResult = expectedResult.
-		self assert: getTTLResult = expectedResult]
+		self assert: setTTLResult equals: expectedResult.
+		self assert: getTTLResult equals: expectedResult]
 ]
