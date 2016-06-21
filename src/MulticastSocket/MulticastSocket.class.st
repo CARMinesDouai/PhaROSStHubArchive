@@ -36,10 +36,8 @@ MulticastSocket class >> new [
 
 { #category : #'initialize-destroy' }
 MulticastSocket >> closeAndDestroy [
-	"mp 2/10/2006 12:29"
-	
-	self leaveGroup.
-	super closeAndDestroy
+	[self leaveGroup] ensure: [
+		super closeAndDestroy]
 ]
 
 { #category : #'initialize-destroy' }
@@ -73,13 +71,9 @@ MulticastSocket >> getTimeToLive [
 
 { #category : #'initialize-destroy' }
 MulticastSocket >> group: anIpAddressString port: aPortNumber [
-	"mp 2/10/2006 12:29"
-	"Create a multicast socket then join the specified group on the specified port."
-
 	self setPort: aPortNumber.
 	self multicastPort: aPortNumber.
 	self groupAddress: anIpAddressString.
-	self setPeer: self groupAddress port: aPortNumber.
 	self joinGroup.
 ]
 
@@ -97,7 +91,7 @@ MulticastSocket >> groupAddress: aStringOrIPAddress [
 MulticastSocket >> inaddrAny [
 	"mp 4/10/2006 16:17"
 	
-	^ #(0 0 0 0)
+	^ #[0 0 0 0]
 ]
 
 { #category : #'initialize-destroy' }
@@ -145,13 +139,7 @@ MulticastSocket >> leaveGroup: aMulticastAddress [
 
 { #category : #'group membership' }
 MulticastSocket >> multicastMembershipParameters [
-	"mp 2/8/2006 15:00"
-	"Arguments for leaving a group are the multicast address (226.0.0.12) and the interface to use (0.0.0.0 for INADDR_ANY)"
-	
-	| joinParams |
-	joinParams := self multicastAddress asOrderedCollection.
-	joinParams addAll: self inaddrAny.
-	^joinParams
+	^self multicastMembershipParametersForAddress: self groupAddress
 ]
 
 { #category : #'group membership' }
