@@ -178,10 +178,17 @@ MulticastSocket >> multicastPort: anInteger [
 { #category : #communicating }
 MulticastSocket >> receive [
 	"mp 2/13/2006 11:05"
-
+	"Suspends for an infinite period until receiving some data"
+	
 	| bytesRead |
 	bytesRead := self receiveDataInto: receptionBuffer.
 	^ receptionBuffer copyFrom: 1 to: bytesRead
+]
+
+{ #category : #communicating }
+MulticastSocket >> receiveTimeout: seconds [
+	self waitForDataFor: seconds.
+	^self receive
 ]
 
 { #category : #communicating }

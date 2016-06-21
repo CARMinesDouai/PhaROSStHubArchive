@@ -42,31 +42,27 @@ MulticastSocketTest >> testInterface [
 
 { #category : #Running }
 MulticastSocketTest >> testLoopbackMode [
-	"mp 4/10/2006 15:55"
-	
 	| sentData |
 	self assert: socket getLoopbackMode equals: #(0 1).
 	sentData := 'hello'.
 	socket send: sentData.
-	self assert: socket receive asString equals: sentData.
+	self assert: (socket receiveTimeout: 1) asString equals: sentData.
 	
 	socket setLoopbackModeTo: false.
 	self assert: socket getLoopbackMode equals: #(0 0).
 	socket send: sentData.
-	self assert: (socket receiveDataTimeout: 1) isEmpty
+	self should: [socket receiveTimeout: 1] raise: ConnectionTimedOut
 ]
 
 { #category : #Running }
 MulticastSocketTest >> testSendReceive [
-	"mp 4/10/2006 15:55"
-	
 	| sender receiver |
 	[	receiver := socket.
 		sender := MulticastSocket 
 				group: '226.0.0.12'
 				port: multicastPort.
 		sender send: 'Hello'.
-		self assert: receiver receive asString equals: 'Hello'
+		self assert: (receiver receiveTimeout: 1) asString equals: 'Hello'
 	] ensure: [
 		sender closeAndDestroy]
 ]
