@@ -5,43 +5,13 @@ Class {
 }
 
 { #category : #forwarding }
-PrTopicMulticastRelayPackage class >> forwardFromTopic: topicName type: topicTypeString toGroupIp: ipString port: portInt [
-	self new forwardFromTopic: topicName type: topicTypeString toGroupIp: ipString port: portInt
+PrTopicMulticastRelayPackage class >> sourceTopic: topicName type: topicTypeString targetGroupIp: ipString port: portInt [
+	self new sourceTopic: topicName type: topicTypeString targetGroupIp: ipString port: portInt
 ]
 
 { #category : #forwarding }
-PrTopicMulticastRelayPackage class >> forwardToTopic: topicName type: topicTypeString fromGroupIp: ipString port: portInt [
-	self new forwardToTopic: topicName type: topicTypeString fromGroupIp: ipString port: portInt
-]
-
-{ #category : #forwarding }
-PrTopicMulticastRelayPackage >> forwardFromTopic: topicName type: topicTypeString toGroupIp: ipString port: portInt [
-	| multicastSocket |
-	multicastSocket := MulticastSocket group: ipString port: portInt.
-	(self node buildConnectionFor: topicName) 
-			typedAs: topicTypeString; 
-			for: [ : arrayWrapper |  
-				arrayWrapper data size > 65500 ifTrue: [
-					self error: 'Data with more than 64KB not yet supported! TODO ;-)'  ].
-				multicastSocket send: arrayWrapper data ];
-			connect
-]
-
-{ #category : #forwarding }
-PrTopicMulticastRelayPackage >> forwardToTopic: topicName type: topicTypeString fromGroupIp: ipString port: portInt [
-	| publisher multicastBridge |
-	publisher := self node 
-						topicPublisher: topicName
-						typedAs: topicTypeString.
-	multicastBridge := MulticastBridge 
-								group: ipString 
-								port: portInt
-								onReceptionDo: [: data|
- 									publisher send:[ : dataWrapper | 
-										dataWrapper data: data.
-									].
-								].
-	multicastBridge start.
+PrTopicMulticastRelayPackage class >> targetTopic: topicName type: topicTypeString sourceGroupIp: ipString port: portInt [
+	self new targetTopic: topicName type: topicTypeString sourceGroupIp: ipString port: portInt
 ]
 
 { #category : #accessing }
@@ -50,13 +20,62 @@ PrTopicMulticastRelayPackage >> node [
 ]
 
 { #category : #scripts }
-PrTopicMulticastRelayPackage >> scriptForwardingFromTopicToMulticastGroupExample [
+PrTopicMulticastRelayPackage >> scriptTopicAsSourceExample [
 	"self new scriptForwardingFromTopicToMulticastGroupExample"
-	self forwardFromTopic: '/demo' type: 'std_msgs/String' toGroupIp: '226.0.0.30' port: 12345
+	self sourceTopic: '/demo' type: 'std_msgs/String' targetGroupIp: '226.0.0.30' port: 12345
 ]
 
 { #category : #scripts }
-PrTopicMulticastRelayPackage >> scriptForwardingToTopicFromMulticastGroupExample [
+PrTopicMulticastRelayPackage >> scriptTopicAsTargetExample [
 	"self new scriptForwardingToTopicFromMulticastGroupExample"
-	self forwardToTopic: '/demo' type: 'std_msgs/String' fromGroupIp: '226.0.0.30' port: 12345
+	self targetTopic: '/demo' type: 'std_msgs/String' sourceGroupIp: '226.0.0.30' port: 12345
+]
+
+{ #category : #forwarding }
+PrTopicMulticastRelayPackage >> sourceTopic: topicName type: topicTypeString targetGroupIp: ipString port: portInt [
+	| multicastSocket |
+	self log: 'Creating multicast socket  Ip: ', ipString, ' port: ', portInt asString, ' ...'.
+	multicastSocket := MulticastSocket group: ipString port: portInt.
+	self logCr: 'DONE'.
+	self log: 'Building topic subscriber on ', topicName,'(', topicTypeString, ') ...'.
+	(self node buildConnectionFor: topicName) 
+			typedAs: topicTypeString; 
+			for: [ : arrayWrapper | 
+				self logCr: 'Received from topic ', topicName,'(', topicTypeString, ') bytes: ',  arrayWrapper data size asString.
+				arrayWrapper data size > 65500 
+				ifTrue: [
+					self logCr: 'Data with more than 64KB not yet supported! TODO ;-)'  ]
+				ifFalse: [ 
+					self log: 'Multicasting data ...'.
+					multicastSocket send: arrayWrapper data.
+					self logCr: 'DONE'.] ];
+			connect.
+	self logCr: 'DONE'.
+
+]
+
+{ #category : #forwarding }
+PrTopicMulticastRelayPackage >> targetTopic: topicName type: topicTypeString sourceGroupIp: ipString port: portInt [
+	| publisher multicastBridge |
+	self log: 'Creating topic publisher on ', topicName,'(', topicTypeString, ') ...'.
+	publisher := self node 
+						topicPublisher: topicName
+						typedAs: topicTypeString.
+	self logCr: 'DONE'.
+	self log: 'Creating multicast listener ...'.
+	multicastBridge := MulticastBridge 
+								group: ipString 
+								port: portInt
+								onReceptionDo: [: data|
+									self logCr: 'Received from multicast bytes: ', data size asString.
+									self log: 'Publishing data to topic', topicName,'(', topicTypeString, ') ...'.
+ 									publisher send:[ : dataWrapper | 
+										dataWrapper data: data.
+									].
+								].
+	self logCr: 'DONE'.
+	self log: 'Starting multicast listener Ip: ', ipString, ' port: ', portInt asString, ' ...'.
+	multicastBridge start.
+	self logCr: 'DONE'.
+
 ]
