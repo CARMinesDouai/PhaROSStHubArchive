@@ -10,7 +10,7 @@ Class {
 	#category : #'PhaROS-Types'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #converting }
 PhaROSValue >> asString [ 
 	| string  |	
 		
@@ -27,12 +27,17 @@ PhaROSValue >> asString [
 	^ string.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+PhaROSValue >> associations [
+	^values associations
+]
+
+{ #category : #accessing }
 PhaROSValue >> at:aName put: aValue [
 	values at:aName put: aValue.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSValue >> closeTo: anOtherValue [
 
 	^ (self class = anOtherValue class) and:[
@@ -44,28 +49,45 @@ PhaROSValue >> closeTo: anOtherValue [
 	].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhaROSValue >> getAt:aName [ 
 	^ values at: aName.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'gt-inspector-extension' }
+PhaROSValue >> gtInspectorItemsIn: composite [
+        <gtInspectorPresentationOrder: 0>
+        ^ (composite table)
+                title: 'Values';
+                display: [ self associations ];
+                children: [ :each |
+                        (each value isKindOf: PhaROSValue)
+                                ifTrue: [ each value associations ]
+                                ifFalse: [ #() ] ];
+                column: 'Key'
+                        evaluated: [:each | each key ];
+                column: 'Value'
+                        evaluated: [:each | each value ]
+
+]
+
+{ #category : #testing }
 PhaROSValue >> hasAttribute: aName [ 
 	^ values includesKey: aName.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 PhaROSValue >> initialize [ 
 	values := Dictionary new.
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 PhaROSValue >> isBasic [
 	^ false. 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #printing }
 PhaROSValue >> printOn: aStream [
 	aStream nextPutAll: self asString.
 	
