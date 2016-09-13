@@ -44,6 +44,11 @@ BGSCell >> acceptVisitor: aVisitor [
 	self acceptContentVisitor: aVisitor
 ]
 
+{ #category : #'content handling' }
+BGSCell >> changed [
+	grid changed
+]
+
 { #category : #accessing }
 BGSCell >> color [
 	^ color

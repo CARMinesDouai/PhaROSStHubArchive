@@ -32,6 +32,11 @@ BGSWireless >> botsInRange [
 	^self peers collect: [:wireless| wireless bot]
 ]
 
+{ #category : #testing }
+BGSWireless >> isInRangeOf: aBot [
+	^ aBot wireless range >= range
+]
+
 { #category : #communicating }
 BGSWireless >> peerAt: cell [
 	cell content ifNil: [^nil].

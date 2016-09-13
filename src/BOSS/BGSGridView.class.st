@@ -150,17 +150,21 @@ BGSGridView >> drawWall: wall on: aCanvas [
 
 { #category : #drawing }
 BGSGridView >> drawWireless: wireless [
-	|origin lineLengthFactor |
+	| origin aRobot |
 	origin := self centerOfCellAt: wireless position.
-	wireless peers do: [:peer|
-		|extremity|
-		extremity := self centerOfCellAt: peer position.
-		self canvas 
-			line: origin 
-			to: extremity 
-			color: self wirelessColor
-	]
-
+	aRobot := wireless bot.
+	wireless peers
+		do: [ :peer | 
+			| extremity |
+			extremity := self centerOfCellAt: peer position.
+			self canvas
+				line: origin
+				to: extremity
+				width:
+					((peer bot isPeerOf: aRobot)
+						ifTrue: [ 2 ]
+						ifFalse: [ 1 ])
+				color: self wirelessColor ]
 ]
 
 { #category : #accessing }
