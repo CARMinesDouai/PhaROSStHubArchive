@@ -30,7 +30,7 @@ NeLargeDataTest >> waitWhile: conditionBlock timeout: aDuration [
 	iterationDuration := 50 milliSeconds.
 	iterationCount := (aDuration / iterationDuration) asFloat rounded + 1.
 	iterationCount timesRepeat: [ 
-		conditionBlock ifFalse: [^self].
+		conditionBlock value ifFalse: [^self].
 		iterationDuration wait].
 	self fail: 'Timeout'.
 	

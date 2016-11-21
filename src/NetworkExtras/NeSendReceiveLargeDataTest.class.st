@@ -15,14 +15,16 @@ NeSendReceiveLargeDataTest >> setUp [
 	receiver port: 12345.
 	receiver start.
 	sender := NeUdpSender new.
+	sender ip: #[127 0 0 1].
+	sender port: receiver port.
 ]
 
 { #category : #testing }
-NeSendReceiveLargeDataTest >> test1Send1ReceiveLargeData [
+NeSendReceiveLargeDataTest >> test1Sender1Receiver [
 	| receivedData sentData |
-	receiver withReconstructedDataDo: [ :data | receivedData := data ].
+	receiver withReceivedDataDo: [ :data | receivedData := data ].
 	sentData := self get100KBytesOfSourceFile.
 	sender send: sentData.
 	self waitWhile: [ receivedData isNil ] timeout: 500 milliSeconds.
-	self assert: receivedData equals: sentData asByteArray.
+	self assert: receivedData equals: sentData asByteArray
 ]

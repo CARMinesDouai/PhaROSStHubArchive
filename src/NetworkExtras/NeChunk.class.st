@@ -13,6 +13,11 @@ NeChunk >> addTo: reconstructor [
 	self subclassResponsibility
 ]
 
+{ #category : #converting }
+NeChunk >> asByteArray [
+	^FLSerializer serializeToByteArray: self
+]
+
 { #category : #accessing }
 NeChunk >> sourceId [
 	^ sourceId

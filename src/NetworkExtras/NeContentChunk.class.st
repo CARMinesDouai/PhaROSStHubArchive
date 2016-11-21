@@ -13,11 +13,6 @@ NeContentChunk >> addTo: reconstructor [
 	reconstructor addContentChunk: self
 ]
 
-{ #category : #converting }
-NeContentChunk >> asByteArray [
-	^FLSerializer serializeToByteArray: self
-]
-
 { #category : #accessing }
 NeContentChunk >> contents [
 	^ contents
