@@ -1,27 +1,12 @@
 Class {
 	#name : #NeSplitReconstructLargeDataTest,
-	#superclass : #TestCase,
+	#superclass : #NeLargeDataTest,
 	#instVars : [
 		'reconstructor',
 		'splitter'
 	],
 	#category : #'NetworkExtras-UDP-SplitReconstructLargeData'
 }
-
-{ #category : #testing }
-NeSplitReconstructLargeDataTest >> get10KBytesOfSourceFile [
-	^SmalltalkImage current sourcesFile readStream next: 10000
-]
-
-{ #category : #testing }
-NeSplitReconstructLargeDataTest >> get50KBytesOfSourceFile [
-	^ SmalltalkImage current sourcesFile readStream next: 50000
-]
-
-{ #category : #testing }
-NeSplitReconstructLargeDataTest >> get5KBytesOfSourceFile [
-	^ self get50KBytesOfSourceFile last: 5000
-]
 
 { #category : #testing }
 NeSplitReconstructLargeDataTest >> setUp [
