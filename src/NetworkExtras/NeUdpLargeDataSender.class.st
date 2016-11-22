@@ -1,5 +1,5 @@
 Class {
-	#name : #NeUdpSender,
+	#name : #NeUdpLargeDataSender,
 	#superclass : #NeUdpSocketWrapper,
 	#instVars : [
 		'ip',
@@ -9,34 +9,24 @@ Class {
 }
 
 { #category : #accessing }
-NeUdpSender >> id: anId [
+NeUdpLargeDataSender >> id: anId [
 	splitter id: anId
 ]
 
 { #category : #'initialize-release' }
-NeUdpSender >> initialize [
+NeUdpLargeDataSender >> initialize [
 	splitter := NeSplitter new.
 	super initialize.
 
 ]
 
 { #category : #accessing }
-NeUdpSender >> ip [
-	^ ip
-]
-
-{ #category : #accessing }
-NeUdpSender >> ip: anObject [
-	ip := anObject
-]
-
-{ #category : #accessing }
-NeUdpSender >> maxChunkSize: anInteger [
+NeUdpLargeDataSender >> maxChunkSize: anInteger [
 	splitter maxChunkSize: anInteger
 ]
 
 { #category : #sending }
-NeUdpSender >> send: data [
+NeUdpLargeDataSender >> send: data [
 	splitter dataBytes: data.
 	splitter chunks do: [ :aChunk | 
 		socket sendData: aChunk asByteArray toHost: self ip port: self port ].

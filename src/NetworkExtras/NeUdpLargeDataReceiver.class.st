@@ -1,5 +1,5 @@
 Class {
-	#name : #NeUdpReceiver,
+	#name : #NeUdpLargeDataReceiver,
 	#superclass : #NeUdpSocketWrapper,
 	#instVars : [
 		'thread',
@@ -11,42 +11,42 @@ Class {
 }
 
 { #category : #receiving }
-NeUdpReceiver >> addChunk: chunk [
-	(self reconstructorAt: chunk id) addChunk: chunk
+NeUdpLargeDataReceiver >> addChunk: chunk [
+	(self reconstructorAt: chunk sourceId) addChunk: chunk
 ]
 
 { #category : #'initialize-release' }
-NeUdpReceiver >> destroy [
+NeUdpLargeDataReceiver >> destroy [
 	self stop.
 	super destroy.
 ]
 
 { #category : #'initialize-release' }
-NeUdpReceiver >> initialize [
+NeUdpLargeDataReceiver >> initialize [
 	super initialize.
 	reconstructorsDict := Dictionary new.
 	thread := ActiveObject repeat: [ self receiveChunk ].
 ]
 
 { #category : #activity }
-NeUdpReceiver >> isStarted [
+NeUdpLargeDataReceiver >> isStarted [
 	^thread isStarted
 ]
 
 { #category : #'initialize-release' }
-NeUdpReceiver >> maxChunkSize: anInteger [ 
+NeUdpLargeDataReceiver >> maxChunkSize: anInteger [ 
 	receptionBuffer := ByteArray new: anInteger.
 ]
 
 { #category : #receiving }
-NeUdpReceiver >> newReconstructor [
+NeUdpLargeDataReceiver >> newReconstructor [
 	^NeReconstructor new
 		withReconstructedDataDo: reconstructionBlock;
 		yourself
 ]
 
 { #category : #receiving }
-NeUdpReceiver >> receiveChunk [
+NeUdpLargeDataReceiver >> receiveChunk [
 	| responseArray receivedBytesCount chunk |
 	responseArray := socket receiveUDPDataInto: receptionBuffer.
 	receivedBytesCount := responseArray first.
@@ -56,23 +56,23 @@ NeUdpReceiver >> receiveChunk [
 ]
 
 { #category : #receiving }
-NeUdpReceiver >> reconstructorAt: id [
+NeUdpLargeDataReceiver >> reconstructorAt: id [
 	^reconstructorsDict at: id ifAbsentPut: [self newReconstructor]
 	
 ]
 
 { #category : #activity }
-NeUdpReceiver >> start [
+NeUdpLargeDataReceiver >> start [
 	socket setPort: self port.
 	thread start
 ]
 
 { #category : #activity }
-NeUdpReceiver >> stop [
+NeUdpLargeDataReceiver >> stop [
 	thread stop
 ]
 
 { #category : #'initialize-release' }
-NeUdpReceiver >> withReceivedDataDo: aBlock [
+NeUdpLargeDataReceiver >> withReceivedDataDo: aBlock [
 	reconstructionBlock := aBlock 
 ]

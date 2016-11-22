@@ -9,19 +9,24 @@ Class {
 }
 
 { #category : #testing }
-NeSendReceiveLargeDataTest >> port [
+NeSendReceiveLargeDataTest >> receiverIp [
+	^ #[127 0 0 1]
+]
+
+{ #category : #testing }
+NeSendReceiveLargeDataTest >> receiverPort [
 	^54321
 ]
 
 { #category : #testing }
 NeSendReceiveLargeDataTest >> setUp [
 	super setUp.
-	receiver := NeUdpReceiver new.
-	receiver port: self port.
+	receiver := NeUdpLargeDataReceiver new.
+	receiver port: self receiverPort.
 	receiver start.
-	sender := NeUdpSender new.
-	sender ip: #[127 0 0 1].
-	sender port: self port
+	sender := NeUdpLargeDataSender new.
+	sender ip: self receiverIp.
+	sender port: self receiverPort
 ]
 
 { #category : #testing }
@@ -44,8 +49,9 @@ NeSendReceiveLargeDataTest >> test1Sender1Receiver [
 { #category : #testing }
 NeSendReceiveLargeDataTest >> test2Senders1Receiver [
 	| receivedDataSet sentData1 sentData2 sender2 |
-	sender2 := NeUdpSender new.
-	sender2 port: self port.
+	sender2 := NeUdpLargeDataSender new.
+	sender2 ip: self receiverIp.
+	sender2 port: self receiverPort.
 	sender2 id: #sender2.
 	sender id: #sender1.
 	receivedDataSet := Set new.

@@ -8,6 +8,18 @@ Class {
 	#category : #'NetworkExtras-UDP-SendReceiveLargeData'
 }
 
+{ #category : #'instance creation' }
+NeUdpSocketWrapper class >> onSocket: udpSocket [
+	^self new
+		socket: udpSocket;
+		yourself
+]
+
+{ #category : #'instance creation' }
+NeUdpSocketWrapper class >> onUnicastSocket [
+	^self onSocket: Socket newUDP
+]
+
 { #category : #'initialize-release' }
 NeUdpSocketWrapper >> defaultMaxChunkSize [
 	^1500
@@ -26,7 +38,6 @@ NeUdpSocketWrapper >> finalize [
 { #category : #'initialize-release' }
 NeUdpSocketWrapper >> initialize [
 	super initialize.
-	socket := Socket newUDP.
 	self maxChunkSize: self defaultMaxChunkSize.
 	self finalizationRegistry add: self.
 ]
@@ -37,11 +48,11 @@ NeUdpSocketWrapper >> maxChunkSize: anInteger [
 ]
 
 { #category : #accessing }
-NeUdpSocketWrapper >> port [
-	^ port
+NeUdpSocketWrapper >> socket [
+	^ socket
 ]
 
 { #category : #accessing }
-NeUdpSocketWrapper >> port: anObject [
-	port := anObject
+NeUdpSocketWrapper >> socket: anObject [
+	socket := anObject
 ]
