@@ -2,11 +2,20 @@ Class {
 	#name : #NeUdpLargeDataSender,
 	#superclass : #NeUdpSocketWrapper,
 	#instVars : [
-		'ip',
 		'splitter'
 	],
 	#category : #'NetworkExtras-UDP-SendReceiveLargeData'
 }
+
+{ #category : #'instance creation' }
+NeUdpLargeDataSender class >> onUnicastIp: ipStringOrByteArray port: portNumber [
+	^ self onSocket: (NeSendUdpSocket ip: ipStringOrByteArray port: portNumber)
+]
+
+{ #category : #'initialize-release' }
+NeUdpLargeDataSender >> defaultMaxChunkSize [
+	^1500
+]
 
 { #category : #accessing }
 NeUdpLargeDataSender >> id: anId [
@@ -15,9 +24,9 @@ NeUdpLargeDataSender >> id: anId [
 
 { #category : #'initialize-release' }
 NeUdpLargeDataSender >> initialize [
-	splitter := NeSplitter new.
 	super initialize.
-
+	splitter := NeSplitter new.
+	self maxChunkSize: self defaultMaxChunkSize.
 ]
 
 { #category : #accessing }
@@ -28,8 +37,6 @@ NeUdpLargeDataSender >> maxChunkSize: anInteger [
 { #category : #sending }
 NeUdpLargeDataSender >> send: data [
 	splitter dataBytes: data.
-	splitter chunks do: [ :aChunk | 
-		socket sendData: aChunk asByteArray toHost: self ip port: self port ].
-	
-	
+	splitter chunks
+		do: [ :aChunk | socket send: aChunk asByteArray ]
 ]

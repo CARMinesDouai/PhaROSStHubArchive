@@ -3,12 +3,16 @@ Class {
 	#superclass : #NeUdpSocketWrapper,
 	#instVars : [
 		'thread',
-		'receptionBuffer',
 		'reconstructorsDict',
 		'reconstructionBlock'
 	],
 	#category : #'NetworkExtras-UDP-SendReceiveLargeData'
 }
+
+{ #category : #'instance creation' }
+NeUdpLargeDataReceiver class >> onUnicastPort: portNumber [
+	^ self onSocket: (NeReceiveUdpSocket port: portNumber)
+]
 
 { #category : #receiving }
 NeUdpLargeDataReceiver >> addChunk: chunk [
@@ -33,11 +37,6 @@ NeUdpLargeDataReceiver >> isStarted [
 	^thread isStarted
 ]
 
-{ #category : #'initialize-release' }
-NeUdpLargeDataReceiver >> maxChunkSize: anInteger [ 
-	receptionBuffer := ByteArray new: anInteger.
-]
-
 { #category : #receiving }
 NeUdpLargeDataReceiver >> newReconstructor [
 	^NeReconstructor new
@@ -47,11 +46,10 @@ NeUdpLargeDataReceiver >> newReconstructor [
 
 { #category : #receiving }
 NeUdpLargeDataReceiver >> receiveChunk [
-	| responseArray receivedBytesCount chunk |
-	responseArray := socket receiveUDPDataInto: receptionBuffer.
-	receivedBytesCount := responseArray first.
-	receivedBytesCount = 0 ifTrue: [ ^self ].
-	chunk := FLMaterializer materializeFromByteArray: (receptionBuffer first: receivedBytesCount).
+	| receivedBytes chunk |
+	receivedBytes := socket receive.
+	receivedBytes ifEmpty: [ ^ self ].
+	chunk := FLMaterializer materializeFromByteArray: receivedBytes.
 	self addChunk: chunk
 ]
 
@@ -63,7 +61,6 @@ NeUdpLargeDataReceiver >> reconstructorAt: id [
 
 { #category : #activity }
 NeUdpLargeDataReceiver >> start [
-	socket setPort: self port.
 	thread start
 ]
 

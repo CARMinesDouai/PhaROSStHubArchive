@@ -1,48 +1,25 @@
+"
+I am an UDP socket. I store the IP and the Port so I make it easy to send different datagrams to the same receiver. I also ensure OS resources I use are cleanup upon garbage collection. 
+
+ Instance Variables
+	ip:		<ByteArray> Ip of the receiver
+	port:		<Integer> port of the receiver
+
+"
 Class {
 	#name : #NeUdpSocket,
-	#superclass : #Object,
-	#instVars : [
-		'ip',
-		'port',
-		'socket'
-	],
-	#category : #'NetworkExtras-UDP-SendReceiveLargeData'
+	#superclass : #Socket,
+	#category : #'NetworkExtras-UDP-Unicast'
 }
 
 { #category : #'initialize-release' }
 NeUdpSocket >> finalize [
-	socket closeAndDestroy
+	self closeAndDestroy
 ]
 
 { #category : #'initialize-release' }
 NeUdpSocket >> initialize [
 	super initialize.
-	socket := Socket newUDP.
 	self finalizationRegistry add: self.
-]
 
-{ #category : #accessing }
-NeUdpSocket >> ip [
-	^ ip
-]
-
-{ #category : #accessing }
-NeUdpSocket >> ip: anObject [
-	ip := anObject
-]
-
-{ #category : #accessing }
-NeUdpSocket >> port [
-	^ port
-]
-
-{ #category : #accessing }
-NeUdpSocket >> port: anObject [
-	port := anObject
-]
-
-{ #category : #sending }
-NeUdpSocket >> send: stringOrByteArray [
-	socket sendData: stringOrByteArray toHost: self ip port: self port
-	
 ]
