@@ -8,11 +8,6 @@ Class {
 	#category : #'NetworkExtras-UDP-SendReceiveLargeData'
 }
 
-{ #category : #'initialize-release' }
-NeUdpSender >> defaultMaxChunkSize [
-	^1500
-]
-
 { #category : #accessing }
 NeUdpSender >> id: anId [
 	splitter id: anId
@@ -20,9 +15,9 @@ NeUdpSender >> id: anId [
 
 { #category : #'initialize-release' }
 NeUdpSender >> initialize [
-	super initialize.
 	splitter := NeSplitter new.
-	self maxChunkSize: self defaultMaxChunkSize.
+	super initialize.
+
 ]
 
 { #category : #accessing }
