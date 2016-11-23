@@ -1,6 +1,8 @@
 Class {
 	#name : #NeLargeDataTest,
 	#superclass : #TestCase,
+	#traits : 'NeTWait',
+	#classTraits : 'NeTWait classTrait',
 	#category : #'NetworkExtras-UDP-SendReceiveLargeData'
 }
 
@@ -22,16 +24,4 @@ NeLargeDataTest >> get50KBytesOfSourceFile [
 { #category : #testing }
 NeLargeDataTest >> get5KBytesOfSourceFile [
 	^ self get50KBytesOfSourceFile last: 5000
-]
-
-{ #category : #testing }
-NeLargeDataTest >> waitWhile: conditionBlock timeout: aDuration [
-	| iterationCount iterationDuration |
-	iterationDuration := 50 milliSeconds.
-	iterationCount := (aDuration / iterationDuration) asFloat rounded + 1.
-	iterationCount timesRepeat: [ 
-		conditionBlock value ifFalse: [^self].
-		iterationDuration wait].
-	self fail: 'Timeout'.
-	
 ]

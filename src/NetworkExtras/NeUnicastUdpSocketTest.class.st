@@ -2,7 +2,6 @@ Class {
 	#name : #NeUnicastUdpSocketTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'socket',
 		'port',
 		'receiver',
 		'sender'

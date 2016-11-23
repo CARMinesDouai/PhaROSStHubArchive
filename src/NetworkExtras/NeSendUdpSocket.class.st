@@ -43,7 +43,6 @@ NeSendUdpSocket >> port: anInteger [
 ]
 
 { #category : #communicating }
-NeSendUdpSocket >> send: stringOrByteArray [
-	self sendData: stringOrByteArray toHost: self ip port: self port
-	
+NeSendUdpSocket >> send: anObject [
+	self sendData: anObject asByteArray toHost: self ip port: self port
 ]

@@ -19,6 +19,11 @@ NeReceiveUdpSocket >> defaultBufferSize [
 	^ 1500
 ]
 
+{ #category : #communicating }
+NeReceiveUdpSocket >> defaultTimeoutSeconds [
+	^ 3600
+]
+
 { #category : #'initialize-release' }
 NeReceiveUdpSocket >> initialize [
 	super initialize.
@@ -32,18 +37,15 @@ NeReceiveUdpSocket >> listenOn: portNumber [
 
 { #category : #communicating }
 NeReceiveUdpSocket >> receive [
-	"mp 2/13/2006 11:05"
-	"Suspends for an infinite period until receiving some data"
-	
-	| bytesRead |
-	bytesRead := self receiveDataInto: receptionBuffer.
-	^ receptionBuffer copyFrom: 1 to: bytesRead
+	^ self receiveTimeout: self defaultTimeoutSeconds
 ]
 
 { #category : #communicating }
 NeReceiveUdpSocket >> receiveTimeout: seconds [
-	self waitForDataFor: seconds.
-	^self receive
+	| bytesReadCount |
+	self waitForData. self flag: #addTimeout.
+	bytesReadCount := self receiveDataInto: receptionBuffer.
+	^ receptionBuffer copyFrom: 1 to: bytesReadCount
 ]
 
 { #category : #'initialize-release' }
