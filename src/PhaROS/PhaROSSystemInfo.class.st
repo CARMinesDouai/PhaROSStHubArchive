@@ -46,6 +46,11 @@ PhaROSSystemInfo class >> instance [
 	^ Instance ifNil: [ Instance := super new ]
 ]
 
+{ #category : #distro }
+PhaROSSystemInfo class >> kinetic [
+	^'/opt/ros/kinetic/bin/'
+]
+
 { #category : #'instance creation' }
 PhaROSSystemInfo class >> new [
 
@@ -332,7 +337,7 @@ PhaROSSystemInfo >> topicList [
 
 	|lst|
 	lst := OSProcess thisOSProcess waitForCommandOutput: (self rospath,'/rostopic list').
-	^ lst substrings: String lf.
+	^ lst subStrings: String lf.
 	
 ]
 
