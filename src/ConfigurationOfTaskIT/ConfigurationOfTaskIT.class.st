@@ -309,7 +309,8 @@ ConfigurationOfTaskIT >> stable: spec [
 	spec for: #'pharo1.4.x' version: '1.1'.
 	spec for: #'pharo2.x' version: '2.0'.
 	spec for: #'pharo3.x' version: '2.1'.
-	spec for: #'pharo4.x' version: '2.1'
+	spec for: #'pharo4.x' version: '2.1'.
+	spec for: #'pharo5.x' version: '2.2'
 ]
 
 { #category : #versions }
