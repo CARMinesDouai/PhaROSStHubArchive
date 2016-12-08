@@ -337,7 +337,7 @@ PhaROSSystemInfo >> topicList [
 
 	|lst|
 	lst := OSProcess thisOSProcess waitForCommandOutput: (self rospath,'/rostopic list').
-	^ lst subStrings: String lf.
+	^ lst substrings: String lf.
 	
 ]
 
