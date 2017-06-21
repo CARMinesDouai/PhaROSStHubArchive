@@ -188,7 +188,7 @@ PhaROSSystemInfo >> messageList [
 
 	|lst|
 	lst := OSProcess thisOSProcess waitForCommandOutput: self rospath,'rosmsg list'.
-	^ lst subStrings: String lf.
+	^ lst substrings: String lf.
 ]
 
 { #category : #messages }
