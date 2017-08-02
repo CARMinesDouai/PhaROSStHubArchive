@@ -20,7 +20,6 @@ NeUnicastUdpServerTest >> setUp [
 	server := NeUdpServer port: port.
 	server onReceptionDo: [ :data | allReceivedData add: data asString ].
 	server priority: Processor userInterruptPriority.
-	server start.
 	sender := NeSendUdpSocket ip: '127.0.0.1' port: port
 ]
 
@@ -35,6 +34,7 @@ NeUnicastUdpServerTest >> tearDown [
 NeUnicastUdpServerTest >> testSendReceive [
 	| allSentData |
 	allSentData := #('Hello' 'World' 'Pharo').
+	server start.
 	allSentData withIndexDo: [ :each :index | 
 		sender send: each.
 		self waitUntil: [ allReceivedData size = index ].

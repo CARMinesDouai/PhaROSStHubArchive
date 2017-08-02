@@ -52,9 +52,9 @@ NeUdpServer >> priority: aPriority [
 { #category : #activity }
 NeUdpServer >> receiveData [
 	| receivedData |
-	receivedData := socket receive.
-	receivedData ifEmpty: [ ^self ].
-	actionBlock cull: receivedData.
+	receivedData := socket receive. ('Received bytes count ', receivedData size asString) logCr.
+	receivedData ifEmpty: [ ^ self ].
+	actionBlock cull: receivedData
 ]
 
 { #category : #activity }

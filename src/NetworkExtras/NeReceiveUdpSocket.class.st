@@ -43,7 +43,8 @@ NeReceiveUdpSocket >> receive [
 { #category : #communicating }
 NeReceiveUdpSocket >> receiveTimeout: seconds [
 	| bytesReadCount |
-	self waitForData. self flag: #addTimeout.
+	self waitForConnectionFor: seconds.
+	self waitForDataFor: seconds.
 	bytesReadCount := self receiveDataInto: receptionBuffer.
 	^ receptionBuffer copyFrom: 1 to: bytesReadCount
 ]
