@@ -12,6 +12,11 @@ Class {
 	#category : #'NetworkExtras-UDP-Unicast'
 }
 
+{ #category : #'instance creation' }
+NeUdpSocket class >> new [
+	^self newUDP
+]
+
 { #category : #'initialize-release' }
 NeUdpSocket >> finalize [
 	self closeAndDestroy

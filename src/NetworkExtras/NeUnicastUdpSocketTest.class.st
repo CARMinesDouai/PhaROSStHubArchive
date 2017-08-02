@@ -35,6 +35,7 @@ NeUnicastUdpSocketTest >> testCloseWhileReceiving [
 	[ 
 		[ [receiver receiveTimeout: 1] ensure: [ done := true ] ] on: Error do: [errorSignaled := true]. 
 	] forkAt: Processor userInterruptPriority.
+	sender send: 'some data'.	
 	receiver closeAndDestroy.
 	self waitUntil: [ done ] timeout: 1 second.
 	self deny: errorSignaled.

@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'thread',
 		'socket',
-		'actionBlock'
+		'actionBlock',
+		'port'
 	],
 	#category : #'NetworkExtras-UDP-Unicast'
 }
@@ -19,14 +20,13 @@ NeUdpServer class >> port: portNumber [
 { #category : #'initialize-release' }
 NeUdpServer >> initialize [
 	super initialize.
-	socket := NeReceiveUdpSocket new.
-	thread := ActiveObject repeat: [ self receiveData ].
+	thread := ActiveObject repeat: [ self receiveData ] ensure: [socket closeAndDestroy].
 	actionBlock := [ :data | data asString logCr ]
 ]
 
 { #category : #activity }
 NeUdpServer >> isStarted [
-	^ thread isStopped
+	^ thread isStarted
 ]
 
 { #category : #activity }
@@ -40,8 +40,19 @@ NeUdpServer >> onReceptionDo: aBlock [
 ]
 
 { #category : #accessing }
+NeUdpServer >> port [
+	^port
+]
+
+{ #category : #accessing }
 NeUdpServer >> port: portNumber [
-	socket listenOn: portNumber
+	port := portNumber.
+
+]
+
+{ #category : #accessing }
+NeUdpServer >> priority [
+	^thread priority
 ]
 
 { #category : #accessing }
@@ -52,14 +63,17 @@ NeUdpServer >> priority: aPriority [
 { #category : #activity }
 NeUdpServer >> receiveData [
 	| receivedData |
-	receivedData := socket receive. ('Received bytes count ', receivedData size asString) logCr.
+	receivedData := socket receive.
 	receivedData ifEmpty: [ ^ self ].
 	actionBlock cull: receivedData
 ]
 
 { #category : #activity }
 NeUdpServer >> start [
-	thread start
+	self isStarted ifTrue: [ ^self ].
+	socket := NeReceiveUdpSocket port: self port.
+	thread name: 'UDP server on port ', self port asString.
+	thread start.
 ]
 
 { #category : #activity }

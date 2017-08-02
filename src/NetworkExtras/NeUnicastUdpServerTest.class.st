@@ -16,7 +16,7 @@ Class {
 NeUnicastUdpServerTest >> setUp [
 	super setUp.
 	allReceivedData := OrderedCollection new.
-	port := 51234.
+	port := 1234.
 	server := NeUdpServer port: port.
 	server onReceptionDo: [ :data | allReceivedData add: data asString ].
 	server priority: Processor userInterruptPriority.
