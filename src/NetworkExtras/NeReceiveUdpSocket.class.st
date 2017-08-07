@@ -1,10 +1,22 @@
+"
+I am an UDP socket dedicated to reception. I provide a buffer for storing incoming data. 
+
+I am useful for oneshot receptions. For repeated reception, use the higher lever class NeUdpServer.
+
+The reception buffer is small by default (see defaultBufferSize method), but it can be increased.
+Its content is overwritten upon each reception.
+
+Instance Variables
+	receptionBuffer		<ByteArray> reception buffer
+
+"
 Class {
 	#name : #NeReceiveUdpSocket,
 	#superclass : #NeUdpSocket,
 	#instVars : [
 		'receptionBuffer'
 	],
-	#category : #'NetworkExtras-UDP-Unicast'
+	#category : #'NetworkExtras-UDP-Kernel'
 }
 
 { #category : #'instance creation' }

@@ -1,18 +1,36 @@
+"
+I am an UDP socket dedicated to sending. I store the IP and the Port so I make it easy to send different datagrams to the same receiver. 
+
+ Instance Variables
+	receiverIp:		<ByteArray> Ip of the receiver
+	receiverPort:		<Integer> port of the receiver
+
+"
 Class {
 	#name : #NeSendUdpSocket,
 	#superclass : #NeUdpSocket,
 	#instVars : [
-		'ip',
-		'port'
+		'receiverIp',
+		'receiverPort'
 	],
-	#category : #'NetworkExtras-UDP-Unicast'
+	#category : #'NetworkExtras-UDP-Kernel'
 }
 
 { #category : #'instance creation' }
-NeSendUdpSocket class >> ip: ipStringOrByteArray port: portNumber [
+NeSendUdpSocket class >> broadcastPort: portNumber [
+	^self receiverIp: self defaultBroadcastIp port: portNumber.
+]
+
+{ #category : #'instance creation' }
+NeSendUdpSocket class >> defaultBroadcastIp [
+	^#[255 255 255 255]
+]
+
+{ #category : #'instance creation' }
+NeSendUdpSocket class >> receiverIp: ipStringOrByteArray port: portNumber [
 	^self newUDP
-		ip: ipStringOrByteArray;
-		port: portNumber;
+		receiverIp: ipStringOrByteArray;
+		receiverPort: portNumber;
 		yourself
 ]
 
@@ -23,26 +41,28 @@ NeSendUdpSocket >> byteArrayIpFrom: byteArrayOrString [
 ]
 
 { #category : #accessing }
-NeSendUdpSocket >> ip [
-	^ ip
+NeSendUdpSocket >> receiverIp [
+	^ receiverIp
 ]
 
 { #category : #accessing }
-NeSendUdpSocket >> ip: byteArrayOrString [
-	ip := self byteArrayIpFrom: byteArrayOrString.
+NeSendUdpSocket >> receiverIp: anObject [
+	receiverIp := (self byteArrayIpFrom: anObject).
+	receiverIp last = 255 ifFalse: [^self].
+	self setOption: 'SO_BROADCAST' value: true
 ]
 
 { #category : #accessing }
-NeSendUdpSocket >> port [
-	^ port
+NeSendUdpSocket >> receiverPort [
+	^ receiverPort
 ]
 
 { #category : #accessing }
-NeSendUdpSocket >> port: anInteger [
-	port := anInteger
+NeSendUdpSocket >> receiverPort: anObject [
+	receiverPort := anObject
 ]
 
 { #category : #communicating }
 NeSendUdpSocket >> send: anObject [
-	self sendData: anObject asByteArray toHost: self ip port: self port
+	self sendData: anObject asByteArray toHost: self receiverIp port: self receiverPort
 ]

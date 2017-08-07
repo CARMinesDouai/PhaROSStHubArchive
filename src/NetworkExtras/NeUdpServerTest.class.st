@@ -1,40 +1,52 @@
 Class {
-	#name : #NeUnicastUdpServerTest,
+	#name : #NeUdpServerTest,
 	#superclass : #TestCase,
 	#traits : 'NeTWait',
 	#classTraits : 'NeTWait classTrait',
 	#instVars : [
-		'port',
 		'server',
 		'sender',
 		'allReceivedData'
 	],
-	#category : #'NetworkExtras-UDP-Unicast'
+	#category : #'NetworkExtras-UDP-Kernel'
 }
 
 { #category : #'initialize-release' }
-NeUnicastUdpServerTest >> setUp [
+NeUdpServerTest >> setUp [
 	super setUp.
 	allReceivedData := OrderedCollection new.
-	port := 1234.
-	server := NeUdpServer port: port.
+	server := NeUdpServer port: 1234.
 	server onReceptionDo: [ :data | allReceivedData add: data asString ].
 	server priority: Processor userInterruptPriority.
-	sender := NeSendUdpSocket ip: '127.0.0.1' port: port
+
 ]
 
 { #category : #'initialize-release' }
-NeUnicastUdpServerTest >> tearDown [
+NeUdpServerTest >> tearDown [
 	super tearDown.
 	sender closeAndDestroy.
 	server stop
 ]
 
 { #category : #Running }
-NeUnicastUdpServerTest >> testSendReceive [
+NeUdpServerTest >> testBroadcastSendReceive [
 	| allSentData |
 	allSentData := #('Hello' 'World' 'Pharo').
 	server start.
+	sender := NeSendUdpSocket broadcastPort: server port.
+	allSentData withIndexDo: [ :each :index | 
+		sender send: each.
+		self waitUntil: [ allReceivedData size = index ].
+	].
+	self assert: allReceivedData asArray equals: allSentData
+]
+
+{ #category : #Running }
+NeUdpServerTest >> testUnicastSendReceive [
+	| allSentData |
+	allSentData := #('Hello' 'World' 'Pharo').
+	server start.
+	sender := NeSendUdpSocket receiverIp: '127.0.0.1' port: server port.
 	allSentData withIndexDo: [ :each :index | 
 		sender send: each.
 		self waitUntil: [ allReceivedData size = index ].

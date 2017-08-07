@@ -1,6 +1,9 @@
+"
+I provide facility methods for tests that require waiting some undefined duration, which is typical in networking
+"
 Trait {
 	#name : #NeTWait,
-	#category : #'NetworkExtras-Tests-Support'
+	#category : #'NetworkExtras-UDP-Kernel'
 }
 
 { #category : #testing }

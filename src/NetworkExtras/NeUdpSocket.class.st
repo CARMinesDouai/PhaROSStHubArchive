@@ -1,30 +1,17 @@
 "
-I am an UDP socket. I store the IP and the Port so I make it easy to send different datagrams to the same receiver. I also ensure OS resources I use are cleanup upon garbage collection. 
-
- Instance Variables
-	ip:		<ByteArray> Ip of the receiver
-	port:		<Integer> port of the receiver
-
+I am an UDP socket. 
+I am an abstract class, use my subclasses
 "
 Class {
 	#name : #NeUdpSocket,
 	#superclass : #Socket,
-	#category : #'NetworkExtras-UDP-Unicast'
+	#category : #'NetworkExtras-UDP-Kernel'
 }
 
 { #category : #'instance creation' }
 NeUdpSocket class >> new [
-	^self newUDP
-]
-
-{ #category : #'initialize-release' }
-NeUdpSocket >> finalize [
-	self closeAndDestroy
-]
-
-{ #category : #'initialize-release' }
-NeUdpSocket >> initialize [
-	super initialize.
-	self finalizationRegistry add: self.
-
+	^self udpCreateIfFail: [
+		UIManager default 
+			abort: 'Either network is not available, or no resources left to create another socket'
+			title: self name, ' creation failed!' ]
 ]

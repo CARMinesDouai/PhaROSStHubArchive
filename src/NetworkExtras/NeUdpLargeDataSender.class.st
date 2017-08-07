@@ -9,7 +9,7 @@ Class {
 
 { #category : #'instance creation' }
 NeUdpLargeDataSender class >> onUnicastIp: ipStringOrByteArray port: portNumber [
-	^ self onSocket: (NeSendUdpSocket ip: ipStringOrByteArray port: portNumber)
+	^ self onSocket: (NeSendUdpSocket receiverIp: ipStringOrByteArray port: portNumber)
 ]
 
 { #category : #'initialize-release' }

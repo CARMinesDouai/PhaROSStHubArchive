@@ -1,5 +1,5 @@
 Class {
-	#name : #NeUnicastUdpSocketTest,
+	#name : #NeUdpUnicastSocketTest,
 	#superclass : #TestCase,
 	#traits : 'NeTWait',
 	#classTraits : 'NeTWait classTrait',
@@ -8,27 +8,27 @@ Class {
 		'receiver',
 		'sender'
 	],
-	#category : #'NetworkExtras-UDP-Unicast'
+	#category : #'NetworkExtras-UDP-Kernel'
 }
 
 { #category : #'initialize-release' }
-NeUnicastUdpSocketTest >> setUp [
+NeUdpUnicastSocketTest >> setUp [
 	super setUp.
 	port := 1234.
 	receiver := NeReceiveUdpSocket port: port.
-	sender := NeSendUdpSocket ip: '127.0.0.1' port: port.
+	sender := NeSendUdpSocket receiverIp: '127.0.0.1' port: port.
 
 ]
 
 { #category : #'initialize-release' }
-NeUnicastUdpSocketTest >> tearDown [
+NeUdpUnicastSocketTest >> tearDown [
 	super tearDown.
 	sender closeAndDestroy.
 	receiver closeAndDestroy
 ]
 
 { #category : #Running }
-NeUnicastUdpSocketTest >> testCloseWhileReceiving [
+NeUdpUnicastSocketTest >> testCloseWhileReceiving [
 	| done errorSignaled |
 	done := false.
 	errorSignaled := false.
@@ -42,7 +42,7 @@ NeUnicastUdpSocketTest >> testCloseWhileReceiving [
 ]
 
 { #category : #Running }
-NeUnicastUdpSocketTest >> testReceiveSend [
+NeUdpUnicastSocketTest >> testReceiveSend [
 	| sentData receivedData |
 	sentData := 'Hello World!'.
 	[self shouldnt: [receivedData := receiver receiveTimeout: 1] raise: Error] forkAt: Processor userInterruptPriority.
@@ -52,7 +52,7 @@ NeUnicastUdpSocketTest >> testReceiveSend [
 ]
 
 { #category : #Running }
-NeUnicastUdpSocketTest >> testReceiveTimeout [
+NeUdpUnicastSocketTest >> testReceiveTimeout [
 	| timeoutSignaled |
 	timeoutSignaled := false.
 	[ 
@@ -63,7 +63,7 @@ NeUnicastUdpSocketTest >> testReceiveTimeout [
 ]
 
 { #category : #Running }
-NeUnicastUdpSocketTest >> testSendReceive [
+NeUdpUnicastSocketTest >> testUnicastSendReceive [
 	sender send: 'Hello'.
 	self assert: (receiver receiveTimeout: 1) asString equals: 'Hello'
 ]

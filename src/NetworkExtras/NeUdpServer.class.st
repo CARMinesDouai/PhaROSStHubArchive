@@ -1,3 +1,17 @@
+"
+I am a UDP server. I handle incoming UDP data repeatedly in a dedicated thread.
+
+    Instance Variables
+	actionBlock:		<BlockClosure> block to handle incoming data
+	port:		<Integer> port on which I receive UDP data
+	socket:		<NeReceiverUdpSocket> socket listening on the UDP port
+	thread:		<ActiveObject>  handles the repeated action. 
+			
+Since we realy on ActiveObjects, the thread is garbage collected if it's not referenced any more.		
+Upon termination, it closes the socket ensuring releasing related resources.
+
+
+"
 Class {
 	#name : #NeUdpServer,
 	#superclass : #Object,
@@ -7,7 +21,7 @@ Class {
 		'actionBlock',
 		'port'
 	],
-	#category : #'NetworkExtras-UDP-Unicast'
+	#category : #'NetworkExtras-UDP-Kernel'
 }
 
 { #category : #'instance creation' }

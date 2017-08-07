@@ -12,7 +12,7 @@ Class {
 		'socket',
 		'multicastPort'
 	],
-	#category : #'NetworkExtras-UDP-Multicast'
+	#category : #'NetworkExtras-UDP-Kernel'
 }
 
 { #category : #'initialize-release' }
