@@ -33,7 +33,7 @@ NeUdpServerTest >> testBroadcastSendReceive [
 	| allSentData |
 	allSentData := #('Hello' 'World' 'Pharo').
 	server start.
-	sender := NeSendUdpSocket broadcastPort: server port.
+	sender := NeBroadcastSocket port: server port.
 	allSentData withIndexDo: [ :each :index | 
 		sender send: each.
 		self waitUntil: [ allReceivedData size = index ].
@@ -46,7 +46,7 @@ NeUdpServerTest >> testUnicastSendReceive [
 	| allSentData |
 	allSentData := #('Hello' 'World' 'Pharo').
 	server start.
-	sender := NeSendUdpSocket receiverIp: '127.0.0.1' port: server port.
+	sender := NeUnicastSendUdpSocket receiverIp: '127.0.0.1' port: server port.
 	allSentData withIndexDo: [ :each :index | 
 		sender send: each.
 		self waitUntil: [ allReceivedData size = index ].

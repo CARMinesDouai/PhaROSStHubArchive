@@ -15,23 +15,23 @@ Class {
 	#category : #'NetworkExtras-UDP-Kernel'
 }
 
-{ #category : #'initialize-release' }
+{ #category : #testing }
 NeMulticastSocketTest >> setUp [
 	super setUp.
 	multicastPort := 1234.
-	socket := MulticastSocket 
+	socket := NeMulticastSocket 
 				group: '226.0.0.12'
 				port: multicastPort
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #testing }
 NeMulticastSocketTest >> tearDown [
 	super tearDown.	
 	socket closeAndDestroy.
 
 ]
 
-{ #category : #Running }
+{ #category : #testing }
 NeMulticastSocketTest >> testInterface [
 	"mp 4/10/2006 15:55"
 	
@@ -40,7 +40,7 @@ NeMulticastSocketTest >> testInterface [
 	self assert: socket getInterface equals: #(0 0)
 ]
 
-{ #category : #Running }
+{ #category : #testing }
 NeMulticastSocketTest >> testLoopbackMode [
 	| sentData |
 	self assert: socket getLoopbackMode equals: #(0 1).
@@ -54,11 +54,12 @@ NeMulticastSocketTest >> testLoopbackMode [
 	self should: [socket receiveTimeout: 1] raise: ConnectionTimedOut
 ]
 
-{ #category : #Running }
+{ #category : #testing }
 NeMulticastSocketTest >> testSendReceive [
 	| sender receiver |
 	[	receiver := socket.
-		sender := MulticastSocket 
+		receiver unregisterUsedPort: receiver port. "Hack to allow having two multicast sockets on the same port!"
+		sender := NeMulticastSocket 
 				group: '226.0.0.12'
 				port: multicastPort.
 		sender send: 'Hello'.
@@ -67,7 +68,7 @@ NeMulticastSocketTest >> testSendReceive [
 		sender closeAndDestroy]
 ]
 
-{ #category : #Running }
+{ #category : #testing }
 NeMulticastSocketTest >> testTimeToLive [
 	"mp 4/10/2006 15:55"
 	

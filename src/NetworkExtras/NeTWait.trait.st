@@ -6,32 +6,32 @@ Trait {
 	#category : #'NetworkExtras-UDP-Kernel'
 }
 
-{ #category : #testing }
+{ #category : #waiting }
 NeTWait >> defaultTimeoutDuration [
 	^500 milliSeconds 
 ]
 
-{ #category : #testing }
+{ #category : #waiting }
 NeTWait >> waitUntil: conditionBlock [
 	self waitUntil: conditionBlock timeout: self defaultTimeoutDuration
 ]
 
-{ #category : #testing }
+{ #category : #waiting }
 NeTWait >> waitUntil: conditionBlock onTimeout: aDuration do: aBlock [
 	self waitWhile: [ conditionBlock value not ] onTimeout: aDuration do: aBlock
 ]
 
-{ #category : #testing }
+{ #category : #waiting }
 NeTWait >> waitUntil: conditionBlock timeout: aDuration [
 	self waitUntil: conditionBlock onTimeout: aDuration do: [ self fail: 'Timeout' ]
 ]
 
-{ #category : #testing }
+{ #category : #waiting }
 NeTWait >> waitWhile: conditionBlock [
 	self waitWhile: conditionBlock timeout: self defaultTimeoutDuration
 ]
 
-{ #category : #testing }
+{ #category : #waiting }
 NeTWait >> waitWhile: conditionBlock onTimeout: aDuration do: aBlock [
 	| iterationCount iterationDuration |
 	iterationDuration := 50 milliSeconds.
@@ -43,7 +43,7 @@ NeTWait >> waitWhile: conditionBlock onTimeout: aDuration do: aBlock [
 	aBlock value
 ]
 
-{ #category : #testing }
+{ #category : #waiting }
 NeTWait >> waitWhile: conditionBlock timeout: aDuration [
 	self waitWhile: conditionBlock onTimeout: aDuration do: [self fail: 'Timeout']
 ]

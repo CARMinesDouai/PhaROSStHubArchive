@@ -87,6 +87,11 @@ NeReceiveUdpSocket >> listenOn: portNumber [
 	self setPort: portNumber.
 ]
 
+{ #category : #accessing }
+NeReceiveUdpSocket >> port [
+	^port
+]
+
 { #category : #communicating }
 NeReceiveUdpSocket >> receive [
 	^ self receiveTimeout: self defaultTimeoutSeconds
