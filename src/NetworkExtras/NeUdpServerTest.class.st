@@ -11,7 +11,7 @@ Class {
 	#category : #'NetworkExtras-UDP-Kernel'
 }
 
-{ #category : #'initialize-release' }
+{ #category : #testing }
 NeUdpServerTest >> setUp [
 	super setUp.
 	allReceivedData := OrderedCollection new.
@@ -21,14 +21,14 @@ NeUdpServerTest >> setUp [
 
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #testing }
 NeUdpServerTest >> tearDown [
 	super tearDown.
 	sender closeAndDestroy.
 	server stop
 ]
 
-{ #category : #Running }
+{ #category : #testing }
 NeUdpServerTest >> testBroadcastSendReceive [
 	| allSentData |
 	allSentData := #('Hello' 'World' 'Pharo').
@@ -41,7 +41,7 @@ NeUdpServerTest >> testBroadcastSendReceive [
 	self assert: allReceivedData asArray equals: allSentData
 ]
 
-{ #category : #Running }
+{ #category : #testing }
 NeUdpServerTest >> testUnicastSendReceive [
 	| allSentData |
 	allSentData := #('Hello' 'World' 'Pharo').

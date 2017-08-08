@@ -11,7 +11,7 @@ Class {
 	#category : #'NetworkExtras-UDP-Kernel'
 }
 
-{ #category : #'initialize-release' }
+{ #category : #testing }
 NeUdpUnicastSocketTest >> setUp [
 	super setUp.
 	port := 1234.
@@ -20,14 +20,14 @@ NeUdpUnicastSocketTest >> setUp [
 
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #testing }
 NeUdpUnicastSocketTest >> tearDown [
 	super tearDown.
 	sender closeAndDestroy.
 	receiver closeAndDestroy
 ]
 
-{ #category : #Running }
+{ #category : #testing }
 NeUdpUnicastSocketTest >> testCloseWhileReceiving [
 	| done errorSignaled |
 	done := false.
@@ -41,7 +41,26 @@ NeUdpUnicastSocketTest >> testCloseWhileReceiving [
 	self deny: errorSignaled.
 ]
 
-{ #category : #Running }
+{ #category : #testing }
+NeUdpUnicastSocketTest >> testForbideMultipleSocketsListeningOnTheSamePort [
+	| socketCreationBlocks |
+	socketCreationBlocks := {[ NeReceiveUdpSocket port: port ].
+		[ NeReceiveUdpSocket new listenOn: port; yourself ].
+		[ NeReceiveUdpSocket new setPort: port; yourself ].
+	}.
+	socketCreationBlocks do: [ : each | 
+			self should: each raise: NeAlreadyUsedSocketPort.
+	].
+	receiver closeAndDestroy.
+	socketCreationBlocks do: [ : each | 
+		|newSocket|
+		self shouldnt: [newSocket := each value] raise: NeAlreadyUsedSocketPort.
+		newSocket closeAndDestroy.
+	].
+
+]
+
+{ #category : #testing }
 NeUdpUnicastSocketTest >> testReceiveSend [
 	| sentData receivedData |
 	sentData := 'Hello World!'.
@@ -51,7 +70,7 @@ NeUdpUnicastSocketTest >> testReceiveSend [
 	self assert: receivedData asString equals: sentData.
 ]
 
-{ #category : #Running }
+{ #category : #testing }
 NeUdpUnicastSocketTest >> testReceiveTimeout [
 	| timeoutSignaled |
 	timeoutSignaled := false.
@@ -62,7 +81,7 @@ NeUdpUnicastSocketTest >> testReceiveTimeout [
 
 ]
 
-{ #category : #Running }
+{ #category : #testing }
 NeUdpUnicastSocketTest >> testUnicastSendReceive [
 	sender send: 'Hello'.
 	self assert: (receiver receiveTimeout: 1) asString equals: 'Hello'

@@ -14,16 +14,46 @@ Class {
 	#name : #NeReceiveUdpSocket,
 	#superclass : #NeUdpSocket,
 	#instVars : [
-		'receptionBuffer'
+		'receptionBuffer',
+		'port'
+	],
+	#classInstVars : [
+		'usedPorts'
 	],
 	#category : #'NetworkExtras-UDP-Kernel'
 }
+
+{ #category : #'used ports tracking' }
+NeReceiveUdpSocket class >> isUsedPort: portNumber [
+	^self usedPorts includes: portNumber
+]
 
 { #category : #'instance creation' }
 NeReceiveUdpSocket class >> port: portNumber [
 	^self newUDP
 		listenOn: portNumber;
 		yourself
+]
+
+{ #category : #'used ports tracking' }
+NeReceiveUdpSocket class >> registerUsedPort: portNumber [
+	self usedPorts add: portNumber
+]
+
+{ #category : #'used ports tracking' }
+NeReceiveUdpSocket class >> resetUsedPorts [
+	^usedPorts := Set new
+]
+
+{ #category : #'used ports tracking' }
+NeReceiveUdpSocket class >> unregisterUsedPort: portNumber [
+	self usedPorts remove: portNumber ifAbsent: [  ]
+]
+
+{ #category : #'used ports tracking' }
+NeReceiveUdpSocket class >> usedPorts [
+	usedPorts ifNil: [ self resetUsedPorts ].
+	^usedPorts
 ]
 
 { #category : #'initialize-release' }
@@ -36,10 +66,20 @@ NeReceiveUdpSocket >> defaultTimeoutSeconds [
 	^ 3600
 ]
 
+{ #category : #'used ports tracking' }
+NeReceiveUdpSocket >> destroy [
+	[ super destroy ] ensure: [ self unregisterUsedPort: port ]
+]
+
 { #category : #'initialize-release' }
 NeReceiveUdpSocket >> initialize [
 	super initialize.
 	self receptionBufferSize: self defaultBufferSize
+]
+
+{ #category : #'used ports tracking' }
+NeReceiveUdpSocket >> isUsedPort: portNumber [
+	^self class isUsedPort: portNumber
 ]
 
 { #category : #communicating }
@@ -65,4 +105,22 @@ NeReceiveUdpSocket >> receiveTimeout: seconds [
 NeReceiveUdpSocket >> receptionBufferSize: bytesCount [
 	receptionBuffer := ByteArray new: bytesCount.
 
+]
+
+{ #category : #'used ports tracking' }
+NeReceiveUdpSocket >> registerUsedPort: portNumber [
+	self class registerUsedPort: portNumber
+]
+
+{ #category : #communicating }
+NeReceiveUdpSocket >> setPort: portNumber [
+	(self isUsedPort: portNumber) ifTrue: [ NeAlreadyUsedSocketPort signal ].
+	port := portNumber.
+	self registerUsedPort: portNumber.
+	super setPort: portNumber.
+]
+
+{ #category : #'used ports tracking' }
+NeReceiveUdpSocket >> unregisterUsedPort: portNumber [
+	self class unregisterUsedPort: portNumber
 ]
