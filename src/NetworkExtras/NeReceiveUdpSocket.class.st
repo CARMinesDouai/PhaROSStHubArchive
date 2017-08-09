@@ -13,10 +13,6 @@ Instance Variables
 Class {
 	#name : #NeReceiveUdpSocket,
 	#superclass : #NeUdpSocket,
-	#instVars : [
-		'receptionBuffer',
-		'port'
-	],
 	#classInstVars : [
 		'usedPorts'
 	],
@@ -26,13 +22,6 @@ Class {
 { #category : #'used ports tracking' }
 NeReceiveUdpSocket class >> isUsedPort: portNumber [
 	^self usedPorts includes: portNumber
-]
-
-{ #category : #'instance creation' }
-NeReceiveUdpSocket class >> port: portNumber [
-	^self newUDP
-		listenOn: portNumber;
-		yourself
 ]
 
 { #category : #'used ports tracking' }
@@ -54,78 +43,4 @@ NeReceiveUdpSocket class >> unregisterUsedPort: portNumber [
 NeReceiveUdpSocket class >> usedPorts [
 	usedPorts ifNil: [ self resetUsedPorts ].
 	^usedPorts
-]
-
-{ #category : #'initialize-release' }
-NeReceiveUdpSocket >> defaultBufferSize [
-	^ 1500
-]
-
-{ #category : #communicating }
-NeReceiveUdpSocket >> defaultTimeoutSeconds [
-	^ 3600
-]
-
-{ #category : #'used ports tracking' }
-NeReceiveUdpSocket >> destroy [
-	[ super destroy ] ensure: [ self unregisterUsedPort: port ]
-]
-
-{ #category : #'initialize-release' }
-NeReceiveUdpSocket >> initialize [
-	super initialize.
-	self receptionBufferSize: self defaultBufferSize
-]
-
-{ #category : #'used ports tracking' }
-NeReceiveUdpSocket >> isUsedPort: portNumber [
-	^self class isUsedPort: portNumber
-]
-
-{ #category : #communicating }
-NeReceiveUdpSocket >> listenOn: portNumber [
-	self setPort: portNumber.
-]
-
-{ #category : #accessing }
-NeReceiveUdpSocket >> port [
-	^port
-]
-
-{ #category : #communicating }
-NeReceiveUdpSocket >> receive [
-	^ self receiveTimeout: self defaultTimeoutSeconds
-]
-
-{ #category : #communicating }
-NeReceiveUdpSocket >> receiveTimeout: seconds [
-	| bytesReadCount |
-	[self waitForConnectionFor: seconds.
-	self waitForDataFor: seconds.
-	bytesReadCount := self receiveDataInto: receptionBuffer.
-	^ receptionBuffer copyFrom: 1 to: bytesReadCount] on: PrimitiveFailed do: [ ^#() ]
-]
-
-{ #category : #'initialize-release' }
-NeReceiveUdpSocket >> receptionBufferSize: bytesCount [
-	receptionBuffer := ByteArray new: bytesCount.
-
-]
-
-{ #category : #'used ports tracking' }
-NeReceiveUdpSocket >> registerUsedPort: portNumber [
-	self class registerUsedPort: portNumber
-]
-
-{ #category : #communicating }
-NeReceiveUdpSocket >> setPort: portNumber [
-	(self isUsedPort: portNumber) ifTrue: [ NeAlreadyUsedSocketPort signal ].
-	port := portNumber.
-	self registerUsedPort: portNumber.
-	super setPort: portNumber.
-]
-
-{ #category : #'used ports tracking' }
-NeReceiveUdpSocket >> unregisterUsedPort: portNumber [
-	self class unregisterUsedPort: portNumber
 ]

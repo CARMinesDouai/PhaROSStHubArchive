@@ -15,8 +15,8 @@ Class {
 NeUdpUnicastSocketTest >> setUp [
 	super setUp.
 	port := 1234.
-	receiver := NeReceiveUdpSocket port: port.
-	sender := NeUnicastSendUdpSocket receiverIp: '127.0.0.1' port: port.
+	receiver := NeUdpSocket receptionPort: port.
+	sender := NeUnicastUdpSocket receiverIp: '127.0.0.1' port: port.
 
 ]
 
@@ -44,9 +44,9 @@ NeUdpUnicastSocketTest >> testCloseWhileReceiving [
 { #category : #testing }
 NeUdpUnicastSocketTest >> testForbideMultipleSocketsListeningOnTheSamePort [
 	| socketCreationBlocks |
-	socketCreationBlocks := {[ NeReceiveUdpSocket port: port ].
-		[ NeReceiveUdpSocket new listenOn: port; yourself ].
-		[ NeReceiveUdpSocket new setPort: port; yourself ].
+	socketCreationBlocks := {[ NeUdpSocket receptionPort: port ].
+		[ NeUdpSocket new receptionPort: port; yourself ].
+		[ NeUdpSocket new setPort: port; yourself ].
 	}.
 	socketCreationBlocks do: [ : each | 
 			self should: each raise: NeAlreadyUsedSocketPort.

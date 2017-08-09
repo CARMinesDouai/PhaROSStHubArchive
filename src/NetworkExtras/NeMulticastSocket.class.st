@@ -6,7 +6,7 @@ Instance Variables
 "
 Class {
 	#name : #NeMulticastSocket,
-	#superclass : #NeReceiveUdpSocket,
+	#superclass : #NeUdpSocket,
 	#instVars : [
 		'groupAddress',
 		'multicastPort'

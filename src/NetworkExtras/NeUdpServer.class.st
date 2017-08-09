@@ -85,7 +85,7 @@ NeUdpServer >> receiveData [
 { #category : #activity }
 NeUdpServer >> start [
 	self isStarted ifTrue: [ ^self ].
-	socket := NeReceiveUdpSocket port: self port.
+	socket := NeUdpSocket receptionPort: self port.
 	thread name: 'UDP server on port ', self port asString.
 	thread start.
 ]

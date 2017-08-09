@@ -7,7 +7,7 @@ I am an UDP socket dedicated to sending. I store the IP and the Port so I make i
 
 "
 Class {
-	#name : #NeUnicastSendUdpSocket,
+	#name : #NeUnicastUdpSocket,
 	#superclass : #NeUdpSocket,
 	#instVars : [
 		'receiverIp',
@@ -17,7 +17,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-NeUnicastSendUdpSocket class >> receiverIp: ip port: portNumber [
+NeUnicastUdpSocket class >> receiverIp: ip port: portNumber [
 	^self newUDP
 		receiverIp: ip;
 		receiverPort: portNumber;
@@ -25,27 +25,32 @@ NeUnicastSendUdpSocket class >> receiverIp: ip port: portNumber [
 ]
 
 { #category : #accessing }
-NeUnicastSendUdpSocket >> receiverIp [
+NeUnicastUdpSocket >> receiverIp [
 	^ receiverIp
 ]
 
 { #category : #accessing }
-NeUnicastSendUdpSocket >> receiverIp: anObject [
+NeUnicastUdpSocket >> receiverIp: anObject [
 	receiverIp := anObject asIpAddress
 
 ]
 
 { #category : #accessing }
-NeUnicastSendUdpSocket >> receiverPort [
+NeUnicastUdpSocket >> receiverPort [
 	^ receiverPort
 ]
 
 { #category : #accessing }
-NeUnicastSendUdpSocket >> receiverPort: anObject [
+NeUnicastUdpSocket >> receiverPort: anObject [
 	receiverPort := anObject
 ]
 
-{ #category : #communicating }
-NeUnicastSendUdpSocket >> send: anObject [
+{ #category : #sending }
+NeUnicastUdpSocket >> send: anObject [
+	self sendData: anObject asByteArray toHost: self receiverIp port: self receiverPort
+]
+
+{ #category : #sending }
+NeUnicastUdpSocket >> send: anObject receiverIp: hostAddress port: portNumber [
 	self sendData: anObject asByteArray toHost: self receiverIp port: self receiverPort
 ]
