@@ -39,7 +39,7 @@ NeUdpSocket >> defaultTimeoutSeconds [
 
 { #category : #'reception ports tracking' }
 NeUdpSocket >> destroy [
-	[ super destroy ] ensure: [ self unregisterUsedPort: self receptionPort ]
+	[ super destroy ] ensure: [ self unregisterUsedPort]
 ]
 
 { #category : #'initialize-release' }
@@ -102,8 +102,8 @@ NeUdpSocket >> setPort: portNumber [
 ]
 
 { #category : #'reception ports tracking' }
-NeUdpSocket >> unregisterUsedPort: portNumber [
-	self usedPortsTracker unregisterUsedPort: portNumber
+NeUdpSocket >> unregisterUsedPort [
+	self usedPortsTracker unregisterUsedPort: self receptionPort
 ]
 
 { #category : #'reception ports tracking' }
