@@ -2,10 +2,10 @@
 An UTMulticastSocket is a sub class of Socket. It is designed for multicast.
 
 Instance Variables
-	groupAddress:		<String | IPAddress>
+	groupAddress:		<NeIpAddress>
 "
 Class {
-	#name : #NeMulticastSocketRefactored,
+	#name : #NeMulticastSocket,
 	#superclass : #NeUdpSocket,
 	#instVars : [
 		'groupAddress',
@@ -16,47 +16,47 @@ Class {
 }
 
 { #category : #'instance creation' }
-NeMulticastSocketRefactored class >> group: groupIp port: anInteger [
+NeMulticastSocket class >> group: groupIp port: anInteger [
 	^self new
 		group: groupIp port: anInteger;
 		yourself
 ]
 
 { #category : #'initialize-destroy' }
-NeMulticastSocketRefactored >> closeAndDestroy [
+NeMulticastSocket >> close [
 	[self leaveGroup] ensure: [
-		super closeAndDestroy]
+		super close]
 ]
 
 { #category : #accessing }
-NeMulticastSocketRefactored >> defaultNetworkInterfaceIp [
+NeMulticastSocket >> defaultNetworkInterfaceIp [
 	^ #[0 0 0 0]
 ]
 
 { #category : #'initialize-destroy' }
-NeMulticastSocketRefactored >> group: anIpAddress port: aPortNumber [
+NeMulticastSocket >> group: anIpAddress port: aPortNumber [
 	self setPort: aPortNumber.
 	self groupAddress: anIpAddress.
 	self joinGroup.
 ]
 
 { #category : #accessing }
-NeMulticastSocketRefactored >> groupAddress [
+NeMulticastSocket >> groupAddress [
 	^ groupAddress
 ]
 
 { #category : #accessing }
-NeMulticastSocketRefactored >> groupAddress: aStringOrIPAddress [ 
+NeMulticastSocket >> groupAddress: aStringOrIPAddress [ 
 	groupAddress := aStringOrIPAddress asIpAddress
 ]
 
 { #category : #communicating }
-NeMulticastSocketRefactored >> groupPort [
+NeMulticastSocket >> groupPort [
 	^self receptionPort
 ]
 
 { #category : #accessing }
-NeMulticastSocketRefactored >> isLoopbackModeEnabled [
+NeMulticastSocket >> isLoopbackModeEnabled [
 	"mp 2/13/2006 10:02"
 	"Get the setting for local loopback of multicast datagrams."
 	
@@ -64,7 +64,7 @@ NeMulticastSocketRefactored >> isLoopbackModeEnabled [
 ]
 
 { #category : #accessing }
-NeMulticastSocketRefactored >> isLoopbackModeEnabled: aBoolean [
+NeMulticastSocket >> isLoopbackModeEnabled: aBoolean [
 	"mp 2/13/2006 10:02"
 	"Disable/Enable local loopback of multicast datagrams. The option is used by the platform's networking code as a hint for setting whether multicast data will be looped back to the local socket."
 	
@@ -72,23 +72,23 @@ NeMulticastSocketRefactored >> isLoopbackModeEnabled: aBoolean [
 ]
 
 { #category : #'group membership' }
-NeMulticastSocketRefactored >> joinGroup [
+NeMulticastSocket >> joinGroup [
 	self setOption: 'IP_ADD_MEMBERSHIP' value: self joinParams
 ]
 
 { #category : #'group membership' }
-NeMulticastSocketRefactored >> joinParams [
+NeMulticastSocket >> joinParams [
 	^self multicastMembershipParametersForAddress: self groupAddress.
 
 ]
 
 { #category : #'group membership' }
-NeMulticastSocketRefactored >> leaveGroup [
+NeMulticastSocket >> leaveGroup [
 		self setOption: 'IP_DROP_MEMBERSHIP' value: self joinParams
 ]
 
 { #category : #'group membership' }
-NeMulticastSocketRefactored >> multicastMembershipParametersForAddress: aMulticastAddress [ 
+NeMulticastSocket >> multicastMembershipParametersForAddress: aMulticastAddress [ 
 	"Arguments for managing multicast membership is the IP address and the network interface."
 	
 	| joinParams |
@@ -98,7 +98,7 @@ NeMulticastSocketRefactored >> multicastMembershipParametersForAddress: aMultica
 ]
 
 { #category : #accessing }
-NeMulticastSocketRefactored >> networkInterface [
+NeMulticastSocket >> networkInterface [
 	"mp 2/13/2006 10:02"
 	"Get the multicast network interface set."
 	
@@ -106,18 +106,18 @@ NeMulticastSocketRefactored >> networkInterface [
 ]
 
 { #category : #accessing }
-NeMulticastSocketRefactored >> networkInterfaceIp [
+NeMulticastSocket >> networkInterfaceIp [
 	^networkInterfaceIp ifNil: [ self defaultNetworkInterfaceIp ]
 ]
 
 { #category : #accessing }
-NeMulticastSocketRefactored >> networkInterfaceIp: anIPAddress [
+NeMulticastSocket >> networkInterfaceIp: anIPAddress [
 	networkInterfaceIp :=  anIPAddress asIpAddress.	
 	self setOption: 'IP_MULTICAST_IF' value: networkInterfaceIp.
 ]
 
 { #category : #communicating }
-NeMulticastSocketRefactored >> send: aString [
+NeMulticastSocket >> send: aString [
 	self 
 		sendData: aString
 		toHost: self groupAddress
@@ -125,7 +125,7 @@ NeMulticastSocketRefactored >> send: aString [
 ]
 
 { #category : #accessing }
-NeMulticastSocketRefactored >> timeToLive [
+NeMulticastSocket >> timeToLive [
 	"mp 2/13/2006 10:01"
 	"Get the default time-to-live for multicast packets sent out on the socket."
 	
@@ -133,7 +133,7 @@ NeMulticastSocketRefactored >> timeToLive [
 ]
 
 { #category : #accessing }
-NeMulticastSocketRefactored >> timeToLive: anInteger [
+NeMulticastSocket >> timeToLive: anInteger [
 	"mp 2/13/2006 10:02"
 	"Set the time-to-live for multicast packets sent out in order to control the scope of the multicasts."
 	

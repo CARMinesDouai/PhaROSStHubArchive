@@ -11,19 +11,9 @@ Class {
 { #category : #testing }
 NeSendReceiveLargeDataTest >> newSender [
 	| newSender |
-	newSender := NeUdpLargeDataSender onUnicastIp: self receiverIp port: self receiverPort.
+	newSender := NeUdpLargeDataSender onUnicastIp: self targetIp port: self targetPort.
 	socketWrappers add: newSender.
 	^newSender
-]
-
-{ #category : #testing }
-NeSendReceiveLargeDataTest >> receiverIp [
-	^ #[127 0 0 1]
-]
-
-{ #category : #testing }
-NeSendReceiveLargeDataTest >> receiverPort [
-	^54321
 ]
 
 { #category : #testing }
@@ -35,9 +25,19 @@ NeSendReceiveLargeDataTest >> setUp [
 
 { #category : #testing }
 NeSendReceiveLargeDataTest >> setUpReceiver [
-	receiver := NeUdpLargeDataReceiver onUnicastPort: self receiverPort.
+	receiver := NeUdpLargeDataReceiver onUnicastPort: self targetPort.
 	receiver start.
 	socketWrappers add: receiver.
+]
+
+{ #category : #testing }
+NeSendReceiveLargeDataTest >> targetIp [
+	^ #[127 0 0 1]
+]
+
+{ #category : #testing }
+NeSendReceiveLargeDataTest >> targetPort [
+	^54321
 ]
 
 { #category : #testing }

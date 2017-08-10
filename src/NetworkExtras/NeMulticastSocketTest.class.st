@@ -12,7 +12,7 @@ Class {
 NeMulticastSocketTest >> setUp [
 	super setUp.
 	multicastPort := 1234.
-	socket := NeMulticastSocketRefactored
+	socket := NeMulticastSocket
 				group: '226.0.0.12'
 				port: multicastPort
 ]
@@ -42,7 +42,7 @@ NeMulticastSocketTest >> testLoopbackMode [
 	self assert: (socket receiveTimeout: 1) asString equals: sentData.
 	
 	socket isLoopbackModeEnabled: false.
-	self assert: socket isLoopbackModeEnabled.
+	self deny: socket isLoopbackModeEnabled.
 	socket send: sentData.
 	self should: [socket receiveTimeout: 1] raise: ConnectionTimedOut
 ]
@@ -52,7 +52,7 @@ NeMulticastSocketTest >> testSendReceive [
 	| sender receiver |
 	receiver := socket.
 		receiver unregisterUsedPort. "Hack to allow having two multicast sockets on the same port!"
-		sender := NeMulticastSocketRefactored 
+		sender := NeMulticastSocket 
 				group: '226.0.0.12'
 				port: multicastPort.
 	[ sender send: 'Hello'.

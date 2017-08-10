@@ -16,7 +16,7 @@ NeUdpUnicastSocketTest >> setUp [
 	super setUp.
 	port := 1234.
 	receiver := NeUdpSocket receptionPort: port.
-	sender := NeUnicastUdpSocket receiverIp: '127.0.0.1' port: port.
+	sender := NeUnicastUdpSocket targetIp: '127.0.0.1' port: port.
 
 ]
 
