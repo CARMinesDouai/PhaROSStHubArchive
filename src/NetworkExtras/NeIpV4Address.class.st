@@ -1,22 +1,27 @@
 "
-I represents an IP address. 
+I represents an IPv4 address. 
 
 I subclass of  ByteArray for purpose of compatibility with the existing implementation of Socket
+
+Instances can be created either  from  a string or a byte array.
+Examples:
+'192.168.11.22' asIpAddress
+#[192 168 11 22] asIpAddress
 "
 Class {
-	#name : #NeIpAddress,
+	#name : #NeIpV4Address,
 	#superclass : #ByteArray,
 	#type : #bytes,
-	#category : #'NetworkExtras-UDP-Kernel'
+	#category : #'NetworkExtras-Kernel'
 }
 
 { #category : #'instance creation' }
-NeIpAddress class >> broadcast [
+NeIpV4Address class >> broadcast [
 	^ self newFrom: #[255 255 255 255]
 ]
 
 { #category : #'instance creation' }
-NeIpAddress class >> fromString: aString [
+NeIpV4Address class >> fromString: aString [
 	"return a new IP address from a string
 	IPAddress fromString: '10.1.10.115'"
 	
@@ -24,7 +29,7 @@ NeIpAddress class >> fromString: aString [
 ]
 
 { #category : #'instance creation' }
-NeIpAddress class >> local [
+NeIpV4Address class >> local [
 	"mp 10/30/2005 15:53"
 	"return a new IP address from a string
 	IPAddress local"
@@ -33,34 +38,21 @@ NeIpAddress class >> local [
 ]
 
 { #category : #'instance creation' }
-NeIpAddress class >> loopback [
+NeIpV4Address class >> loopback [
 	^ self newFrom: NetNameResolver loopBackAddress
 ]
 
-{ #category : #'instance creation' }
-NeIpAddress class >> netID1: anInteger1 netID2: anInteger2 hostID1: anInteger3 hostID2: anInteger4 [
-	"mp 10/6/2005 18:53"
-	"Return an instance with the 4 bytes of an IP address"
-	"IpAddress netID1: 1 netID2: 2 hostID1: 3 hostID2: 4"
-	
-	^ self 
-		with: anInteger1
-		with: anInteger2
-		with: anInteger3
-		with: anInteger4
-]
-
 { #category : #converting }
-NeIpAddress >> asIpAddress [
+NeIpV4Address >> asIpAddress [
 	^self
 ]
 
 { #category : #converting }
-NeIpAddress >> asString [
+NeIpV4Address >> asString [
 	^ NetNameResolver stringFromAddress: self
 ]
 
 { #category : #accessing }
-NeIpAddress >> name [
+NeIpV4Address >> name [
 	^NetNameResolver nameForAddress: self timeout: 60
 ]

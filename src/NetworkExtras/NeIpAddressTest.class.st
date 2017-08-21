@@ -3,12 +3,12 @@ Class {
 	#superclass : #TestCase,
 	#traits : 'NeTWait',
 	#classTraits : 'NeTWait classTrait',
-	#category : #'NetworkExtras-UDP-Kernel'
+	#category : #'NetworkExtras-Kernel'
 }
 
 { #category : #testing }
 NeIpAddressTest >> testAddressName [
-	self assert: NeIpAddress loopback name equals: 'localhost'.
-	self assert: NeIpAddress broadcast name equals: 'broadcasthost'.
+	self assert: NeIpV4Address loopback name equals: 'localhost'.
+	self assert: NeIpV4Address broadcast name equals: 'broadcasthost'.
 	
 ]

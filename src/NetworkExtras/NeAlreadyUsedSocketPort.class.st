@@ -4,5 +4,5 @@ I am a network error signaled when attempting to create a socket that listens on
 Class {
 	#name : #NeAlreadyUsedSocketPort,
 	#superclass : #NetworkError,
-	#category : #'NetworkExtras-UDP-Kernel'
+	#category : #'NetworkExtras-Kernel'
 }

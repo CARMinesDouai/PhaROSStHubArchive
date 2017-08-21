@@ -3,7 +3,7 @@ I provide facility methods for tests that require waiting some undefined duratio
 "
 Trait {
 	#name : #NeTWait,
-	#category : #'NetworkExtras-UDP-Kernel'
+	#category : #'NetworkExtras-Kernel'
 }
 
 { #category : #waiting }

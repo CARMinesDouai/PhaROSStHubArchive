@@ -9,7 +9,7 @@ Class {
 	#classInstVars : [
 		'usedPorts'
 	],
-	#category : #'NetworkExtras-UDP-Kernel'
+	#category : #'NetworkExtras-Kernel'
 }
 
 { #category : #'initialize-release' }

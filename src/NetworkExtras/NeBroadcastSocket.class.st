@@ -1,9 +1,17 @@
+"
+I am an UDP socket dedicated to broadcast communication.  Broadcast is meant either for the wohole network, or a sub-network depending on the used broadcastIp address. 
+
+    Instance Variables
+	broadcastIp:		<NeIpAddress> IP used as a traget of broadcasted data
+	broadcastPort:		<Integer> port targeted with broadcasted data
+
+"
 Class {
 	#name : #NeBroadcastSocket,
 	#superclass : #NeUdpSocket,
 	#instVars : [
-		'ip',
-		'port'
+		'broadcastPort',
+		'broadcastIp'
 	],
 	#category : #'NetworkExtras-UDP-Kernel'
 }
@@ -11,45 +19,41 @@ Class {
 { #category : #'instance creation' }
 NeBroadcastSocket class >> ip: ip port: portNumber [
 	^self new 
-		ip: ip port: portNumber;
+		broadcastIp: ip port: portNumber;
 		yourself
 ]
 
 { #category : #'instance creation' }
 NeBroadcastSocket class >> port: portNumber [
-	^self new 
-		port: portNumber;
-		yourself
-]
-
-{ #category : #'initialize-release' }
-NeBroadcastSocket >> defaultBroadcastIp [
-	^#[255 255 255 255]
+	^self 
+		ip: NeIpV4Address broadcast
+		port: portNumber
 ]
 
 { #category : #accessing }
-NeBroadcastSocket >> ip [
-	^ip
+NeBroadcastSocket >> broadcastIp [
+	^broadcastIp
 ]
 
 { #category : #'initialize-release' }
-NeBroadcastSocket >> ip: ipAddressOrString  port: portNumber [
-	ip := ipAddressOrString asIpAddress.
-	port := portNumber.
+NeBroadcastSocket >> broadcastIp: anIp port: portNumber [
+	anIp last = 255 ifFalse: [^NeInvalidBroadcastIp signal].
+	broadcastIp := anIp asIpAddress.
+	broadcastPort := portNumber.
 	self setOption: 'SO_BROADCAST' value: true
 ]
 
 { #category : #accessing }
-NeBroadcastSocket >> port [
-	^port
+NeBroadcastSocket >> broadcastPort [
+	^broadcastPort
 ]
 
 { #category : #'initialize-release' }
-NeBroadcastSocket >> port: portNumber [
-	self ip: self defaultBroadcastIp port: portNumber
+NeBroadcastSocket >> broadcastPort: portNumber [
+	self broadcastIp: self broadcastIp port: portNumber
 ]
 
 { #category : #communicating }
 NeBroadcastSocket >> send: anObject [
-	self sendData: anObject asByteArray toHost: ip port: port
+	self sendData: anObject asByteArray toHost: self broadcastIp port: broadcastPort
 ]

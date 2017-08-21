@@ -1,6 +1,13 @@
+"
+I am a trait that provides behavior to track ports  used for reception to avoid having 2 sockets listening on the same port.
+
+I am used for both TCP and UDP. See
+NeTcpUsedPortsTracker
+NeUdpUsedPortsTracker
+"
 Trait {
 	#name : #NeTResetTrackedUsedPortsOnStartUp,
-	#category : #'NetworkExtras-UDP-Kernel'
+	#category : #'NetworkExtras-Kernel'
 }
 
 { #category : #initialization }

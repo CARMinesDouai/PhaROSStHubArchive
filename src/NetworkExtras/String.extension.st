@@ -2,5 +2,5 @@ Extension { #name : #String }
 
 { #category : #'*NetworkExtras-converting' }
 String >> asIpAddress [
-	^NeIpAddress fromString: self
+	^NeIpV4Address fromString: self
 ]

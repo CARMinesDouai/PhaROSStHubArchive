@@ -8,5 +8,5 @@ Class {
 	#superclass : #NeUsedPortsTracker,
 	#traits : 'NeTResetTrackedUsedPortsOnStartUp',
 	#classTraits : 'NeTResetTrackedUsedPortsOnStartUp classTrait',
-	#category : #'NetworkExtras-UDP-Kernel'
+	#category : #'NetworkExtras-Kernel'
 }

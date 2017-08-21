@@ -1,5 +1,5 @@
 "
-I am an UDP socket dedicated to sending. I store the target IP and the Port so I make it easy to send different datagrams to the same target. 
+I am an UDP socket dedicated to unicast communication. I store the target IP and the Port of  the target, to make it easy to send different datagrams to the same target. 
 
  Instance Variables
 	targetIp:		<NeIpAddress> Ip of the socket to which I send data

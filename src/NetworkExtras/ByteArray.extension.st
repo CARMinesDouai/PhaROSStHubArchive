@@ -2,6 +2,6 @@ Extension { #name : #ByteArray }
 
 { #category : #'*NetworkExtras-converting' }
 ByteArray >> asIpAddress [
-	NeIpAddress adoptInstance: self.
+	NeIpV4Address adoptInstance: self.
 	^self
 ]

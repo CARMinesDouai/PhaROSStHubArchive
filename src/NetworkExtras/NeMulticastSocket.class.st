@@ -1,15 +1,26 @@
 "
-An UTMulticastSocket is a sub class of Socket. It is designed for multicast.
+I am an UDP socket dedicated to multicast communication.  I can join and leave a group.
 
-Instance Variables
+When enabling loopback mode, I receive a copy of datagrams I send.
+
+By default, multicast datagrams are sent with a default TTL (Time To Leave) value of 1, to prevent them to be forwarded beyond the local network. Setting TTL to other values enable receivers to forward data to other networks they are connected to. The TTL is decremented upon each forward, when reaching 0, data is not forwarded anymore.
+
+
+I use the same port for sending and receiving data.
+
+
+    Instance Variables
 	groupAddress:		<NeIpAddress>
+	networkInterfaceIp:		<Object>
+
+
+    Implementation Points
 "
 Class {
 	#name : #NeMulticastSocket,
 	#superclass : #NeUdpSocket,
 	#instVars : [
 		'groupAddress',
-		'multicastPort',
 		'networkInterfaceIp'
 	],
 	#category : #'NetworkExtras-UDP-Kernel'
