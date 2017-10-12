@@ -131,11 +131,12 @@ ConfigurationOfReusableBricks >> baseline02: spec [
 		spec blessing: #'baseline'.
 		spec repository: 'http://smalltalkhub.com/mc/CAR/ReusableBricks/main/'.
 		spec 
-			package: 'Equals';
-			package: 'Concurrency';
 			package: 'BooleanExpressions';
-			package: #StateMachine;
-			package: 'MulticastSocket'. ].
+			package: 'Concurrency';
+			package: 'Equals';
+			package: 'NetworkExtras' with: [
+				spec requires: #('Concurrency' ). ];
+			package: #StateMachine. ].
 
 ]
 
