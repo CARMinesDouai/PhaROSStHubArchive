@@ -53,7 +53,12 @@ NeBroadcastSocket >> broadcastPort: portNumber [
 	self broadcastIp: self broadcastIp port: portNumber
 ]
 
-{ #category : #communicating }
-NeBroadcastSocket >> send: anObject [
-	self sendData: anObject asByteArray toHost: self broadcastIp port: broadcastPort
+{ #category : #sending }
+NeBroadcastSocket >> targetIp [
+	^self broadcastIp
+]
+
+{ #category : #sending }
+NeBroadcastSocket >> targetPort [
+	^self broadcastPort
 ]

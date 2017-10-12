@@ -11,7 +11,7 @@ Class {
 
 { #category : #'instance creation' }
 NeUdpLargeDataReceiver class >> onUnicastPort: portNumber [
-	^ self onSocket: (NeUnicastUdpSocket port: portNumber)
+	^ self onSocket: (NeUnicastUdpSocket receptionPort: portNumber)
 ]
 
 { #category : #receiving }

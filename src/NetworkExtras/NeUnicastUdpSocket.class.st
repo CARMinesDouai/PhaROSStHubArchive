@@ -25,18 +25,13 @@ NeUnicastUdpSocket class >> targetIp: ip port: portNumber [
 ]
 
 { #category : #sending }
-NeUnicastUdpSocket >> send: anObject [
-	^self sendData: anObject asByteArray toHost: self targetIp port: self targetPort
-]
-
-{ #category : #sending }
 NeUnicastUdpSocket >> send: anObject targetIp: ipAddress port: portNumber [
 	self targetIp: ipAddress.
 	self targetPort: portNumber.
 	^self send: anObject
 ]
 
-{ #category : #accessing }
+{ #category : #sending }
 NeUnicastUdpSocket >> targetIp [
 	^ targetIp
 ]
@@ -47,7 +42,7 @@ NeUnicastUdpSocket >> targetIp: anObject [
 
 ]
 
-{ #category : #accessing }
+{ #category : #sending }
 NeUnicastUdpSocket >> targetPort [
 	^ targetPort
 ]

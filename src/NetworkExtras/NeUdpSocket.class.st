@@ -93,12 +93,27 @@ NeUdpSocket >> registerUsedPort: portNumber [
 	self usedPortsTracker registerUsedPort: portNumber
 ]
 
+{ #category : #sending }
+NeUdpSocket >> send: anObject [
+	self sendData: anObject asByteArray toHost: self targetIp port: self targetPort
+]
+
 { #category : #'reception ports tracking' }
 NeUdpSocket >> setPort: portNumber [
 	(self isUsedPort: portNumber) ifTrue: [ NeAlreadyUsedSocketPort signal ].
 	receptionPort := portNumber.
 	self registerUsedPort: portNumber.
 	super setPort: portNumber.
+]
+
+{ #category : #sending }
+NeUdpSocket >> targetIp [
+	self subclassResponsibility
+]
+
+{ #category : #sending }
+NeUdpSocket >> targetPort [
+	self subclassResponsibility
 ]
 
 { #category : #'reception ports tracking' }

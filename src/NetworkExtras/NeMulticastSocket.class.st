@@ -128,11 +128,14 @@ NeMulticastSocket >> networkInterfaceIp: anIPAddress [
 ]
 
 { #category : #communicating }
-NeMulticastSocket >> send: aString [
-	self 
-		sendData: aString
-		toHost: self groupAddress
-		port: self groupPort.
+NeMulticastSocket >> targetIp [
+	^self groupAddress
+
+]
+
+{ #category : #communicating }
+NeMulticastSocket >> targetPort [
+	^self groupPort.
 ]
 
 { #category : #accessing }

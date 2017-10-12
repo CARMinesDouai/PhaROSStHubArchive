@@ -3,24 +3,35 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'socket',
-		'multicastPort'
+		'multicastPort',
+		'allSockets'
 	],
 	#category : #'NetworkExtras-UDP-Kernel'
 }
 
 { #category : #testing }
+NeMulticastSocketTest >> newSocketGroup: groupIp port: port [
+	| newSocket |
+	newSocket := NeMulticastSocket
+				group: groupIp
+				port: port.
+	allSockets add: newSocket.
+	^newSocket
+]
+
+{ #category : #testing }
 NeMulticastSocketTest >> setUp [
 	super setUp.
-	multicastPort := 1234.
-	socket := NeMulticastSocket
-				group: '226.0.0.12'
+	multicastPort := NeUdpUsedPortsTracker freePortAtRandom.
+	allSockets := Set new.
+	socket := self newSocketGroup: '226.0.0.12'
 				port: multicastPort
 ]
 
 { #category : #testing }
 NeMulticastSocketTest >> tearDown [
 	super tearDown.	
-	socket closeAndDestroy.
+	allSockets do: #closeAndDestroy.
 
 ]
 
@@ -39,26 +50,49 @@ NeMulticastSocketTest >> testLoopbackMode [
 	self assert: socket isLoopbackModeEnabled.
 	sentData := 'hello'.
 	socket send: sentData.
-	self assert: (socket receiveTimeout: 1) asString equals: sentData.
+	self assert: (socket receiveTimeout: 0.1) asString equals: sentData.
 	
 	socket isLoopbackModeEnabled: false.
 	self deny: socket isLoopbackModeEnabled.
 	socket send: sentData.
-	self should: [socket receiveTimeout: 1] raise: ConnectionTimedOut
+	self should: [socket receiveTimeout: 0.1] raise: ConnectionTimedOut
 ]
 
 { #category : #testing }
 NeMulticastSocketTest >> testSendReceive [
 	| sender receiver |
 	receiver := socket.
-		receiver unregisterUsedPort. "Hack to allow having two multicast sockets on the same port!"
-		sender := NeMulticastSocket 
+	receiver unregisterUsedPort. "Hack to allow having two multicast sockets on the same port!"
+	sender := self newSocketGroup: '226.0.0.12'
+				port: multicastPort.
+	sender send: 'Hello'.
+	self assert: (receiver receiveTimeout: 0.1) asString equals: 'Hello'
+
+]
+
+{ #category : #testing }
+NeMulticastSocketTest >> testSendReceiveOnDifferentGroups [
+	| sender1 receiver1 sender2 receiver2 multicastPort2 |
+	receiver1 := socket.
+	receiver1 unregisterUsedPort. "Hack to allow having two multicast sockets on the same port!"
+	sender1 := NeMulticastSocket 
 				group: '226.0.0.12'
 				port: multicastPort.
-	[ sender send: 'Hello'.
-		self assert: (receiver receiveTimeout: 1) asString equals: 'Hello'
-	] ensure: [
-		sender closeAndDestroy]
+	multicastPort2 := NeUdpUsedPortsTracker freePortAtRandom.
+	receiver2 := NeMulticastSocket 
+				group: '226.0.0.42'
+				port: multicastPort2.
+	receiver2 unregisterUsedPort. "Hack to allow having two multicast sockets on the same port!"
+	sender2 := NeMulticastSocket 
+				group: '226.0.0.42'
+				port: multicastPort2.
+	sender1 send: 'Hello'.
+	self assert: (receiver1 receiveTimeout: 0.1) asString equals: 'Hello'.
+	self should: [ receiver2 receiveTimeout: 0.1 ] raise: ConnectionTimedOut.
+	sender2 send: 'Goodbye'.
+	self assert: (receiver2 receiveTimeout: 0.1) asString equals: 'Goodbye'.
+	self should: [ receiver1 receiveTimeout: 0.1 ] raise: ConnectionTimedOut.
+
 ]
 
 { #category : #testing }

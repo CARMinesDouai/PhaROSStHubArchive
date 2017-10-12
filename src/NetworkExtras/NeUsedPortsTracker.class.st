@@ -12,6 +12,14 @@ Class {
 	#category : #'NetworkExtras-Kernel'
 }
 
+{ #category : #accessing }
+NeUsedPortsTracker class >> freePortAtRandom [
+	| allFreePorts |
+	self usedPorts size = self totalAvailablePorts ifTrue: [^NeAllPortsUsedError signal].
+	allFreePorts := (self minPortNumber to: self maxPortNumber) copyWithoutAll: self usedPorts. 
+	^allFreePorts atRandom
+]
+
 { #category : #'initialize-release' }
 NeUsedPortsTracker class >> initUsedPorts [
 	usedPorts := Set new
@@ -22,6 +30,16 @@ NeUsedPortsTracker class >> isUsedPort: portNumber [
 	^self usedPorts includes: portNumber
 ]
 
+{ #category : #accessing }
+NeUsedPortsTracker class >> maxPortNumber [
+	^65535
+]
+
+{ #category : #accessing }
+NeUsedPortsTracker class >> minPortNumber [
+	^1024
+]
+
 { #category : #tracking }
 NeUsedPortsTracker class >> registerUsedPort: portNumber [
 	self usedPorts add: portNumber
@@ -30,6 +48,11 @@ NeUsedPortsTracker class >> registerUsedPort: portNumber [
 { #category : #'initialize-release' }
 NeUsedPortsTracker class >> resetUsedPorts [
 	usedPorts := nil
+]
+
+{ #category : #accessing }
+NeUsedPortsTracker class >> totalAvailablePorts [
+	^self maxPortNumber - self minPortNumber + 1
 ]
 
 { #category : #tracking }
