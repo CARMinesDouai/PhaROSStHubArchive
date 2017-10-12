@@ -61,7 +61,7 @@ NeMulticastSocket >> groupAddress: aStringOrIPAddress [
 	groupAddress := aStringOrIPAddress asIpAddress
 ]
 
-{ #category : #communicating }
+{ #category : #accessing }
 NeMulticastSocket >> groupPort [
 	^self receptionPort
 ]
@@ -127,32 +127,18 @@ NeMulticastSocket >> networkInterfaceIp: anIPAddress [
 	self setOption: 'IP_MULTICAST_IF' value: networkInterfaceIp.
 ]
 
-{ #category : #communicating }
+{ #category : #sending }
 NeMulticastSocket >> targetIp [
 	^self groupAddress
 
 ]
 
-{ #category : #communicating }
+{ #category : #sending }
 NeMulticastSocket >> targetPort [
 	^self groupPort.
 ]
 
-{ #category : #accessing }
-NeMulticastSocket >> timeToLive [
-	"mp 2/13/2006 10:01"
-	"Get the default time-to-live for multicast packets sent out on the socket."
-	
-	^ self getOption: 'IP_MULTICAST_TTL'
-]
-
-{ #category : #accessing }
-NeMulticastSocket >> timeToLive: anInteger [
-	"mp 2/13/2006 10:02"
-	"Set the time-to-live for multicast packets sent out in order to control the scope of the multicasts."
-	
-	(anInteger between: 0 and: 255) 
-		ifFalse: [self error: 'Time-To-Live out of range'].
-	^self setOption: 'IP_MULTICAST_TTL' value: anInteger
-
+{ #category : #sending }
+NeMulticastSocket >> timeToLiveOptionId [
+		^'IP_MULTICAST_TTL'
 ]

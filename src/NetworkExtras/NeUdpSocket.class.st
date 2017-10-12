@@ -116,6 +116,36 @@ NeUdpSocket >> targetPort [
 	self subclassResponsibility
 ]
 
+{ #category : #sending }
+NeUdpSocket >> timeToLive [
+	"Time To Live (TTL) is also known as the HOP limit. 
+	See the write accessor comment for a longuer explaination"	
+	^ self getOption: self timeToLiveOptionId
+]
+
+{ #category : #sending }
+NeUdpSocket >> timeToLive: anInteger [
+	"Time To Live (TTL) is also known as the HOP limit.
+Each router that receives the packet subtracts at least 1 from the count; if the count remains greater than 0, the router forwards the packet, otherwise it discards it and sends an Internet Control Message Protocol (ICMP) message back to the originating host, which may trigger a resend. 
+By convention:
+0 is restricted to the same host
+1 is restricted to the same subnet
+32 is restricted to the same site
+64 is restricted to the same region
+128 is restricted to the same continent
+255 is unrestricted
+"
+	(anInteger between: 0 and: 255) 
+		ifFalse: [self error: 'Time-To-Live out of range'].
+	^self setOption: self timeToLiveOptionId value: anInteger
+
+]
+
+{ #category : #sending }
+NeUdpSocket >> timeToLiveOptionId [
+	^'IP_TTL'
+]
+
 { #category : #'reception ports tracking' }
 NeUdpSocket >> unregisterUsedPort [
 	self usedPortsTracker unregisterUsedPort: self receptionPort
