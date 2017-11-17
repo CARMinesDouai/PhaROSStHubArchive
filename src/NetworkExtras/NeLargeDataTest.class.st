@@ -6,19 +6,24 @@ Class {
 	#category : #'NetworkExtras-UDP-SendReceiveLargeData'
 }
 
+{ #category : #'data source' }
+NeLargeDataTest >> dataSource [
+	^ SmalltalkImage current sourcesFile asFileReference 
+]
+
 { #category : #testing }
 NeLargeDataTest >> get100KBytesOfSourceFile [
-	^ SmalltalkImage current sourcesFile readStream next: 100000
+	^ self dataSource readStream next: 100000
 ]
 
 { #category : #testing }
 NeLargeDataTest >> get10KBytesOfSourceFile [
-	^SmalltalkImage current sourcesFile readStream next: 10000
+	^ self dataSource readStream next: 10000
 ]
 
 { #category : #testing }
 NeLargeDataTest >> get50KBytesOfSourceFile [
-	^ SmalltalkImage current sourcesFile readStream next: 50000
+	^ self dataSource readStream next: 50000
 ]
 
 { #category : #testing }
