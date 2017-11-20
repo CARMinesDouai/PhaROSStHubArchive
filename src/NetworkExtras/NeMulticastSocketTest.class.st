@@ -35,13 +35,26 @@ NeMulticastSocketTest >> tearDown [
 
 ]
 
+{ #category : #testing }
+NeMulticastSocketTest >> testGroupAddress [
+	
+	#('224.0.0.1' '225.1.2.3' '230.220.210.200' '239.255.255.255') do: [ : groupIpString |
+		self 
+			shouldnt: [self newSocketGroup: groupIpString port: NeUdpUsedPortsTracker freePortAtRandom] 
+			raise: Error].
+	
+	#('223.1.2.3' '240.0.0.1') do:  [ : groupIpString |
+		self
+			should: [self newSocketGroup: groupIpString port: NeUdpUsedPortsTracker freePortAtRandom] 
+			raise: NeInvalidMulticastGroupIpError].
+]
+
 { #category : #Running }
 NeMulticastSocketTest >> testInterface [
-	"mp 4/10/2006 15:55"
-	
-	self assert: socket networkInterface equals: #(0 0).
-	socket networkInterfaceIp: '0.0.0.0'.
-	self assert: socket networkInterface equals: #(0 0)
+	<expectedFailure>
+	self assert: socket networkInterface equals: #(0 0). "API to be improved"
+	socket networkInterfaceIp: '10.89.2.24'.
+	self fail: #todo
 ]
 
 { #category : #testing }
@@ -60,6 +73,9 @@ NeMulticastSocketTest >> testLoopbackMode [
 
 { #category : #testing }
 NeMulticastSocketTest >> testSendReceive [
+	"Order is important! Since we are on the same machine and use the default interface, 
+	receiver socket should be created first to ensure it will be fed packets by the OS. 
+	Remeber that sockets are bidirectional."
 	| sender receiver |
 	receiver := socket.
 	receiver unregisterUsedPort. "Hack to allow having two multicast sockets on the same port!"
@@ -97,14 +113,12 @@ NeMulticastSocketTest >> testSendReceiveOnDifferentGroups [
 
 { #category : #testing }
 NeMulticastSocketTest >> testTimeToLive [
-	"mp 4/10/2006 15:55"
-	
-	| setTTLResult expectedResult getTTLResult |
-	self assert: socket timeToLive equals: #(0 1).
-	(2 to: 255) do: [:timeToLive|
-		expectedResult := {0. timeToLive}.
+	| setTTLResult getTTLResult |
+	self assert: socket timeToLive equals: 1.
+	(2 to: 255), { 1. 0 } do: [: timeToLive|
 		setTTLResult := socket timeToLive: timeToLive.
 		getTTLResult := socket timeToLive.
-		self assert: setTTLResult equals: expectedResult.
-		self assert: getTTLResult equals: expectedResult]
+		self assert: setTTLResult equals: timeToLive.
+		self assert: getTTLResult equals: timeToLive].
+	self should: [ socket timeToLive: 256 ] raise: Error.
 ]

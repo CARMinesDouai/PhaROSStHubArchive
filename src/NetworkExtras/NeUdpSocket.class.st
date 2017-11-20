@@ -120,7 +120,7 @@ NeUdpSocket >> targetPort [
 NeUdpSocket >> timeToLive [
 	"Time To Live (TTL) is also known as the HOP limit. 
 	See the write accessor comment for a longuer explaination"	
-	^ self getOption: self timeToLiveOptionId
+	^ (self getOption: self timeToLiveOptionId) last
 ]
 
 { #category : #sending }
@@ -135,9 +135,11 @@ By convention:
 128 is restricted to the same continent
 255 is unrestricted
 "
+	| resultArray |
 	(anInteger between: 0 and: 255) 
 		ifFalse: [self error: 'Time-To-Live out of range'].
-	^self setOption: self timeToLiveOptionId value: anInteger
+	resultArray := self setOption: self timeToLiveOptionId value: anInteger.
+	^resultArray last
 
 ]
 

@@ -3,8 +3,7 @@ I am a UDP server. I handle incoming UDP data repeatedly in a dedicated thread.
 
     Instance Variables
 	actionBlock:		<BlockClosure> block to handle incoming data
-	port:		<Integer> port on which I receive UDP data
-	socket:		<NeReceiverUdpSocket> socket listening on the UDP port
+	socket:		<NeUdpSocket> socket listening on the UDP port
 	thread:		<ActiveObject>  handles the repeated action. 
 			
 Since we realy on ActiveObjects, the thread is garbage collected if it's not referenced any more.		
@@ -18,23 +17,28 @@ Class {
 	#instVars : [
 		'thread',
 		'socket',
-		'actionBlock',
-		'port'
+		'actionBlock'
 	],
 	#category : #'NetworkExtras-UDP-Kernel'
 }
 
 { #category : #'instance creation' }
-NeUdpServer class >> port: portNumber [
-	^ self new
-		port: portNumber;
+NeUdpServer class >> receptionPort: portNumber [
+	^self socket: (NeUnicastUdpSocket receptionPort: portNumber)
+
+]
+
+{ #category : #'instance creation' }
+NeUdpServer class >> socket: udpSocket [
+	^self new
+		socket: udpSocket;
 		yourself
 ]
 
 { #category : #'initialize-release' }
 NeUdpServer >> initialize [
 	super initialize.
-	thread := ActiveObject repeat: [ self receiveData ] ensure: [socket closeAndDestroy].
+	thread := ActiveObject repeat: [ self receiveData ] ensure: [self socket closeAndDestroy].
 	actionBlock := [ :data | data asString logCr ]
 ]
 
@@ -55,13 +59,7 @@ NeUdpServer >> onReceptionDo: aBlock [
 
 { #category : #accessing }
 NeUdpServer >> port [
-	^port
-]
-
-{ #category : #accessing }
-NeUdpServer >> port: portNumber [
-	port := portNumber.
-
+	^self socket receptionPort
 ]
 
 { #category : #accessing }
@@ -77,16 +75,25 @@ NeUdpServer >> priority: aPriority [
 { #category : #activity }
 NeUdpServer >> receiveData [
 	| receivedData |
-	receivedData := socket receive.
+	receivedData := self socket receive.
 	receivedData ifEmpty: [ ^ self ].
 	actionBlock cull: receivedData
+]
+
+{ #category : #accessing }
+NeUdpServer >> socket [
+	^ socket
+]
+
+{ #category : #accessing }
+NeUdpServer >> socket: anObject [
+	socket := anObject
 ]
 
 { #category : #activity }
 NeUdpServer >> start [
 	self isStarted ifTrue: [ ^self ].
-	socket := NeUdpSocket receptionPort: self port.
-	thread name: 'UDP server on port ', self port asString.
+	thread name: 'UDP server on socket ', self socket asString.
 	thread start.
 ]
 

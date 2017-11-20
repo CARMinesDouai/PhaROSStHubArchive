@@ -16,6 +16,12 @@ Class {
 }
 
 { #category : #'instance creation' }
+NeIpV4Address class >> allNetworkInterfaces [
+	"INADDR_ANY = all available network interfaces on the current device"
+	^ self newFrom:  #[0 0 0 0]
+]
+
+{ #category : #'instance creation' }
 NeIpV4Address class >> broadcast [
 	^ self newFrom: #[255 255 255 255]
 ]
@@ -42,9 +48,29 @@ NeIpV4Address class >> loopback [
 	^ self newFrom: NetNameResolver loopBackAddress
 ]
 
+{ #category : #comparing }
+NeIpV4Address >> < anIpAddress [
+	^self asNumber < anIpAddress asNumber
+]
+
+{ #category : #comparing }
+NeIpV4Address >> > anIpAddress [
+	^self asNumber > anIpAddress asNumber
+]
+
 { #category : #converting }
 NeIpV4Address >> asIpAddress [
 	^self
+]
+
+{ #category : #converting }
+NeIpV4Address >> asNumber [
+	| result coeficient |
+	result := 0.
+	self with: (self size to: 1 by: -1) do: [ : value : index |
+		coeficient := 10 ** (index * 3).
+		result := result + (value * coeficient) ].
+	^result
 ]
 
 { #category : #converting }

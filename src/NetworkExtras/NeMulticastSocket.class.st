@@ -5,13 +5,13 @@ When enabling loopback mode, I receive a copy of datagrams I send.
 
 By default, multicast datagrams are sent with a default TTL (Time To Leave) value of 1, to prevent them to be forwarded beyond the local network. Setting TTL to other values enable receivers to forward data to other networks they are connected to. The TTL is decremented upon each forward, when reaching 0, data is not forwarded anymore.
 
-
 I use the same port for sending and receiving data.
 
+More on Multicast sockets at: http://www.tldp.org/HOWTO/Multicast-HOWTO.html
 
     Instance Variables
 	groupAddress:		<NeIpAddress>
-	networkInterfaceIp:		<Object>
+	networkInterfaceIp:		<NeIpAddress>
 
 
     Implementation Points
@@ -41,11 +41,12 @@ NeMulticastSocket >> close [
 
 { #category : #accessing }
 NeMulticastSocket >> defaultNetworkInterfaceIp [
-	^ #[0 0 0 0]
+	^NeIpV4Address allNetworkInterfaces
 ]
 
 { #category : #'initialize-destroy' }
 NeMulticastSocket >> group: anIpAddress port: aPortNumber [
+	"The group IP address must be within the range: 224.0.0.0 - 239.255.255.255"
 	self setPort: aPortNumber.
 	self groupAddress: anIpAddress.
 	self joinGroup.
@@ -58,7 +59,10 @@ NeMulticastSocket >> groupAddress [
 
 { #category : #accessing }
 NeMulticastSocket >> groupAddress: aStringOrIPAddress [ 
-	groupAddress := aStringOrIPAddress asIpAddress
+	groupAddress := aStringOrIPAddress asIpAddress.
+	(groupAddress < self minGroupAddress 
+		or: [groupAddress > self maxGroupAddress]) 
+			ifTrue: [ NeInvalidMulticastGroupIpError signal].
 ]
 
 { #category : #accessing }
@@ -67,17 +71,13 @@ NeMulticastSocket >> groupPort [
 ]
 
 { #category : #accessing }
-NeMulticastSocket >> isLoopbackModeEnabled [
-	"mp 2/13/2006 10:02"
-	"Get the setting for local loopback of multicast datagrams."
-	
-	^ (self getOption: 'IP_MULTICAST_LOOP') ~= #(0 0)
+NeMulticastSocket >> isLoopbackModeEnabled [	
+	^ (self getOption: 'IP_MULTICAST_LOOP') last = 1
 ]
 
 { #category : #accessing }
 NeMulticastSocket >> isLoopbackModeEnabled: aBoolean [
-	"mp 2/13/2006 10:02"
-	"Disable/Enable local loopback of multicast datagrams. The option is used by the platform's networking code as a hint for setting whether multicast data will be looped back to the local socket."
+	"When enabling loopback mode, I receive a copy of datagrams I send."
 	
 	self setOption: 'IP_MULTICAST_LOOP' value: aBoolean
 ]
@@ -89,8 +89,10 @@ NeMulticastSocket >> joinGroup [
 
 { #category : #'group membership' }
 NeMulticastSocket >> joinParams [
-	^self multicastMembershipParametersForAddress: self groupAddress.
-
+	| joinParams |
+	joinParams := self groupAddress asOrderedCollection.
+	joinParams addAll: self networkInterfaceIp.
+	^ joinParams asByteArray
 ]
 
 { #category : #'group membership' }
@@ -98,21 +100,18 @@ NeMulticastSocket >> leaveGroup [
 		self setOption: 'IP_DROP_MEMBERSHIP' value: self joinParams
 ]
 
-{ #category : #'group membership' }
-NeMulticastSocket >> multicastMembershipParametersForAddress: aMulticastAddress [ 
-	"Arguments for managing multicast membership is the IP address and the network interface."
-	
-	| joinParams |
-	joinParams := aMulticastAddress asOrderedCollection.
-	joinParams addAll: self networkInterfaceIp.
-	^joinParams asByteArray
+{ #category : #accessing }
+NeMulticastSocket >> maxGroupAddress [
+	^#[239 255 255 255] asIpAddress
+]
+
+{ #category : #accessing }
+NeMulticastSocket >> minGroupAddress [
+	^#[224 0 0 0] asIpAddress
 ]
 
 { #category : #accessing }
 NeMulticastSocket >> networkInterface [
-	"mp 2/13/2006 10:02"
-	"Get the multicast network interface set."
-	
 	^ self getOption: 'IP_MULTICAST_IF'
 ]
 
@@ -122,8 +121,8 @@ NeMulticastSocket >> networkInterfaceIp [
 ]
 
 { #category : #accessing }
-NeMulticastSocket >> networkInterfaceIp: anIPAddress [
-	networkInterfaceIp :=  anIPAddress asIpAddress.	
+NeMulticastSocket >> networkInterfaceIp: newAddress [
+	networkInterfaceIp :=  newAddress asIpAddress.	
 	self setOption: 'IP_MULTICAST_IF' value: networkInterfaceIp.
 ]
 

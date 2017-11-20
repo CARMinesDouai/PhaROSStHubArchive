@@ -15,7 +15,7 @@ Class {
 NeUdpServerTest >> setUp [
 	super setUp.
 	allReceivedData := OrderedCollection new.
-	server := NeUdpServer port: 1234.
+	server := NeUdpServer receptionPort: NeUdpUsedPortsTracker freePortAtRandom.
 	server onReceptionDo: [ :data | allReceivedData add: data asString ].
 	server priority: Processor userInterruptPriority.
 
@@ -34,6 +34,27 @@ NeUdpServerTest >> testBroadcastSendReceive [
 	allSentData := #('Hello' 'World' 'Pharo').
 	server start.
 	sender := NeBroadcastSocket port: server port.
+	allSentData withIndexDo: [ :each :index | 
+		sender send: each.
+		self waitUntil: [ allReceivedData size = index ].
+	].
+	self assert: allReceivedData asArray equals: allSentData
+]
+
+{ #category : #testing }
+NeUdpServerTest >> testMulticastSendReceive [
+	| allSentData multicastGroup multicastPort |
+	multicastGroup := '236.1.2.13'.
+	multicastPort := NeUsedPortsTracker freePortAtRandom.
+	server socket closeAndDestroy. "Cleanly remove it and ensure port is free"
+	server socket: (NeMulticastSocket group: multicastGroup port: multicastPort).
+	server socket unregisterUsedPort. "Hack to allow having two multicast sockets on the same port!"
+	"Order is important! Since we are on the same machine and use the default interface, 
+	receiver socket should be created first to ensure it will be fed packets by the OS. 
+	Remeber that sockets are bidirectional."
+	sender := NeMulticastSocket group: multicastGroup port: multicastPort.
+	server start.
+	allSentData := #('Hello' 'World' 'Pharo').
 	allSentData withIndexDo: [ :each :index | 
 		sender send: each.
 		self waitUntil: [ allReceivedData size = index ].
