@@ -48,6 +48,7 @@ NeUnicastUdpSocket >> targetPort [
 ]
 
 { #category : #accessing }
-NeUnicastUdpSocket >> targetPort: anObject [
-	targetPort := anObject
+NeUnicastUdpSocket >> targetPort: anInteger [
+	self ensureValidPort: anInteger.
+	targetPort := anInteger
 ]

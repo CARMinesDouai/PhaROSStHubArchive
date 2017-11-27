@@ -27,7 +27,7 @@ NeUdpSocket class >> receptionPort: portNumber [
 		yourself
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 NeUdpSocket >> defaultBufferSize [
 	^ 1500
 ]
@@ -42,7 +42,13 @@ NeUdpSocket >> destroy [
 	[ super destroy ] ensure: [ self unregisterUsedPort]
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #testing }
+NeUdpSocket >> ensureValidPort: portNumber [
+	(self isValidPort: portNumber) ifTrue: [ ^self ].
+	NeInvalidSocketPortError signal
+]
+
+{ #category : #initialization }
 NeUdpSocket >> initReceptionBuffer [
 	self receptionBufferSize: self defaultBufferSize
 ]
@@ -50,6 +56,13 @@ NeUdpSocket >> initReceptionBuffer [
 { #category : #'reception ports tracking' }
 NeUdpSocket >> isUsedPort: portNumber [
 	^self usedPortsTracker isUsedPort: portNumber
+]
+
+{ #category : #testing }
+NeUdpSocket >> isValidPort: portNumber [
+	portNumber < 0 ifTrue: [ ^false ].
+	portNumber > 65535 ifTrue: [ ^false ].
+	^true
 ]
 
 { #category : #receiving }
@@ -72,7 +85,7 @@ NeUdpSocket >> receptionBuffer [
 	^receptionBuffer
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 NeUdpSocket >> receptionBufferSize: bytesCount [
 	receptionBuffer := ByteArray new: bytesCount.
 
@@ -98,9 +111,11 @@ NeUdpSocket >> send: anObject [
 	self sendData: anObject asByteArray toHost: self targetIp port: self targetPort
 ]
 
-{ #category : #'reception ports tracking' }
+{ #category : #initialization }
 NeUdpSocket >> setPort: portNumber [
-	(self isUsedPort: portNumber) ifTrue: [ NeAlreadyUsedSocketPort signal ].
+	self ensureValidPort: portNumber.
+	(self isUsedPort: portNumber) ifTrue: [ 
+		NeAlreadyUsedSocketPort signal ].
 	receptionPort := portNumber.
 	self registerUsedPort: portNumber.
 	super setPort: portNumber.

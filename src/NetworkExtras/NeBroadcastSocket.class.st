@@ -38,6 +38,7 @@ NeBroadcastSocket >> broadcastIp [
 { #category : #'initialize-release' }
 NeBroadcastSocket >> broadcastIp: anIp port: portNumber [
 	anIp last = 255 ifFalse: [^NeInvalidBroadcastIp signal].
+	self ensureValidPort: portNumber.
 	broadcastIp := anIp asIpAddress.
 	broadcastPort := portNumber.
 	self setOption: 'SO_BROADCAST' value: true

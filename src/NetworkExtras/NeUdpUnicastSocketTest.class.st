@@ -1,6 +1,6 @@
 Class {
 	#name : #NeUdpUnicastSocketTest,
-	#superclass : #TestCase,
+	#superclass : #NeUdpSocketTest,
 	#traits : 'NeTWait',
 	#classTraits : 'NeTWait classTrait',
 	#instVars : [
@@ -14,9 +14,9 @@ Class {
 { #category : #testing }
 NeUdpUnicastSocketTest >> setUp [
 	super setUp.
-	port := 1234.
-	receiver := NeUdpSocket receptionPort: port.
-	sender := NeUnicastUdpSocket targetIp: '127.0.0.1' port: port.
+	port := NeUdpUsedPortsTracker freePortAtRandom.
+	receiver := self newUnicastUdpSocketReceivingOnPort: port.
+	sender := self newUnicastUdpSocketEmittingToIp: '127.0.0.1' port: port.
 
 ]
 
@@ -44,12 +44,12 @@ NeUdpUnicastSocketTest >> testCloseWhileReceiving [
 { #category : #testing }
 NeUdpUnicastSocketTest >> testForbideMultipleSocketsListeningOnTheSamePort [
 	| socketCreationBlocks |
-	socketCreationBlocks := {[ NeUdpSocket receptionPort: port ].
-		[ NeUdpSocket new receptionPort: port; yourself ].
-		[ NeUdpSocket new setPort: port; yourself ].
+	socketCreationBlocks := {[NeUdpSocket receptionPort: port].
+		[NeUdpSocket new receptionPort: port; yourself].
+		[NeUdpSocket new setPort: port; yourself].
 	}.
-	socketCreationBlocks do: [ : each | 
-			self should: each raise: NeAlreadyUsedSocketPort.
+	socketCreationBlocks do: [ : creationBlock | 
+			self should: [self createSocket: creationBlock] raise: NeAlreadyUsedSocketPort.
 	].
 	receiver closeAndDestroy.
 	socketCreationBlocks do: [ : each | 

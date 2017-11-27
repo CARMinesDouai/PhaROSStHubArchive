@@ -1,38 +1,19 @@
 Class {
 	#name : #NeMulticastSocketTest,
-	#superclass : #TestCase,
+	#superclass : #NeUdpSocketTest,
 	#instVars : [
 		'socket',
-		'multicastPort',
-		'allSockets'
+		'multicastPort'
 	],
 	#category : #'NetworkExtras-UDP-Kernel'
 }
 
 { #category : #testing }
-NeMulticastSocketTest >> newSocketGroup: groupIp port: port [
-	| newSocket |
-	newSocket := NeMulticastSocket
-				group: groupIp
-				port: port.
-	allSockets add: newSocket.
-	^newSocket
-]
-
-{ #category : #testing }
 NeMulticastSocketTest >> setUp [
 	super setUp.
 	multicastPort := NeUdpUsedPortsTracker freePortAtRandom.
-	allSockets := Set new.
-	socket := self newSocketGroup: '226.0.0.12'
+	socket := self newMulticastSocketOnGroup: '226.0.0.12'
 				port: multicastPort
-]
-
-{ #category : #testing }
-NeMulticastSocketTest >> tearDown [
-	super tearDown.	
-	allSockets do: #closeAndDestroy.
-
 ]
 
 { #category : #testing }
@@ -40,16 +21,16 @@ NeMulticastSocketTest >> testGroupAddress [
 	
 	#('224.0.0.1' '225.1.2.3' '230.220.210.200' '239.255.255.255') do: [ : groupIpString |
 		self 
-			shouldnt: [self newSocketGroup: groupIpString port: NeUdpUsedPortsTracker freePortAtRandom] 
+			shouldnt: [self newMulticastSocketOnGroup: groupIpString port: NeUdpUsedPortsTracker freePortAtRandom] 
 			raise: Error].
 	
 	#('223.1.2.3' '240.0.0.1') do:  [ : groupIpString |
 		self
-			should: [self newSocketGroup: groupIpString port: NeUdpUsedPortsTracker freePortAtRandom] 
+			should: [self newMulticastSocketOnGroup: groupIpString port: NeUdpUsedPortsTracker freePortAtRandom] 
 			raise: NeInvalidMulticastGroupIpError].
 ]
 
-{ #category : #Running }
+{ #category : #testing }
 NeMulticastSocketTest >> testInterface [
 	<expectedFailure>
 	self assert: socket networkInterface equals: #(0 0). "API to be improved"
@@ -79,7 +60,7 @@ NeMulticastSocketTest >> testSendReceive [
 	| sender receiver |
 	receiver := socket.
 	receiver unregisterUsedPort. "Hack to allow having two multicast sockets on the same port!"
-	sender := self newSocketGroup: '226.0.0.12'
+	sender := self newMulticastSocketOnGroup: '226.0.0.12'
 				port: multicastPort.
 	sender send: 'Hello'.
 	self assert: (receiver receiveTimeout: 0.1) asString equals: 'Hello'
@@ -91,17 +72,11 @@ NeMulticastSocketTest >> testSendReceiveOnDifferentGroups [
 	| sender1 receiver1 sender2 receiver2 multicastPort2 |
 	receiver1 := socket.
 	receiver1 unregisterUsedPort. "Hack to allow having two multicast sockets on the same port!"
-	sender1 := NeMulticastSocket 
-				group: '226.0.0.12'
-				port: multicastPort.
+	sender1 := self newMulticastSocketOnGroup:'226.0.0.12' port: multicastPort.
 	multicastPort2 := NeUdpUsedPortsTracker freePortAtRandom.
-	receiver2 := NeMulticastSocket 
-				group: '226.0.0.42'
-				port: multicastPort2.
+	receiver2 := self newMulticastSocketOnGroup: '226.0.0.42' port: multicastPort2.
 	receiver2 unregisterUsedPort. "Hack to allow having two multicast sockets on the same port!"
-	sender2 := NeMulticastSocket 
-				group: '226.0.0.42'
-				port: multicastPort2.
+	sender2 := self newMulticastSocketOnGroup: '226.0.0.42' port: multicastPort2.
 	sender1 send: 'Hello'.
 	self assert: (receiver1 receiveTimeout: 0.1) asString equals: 'Hello'.
 	self should: [ receiver2 receiveTimeout: 0.1 ] raise: ConnectionTimedOut.
