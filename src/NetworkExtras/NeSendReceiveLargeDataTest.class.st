@@ -37,7 +37,7 @@ NeSendReceiveLargeDataTest >> targetIp [
 
 { #category : #testing }
 NeSendReceiveLargeDataTest >> targetPort [
-	^54321
+	^NeUdpUsedPortsTracker freePortAtRandom
 ]
 
 { #category : #testing }

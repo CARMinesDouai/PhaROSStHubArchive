@@ -1,3 +1,11 @@
+"
+I represent a unique part of some data split at some specific point in time by a specific spliter. 
+
+    Instance Variables
+	contents:		<ByteArray> data fragment
+	index:		<Integer> position relative to other content chunks belonging to the same collection
+
+"
 Class {
 	#name : #NeContentChunk,
 	#superclass : #NeChunk,
@@ -5,7 +13,7 @@ Class {
 		'index',
 		'contents'
 	],
-	#category : #'NetworkExtras-UDP-SplitReconstructLargeData'
+	#category : #'NetworkExtras-SplitReconstructLargeData'
 }
 
 { #category : #reconstructing }

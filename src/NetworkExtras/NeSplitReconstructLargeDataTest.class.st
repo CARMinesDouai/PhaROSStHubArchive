@@ -5,14 +5,14 @@ Class {
 		'reconstructor',
 		'splitter'
 	],
-	#category : #'NetworkExtras-UDP-SplitReconstructLargeData'
+	#category : #'NetworkExtras-SplitReconstructLargeData'
 }
 
 { #category : #testing }
 NeSplitReconstructLargeDataTest >> setUp [
 	super setUp.
-	reconstructor := NeReconstructor new.
-	splitter := NeSplitter new.
+	reconstructor := NeSingleSourceDataReconstructor new.
+	splitter := NeDataSplitter new.
 	splitter id: #testSplitter.
 
 ]

@@ -25,7 +25,7 @@ NeUdpLargeDataSender >> id: anId [
 { #category : #'initialize-release' }
 NeUdpLargeDataSender >> initialize [
 	super initialize.
-	splitter := NeSplitter new.
+	splitter := NeDataSplitter new.
 	self maxChunkSize: self defaultMaxChunkSize.
 ]
 

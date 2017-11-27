@@ -39,7 +39,7 @@ NeUdpLargeDataReceiver >> isStarted [
 
 { #category : #receiving }
 NeUdpLargeDataReceiver >> newReconstructor [
-	^NeReconstructor new
+	^NeSingleSourceDataReconstructor new
 		withReconstructedDataDo: reconstructionBlock;
 		yourself
 ]
