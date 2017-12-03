@@ -1,11 +1,13 @@
 Class {
 	#name : #NeSplitReconstructLargeDataTest,
-	#superclass : #NeLargeDataTest,
+	#superclass : #TestCase,
+	#traits : 'NeTLargeDataProvider',
+	#classTraits : 'NeTLargeDataProvider classTrait',
 	#instVars : [
 		'reconstructor',
 		'splitter'
 	],
-	#category : #'NetworkExtras-SplitReconstructLargeData'
+	#category : #'NetworkExtras-UDP-LargeDataTransmission'
 }
 
 { #category : #testing }

@@ -13,7 +13,7 @@ Class {
 		'index',
 		'contents'
 	],
-	#category : #'NetworkExtras-SplitReconstructLargeData'
+	#category : #'NetworkExtras-UDP-LargeDataTransmission'
 }
 
 { #category : #reconstructing }

@@ -1,75 +1,49 @@
+"
+I am a UDP server that reconstructs data sent in chunks (instances of NeChunk). 
+I can hundle data coming from multiple sources (NeUdpLargeDataSender) since I rely on NeMultiSourceDataReconstructor.
+
+Public API and Key Messages
+-withReceivedDataDo: aTwoArgsBlock
+Sets the data handling block valued  each time  a data is reconstructed. It must  have two arguments one for the sourceId and the second for the reconstructed data
+
+    Instance Variables
+	dataReconstructor:		<NeMultiSourceDataReconstructor>
+
+"
 Class {
 	#name : #NeUdpLargeDataReceiver,
-	#superclass : #NeUdpSocketWrapper,
+	#superclass : #NeUdpServer,
 	#instVars : [
-		'thread',
-		'reconstructorsDict',
-		'reconstructionBlock'
+		'dataReconstructor'
 	],
-	#category : #'NetworkExtras-UDP-SendReceiveLargeData'
+	#category : #'NetworkExtras-UDP-LargeDataTransmission'
 }
 
-{ #category : #'instance creation' }
-NeUdpLargeDataReceiver class >> onUnicastPort: portNumber [
-	^ self onSocket: (NeUnicastUdpSocket receptionPort: portNumber)
+{ #category : #activity }
+NeUdpLargeDataReceiver >> handleReceivedBytes: receivedBytes [
+	| chunk |
+	chunk := FLMaterializer materializeFromByteArray: receivedBytes.
+	dataReconstructor addChunk: chunk
 ]
 
-{ #category : #receiving }
-NeUdpLargeDataReceiver >> addChunk: chunk [
-	(self reconstructorAt: chunk sourceId) addChunk: chunk
-]
-
-{ #category : #'initialize-release' }
-NeUdpLargeDataReceiver >> destroy [
-	self stop.
-	super destroy.
-]
-
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 NeUdpLargeDataReceiver >> initialize [
 	super initialize.
-	reconstructorsDict := Dictionary new.
-	thread := ActiveObject repeat: [ self receiveChunk ].
+	dataReconstructor := NeMultiSourceDataReconstructor new.
+	self withReceivedDataDo: [ : sourceId : reconstructedData | 
+		Transcript 
+			cr; 
+			show: sourceId; 
+			show: ' sent: ';
+			show: reconstructedData asString]
 ]
 
 { #category : #activity }
-NeUdpLargeDataReceiver >> isStarted [
-	^thread isStarted
+NeUdpLargeDataReceiver >> threadName [
+	^'Large data receiver over UDP socket ', self socket asString
 ]
 
-{ #category : #receiving }
-NeUdpLargeDataReceiver >> newReconstructor [
-	^NeSingleSourceDataReconstructor new
-		withReconstructedDataDo: reconstructionBlock;
-		yourself
-]
-
-{ #category : #receiving }
-NeUdpLargeDataReceiver >> receiveChunk [
-	| receivedBytes chunk |
-	receivedBytes := socket receive.
-	receivedBytes ifEmpty: [ ^ self ].
-	chunk := FLMaterializer materializeFromByteArray: receivedBytes.
-	self addChunk: chunk
-]
-
-{ #category : #receiving }
-NeUdpLargeDataReceiver >> reconstructorAt: id [
-	^reconstructorsDict at: id ifAbsentPut: [self newReconstructor]
-	
-]
-
-{ #category : #activity }
-NeUdpLargeDataReceiver >> start [
-	thread start
-]
-
-{ #category : #activity }
-NeUdpLargeDataReceiver >> stop [
-	thread stop
-]
-
-{ #category : #'initialize-release' }
-NeUdpLargeDataReceiver >> withReceivedDataDo: aBlock [
-	reconstructionBlock := aBlock 
+{ #category : #initialization }
+NeUdpLargeDataReceiver >> withReceivedDataDo: aTwoArgBlockClosure [ 
+	dataReconstructor withReconstructedDataDo: aTwoArgBlockClosure 
 ]

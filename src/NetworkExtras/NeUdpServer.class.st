@@ -14,10 +14,13 @@ Upon termination, it closes the socket ensuring releasing related resources.
 Class {
 	#name : #NeUdpServer,
 	#superclass : #Object,
+	#traits : 'NeTUdpSocketWrapper',
+	#classTraits : 'NeTUdpSocketWrapper classTrait',
 	#instVars : [
 		'thread',
 		'socket',
-		'actionBlock'
+		'actionBlock',
+		'receivedDataHandlingPriority'
 	],
 	#category : #'NetworkExtras-UDP-Kernel'
 }
@@ -36,10 +39,27 @@ NeUdpServer class >> socket: udpSocket [
 ]
 
 { #category : #'initialize-release' }
+NeUdpServer >> defaultReceivedDataHandlingPriority [
+	^Processor userSchedulingPriority
+]
+
+{ #category : #'initialize-release' }
+NeUdpServer >> destroy [
+	self stop.
+	self destroySocket
+]
+
+{ #category : #activity }
+NeUdpServer >> handleReceivedBytes: bytes [
+	'UDP server received bytes: ' bytes asString logCr
+]
+
+{ #category : #'initialize-release' }
 NeUdpServer >> initialize [
 	super initialize.
 	thread := ActiveObject repeat: [ self receiveData ] ensure: [self socket closeAndDestroy].
-	actionBlock := [ :data | data asString logCr ]
+	actionBlock := [ : bytes | self handleReceivedBytes: bytes].
+	self receivedDataHandlingPriority: self defaultReceivedDataHandlingPriority
 ]
 
 { #category : #activity }
@@ -75,9 +95,19 @@ NeUdpServer >> priority: aPriority [
 { #category : #activity }
 NeUdpServer >> receiveData [
 	| receivedData |
-	receivedData := self socket receive.
+	receivedData := [self socket receive] on: ConnectionTimedOut do: [: ex| ^self].
 	receivedData ifEmpty: [ ^ self ].
-	actionBlock cull: receivedData
+	[actionBlock cull: receivedData] forkAt: self receivedDataHandlingPriority
+]
+
+{ #category : #accessing }
+NeUdpServer >> receivedDataHandlingPriority [
+	^receivedDataHandlingPriority
+]
+
+{ #category : #accessing }
+NeUdpServer >> receivedDataHandlingPriority: anInteger [
+	^receivedDataHandlingPriority := anInteger
 ]
 
 { #category : #accessing }
@@ -92,12 +122,18 @@ NeUdpServer >> socket: anObject [
 
 { #category : #activity }
 NeUdpServer >> start [
-	self isStarted ifTrue: [ ^self ].
-	thread name: 'UDP server on socket ', self socket asString.
-	thread start.
+	self isStarted
+		ifTrue: [ ^ self ].
+	thread name: self threadName.
+	thread start
 ]
 
 { #category : #activity }
 NeUdpServer >> stop [
 	thread stop
+]
+
+{ #category : #activity }
+NeUdpServer >> threadName [
+	^ 'UDP server on socket ' , self socket asString
 ]
