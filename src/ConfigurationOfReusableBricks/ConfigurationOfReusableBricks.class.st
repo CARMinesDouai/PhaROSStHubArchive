@@ -173,7 +173,7 @@ ConfigurationOfReusableBricks >> project [
 ConfigurationOfReusableBricks >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '1.2'.
+	spec for: #'common' version: '1.3'.
 
 ]
 
@@ -225,5 +225,23 @@ ConfigurationOfReusableBricks >> version12: spec [
 			package: 'Concurrency' with: 'Concurrency-NouryBouraqadi.13';
 			package: 'BooleanExpressions' with: 'BooleanExpressions-NouryBouraqadi.1';
 			package: #StateMachine with: 'StateMachine-NouryBouraqadi.1'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfReusableBricks >> version13: spec [
+	<version: '1.3' imports: #('0.2-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'version 1.3'.
+		spec author: 'NouryBouraqadi'.
+		spec timestamp: '12/3/2017 13:42'.
+		spec 
+			package: 'BooleanExpressions' with: 'BooleanExpressions-NouryBouraqadi.1';
+			package: 'Concurrency' with: 'Concurrency-NouryBouraqadi.13';
+			package: 'Equals' with: 'Equals-NouryBouraqadi.3';
+			package: 'NetworkExtras' with: 'NetworkExtras-NouryBouraqadi.22';
+			package: #StateMachine with: 'StateMachine-NouryBouraqadi.2'. ].
 
 ]
