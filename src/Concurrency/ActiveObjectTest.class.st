@@ -18,5 +18,5 @@ ActiveObjectTest >> activeObjProcess [
 { #category : #testing }
 ActiveObjectTest >> tearDown [
 	super tearDown.
-	self activeObjProcess ifNotNilDo: [:process | process terminate]
+	self activeObjProcess ifNotNil: [ :process | process terminate ]
 ]
