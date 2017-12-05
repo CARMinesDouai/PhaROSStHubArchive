@@ -7,9 +7,19 @@ Class {
 }
 
 { #category : #testing }
+NeIpAddressTest >> testAddressFromString [
+	self assert: 'localhost' asIpAddress equals: '127.0.0.1' asIpAddress.
+	self assert: '255.255.255.255' asIpAddress equals: 'broadcasthost' asIpAddress.
+	
+]
+
+{ #category : #testing }
 NeIpAddressTest >> testAddressName [
 	self assert: NeIpV4Address loopback name equals: 'localhost'.
 	self assert: NeIpV4Address broadcast name equals: 'broadcasthost'.
+	self assert: (NeIpV4Address fromName: 'localhost') equals: NeIpV4Address loopback.
+	self assert: (NeIpV4Address fromName: 'broadcasthost') equals: NeIpV4Address broadcast.
+	
 	
 ]
 

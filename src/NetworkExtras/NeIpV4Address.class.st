@@ -27,16 +27,30 @@ NeIpV4Address class >> broadcast [
 ]
 
 { #category : #'instance creation' }
-NeIpV4Address class >> fromString: aString [
+NeIpV4Address class >> fromIpString: aString [
 	"return a new IP address from a string
-	IPAddress fromString: '10.1.10.115'"
+	IPAddress fromIpString: '10.1.10.115'"
 	
 	^ self newFrom: ((aString splitOn: $.) collect: [:s | s asInteger])
 ]
 
 { #category : #'instance creation' }
+NeIpV4Address class >> fromName: aString [
+	"return a new IP address from a host name
+	IPAddress fromName: 'localhost'"
+	
+	^ (NetNameResolver addressForName: aString) asIpAddress
+]
+
+{ #category : #'instance creation' }
+NeIpV4Address class >> fromString: aString [
+	(aString includes: $.) ifTrue: [ ^self fromIpString: aString ].
+	^self fromName: aString
+
+]
+
+{ #category : #'instance creation' }
 NeIpV4Address class >> local [
-	"mp 10/30/2005 15:53"
 	"return a new IP address from a string
 	IPAddress local"
 	
@@ -80,5 +94,6 @@ NeIpV4Address >> asString [
 
 { #category : #accessing }
 NeIpV4Address >> name [
+	self = self class loopback ifTrue: [^'localhost']. "Workaround for Windows where VM answers that actual machine name!"
 	^NetNameResolver nameForAddress: self timeout: 60
 ]

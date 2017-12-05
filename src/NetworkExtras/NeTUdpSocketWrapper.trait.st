@@ -17,14 +17,9 @@ NeTUdpSocketWrapper classSide >> broadcastPort: portNumber [
 ]
 
 { #category : #'instance creation' }
-NeTUdpSocketWrapper classSide >> multicastSocketClass [
-	self subclassResponsibility
-]
-
-{ #category : #'instance creation' }
 NeTUdpSocketWrapper classSide >> multicastSocketGroup: groupIp port: port [
 	| socket |
-	socket := self multicastSocketClass group: groupIp port: port.
+	socket := NeMulticastSocket group: groupIp port: port.
 	^ self socket: socket
 ]
 
