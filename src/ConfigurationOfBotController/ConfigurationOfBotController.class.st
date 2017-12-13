@@ -116,6 +116,11 @@ ConfigurationOfBotController >> baseline01: spec [
 		spec blessing: #'baseline'.
 		spec repository: 'http://smalltalkhub.com/mc/CAR/BotController/main/'.
 		spec 
+			project: 'BoTest' with: [
+				spec
+					className: #ConfigurationOfBoTest;
+					versionString: #'bleedingEdge';
+					repository: 'http://smalltalkhub.com/mc/CAR/BoTest/main/' ];
 			project: 'ChainableComponents' with: [
 				spec
 					className: #ConfigurationOfChainableComponents;
@@ -126,21 +131,17 @@ ConfigurationOfBotController >> baseline01: spec [
 					className: #ConfigurationOfMorphicApp;
 					versionString: #'stable';
 					repository: 'http://smalltalkhub.com/mc/noury/MorphicApp/main/' ];
-			project: 'BoTest' with: [
-				spec
-					className: #ConfigurationOfBoTest;
-					versionString: #'bleedingEdge';
-					repository: 'http://smalltalkhub.com/mc/CAR/BoTest/main/' ];
 			project: 'PureNG' with: [
 				spec
 					className: #ConfigurationOfPureNG;
 					versionString: #'bleedingEdge';
 					repository: 'http://smalltalkhub.com/mc/CAR/Robulab/main/' ].
 		spec 
-			package: #Vectors with: [
-				spec requires: #('BoTest' ). ];
+			package: #BotController;
 			package: #ReactiveRobot with: [
-				spec requires: #('BoTest' 'ChainableComponents' 'MorphicApp' #Vectors 'PureNG' ). ]. ].
+				spec requires: #('BoTest' 'ChainableComponents' 'MorphicApp' #Vectors 'PureNG' ). ];
+			package: #Vectors with: [
+				spec requires: #('BoTest' ). ]. ].
 
 ]
 
