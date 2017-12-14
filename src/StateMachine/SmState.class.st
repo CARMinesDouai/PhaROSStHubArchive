@@ -1,14 +1,20 @@
 "
 A SmState is a state in an automaton.
 
+States are attached to an automaton (instance of SmAutomaton). It is the automaton who is in charge of creating states attached to it.
+
 Instance Variables
 	automaton:		<SmAutomaton>
+	mainActionBlock: <BlockClosure>
 	entryActionBlock:		<BlockClosure>
 	exitActionBlock:		<BlockClosure>
 	transitions:		<Set of SmTransition>
 
 automaton
 	- The automaton to which belongs this state
+
+mainActionBlock
+	- Action performed when the state is active, it is performed repeatedly each time the state is the current state of the automaton. This includes the first time the state is enabled
 
 entryActionBlock
 	- Action performed when the state is enabled, i.e. when it becomes the current state of the automaton.
@@ -26,6 +32,7 @@ Class {
 	#instVars : [
 		'transitions',
 		'automaton',
+		'mainActionBlock',
 		'entryActionBlock',
 		'exitActionBlock'
 	],
@@ -89,6 +96,21 @@ SmState >> exitActionBlock: anObject [
 SmState >> initialize [
 	super initialize.
 	transitions := Set new
+]
+
+{ #category : #accessing }
+SmState >> mainActionBlock [
+	^ mainActionBlock
+]
+
+{ #category : #accessing }
+SmState >> mainActionBlock: anObject [
+	mainActionBlock := anObject
+]
+
+{ #category : #stepping }
+SmState >> performMainAction [
+	self mainActionBlock value
 ]
 
 { #category : #stepping }

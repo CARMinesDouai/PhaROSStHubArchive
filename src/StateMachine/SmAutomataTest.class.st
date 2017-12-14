@@ -43,6 +43,25 @@ SmAutomataTest >> testEntryActionOfInitialStatePerformed [
 ]
 
 { #category : #testing }
+SmAutomataTest >> testStateActionRepeatedAsLongNoTransitionOccurs [
+	| count countingState shouldCount |
+	count := 0.
+	countingState := automaton newStateDoing: [ count := count + 1 ].
+	shouldCount := false.
+	initialState transitionTo: countingState when: [shouldCount].
+	countingState transitionTo: initialState when: [shouldCount not].
+	shouldCount := true.
+	1 to: 4 do: [: expectedCount |
+		automaton step.
+		self assert: count equals: expectedCount].
+	shouldCount := false.
+	4 timesRepeat: [
+		automaton step.
+		self assert: count equals: 4]
+
+]
+
+{ #category : #testing }
 SmAutomataTest >> testStateEntryActionPerformed [
 	|newState entryActionPeformed|
 	entryActionPeformed := false.

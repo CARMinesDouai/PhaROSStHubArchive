@@ -53,20 +53,44 @@ SmAutomaton >> newState [
 ]
 
 { #category : #'creating states' }
-SmAutomaton >> newStateOnEntryDo: aBlockClosure [ 
-	^self newStateOnEntryDo: aBlockClosure onExitDo: [].
+SmAutomaton >> newStateDoing: aBlock [
+	^self newState
+		mainActionBlock: aBlock;
+		yourself
+		
 ]
 
 { #category : #'creating states' }
-SmAutomaton >> newStateOnEntryDo: entryActionBlock onExitDo: exitActionBlock [
-	^self newState
+SmAutomaton >> newStateDoing: mainActionBlock onEntryDo: entryActionBlock [ 
+	^self newStateDoing: mainActionBlock onEntryDo: entryActionBlock onExitDo: nil.
+]
+
+{ #category : #'creating states' }
+SmAutomaton >> newStateDoing: mainActionBlock onEntryDo: entryActionBlock onExitDo: exitActionBlock [
+	^(self newStateDoing: mainActionBlock)
 		entryActionBlock: entryActionBlock;
 		exitActionBlock: exitActionBlock;
 		yourself
 
 ]
 
+{ #category : #'creating states' }
+SmAutomaton >> newStateDoing: mainActionBlock onExitDo: exitActionBlock [ 
+	^self newStateDoing: mainActionBlock onEntryDo: nil onExitDo: exitActionBlock.
+]
+
+{ #category : #'creating states' }
+SmAutomaton >> newStateOnEntryDo: aBlockClosure [ 
+	^self newStateDoing: nil onEntryDo: aBlockClosure
+]
+
+{ #category : #'creating states' }
+SmAutomaton >> newStateOnExitDo: aBlockClosure [ 
+	^self newStateDoing: nil onExitDo: aBlockClosure
+]
+
 { #category : #stepping }
 SmAutomaton >> step [
-	self currentState step
+	self currentState step.
+	self currentState performMainAction
 ]
