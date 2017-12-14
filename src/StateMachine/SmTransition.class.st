@@ -80,5 +80,5 @@ SmTransition >> targetState [
 { #category : #accessing }
 SmTransition >> targetState: aState [
 	targetState := aState.
-	targetState automaton: self automaton
+
 ]

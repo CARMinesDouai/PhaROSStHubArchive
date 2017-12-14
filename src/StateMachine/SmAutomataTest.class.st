@@ -12,21 +12,22 @@ Class {
 SmAutomataTest >> setUp [
 	super setUp.
 	automaton := SmAutomaton new.
-	initialState := SmState new.
+	initialState := automaton newState.
 	automaton initialState: initialState 
 ]
 
 { #category : #testing }
 SmAutomataTest >> testAutomatonAtInitialState [
-	self assert: automaton currentState equals: initialState
+	self assert: automaton currentState equals: initialState.
+	self assert: initialState automaton equals: automaton
 ]
 
 { #category : #testing }
 SmAutomataTest >> testChangeStateWhenTransitionConditionIsVerified [
 	|newState flag|
-	newState := SmState new.
+	newState := automaton newState.
 	flag := false.
-	initialState transitionTo: newState when: [flag = true].
+	initialState transitionTo: newState when: [flag].
 	flag := true.
 	automaton step.
 	self assert: automaton currentState equals: newState
@@ -36,7 +37,7 @@ SmAutomataTest >> testChangeStateWhenTransitionConditionIsVerified [
 SmAutomataTest >> testEntryActionOfInitialStatePerformed [
 	|newState entryActionPeformed|
 	entryActionPeformed := false.
-	newState := SmState entryAction: [ entryActionPeformed := true ].
+	newState := automaton newStateOnEntryDo: [ entryActionPeformed := true ].
 	automaton initialState: newState.
 	self assert: entryActionPeformed
 ]
@@ -45,7 +46,7 @@ SmAutomataTest >> testEntryActionOfInitialStatePerformed [
 SmAutomataTest >> testStateEntryActionPerformed [
 	|newState entryActionPeformed|
 	entryActionPeformed := false.
-	newState := SmState entryAction: [ entryActionPeformed := true ].
+	newState := automaton newStateOnEntryDo: [ entryActionPeformed := true ].
 	initialState transitionTo: newState when: [true].
 	automaton step.
 	self assert: entryActionPeformed
@@ -55,7 +56,7 @@ SmAutomataTest >> testStateEntryActionPerformed [
 SmAutomataTest >> testStateExitActionPerformed [
 	|newState exitActionPeformed|
 	exitActionPeformed := false.
-	newState := SmState new.
+	newState := automaton newState.
 	initialState exitActionBlock: [ exitActionPeformed := true ].
 	initialState transitionTo: newState when: [true].
 	automaton step.
@@ -63,11 +64,27 @@ SmAutomataTest >> testStateExitActionPerformed [
 ]
 
 { #category : #testing }
+SmAutomataTest >> testStateReferencesAutomaton [
+	| targetState sourceState |
+	self assert: initialState automaton equals: automaton.	
+	targetState := automaton newState.
+	initialState transitionTo: targetState when: [true].
+	self assert: initialState automaton equals: automaton.	
+	self assert: targetState automaton equals: automaton.	
+	sourceState := automaton newState.
+	sourceState transitionTo: initialState when: [true].
+	self assert: initialState automaton equals: automaton.	
+	self assert: targetState automaton equals: automaton.	
+	self assert: sourceState automaton equals: automaton.	
+	
+]
+
+{ #category : #testing }
 SmAutomataTest >> testStateUnchangedWhenNOTransitionIsActionable [
 	|newState flag|
-	newState := SmState new.
+	newState := automaton newState.
 	flag := false.
-	initialState transitionTo: newState when: [flag = true].
+	initialState transitionTo: newState when: [flag].
 	automaton step.
 	self assert: automaton currentState equals: initialState
 ]

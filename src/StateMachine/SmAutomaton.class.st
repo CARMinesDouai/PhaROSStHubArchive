@@ -42,9 +42,27 @@ SmAutomaton >> currentState: aState [
 
 { #category : #'initialize-release' }
 SmAutomaton >> initialState: aState [
-	aState automaton: self.
 	self currentState: aState.
 	aState enable.
+
+]
+
+{ #category : #'creating states' }
+SmAutomaton >> newState [
+	^SmState automaton: self
+]
+
+{ #category : #'creating states' }
+SmAutomaton >> newStateOnEntryDo: aBlockClosure [ 
+	^self newStateOnEntryDo: aBlockClosure onExitDo: [].
+]
+
+{ #category : #'creating states' }
+SmAutomaton >> newStateOnEntryDo: entryActionBlock onExitDo: exitActionBlock [
+	^self newState
+		entryActionBlock: entryActionBlock;
+		exitActionBlock: exitActionBlock;
+		yourself
 
 ]
 

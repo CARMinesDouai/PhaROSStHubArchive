@@ -33,17 +33,15 @@ Class {
 }
 
 { #category : #'instance creation' }
-SmState class >> entryAction: aBlockClosure [ 
-	^self entryAction: aBlockClosure exitAction: [].
+SmState class >> automaton: anAutomaton [
+	^super new
+		automaton: anAutomaton;
+		yourself
 ]
 
-{ #category : #'instance-creation' }
-SmState class >> entryAction: entryActionBlock exitAction: exitActionBlock [
-	^self new
-		entryActionBlock: entryActionBlock;
-		exitActionBlock: exitActionBlock;
-		yourself
-
+{ #category : #'instance creation' }
+SmState class >> new [
+	self error: 'Use automaton: message to create states'
 ]
 
 { #category : #accessing }
