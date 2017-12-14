@@ -7,7 +7,7 @@ Class {
 		'newValueWeight',
 		'oldAverageWeight'
 	],
-	#category : #'BotController-Body'
+	#category : #'BotController-OLD-Body'
 }
 
 { #category : #'instance creation' }

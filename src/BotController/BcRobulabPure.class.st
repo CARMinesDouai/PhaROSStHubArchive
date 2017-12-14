@@ -4,19 +4,19 @@ Class {
 	#instVars : [
 		'serviceRegistry'
 	],
-	#category : #'BotController-Body'
+	#category : #'BotController-Bodies'
 }
 
 { #category : #'instance creation' }
 BcRobulabPure class >> robulab1 [
 	"self robulab1"
-	^self serviceRegistry: PNGRobulab kompai1
+	^self serviceRegistry: PNGRobulabHandcodedFactory kompai1
 ]
 
 { #category : #'instance creation' }
 BcRobulabPure class >> robulab2 [
 	"self robulab2"
-	^self serviceRegistry: PNGRobulab kompai2
+	^self serviceRegistry: PNGRobulabHandcodedFactory kompai2
 ]
 
 { #category : #'instance creation' }
@@ -26,14 +26,9 @@ BcRobulabPure class >> serviceRegistry: aPNGRobulab [
 		yourself
 ]
 
-{ #category : #actions }
+{ #category : #acting }
 BcRobulabPure >> interWheelsDistance [
 	^0.4
-]
-
-{ #category : #accessing }
-BcRobulabPure >> maxForwardLateralSpeed [
-	^1
 ]
 
 { #category : #accessing }
@@ -42,12 +37,36 @@ BcRobulabPure >> minBackwardLateralSpeed [
 	
 ]
 
-{ #category : #accessing }
-BcRobulabPure >> minForwardLateralSpeed [
-	self shouldBeImplemented
+{ #category : #sensing }
+BcRobulabPure >> onLaserScanDo: aBlock [
+	serviceRegistry laserService  onNotificationDo: [ :notif | 
+		| obstacleEchoes |
+		"Filter away errors due to laser detecting the robot's chassis"
+		obstacleEchoes := notif echoes copyFrom: 2 to: 269.
+		aBlock cull: obstacleEchoes].
 ]
 
-{ #category : #actions }
+{ #category : #accessing }
+BcRobulabPure >> serviceRegistry: aPNGRobulab [ 
+	serviceRegistry := aPNGRobulab
+]
+
+{ #category : #sensing }
+BcRobulabPure >> startLaserScanner [
+	self startLaserScannerPeriod: 0
+]
+
+{ #category : #sensing }
+BcRobulabPure >> startLaserScannerPeriod: durationInClockCycles [
+	serviceRegistry laserService enableNotificationsEvery: durationInClockCycles
+]
+
+{ #category : #sensing }
+BcRobulabPure >> stopLaserScanner [
+	serviceRegistry laserService disableNotifications
+]
+
+{ #category : #acting }
 BcRobulabPure >> velocityForward: forwardSpeed rotation: rotationSpeed [
 	serviceRegistry differentialService moveAt: forwardSpeed and: rotationSpeed
 ]

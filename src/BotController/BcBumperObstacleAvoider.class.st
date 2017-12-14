@@ -1,7 +1,7 @@
 Class {
 	#name : #BcBumperObstacleAvoider,
 	#superclass : #BcSimpleBehavior,
-	#category : #'BotController-Behaviors'
+	#category : #'BotController-OLD-Behaviors'
 }
 
 { #category : #reactions }

@@ -5,7 +5,7 @@ Class {
 		'period',
 		'repeatedBlock'
 	],
-	#category : #'BotController-Body'
+	#category : #'BotController-OLD-Body'
 }
 
 { #category : #'instance creation' }

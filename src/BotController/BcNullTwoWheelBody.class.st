@@ -1,15 +1,15 @@
 Class {
 	#name : #BcNullTwoWheelBody,
 	#superclass : #BcTwoWheelBody,
-	#category : #'BotController-Body'
+	#category : #'BotController-Bodies'
 }
 
-{ #category : #actions }
+{ #category : #acting }
 BcNullTwoWheelBody >> leftSpeed: aNumber rightSpeed: aNumber2 [ 
 	^self
 ]
 
-{ #category : #actions }
+{ #category : #acting }
 BcNullTwoWheelBody >> velocityForward: forwardSpeed rotation: rotationSpeed [
 	^self
 ]

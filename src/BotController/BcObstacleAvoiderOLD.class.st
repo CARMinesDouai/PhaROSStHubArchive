@@ -1,5 +1,5 @@
 Class {
-	#name : #BcObstacleAvoider,
+	#name : #BcObstacleAvoiderOLD,
 	#superclass : #BcCompositeBehavior,
 	#instVars : [
 		'bumperReactor',
@@ -8,18 +8,18 @@ Class {
 		'suppressor',
 		'repeater'
 	],
-	#category : #'BotController-Behaviors'
+	#category : #'BotController-OLD-Behaviors'
 }
 
 { #category : #accessing }
-BcObstacleAvoider >> body: aBody [
+BcObstacleAvoiderOLD >> body: aBody [
 	super body: aBody.
 	speedRamp body: aBody.
 	repeater body: aBody
 ]
 
 { #category : #'initialize-release' }
-BcObstacleAvoider >> initialize [
+BcObstacleAvoiderOLD >> initialize [
 	super initialize.
 	repeater := BcRepeater duration: 50 milliSeconds period: 10 milliSeconds.
 	bumperReactor := BcBumperObstacleAvoider body: repeater.
@@ -30,13 +30,13 @@ BcObstacleAvoider >> initialize [
 ]
 
 { #category : #reactions }
-BcObstacleAvoider >> updateSpeedFromBumperEvent: bumperEvent [
+BcObstacleAvoiderOLD >> updateSpeedFromBumperEvent: bumperEvent [
 	suppressor start.
 	speedRamp reset.
 	bumperReactor updateSpeedFromBumperEvent: bumperEvent
 ]
 
 { #category : #reactions }
-BcObstacleAvoider >> updateSpeedFromLaserScan: scanFrame [
+BcObstacleAvoiderOLD >> updateSpeedFromLaserScan: scanFrame [
 	laserReactor updateSpeedFromLaserScan: scanFrame
 ]

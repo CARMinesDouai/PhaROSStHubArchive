@@ -7,7 +7,7 @@ Class {
 		'angle_min',
 		'ranges'
 	],
-	#category : #'BotController-Tests'
+	#category : #'BotController-OLD-Tests'
 }
 
 { #category : #'instance creation' }

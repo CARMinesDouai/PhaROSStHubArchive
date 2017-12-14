@@ -5,7 +5,7 @@ Class {
 		'leftSpeed',
 		'rightSpeed'
 	],
-	#category : #'BotController-Tests'
+	#category : #'BotController-OLD-Tests'
 }
 
 { #category : #accessing }

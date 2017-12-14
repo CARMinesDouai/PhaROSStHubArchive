@@ -4,10 +4,10 @@ Class {
 	#instVars : [
 		'velocityPublisher'
 	],
-	#category : #'BotController-Body'
+	#category : #'BotController-Bodies'
 }
 
-{ #category : #actions }
+{ #category : #acting }
 BcRosTwoWheelBody >> velocityForward: forwardSpeed rotation: rotationSpeed [
 	self velocityPublisher
 		send: [ :aTwist | 

@@ -1,7 +1,7 @@
 Class {
 	#name : #BcLaserObstacleAvoiderTest,
 	#superclass : #BcBehaviorTest,
-	#category : #'BotController-Tests'
+	#category : #'BotController-OLD-Tests'
 }
 
 { #category : #testing }

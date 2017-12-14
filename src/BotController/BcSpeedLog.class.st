@@ -1,7 +1,7 @@
 Class {
 	#name : #BcSpeedLog,
 	#superclass : #BcBodyDecorator,
-	#category : #'BotController-Body'
+	#category : #'BotController-Bodies'
 }
 
 { #category : #actions }

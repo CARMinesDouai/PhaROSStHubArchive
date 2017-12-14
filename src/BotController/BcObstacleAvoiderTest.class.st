@@ -1,12 +1,12 @@
 Class {
 	#name : #BcObstacleAvoiderTest,
 	#superclass : #BcBehaviorTest,
-	#category : #'BotController-Tests'
+	#category : #'BotController-OLD-Tests'
 }
 
 { #category : #testing }
 BcObstacleAvoiderTest >> behaviorClass [
-	^BcObstacleAvoider 
+	^BcObstacleAvoiderOLD 
 ]
 
 { #category : #testing }

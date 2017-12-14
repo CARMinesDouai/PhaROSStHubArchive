@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'actualBody'
 	],
-	#category : #'BotController-Body'
+	#category : #'BotController-Bodies'
 }
 
 { #category : #accessing }

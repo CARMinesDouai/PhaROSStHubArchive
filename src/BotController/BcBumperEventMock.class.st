@@ -5,7 +5,7 @@ Class {
 		'state',
 		'bumper'
 	],
-	#category : #'BotController-Tests'
+	#category : #'BotController-OLD-Tests'
 }
 
 { #category : #'instance creation' }

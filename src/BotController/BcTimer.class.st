@@ -5,7 +5,7 @@ Class {
 		'duration',
 		'startTimestamp'
 	],
-	#category : #'BotController-Body'
+	#category : #'BotController-OLD-Body'
 }
 
 { #category : #'instance creation' }

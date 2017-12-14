@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'suppressor'
 	],
-	#category : #'BotController-Tests'
+	#category : #'BotController-OLD-Tests'
 }
 
 { #category : #testing }

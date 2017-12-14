@@ -5,7 +5,7 @@ Class {
 		'repeater',
 		'count'
 	],
-	#category : #'BotController-Tests'
+	#category : #'BotController-OLD-Tests'
 }
 
 { #category : #testing }

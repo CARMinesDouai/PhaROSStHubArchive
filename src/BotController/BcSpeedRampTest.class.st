@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'ramp'
 	],
-	#category : #'BotController-Tests'
+	#category : #'BotController-OLD-Tests'
 }
 
 { #category : #testing }

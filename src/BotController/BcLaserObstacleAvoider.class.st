@@ -6,7 +6,7 @@ Class {
 		'previousRightSpeed',
 		'safetyDistance'
 	],
-	#category : #'BotController-Behaviors'
+	#category : #'BotController-OLD-Behaviors'
 }
 
 { #category : #'initialize-release' }

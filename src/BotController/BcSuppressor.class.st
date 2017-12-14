@@ -1,7 +1,7 @@
 Class {
 	#name : #BcSuppressor,
 	#superclass : #BcTimer,
-	#category : #'BotController-Body'
+	#category : #'BotController-OLD-Body'
 }
 
 { #category : #actions }

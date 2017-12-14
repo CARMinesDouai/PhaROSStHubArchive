@@ -1,7 +1,7 @@
 Class {
 	#name : #BcTurtleBot,
 	#superclass : #BcRosTwoWheelBody,
-	#category : #'BotController-Body'
+	#category : #'BotController-Bodies'
 }
 
 { #category : #accessing }
@@ -10,16 +10,6 @@ BcTurtleBot >> interWheelsDistance [
 ]
 
 { #category : #accessing }
-BcTurtleBot >> maxForwardLateralSpeed [
-	^0.5
-]
-
-{ #category : #accessing }
 BcTurtleBot >> minBackwardLateralSpeed [
 	^ -0.1
-]
-
-{ #category : #accessing }
-BcTurtleBot >> minForwardLateralSpeed [
-	^ 0.1
 ]

@@ -1,7 +1,7 @@
 Class {
 	#name : #BcSimpleBehavior,
-	#superclass : #BcBehavior,
-	#category : #'BotController-Behaviors'
+	#superclass : #BcBehaviorOLD,
+	#category : #'BotController-OLD-Behaviors'
 }
 
 { #category : #'initialize-release' }

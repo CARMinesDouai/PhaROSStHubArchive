@@ -1,45 +1,45 @@
 Class {
-	#name : #BcBehavior,
+	#name : #BcBehaviorOLD,
 	#superclass : #Object,
 	#instVars : [
 		'body'
 	],
-	#category : #'BotController-Behaviors'
+	#category : #'BotController-OLD-Behaviors'
 }
 
 { #category : #'instance creation' }
-BcBehavior class >> body: aBody [
+BcBehaviorOLD class >> body: aBody [
 	^self new 
 		body: aBody ;
 		yourself
 ]
 
 { #category : #'instance creation' }
-BcBehavior class >> onTurtleBot [
+BcBehaviorOLD class >> onTurtleBot [
 	^self body: BcTurtleBot
 ]
 
 { #category : #accessing }
-BcBehavior >> body [
+BcBehaviorOLD >> body [
 	^ body
 ]
 
 { #category : #accessing }
-BcBehavior >> body: anObject [
+BcBehaviorOLD >> body: anObject [
 	body := anObject
 ]
 
 { #category : #accessing }
-BcBehavior >> maxForwardLateralSpeed [
+BcBehaviorOLD >> maxForwardLateralSpeed [
 	^self body maxForwardLateralSpeed
 ]
 
 { #category : #accessing }
-BcBehavior >> minBackwardLateralSpeed [
+BcBehaviorOLD >> minBackwardLateralSpeed [
 	^self body minBackwardLateralSpeed
 ]
 
 { #category : #accessing }
-BcBehavior >> minForwardLateralSpeed [
+BcBehaviorOLD >> minForwardLateralSpeed [
 	^self body minForwardLateralSpeed.
 ]

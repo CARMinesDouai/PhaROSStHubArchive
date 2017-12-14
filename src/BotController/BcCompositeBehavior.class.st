@@ -1,5 +1,5 @@
 Class {
 	#name : #BcCompositeBehavior,
-	#superclass : #BcBehavior,
-	#category : #'BotController-Behaviors'
+	#superclass : #BcBehaviorOLD,
+	#category : #'BotController-OLD-Behaviors'
 }

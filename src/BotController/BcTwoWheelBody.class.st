@@ -1,35 +1,42 @@
 Class {
 	#name : #BcTwoWheelBody,
 	#superclass : #Object,
-	#category : #'BotController-Body'
+	#category : #'BotController-Bodies'
 }
 
-{ #category : #actions }
+{ #category : #acting }
 BcTwoWheelBody >> interWheelsDistance [
 	self subclassResponsibility
 ]
 
-{ #category : #actions }
+{ #category : #acting }
 BcTwoWheelBody >> leftSpeed: newLeftSpeed rightSpeed: newRightSpeed [
 	self velocityForward: newLeftSpeed + newRightSpeed rotation: (newLeftSpeed - newRightSpeed) / self interWheelsDistance
 ]
 
-{ #category : #accessing }
-BcTwoWheelBody >> maxForwardLateralSpeed [
+{ #category : #sensing }
+BcTwoWheelBody >> onLaserScanDo: aBlock [
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
-BcTwoWheelBody >> minBackwardLateralSpeed [
-	self subclassResponsibility
+{ #category : #acting }
+BcTwoWheelBody >> stop [
+	self velocityForward: 0 rotation: 0
 ]
 
-{ #category : #accessing }
-BcTwoWheelBody >> minForwardLateralSpeed [
-	self subclassResponsibility 
+{ #category : #acting }
+BcTwoWheelBody >> velocityForward: forwardSpeed [
+	self velocityForward: forwardSpeed rotation: 0
+
 ]
 
-{ #category : #actions }
+{ #category : #acting }
 BcTwoWheelBody >> velocityForward: forwardSpeed rotation: rotationSpeed [
 	self subclassResponsibility
+]
+
+{ #category : #acting }
+BcTwoWheelBody >> velocityRotation: rotationSpeed [
+	self velocityForward: 0 rotation: rotationSpeed
+
 ]
