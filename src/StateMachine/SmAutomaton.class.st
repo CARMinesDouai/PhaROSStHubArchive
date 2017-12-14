@@ -44,7 +44,7 @@ SmAutomaton >> currentState: aState [
 SmAutomaton >> initialState: aState [
 	self currentState: aState.
 	aState enable.
-
+	aState performMainAction.
 ]
 
 { #category : #'creating states' }
