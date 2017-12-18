@@ -27,12 +27,11 @@ Class {
 
 { #category : #initialization }
 BcStopOnFrontObstacleController >> initStatesAndTransitions [
-	| moveForwardState |
+	| moveState |
 	super initStatesAndTransitions.
-	moveForwardState := stateMachine newStateDoing: [self body velocityForward: 0.2  ].
-	stopState transitionTo: moveForwardState when: [self isObstacleClose not]. 
-	moveForwardState transitionTo: stopState when: [self isObstacleClose]. 
-
+	moveState := stateMachine newStateDoing: [ self move ].
+	stopState transitionTo: moveState when: [ self isObstacleClose not ].
+	moveState transitionTo: stopState when: [ self isObstacleClose ]
 ]
 
 { #category : #living }
@@ -41,19 +40,7 @@ BcStopOnFrontObstacleController >> isObstacleClose [
 ]
 
 { #category : #living }
-BcStopOnFrontObstacleController >> start [
-	super start.
-	self body onLaserScanDo: [ : echoes | self updateMinObstacleDistance: echoes ].
-	self body startLaserScanner.
-]
-
-{ #category : #living }
-BcStopOnFrontObstacleController >> stop [
-	self body stopLaserScanner
-]
-
-{ #category : #living }
-BcStopOnFrontObstacleController >> updateMinObstacleDistance: echoes [
+BcStopOnFrontObstacleController >> laserScan: echoes [
 	| frontEchoesDistances |
 	frontEchoesDistances := SortedCollection new.
 	"Front echoes are ones with angle about Float pi / 3"
@@ -62,4 +49,23 @@ BcStopOnFrontObstacleController >> updateMinObstacleDistance: echoes [
 	minFrontObstacleDistance := frontEchoesDistances first.
 	stateMachine step.
 
+]
+
+{ #category : #initialization }
+BcStopOnFrontObstacleController >> move [
+	^ self body velocityForward: 0.2
+]
+
+{ #category : #living }
+BcStopOnFrontObstacleController >> start [
+	super start.
+	self body onLaserScanDo: [ : echoes | 
+		self laserScan: echoes.
+		stateMachine step. ].
+	self body startLaserScanner.
+]
+
+{ #category : #living }
+BcStopOnFrontObstacleController >> stop [
+	self body stopLaserScanner
 ]
