@@ -1,5 +1,10 @@
 Class {
 	#name : #BcWallFollowerTest,
-	#superclass : #BcControllerTest,
+	#superclass : #BcStopOnFrontObstacleControllerTest,
 	#category : #'BotController-Controllers'
 }
+
+{ #category : #testing }
+BcWallFollowerTest >> controllerClass [
+	^BcWallFollower
+]
