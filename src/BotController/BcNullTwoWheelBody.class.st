@@ -5,7 +5,12 @@ Class {
 }
 
 { #category : #acting }
-BcNullTwoWheelBody >> leftSpeed: aNumber rightSpeed: aNumber2 [ 
+BcNullTwoWheelBody >> interWheelsDistance [
+	^1
+]
+
+{ #category : #sensing }
+BcNullTwoWheelBody >> onLaserScanDo: aBlock [
 	^self
 ]
 

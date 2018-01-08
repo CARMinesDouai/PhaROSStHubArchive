@@ -1,6 +1,6 @@
 Class {
 	#name : #BcAvoidObstacles,
-	#superclass : #BcBehavior,
+	#superclass : #BcAction,
 	#instVars : [
 		'maxSpeed',
 		'minFrontLeftObstacleDistance',

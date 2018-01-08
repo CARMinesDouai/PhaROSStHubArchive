@@ -1,6 +1,6 @@
 Class {
 	#name : #BcMoveAtFixedSpeed,
-	#superclass : #BcBehavior,
+	#superclass : #BcAction,
 	#instVars : [
 		'forwardSpeed',
 		'rotationSpeed'

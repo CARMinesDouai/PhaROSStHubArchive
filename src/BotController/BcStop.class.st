@@ -1,6 +1,6 @@
 Class {
 	#name : #BcStop,
-	#superclass : #BcBehavior,
+	#superclass : #BcAction,
 	#category : #'BotController-Controllers'
 }
 

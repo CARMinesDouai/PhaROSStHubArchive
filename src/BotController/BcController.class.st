@@ -48,10 +48,10 @@ BcController >> body: anObject [
 
 { #category : #living }
 BcController >> start [
-	^self
+	self body startUp.
 ]
 
 { #category : #living }
 BcController >> stop [
-	^self
+	self body shutDown
 ]

@@ -16,23 +16,30 @@ The default initial state (stopState) does set the body's speed to 0.
 "
 Class {
 	#name : #BcStateMachineController,
-	#superclass : #BcController,
+	#superclass : #BcSingleThreadController,
 	#instVars : [
 		'stateMachine',
-		'stopState'
+		'stopBehavior',
+		'stopAction',
+		'currentAction'
 	],
 	#category : #'BotController-Controllers'
 }
 
+{ #category : #living }
+BcStateMachineController >> act [
+	currentAction step
+]
+
 { #category : #initialization }
 BcStateMachineController >> initStatesAndTransitions [
-	stopState := stateMachine newStateDoing: [self body stop].
+	stopAction := stateMachine newStateOnEntryDo: [currentAction := stopBehavior].
 
 ]
 
 { #category : #initialization }
 BcStateMachineController >> initialState [
-	^stopState
+	^stopAction
 ]
 
 { #category : #initialization }
@@ -40,11 +47,17 @@ BcStateMachineController >> initialize [
 	super initialize.
 	stateMachine := SmAutomaton new.
 	self initStatesAndTransitions.
+	stopBehavior := BcStop new.
 
 ]
 
 { #category : #living }
+BcStateMachineController >> plan [
+	stateMachine step
+]
+
+{ #category : #living }
 BcStateMachineController >> start [
-	"Setting the initial state might trigger some actions on the body such as setting the speed"
+	super start.
 	stateMachine initialState: self initialState.
 ]

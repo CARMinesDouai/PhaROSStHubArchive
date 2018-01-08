@@ -20,6 +20,16 @@ BcTwoWheelBody >> onLaserScanDo: aBlock [
 ]
 
 { #category : #acting }
+BcTwoWheelBody >> shutDown [
+	self stop
+]
+
+{ #category : #acting }
+BcTwoWheelBody >> startUp [
+	^self
+]
+
+{ #category : #acting }
 BcTwoWheelBody >> stop [
 	self velocityForward: 0 rotation: 0
 ]

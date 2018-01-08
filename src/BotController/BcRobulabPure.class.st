@@ -28,7 +28,7 @@ BcRobulabPure class >> serviceRegistry: aPNGRobulab [
 
 { #category : #acting }
 BcRobulabPure >> interWheelsDistance [
-	^0.4
+	^0.39
 ]
 
 { #category : #accessing }
@@ -49,6 +49,12 @@ BcRobulabPure >> onLaserScanDo: aBlock [
 { #category : #accessing }
 BcRobulabPure >> serviceRegistry: aPNGRobulab [ 
 	serviceRegistry := aPNGRobulab
+]
+
+{ #category : #acting }
+BcRobulabPure >> shutDown [
+	serviceRegistry deleteAllNotifyingServices.
+	super shutDown
 ]
 
 { #category : #sensing }
