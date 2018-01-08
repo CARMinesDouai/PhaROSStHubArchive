@@ -1,42 +1,79 @@
 Class {
 	#name : #BcObstacleAvoiderOLD,
-	#superclass : #BcCompositeBehavior,
+	#superclass : #BcStopOnFrontObstacleController,
 	#instVars : [
-		'bumperReactor',
-		'laserReactor',
-		'speedRamp',
-		'suppressor',
-		'repeater'
+		'minFrontLeftObstacleDistance',
+		'minFrontRightObstacleDistance'
 	],
-	#category : #'BotController-OLD-Behaviors'
+	#category : #'BotController-Controllers'
 }
 
-{ #category : #accessing }
-BcObstacleAvoiderOLD >> body: aBody [
-	super body: aBody.
-	speedRamp body: aBody.
-	repeater body: aBody
+{ #category : #living }
+BcObstacleAvoiderOLD >> laserScan: echoes [
+	minFrontLeftObstacleDistance := 100.
+	minFrontRightObstacleDistance := minFrontLeftObstacleDistance.
+	echoes do: [ : each | self updateObstacleDistanceFrom: each].
+	minFrontObstacleDistance := minFrontLeftObstacleDistance min: minFrontRightObstacleDistance
+	
 ]
 
-{ #category : #'initialize-release' }
-BcObstacleAvoiderOLD >> initialize [
-	super initialize.
-	repeater := BcRepeater duration: 50 milliSeconds period: 10 milliSeconds.
-	bumperReactor := BcBumperObstacleAvoider body: repeater.
-	speedRamp := BcSpeedRamp valuesCount: 5.
-	suppressor := BcSuppressor duration: 500 milliSeconds.
-	suppressor body: speedRamp.
-	laserReactor := BcLaserObstacleAvoider body: suppressor
+{ #category : #living }
+BcObstacleAvoiderOLD >> maxSpeed [
+	^0.3
 ]
 
-{ #category : #reactions }
-BcObstacleAvoiderOLD >> updateSpeedFromBumperEvent: bumperEvent [
-	suppressor start.
-	speedRamp reset.
-	bumperReactor updateSpeedFromBumperEvent: bumperEvent
+{ #category : #living }
+BcObstacleAvoiderOLD >> move [
+	| leftSpeed rightSpeed |
+	leftSpeed := self turnSpeedFromObstacleDistance: minFrontRightObstacleDistance.
+	rightSpeed := self turnSpeedFromObstacleDistance: minFrontLeftObstacleDistance.
+Transcript cr;
+	show: 'leftSpeed: ';
+	show: leftSpeed;
+	cr;
+	show: 'rightSpeed: ';
+	show: rightSpeed;
+	cr; cr.
+"	self body 
+		leftSpeed: leftSpeed 
+		rightSpeed: rightSpeed 
+"
+"	minFrontLeftObstacleDistance < minFrontRightObstacleDistance ifTrue: [ ^self turnRight ].
+	self turnLeft"
 ]
 
-{ #category : #reactions }
-BcObstacleAvoiderOLD >> updateSpeedFromLaserScan: scanFrame [
-	laserReactor updateSpeedFromLaserScan: scanFrame
+{ #category : #living }
+BcObstacleAvoiderOLD >> turnLeft [
+	| leftSpeed |
+	leftSpeed := self turnSpeedFromObstacleDistance: minFrontRightObstacleDistance.
+	"self body 
+		leftSpeed: leftSpeed
+		rightSpeed: self maxSpeed  
+"
+]
+
+{ #category : #living }
+BcObstacleAvoiderOLD >> turnRight [
+	| rightSpeed |
+	rightSpeed := self turnSpeedFromObstacleDistance: minFrontLeftObstacleDistance.
+	"self body 
+		leftSpeed: self maxSpeed 
+		rightSpeed: rightSpeed 
+"
+]
+
+{ #category : #living }
+BcObstacleAvoiderOLD >> turnSpeedFromObstacleDistance: distanceToObstacle [
+	^distanceToObstacle - self maxSpeed.
+
+]
+
+{ #category : #living }
+BcObstacleAvoiderOLD >> updateObstacleDistanceFrom: anEcho [
+	| obstacleDistance |
+	(self isFrontEcho: anEcho) ifFalse: [ ^self ].
+	obstacleDistance := anEcho distance * anEcho angle cos.
+	anEcho angle < 0 ifTrue: [
+		^minFrontRightObstacleDistance := minFrontRightObstacleDistance min: obstacleDistance].
+	minFrontLeftObstacleDistance := minFrontLeftObstacleDistance min: obstacleDistance
 ]

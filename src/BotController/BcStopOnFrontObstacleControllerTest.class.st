@@ -1,28 +1,32 @@
 Class {
 	#name : #BcStopOnFrontObstacleControllerTest,
-	#superclass : #TestCase,
-	#traits : 'NeTWait',
-	#classTraits : 'NeTWait classTrait',
-	#instVars : [
-		'body',
-		'controller'
-	],
+	#superclass : #BcControllerTest,
 	#category : #'BotController-Controllers'
 }
 
 { #category : #testing }
-BcStopOnFrontObstacleControllerTest >> setUp [
-	super setUp.
-	body := BcNullTwoWheelBody new.
-	controller := BcStopOnFrontObstacleController body: body.
-	controller start.
-	self waitUntilRobotStarted
+BcStopOnFrontObstacleControllerTest >> controllerClass [
+	^ BcStopOnFrontObstacleController
 ]
 
 { #category : #testing }
-BcStopOnFrontObstacleControllerTest >> tearDown [
-	super tearDown.
-	controller stop. 
+BcStopOnFrontObstacleControllerTest >> testDoNotRestartAfterStopIfObstacleIsClose [
+	| echoObstacleTooClose echoObstacleNotFarEnough |
+	echoObstacleTooClose := PNGLaserEcho new.
+	echoObstacleTooClose distance: 0.1.
+	echoObstacleTooClose angle: 0.
+	body latestLaserScan: {echoObstacleTooClose}.
+	self waitWhile: [body forwardSpeed > 0] timeout: self defaultTimeoutDuration.
+	self assert: body forwardSpeed equals: 0.
+	self assert: body rotationSpeed equals: 0.
+	echoObstacleNotFarEnough := PNGLaserEcho new.
+	echoObstacleNotFarEnough distance: 0.25.
+	echoObstacleNotFarEnough angle: 0.
+	body latestLaserScan: {echoObstacleNotFarEnough}.
+   controller step.
+	self assert: body forwardSpeed equals: 0.
+	self assert: body rotationSpeed equals: 0.
+
 ]
 
 { #category : #testing }
@@ -43,15 +47,18 @@ BcStopOnFrontObstacleControllerTest >> testMovesAfterStartIfNoObstacle [
 
 { #category : #testing }
 BcStopOnFrontObstacleControllerTest >> testRestartAfterStopIfObstacleIsFarEnough [
-	| echo |
-	echo := PNGLaserEcho new.
-	echo distance: 0.
-	echo angle: 0.
-	body latestLaserScan: {echo}.
+	| echoObstacleClose echoObstacleFar |
+	echoObstacleClose := PNGLaserEcho new.
+	echoObstacleClose distance: 0.12.
+	echoObstacleClose angle: 0.
+	body latestLaserScan: {echoObstacleClose}.
 	self waitWhile: [body forwardSpeed > 0] timeout: self defaultTimeoutDuration.
 	self assert: body forwardSpeed equals: 0.
 	self assert: body rotationSpeed equals: 0.
-	body latestLaserScan: #().
+	echoObstacleFar := PNGLaserEcho new.
+	echoObstacleFar distance: 0.5.
+	echoObstacleFar angle: 0.
+	body latestLaserScan: {echoObstacleFar}.
 	self waitWhile: [body forwardSpeed = 0] timeout: self defaultTimeoutDuration.
 	self assert: body forwardSpeed > 0.
 
@@ -67,11 +74,4 @@ BcStopOnFrontObstacleControllerTest >> testStopIfCloseFrontObstacleWhileMoving [
 	self waitWhile: [body forwardSpeed > 0] timeout: self defaultTimeoutDuration.
 	self assert: body forwardSpeed equals: 0.
 	self assert: body rotationSpeed equals: 0.
-]
-
-{ #category : #testing }
-BcStopOnFrontObstacleControllerTest >> waitUntilRobotStarted [
-	self
-		waitWhile: [ body forwardSpeed isNil ]
-		timeout: self defaultTimeoutDuration
 ]

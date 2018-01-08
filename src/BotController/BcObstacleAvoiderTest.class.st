@@ -6,7 +6,7 @@ Class {
 
 { #category : #testing }
 BcObstacleAvoiderTest >> behaviorClass [
-	^BcObstacleAvoiderOLD 
+	^BcObstacleAvoiderBehaviorOLD 
 ]
 
 { #category : #testing }
