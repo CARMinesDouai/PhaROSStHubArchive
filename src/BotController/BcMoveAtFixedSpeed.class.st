@@ -15,7 +15,7 @@ BcMoveAtFixedSpeed >> defaultForwardSpeed [
 
 { #category : #initialization }
 BcMoveAtFixedSpeed >> defaultRotationSpeed [
-	^0
+	^0.1
 ]
 
 { #category : #accessing }
@@ -28,11 +28,16 @@ BcMoveAtFixedSpeed >> forwardSpeed: anObject [
 	forwardSpeed := anObject
 ]
 
+{ #category : #accessing }
+BcMoveAtFixedSpeed >> forwardSpeed: newForwardSpeed rotationSpeed: newRotationSpeed [
+	self forwardSpeed: newForwardSpeed.
+	self rotationSpeed: newRotationSpeed.
+]
+
 { #category : #initialization }
 BcMoveAtFixedSpeed >> initialize [
 	super initialize.
-	self forwardSpeed: self defaultForwardSpeed.
-	self rotationSpeed: self defaultRotationSpeed.
+	self forwardSpeed: self defaultForwardSpeed rotationSpeed: self defaultRotationSpeed.
 ]
 
 { #category : #accessing }

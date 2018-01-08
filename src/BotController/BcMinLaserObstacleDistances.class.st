@@ -42,7 +42,7 @@ BcMinLaserObstacleDistances >> isRearEcho: anEcho [
 	^anEcho angle abs > 1.57 "Half Pi"
 ]
 
-{ #category : #updating }
+{ #category : #'initialize-release' }
 BcMinLaserObstacleDistances >> reset [
 	frontLeft := Float infinity.
 	frontRight := Float infinity.

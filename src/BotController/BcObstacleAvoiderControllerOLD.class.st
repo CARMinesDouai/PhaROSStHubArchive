@@ -1,6 +1,6 @@
 Class {
 	#name : #BcObstacleAvoiderControllerOLD,
-	#superclass : #BcStopOnFrontObstacleControllerOLD,
+	#superclass : #BcStopOnFrontObstacleController,
 	#instVars : [
 		'minFrontLeftObstacleDistance',
 		'minFrontRightObstacleDistance'

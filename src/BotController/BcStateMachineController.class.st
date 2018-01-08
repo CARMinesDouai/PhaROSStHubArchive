@@ -19,9 +19,9 @@ Class {
 	#superclass : #BcSingleThreadController,
 	#instVars : [
 		'stateMachine',
-		'stopBehavior',
-		'stopAction',
-		'currentAction'
+		'currentAction',
+		'stopState',
+		'stopAction'
 	],
 	#category : #'BotController-Controllers'
 }
@@ -33,13 +33,13 @@ BcStateMachineController >> act [
 
 { #category : #initialization }
 BcStateMachineController >> initStatesAndTransitions [
-	stopAction := stateMachine newStateOnEntryDo: [currentAction := stopBehavior].
+	stopState := stateMachine newStateOnEntryDo: [currentAction := stopAction].
 
 ]
 
 { #category : #initialization }
 BcStateMachineController >> initialState [
-	^stopAction
+	^stopState
 ]
 
 { #category : #initialization }
@@ -47,7 +47,7 @@ BcStateMachineController >> initialize [
 	super initialize.
 	stateMachine := SmAutomaton new.
 	self initStatesAndTransitions.
-	stopBehavior := BcStop new.
+	stopAction := self newAction: BcStop.
 
 ]
 
@@ -58,6 +58,7 @@ BcStateMachineController >> plan [
 
 { #category : #living }
 BcStateMachineController >> start [
-	super start.
 	stateMachine initialState: self initialState.
+	super start.
+
 ]

@@ -1,12 +1,20 @@
 Class {
 	#name : #BcTwoWheelBody,
 	#superclass : #Object,
+	#instVars : [
+		'latestLaserScan'
+	],
 	#category : #'BotController-Bodies'
 }
 
 { #category : #acting }
 BcTwoWheelBody >> interWheelsDistance [
 	self subclassResponsibility
+]
+
+{ #category : #sensing }
+BcTwoWheelBody >> latestLaserScan [
+	^latestLaserScan ifNil: [ #() ]
 ]
 
 { #category : #acting }
@@ -24,6 +32,12 @@ BcTwoWheelBody >> shutDown [
 	self stop
 ]
 
+{ #category : #sensing }
+BcTwoWheelBody >> startLaserScanner [
+	self onLaserScanDo: [ : echoes | latestLaserScan := echoes].
+
+]
+
 { #category : #acting }
 BcTwoWheelBody >> startUp [
 	^self
@@ -32,6 +46,11 @@ BcTwoWheelBody >> startUp [
 { #category : #acting }
 BcTwoWheelBody >> stop [
 	self velocityForward: 0 rotation: 0
+]
+
+{ #category : #sensing }
+BcTwoWheelBody >> stopLaserScanner [
+	self subclassResponsibility
 ]
 
 { #category : #acting }

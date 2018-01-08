@@ -35,6 +35,11 @@ BcController class >> pureRobulab2 [
 	^self body: BcRobulabPure robulab2
 ]
 
+{ #category : #living }
+BcController >> act [
+	^self
+]
+
 { #category : #accessing }
 BcController >> body [
 	^ body
@@ -46,9 +51,31 @@ BcController >> body: anObject [
 
 ]
 
+{ #category : #'initialize-release' }
+BcController >> newAction: behaviorClass [
+	^behaviorClass controller: self
+]
+
+{ #category : #living }
+BcController >> plan [
+	^self
+]
+
+{ #category : #living }
+BcController >> sense [
+	^self
+]
+
 { #category : #living }
 BcController >> start [
 	self body startUp.
+]
+
+{ #category : #living }
+BcController >> step [
+	self sense.
+	self plan.
+	self act.
 ]
 
 { #category : #living }

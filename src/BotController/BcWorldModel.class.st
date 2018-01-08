@@ -5,6 +5,12 @@ Class {
 }
 
 { #category : #'initialize-release' }
+BcWorldModel >> initialize [
+	super initialize.
+	self reset.
+]
+
+{ #category : #'initialize-release' }
 BcWorldModel >> reset [
 	^self
 ]

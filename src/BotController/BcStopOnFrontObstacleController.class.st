@@ -20,7 +20,8 @@ Class {
 	#name : #BcStopOnFrontObstacleController,
 	#superclass : #BcStateMachineController,
 	#instVars : [
-		'moveAction'
+		'moveAction',
+		'obstacleDistances'
 	],
 	#category : #'BotController-Controllers'
 }
@@ -30,12 +31,45 @@ BcStopOnFrontObstacleController >> initStatesAndTransitions [
 	| moveState |
 	super initStatesAndTransitions.
 	moveState := stateMachine newStateDoing: [ currentAction := moveAction ].
-	stopAction transitionTo: moveState when: [ self isObstacleClose not ].
-	moveState transitionTo: stopAction when: [ self isObstacleClose ]
+	stopState transitionTo: moveState when: [ self shouldMove ].
+	moveState transitionTo: stopState when: [ self shouldStop ]
+]
+
+{ #category : #initialization }
+BcStopOnFrontObstacleController >> initialize [
+	super initialize.
+	moveAction := self newAction: BcMoveAtFixedSpeed.
+	obstacleDistances := BcMinLaserObstacleDistances new.
+
+]
+
+{ #category : #testing }
+BcStopOnFrontObstacleController >> moveDistance [
+	^0.30
+]
+
+{ #category : #living }
+BcStopOnFrontObstacleController >> sense [
+	obstacleDistances updateFromAllEchoes: body latestLaserScan
+]
+
+{ #category : #testing }
+BcStopOnFrontObstacleController >> shouldMove [
+	^obstacleDistances front > self moveDistance
+]
+
+{ #category : #testing }
+BcStopOnFrontObstacleController >> shouldStop [
+	^obstacleDistances front < self stopDistance
 ]
 
 { #category : #living }
 BcStopOnFrontObstacleController >> start [
 	super start.
 	self body startLaserScanner.
+]
+
+{ #category : #testing }
+BcStopOnFrontObstacleController >> stopDistance [
+	^0.15
 ]

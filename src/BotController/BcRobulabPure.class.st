@@ -59,6 +59,7 @@ BcRobulabPure >> shutDown [
 
 { #category : #sensing }
 BcRobulabPure >> startLaserScanner [
+	super startLaserScanner.
 	self startLaserScannerPeriod: 0
 ]
 
