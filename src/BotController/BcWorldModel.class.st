@@ -1,7 +1,7 @@
 Class {
 	#name : #BcWorldModel,
 	#superclass : #Object,
-	#category : #'BotController-Controllers'
+	#category : #'BotController-WorldModel'
 }
 
 { #category : #'initialize-release' }

@@ -1,7 +1,7 @@
 Class {
 	#name : #BcStopOnFrontObstacleControllerTest,
 	#superclass : #BcControllerTest,
-	#category : #'BotController-Controllers'
+	#category : #'BotController-Tests'
 }
 
 { #category : #testing }
@@ -16,14 +16,14 @@ BcStopOnFrontObstacleControllerTest >> testDoNotRestartAfterStopIfObstacleIsClos
 	echoObstacleTooClose distance: 0.1.
 	echoObstacleTooClose angle: 0.
 	body latestLaserScan: {echoObstacleTooClose}.
-	self waitWhile: [body forwardSpeed > 0] timeout: self defaultTimeoutDuration.
+	runner step.
 	self assert: body forwardSpeed equals: 0.
 	self assert: body rotationSpeed equals: 0.
 	echoObstacleNotFarEnough := PNGLaserEcho new.
 	echoObstacleNotFarEnough distance: 0.25.
 	echoObstacleNotFarEnough angle: 0.
 	body latestLaserScan: {echoObstacleNotFarEnough}.
-   controller step.
+   runner step.
 	self assert: body forwardSpeed equals: 0.
 	self assert: body rotationSpeed equals: 0.
 
@@ -36,12 +36,13 @@ BcStopOnFrontObstacleControllerTest >> testIgnoreSideObstacleWhileMoving [
 	echo distance: 0.
 	echo angle: 2. "Radians"
 	body latestLaserScan: {echo}.
-	controller step.
+	runner step.
 	self assert: body forwardSpeed > 0.
 ]
 
 { #category : #testing }
 BcStopOnFrontObstacleControllerTest >> testMovesAfterStartIfNoObstacle [
+	runner step.
 	self assert: body forwardSpeed > 0
 ]
 
@@ -52,26 +53,64 @@ BcStopOnFrontObstacleControllerTest >> testRestartAfterStopIfObstacleIsFarEnough
 	echoObstacleClose distance: 0.12.
 	echoObstacleClose angle: 0.
 	body latestLaserScan: {echoObstacleClose}.
-	self waitWhile: [body forwardSpeed > 0] timeout: self defaultTimeoutDuration.
+	runner step.
 	self assert: body forwardSpeed equals: 0.
 	self assert: body rotationSpeed equals: 0.
 	echoObstacleFar := PNGLaserEcho new.
 	echoObstacleFar distance: 0.5.
 	echoObstacleFar angle: 0.
 	body latestLaserScan: {echoObstacleFar}.
-	self waitWhile: [body forwardSpeed = 0] timeout: self defaultTimeoutDuration.
+	runner step.
 	self assert: body forwardSpeed > 0.
 
 ]
 
 { #category : #testing }
-BcStopOnFrontObstacleControllerTest >> testStopIfCloseFrontObstacleWhileMoving [
+BcStopOnFrontObstacleControllerTest >> testStopIfCloseToFrontLeftObstacleWhileMoving [
+	| echo |
+	echo := PNGLaserEcho new.
+	echo distance: 0.27. 
+	echo angle: 1. "Front angles are < Pi/3"
+	self assert: echo distance > controller stopDistance. 
+	body latestLaserScan: {echo}.
+	runner step.
+	self assert: body forwardSpeed equals: 0.
+	self assert: body rotationSpeed equals: 0.
+]
+
+{ #category : #testing }
+BcStopOnFrontObstacleControllerTest >> testStopIfCloseToFrontObstacleWhileMoving [
 	| echo |
 	echo := PNGLaserEcho new.
 	echo distance: 0.
 	echo angle: 0.
 	body latestLaserScan: {echo}.
-	self waitWhile: [body forwardSpeed > 0] timeout: self defaultTimeoutDuration.
+	runner step.
+	self assert: body forwardSpeed equals: 0.
+	self assert: body rotationSpeed equals: 0.
+]
+
+{ #category : #testing }
+BcStopOnFrontObstacleControllerTest >> testStopIfCloseToFrontRightObstacleWhileMoving [
+	| echo |
+	echo := PNGLaserEcho new.
+	echo distance: 0.27. 
+	echo angle: -1. "Front angles are < Pi/3"
+	self assert: echo distance > controller stopDistance. 
+	body latestLaserScan: {echo}.
+	runner step.
+	self assert: body forwardSpeed equals: 0.
+	self assert: body rotationSpeed equals: 0.
+]
+
+{ #category : #testing }
+BcStopOnFrontObstacleControllerTest >> testStopIfTouchingFrontObstacleWhileMoving [
+	| echo |
+	echo := PNGLaserEcho new.
+	echo distance: 0.
+	echo angle: 0.
+	body latestLaserScan: {echo}.
+	runner step.
 	self assert: body forwardSpeed equals: 0.
 	self assert: body rotationSpeed equals: 0.
 ]

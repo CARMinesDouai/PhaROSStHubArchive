@@ -9,7 +9,7 @@ Class {
 		'frontLeft',
 		'frontRight'
 	],
-	#category : #'BotController-Controllers'
+	#category : #'BotController-WorldModel'
 }
 
 { #category : #accessing }
@@ -34,12 +34,18 @@ BcMinLaserObstacleDistances >> isFrontEcho: anEcho [
 
 { #category : #testing }
 BcMinLaserObstacleDistances >> isLeftEcho: anEcho [
-	^anEcho angle abs > 0 
+	^anEcho angle > 0 
 ]
 
 { #category : #testing }
 BcMinLaserObstacleDistances >> isRearEcho: anEcho [
 	^anEcho angle abs > 1.57 "Half Pi"
+]
+
+{ #category : #updating }
+BcMinLaserObstacleDistances >> min: distance frontEcho: anEcho [
+	^distance min: (anEcho distance * anEcho angle cos)
+
 ]
 
 { #category : #'initialize-release' }
@@ -96,7 +102,7 @@ BcMinLaserObstacleDistances >> updateFromEcho: anEcho [
 
 { #category : #updating }
 BcMinLaserObstacleDistances >> updateFromLeftEcho: anEcho [
-	(self isFrontEcho: anEcho) ifTrue: [^frontLeft := frontLeft min: anEcho distance].
+	(self isFrontEcho: anEcho) ifTrue: [^frontLeft := self min: frontLeft frontEcho: anEcho].
 	(self isRearEcho: anEcho) ifTrue: [^sideLeftRear := sideLeftRear min: anEcho distance].
 	sideLeftFront := sideLeftFront min: anEcho distance
 ]

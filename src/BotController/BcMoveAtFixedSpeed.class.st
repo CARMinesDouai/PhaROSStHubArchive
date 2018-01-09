@@ -5,7 +5,7 @@ Class {
 		'forwardSpeed',
 		'rotationSpeed'
 	],
-	#category : #'BotController-Controllers'
+	#category : #'BotController-Actions'
 }
 
 { #category : #initialization }

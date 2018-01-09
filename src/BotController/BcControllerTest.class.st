@@ -1,13 +1,12 @@
 Class {
 	#name : #BcControllerTest,
 	#superclass : #TestCase,
-	#traits : 'NeTWait',
-	#classTraits : 'NeTWait classTrait',
 	#instVars : [
 		'body',
-		'controller'
+		'controller',
+		'runner'
 	],
-	#category : #'BotController-Controllers'
+	#category : #'BotController-Tests'
 }
 
 { #category : #testing }
@@ -19,20 +18,14 @@ BcControllerTest >> controllerClass [
 BcControllerTest >> setUp [
 	super setUp.
 	body := BcNullTwoWheelBody new.
-	controller := self controllerClass body: body.
+	controller := self controllerClass body: body runnerClass: BcNullRunner.
+	runner := controller runner.
 	controller start.
-	self waitUntilRobotStarted
+
 ]
 
 { #category : #testing }
 BcControllerTest >> tearDown [
 	super tearDown.
 	controller stop. 
-]
-
-{ #category : #testing }
-BcControllerTest >> waitUntilRobotStarted [
-	self
-		waitWhile: [ body forwardSpeed isNil ]
-		timeout: self defaultTimeoutDuration
 ]

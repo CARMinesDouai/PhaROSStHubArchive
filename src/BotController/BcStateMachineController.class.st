@@ -1,22 +1,6 @@
-"
-I am a controller based on a state machine. The initial state is stop.
-Subclasses can extend and adapt the state machine by redefining methods:
--iniitStateAndTransitions
--initialState
-
-The initial state is set only once the controller is started (message start). This is because the initial state might perform some action on the body. 
-The default initial state (stopState) does set the body's speed to 0.
-
-    Instance Variables
-	stateMachine:		<SmAutomaton>
-	stopState:		<SmState>
-
-
-
-"
 Class {
 	#name : #BcStateMachineController,
-	#superclass : #BcSingleThreadController,
+	#superclass : #BcController,
 	#instVars : [
 		'stateMachine',
 		'currentAction',

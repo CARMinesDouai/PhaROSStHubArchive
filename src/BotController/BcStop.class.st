@@ -1,7 +1,7 @@
 Class {
 	#name : #BcStop,
 	#superclass : #BcAction,
-	#category : #'BotController-Controllers'
+	#category : #'BotController-Actions'
 }
 
 { #category : #stepping }

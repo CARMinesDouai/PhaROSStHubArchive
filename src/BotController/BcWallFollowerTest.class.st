@@ -1,7 +1,7 @@
 Class {
 	#name : #BcWallFollowerTest,
 	#superclass : #BcStopOnFrontObstacleControllerTest,
-	#category : #'BotController-Controllers'
+	#category : #'BotController-Tests'
 }
 
 { #category : #testing }

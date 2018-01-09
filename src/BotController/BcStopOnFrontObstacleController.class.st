@@ -38,9 +38,13 @@ BcStopOnFrontObstacleController >> initStatesAndTransitions [
 { #category : #initialization }
 BcStopOnFrontObstacleController >> initialize [
 	super initialize.
-	moveAction := self newAction: BcMoveAtFixedSpeed.
-	obstacleDistances := BcMinLaserObstacleDistances new.
+	moveAction := self newAction: self moveActionClass.
+	obstacleDistances := BcMinLaserObstacleDistances new
+]
 
+{ #category : #initialization }
+BcStopOnFrontObstacleController >> moveActionClass [
+	^ BcMoveAtFixedSpeed
 ]
 
 { #category : #testing }

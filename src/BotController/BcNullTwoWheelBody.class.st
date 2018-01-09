@@ -6,7 +6,7 @@ Class {
 		'rotationSpeed',
 		'onLaserScanBlock'
 	],
-	#category : #'BotController-Bodies'
+	#category : #'BotController-Tests'
 }
 
 { #category : #accessing }

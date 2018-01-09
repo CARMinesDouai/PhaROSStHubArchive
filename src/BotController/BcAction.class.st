@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'controller'
 	],
-	#category : #'BotController-Controllers'
+	#category : #'BotController-Actions'
 }
 
 { #category : #'instance creation' }

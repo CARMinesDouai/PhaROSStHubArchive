@@ -6,7 +6,7 @@ Class {
 		'minFrontLeftObstacleDistance',
 		'minFrontRightObstacleDistance'
 	],
-	#category : #'BotController-Controllers'
+	#category : #'BotController-Actions'
 }
 
 { #category : #initialization }

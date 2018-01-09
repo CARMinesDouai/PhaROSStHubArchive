@@ -1,18 +1,8 @@
-"
-I am an abstract controller.
-I meanly provide facility methods to create more concrete controllers.
-Classe side methods allow creating controllers connected to pre-built bodies such as the ones of robobulab and turtlebot
-
-
-    Instance Variables
-	body:		<Object>
-
-
-"
 Class {
 	#name : #BcController,
 	#superclass : #Object,
 	#instVars : [
+		'runner',
 		'body'
 	],
 	#category : #'BotController-Controllers'
@@ -26,13 +16,20 @@ BcController class >> body: aBcBody [
 ]
 
 { #category : #'instance creation' }
+BcController class >> body: aBcBody runnerClass: aRunnerClass [
+	^(self body: aBcBody)
+		runnerClass: aRunnerClass;
+		yourself
+]
+
+{ #category : #'instance creation' }
 BcController class >> pureRobulab1 [
-	^self body: BcRobulabPure robulab1
+	^self body: BcRobulabPure robulab1 runnerClass: BcSingleThreadRunner
 ]
 
 { #category : #'instance creation' }
 BcController class >> pureRobulab2 [
-	^self body: BcRobulabPure robulab2
+	^self body: BcRobulabPure robulab2 runnerClass: BcSingleThreadRunner
 ]
 
 { #category : #living }
@@ -56,9 +53,29 @@ BcController >> newAction: behaviorClass [
 	^behaviorClass controller: self
 ]
 
+{ #category : #'initialize-release' }
+BcController >> newRunner: runnerClass [
+	^runnerClass controller: self
+]
+
 { #category : #living }
 BcController >> plan [
 	^self
+]
+
+{ #category : #accessing }
+BcController >> runner [
+	^ runner
+]
+
+{ #category : #accessing }
+BcController >> runner: anObject [
+	runner := anObject
+]
+
+{ #category : #'initialize-release' }
+BcController >> runnerClass: runnerClass [
+	self runner: (self newRunner: runnerClass)
 ]
 
 { #category : #living }
@@ -69,13 +86,7 @@ BcController >> sense [
 { #category : #living }
 BcController >> start [
 	self body startUp.
-]
-
-{ #category : #living }
-BcController >> step [
-	self sense.
-	self plan.
-	self act.
+	self runner start.
 ]
 
 { #category : #living }
