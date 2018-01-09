@@ -39,7 +39,7 @@ BcStopOnFrontObstacleController >> initStatesAndTransitions [
 BcStopOnFrontObstacleController >> initialize [
 	super initialize.
 	moveAction := self newAction: self moveActionClass.
-	obstacleDistances := BcMinLaserObstacleDistances new
+	self obstacleDistances: BcMinLaserObstacleDistances new
 ]
 
 { #category : #initialization }
@@ -52,19 +52,29 @@ BcStopOnFrontObstacleController >> moveDistance [
 	^0.30
 ]
 
+{ #category : #accessing }
+BcStopOnFrontObstacleController >> obstacleDistances [
+	^ obstacleDistances
+]
+
+{ #category : #accessing }
+BcStopOnFrontObstacleController >> obstacleDistances: anObject [
+	obstacleDistances := anObject
+]
+
 { #category : #living }
 BcStopOnFrontObstacleController >> sense [
-	obstacleDistances updateFromAllEchoes: body latestLaserScan
+	self obstacleDistances updateFromAllEchoes: body latestLaserScan
 ]
 
 { #category : #testing }
 BcStopOnFrontObstacleController >> shouldMove [
-	^obstacleDistances front > self moveDistance
+	^self obstacleDistances front > self moveDistance
 ]
 
 { #category : #testing }
 BcStopOnFrontObstacleController >> shouldStop [
-	^obstacleDistances front < self stopDistance
+	^self obstacleDistances front < self stopDistance
 ]
 
 { #category : #living }
