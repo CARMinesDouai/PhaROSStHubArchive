@@ -21,10 +21,32 @@ Class {
 	#superclass : #BcStateMachineController,
 	#instVars : [
 		'moveAction',
-		'obstacleDistances'
+		'obstacleDistances',
+		'stopDistance',
+		'moveDistance'
 	],
 	#category : #'BotController-Controllers'
 }
+
+{ #category : #initialization }
+BcStopOnFrontObstacleController >> defaultMoveDistance [
+	^self defaultStopDistance + 0.05
+]
+
+{ #category : #initialization }
+BcStopOnFrontObstacleController >> defaultStopDistance [
+	^0.2
+]
+
+{ #category : #accessing }
+BcStopOnFrontObstacleController >> forwardSpeed: newForwardSpeed [
+	moveAction forwardSpeed: newForwardSpeed
+]
+
+{ #category : #accessing }
+BcStopOnFrontObstacleController >> forwardSpeed: newForwardSpeed rotationSpeed: newRotationSpeed [
+	moveAction forwardSpeed: newForwardSpeed rotationSpeed: newRotationSpeed
+]
 
 { #category : #initialization }
 BcStopOnFrontObstacleController >> initStatesAndTransitions [
@@ -39,7 +61,9 @@ BcStopOnFrontObstacleController >> initStatesAndTransitions [
 BcStopOnFrontObstacleController >> initialize [
 	super initialize.
 	moveAction := self newAction: self moveActionClass.
-	self obstacleDistances: BcMinLaserObstacleDistances new
+	self obstacleDistances: BcMinLaserObstacleDistances new.
+	self stopDistance: self defaultStopDistance.
+	self moveDistance: self defaultMoveDistance.
 ]
 
 { #category : #initialization }
@@ -47,9 +71,14 @@ BcStopOnFrontObstacleController >> moveActionClass [
 	^ BcMoveAtFixedSpeed
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 BcStopOnFrontObstacleController >> moveDistance [
-	^0.30
+	^moveDistance
+]
+
+{ #category : #accessing }
+BcStopOnFrontObstacleController >> moveDistance: newMoveDistance [
+	^moveDistance := newMoveDistance
 ]
 
 { #category : #accessing }
@@ -60,6 +89,11 @@ BcStopOnFrontObstacleController >> obstacleDistances [
 { #category : #accessing }
 BcStopOnFrontObstacleController >> obstacleDistances: anObject [
 	obstacleDistances := anObject
+]
+
+{ #category : #accessing }
+BcStopOnFrontObstacleController >> rotationSpeed: newRotationSpeed [
+	moveAction rotationSpeed: newRotationSpeed
 ]
 
 { #category : #living }
@@ -83,7 +117,12 @@ BcStopOnFrontObstacleController >> start [
 	self body startLaserScanner.
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 BcStopOnFrontObstacleController >> stopDistance [
-	^0.15
+	^stopDistance
+]
+
+{ #category : #accessing }
+BcStopOnFrontObstacleController >> stopDistance: newStopDistance [
+	^stopDistance := newStopDistance
 ]

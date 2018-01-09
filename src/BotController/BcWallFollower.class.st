@@ -4,12 +4,22 @@ Class {
 	#category : #'BotController-Controllers'
 }
 
-{ #category : #initialization }
+{ #category : #accessing }
+BcWallFollower >> maxAcceptableDistance [
+	^moveAction maxAcceptableDistance
+]
+
+{ #category : #accessing }
 BcWallFollower >> maxAcceptableDistance: distance [
 	moveAction maxAcceptableDistance: distance
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
+BcWallFollower >> minAcceptableDistance [
+	^moveAction minAcceptableDistance
+]
+
+{ #category : #accessing }
 BcWallFollower >> minAcceptableDistance: distance [
 	moveAction minAcceptableDistance: distance
 ]

@@ -10,12 +10,20 @@ Class {
 }
 
 { #category : #initialization }
+BcSingleThreadRunner >> defaultInterStepDuration [
+	^50 milliSeconds 
+]
+
+{ #category : #initialization }
+BcSingleThreadRunner >> defaultPriority [
+	^Processor userInterruptPriority
+]
+
+{ #category : #initialization }
 BcSingleThreadRunner >> initialize [
 	super initialize.
-	thread := ActiveObject 
-		repeat: [ self controller step ] 
-		every: self defaultInterStepDuration.
-	thread priority: self defaultPriority.
+	self interStepDuration: self defaultInterStepDuration.
+	self priority: self defaultPriority.
 ]
 
 { #category : #accessing }
@@ -26,6 +34,12 @@ BcSingleThreadRunner >> interStepDuration [
 { #category : #accessing }
 BcSingleThreadRunner >> interStepDuration: anObject [
 	interStepDuration := anObject
+]
+
+{ #category : #living }
+BcSingleThreadRunner >> isStarted [
+	thread ifNil:[^false].
+	^thread isStarted 
 ]
 
 { #category : #accessing }
@@ -40,6 +54,11 @@ BcSingleThreadRunner >> priority: anObject [
 
 { #category : #living }
 BcSingleThreadRunner >> start [
+	self isStarted ifTrue: [ ^self ].
+	thread := ActiveObject 
+		repeat: [ self step ] 
+		every: self interStepDuration.
+	thread priority: self priority.
 	thread start
 ]
 

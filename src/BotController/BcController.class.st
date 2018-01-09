@@ -91,5 +91,7 @@ BcController >> start [
 
 { #category : #living }
 BcController >> stop [
-	self body shutDown
+	self body shutDown.
+	self runner stop.
+
 ]

@@ -8,9 +8,21 @@ Class {
 	#category : #'BotController-Actions'
 }
 
-{ #category : #stepping }
-BcFollowWall >> distanceToWall [
+{ #category : #accessing }
+BcFollowWall >> distanceToFrontWall [
+	^self controller obstacleDistances frontLeft
+]
+
+{ #category : #accessing }
+BcFollowWall >> distanceToSideWall [
 	^self controller obstacleDistances sideLeftFront 
+]
+
+{ #category : #initialization }
+BcFollowWall >> initialize [
+	super initialize.
+	self minAcceptableDistance: 0.2.
+	self maxAcceptableDistance: 0.4.
 ]
 
 { #category : #accessing }
@@ -42,7 +54,7 @@ BcFollowWall >> step [
 
 { #category : #stepping }
 BcFollowWall >> updateVelocity [
-	self distanceToWall < self minAcceptableDistance ifTrue: [ ^self rotationSpeed: 0.1 ].
-	self distanceToWall > self maxAcceptableDistance ifTrue: [ ^self rotationSpeed: -0.1 ].
+	self distanceToSideWall < self minAcceptableDistance ifTrue: [ ^self rotationSpeed: -0.2 ].
+	self distanceToSideWall > self maxAcceptableDistance ifTrue: [ ^self rotationSpeed: 0.2 ].
 	self rotationSpeed: 0
 ]

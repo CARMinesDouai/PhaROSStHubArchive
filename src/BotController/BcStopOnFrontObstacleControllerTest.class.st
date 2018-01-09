@@ -10,6 +10,12 @@ BcStopOnFrontObstacleControllerTest >> controllerClass [
 ]
 
 { #category : #testing }
+BcStopOnFrontObstacleControllerTest >> setUp [
+	super setUp.
+
+]
+
+{ #category : #testing }
 BcStopOnFrontObstacleControllerTest >> testDoNotRestartAfterStopIfObstacleIsClose [
 	| echoObstacleTooClose echoObstacleNotFarEnough |
 	echoObstacleTooClose := PNGLaserEcho new.
@@ -69,7 +75,7 @@ BcStopOnFrontObstacleControllerTest >> testRestartAfterStopIfObstacleIsFarEnough
 BcStopOnFrontObstacleControllerTest >> testStopIfCloseToFrontLeftObstacleWhileMoving [
 	| echo |
 	echo := PNGLaserEcho new.
-	echo distance: 0.27. 
+	echo distance: controller stopDistance + 0.1. 
 	echo angle: 1. "Front angles are < Pi/3"
 	self assert: echo distance > controller stopDistance. 
 	body latestLaserScan: {echo}.
@@ -82,7 +88,7 @@ BcStopOnFrontObstacleControllerTest >> testStopIfCloseToFrontLeftObstacleWhileMo
 BcStopOnFrontObstacleControllerTest >> testStopIfCloseToFrontObstacleWhileMoving [
 	| echo |
 	echo := PNGLaserEcho new.
-	echo distance: 0.
+	echo distance: 0.1.
 	echo angle: 0.
 	body latestLaserScan: {echo}.
 	runner step.
@@ -94,21 +100,9 @@ BcStopOnFrontObstacleControllerTest >> testStopIfCloseToFrontObstacleWhileMoving
 BcStopOnFrontObstacleControllerTest >> testStopIfCloseToFrontRightObstacleWhileMoving [
 	| echo |
 	echo := PNGLaserEcho new.
-	echo distance: 0.27. 
+	echo distance: controller stopDistance + 0.1. 
 	echo angle: -1. "Front angles are < Pi/3"
 	self assert: echo distance > controller stopDistance. 
-	body latestLaserScan: {echo}.
-	runner step.
-	self assert: body forwardSpeed equals: 0.
-	self assert: body rotationSpeed equals: 0.
-]
-
-{ #category : #testing }
-BcStopOnFrontObstacleControllerTest >> testStopIfTouchingFrontObstacleWhileMoving [
-	| echo |
-	echo := PNGLaserEcho new.
-	echo distance: 0.
-	echo angle: 0.
 	body latestLaserScan: {echo}.
 	runner step.
 	self assert: body forwardSpeed equals: 0.

@@ -48,6 +48,12 @@ BcMinLaserObstacleDistances >> min: distance frontEcho: anEcho [
 
 ]
 
+{ #category : #updating }
+BcMinLaserObstacleDistances >> min: distance sideEcho: anEcho [
+	^distance min: (anEcho distance * anEcho angle abs sin)
+
+]
+
 { #category : #'initialize-release' }
 BcMinLaserObstacleDistances >> reset [
 	frontLeft := Float infinity.
@@ -103,13 +109,13 @@ BcMinLaserObstacleDistances >> updateFromEcho: anEcho [
 { #category : #updating }
 BcMinLaserObstacleDistances >> updateFromLeftEcho: anEcho [
 	(self isFrontEcho: anEcho) ifTrue: [^frontLeft := self min: frontLeft frontEcho: anEcho].
-	(self isRearEcho: anEcho) ifTrue: [^sideLeftRear := sideLeftRear min: anEcho distance].
-	sideLeftFront := sideLeftFront min: anEcho distance
+	(self isRearEcho: anEcho) ifTrue: [^sideLeftRear := self min: sideLeftRear sideEcho: anEcho].
+	sideLeftFront := self min: sideLeftFront sideEcho: anEcho
 ]
 
 { #category : #updating }
 BcMinLaserObstacleDistances >> updateFromRightEcho: anEcho [
-	(self isFrontEcho: anEcho) ifTrue: [^frontRight := frontRight min: anEcho distance].
-	(self isRearEcho: anEcho) ifTrue: [^sideRightRear := sideRightRear min: anEcho distance].
-	sideRightFront := sideRightFront min: anEcho distance
+	(self isFrontEcho: anEcho) ifTrue: [^frontRight := self min: frontRight frontEcho: anEcho].
+	(self isRearEcho: anEcho) ifTrue: [^sideRightRear := self min: sideRightRear sideEcho: anEcho].
+	sideRightFront := self min: sideRightFront sideEcho: anEcho.
 ]
