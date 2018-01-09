@@ -39,6 +39,11 @@ BcStopOnFrontObstacleController >> defaultStopDistance [
 ]
 
 { #category : #accessing }
+BcStopOnFrontObstacleController >> forwardSpeed [
+	^moveAction forwardSpeed
+]
+
+{ #category : #accessing }
 BcStopOnFrontObstacleController >> forwardSpeed: newForwardSpeed [
 	moveAction forwardSpeed: newForwardSpeed
 ]
@@ -89,6 +94,11 @@ BcStopOnFrontObstacleController >> obstacleDistances [
 { #category : #accessing }
 BcStopOnFrontObstacleController >> obstacleDistances: anObject [
 	obstacleDistances := anObject
+]
+
+{ #category : #accessing }
+BcStopOnFrontObstacleController >> rotationSpeed [
+	^moveAction rotationSpeed
 ]
 
 { #category : #accessing }

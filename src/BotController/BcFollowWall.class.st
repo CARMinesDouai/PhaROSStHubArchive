@@ -54,7 +54,7 @@ BcFollowWall >> step [
 
 { #category : #stepping }
 BcFollowWall >> updateVelocity [
-	self distanceToSideWall < self minAcceptableDistance ifTrue: [ ^self rotationSpeed: -0.2 ].
-	self distanceToSideWall > self maxAcceptableDistance ifTrue: [ ^self rotationSpeed: 0.2 ].
+	self distanceToSideWall < self minAcceptableDistance ifTrue: [ ^self rotationSpeed: -0.3 ].
+	self distanceToSideWall > self maxAcceptableDistance ifTrue: [ ^self rotationSpeed: 0.3 ].
 	self rotationSpeed: 0
 ]
