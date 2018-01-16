@@ -9,13 +9,8 @@ Class {
 }
 
 { #category : #accessing }
-BcFollowWall >> distanceToFrontWall [
-	^self controller obstacleDistances frontLeft
-]
-
-{ #category : #accessing }
-BcFollowWall >> distanceToSideWall [
-	^self controller obstacleDistances sideLeftFront 
+BcFollowWall >> distanceToFollowedWall [
+	^self subclassResponsibility
 ]
 
 { #category : #initialization }
@@ -45,6 +40,21 @@ BcFollowWall >> minAcceptableDistance: anObject [
 	minAcceptableDistance := anObject
 ]
 
+{ #category : #accessing }
+BcFollowWall >> negativeWallFollowingRotationSpeed [
+	^self positiveWallFollowingRotationSpeed negated
+]
+
+{ #category : #accessing }
+BcFollowWall >> obstacleDistances [
+	^self controller obstacleDistances
+]
+
+{ #category : #accessing }
+BcFollowWall >> positiveWallFollowingRotationSpeed [
+	^0.3
+]
+
 { #category : #stepping }
 BcFollowWall >> step [
 	self updateVelocity.
@@ -53,8 +63,18 @@ BcFollowWall >> step [
 ]
 
 { #category : #stepping }
+BcFollowWall >> turnAwayFromWallRotationSpeed [
+	self subclassResponsibility
+]
+
+{ #category : #stepping }
+BcFollowWall >> turnTowardsWallRotationSpeed [
+	self subclassResponsibility
+]
+
+{ #category : #stepping }
 BcFollowWall >> updateVelocity [
-	self distanceToSideWall < self minAcceptableDistance ifTrue: [ ^self rotationSpeed: -0.3 ].
-	self distanceToSideWall > self maxAcceptableDistance ifTrue: [ ^self rotationSpeed: 0.3 ].
+	self distanceToFollowedWall < self minAcceptableDistance ifTrue: [ ^self rotationSpeed: self turnAwayFromWallRotationSpeed].
+	self distanceToFollowedWall > self maxAcceptableDistance ifTrue: [ ^self rotationSpeed: self turnTowardsWallRotationSpeed ].
 	self rotationSpeed: 0
 ]

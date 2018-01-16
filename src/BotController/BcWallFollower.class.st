@@ -1,8 +1,23 @@
 Class {
 	#name : #BcWallFollower,
 	#superclass : #BcStopOnFrontObstacleController,
+	#instVars : [
+		'moveActionClass'
+	],
 	#category : #'BotController-Controllers'
 }
+
+{ #category : #initialization }
+BcWallFollower >> followLeftWall [
+	moveActionClass := BcFollowLeftWall.
+	self resetMoveAction
+]
+
+{ #category : #initialization }
+BcWallFollower >> followRightWall [
+	moveActionClass := BcFollowRightWall.
+	self resetMoveAction
+]
 
 { #category : #accessing }
 BcWallFollower >> maxAcceptableDistance [
@@ -26,5 +41,17 @@ BcWallFollower >> minAcceptableDistance: distance [
 
 { #category : #initialization }
 BcWallFollower >> moveActionClass [
-	^BcFollowWall
+	^moveActionClass ifNil: [ BcFollowLeftWall ]
+]
+
+{ #category : #initialization }
+BcWallFollower >> resetMoveAction [
+	| oldMoveAction |
+	oldMoveAction := moveAction.
+	super resetMoveAction.
+	oldMoveAction ifNil: [ ^self ].
+	moveAction 
+		forwardSpeed: oldMoveAction forwardSpeed;
+		minAcceptableDistance: oldMoveAction minAcceptableDistance;
+		maxAcceptableDistance: oldMoveAction maxAcceptableDistance. 
 ]

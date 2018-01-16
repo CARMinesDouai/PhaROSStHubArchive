@@ -65,10 +65,10 @@ BcStopOnFrontObstacleController >> initStatesAndTransitions [
 { #category : #initialization }
 BcStopOnFrontObstacleController >> initialize [
 	super initialize.
-	moveAction := self newAction: self moveActionClass.
+	self resetMoveAction.
 	self obstacleDistances: BcMinLaserObstacleDistances new.
 	self stopDistance: self defaultStopDistance.
-	self moveDistance: self defaultMoveDistance.
+	self moveDistance: self defaultMoveDistance
 ]
 
 { #category : #initialization }
@@ -94,6 +94,11 @@ BcStopOnFrontObstacleController >> obstacleDistances [
 { #category : #accessing }
 BcStopOnFrontObstacleController >> obstacleDistances: anObject [
 	obstacleDistances := anObject
+]
+
+{ #category : #initialization }
+BcStopOnFrontObstacleController >> resetMoveAction [
+	moveAction := self newAction: self moveActionClass
 ]
 
 { #category : #accessing }

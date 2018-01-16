@@ -42,6 +42,11 @@ BcMinLaserObstacleDistances >> isRearEcho: anEcho [
 	^anEcho angle abs > 1.57 "Half Pi"
 ]
 
+{ #category : #accessing }
+BcMinLaserObstacleDistances >> left [
+	^self frontLeft min: self sideLeft
+]
+
 { #category : #updating }
 BcMinLaserObstacleDistances >> min: distance frontEcho: anEcho [
 	^distance min: (anEcho distance * anEcho angle cos)
@@ -62,6 +67,11 @@ BcMinLaserObstacleDistances >> reset [
 	sideLeftRear := Float infinity.
 	sideRightFront := Float infinity.
 	sideRightRear := Float infinity
+]
+
+{ #category : #accessing }
+BcMinLaserObstacleDistances >> right [
+	^self frontRight min: self sideRight
 ]
 
 { #category : #accessing }
