@@ -6,15 +6,15 @@ Class {
 
 { #category : #accessing }
 BcFollowRightWall >> distanceToFollowedWall [
-	^self obstacleDistances right
+	^self obstacleDistances sideRightFront
+]
+
+{ #category : #testing }
+BcFollowRightWall >> isFollowingLeftWall [
+	^false
 ]
 
 { #category : #stepping }
 BcFollowRightWall >> turnAwayFromWallRotationSpeed [
 	^self positiveWallFollowingRotationSpeed
-]
-
-{ #category : #stepping }
-BcFollowRightWall >> turnTowardsWallRotationSpeed [
-	^self negativeWallFollowingRotationSpeed
 ]

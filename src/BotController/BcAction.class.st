@@ -30,7 +30,7 @@ BcAction >> controller: anObject [
 ]
 
 { #category : #stepping }
-BcAction >> step [
+BcAction >> perform [
 	self subclassResponsibility
 ]
 

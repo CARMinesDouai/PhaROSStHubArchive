@@ -51,7 +51,7 @@ BcAvoidObstacles >> minFrontRightObstacleDistance: anObject [
 ]
 
 { #category : #stepping }
-BcAvoidObstacles >> step [
+BcAvoidObstacles >> perform [
 	| leftSpeed rightSpeed |
 	leftSpeed := minFrontLeftObstacleDistance min: self maxSpeed. 
 	rightSpeed := minFrontRightObstacleDistance min: self maxSpeed.

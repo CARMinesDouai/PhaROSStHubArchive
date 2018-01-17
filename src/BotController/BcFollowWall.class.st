@@ -20,6 +20,16 @@ BcFollowWall >> initialize [
 	self maxAcceptableDistance: 0.4.
 ]
 
+{ #category : #testing }
+BcFollowWall >> isFollowingLeftWall [
+	^self subclassResponsibility
+]
+
+{ #category : #testing }
+BcFollowWall >> isFollowingRightWall [
+	^self isFollowingLeftWall not
+]
+
 { #category : #accessing }
 BcFollowWall >> maxAcceptableDistance [
 	^ maxAcceptableDistance
@@ -50,16 +60,16 @@ BcFollowWall >> obstacleDistances [
 	^self controller obstacleDistances
 ]
 
+{ #category : #stepping }
+BcFollowWall >> perform [
+	self updateVelocity.
+	super perform.
+	
+]
+
 { #category : #accessing }
 BcFollowWall >> positiveWallFollowingRotationSpeed [
 	^0.3
-]
-
-{ #category : #stepping }
-BcFollowWall >> step [
-	self updateVelocity.
-	super step.
-	
 ]
 
 { #category : #stepping }
@@ -69,7 +79,7 @@ BcFollowWall >> turnAwayFromWallRotationSpeed [
 
 { #category : #stepping }
 BcFollowWall >> turnTowardsWallRotationSpeed [
-	self subclassResponsibility
+	^self turnAwayFromWallRotationSpeed negated
 ]
 
 { #category : #stepping }

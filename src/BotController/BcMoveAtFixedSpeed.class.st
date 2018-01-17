@@ -40,6 +40,11 @@ BcMoveAtFixedSpeed >> initialize [
 	self forwardSpeed: self defaultForwardSpeed rotationSpeed: self defaultRotationSpeed.
 ]
 
+{ #category : #stepping }
+BcMoveAtFixedSpeed >> perform [
+	self body velocityForward: self forwardSpeed rotation: self rotationSpeed
+]
+
 { #category : #accessing }
 BcMoveAtFixedSpeed >> rotationSpeed [
 	^ rotationSpeed
@@ -48,9 +53,4 @@ BcMoveAtFixedSpeed >> rotationSpeed [
 { #category : #accessing }
 BcMoveAtFixedSpeed >> rotationSpeed: anObject [
 	rotationSpeed := anObject
-]
-
-{ #category : #stepping }
-BcMoveAtFixedSpeed >> step [
-	self body velocityForward: self forwardSpeed rotation: self rotationSpeed
 ]

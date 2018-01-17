@@ -5,6 +5,6 @@ Class {
 }
 
 { #category : #stepping }
-BcStop >> step [
+BcStop >> perform [
 	self body stop
 ]

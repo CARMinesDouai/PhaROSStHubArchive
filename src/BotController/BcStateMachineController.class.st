@@ -12,7 +12,7 @@ Class {
 
 { #category : #living }
 BcStateMachineController >> act [
-	currentAction step
+	currentAction perform
 ]
 
 { #category : #initialization }

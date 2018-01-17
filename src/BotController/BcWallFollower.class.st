@@ -19,6 +19,16 @@ BcWallFollower >> followRightWall [
 	self resetMoveAction
 ]
 
+{ #category : #testing }
+BcWallFollower >> isFollowingLeftWall [
+	^moveAction isFollowingLeftWall
+]
+
+{ #category : #testing }
+BcWallFollower >> isFollowingRightWall [
+	^moveAction isFollowingRightWall
+]
+
 { #category : #accessing }
 BcWallFollower >> maxAcceptableDistance [
 	^moveAction maxAcceptableDistance
