@@ -1,5 +1,5 @@
 Class {
-	#name : #BcSingleThreadRunner,
+	#name : #BcSingleThreadSensePlanActRunner,
 	#superclass : #BcSensePlanActRunner,
 	#instVars : [
 		'thread',
@@ -10,50 +10,50 @@ Class {
 }
 
 { #category : #initialization }
-BcSingleThreadRunner >> defaultInterStepDuration [
+BcSingleThreadSensePlanActRunner >> defaultInterStepDuration [
 	^50 milliSeconds 
 ]
 
 { #category : #initialization }
-BcSingleThreadRunner >> defaultPriority [
+BcSingleThreadSensePlanActRunner >> defaultPriority [
 	^Processor userInterruptPriority
 ]
 
 { #category : #initialization }
-BcSingleThreadRunner >> initialize [
+BcSingleThreadSensePlanActRunner >> initialize [
 	super initialize.
 	self interStepDuration: self defaultInterStepDuration.
 	self priority: self defaultPriority.
 ]
 
 { #category : #accessing }
-BcSingleThreadRunner >> interStepDuration [
+BcSingleThreadSensePlanActRunner >> interStepDuration [
 	^ interStepDuration
 ]
 
 { #category : #accessing }
-BcSingleThreadRunner >> interStepDuration: anObject [
+BcSingleThreadSensePlanActRunner >> interStepDuration: anObject [
 	interStepDuration := anObject
 ]
 
 { #category : #living }
-BcSingleThreadRunner >> isStarted [
+BcSingleThreadSensePlanActRunner >> isStarted [
 	thread ifNil:[^false].
 	^thread isStarted 
 ]
 
 { #category : #accessing }
-BcSingleThreadRunner >> priority [
+BcSingleThreadSensePlanActRunner >> priority [
 	^ priority
 ]
 
 { #category : #accessing }
-BcSingleThreadRunner >> priority: anObject [
+BcSingleThreadSensePlanActRunner >> priority: anObject [
 	priority := anObject
 ]
 
 { #category : #living }
-BcSingleThreadRunner >> start [
+BcSingleThreadSensePlanActRunner >> start [
 	self isStarted ifTrue: [ ^self ].
 	thread := ActiveObject 
 		repeat: [ self step ] 
@@ -63,6 +63,6 @@ BcSingleThreadRunner >> start [
 ]
 
 { #category : #living }
-BcSingleThreadRunner >> stop [
+BcSingleThreadSensePlanActRunner >> stop [
 	thread stop
 ]

@@ -83,17 +83,6 @@ BcWallFollowerTest >> testKeepRotationSpeedToZeroIfMinDistanceWithinAcceptableRa
 ]
 
 { #category : #testing }
-BcWallFollowerTest >> testNegativeRotationSpeedToGetAwayFromFrontLeftWall [
-	| echo |
-	echo := PNGLaserEcho new.
-	echo angle: 0.1.
-	echo distance: self minAcceptableDistance - 0.1.
-	body latestLaserScan: {echo}.
-	runner step.
-	self assert: body rotationSpeed < 0
-]
-
-{ #category : #testing }
 BcWallFollowerTest >> testNegativeRotationSpeedToGetAwayFromLeftWall [
 	| echo |
 	echo := PNGLaserEcho new.
@@ -114,18 +103,6 @@ BcWallFollowerTest >> testNegativeRotationSpeedToGetCloserToRightWall [
 	body latestLaserScan: {echo}.
 	runner step.
 	self assert: body rotationSpeed < 0
-]
-
-{ #category : #testing }
-BcWallFollowerTest >> testPositiveRotationSpeedToGetAwayFromFrontRightWall [
-	| echo |
-	controller followRightWall.
-	echo := PNGLaserEcho new.
-	echo angle: -0.1.
-	echo distance: self minAcceptableDistance - 0.1.
-	body latestLaserScan: {echo}.
-	runner step.
-	self assert: body rotationSpeed > 0
 ]
 
 { #category : #testing }
