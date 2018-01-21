@@ -6,7 +6,7 @@ Class {
 		'priority',
 		'interStepDuration'
 	],
-	#category : #'BotController-Controllers'
+	#category : #'BotController-Runners'
 }
 
 { #category : #initialization }

@@ -1,9 +1,6 @@
 Class {
 	#name : #BcAction,
-	#superclass : #Object,
-	#instVars : [
-		'controller'
-	],
+	#superclass : #BcControllerPart,
 	#category : #'BotController-Actions'
 }
 
@@ -12,21 +9,6 @@ BcAction class >> controller: aController [
 	^self new
 		controller: aController;
 		yourself
-]
-
-{ #category : #accessing }
-BcAction >> body [
-	^self controller body
-]
-
-{ #category : #accessing }
-BcAction >> controller [
-	^ controller
-]
-
-{ #category : #accessing }
-BcAction >> controller: anObject [
-	controller := anObject
 ]
 
 { #category : #stepping }

@@ -57,7 +57,7 @@ BcFollowWall >> negativeWallFollowingRotationSpeed [
 
 { #category : #accessing }
 BcFollowWall >> obstacleDistances [
-	^self controller obstacleDistances
+	^self worldModel
 ]
 
 { #category : #stepping }

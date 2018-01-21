@@ -1,7 +1,7 @@
 Class {
 	#name : #BcNullRunner,
 	#superclass : #BcSensePlanActRunner,
-	#category : #'BotController-Controllers'
+	#category : #'BotController-Runners'
 }
 
 { #category : #living }

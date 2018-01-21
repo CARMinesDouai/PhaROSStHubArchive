@@ -1,18 +1,30 @@
 "
-I am a controller with 2 states: move forward or stop.
-Transition from one to the other is triggered if there is an obstacle too close to the front. Obstacles are sensed based on laser scanner.
-I receive laser scans repeatly. Transitions are triggered by these scans.
+I am a state machine-based controller with 2 states: move forward or stop.  
+
+The state machine operates as following:
+-The initial state is stopState. 
+-When the distance to the nearest front obstacle is above the move threshold (message moveDistance), I switch to the moveState. The moveAction is then selected.
+-When the distance to the nearest front obstacle is below the stop threshold (message stopDistance), I swich to stopState. the stopAction is then selected.
+
+I provide accessors to read and write the following parameters:
+-forwardSpeed and rotationSpeed
+Define the speed of the robot while in moveState
+-stopDistance and moveDistance
+Distances to trigger transitions to stopState and moveState
 
 Examples
 -create and start :
 bot := BcStopOnFrontObstacleController pureRobulab2.
 bot start.
 
--once done, the threads for communicating with the actual robot body can be terminated by evaluating
+-to stop the robot simply evaluate :
 bot stop
 
 
     Instance Variables
+moveAction	<MoveAtFixedSpeed>
+obstacleDistances	<BcWorldModel>
+	stopDistance moveDistance moveState
 	minFrontObstacleDistance:		<Float> distance to the nearest obstactle on the front.
 
 "
@@ -23,7 +35,8 @@ Class {
 		'moveAction',
 		'obstacleDistances',
 		'stopDistance',
-		'moveDistance'
+		'moveDistance',
+		'moveState'
 	],
 	#category : #'BotController-Controllers'
 }
@@ -55,7 +68,6 @@ BcStopOnFrontObstacleController >> forwardSpeed: newForwardSpeed rotationSpeed: 
 
 { #category : #initialization }
 BcStopOnFrontObstacleController >> initStatesAndTransitions [
-	| moveState |
 	super initStatesAndTransitions.
 	moveState := stateMachine newStateDoing: [ currentAction := moveAction ].
 	stopState transitionTo: moveState when: [ self shouldMove ].
@@ -66,7 +78,6 @@ BcStopOnFrontObstacleController >> initStatesAndTransitions [
 BcStopOnFrontObstacleController >> initialize [
 	super initialize.
 	self resetMoveAction.
-	self obstacleDistances: BcMinLaserObstacleDistances new.
 	self stopDistance: self defaultStopDistance.
 	self moveDistance: self defaultMoveDistance
 ]
@@ -88,12 +99,7 @@ BcStopOnFrontObstacleController >> moveDistance: newMoveDistance [
 
 { #category : #accessing }
 BcStopOnFrontObstacleController >> obstacleDistances [
-	^ obstacleDistances
-]
-
-{ #category : #accessing }
-BcStopOnFrontObstacleController >> obstacleDistances: anObject [
-	obstacleDistances := anObject
+	^ self worldModel
 ]
 
 { #category : #initialization }
@@ -109,11 +115,6 @@ BcStopOnFrontObstacleController >> rotationSpeed [
 { #category : #accessing }
 BcStopOnFrontObstacleController >> rotationSpeed: newRotationSpeed [
 	moveAction rotationSpeed: newRotationSpeed
-]
-
-{ #category : #living }
-BcStopOnFrontObstacleController >> sense [
-	self obstacleDistances updateFromAllEchoes: body latestLaserScan
 ]
 
 { #category : #testing }
@@ -140,4 +141,9 @@ BcStopOnFrontObstacleController >> stopDistance [
 { #category : #accessing }
 BcStopOnFrontObstacleController >> stopDistance: newStopDistance [
 	^stopDistance := newStopDistance
+]
+
+{ #category : #'initialize-release' }
+BcStopOnFrontObstacleController >> worldModelBuilderClass [
+	^Bc6ZonesObstacleDistancesBuilderFromLaser270 
 ]
