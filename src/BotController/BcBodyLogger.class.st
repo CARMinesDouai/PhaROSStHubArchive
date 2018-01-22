@@ -1,3 +1,25 @@
+"
+I log the activity of body of a given controller as text on the transcript.
+
+I rely on annoucement to observe a body. I can log all activity (enableAll message) or only some activity (e.g. enableLogLaserScan, enableLogShutdown). Logging can also be totally or selectively disabled. See messages disableAll, and disableLogXXX.
+
+Example
+Transcript clear.
+bot := BcStopOnFrontObstacleController pureRobulab2.
+logger := BcBodyLogger controller: bot.
+logger enableAll.
+bot stop
+
+
+    Instance Variables
+	body:		<BcBody>
+	laserScanSubscription:		<AnnouncementSubscription>
+	shutdownSubscription:		<AnnouncementSubscription>
+	speedSubscription:		<AnnouncementSubscription>
+	startUpSubscription:		<AnnouncementSubscription>
+	velocitySubscription:		<AnnouncementSubscription>
+
+"
 Class {
 	#name : #BcBodyLogger,
 	#superclass : #Object,

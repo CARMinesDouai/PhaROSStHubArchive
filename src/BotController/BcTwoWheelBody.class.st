@@ -7,9 +7,14 @@ Class {
 	#category : #'BotController-Bodies'
 }
 
-{ #category : #acting }
+{ #category : #accessing }
 BcTwoWheelBody >> interWheelsDistance [
-	self subclassResponsibility
+	^self dimensions interWheelsDistance
+]
+
+{ #category : #accessing }
+BcTwoWheelBody >> laserToSideDistance [
+	^self dimensions laserToSideDistance
 ]
 
 { #category : #sensing }

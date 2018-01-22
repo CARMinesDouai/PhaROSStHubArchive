@@ -10,12 +10,6 @@ BcStopOnFrontObstacleControllerTest >> controllerClass [
 ]
 
 { #category : #testing }
-BcStopOnFrontObstacleControllerTest >> setUp [
-	super setUp.
-
-]
-
-{ #category : #testing }
 BcStopOnFrontObstacleControllerTest >> testDoNotRestartAfterStopIfObstacleIsClose [
 	| echoObstacleTooClose echoObstacleNotFarEnough |
 	echoObstacleTooClose := PNGLaserEcho new.

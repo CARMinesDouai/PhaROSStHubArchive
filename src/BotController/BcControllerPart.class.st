@@ -1,3 +1,10 @@
+"
+I am a part of a controller. I keep a reference to the controller so I can access other objects such as the body.
+
+    Instance Variables
+	controller:		<BcController>
+
+"
 Class {
 	#name : #BcControllerPart,
 	#superclass : #Object,

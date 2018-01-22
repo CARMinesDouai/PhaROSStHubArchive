@@ -1,21 +1,24 @@
 "
-I am a state machine based controller with reified actions. The state machine takes care of the planning. It selects one action that meets the current context. Only the selected action is capable of driving the robot by issues commands to the actuators.
+I am a state machine based controller. The state machine takes care of the planning. It selects one state that meets the current context. Each state set the current action upon entry.  The current action  drives the robot by issuing commands to the actuators.
 
     Instance Variables
-	currentAction:		<BcAction>
 	stateMachine:		<SmAutomaton>
 	stopAction:		<BcAction>
 	stopState:		<SmState>
 
 I know:
--the currentAction that is the action selected by the latest planning. It is performed when it's time to act.
+-the stopAction: That is the action that makes the robot stop moving.
 -the stopState: That is state that sets the currentAction to the stopAction.
+
+API
+-newStateSelectingAction: actionBlock
+Create states which do set the current action upon entry i.e. when the state machine selects  the state, the current action is set . The actionBlock parameter value is the action that is set to be the current one.
 
 I am abstract. Subclasses are likely to override methods: 
 -initStatesAndTransitions 
 Creates states and transitions to those states. When reached, any state should simply set the currentAction.
 -initialState
-Defines the initial state of the state machine, set each time the controller is started (message start)
+Defines the initial state of the state machine, set each time the controller is started (message start). By default, this is the stopState
 
 "
 Class {
@@ -23,36 +26,35 @@ Class {
 	#superclass : #BcSensePlanActController,
 	#instVars : [
 		'stateMachine',
-		'currentAction',
 		'stopState',
 		'stopAction'
 	],
 	#category : #'BotController-Controllers'
 }
 
-{ #category : #living }
-BcStateMachineController >> act [
-	currentAction perform
-]
-
-{ #category : #initialization }
+{ #category : #'initialize-release' }
 BcStateMachineController >> initStatesAndTransitions [
-	stopState := stateMachine newStateOnEntryDo: [currentAction := stopAction].
+	stopState := self newStateSelectingAction: [stopAction].
 
 ]
 
-{ #category : #initialization }
+{ #category : #'initialize-release' }
 BcStateMachineController >> initialState [
 	^stopState
 ]
 
-{ #category : #initialization }
+{ #category : #'initialize-release' }
 BcStateMachineController >> initialize [
 	super initialize.
+	stopAction := self newAction: BcStop.
 	stateMachine := SmAutomaton new.
 	self initStatesAndTransitions.
-	stopAction := self newAction: BcStop.
 
+]
+
+{ #category : #'initialize-release' }
+BcStateMachineController >> newStateSelectingAction: actionBlock [
+	^stateMachine newStateDoing: [ self currentAction: actionBlock value ]
 ]
 
 { #category : #living }

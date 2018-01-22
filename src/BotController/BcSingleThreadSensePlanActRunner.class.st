@@ -1,3 +1,19 @@
+"
+I a sense-plan-act controller that relies on a single thread for stepping. 
+
+My thread is decoupled from the robot body that might have its own threads.
+
+My thread sleeps for a duration between two steps. This duration is parametrizable (see interStepSuration accessors). 
+The thread priority i also parametrizable (see priority accessors). 
+
+    Instance Variables
+	interStepDuration:		<Duration>
+	priority:		<Integer>
+	thread:		<ActiveObject>
+
+
+    Implementation Points
+"
 Class {
 	#name : #BcSingleThreadSensePlanActRunner,
 	#superclass : #BcSensePlanActRunner,

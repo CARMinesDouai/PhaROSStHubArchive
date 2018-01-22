@@ -4,7 +4,7 @@ Class {
 	#category : #'BotController-Bodies'
 }
 
-{ #category : #accessing }
-BcTurtleBot >> interWheelsDistance [
-	^0.23
+{ #category : #initialization }
+BcTurtleBot >> newDimensions [
+	^BcTwoWheelBody turtleBot
 ]

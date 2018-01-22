@@ -2,7 +2,8 @@ Class {
 	#name : #BcRosTwoWheelBody,
 	#superclass : #BcTwoWheelBody,
 	#instVars : [
-		'velocityPublisher'
+		'velocityPublisher',
+		'laserSubscriber'
 	],
 	#category : #'BotController-Bodies'
 }

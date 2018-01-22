@@ -4,23 +4,33 @@ I am a controller that separates behavior in 3 parts:
 -plan
 -act
 
-Each materializes as a method. The plan and act  methods do nothing. Subclasses are likely to override them. While the sense method triggers the worldModelBuilder to update the worldModel. 
-
-I am abstract. Subclasses have to override method worldModelBuilderClass.
-
 The order and threading model for executing the three methods above is defined by the runner. 
 
 My default runner is BcSingleThreadSensePlanActRunner (see class-side method defaultRunner).
 
+Each materializes as a method. 
+-sense 
+Triggers the worldModelBuilder to update the worldModel. 
+-plan 
+Does nothing. Subclasses are likely to override it. 
+-act
+Performs the currentAction
+
 Instance Variables
+	currentAction:		<BcAction> action eformed at the act step (see act message)
 	worldModelBuilder:	<BcWorldModelBuilder> takes care of constructing and updating the world model from sensed data
+
+I am abstract. Subclasses have to override method worldModelBuilderClass.
+Subclasses are also likely to override the plan method that is left empty here.
+
 
 "
 Class {
 	#name : #BcSensePlanActController,
 	#superclass : #BcController,
 	#instVars : [
-		'worldModelBuilder'
+		'worldModelBuilder',
+		'currentAction'
 	],
 	#category : #'BotController-Controllers'
 }
@@ -32,7 +42,17 @@ BcSensePlanActController class >> defaultRunnerClass [
 
 { #category : #living }
 BcSensePlanActController >> act [
-	^self
+	self currentAction perform
+]
+
+{ #category : #accessing }
+BcSensePlanActController >> currentAction [
+	^ currentAction
+]
+
+{ #category : #accessing }
+BcSensePlanActController >> currentAction: anObject [
+	^ currentAction := anObject
 ]
 
 { #category : #'initialize-release' }

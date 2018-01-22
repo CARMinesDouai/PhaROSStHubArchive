@@ -26,9 +26,9 @@ BcRobulabPure class >> serviceRegistry: aPNGRobulab [
 		yourself
 ]
 
-{ #category : #acting }
-BcRobulabPure >> interWheelsDistance [
-	^0.39
+{ #category : #'initialize-release' }
+BcRobulabPure >> newDimensions [
+	^BcTwoWheelBody robulab
 ]
 
 { #category : #'initialize-release' }

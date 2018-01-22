@@ -18,7 +18,7 @@ BcControllerTest >> controllerClass [
 BcControllerTest >> setUp [
 	super setUp.
 	body := BcNullTwoWheelBody new.
-	controller := self controllerClass body: body runnerClass: BcNullRunner.
+	controller := self controllerClass body: body runnerClass: BcNullSensePlanActRunner.
 	runner := controller runner.
 	controller start.
 

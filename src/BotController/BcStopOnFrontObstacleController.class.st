@@ -6,6 +6,8 @@ The state machine operates as following:
 -When the distance to the nearest front obstacle is above the move threshold (message moveDistance), I switch to the moveState. The moveAction is then selected.
 -When the distance to the nearest front obstacle is below the stop threshold (message stopDistance), I swich to stopState. the stopAction is then selected.
 
+The distance to nearest front obstacle is provided by the world model.
+
 I provide accessors to read and write the following parameters:
 -forwardSpeed and rotationSpeed
 Define the speed of the robot while in moveState
@@ -20,33 +22,31 @@ bot start.
 -to stop the robot simply evaluate :
 bot stop
 
-
     Instance Variables
-moveAction	<MoveAtFixedSpeed>
-obstacleDistances	<BcWorldModel>
-	stopDistance moveDistance moveState
-	minFrontObstacleDistance:		<Float> distance to the nearest obstactle on the front.
+	stopDistance  <Float>  When distance to a front obstactle is below this threshold, the stopState is activated
+	moveDistance	<Float> When the distance to a front obstacle is above this threshold, the moveState is activated
+	moveAction	<Object> defined by instantiating the class returned by message moveActionClass
+	moveState	<SmState> selects the currentAction to moveAction
 
 "
 Class {
 	#name : #BcStopOnFrontObstacleController,
 	#superclass : #BcStateMachineController,
 	#instVars : [
-		'moveAction',
-		'obstacleDistances',
 		'stopDistance',
 		'moveDistance',
+		'moveAction',
 		'moveState'
 	],
 	#category : #'BotController-Controllers'
 }
 
-{ #category : #initialization }
+{ #category : #'initialize-release' }
 BcStopOnFrontObstacleController >> defaultMoveDistance [
 	^self defaultStopDistance + 0.05
 ]
 
-{ #category : #initialization }
+{ #category : #'initialize-release' }
 BcStopOnFrontObstacleController >> defaultStopDistance [
 	^0.2
 ]
@@ -66,15 +66,15 @@ BcStopOnFrontObstacleController >> forwardSpeed: newForwardSpeed rotationSpeed: 
 	moveAction forwardSpeed: newForwardSpeed rotationSpeed: newRotationSpeed
 ]
 
-{ #category : #initialization }
+{ #category : #'initialize-release' }
 BcStopOnFrontObstacleController >> initStatesAndTransitions [
 	super initStatesAndTransitions.
-	moveState := stateMachine newStateDoing: [ currentAction := moveAction ].
+	moveState := self newStateSelectingAction: [moveAction].
 	stopState transitionTo: moveState when: [ self shouldMove ].
 	moveState transitionTo: stopState when: [ self shouldStop ]
 ]
 
-{ #category : #initialization }
+{ #category : #'initialize-release' }
 BcStopOnFrontObstacleController >> initialize [
 	super initialize.
 	self resetMoveAction.
@@ -82,7 +82,7 @@ BcStopOnFrontObstacleController >> initialize [
 	self moveDistance: self defaultMoveDistance
 ]
 
-{ #category : #initialization }
+{ #category : #'initialize-release' }
 BcStopOnFrontObstacleController >> moveActionClass [
 	^ BcMoveAtFixedSpeed
 ]
@@ -102,7 +102,7 @@ BcStopOnFrontObstacleController >> obstacleDistances [
 	^ self worldModel
 ]
 
-{ #category : #initialization }
+{ #category : #'initialize-release' }
 BcStopOnFrontObstacleController >> resetMoveAction [
 	moveAction := self newAction: self moveActionClass
 ]

@@ -5,7 +5,7 @@ Class {
 		'forwardSpeed',
 		'rotationSpeed'
 	],
-	#category : #'BotController-Tests'
+	#category : #'BotController-Bodies'
 }
 
 { #category : #accessing }
@@ -16,6 +16,14 @@ BcNullTwoWheelBody >> forwardSpeed [
 { #category : #acting }
 BcNullTwoWheelBody >> interWheelsDistance [
 	^1
+]
+
+{ #category : #initialization }
+BcNullTwoWheelBody >> newDimensions [
+	^BcTwoWheelBodyDimensions new
+		interWheelsDistance: 1;
+		laserToSideDistance: 0.5;
+		yourself
 ]
 
 { #category : #accessing }

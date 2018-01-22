@@ -23,6 +23,7 @@ Creates a ready to use controller with a given body. The runner is instantiated 
 Creates a ready to use controller for Robulab-1 over the Pure middleware using the default runner.
 - pureRobulab2
 Creates a ready to use controller for Robulab-1 over the Pure middleware using the default runner.
+
 "
 Class {
 	#name : #BcController,

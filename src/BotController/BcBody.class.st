@@ -1,8 +1,23 @@
+"
+I am the facade to a robot body. I rely on some middleware to talk to the sensors and the actuators of the robot body.
+
+I also rely on annoucements to allow observing robot activity. Examples of observers are BcBodyLogger and BcLaserDrivenSensePlanActRunner
+
+    Instance Variables
+	announcer:		<Announcer>
+	dimensions:		<BcBodyDimensions>
+
+I am abstract. Subclasses should implement:
+-newDimensions
+Answers an object that provides dimensions of the robot.
+
+"
 Class {
 	#name : #BcBody,
 	#superclass : #Object,
 	#instVars : [
-		'announcer'
+		'announcer',
+		'dimensions'
 	],
 	#category : #'BotController-Bodies'
 }
@@ -20,6 +35,22 @@ BcBody >> announcer [
 { #category : #announcing }
 BcBody >> announcer: anObject [
 	announcer := anObject
+]
+
+{ #category : #accessing }
+BcBody >> dimensions [
+	^dimensions
+]
+
+{ #category : #initialization }
+BcBody >> initialize [
+	super initialize.
+	dimensions := self newDimensions
+]
+
+{ #category : #initialization }
+BcBody >> newDimensions [
+	self subclassResponsibility
 ]
 
 { #category : #announcing }
