@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+RoscppLogger class >> rosTypeDefinition [ 
+^' string name
+ string level
+'
+]
+
+{ #category : #'as yet unclassified' }
+RoscppLogger class >> rosTypeName [ 
+^'roscpp/Logger'
+]
+
+{ #category : #'as yet unclassified' }
 RoscppLogger >> initialize [
 	super initialize.
 	 self name: ''. 

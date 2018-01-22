@@ -116,7 +116,10 @@ PhaROSMessageTypeBuilder >> installMethodsIn: aClass [
 	 ].
 	
 	aClass compile: ((self definition fields collect: #initializer) inject: 'initialize', String crlf, String tab, 'super initialize.', String crlf into:[ :acc :line | acc, line ]).
-
+	
+	"save ros definitions on class-side too"
+	aClass class compile: 'rosTypeName ', String lf, '^', self name printString.
+	aClass class compile: 'rosTypeDefinition ', String lf, '^', self rosdefinition printString.		
 ]
 
 { #category : #proto }

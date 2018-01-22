@@ -26,6 +26,19 @@ Std_msgsHeader class >> initialize [
 ]
 
 { #category : #'as yet unclassified' }
+Std_msgsHeader class >> rosTypeDefinition [ 
+^' int32 seq
+ time stamp
+ string frame_id
+'
+]
+
+{ #category : #'as yet unclassified' }
+Std_msgsHeader class >> rosTypeName [ 
+^'std_msgs/Header'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsHeader >> frame_id [
 	^ self getAt: #frame_id. 
 

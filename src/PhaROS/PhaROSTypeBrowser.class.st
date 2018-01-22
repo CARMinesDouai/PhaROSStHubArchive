@@ -19,6 +19,7 @@ Class {
 PhaROSTypeBrowser class >> instance [
 	^ instance ifNil: [
 		instance := super new.	
+		instance fillWithExistingGeneratedTypeClasses
 		"instance register: 
 					(PhaROSType composite: {
 						#loggers -> (PhaROSArrayType of: (PhaROSTypeBrowser instance definition: 'roscpp/Logger') ).
@@ -87,6 +88,30 @@ PhaROSTypeBrowser >> definition: aTypeId [
 		]) 
 
 
+]
+
+{ #category : #private }
+PhaROSTypeBrowser >> fillWithExistingGeneratedTypeClasses [
+	
+	| existingTypeClasses |
+		
+	"we miss classes if we restrict on the Generated RPackage"
+	"[ existingTypeClasses := (RPackageOrganizer default  packageNamed: 'PhaROSGenerated') classes ] on: KeyNotFound do: [ :e | ^ self ]."
+	
+	existingTypeClasses := PhaROSValue allSubclasses select: [ :c | c respondsTo: #rosTypeName ].
+		
+	existingTypeClasses do: [ : aTypeClass | 
+		|aTypeId|
+		aTypeId := aTypeClass rosTypeName.
+		self browser at: aTypeId ifAbsentPut: [
+			|firstLevel newType|
+			firstLevel := (Character lf split: aTypeClass rosTypeDefinition) select: [ :str | (str beginsWith: ' ') not & (str size > 3) ].
+			newType := self typeNamed: aTypeId for: firstLevel.
+			newType build.
+			newType
+		]
+	]
+	
 ]
 
 { #category : #'initialize-release' }
