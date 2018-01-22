@@ -9,13 +9,13 @@ Class {
 
 { #category : #initialization }
 BcWallFollower >> followLeftWall [
-	moveActionClass := BcFollowLeftWall.
+	moveActionClass := BcFollowLeftWallAtFixedSpeed.
 	self resetMoveAction
 ]
 
 { #category : #initialization }
 BcWallFollower >> followRightWall [
-	moveActionClass := BcFollowRightWall.
+	moveActionClass := BcFollowRightWallAtFixedSpeed.
 	self resetMoveAction
 ]
 
@@ -51,7 +51,7 @@ BcWallFollower >> minAcceptableDistance: distance [
 
 { #category : #initialization }
 BcWallFollower >> moveActionClass [
-	^moveActionClass ifNil: [ BcFollowLeftWall ]
+	^moveActionClass ifNil: [ BcFollowLeftWallAtFixedSpeed ]
 ]
 
 { #category : #initialization }

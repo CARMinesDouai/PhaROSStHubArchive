@@ -3,8 +3,7 @@ Class {
 	#superclass : #BcTwoWheelBody,
 	#instVars : [
 		'forwardSpeed',
-		'rotationSpeed',
-		'onLaserScanBlock'
+		'rotationSpeed'
 	],
 	#category : #'BotController-Tests'
 }
@@ -20,22 +19,18 @@ BcNullTwoWheelBody >> interWheelsDistance [
 ]
 
 { #category : #accessing }
-BcNullTwoWheelBody >> latestLaserScan: echoes [
-	latestLaserScan := echoes
+BcNullTwoWheelBody >> rotationSpeed [
+	^ rotationSpeed
 ]
 
 { #category : #sensing }
-BcNullTwoWheelBody >> onLaserScanDo: aBlock [
-	onLaserScanBlock := aBlock
-]
-
-{ #category : #accessing }
-BcNullTwoWheelBody >> rotationSpeed [
-	^ rotationSpeed
+BcNullTwoWheelBody >> startLaserScanner [
+	^self
 ]
 
 { #category : #acting }
 BcNullTwoWheelBody >> velocityForward: newForwardSpeed rotation: newRotationSpeed [
 	forwardSpeed := newForwardSpeed.
 	rotationSpeed := newRotationSpeed.
+	super velocityForward: newForwardSpeed rotation: newRotationSpeed
 ]

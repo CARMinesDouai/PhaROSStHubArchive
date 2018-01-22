@@ -17,25 +17,29 @@ BcTwoWheelBody >> latestLaserScan [
 	^latestLaserScan ifNil: [ #() ]
 ]
 
+{ #category : #sensing }
+BcTwoWheelBody >> latestLaserScan: echoes [
+	latestLaserScan := echoes.
+	self announce: (BcLaserScanAnnouncement echoes: echoes)
+]
+
 { #category : #acting }
 BcTwoWheelBody >> leftSpeed: newLeftSpeed rightSpeed: newRightSpeed [
+	| annoucement |
+	annoucement := BcSpeedLeftRightAnnouncement left: newLeftSpeed right: newRightSpeed.
+	self announce: annoucement.
 	self velocityForward: newLeftSpeed + newRightSpeed rotation: (newLeftSpeed - newRightSpeed) / self interWheelsDistance
 ]
 
 { #category : #sensing }
 BcTwoWheelBody >> onLaserScanDo: aBlock [
-	self subclassResponsibility
+	self subscribe: BcLaserScanAnnouncement do: aBlock
 ]
 
 { #category : #sensing }
 BcTwoWheelBody >> startLaserScanner [
-	self onLaserScanDo: [ : echoes | latestLaserScan := echoes].
+	self subclassResponsibility
 
-]
-
-{ #category : #acting }
-BcTwoWheelBody >> stop [
-	self velocityForward: 0 rotation: 0
 ]
 
 { #category : #sensing }

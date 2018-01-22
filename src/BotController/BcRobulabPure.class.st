@@ -31,22 +31,7 @@ BcRobulabPure >> interWheelsDistance [
 	^0.39
 ]
 
-{ #category : #accessing }
-BcRobulabPure >> minBackwardLateralSpeed [
-	^-0.1
-	
-]
-
-{ #category : #sensing }
-BcRobulabPure >> onLaserScanDo: aBlock [
-	serviceRegistry laserService  onNotificationDo: [ :notif | 
-		| obstacleEchoes |
-		"Filter away errors due to laser detecting the robot's chassis"
-		obstacleEchoes := notif echoes copyFrom: 2 to: 269.
-		aBlock cull: obstacleEchoes].
-]
-
-{ #category : #accessing }
+{ #category : #'initialize-release' }
 BcRobulabPure >> serviceRegistry: aPNGRobulab [ 
 	serviceRegistry := aPNGRobulab
 ]
@@ -59,13 +44,18 @@ BcRobulabPure >> shutDown [
 
 { #category : #sensing }
 BcRobulabPure >> startLaserScanner [
-	super startLaserScanner.
 	self startLaserScannerPeriod: 0
 ]
 
 { #category : #sensing }
 BcRobulabPure >> startLaserScannerPeriod: durationInClockCycles [
-	serviceRegistry laserService enableNotificationsEvery: durationInClockCycles
+	serviceRegistry laserService onNotificationDo: [ :notif | 
+		| obstacleEchoes |
+		"Filter away errors due to laser detecting the robot's chassis"
+		obstacleEchoes := notif echoes copyFrom: 2 to: 269.
+		self latestLaserScan: obstacleEchoes].
+	serviceRegistry laserService enableNotificationsEvery: durationInClockCycles.
+
 ]
 
 { #category : #sensing }
@@ -74,6 +64,7 @@ BcRobulabPure >> stopLaserScanner [
 ]
 
 { #category : #acting }
-BcRobulabPure >> velocityForward: forwardSpeed rotation: rotationSpeed [
-	serviceRegistry differentialService moveAt: forwardSpeed and: rotationSpeed
+BcRobulabPure >> velocityForward: newForwardSpeed rotation: newRotationSpeed [
+	serviceRegistry differentialService moveAt: newForwardSpeed and: newRotationSpeed.
+	super velocityForward: newForwardSpeed rotation: newRotationSpeed
 ]

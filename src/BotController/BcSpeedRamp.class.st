@@ -1,6 +1,6 @@
 Class {
 	#name : #BcSpeedRamp,
-	#superclass : #BcBodyDecorator,
+	#superclass : #BcBodyDecoratorOLD,
 	#instVars : [
 		'leftSpeed',
 		'rightSpeed',

@@ -1,6 +1,6 @@
 Class {
 	#name : #BcTimer,
-	#superclass : #BcBodyDecorator,
+	#superclass : #BcBodyDecoratorOLD,
 	#instVars : [
 		'duration',
 		'startTimestamp'

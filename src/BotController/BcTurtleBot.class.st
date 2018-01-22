@@ -8,8 +8,3 @@ Class {
 BcTurtleBot >> interWheelsDistance [
 	^0.23
 ]
-
-{ #category : #accessing }
-BcTurtleBot >> minBackwardLateralSpeed [
-	^ -0.1
-]

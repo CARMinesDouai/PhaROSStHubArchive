@@ -1,5 +1,5 @@
 Class {
-	#name : #BcFollowWall,
+	#name : #BcFollowWallAtFixedSpeed,
 	#superclass : #BcMoveAtFixedSpeed,
 	#instVars : [
 		'minAcceptableDistance',
@@ -9,81 +9,81 @@ Class {
 }
 
 { #category : #accessing }
-BcFollowWall >> distanceToFollowedWall [
+BcFollowWallAtFixedSpeed >> distanceToFollowedWall [
 	^self subclassResponsibility
 ]
 
 { #category : #initialization }
-BcFollowWall >> initialize [
+BcFollowWallAtFixedSpeed >> initialize [
 	super initialize.
 	self minAcceptableDistance: 0.2.
 	self maxAcceptableDistance: 0.4.
 ]
 
 { #category : #testing }
-BcFollowWall >> isFollowingLeftWall [
+BcFollowWallAtFixedSpeed >> isFollowingLeftWall [
 	^self subclassResponsibility
 ]
 
 { #category : #testing }
-BcFollowWall >> isFollowingRightWall [
+BcFollowWallAtFixedSpeed >> isFollowingRightWall [
 	^self isFollowingLeftWall not
 ]
 
 { #category : #accessing }
-BcFollowWall >> maxAcceptableDistance [
+BcFollowWallAtFixedSpeed >> maxAcceptableDistance [
 	^ maxAcceptableDistance
 ]
 
 { #category : #accessing }
-BcFollowWall >> maxAcceptableDistance: anObject [
+BcFollowWallAtFixedSpeed >> maxAcceptableDistance: anObject [
 	maxAcceptableDistance := anObject
 ]
 
 { #category : #accessing }
-BcFollowWall >> minAcceptableDistance [
+BcFollowWallAtFixedSpeed >> minAcceptableDistance [
 	^ minAcceptableDistance
 ]
 
 { #category : #accessing }
-BcFollowWall >> minAcceptableDistance: anObject [
+BcFollowWallAtFixedSpeed >> minAcceptableDistance: anObject [
 	minAcceptableDistance := anObject
 ]
 
 { #category : #accessing }
-BcFollowWall >> negativeWallFollowingRotationSpeed [
+BcFollowWallAtFixedSpeed >> negativeWallFollowingRotationSpeed [
 	^self positiveWallFollowingRotationSpeed negated
 ]
 
 { #category : #accessing }
-BcFollowWall >> obstacleDistances [
+BcFollowWallAtFixedSpeed >> obstacleDistances [
 	^self worldModel
 ]
 
 { #category : #stepping }
-BcFollowWall >> perform [
+BcFollowWallAtFixedSpeed >> perform [
 	self updateVelocity.
 	super perform.
 	
 ]
 
 { #category : #accessing }
-BcFollowWall >> positiveWallFollowingRotationSpeed [
+BcFollowWallAtFixedSpeed >> positiveWallFollowingRotationSpeed [
 	^0.3
 ]
 
 { #category : #stepping }
-BcFollowWall >> turnAwayFromWallRotationSpeed [
+BcFollowWallAtFixedSpeed >> turnAwayFromWallRotationSpeed [
 	self subclassResponsibility
 ]
 
 { #category : #stepping }
-BcFollowWall >> turnTowardsWallRotationSpeed [
+BcFollowWallAtFixedSpeed >> turnTowardsWallRotationSpeed [
 	^self turnAwayFromWallRotationSpeed negated
 ]
 
 { #category : #stepping }
-BcFollowWall >> updateVelocity [
+BcFollowWallAtFixedSpeed >> updateVelocity [
 	self distanceToFollowedWall < self minAcceptableDistance ifTrue: [ ^self rotationSpeed: self turnAwayFromWallRotationSpeed].
 	self distanceToFollowedWall > self maxAcceptableDistance ifTrue: [ ^self rotationSpeed: self turnTowardsWallRotationSpeed ].
 	self rotationSpeed: 0

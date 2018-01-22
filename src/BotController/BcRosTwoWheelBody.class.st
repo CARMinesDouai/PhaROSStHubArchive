@@ -7,12 +7,23 @@ Class {
 	#category : #'BotController-Bodies'
 }
 
+{ #category : #sensing }
+BcRosTwoWheelBody >> startLaserScanner [
+	self shouldBeImplemented
+]
+
+{ #category : #sensing }
+BcRosTwoWheelBody >> stopLaserScanner [
+	self shouldBeImplemented
+]
+
 { #category : #acting }
-BcRosTwoWheelBody >> velocityForward: forwardSpeed rotation: rotationSpeed [
+BcRosTwoWheelBody >> velocityForward: newForwardSpeed rotation: newRotationSpeed [
 	self velocityPublisher
 		send: [ :aTwist | 
-			aTwist linear x: forwardSpeed.
-			aTwist angular z: rotationSpeed ]
+			aTwist linear x: newForwardSpeed.
+			aTwist angular z: newRotationSpeed ].
+	super velocityForward: newForwardSpeed rotation: newRotationSpeed
 ]
 
 { #category : #accessing }
