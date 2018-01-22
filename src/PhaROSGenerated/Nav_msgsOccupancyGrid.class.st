@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Nav_msgsOccupancyGrid class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ nav_msgs/MapMetaData info
+ int8[] data
+'
+]
+
+{ #category : #'as yet unclassified' }
+Nav_msgsOccupancyGrid class >> rosTypeName [ 
+^'nav_msgs/OccupancyGrid'
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsOccupancyGrid >> data [
 	^ self getAt: #data. 
 

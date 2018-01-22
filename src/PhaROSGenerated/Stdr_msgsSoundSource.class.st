@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSoundSource class >> rosTypeDefinition [ 
+^' string id
+ float32 dbs
+ geometry_msgs/Pose2D pose
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsSoundSource class >> rosTypeName [ 
+^'stdr_msgs/SoundSource'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSoundSource >> dbs [
 	^ self getAt: #dbs. 
 

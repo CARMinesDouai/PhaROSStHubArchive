@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsScanAngle class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ float64 scan_angle
+'
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsScanAngle class >> rosTypeName [ 
+^'kobuki_msgs/ScanAngle'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsScanAngle >> header [
 	^ self getAt: #header. 
 

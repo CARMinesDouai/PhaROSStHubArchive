@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRobotIndexedVectorMsg class >> rosTypeDefinition [ 
+^' stdr_msgs/RobotIndexedMsg[] robots
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsRobotIndexedVectorMsg class >> rosTypeName [ 
+^'stdr_msgs/RobotIndexedVectorMsg'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRobotIndexedVectorMsg >> initialize [
 	super initialize.
 	 self robots: OrderedCollection new . 

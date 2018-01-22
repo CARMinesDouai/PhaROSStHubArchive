@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Pcl_msgsPolygonMesh class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ sensor_msgs/PointCloud2 cloud
+ pcl_msgs/Vertices[] polygons
+'
+]
+
+{ #category : #'as yet unclassified' }
+Pcl_msgsPolygonMesh class >> rosTypeName [ 
+^'pcl_msgs/PolygonMesh'
+]
+
+{ #category : #'as yet unclassified' }
 Pcl_msgsPolygonMesh >> cloud [
 	^ self getAt: #cloud. 
 

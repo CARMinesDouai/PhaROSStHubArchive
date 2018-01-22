@@ -5,6 +5,22 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Map_msgsOccupancyGridUpdate class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ int32 x
+ int32 y
+ int32 width
+ int32 height
+ int8[] data
+'
+]
+
+{ #category : #'as yet unclassified' }
+Map_msgsOccupancyGridUpdate class >> rosTypeName [ 
+^'map_msgs/OccupancyGridUpdate'
+]
+
+{ #category : #'as yet unclassified' }
 Map_msgsOccupancyGridUpdate >> data [
 	^ self getAt: #data. 
 

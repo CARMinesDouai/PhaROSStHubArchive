@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Tf2_msgsLookupTransformActionResult class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ tf2_msgs/LookupTransformResult result
+'
+]
+
+{ #category : #'as yet unclassified' }
+Tf2_msgsLookupTransformActionResult class >> rosTypeName [ 
+^'tf2_msgs/LookupTransformActionResult'
+]
+
+{ #category : #'as yet unclassified' }
 Tf2_msgsLookupTransformActionResult >> header [
 	^ self getAt: #header. 
 

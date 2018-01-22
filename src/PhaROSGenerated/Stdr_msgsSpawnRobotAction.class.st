@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSpawnRobotAction class >> rosTypeDefinition [ 
+^' stdr_msgs/SpawnRobotActionGoal action_goal
+ stdr_msgs/SpawnRobotActionResult action_result
+ stdr_msgs/SpawnRobotActionFeedback action_feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsSpawnRobotAction class >> rosTypeName [ 
+^'stdr_msgs/SpawnRobotAction'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSpawnRobotAction >> action_feedback [
 	^ self getAt: #action_feedback. 
 

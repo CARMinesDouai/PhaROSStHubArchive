@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsDeleteRobotActionResult class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ stdr_msgs/DeleteRobotResult result
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsDeleteRobotActionResult class >> rosTypeName [ 
+^'stdr_msgs/DeleteRobotActionResult'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsDeleteRobotActionResult >> header [
 	^ self getAt: #header. 
 

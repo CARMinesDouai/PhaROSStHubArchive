@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsWrenchStamped class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ geometry_msgs/Wrench wrench
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsWrenchStamped class >> rosTypeName [ 
+^'geometry_msgs/WrenchStamped'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsWrenchStamped >> header [
 	^ self getAt: #header. 
 

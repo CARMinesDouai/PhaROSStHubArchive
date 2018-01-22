@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+ActionlibTestResult class >> rosTypeDefinition [ 
+^' int32 result
+'
+]
+
+{ #category : #'as yet unclassified' }
+ActionlibTestResult class >> rosTypeName [ 
+^'actionlib/TestResult'
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTestResult >> initialize [
 	super initialize.
 	 self result: 0. 

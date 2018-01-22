@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Std_msgsFloat32 class >> rosTypeDefinition [ 
+^' float32 data
+'
+]
+
+{ #category : #'as yet unclassified' }
+Std_msgsFloat32 class >> rosTypeName [ 
+^'std_msgs/Float32'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsFloat32 >> data [
 	^ self getAt: #data. 
 

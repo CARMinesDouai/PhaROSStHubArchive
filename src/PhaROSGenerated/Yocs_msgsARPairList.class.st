@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsARPairList class >> rosTypeDefinition [ 
+^' yocs_msgs/ARPair[] pairs
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsARPairList class >> rosTypeName [ 
+^'yocs_msgs/ARPairList'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsARPairList >> initialize [
 	super initialize.
 	 self pairs: OrderedCollection new . 

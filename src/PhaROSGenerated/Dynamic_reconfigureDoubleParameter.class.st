@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureDoubleParameter class >> rosTypeDefinition [ 
+^' string name
+ float64 value
+'
+]
+
+{ #category : #'as yet unclassified' }
+Dynamic_reconfigureDoubleParameter class >> rosTypeName [ 
+^'dynamic_reconfigure/DoubleParameter'
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureDoubleParameter >> initialize [
 	super initialize.
 	 self name: ''. 

@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPose2D class >> rosTypeDefinition [ 
+^' float64 x
+ float64 y
+ float64 theta
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsPose2D class >> rosTypeName [ 
+^'geometry_msgs/Pose2D'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPose2D >> initialize [
 	super initialize.
 	 self x: 0.0. 

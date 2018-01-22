@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Nav_msgsGridCells class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ float32 cell_width
+ float32 cell_height
+ geometry_msgs/Point[] cells
+'
+]
+
+{ #category : #'as yet unclassified' }
+Nav_msgsGridCells class >> rosTypeName [ 
+^'nav_msgs/GridCells'
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsGridCells >> cell_height [
 	^ self getAt: #cell_height. 
 

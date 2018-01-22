@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Std_msgsMultiArrayLayout class >> rosTypeDefinition [ 
+^' std_msgs/MultiArrayDimension[] dim
+ int32 data_offset
+'
+]
+
+{ #category : #'as yet unclassified' }
+Std_msgsMultiArrayLayout class >> rosTypeName [ 
+^'std_msgs/MultiArrayLayout'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsMultiArrayLayout >> data_offset [
 	^ self getAt: #data_offset. 
 

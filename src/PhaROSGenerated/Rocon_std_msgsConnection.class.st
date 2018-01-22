@@ -29,6 +29,28 @@ Rocon_std_msgsConnection class >> publisher [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsConnection class >> rosTypeDefinition [ 
+^' string PUBLISHER=''publisher''
+ string SUBSCRIBER=''subscriber''
+ string SERVICE=''service''
+ string ACTION_CLIENT=''action_client''
+ string ACTION_SERVER=''action_server''
+ string INVALID=''invalid''
+ string type
+ string name
+ string node
+ string type_msg
+ string type_info
+ string xmlrpc_uri
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_std_msgsConnection class >> rosTypeName [ 
+^'rocon_std_msgs/Connection'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsConnection class >> service [
 	^'service'
 

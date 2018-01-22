@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsRappList class >> rosTypeDefinition [ 
+^' rocon_app_manager_msgs/Rapp[] available_rapps
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_app_manager_msgsRappList class >> rosTypeName [ 
+^'rocon_app_manager_msgs/RappList'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsRappList >> available_rapps [
 	^ self getAt: #available_rapps. 
 

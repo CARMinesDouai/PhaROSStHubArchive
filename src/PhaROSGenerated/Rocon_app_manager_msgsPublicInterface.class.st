@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsPublicInterface class >> rosTypeDefinition [ 
+^' string connection_type
+ string data_type
+ string name
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_app_manager_msgsPublicInterface class >> rosTypeName [ 
+^'rocon_app_manager_msgs/PublicInterface'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsPublicInterface >> connection_type [
 	^ self getAt: #connection_type. 
 

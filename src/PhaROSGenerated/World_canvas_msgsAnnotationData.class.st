@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+World_canvas_msgsAnnotationData class >> rosTypeDefinition [ 
+^' uuid_msgs/UniqueID id
+ string type
+ int8[] data
+'
+]
+
+{ #category : #'as yet unclassified' }
+World_canvas_msgsAnnotationData class >> rosTypeName [ 
+^'world_canvas_msgs/AnnotationData'
+]
+
+{ #category : #'as yet unclassified' }
 World_canvas_msgsAnnotationData >> data [
 	^ self getAt: #data. 
 

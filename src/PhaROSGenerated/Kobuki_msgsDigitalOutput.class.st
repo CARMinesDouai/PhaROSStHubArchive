@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsDigitalOutput class >> rosTypeDefinition [ 
+^' bool[4]  values
+ bool[4]  mask
+'
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsDigitalOutput class >> rosTypeName [ 
+^'kobuki_msgs/DigitalOutput'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsDigitalOutput >> initialize [
 	super initialize.
 	 self values:  (OrderedCollection new: 4). 

@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsConnectionsDiff class >> rosTypeDefinition [ 
+^' rocon_std_msgs/Connection[] added
+ rocon_std_msgs/Connection[] lost
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_std_msgsConnectionsDiff class >> rosTypeName [ 
+^'rocon_std_msgs/ConnectionsDiff'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsConnectionsDiff >> added [
 	^ self getAt: #added. 
 

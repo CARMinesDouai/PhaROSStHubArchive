@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsWallList class >> rosTypeDefinition [ 
+^' yocs_msgs/Wall[] obstacles
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsWallList class >> rosTypeName [ 
+^'yocs_msgs/WallList'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsWallList >> initialize [
 	super initialize.
 	 self obstacles: OrderedCollection new . 

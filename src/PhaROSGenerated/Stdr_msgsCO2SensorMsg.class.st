@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsCO2SensorMsg class >> rosTypeDefinition [ 
+^' float32 maxRange
+ float32 frequency
+ string frame_id
+ geometry_msgs/Pose2D pose
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsCO2SensorMsg class >> rosTypeName [ 
+^'stdr_msgs/CO2SensorMsg'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsCO2SensorMsg >> frame_id [
 	^ self getAt: #frame_id. 
 

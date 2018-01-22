@@ -5,6 +5,22 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+BondStatus class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ string id
+ string instance_id
+ bool active
+ float32 heartbeat_timeout
+ float32 heartbeat_period
+'
+]
+
+{ #category : #'as yet unclassified' }
+BondStatus class >> rosTypeName [ 
+^'bond/Status'
+]
+
+{ #category : #'as yet unclassified' }
 BondStatus >> active [
 	^ self getAt: #active. 
 

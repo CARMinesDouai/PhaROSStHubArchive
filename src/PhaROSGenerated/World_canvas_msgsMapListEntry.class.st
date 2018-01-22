@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+World_canvas_msgsMapListEntry class >> rosTypeDefinition [ 
+^' string name
+ string session_id
+ int64 date
+ string map_id
+'
+]
+
+{ #category : #'as yet unclassified' }
+World_canvas_msgsMapListEntry class >> rosTypeName [ 
+^'world_canvas_msgs/MapListEntry'
+]
+
+{ #category : #'as yet unclassified' }
 World_canvas_msgsMapListEntry >> date [
 	^ self getAt: #date. 
 

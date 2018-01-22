@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtle_actionlibShapeResult class >> rosTypeDefinition [ 
+^' float32 interior_angle
+ float32 apothem
+'
+]
+
+{ #category : #'as yet unclassified' }
+Turtle_actionlibShapeResult class >> rosTypeName [ 
+^'turtle_actionlib/ShapeResult'
+]
+
+{ #category : #'as yet unclassified' }
 Turtle_actionlibShapeResult >> apothem [
 	^ self getAt: #apothem. 
 

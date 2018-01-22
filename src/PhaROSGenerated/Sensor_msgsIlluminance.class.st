@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsIlluminance class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ float64 illuminance
+ float64 variance
+'
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsIlluminance class >> rosTypeName [ 
+^'sensor_msgs/Illuminance'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsIlluminance >> header [
 	^ self getAt: #header. 
 

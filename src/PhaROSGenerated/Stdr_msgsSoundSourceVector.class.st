@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSoundSourceVector class >> rosTypeDefinition [ 
+^' stdr_msgs/SoundSource[] sound_sources
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsSoundSourceVector class >> rosTypeName [ 
+^'stdr_msgs/SoundSourceVector'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSoundSourceVector >> initialize [
 	super initialize.
 	 self sound_sources: OrderedCollection new . 

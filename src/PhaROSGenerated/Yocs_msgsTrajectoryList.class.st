@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsTrajectoryList class >> rosTypeDefinition [ 
+^' yocs_msgs/Trajectory[] trajectories
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsTrajectoryList class >> rosTypeName [ 
+^'yocs_msgs/TrajectoryList'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsTrajectoryList >> initialize [
 	super initialize.
 	 self trajectories: OrderedCollection new . 

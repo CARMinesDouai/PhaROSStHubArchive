@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionFeedback class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ float64 position
+ float64 velocity
+ float64 error
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionFeedback class >> rosTypeName [ 
+^'control_msgs/SingleJointPositionFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsSingleJointPositionFeedback >> error [
 	^ self getAt: #error. 
 

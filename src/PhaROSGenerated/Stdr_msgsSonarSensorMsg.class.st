@@ -5,6 +5,23 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSonarSensorMsg class >> rosTypeDefinition [ 
+^' float32 maxRange
+ float32 minRange
+ float32 coneAngle
+ float32 frequency
+ stdr_msgs/Noise noise
+ string frame_id
+ geometry_msgs/Pose2D pose
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsSonarSensorMsg class >> rosTypeName [ 
+^'stdr_msgs/SonarSensorMsg'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSonarSensorMsg >> coneAngle [
 	^ self getAt: #coneAngle. 
 

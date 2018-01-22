@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Trajectory_msgsMultiDOFJointTrajectory class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ string[] joint_names
+ trajectory_msgs/MultiDOFJointTrajectoryPoint[] points
+'
+]
+
+{ #category : #'as yet unclassified' }
+Trajectory_msgsMultiDOFJointTrajectory class >> rosTypeName [ 
+^'trajectory_msgs/MultiDOFJointTrajectory'
+]
+
+{ #category : #'as yet unclassified' }
 Trajectory_msgsMultiDOFJointTrajectory >> header [
 	^ self getAt: #header. 
 

@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+ActionlibTwoIntsAction class >> rosTypeDefinition [ 
+^' actionlib/TwoIntsActionGoal action_goal
+ actionlib/TwoIntsActionResult action_result
+ actionlib/TwoIntsActionFeedback action_feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+ActionlibTwoIntsAction class >> rosTypeName [ 
+^'actionlib/TwoIntsAction'
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTwoIntsAction >> action_feedback [
 	^ self getAt: #action_feedback. 
 

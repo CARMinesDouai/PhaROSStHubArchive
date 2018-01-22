@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+ActionlibTestFeedback class >> rosTypeDefinition [ 
+^' int32 feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+ActionlibTestFeedback class >> rosTypeName [ 
+^'actionlib/TestFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTestFeedback >> feedback [
 	^ self getAt: #feedback. 
 

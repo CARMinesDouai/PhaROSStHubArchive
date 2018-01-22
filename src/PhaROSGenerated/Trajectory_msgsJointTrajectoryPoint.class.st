@@ -5,6 +5,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Trajectory_msgsJointTrajectoryPoint class >> rosTypeDefinition [ 
+^' float64[] positions
+ float64[] velocities
+ float64[] accelerations
+ float64[] effort
+ duration time_from_start
+'
+]
+
+{ #category : #'as yet unclassified' }
+Trajectory_msgsJointTrajectoryPoint class >> rosTypeName [ 
+^'trajectory_msgs/JointTrajectoryPoint'
+]
+
+{ #category : #'as yet unclassified' }
 Trajectory_msgsJointTrajectoryPoint >> accelerations [
 	^ self getAt: #accelerations. 
 

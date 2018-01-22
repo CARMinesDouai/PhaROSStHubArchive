@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsJoy class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ float32[] axes
+ int32[] buttons
+'
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsJoy class >> rosTypeName [ 
+^'sensor_msgs/Joy'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsJoy >> axes [
 	^ self getAt: #axes. 
 

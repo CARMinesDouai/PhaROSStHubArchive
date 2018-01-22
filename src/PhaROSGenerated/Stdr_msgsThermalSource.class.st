@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsThermalSource class >> rosTypeDefinition [ 
+^' string id
+ float32 degrees
+ geometry_msgs/Pose2D pose
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsThermalSource class >> rosTypeName [ 
+^'stdr_msgs/ThermalSource'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsThermalSource >> degrees [
 	^ self getAt: #degrees. 
 

@@ -5,6 +5,23 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigateToFeedback class >> rosTypeDefinition [ 
+^' int8 STATUS_RETRY=21
+ int8 STATUS_INPROGRESS=22
+ int8 STATUS_ERROR=23
+ string message
+ float32 distance
+ float32 remain_time
+ int8 status
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigateToFeedback class >> rosTypeName [ 
+^'yocs_msgs/NavigateToFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigateToFeedback class >> status_error [
 	^23
 

@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRfidSensorMeasurementMsg class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ string[] rfid_tags_ids
+ string[] rfid_tags_msgs
+ float32[] rfid_tags_dbs
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsRfidSensorMeasurementMsg class >> rosTypeName [ 
+^'stdr_msgs/RfidSensorMeasurementMsg'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRfidSensorMeasurementMsg >> header [
 	^ self getAt: #header. 
 

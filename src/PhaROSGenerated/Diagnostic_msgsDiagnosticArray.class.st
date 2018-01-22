@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Diagnostic_msgsDiagnosticArray class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ diagnostic_msgs/DiagnosticStatus[] status
+'
+]
+
+{ #category : #'as yet unclassified' }
+Diagnostic_msgsDiagnosticArray class >> rosTypeName [ 
+^'diagnostic_msgs/DiagnosticArray'
+]
+
+{ #category : #'as yet unclassified' }
 Diagnostic_msgsDiagnosticArray >> header [
 	^ self getAt: #header. 
 

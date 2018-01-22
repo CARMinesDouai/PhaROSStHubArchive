@@ -5,6 +5,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Nav_msgsMapMetaData class >> rosTypeDefinition [ 
+^' time map_load_time
+ float32 resolution
+ int32 width
+ int32 height
+ geometry_msgs/Pose origin
+'
+]
+
+{ #category : #'as yet unclassified' }
+Nav_msgsMapMetaData class >> rosTypeName [ 
+^'nav_msgs/MapMetaData'
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsMapMetaData >> height [
 	^ self getAt: #height. 
 

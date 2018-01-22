@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_msgsGoalID class >> rosTypeDefinition [ 
+^' time stamp
+ string id
+'
+]
+
+{ #category : #'as yet unclassified' }
+Actionlib_msgsGoalID class >> rosTypeName [ 
+^'actionlib_msgs/GoalID'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_msgsGoalID >> id [
 	^ self getAt: #id. 
 

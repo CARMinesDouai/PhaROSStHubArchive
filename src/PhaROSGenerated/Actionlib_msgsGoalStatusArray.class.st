@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_msgsGoalStatusArray class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus[] status_list
+'
+]
+
+{ #category : #'as yet unclassified' }
+Actionlib_msgsGoalStatusArray class >> rosTypeName [ 
+^'actionlib_msgs/GoalStatusArray'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_msgsGoalStatusArray >> header [
 	^ self getAt: #header. 
 

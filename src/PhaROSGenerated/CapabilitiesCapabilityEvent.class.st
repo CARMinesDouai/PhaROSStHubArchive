@@ -11,6 +11,25 @@ CapabilitiesCapabilityEvent class >> launched [
 ]
 
 { #category : #'as yet unclassified' }
+CapabilitiesCapabilityEvent class >> rosTypeDefinition [ 
+^' string LAUNCHED=''"launched"''
+ string STOPPED=''"stopped"''
+ string TERMINATED=''"terminated"''
+ string SERVER_READY=''"server_ready"''
+ std_msgs/Header header
+ string capability
+ string provider
+ string type
+ int32 pid
+'
+]
+
+{ #category : #'as yet unclassified' }
+CapabilitiesCapabilityEvent class >> rosTypeName [ 
+^'capabilities/CapabilityEvent'
+]
+
+{ #category : #'as yet unclassified' }
 CapabilitiesCapabilityEvent class >> server_ready [
 	^'"server_ready"'
 

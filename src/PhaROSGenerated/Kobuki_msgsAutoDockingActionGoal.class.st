@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingActionGoal class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalID goal_id
+ kobuki_msgs/AutoDockingGoal goal
+'
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingActionGoal class >> rosTypeName [ 
+^'kobuki_msgs/AutoDockingActionGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsAutoDockingActionGoal >> goal [
 	^ self getAt: #goal. 
 

@@ -11,6 +11,21 @@ Yocs_msgsNavigationControl class >> pause [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigationControl class >> rosTypeDefinition [ 
+^' int8 STOP=0
+ int8 START=1
+ int8 PAUSE=2
+ int8 control
+ string goal_name
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigationControl class >> rosTypeName [ 
+^'yocs_msgs/NavigationControl'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigationControl class >> start [
 	^1
 

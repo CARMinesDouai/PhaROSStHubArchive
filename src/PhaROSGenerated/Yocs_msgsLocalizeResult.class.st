@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsLocalizeResult class >> rosTypeDefinition [ 
+^' bool success
+ string message
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsLocalizeResult class >> rosTypeName [ 
+^'yocs_msgs/LocalizeResult'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsLocalizeResult >> initialize [
 	super initialize.
 	 self success: false. 

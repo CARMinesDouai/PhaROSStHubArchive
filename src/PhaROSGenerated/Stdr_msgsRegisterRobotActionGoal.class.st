@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRegisterRobotActionGoal class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalID goal_id
+ stdr_msgs/RegisterRobotGoal goal
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsRegisterRobotActionGoal class >> rosTypeName [ 
+^'stdr_msgs/RegisterRobotActionGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRegisterRobotActionGoal >> goal [
 	^ self getAt: #goal. 
 

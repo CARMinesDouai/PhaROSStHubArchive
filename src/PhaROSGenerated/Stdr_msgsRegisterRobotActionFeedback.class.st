@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRegisterRobotActionFeedback class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ stdr_msgs/RegisterRobotFeedback feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsRegisterRobotActionFeedback class >> rosTypeName [ 
+^'stdr_msgs/RegisterRobotActionFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRegisterRobotActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

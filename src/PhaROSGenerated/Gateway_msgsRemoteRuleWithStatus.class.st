@@ -29,6 +29,23 @@ Gateway_msgsRemoteRuleWithStatus class >> resend [
 ]
 
 { #category : #'as yet unclassified' }
+Gateway_msgsRemoteRuleWithStatus class >> rosTypeDefinition [ 
+^' string UNKNOWN=''unknown''
+ string PENDING=''pending''
+ string ACCEPTED=''accepted''
+ string BLOCKED=''blocked''
+ string RESEND=''resend''
+ gateway_msgs/RemoteRule remote_rule
+ string status
+'
+]
+
+{ #category : #'as yet unclassified' }
+Gateway_msgsRemoteRuleWithStatus class >> rosTypeName [ 
+^'gateway_msgs/RemoteRuleWithStatus'
+]
+
+{ #category : #'as yet unclassified' }
 Gateway_msgsRemoteRuleWithStatus class >> unknown [
 	^'unknown'
 

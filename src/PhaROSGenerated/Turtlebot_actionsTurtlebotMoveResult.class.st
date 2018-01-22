@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsTurtlebotMoveResult class >> rosTypeDefinition [ 
+^' float32 turn_distance
+ float32 forward_distance
+'
+]
+
+{ #category : #'as yet unclassified' }
+Turtlebot_actionsTurtlebotMoveResult class >> rosTypeName [ 
+^'turtlebot_actions/TurtlebotMoveResult'
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsTurtlebotMoveResult >> forward_distance [
 	^ self getAt: #forward_distance. 
 

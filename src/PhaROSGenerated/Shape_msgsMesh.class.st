@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Shape_msgsMesh class >> rosTypeDefinition [ 
+^' shape_msgs/MeshTriangle[] triangles
+ geometry_msgs/Point[] vertices
+'
+]
+
+{ #category : #'as yet unclassified' }
+Shape_msgsMesh class >> rosTypeName [ 
+^'shape_msgs/Mesh'
+]
+
+{ #category : #'as yet unclassified' }
 Shape_msgsMesh >> initialize [
 	super initialize.
 	 self triangles: OrderedCollection new . 

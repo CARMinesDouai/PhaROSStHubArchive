@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsTwistWithCovarianceStamped class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ geometry_msgs/TwistWithCovariance twist
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsTwistWithCovarianceStamped class >> rosTypeName [ 
+^'geometry_msgs/TwistWithCovarianceStamped'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsTwistWithCovarianceStamped >> header [
 	^ self getAt: #header. 
 

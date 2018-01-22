@@ -5,6 +5,23 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Visualization_msgsInteractiveMarker class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ geometry_msgs/Pose pose
+ string name
+ string description
+ float32 scale
+ visualization_msgs/MenuEntry[] menu_entries
+ visualization_msgs/InteractiveMarkerControl[] controls
+'
+]
+
+{ #category : #'as yet unclassified' }
+Visualization_msgsInteractiveMarker class >> rosTypeName [ 
+^'visualization_msgs/InteractiveMarker'
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsInteractiveMarker >> controls [
 	^ self getAt: #controls. 
 

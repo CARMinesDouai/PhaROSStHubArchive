@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Base_local_plannerPosition2DInt class >> rosTypeDefinition [ 
+^' int64 x
+ int64 y
+'
+]
+
+{ #category : #'as yet unclassified' }
+Base_local_plannerPosition2DInt class >> rosTypeName [ 
+^'base_local_planner/Position2DInt'
+]
+
+{ #category : #'as yet unclassified' }
 Base_local_plannerPosition2DInt >> initialize [
 	super initialize.
 	 self x: 0. 

@@ -5,6 +5,23 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Tf2_msgsLookupTransformGoal class >> rosTypeDefinition [ 
+^' string target_frame
+ string source_frame
+ time source_time
+ duration timeout
+ time target_time
+ string fixed_frame
+ bool advanced
+'
+]
+
+{ #category : #'as yet unclassified' }
+Tf2_msgsLookupTransformGoal class >> rosTypeName [ 
+^'tf2_msgs/LookupTransformGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Tf2_msgsLookupTransformGoal >> advanced [
 	^ self getAt: #advanced. 
 

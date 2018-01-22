@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionAction class >> rosTypeDefinition [ 
+^' control_msgs/SingleJointPositionActionGoal action_goal
+ control_msgs/SingleJointPositionActionResult action_result
+ control_msgs/SingleJointPositionActionFeedback action_feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionAction class >> rosTypeName [ 
+^'control_msgs/SingleJointPositionAction'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsSingleJointPositionAction >> action_feedback [
 	^ self getAt: #action_feedback. 
 

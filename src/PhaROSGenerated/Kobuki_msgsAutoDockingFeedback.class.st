@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingFeedback class >> rosTypeDefinition [ 
+^' string state
+ string text
+'
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingFeedback class >> rosTypeName [ 
+^'kobuki_msgs/AutoDockingFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsAutoDockingFeedback >> initialize [
 	super initialize.
 	 self state: ''. 

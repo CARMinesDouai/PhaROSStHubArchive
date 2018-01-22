@@ -5,6 +5,22 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsPairing class >> rosTypeDefinition [ 
+^' string name
+ string rapp
+ string description
+ rocon_std_msgs/Icon icon
+ rocon_std_msgs/Remapping[] remappings
+ rocon_std_msgs/KeyValue[] parameters
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_interaction_msgsPairing class >> rosTypeName [ 
+^'rocon_interaction_msgs/Pairing'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsPairing >> description [
 	^ self getAt: #description. 
 

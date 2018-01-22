@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Controller_manager_msgsHardwareInterfaceResources class >> rosTypeDefinition [ 
+^' string hardware_interface
+ string[] resources
+'
+]
+
+{ #category : #'as yet unclassified' }
+Controller_manager_msgsHardwareInterfaceResources class >> rosTypeName [ 
+^'controller_manager_msgs/HardwareInterfaceResources'
+]
+
+{ #category : #'as yet unclassified' }
 Controller_manager_msgsHardwareInterfaceResources >> hardware_interface [
 	^ self getAt: #hardware_interface. 
 

@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsGripperCommandActionFeedback class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ control_msgs/GripperCommandFeedback feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsGripperCommandActionFeedback class >> rosTypeName [ 
+^'control_msgs/GripperCommandActionFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsGripperCommandActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

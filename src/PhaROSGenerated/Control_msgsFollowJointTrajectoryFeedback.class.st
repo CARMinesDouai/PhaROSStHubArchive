@@ -5,6 +5,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsFollowJointTrajectoryFeedback class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ string[] joint_names
+ trajectory_msgs/JointTrajectoryPoint desired
+ trajectory_msgs/JointTrajectoryPoint actual
+ trajectory_msgs/JointTrajectoryPoint error
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsFollowJointTrajectoryFeedback class >> rosTypeName [ 
+^'control_msgs/FollowJointTrajectoryFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsFollowJointTrajectoryFeedback >> actual [
 	^ self getAt: #actual. 
 

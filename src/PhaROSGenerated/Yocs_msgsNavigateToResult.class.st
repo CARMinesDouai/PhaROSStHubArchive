@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigateToResult class >> rosTypeDefinition [ 
+^' bool success
+ float32 distance
+ string message
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigateToResult class >> rosTypeName [ 
+^'yocs_msgs/NavigateToResult'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigateToResult >> distance [
 	^ self getAt: #distance. 
 

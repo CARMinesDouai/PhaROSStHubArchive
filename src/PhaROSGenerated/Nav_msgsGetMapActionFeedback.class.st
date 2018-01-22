@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Nav_msgsGetMapActionFeedback class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ nav_msgs/GetMapFeedback feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Nav_msgsGetMapActionFeedback class >> rosTypeName [ 
+^'nav_msgs/GetMapActionFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsGetMapActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

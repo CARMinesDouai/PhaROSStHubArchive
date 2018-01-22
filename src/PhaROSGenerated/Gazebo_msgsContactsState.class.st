@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Gazebo_msgsContactsState class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ gazebo_msgs/ContactState[] states
+'
+]
+
+{ #category : #'as yet unclassified' }
+Gazebo_msgsContactsState class >> rosTypeName [ 
+^'gazebo_msgs/ContactsState'
+]
+
+{ #category : #'as yet unclassified' }
 Gazebo_msgsContactsState >> header [
 	^ self getAt: #header. 
 

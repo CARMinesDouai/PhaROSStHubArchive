@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsTable class >> rosTypeDefinition [ 
+^' string name
+ float32 radius
+ float32 height
+ geometry_msgs/PoseWithCovarianceStamped pose
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsTable class >> rosTypeName [ 
+^'yocs_msgs/Table'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsTable >> height [
 	^ self getAt: #height. 
 

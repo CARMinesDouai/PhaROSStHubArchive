@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsAccelStamped class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ geometry_msgs/Accel accel
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsAccelStamped class >> rosTypeName [ 
+^'geometry_msgs/AccelStamped'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsAccelStamped >> accel [
 	^ self getAt: #accel. 
 

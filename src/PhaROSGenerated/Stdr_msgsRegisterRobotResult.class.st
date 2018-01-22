@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRegisterRobotResult class >> rosTypeDefinition [ 
+^' stdr_msgs/RobotMsg description
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsRegisterRobotResult class >> rosTypeName [ 
+^'stdr_msgs/RegisterRobotResult'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRegisterRobotResult >> description [
 	^ self getAt: #description. 
 

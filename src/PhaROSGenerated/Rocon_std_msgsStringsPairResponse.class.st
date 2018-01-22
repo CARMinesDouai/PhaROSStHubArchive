@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsStringsPairResponse class >> rosTypeDefinition [ 
+^' uuid_msgs/UniqueID id
+ rocon_std_msgs/StringsResponse response
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_std_msgsStringsPairResponse class >> rosTypeName [ 
+^'rocon_std_msgs/StringsPairResponse'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsStringsPairResponse >> id [
 	^ self getAt: #id. 
 

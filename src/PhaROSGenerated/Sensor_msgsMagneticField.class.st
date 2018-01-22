@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsMagneticField class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ geometry_msgs/Vector3 magnetic_field
+ float64[9]  magnetic_field_covariance
+'
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsMagneticField class >> rosTypeName [ 
+^'sensor_msgs/MagneticField'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsMagneticField >> header [
 	^ self getAt: #header. 
 

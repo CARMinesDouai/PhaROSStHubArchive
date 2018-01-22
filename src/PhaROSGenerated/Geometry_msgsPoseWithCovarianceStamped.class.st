@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPoseWithCovarianceStamped class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ geometry_msgs/PoseWithCovariance pose
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsPoseWithCovarianceStamped class >> rosTypeName [ 
+^'geometry_msgs/PoseWithCovarianceStamped'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPoseWithCovarianceStamped >> header [
 	^ self getAt: #header. 
 

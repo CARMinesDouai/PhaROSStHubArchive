@@ -5,6 +5,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Gazebo_msgsWorldState class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ string[] name
+ geometry_msgs/Pose[] pose
+ geometry_msgs/Twist[] twist
+ geometry_msgs/Wrench[] wrench
+'
+]
+
+{ #category : #'as yet unclassified' }
+Gazebo_msgsWorldState class >> rosTypeName [ 
+^'gazebo_msgs/WorldState'
+]
+
+{ #category : #'as yet unclassified' }
 Gazebo_msgsWorldState >> header [
 	^ self getAt: #header. 
 

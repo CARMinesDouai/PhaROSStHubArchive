@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Ar_track_alvar_msgsAlvarMarkers class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ ar_track_alvar_msgs/AlvarMarker[] markers
+'
+]
+
+{ #category : #'as yet unclassified' }
+Ar_track_alvar_msgsAlvarMarkers class >> rosTypeName [ 
+^'ar_track_alvar_msgs/AlvarMarkers'
+]
+
+{ #category : #'as yet unclassified' }
 Ar_track_alvar_msgsAlvarMarkers >> header [
 	^ self getAt: #header. 
 

@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Controller_manager_msgsControllerState class >> rosTypeDefinition [ 
+^' string name
+ string state
+ string type
+ controller_manager_msgs/HardwareInterfaceResources[] claimed_resources
+'
+]
+
+{ #category : #'as yet unclassified' }
+Controller_manager_msgsControllerState class >> rosTypeName [ 
+^'controller_manager_msgs/ControllerState'
+]
+
+{ #category : #'as yet unclassified' }
 Controller_manager_msgsControllerState >> claimed_resources [
 	^ self getAt: #claimed_resources. 
 

@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsTableList class >> rosTypeDefinition [ 
+^' yocs_msgs/Table[] tables
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsTableList class >> rosTypeName [ 
+^'yocs_msgs/TableList'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsTableList >> initialize [
 	super initialize.
 	 self tables: OrderedCollection new . 

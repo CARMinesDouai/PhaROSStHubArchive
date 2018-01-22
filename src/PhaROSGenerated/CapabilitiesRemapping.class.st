@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+CapabilitiesRemapping class >> rosTypeDefinition [ 
+^' string key
+ string value
+'
+]
+
+{ #category : #'as yet unclassified' }
+CapabilitiesRemapping class >> rosTypeName [ 
+^'capabilities/Remapping'
+]
+
+{ #category : #'as yet unclassified' }
 CapabilitiesRemapping >> initialize [
 	super initialize.
 	 self key: ''. 

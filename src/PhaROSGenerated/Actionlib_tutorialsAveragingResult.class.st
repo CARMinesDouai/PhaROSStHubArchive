@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsAveragingResult class >> rosTypeDefinition [ 
+^' float32 mean
+ float32 std_dev
+'
+]
+
+{ #category : #'as yet unclassified' }
+Actionlib_tutorialsAveragingResult class >> rosTypeName [ 
+^'actionlib_tutorials/AveragingResult'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsAveragingResult >> initialize [
 	super initialize.
 	 self mean: 0.0. 

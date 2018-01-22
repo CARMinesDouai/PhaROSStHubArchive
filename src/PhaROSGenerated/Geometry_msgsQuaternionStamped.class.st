@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsQuaternionStamped class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ geometry_msgs/Quaternion quaternion
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsQuaternionStamped class >> rosTypeName [ 
+^'geometry_msgs/QuaternionStamped'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsQuaternionStamped >> header [
 	^ self getAt: #header. 
 

@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsTrajectory class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ string name
+ yocs_msgs/Waypoint[] waypoints
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsTrajectory class >> rosTypeName [ 
+^'yocs_msgs/Trajectory'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsTrajectory >> header [
 	^ self getAt: #header. 
 

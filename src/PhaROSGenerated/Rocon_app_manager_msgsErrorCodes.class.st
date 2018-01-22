@@ -65,6 +65,28 @@ Rocon_app_manager_msgsErrorCodes class >> rapp_is_not_running [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsErrorCodes class >> rosTypeDefinition [ 
+^' int8 SUCCESS=0
+ int8 UNKNOWN=1
+ int8 MULTI_RAPP_NOT_SUPPORTED=10
+ int8 RAPP_IS_NOT_RUNNING=20
+ int8 RAPP_IS_NOT_AVAILABLE=21
+ int8 LOCAL_INVITATIONS_ONLY=30
+ int8 NO_LOCAL_GATEWAY=31
+ int8 ALREADY_REMOTE_CONTROLLED=32
+ int8 NOT_CURRENT_REMOTE_CONTROLLER=33
+ int8 INVITING_CONTROLLER_NOT_WHITELISTED=34
+ int8 INVITING_CONTROLLER_BLACKLISTED=35
+ int8 CLIENT_CONNECTION_DISRUPTED=36
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_app_manager_msgsErrorCodes class >> rosTypeName [ 
+^'rocon_app_manager_msgs/ErrorCodes'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsErrorCodes class >> success [
 	^0
 

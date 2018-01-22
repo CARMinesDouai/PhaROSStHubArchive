@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Trajectory_msgsMultiDOFJointTrajectoryPoint class >> rosTypeDefinition [ 
+^' geometry_msgs/Transform[] transforms
+ geometry_msgs/Twist[] velocities
+ geometry_msgs/Twist[] accelerations
+ duration time_from_start
+'
+]
+
+{ #category : #'as yet unclassified' }
+Trajectory_msgsMultiDOFJointTrajectoryPoint class >> rosTypeName [ 
+^'trajectory_msgs/MultiDOFJointTrajectoryPoint'
+]
+
+{ #category : #'as yet unclassified' }
 Trajectory_msgsMultiDOFJointTrajectoryPoint >> accelerations [
 	^ self getAt: #accelerations. 
 

@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsTwistStamped class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ geometry_msgs/Twist twist
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsTwistStamped class >> rosTypeName [ 
+^'geometry_msgs/TwistStamped'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsTwistStamped >> header [
 	^ self getAt: #header. 
 

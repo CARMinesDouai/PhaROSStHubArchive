@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsFindFiducialAction class >> rosTypeDefinition [ 
+^' turtlebot_actions/FindFiducialActionGoal action_goal
+ turtlebot_actions/FindFiducialActionResult action_result
+ turtlebot_actions/FindFiducialActionFeedback action_feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Turtlebot_actionsFindFiducialAction class >> rosTypeName [ 
+^'turtlebot_actions/FindFiducialAction'
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsFindFiducialAction >> action_feedback [
 	^ self getAt: #action_feedback. 
 

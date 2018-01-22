@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsIcon class >> rosTypeDefinition [ 
+^' string resource_name
+ string format
+ int8[] data
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_std_msgsIcon class >> rosTypeName [ 
+^'rocon_std_msgs/Icon'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsIcon >> data [
 	^ self getAt: #data. 
 

@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Std_msgsColorRGBA class >> rosTypeDefinition [ 
+^' float32 r
+ float32 g
+ float32 b
+ float32 a
+'
+]
+
+{ #category : #'as yet unclassified' }
+Std_msgsColorRGBA class >> rosTypeName [ 
+^'std_msgs/ColorRGBA'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsColorRGBA >> a [
 	^ self getAt: #a. 
 

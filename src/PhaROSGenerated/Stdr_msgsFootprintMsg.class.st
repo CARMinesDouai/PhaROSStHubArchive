@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsFootprintMsg class >> rosTypeDefinition [ 
+^' geometry_msgs/Point[] points
+ float32 radius
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsFootprintMsg class >> rosTypeName [ 
+^'stdr_msgs/FootprintMsg'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsFootprintMsg >> initialize [
 	super initialize.
 	 self points: OrderedCollection new . 

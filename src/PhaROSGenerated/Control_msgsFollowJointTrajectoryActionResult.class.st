@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsFollowJointTrajectoryActionResult class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ control_msgs/FollowJointTrajectoryResult result
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsFollowJointTrajectoryActionResult class >> rosTypeName [ 
+^'control_msgs/FollowJointTrajectoryActionResult'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsFollowJointTrajectoryActionResult >> header [
 	^ self getAt: #header. 
 

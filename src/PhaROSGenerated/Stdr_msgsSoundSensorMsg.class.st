@@ -5,6 +5,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSoundSensorMsg class >> rosTypeDefinition [ 
+^' float32 maxRange
+ float32 frequency
+ float32 angleSpan
+ string frame_id
+ geometry_msgs/Pose2D pose
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsSoundSensorMsg class >> rosTypeName [ 
+^'stdr_msgs/SoundSensorMsg'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSoundSensorMsg >> angleSpan [
 	^ self getAt: #angleSpan. 
 

@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsDockingInteractorResult class >> rosTypeDefinition [ 
+^' bool success
+ string message
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsDockingInteractorResult class >> rosTypeName [ 
+^'yocs_msgs/DockingInteractorResult'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsDockingInteractorResult >> initialize [
 	super initialize.
 	 self success: false. 

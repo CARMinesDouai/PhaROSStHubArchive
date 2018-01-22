@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Move_base_msgsMoveBaseGoal class >> rosTypeDefinition [ 
+^' geometry_msgs/PoseStamped target_pose
+'
+]
+
+{ #category : #'as yet unclassified' }
+Move_base_msgsMoveBaseGoal class >> rosTypeName [ 
+^'move_base_msgs/MoveBaseGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Move_base_msgsMoveBaseGoal >> initialize [
 	super initialize.
 	 self target_pose: Geometry_msgsPoseStamped new. 

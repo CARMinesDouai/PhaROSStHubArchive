@@ -17,6 +17,19 @@ Kobuki_msgsRobotStateEvent class >> online [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsRobotStateEvent class >> rosTypeDefinition [ 
+^' int8 ONLINE=1
+ int8 OFFLINE=0
+ int8 state
+'
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsRobotStateEvent class >> rosTypeName [ 
+^'kobuki_msgs/RobotStateEvent'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsRobotStateEvent >> initialize [
 	super initialize.
 	 self state: 0. 

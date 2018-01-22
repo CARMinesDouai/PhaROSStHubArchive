@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsThermalSensorMeasurementMsg class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ float32[] thermal_source_degrees
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsThermalSensorMeasurementMsg class >> rosTypeName [ 
+^'stdr_msgs/ThermalSensorMeasurementMsg'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsThermalSensorMeasurementMsg >> header [
 	^ self getAt: #header. 
 

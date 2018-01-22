@@ -35,6 +35,24 @@ Yocs_msgsNavigationControlStatus class >> paused [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigationControlStatus class >> rosTypeDefinition [ 
+^' int8 ERROR=-1
+ int8 IDLING=0
+ int8 RUNNING=1
+ int8 PAUSED=2
+ int8 COMPLETED=3
+ int8 CANCELLED=4
+ int8 status
+ string status_desc
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigationControlStatus class >> rosTypeName [ 
+^'yocs_msgs/NavigationControlStatus'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigationControlStatus class >> running [
 	^1
 

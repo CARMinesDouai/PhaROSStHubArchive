@@ -5,6 +5,23 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Costmap_2dVoxelGrid class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ int32[] data
+ geometry_msgs/Point32 origin
+ geometry_msgs/Vector3 resolutions
+ int32 size_x
+ int32 size_y
+ int32 size_z
+'
+]
+
+{ #category : #'as yet unclassified' }
+Costmap_2dVoxelGrid class >> rosTypeName [ 
+^'costmap_2d/VoxelGrid'
+]
+
+{ #category : #'as yet unclassified' }
 Costmap_2dVoxelGrid >> data [
 	^ self getAt: #data. 
 

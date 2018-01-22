@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsGripperCommandActionGoal class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalID goal_id
+ control_msgs/GripperCommandGoal goal
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsGripperCommandActionGoal class >> rosTypeName [ 
+^'control_msgs/GripperCommandActionGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsGripperCommandActionGoal >> goal [
 	^ self getAt: #goal. 
 

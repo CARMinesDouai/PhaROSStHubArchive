@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsRelativeHumidity class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ float64 relative_humidity
+ float64 variance
+'
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsRelativeHumidity class >> rosTypeName [ 
+^'sensor_msgs/RelativeHumidity'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsRelativeHumidity >> header [
 	^ self getAt: #header. 
 

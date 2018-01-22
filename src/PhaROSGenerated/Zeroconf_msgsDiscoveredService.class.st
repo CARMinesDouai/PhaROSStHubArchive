@@ -5,6 +5,30 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Zeroconf_msgsDiscoveredService class >> rosTypeDefinition [ 
+^' string name
+ string type
+ string domain
+ string description
+ string hostname
+ string[] ipv4_addresses
+ string[] ipv6_addresses
+ int32 port
+ int32 cookie
+ bool is_local
+ bool our_own
+ bool wide_area
+ bool multicast
+ bool cached
+'
+]
+
+{ #category : #'as yet unclassified' }
+Zeroconf_msgsDiscoveredService class >> rosTypeName [ 
+^'zeroconf_msgs/DiscoveredService'
+]
+
+{ #category : #'as yet unclassified' }
 Zeroconf_msgsDiscoveredService >> cached [
 	^ self getAt: #cached. 
 

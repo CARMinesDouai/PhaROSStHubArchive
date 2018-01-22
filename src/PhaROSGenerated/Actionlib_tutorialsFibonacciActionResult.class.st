@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciActionResult class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ actionlib_tutorials/FibonacciResult result
+'
+]
+
+{ #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciActionResult class >> rosTypeName [ 
+^'actionlib_tutorials/FibonacciActionResult'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsFibonacciActionResult >> header [
 	^ self getAt: #header. 
 

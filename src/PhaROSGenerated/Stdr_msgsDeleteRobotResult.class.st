@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsDeleteRobotResult class >> rosTypeDefinition [ 
+^' bool success
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsDeleteRobotResult class >> rosTypeName [ 
+^'stdr_msgs/DeleteRobotResult'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsDeleteRobotResult >> initialize [
 	super initialize.
 	 self success: false. 

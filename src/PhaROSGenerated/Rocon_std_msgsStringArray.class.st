@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsStringArray class >> rosTypeDefinition [ 
+^' string[] strings
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_std_msgsStringArray class >> rosTypeName [ 
+^'rocon_std_msgs/StringArray'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsStringArray >> initialize [
 	super initialize.
 	 self strings: OrderedCollection new . 

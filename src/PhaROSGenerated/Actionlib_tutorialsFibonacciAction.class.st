@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciAction class >> rosTypeDefinition [ 
+^' actionlib_tutorials/FibonacciActionGoal action_goal
+ actionlib_tutorials/FibonacciActionResult action_result
+ actionlib_tutorials/FibonacciActionFeedback action_feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciAction class >> rosTypeName [ 
+^'actionlib_tutorials/FibonacciAction'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsFibonacciAction >> action_feedback [
 	^ self getAt: #action_feedback. 
 

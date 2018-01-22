@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Nav_msgsGetMapResult class >> rosTypeDefinition [ 
+^' nav_msgs/OccupancyGrid map
+'
+]
+
+{ #category : #'as yet unclassified' }
+Nav_msgsGetMapResult class >> rosTypeName [ 
+^'nav_msgs/GetMapResult'
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsGetMapResult >> initialize [
 	super initialize.
 	 self map: Nav_msgsOccupancyGrid new. 

@@ -5,6 +5,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsMasterInfo class >> rosTypeDefinition [ 
+^' string name
+ string rocon_uri
+ string description
+ rocon_std_msgs/Icon icon
+ string version
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_std_msgsMasterInfo class >> rosTypeName [ 
+^'rocon_std_msgs/MasterInfo'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsMasterInfo >> description [
 	^ self getAt: #description. 
 

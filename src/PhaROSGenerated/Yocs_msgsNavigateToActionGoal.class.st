@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigateToActionGoal class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalID goal_id
+ yocs_msgs/NavigateToGoal goal
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigateToActionGoal class >> rosTypeName [ 
+^'yocs_msgs/NavigateToActionGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigateToActionGoal >> goal [
 	^ self getAt: #goal. 
 

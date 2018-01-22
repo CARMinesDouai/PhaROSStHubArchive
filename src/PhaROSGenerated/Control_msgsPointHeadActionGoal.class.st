@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsPointHeadActionGoal class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalID goal_id
+ control_msgs/PointHeadGoal goal
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsPointHeadActionGoal class >> rosTypeName [ 
+^'control_msgs/PointHeadActionGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsPointHeadActionGoal >> goal [
 	^ self getAt: #goal. 
 

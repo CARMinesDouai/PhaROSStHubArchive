@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsFollowJointTrajectoryActionFeedback class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ control_msgs/FollowJointTrajectoryFeedback feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsFollowJointTrajectoryActionFeedback class >> rosTypeName [ 
+^'control_msgs/FollowJointTrajectoryActionFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsFollowJointTrajectoryActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

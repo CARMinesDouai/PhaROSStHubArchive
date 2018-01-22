@@ -41,6 +41,24 @@ Kobuki_msgsDockInfraRed class >> near_right [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsDockInfraRed class >> rosTypeDefinition [ 
+^' int8 NEAR_LEFT=1
+ int8 NEAR_CENTER=2
+ int8 NEAR_RIGHT=4
+ int8 FAR_LEFT=16
+ int8 FAR_CENTER=8
+ int8 FAR_RIGHT=32
+ std_msgs/Header header
+ int8[] data
+'
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsDockInfraRed class >> rosTypeName [ 
+^'kobuki_msgs/DockInfraRed'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsDockInfraRed >> data [
 	^ self getAt: #data. 
 

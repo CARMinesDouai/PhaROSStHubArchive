@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsFindFiducialResult class >> rosTypeDefinition [ 
+^' geometry_msgs/PoseStamped pose
+'
+]
+
+{ #category : #'as yet unclassified' }
+Turtlebot_actionsFindFiducialResult class >> rosTypeName [ 
+^'turtlebot_actions/FindFiducialResult'
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsFindFiducialResult >> initialize [
 	super initialize.
 	 self pose: Geometry_msgsPoseStamped new. 

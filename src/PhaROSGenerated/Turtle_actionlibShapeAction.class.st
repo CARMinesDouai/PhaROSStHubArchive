@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtle_actionlibShapeAction class >> rosTypeDefinition [ 
+^' turtle_actionlib/ShapeActionGoal action_goal
+ turtle_actionlib/ShapeActionResult action_result
+ turtle_actionlib/ShapeActionFeedback action_feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Turtle_actionlibShapeAction class >> rosTypeName [ 
+^'turtle_actionlib/ShapeAction'
+]
+
+{ #category : #'as yet unclassified' }
 Turtle_actionlibShapeAction >> action_feedback [
 	^ self getAt: #action_feedback. 
 

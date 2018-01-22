@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtle_actionlibShapeActionGoal class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalID goal_id
+ turtle_actionlib/ShapeGoal goal
+'
+]
+
+{ #category : #'as yet unclassified' }
+Turtle_actionlibShapeActionGoal class >> rosTypeName [ 
+^'turtle_actionlib/ShapeActionGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Turtle_actionlibShapeActionGoal >> goal [
 	^ self getAt: #goal. 
 

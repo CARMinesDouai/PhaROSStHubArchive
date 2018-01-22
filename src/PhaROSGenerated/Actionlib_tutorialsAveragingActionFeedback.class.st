@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsAveragingActionFeedback class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ actionlib_tutorials/AveragingFeedback feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Actionlib_tutorialsAveragingActionFeedback class >> rosTypeName [ 
+^'actionlib_tutorials/AveragingActionFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsAveragingActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

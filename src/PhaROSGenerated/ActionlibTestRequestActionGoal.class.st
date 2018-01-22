@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+ActionlibTestRequestActionGoal class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalID goal_id
+ actionlib/TestRequestGoal goal
+'
+]
+
+{ #category : #'as yet unclassified' }
+ActionlibTestRequestActionGoal class >> rosTypeName [ 
+^'actionlib/TestRequestActionGoal'
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTestRequestActionGoal >> goal [
 	^ self getAt: #goal. 
 

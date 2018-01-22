@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+World_canvas_msgsWorldCanvas class >> rosTypeDefinition [ 
+^' time timestamp
+ string name
+ string description
+ string geometry
+'
+]
+
+{ #category : #'as yet unclassified' }
+World_canvas_msgsWorldCanvas class >> rosTypeName [ 
+^'world_canvas_msgs/WorldCanvas'
+]
+
+{ #category : #'as yet unclassified' }
 World_canvas_msgsWorldCanvas >> description [
 	^ self getAt: #description. 
 

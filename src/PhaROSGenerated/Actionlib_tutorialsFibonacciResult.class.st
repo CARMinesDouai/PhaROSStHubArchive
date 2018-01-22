@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciResult class >> rosTypeDefinition [ 
+^' int32[] sequence
+'
+]
+
+{ #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciResult class >> rosTypeName [ 
+^'actionlib_tutorials/FibonacciResult'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsFibonacciResult >> initialize [
 	super initialize.
 	 self sequence: OrderedCollection new . 

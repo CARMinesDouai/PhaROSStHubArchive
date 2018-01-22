@@ -23,6 +23,22 @@ Yocs_msgsDockingInteractorFeedback class >> info [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsDockingInteractorFeedback class >> rosTypeDefinition [ 
+^' int8 DEBUG=1
+ int8 INFO=2
+ int8 WARN=4
+ int8 ERROR=8
+ int8 level
+ string message
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsDockingInteractorFeedback class >> rosTypeName [ 
+^'yocs_msgs/DockingInteractorFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsDockingInteractorFeedback class >> warn [
 	^4
 

@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsVector3 class >> rosTypeDefinition [ 
+^' float64 x
+ float64 y
+ float64 z
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsVector3 class >> rosTypeName [ 
+^'geometry_msgs/Vector3'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsVector3 >> initialize [
 	super initialize.
 	 self x: 0.0. 

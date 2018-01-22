@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsFollowJointTrajectoryGoal class >> rosTypeDefinition [ 
+^' trajectory_msgs/JointTrajectory trajectory
+ control_msgs/JointTolerance[] path_tolerance
+ control_msgs/JointTolerance[] goal_tolerance
+ duration goal_time_tolerance
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsFollowJointTrajectoryGoal class >> rosTypeName [ 
+^'control_msgs/FollowJointTrajectoryGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsFollowJointTrajectoryGoal >> goal_time_tolerance [
 	^ self getAt: #goal_time_tolerance. 
 

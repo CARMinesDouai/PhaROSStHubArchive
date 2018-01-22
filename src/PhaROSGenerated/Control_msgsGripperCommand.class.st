@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsGripperCommand class >> rosTypeDefinition [ 
+^' float64 position
+ float64 max_effort
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsGripperCommand class >> rosTypeName [ 
+^'control_msgs/GripperCommand'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsGripperCommand >> initialize [
 	super initialize.
 	 self position: 0.0. 

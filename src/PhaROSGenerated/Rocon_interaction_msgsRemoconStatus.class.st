@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsRemoconStatus class >> rosTypeDefinition [ 
+^' rocon_std_msgs/MasterInfo platform_info
+ string uuid
+ int32[] running_interactions
+ string version
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_interaction_msgsRemoconStatus class >> rosTypeName [ 
+^'rocon_interaction_msgs/RemoconStatus'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsRemoconStatus >> initialize [
 	super initialize.
 	 self platform_info: Rocon_std_msgsMasterInfo new. 

@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsAccel class >> rosTypeDefinition [ 
+^' geometry_msgs/Vector3 linear
+ geometry_msgs/Vector3 angular
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsAccel class >> rosTypeName [ 
+^'geometry_msgs/Accel'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsAccel >> angular [
 	^ self getAt: #angular. 
 

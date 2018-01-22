@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPolygonStamped class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ geometry_msgs/Polygon polygon
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsPolygonStamped class >> rosTypeName [ 
+^'geometry_msgs/PolygonStamped'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPolygonStamped >> header [
 	^ self getAt: #header. 
 

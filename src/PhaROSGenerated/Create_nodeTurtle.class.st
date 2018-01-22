@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Create_nodeTurtle class >> rosTypeDefinition [ 
+^' float32 linear
+ float32 angular
+'
+]
+
+{ #category : #'as yet unclassified' }
+Create_nodeTurtle class >> rosTypeName [ 
+^'create_node/Turtle'
+]
+
+{ #category : #'as yet unclassified' }
 Create_nodeTurtle >> angular [
 	^ self getAt: #angular. 
 

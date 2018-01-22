@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Move_base_msgsMoveBaseFeedback class >> rosTypeDefinition [ 
+^' geometry_msgs/PoseStamped base_position
+'
+]
+
+{ #category : #'as yet unclassified' }
+Move_base_msgsMoveBaseFeedback class >> rosTypeName [ 
+^'move_base_msgs/MoveBaseFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Move_base_msgsMoveBaseFeedback >> base_position [
 	^ self getAt: #base_position. 
 

@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Tf2_msgsLookupTransformActionFeedback class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ tf2_msgs/LookupTransformFeedback feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Tf2_msgsLookupTransformActionFeedback class >> rosTypeName [ 
+^'tf2_msgs/LookupTransformActionFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Tf2_msgsLookupTransformActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

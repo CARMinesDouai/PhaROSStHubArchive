@@ -5,6 +5,25 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsLaserSensorMsg class >> rosTypeDefinition [ 
+^' float32 maxAngle
+ float32 minAngle
+ float32 maxRange
+ float32 minRange
+ int32 numRays
+ stdr_msgs/Noise noise
+ float32 frequency
+ string frame_id
+ geometry_msgs/Pose2D pose
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsLaserSensorMsg class >> rosTypeName [ 
+^'stdr_msgs/LaserSensorMsg'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsLaserSensorMsg >> frame_id [
 	^ self getAt: #frame_id. 
 

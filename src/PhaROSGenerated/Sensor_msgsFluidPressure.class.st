@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsFluidPressure class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ float64 fluid_pressure
+ float64 variance
+'
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsFluidPressure class >> rosTypeName [ 
+^'sensor_msgs/FluidPressure'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsFluidPressure >> fluid_pressure [
 	^ self getAt: #fluid_pressure. 
 

@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsDeleteRobotGoal class >> rosTypeDefinition [ 
+^' string name
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsDeleteRobotGoal class >> rosTypeName [ 
+^'stdr_msgs/DeleteRobotGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsDeleteRobotGoal >> initialize [
 	super initialize.
 	 self name: ''. 

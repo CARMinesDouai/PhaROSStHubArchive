@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Std_msgsFloat64MultiArray class >> rosTypeDefinition [ 
+^' std_msgs/MultiArrayLayout layout
+ float64[] data
+'
+]
+
+{ #category : #'as yet unclassified' }
+Std_msgsFloat64MultiArray class >> rosTypeName [ 
+^'std_msgs/Float64MultiArray'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsFloat64MultiArray >> data [
 	^ self getAt: #data. 
 

@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Std_msgsBool class >> rosTypeDefinition [ 
+^' bool data
+'
+]
+
+{ #category : #'as yet unclassified' }
+Std_msgsBool class >> rosTypeName [ 
+^'std_msgs/Bool'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsBool >> data [
 	^ self getAt: #data. 
 

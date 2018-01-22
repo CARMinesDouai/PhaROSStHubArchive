@@ -5,6 +5,24 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsInertia class >> rosTypeDefinition [ 
+^' float64 m
+ geometry_msgs/Vector3 com
+ float64 ixx
+ float64 ixy
+ float64 ixz
+ float64 iyy
+ float64 iyz
+ float64 izz
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsInertia class >> rosTypeName [ 
+^'geometry_msgs/Inertia'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsInertia >> com [
 	^ self getAt: #com. 
 

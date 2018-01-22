@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsAccelWithCovariance class >> rosTypeDefinition [ 
+^' geometry_msgs/Accel accel
+ float64[36]  covariance
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsAccelWithCovariance class >> rosTypeName [ 
+^'geometry_msgs/AccelWithCovariance'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsAccelWithCovariance >> accel [
 	^ self getAt: #accel. 
 

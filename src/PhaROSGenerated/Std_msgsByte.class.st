@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Std_msgsByte class >> rosTypeDefinition [ 
+^' int8 data
+'
+]
+
+{ #category : #'as yet unclassified' }
+Std_msgsByte class >> rosTypeName [ 
+^'std_msgs/Byte'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsByte >> data [
 	^ self getAt: #data. 
 

@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsLocalizeActionResult class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ yocs_msgs/LocalizeResult result
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsLocalizeActionResult class >> rosTypeName [ 
+^'yocs_msgs/LocalizeActionResult'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsLocalizeActionResult >> header [
 	^ self getAt: #header. 
 

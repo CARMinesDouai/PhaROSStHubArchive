@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsPairingStatus class >> rosTypeDefinition [ 
+^' string active_pairing
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_interaction_msgsPairingStatus class >> rosTypeName [ 
+^'rocon_interaction_msgs/PairingStatus'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsPairingStatus >> active_pairing [
 	^ self getAt: #active_pairing. 
 

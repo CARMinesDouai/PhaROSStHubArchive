@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rosgraph_msgsClock class >> rosTypeDefinition [ 
+^' time clock
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rosgraph_msgsClock class >> rosTypeName [ 
+^'rosgraph_msgs/Clock'
+]
+
+{ #category : #'as yet unclassified' }
 Rosgraph_msgsClock >> clock [
 	^ self getAt: #clock. 
 

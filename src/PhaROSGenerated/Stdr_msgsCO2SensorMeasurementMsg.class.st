@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsCO2SensorMeasurementMsg class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ float32 co2_ppm
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsCO2SensorMeasurementMsg class >> rosTypeName [ 
+^'stdr_msgs/CO2SensorMeasurementMsg'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsCO2SensorMeasurementMsg >> co2_ppm [
 	^ self getAt: #co2_ppm. 
 

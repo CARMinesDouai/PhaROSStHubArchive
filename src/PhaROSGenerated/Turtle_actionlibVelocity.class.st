@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtle_actionlibVelocity class >> rosTypeDefinition [ 
+^' float32 linear
+ float32 angular
+'
+]
+
+{ #category : #'as yet unclassified' }
+Turtle_actionlibVelocity class >> rosTypeName [ 
+^'turtle_actionlib/Velocity'
+]
+
+{ #category : #'as yet unclassified' }
 Turtle_actionlibVelocity >> angular [
 	^ self getAt: #angular. 
 

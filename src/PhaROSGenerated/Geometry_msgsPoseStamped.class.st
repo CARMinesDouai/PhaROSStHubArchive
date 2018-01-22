@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPoseStamped class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ geometry_msgs/Pose pose
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsPoseStamped class >> rosTypeName [ 
+^'geometry_msgs/PoseStamped'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPoseStamped >> header [
 	^ self getAt: #header. 
 

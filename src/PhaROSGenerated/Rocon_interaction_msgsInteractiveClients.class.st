@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsInteractiveClients class >> rosTypeDefinition [ 
+^' rocon_interaction_msgs/InteractiveClient[] idle_clients
+ rocon_interaction_msgs/InteractiveClient[] running_clients
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_interaction_msgsInteractiveClients class >> rosTypeName [ 
+^'rocon_interaction_msgs/InteractiveClients'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsInteractiveClients >> idle_clients [
 	^ self getAt: #idle_clients. 
 

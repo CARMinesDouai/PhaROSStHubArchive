@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Std_msgsMultiArrayDimension class >> rosTypeDefinition [ 
+^' string label
+ int32 size
+ int32 stride
+'
+]
+
+{ #category : #'as yet unclassified' }
+Std_msgsMultiArrayDimension class >> rosTypeName [ 
+^'std_msgs/MultiArrayDimension'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsMultiArrayDimension >> initialize [
 	super initialize.
 	 self label: ''. 

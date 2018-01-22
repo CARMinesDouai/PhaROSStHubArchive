@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Std_msgsDuration class >> rosTypeDefinition [ 
+^' duration data
+'
+]
+
+{ #category : #'as yet unclassified' }
+Std_msgsDuration class >> rosTypeName [ 
+^'std_msgs/Duration'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsDuration >> data [
 	^ self getAt: #data. 
 

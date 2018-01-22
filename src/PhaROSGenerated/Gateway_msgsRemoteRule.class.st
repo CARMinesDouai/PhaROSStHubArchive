@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Gateway_msgsRemoteRule class >> rosTypeDefinition [ 
+^' string gateway
+ gateway_msgs/Rule rule
+'
+]
+
+{ #category : #'as yet unclassified' }
+Gateway_msgsRemoteRule class >> rosTypeName [ 
+^'gateway_msgs/RemoteRule'
+]
+
+{ #category : #'as yet unclassified' }
 Gateway_msgsRemoteRule >> gateway [
 	^ self getAt: #gateway. 
 

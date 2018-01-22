@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Std_msgsTime class >> rosTypeDefinition [ 
+^' time data
+'
+]
+
+{ #category : #'as yet unclassified' }
+Std_msgsTime class >> rosTypeName [ 
+^'std_msgs/Time'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsTime >> data [
 	^ self getAt: #data. 
 

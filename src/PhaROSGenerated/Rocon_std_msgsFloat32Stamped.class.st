@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsFloat32Stamped class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ float32 data
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_std_msgsFloat32Stamped class >> rosTypeName [ 
+^'rocon_std_msgs/Float32Stamped'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsFloat32Stamped >> data [
 	^ self getAt: #data. 
 

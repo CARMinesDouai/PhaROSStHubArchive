@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsLocalizeGoal class >> rosTypeDefinition [ 
+^' int8 STAND_AND_LOCALIZE=10
+ int8 SPIN_AND_LOCALIZE=20
+ int8 command
+ float32 distortion
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsLocalizeGoal class >> rosTypeName [ 
+^'yocs_msgs/LocalizeGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsLocalizeGoal class >> spin_and_localize [
 	^20
 

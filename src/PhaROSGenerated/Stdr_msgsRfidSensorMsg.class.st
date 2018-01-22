@@ -5,6 +5,22 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRfidSensorMsg class >> rosTypeDefinition [ 
+^' float32 maxRange
+ float32 angleSpan
+ float32 signalCutoff
+ float32 frequency
+ string frame_id
+ geometry_msgs/Pose2D pose
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsRfidSensorMsg class >> rosTypeName [ 
+^'stdr_msgs/RfidSensorMsg'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRfidSensorMsg >> angleSpan [
 	^ self getAt: #angleSpan. 
 

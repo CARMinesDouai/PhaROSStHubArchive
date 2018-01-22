@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+ActionlibTwoIntsActionFeedback class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ actionlib/TwoIntsFeedback feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+ActionlibTwoIntsActionFeedback class >> rosTypeName [ 
+^'actionlib/TwoIntsActionFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTwoIntsActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

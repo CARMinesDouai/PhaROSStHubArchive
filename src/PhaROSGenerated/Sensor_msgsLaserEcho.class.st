@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsLaserEcho class >> rosTypeDefinition [ 
+^' float32[] echoes
+'
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsLaserEcho class >> rosTypeName [ 
+^'sensor_msgs/LaserEcho'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsLaserEcho >> echoes [
 	^ self getAt: #echoes. 
 

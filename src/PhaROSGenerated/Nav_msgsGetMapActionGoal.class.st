@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Nav_msgsGetMapActionGoal class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalID goal_id
+ nav_msgs/GetMapGoal goal
+'
+]
+
+{ #category : #'as yet unclassified' }
+Nav_msgsGetMapActionGoal class >> rosTypeName [ 
+^'nav_msgs/GetMapActionGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsGetMapActionGoal >> goal [
 	^ self getAt: #goal. 
 

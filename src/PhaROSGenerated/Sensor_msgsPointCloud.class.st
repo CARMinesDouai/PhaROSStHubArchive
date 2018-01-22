@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsPointCloud class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ geometry_msgs/Point32[] points
+ sensor_msgs/ChannelFloat32[] channels
+'
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsPointCloud class >> rosTypeName [ 
+^'sensor_msgs/PointCloud'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsPointCloud >> channels [
 	^ self getAt: #channels. 
 

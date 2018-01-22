@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsTwistWithCovariance class >> rosTypeDefinition [ 
+^' geometry_msgs/Twist twist
+ float64[36]  covariance
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsTwistWithCovariance class >> rosTypeName [ 
+^'geometry_msgs/TwistWithCovariance'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsTwistWithCovariance >> covariance [
 	^ self getAt: #covariance. 
 

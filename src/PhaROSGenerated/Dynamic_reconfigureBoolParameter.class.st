@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureBoolParameter class >> rosTypeDefinition [ 
+^' string name
+ bool value
+'
+]
+
+{ #category : #'as yet unclassified' }
+Dynamic_reconfigureBoolParameter class >> rosTypeName [ 
+^'dynamic_reconfigure/BoolParameter'
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureBoolParameter >> initialize [
 	super initialize.
 	 self name: ''. 

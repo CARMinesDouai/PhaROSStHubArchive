@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsNoise class >> rosTypeDefinition [ 
+^' bool noise
+ float32 noiseMean
+ float32 noiseStd
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsNoise class >> rosTypeName [ 
+^'stdr_msgs/Noise'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsNoise >> initialize [
 	super initialize.
 	 self noise: false. 

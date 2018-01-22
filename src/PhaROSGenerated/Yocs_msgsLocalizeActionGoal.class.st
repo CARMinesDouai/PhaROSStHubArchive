@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsLocalizeActionGoal class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalID goal_id
+ yocs_msgs/LocalizeGoal goal
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsLocalizeActionGoal class >> rosTypeName [ 
+^'yocs_msgs/LocalizeActionGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsLocalizeActionGoal >> goal [
 	^ self getAt: #goal. 
 

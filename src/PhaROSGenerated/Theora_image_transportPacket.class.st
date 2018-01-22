@@ -5,6 +5,22 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Theora_image_transportPacket class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ int8[] data
+ int32 b_o_s
+ int32 e_o_s
+ int64 granulepos
+ int64 packetno
+'
+]
+
+{ #category : #'as yet unclassified' }
+Theora_image_transportPacket class >> rosTypeName [ 
+^'theora_image_transport/Packet'
+]
+
+{ #category : #'as yet unclassified' }
 Theora_image_transportPacket >> b_o_s [
 	^ self getAt: #b_o_s. 
 

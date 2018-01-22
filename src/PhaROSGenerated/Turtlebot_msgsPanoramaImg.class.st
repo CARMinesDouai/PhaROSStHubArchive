@@ -5,6 +5,23 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtlebot_msgsPanoramaImg class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ string pano_id
+ float64 latitude
+ float64 longitude
+ float64 heading
+ string geo_tag
+ sensor_msgs/Image image
+'
+]
+
+{ #category : #'as yet unclassified' }
+Turtlebot_msgsPanoramaImg class >> rosTypeName [ 
+^'turtlebot_msgs/PanoramaImg'
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_msgsPanoramaImg >> geo_tag [
 	^ self getAt: #geo_tag. 
 

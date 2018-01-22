@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtlebot_calibrationScanAngle class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ float64 scan_angle
+'
+]
+
+{ #category : #'as yet unclassified' }
+Turtlebot_calibrationScanAngle class >> rosTypeName [ 
+^'turtlebot_calibration/ScanAngle'
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_calibrationScanAngle >> header [
 	^ self getAt: #header. 
 

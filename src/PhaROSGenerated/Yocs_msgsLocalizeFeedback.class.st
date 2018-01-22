@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsLocalizeFeedback class >> rosTypeDefinition [ 
+^' string message
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsLocalizeFeedback class >> rosTypeName [ 
+^'yocs_msgs/LocalizeFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsLocalizeFeedback >> initialize [
 	super initialize.
 	 self message: ''. 

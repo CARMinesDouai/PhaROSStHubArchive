@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+TurtlesimColor class >> rosTypeDefinition [ 
+^' int8 r
+ int8 g
+ int8 b
+'
+]
+
+{ #category : #'as yet unclassified' }
+TurtlesimColor class >> rosTypeName [ 
+^'turtlesim/Color'
+]
+
+{ #category : #'as yet unclassified' }
 TurtlesimColor >> b [
 	^ self getAt: #b. 
 

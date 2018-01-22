@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsInertiaStamped class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ geometry_msgs/Inertia inertia
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsInertiaStamped class >> rosTypeName [ 
+^'geometry_msgs/InertiaStamped'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsInertiaStamped >> header [
 	^ self getAt: #header. 
 

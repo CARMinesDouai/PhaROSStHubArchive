@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Uuid_msgsUniqueID class >> rosTypeDefinition [ 
+^' int8[16]  uuid
+'
+]
+
+{ #category : #'as yet unclassified' }
+Uuid_msgsUniqueID class >> rosTypeName [ 
+^'uuid_msgs/UniqueID'
+]
+
+{ #category : #'as yet unclassified' }
 Uuid_msgsUniqueID >> initialize [
 	super initialize.
 	 self uuid:  (OrderedCollection new: 16). 

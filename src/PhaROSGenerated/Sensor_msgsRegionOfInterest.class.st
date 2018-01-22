@@ -5,6 +5,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsRegionOfInterest class >> rosTypeDefinition [ 
+^' int32 x_offset
+ int32 y_offset
+ int32 height
+ int32 width
+ bool do_rectify
+'
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsRegionOfInterest class >> rosTypeName [ 
+^'sensor_msgs/RegionOfInterest'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsRegionOfInterest >> do_rectify [
 	^ self getAt: #do_rectify. 
 

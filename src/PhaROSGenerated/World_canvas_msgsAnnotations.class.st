@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+World_canvas_msgsAnnotations class >> rosTypeDefinition [ 
+^' string map_id
+ world_canvas_msgs/Annotation[] annotations
+'
+]
+
+{ #category : #'as yet unclassified' }
+World_canvas_msgsAnnotations class >> rosTypeName [ 
+^'world_canvas_msgs/Annotations'
+]
+
+{ #category : #'as yet unclassified' }
 World_canvas_msgsAnnotations >> annotations [
 	^ self getAt: #annotations. 
 

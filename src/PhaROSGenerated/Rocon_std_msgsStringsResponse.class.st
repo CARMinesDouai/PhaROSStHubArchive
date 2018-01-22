@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsStringsResponse class >> rosTypeDefinition [ 
+^' string data
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_std_msgsStringsResponse class >> rosTypeName [ 
+^'rocon_std_msgs/StringsResponse'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsStringsResponse >> data [
 	^ self getAt: #data. 
 

@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsAveragingAction class >> rosTypeDefinition [ 
+^' actionlib_tutorials/AveragingActionGoal action_goal
+ actionlib_tutorials/AveragingActionResult action_result
+ actionlib_tutorials/AveragingActionFeedback action_feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Actionlib_tutorialsAveragingAction class >> rosTypeName [ 
+^'actionlib_tutorials/AveragingAction'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsAveragingAction >> action_feedback [
 	^ self getAt: #action_feedback. 
 

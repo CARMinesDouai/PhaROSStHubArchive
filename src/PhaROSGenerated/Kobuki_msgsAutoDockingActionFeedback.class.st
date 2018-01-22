@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingActionFeedback class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ kobuki_msgs/AutoDockingFeedback feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingActionFeedback class >> rosTypeName [ 
+^'kobuki_msgs/AutoDockingActionFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsAutoDockingActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

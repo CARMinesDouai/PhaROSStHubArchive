@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsPointHeadFeedback class >> rosTypeDefinition [ 
+^' float64 pointing_angle_error
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsPointHeadFeedback class >> rosTypeName [ 
+^'control_msgs/PointHeadFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsPointHeadFeedback >> initialize [
 	super initialize.
 	 self pointing_angle_error: 0.0. 

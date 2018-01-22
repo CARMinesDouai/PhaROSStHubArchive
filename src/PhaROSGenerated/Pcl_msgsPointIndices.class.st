@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Pcl_msgsPointIndices class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ int32[] indices
+'
+]
+
+{ #category : #'as yet unclassified' }
+Pcl_msgsPointIndices class >> rosTypeName [ 
+^'pcl_msgs/PointIndices'
+]
+
+{ #category : #'as yet unclassified' }
 Pcl_msgsPointIndices >> header [
 	^ self getAt: #header. 
 

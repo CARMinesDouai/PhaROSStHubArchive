@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsDockingInteractorActionResult class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ yocs_msgs/DockingInteractorResult result
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsDockingInteractorActionResult class >> rosTypeName [ 
+^'yocs_msgs/DockingInteractorActionResult'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsDockingInteractorActionResult >> header [
 	^ self getAt: #header. 
 

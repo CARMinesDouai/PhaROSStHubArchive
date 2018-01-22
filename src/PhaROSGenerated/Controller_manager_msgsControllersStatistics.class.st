@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Controller_manager_msgsControllersStatistics class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ controller_manager_msgs/ControllerStatistics[] controller
+'
+]
+
+{ #category : #'as yet unclassified' }
+Controller_manager_msgsControllersStatistics class >> rosTypeName [ 
+^'controller_manager_msgs/ControllersStatistics'
+]
+
+{ #category : #'as yet unclassified' }
 Controller_manager_msgsControllersStatistics >> controller [
 	^ self getAt: #controller. 
 

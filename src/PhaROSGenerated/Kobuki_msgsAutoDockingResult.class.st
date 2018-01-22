@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingResult class >> rosTypeDefinition [ 
+^' string text
+'
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingResult class >> rosTypeName [ 
+^'kobuki_msgs/AutoDockingResult'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsAutoDockingResult >> initialize [
 	super initialize.
 	 self text: ''. 

@@ -5,6 +5,23 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Map_msgsProjectedMapInfo class >> rosTypeDefinition [ 
+^' string frame_id
+ float64 x
+ float64 y
+ float64 width
+ float64 height
+ float64 min_z
+ float64 max_z
+'
+]
+
+{ #category : #'as yet unclassified' }
+Map_msgsProjectedMapInfo class >> rosTypeName [ 
+^'map_msgs/ProjectedMapInfo'
+]
+
+{ #category : #'as yet unclassified' }
 Map_msgsProjectedMapInfo >> frame_id [
 	^ self getAt: #frame_id. 
 

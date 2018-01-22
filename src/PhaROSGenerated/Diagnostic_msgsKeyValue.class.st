@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Diagnostic_msgsKeyValue class >> rosTypeDefinition [ 
+^' string key
+ string value
+'
+]
+
+{ #category : #'as yet unclassified' }
+Diagnostic_msgsKeyValue class >> rosTypeName [ 
+^'diagnostic_msgs/KeyValue'
+]
+
+{ #category : #'as yet unclassified' }
 Diagnostic_msgsKeyValue >> initialize [
 	super initialize.
 	 self key: ''. 

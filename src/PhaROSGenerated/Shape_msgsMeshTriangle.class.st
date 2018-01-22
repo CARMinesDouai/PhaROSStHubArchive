@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Shape_msgsMeshTriangle class >> rosTypeDefinition [ 
+^' int32[3]  vertex_indices
+'
+]
+
+{ #category : #'as yet unclassified' }
+Shape_msgsMeshTriangle class >> rosTypeName [ 
+^'shape_msgs/MeshTriangle'
+]
+
+{ #category : #'as yet unclassified' }
 Shape_msgsMeshTriangle >> initialize [
 	super initialize.
 	 self vertex_indices:  (OrderedCollection new: 3). 

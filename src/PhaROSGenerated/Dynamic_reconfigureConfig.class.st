@@ -5,6 +5,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureConfig class >> rosTypeDefinition [ 
+^' dynamic_reconfigure/BoolParameter[] bools
+ dynamic_reconfigure/IntParameter[] ints
+ dynamic_reconfigure/StrParameter[] strs
+ dynamic_reconfigure/DoubleParameter[] doubles
+ dynamic_reconfigure/GroupState[] groups
+'
+]
+
+{ #category : #'as yet unclassified' }
+Dynamic_reconfigureConfig class >> rosTypeName [ 
+^'dynamic_reconfigure/Config'
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureConfig >> bools [
 	^ self getAt: #bools. 
 

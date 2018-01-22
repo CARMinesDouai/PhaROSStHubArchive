@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Pcl_msgsModelCoefficients class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ float32[] values
+'
+]
+
+{ #category : #'as yet unclassified' }
+Pcl_msgsModelCoefficients class >> rosTypeName [ 
+^'pcl_msgs/ModelCoefficients'
+]
+
+{ #category : #'as yet unclassified' }
 Pcl_msgsModelCoefficients >> header [
 	^ self getAt: #header. 
 

@@ -5,6 +5,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+TurtlesimPose class >> rosTypeDefinition [ 
+^' float32 x
+ float32 y
+ float32 theta
+ float32 linear_velocity
+ float32 angular_velocity
+'
+]
+
+{ #category : #'as yet unclassified' }
+TurtlesimPose class >> rosTypeName [ 
+^'turtlesim/Pose'
+]
+
+{ #category : #'as yet unclassified' }
 TurtlesimPose >> angular_velocity [
 	^ self getAt: #angular_velocity. 
 

@@ -23,6 +23,24 @@ Turtlebot_actionsFindFiducialGoal class >> circles_grid [
 ]
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsFindFiducialGoal class >> rosTypeDefinition [ 
+^' int8 CHESSBOARD=1
+ int8 CIRCLES_GRID=2
+ int8 ASYMMETRIC_CIRCLES_GRID=3
+ string camera_name
+ int8 pattern_width
+ int8 pattern_height
+ float32 pattern_size
+ int8 pattern_type
+'
+]
+
+{ #category : #'as yet unclassified' }
+Turtlebot_actionsFindFiducialGoal class >> rosTypeName [ 
+^'turtlebot_actions/FindFiducialGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsFindFiducialGoal >> camera_name [
 	^ self getAt: #camera_name. 
 

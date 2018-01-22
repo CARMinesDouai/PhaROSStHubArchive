@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Tf2_msgsLookupTransformResult class >> rosTypeDefinition [ 
+^' geometry_msgs/TransformStamped transform
+ tf2_msgs/TF2Error error
+'
+]
+
+{ #category : #'as yet unclassified' }
+Tf2_msgsLookupTransformResult class >> rosTypeName [ 
+^'tf2_msgs/LookupTransformResult'
+]
+
+{ #category : #'as yet unclassified' }
 Tf2_msgsLookupTransformResult >> error [
 	^ self getAt: #error. 
 

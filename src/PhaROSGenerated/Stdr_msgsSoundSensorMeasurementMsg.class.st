@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSoundSensorMeasurementMsg class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ float32 sound_dbs
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsSoundSensorMeasurementMsg class >> rosTypeName [ 
+^'stdr_msgs/SoundSensorMeasurementMsg'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSoundSensorMeasurementMsg >> header [
 	^ self getAt: #header. 
 

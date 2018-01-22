@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigateToActionFeedback class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ yocs_msgs/NavigateToFeedback feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigateToActionFeedback class >> rosTypeName [ 
+^'yocs_msgs/NavigateToActionFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigateToActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

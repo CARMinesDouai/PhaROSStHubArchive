@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Move_base_msgsMoveBaseActionResult class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ move_base_msgs/MoveBaseResult result
+'
+]
+
+{ #category : #'as yet unclassified' }
+Move_base_msgsMoveBaseActionResult class >> rosTypeName [ 
+^'move_base_msgs/MoveBaseActionResult'
+]
+
+{ #category : #'as yet unclassified' }
 Move_base_msgsMoveBaseActionResult >> header [
 	^ self getAt: #header. 
 

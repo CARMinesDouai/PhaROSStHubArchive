@@ -35,6 +35,24 @@ Control_msgsFollowJointTrajectoryResult class >> path_tolerance_violated [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsFollowJointTrajectoryResult class >> rosTypeDefinition [ 
+^' int32 SUCCESSFUL=0
+ int32 INVALID_GOAL=-1
+ int32 INVALID_JOINTS=-2
+ int32 OLD_HEADER_TIMESTAMP=-3
+ int32 PATH_TOLERANCE_VIOLATED=-4
+ int32 GOAL_TOLERANCE_VIOLATED=-5
+ int32 error_code
+ string error_string
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsFollowJointTrajectoryResult class >> rosTypeName [ 
+^'control_msgs/FollowJointTrajectoryResult'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsFollowJointTrajectoryResult class >> successful [
 	^0
 

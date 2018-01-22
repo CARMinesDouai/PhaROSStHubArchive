@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Visualization_msgsMarkerArray class >> rosTypeDefinition [ 
+^' visualization_msgs/Marker[] markers
+'
+]
+
+{ #category : #'as yet unclassified' }
+Visualization_msgsMarkerArray class >> rosTypeName [ 
+^'visualization_msgs/MarkerArray'
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsMarkerArray >> initialize [
 	super initialize.
 	 self markers: OrderedCollection new . 

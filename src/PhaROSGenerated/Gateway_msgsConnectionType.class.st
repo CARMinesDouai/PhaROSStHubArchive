@@ -29,6 +29,22 @@ Gateway_msgsConnectionType class >> publisher [
 ]
 
 { #category : #'as yet unclassified' }
+Gateway_msgsConnectionType class >> rosTypeDefinition [ 
+^' string PUBLISHER=''publisher''
+ string SUBSCRIBER=''subscriber''
+ string SERVICE=''service''
+ string ACTION_CLIENT=''action_client''
+ string ACTION_SERVER=''action_server''
+ string INVALID=''invalid''
+'
+]
+
+{ #category : #'as yet unclassified' }
+Gateway_msgsConnectionType class >> rosTypeName [ 
+^'gateway_msgs/ConnectionType'
+]
+
+{ #category : #'as yet unclassified' }
 Gateway_msgsConnectionType class >> service [
 	^'service'
 

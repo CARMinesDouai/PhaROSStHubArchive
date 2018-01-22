@@ -11,6 +11,22 @@ Kobuki_msgsControllerInfo class >> default [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsControllerInfo class >> rosTypeDefinition [ 
+^' int8 DEFAULT=0
+ int8 USER_CONFIGURED=1
+ int8 type
+ float64 p_gain
+ float64 i_gain
+ float64 d_gain
+'
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsControllerInfo class >> rosTypeName [ 
+^'kobuki_msgs/ControllerInfo'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsControllerInfo class >> user_configured [
 	^1
 

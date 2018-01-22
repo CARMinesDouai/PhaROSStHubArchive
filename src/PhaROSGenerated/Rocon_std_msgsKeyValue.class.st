@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsKeyValue class >> rosTypeDefinition [ 
+^' string key
+ string value
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_std_msgsKeyValue class >> rosTypeName [ 
+^'rocon_std_msgs/KeyValue'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsKeyValue >> initialize [
 	super initialize.
 	 self key: ''. 

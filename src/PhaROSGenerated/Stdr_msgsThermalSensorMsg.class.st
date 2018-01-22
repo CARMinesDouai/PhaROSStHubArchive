@@ -5,6 +5,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsThermalSensorMsg class >> rosTypeDefinition [ 
+^' float32 maxRange
+ float32 frequency
+ float32 angleSpan
+ string frame_id
+ geometry_msgs/Pose2D pose
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsThermalSensorMsg class >> rosTypeName [ 
+^'stdr_msgs/ThermalSensorMsg'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsThermalSensorMsg >> angleSpan [
 	^ self getAt: #angleSpan. 
 

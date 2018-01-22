@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsConnectionCacheSpin class >> rosTypeDefinition [ 
+^' float32 spin_freq
+ float32 spin_timer
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_std_msgsConnectionCacheSpin class >> rosTypeName [ 
+^'rocon_std_msgs/ConnectionCacheSpin'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsConnectionCacheSpin >> initialize [
 	super initialize.
 	 self spin_freq: 0.0. 

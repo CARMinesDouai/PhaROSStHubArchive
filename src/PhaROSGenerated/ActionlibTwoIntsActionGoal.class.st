@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+ActionlibTwoIntsActionGoal class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalID goal_id
+ actionlib/TwoIntsGoal goal
+'
+]
+
+{ #category : #'as yet unclassified' }
+ActionlibTwoIntsActionGoal class >> rosTypeName [ 
+^'actionlib/TwoIntsActionGoal'
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTwoIntsActionGoal >> goal [
 	^ self getAt: #goal. 
 

@@ -5,6 +5,29 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsPidState class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ duration timestep
+ float64 error
+ float64 error_dot
+ float64 p_error
+ float64 i_error
+ float64 d_error
+ float64 p_term
+ float64 i_term
+ float64 d_term
+ float64 i_max
+ float64 i_min
+ float64 output
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsPidState class >> rosTypeName [ 
+^'control_msgs/PidState'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsPidState >> d_error [
 	^ self getAt: #d_error. 
 

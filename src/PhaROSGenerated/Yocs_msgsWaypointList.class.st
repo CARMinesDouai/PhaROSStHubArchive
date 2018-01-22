@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsWaypointList class >> rosTypeDefinition [ 
+^' yocs_msgs/Waypoint[] waypoints
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsWaypointList class >> rosTypeName [ 
+^'yocs_msgs/WaypointList'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsWaypointList >> initialize [
 	super initialize.
 	 self waypoints: OrderedCollection new . 

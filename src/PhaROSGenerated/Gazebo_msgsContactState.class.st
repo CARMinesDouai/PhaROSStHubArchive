@@ -5,6 +5,24 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Gazebo_msgsContactState class >> rosTypeDefinition [ 
+^' string info
+ string collision1_name
+ string collision2_name
+ geometry_msgs/Wrench[] wrenches
+ geometry_msgs/Wrench total_wrench
+ geometry_msgs/Vector3[] contact_positions
+ geometry_msgs/Vector3[] contact_normals
+ float64[] depths
+'
+]
+
+{ #category : #'as yet unclassified' }
+Gazebo_msgsContactState class >> rosTypeName [ 
+^'gazebo_msgs/ContactState'
+]
+
+{ #category : #'as yet unclassified' }
 Gazebo_msgsContactState >> collision1_name [
 	^ self getAt: #collision1_name. 
 

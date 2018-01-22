@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Torob_msgsVectorMap class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ float64 resolution
+ torob_msgs/Node[] nodes
+ torob_msgs/Edge[] edges
+'
+]
+
+{ #category : #'as yet unclassified' }
+Torob_msgsVectorMap class >> rosTypeName [ 
+^'torob_msgs/VectorMap'
+]
+
+{ #category : #'as yet unclassified' }
 Torob_msgsVectorMap >> edges [
 	^ self getAt: #edges. 
 

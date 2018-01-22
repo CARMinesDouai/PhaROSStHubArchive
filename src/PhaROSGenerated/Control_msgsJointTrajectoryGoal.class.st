@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryGoal class >> rosTypeDefinition [ 
+^' trajectory_msgs/JointTrajectory trajectory
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryGoal class >> rosTypeName [ 
+^'control_msgs/JointTrajectoryGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsJointTrajectoryGoal >> initialize [
 	super initialize.
 	 self trajectory: Trajectory_msgsJointTrajectory new. 

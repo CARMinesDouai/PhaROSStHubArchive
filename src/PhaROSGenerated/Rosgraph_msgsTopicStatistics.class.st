@@ -5,6 +5,30 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rosgraph_msgsTopicStatistics class >> rosTypeDefinition [ 
+^' string topic
+ string node_pub
+ string node_sub
+ time window_start
+ time window_stop
+ int32 delivered_msgs
+ int32 dropped_msgs
+ int32 traffic
+ duration period_mean
+ duration period_stddev
+ duration period_max
+ duration stamp_age_mean
+ duration stamp_age_stddev
+ duration stamp_age_max
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rosgraph_msgsTopicStatistics class >> rosTypeName [ 
+^'rosgraph_msgs/TopicStatistics'
+]
+
+{ #category : #'as yet unclassified' }
 Rosgraph_msgsTopicStatistics >> delivered_msgs [
 	^ self getAt: #delivered_msgs. 
 

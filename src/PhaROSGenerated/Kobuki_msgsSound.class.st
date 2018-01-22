@@ -47,6 +47,24 @@ Kobuki_msgsSound class >> recharge [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsSound class >> rosTypeDefinition [ 
+^' int8 ON=0
+ int8 OFF=1
+ int8 RECHARGE=2
+ int8 BUTTON=3
+ int8 ERROR=4
+ int8 CLEANINGSTART=5
+ int8 CLEANINGEND=6
+ int8 value
+'
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsSound class >> rosTypeName [ 
+^'kobuki_msgs/Sound'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsSound >> initialize [
 	super initialize.
 	 self value: 0. 

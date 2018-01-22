@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsConnectionsList class >> rosTypeDefinition [ 
+^' rocon_std_msgs/Connection[] connections
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_std_msgsConnectionsList class >> rosTypeName [ 
+^'rocon_std_msgs/ConnectionsList'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsConnectionsList >> connections [
 	^ self getAt: #connections. 
 

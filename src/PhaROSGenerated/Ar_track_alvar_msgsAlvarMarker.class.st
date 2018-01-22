@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Ar_track_alvar_msgsAlvarMarker class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ int32 id
+ int32 confidence
+ geometry_msgs/PoseStamped pose
+'
+]
+
+{ #category : #'as yet unclassified' }
+Ar_track_alvar_msgsAlvarMarker class >> rosTypeName [ 
+^'ar_track_alvar_msgs/AlvarMarker'
+]
+
+{ #category : #'as yet unclassified' }
 Ar_track_alvar_msgsAlvarMarker >> confidence [
 	^ self getAt: #confidence. 
 

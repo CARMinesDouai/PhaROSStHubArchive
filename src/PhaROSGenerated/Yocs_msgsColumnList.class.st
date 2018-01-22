@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsColumnList class >> rosTypeDefinition [ 
+^' yocs_msgs/Column[] obstacles
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsColumnList class >> rosTypeName [ 
+^'yocs_msgs/ColumnList'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsColumnList >> initialize [
 	super initialize.
 	 self obstacles: OrderedCollection new . 

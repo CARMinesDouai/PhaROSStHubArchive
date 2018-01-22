@@ -11,6 +11,24 @@ Visualization_msgsInteractiveMarkerUpdate class >> keep_alive [
 ]
 
 { #category : #'as yet unclassified' }
+Visualization_msgsInteractiveMarkerUpdate class >> rosTypeDefinition [ 
+^' int8 KEEP_ALIVE=0
+ int8 UPDATE=1
+ string server_id
+ int64 seq_num
+ int8 type
+ visualization_msgs/InteractiveMarker[] markers
+ visualization_msgs/InteractiveMarkerPose[] poses
+ string[] erases
+'
+]
+
+{ #category : #'as yet unclassified' }
+Visualization_msgsInteractiveMarkerUpdate class >> rosTypeName [ 
+^'visualization_msgs/InteractiveMarkerUpdate'
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsInteractiveMarkerUpdate class >> update [
 	^1
 

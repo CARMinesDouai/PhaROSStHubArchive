@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsGripperCommandResult class >> rosTypeDefinition [ 
+^' float64 position
+ float64 effort
+ bool stalled
+ bool reached_goal
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsGripperCommandResult class >> rosTypeName [ 
+^'control_msgs/GripperCommandResult'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsGripperCommandResult >> effort [
 	^ self getAt: #effort. 
 

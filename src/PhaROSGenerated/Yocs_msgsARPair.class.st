@@ -5,6 +5,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsARPair class >> rosTypeDefinition [ 
+^' int16 left_id
+ int16 right_id
+ float32 baseline
+ float32 target_offset
+ string target_frame
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsARPair class >> rosTypeName [ 
+^'yocs_msgs/ARPair'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsARPair >> baseline [
 	^ self getAt: #baseline. 
 

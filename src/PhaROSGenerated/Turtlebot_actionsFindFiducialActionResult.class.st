@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsFindFiducialActionResult class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ turtlebot_actions/FindFiducialResult result
+'
+]
+
+{ #category : #'as yet unclassified' }
+Turtlebot_actionsFindFiducialActionResult class >> rosTypeName [ 
+^'turtlebot_actions/FindFiducialActionResult'
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsFindFiducialActionResult >> header [
 	^ self getAt: #header. 
 

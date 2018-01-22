@@ -5,6 +5,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsPointHeadGoal class >> rosTypeDefinition [ 
+^' geometry_msgs/PointStamped target
+ geometry_msgs/Vector3 pointing_axis
+ string pointing_frame
+ duration min_duration
+ float64 max_velocity
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsPointHeadGoal class >> rosTypeName [ 
+^'control_msgs/PointHeadGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsPointHeadGoal >> initialize [
 	super initialize.
 	 self target: Geometry_msgsPointStamped new. 

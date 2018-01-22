@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Move_base_msgsMoveBaseAction class >> rosTypeDefinition [ 
+^' move_base_msgs/MoveBaseActionGoal action_goal
+ move_base_msgs/MoveBaseActionResult action_result
+ move_base_msgs/MoveBaseActionFeedback action_feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Move_base_msgsMoveBaseAction class >> rosTypeName [ 
+^'move_base_msgs/MoveBaseAction'
+]
+
+{ #category : #'as yet unclassified' }
 Move_base_msgsMoveBaseAction >> action_feedback [
 	^ self getAt: #action_feedback. 
 

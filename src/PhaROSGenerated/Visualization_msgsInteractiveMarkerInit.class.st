@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Visualization_msgsInteractiveMarkerInit class >> rosTypeDefinition [ 
+^' string server_id
+ int64 seq_num
+ visualization_msgs/InteractiveMarker[] markers
+'
+]
+
+{ #category : #'as yet unclassified' }
+Visualization_msgsInteractiveMarkerInit class >> rosTypeName [ 
+^'visualization_msgs/InteractiveMarkerInit'
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsInteractiveMarkerInit >> initialize [
 	super initialize.
 	 self server_id: ''. 

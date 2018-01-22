@@ -5,6 +5,24 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stereo_msgsDisparityImage class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ sensor_msgs/Image image
+ float32 f
+ float32 T
+ sensor_msgs/RegionOfInterest valid_window
+ float32 min_disparity
+ float32 max_disparity
+ float32 delta_d
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stereo_msgsDisparityImage class >> rosTypeName [ 
+^'stereo_msgs/DisparityImage'
+]
+
+{ #category : #'as yet unclassified' }
 Stereo_msgsDisparityImage >> T [
 	^ self getAt: #T. 
 

@@ -5,6 +5,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+RosapiTypeDef class >> rosTypeDefinition [ 
+^' string type
+ string[] fieldnames
+ string[] fieldtypes
+ int32[] fieldarraylen
+ string[] examples
+'
+]
+
+{ #category : #'as yet unclassified' }
+RosapiTypeDef class >> rosTypeName [ 
+^'rosapi/TypeDef'
+]
+
+{ #category : #'as yet unclassified' }
 RosapiTypeDef >> examples [
 	^ self getAt: #examples. 
 

@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Nav_msgsPath class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ geometry_msgs/PoseStamped[] poses
+'
+]
+
+{ #category : #'as yet unclassified' }
+Nav_msgsPath class >> rosTypeName [ 
+^'nav_msgs/Path'
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsPath >> header [
 	^ self getAt: #header. 
 

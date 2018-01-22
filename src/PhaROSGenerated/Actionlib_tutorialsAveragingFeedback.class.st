@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsAveragingFeedback class >> rosTypeDefinition [ 
+^' int32 sample
+ float32 data
+ float32 mean
+ float32 std_dev
+'
+]
+
+{ #category : #'as yet unclassified' }
+Actionlib_tutorialsAveragingFeedback class >> rosTypeName [ 
+^'actionlib_tutorials/AveragingFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsAveragingFeedback >> data [
 	^ self getAt: #data. 
 

@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+CapabilitiesCapability class >> rosTypeDefinition [ 
+^' string capability
+ string provider
+'
+]
+
+{ #category : #'as yet unclassified' }
+CapabilitiesCapability class >> rosTypeName [ 
+^'capabilities/Capability'
+]
+
+{ #category : #'as yet unclassified' }
 CapabilitiesCapability >> capability [
 	^ self getAt: #capability. 
 

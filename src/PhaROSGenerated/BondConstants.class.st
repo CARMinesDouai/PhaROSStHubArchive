@@ -41,6 +41,22 @@ BondConstants class >> disable_heartbeat_timeout_param [
 ]
 
 { #category : #'as yet unclassified' }
+BondConstants class >> rosTypeDefinition [ 
+^' float32 DEAD_PUBLISH_PERIOD=0.05
+ float32 DEFAULT_CONNECT_TIMEOUT=10.0
+ float32 DEFAULT_HEARTBEAT_TIMEOUT=4.0
+ float32 DEFAULT_DISCONNECT_TIMEOUT=2.0
+ float32 DEFAULT_HEARTBEAT_PERIOD=1.0
+ string DISABLE_HEARTBEAT_TIMEOUT_PARAM=''/bond_disable_heartbeat_timeout''
+'
+]
+
+{ #category : #'as yet unclassified' }
+BondConstants class >> rosTypeName [ 
+^'bond/Constants'
+]
+
+{ #category : #'as yet unclassified' }
 BondConstants >> initialize [
 	super initialize.
 

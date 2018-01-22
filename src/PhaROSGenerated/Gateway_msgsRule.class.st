@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Gateway_msgsRule class >> rosTypeDefinition [ 
+^' string type
+ string name
+ string node
+'
+]
+
+{ #category : #'as yet unclassified' }
+Gateway_msgsRule class >> rosTypeName [ 
+^'gateway_msgs/Rule'
+]
+
+{ #category : #'as yet unclassified' }
 Gateway_msgsRule >> initialize [
 	super initialize.
 	 self type: ''. 

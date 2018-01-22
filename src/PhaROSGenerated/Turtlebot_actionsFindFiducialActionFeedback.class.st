@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsFindFiducialActionFeedback class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ turtlebot_actions/FindFiducialFeedback feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Turtlebot_actionsFindFiducialActionFeedback class >> rosTypeName [ 
+^'turtlebot_actions/FindFiducialActionFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsFindFiducialActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Shape_msgsPlane class >> rosTypeDefinition [ 
+^' float64[4]  coef
+'
+]
+
+{ #category : #'as yet unclassified' }
+Shape_msgsPlane class >> rosTypeName [ 
+^'shape_msgs/Plane'
+]
+
+{ #category : #'as yet unclassified' }
 Shape_msgsPlane >> coef [
 	^ self getAt: #coef. 
 

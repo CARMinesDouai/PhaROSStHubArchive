@@ -11,6 +11,24 @@ Visualization_msgsMenuEntry class >> feedback [
 ]
 
 { #category : #'as yet unclassified' }
+Visualization_msgsMenuEntry class >> rosTypeDefinition [ 
+^' int8 FEEDBACK=0
+ int8 ROSRUN=1
+ int8 ROSLAUNCH=2
+ int32 id
+ int32 parent_id
+ string title
+ string command
+ int8 command_type
+'
+]
+
+{ #category : #'as yet unclassified' }
+Visualization_msgsMenuEntry class >> rosTypeName [ 
+^'visualization_msgs/MenuEntry'
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsMenuEntry class >> roslaunch [
 	^2
 

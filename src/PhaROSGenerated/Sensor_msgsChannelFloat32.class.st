@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsChannelFloat32 class >> rosTypeDefinition [ 
+^' string name
+ float32[] values
+'
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsChannelFloat32 class >> rosTypeName [ 
+^'sensor_msgs/ChannelFloat32'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsChannelFloat32 >> initialize [
 	super initialize.
 	 self name: ''. 

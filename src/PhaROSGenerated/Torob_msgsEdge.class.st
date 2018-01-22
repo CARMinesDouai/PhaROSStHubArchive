@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Torob_msgsEdge class >> rosTypeDefinition [ 
+^' int64 src
+ int64 trg
+ int64 type
+ float64 weight
+'
+]
+
+{ #category : #'as yet unclassified' }
+Torob_msgsEdge class >> rosTypeName [ 
+^'torob_msgs/Edge'
+]
+
+{ #category : #'as yet unclassified' }
 Torob_msgsEdge >> initialize [
 	super initialize.
 	 self src: 0. 

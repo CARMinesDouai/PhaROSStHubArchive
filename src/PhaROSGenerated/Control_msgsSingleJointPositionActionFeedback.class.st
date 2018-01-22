@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionActionFeedback class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ control_msgs/SingleJointPositionFeedback feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionActionFeedback class >> rosTypeName [ 
+^'control_msgs/SingleJointPositionActionFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsSingleJointPositionActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

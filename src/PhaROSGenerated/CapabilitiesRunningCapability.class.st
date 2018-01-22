@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+CapabilitiesRunningCapability class >> rosTypeDefinition [ 
+^' capabilities/Capability capability
+ capabilities/Capability[] dependent_capabilities
+ string started_by
+ int32 pid
+'
+]
+
+{ #category : #'as yet unclassified' }
+CapabilitiesRunningCapability class >> rosTypeName [ 
+^'capabilities/RunningCapability'
+]
+
+{ #category : #'as yet unclassified' }
 CapabilitiesRunningCapability >> capability [
 	^ self getAt: #capability. 
 

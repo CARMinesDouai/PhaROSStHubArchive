@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureIntParameter class >> rosTypeDefinition [ 
+^' string name
+ int32 value
+'
+]
+
+{ #category : #'as yet unclassified' }
+Dynamic_reconfigureIntParameter class >> rosTypeName [ 
+^'dynamic_reconfigure/IntParameter'
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureIntParameter >> initialize [
 	super initialize.
 	 self name: ''. 

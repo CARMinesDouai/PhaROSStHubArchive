@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsWaypoint class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ string name
+ geometry_msgs/Pose pose
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsWaypoint class >> rosTypeName [ 
+^'yocs_msgs/Waypoint'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsWaypoint >> header [
 	^ self getAt: #header. 
 

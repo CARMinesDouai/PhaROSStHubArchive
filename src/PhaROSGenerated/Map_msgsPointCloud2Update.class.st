@@ -17,6 +17,21 @@ Map_msgsPointCloud2Update class >> delete [
 ]
 
 { #category : #'as yet unclassified' }
+Map_msgsPointCloud2Update class >> rosTypeDefinition [ 
+^' int32 ADD=0
+ int32 DELETE=1
+ std_msgs/Header header
+ int32 type
+ sensor_msgs/PointCloud2 points
+'
+]
+
+{ #category : #'as yet unclassified' }
+Map_msgsPointCloud2Update class >> rosTypeName [ 
+^'map_msgs/PointCloud2Update'
+]
+
+{ #category : #'as yet unclassified' }
 Map_msgsPointCloud2Update >> header [
 	^ self getAt: #header. 
 

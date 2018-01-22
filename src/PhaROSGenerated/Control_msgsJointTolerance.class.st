@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsJointTolerance class >> rosTypeDefinition [ 
+^' string name
+ float64 position
+ float64 velocity
+ float64 acceleration
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsJointTolerance class >> rosTypeName [ 
+^'control_msgs/JointTolerance'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsJointTolerance >> acceleration [
 	^ self getAt: #acceleration. 
 

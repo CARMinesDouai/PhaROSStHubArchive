@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsTimeReference class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ time time_ref
+ string source
+'
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsTimeReference class >> rosTypeName [ 
+^'sensor_msgs/TimeReference'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsTimeReference >> header [
 	^ self getAt: #header. 
 

@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPointStamped class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ geometry_msgs/Point point
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsPointStamped class >> rosTypeName [ 
+^'geometry_msgs/PointStamped'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPointStamped >> header [
 	^ self getAt: #header. 
 

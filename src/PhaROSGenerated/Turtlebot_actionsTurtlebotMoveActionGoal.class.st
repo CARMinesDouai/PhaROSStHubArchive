@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsTurtlebotMoveActionGoal class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalID goal_id
+ turtlebot_actions/TurtlebotMoveGoal goal
+'
+]
+
+{ #category : #'as yet unclassified' }
+Turtlebot_actionsTurtlebotMoveActionGoal class >> rosTypeName [ 
+^'turtlebot_actions/TurtlebotMoveActionGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsTurtlebotMoveActionGoal >> goal [
 	^ self getAt: #goal. 
 

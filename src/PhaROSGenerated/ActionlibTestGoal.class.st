@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+ActionlibTestGoal class >> rosTypeDefinition [ 
+^' int32 goal
+'
+]
+
+{ #category : #'as yet unclassified' }
+ActionlibTestGoal class >> rosTypeName [ 
+^'actionlib/TestGoal'
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTestGoal >> goal [
 	^ self getAt: #goal. 
 

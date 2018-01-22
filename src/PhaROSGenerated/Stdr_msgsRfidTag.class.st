@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRfidTag class >> rosTypeDefinition [ 
+^' string tag_id
+ string message
+ geometry_msgs/Pose2D pose
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsRfidTag class >> rosTypeName [ 
+^'stdr_msgs/RfidTag'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRfidTag >> initialize [
 	super initialize.
 	 self tag_id: ''. 

@@ -11,6 +11,24 @@ Sensor_msgsRange class >> infrared [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsRange class >> rosTypeDefinition [ 
+^' int8 ULTRASOUND=0
+ int8 INFRARED=1
+ std_msgs/Header header
+ int8 radiation_type
+ float32 field_of_view
+ float32 min_range
+ float32 max_range
+ float32 range
+'
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsRange class >> rosTypeName [ 
+^'sensor_msgs/Range'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsRange class >> ultrasound [
 	^0
 

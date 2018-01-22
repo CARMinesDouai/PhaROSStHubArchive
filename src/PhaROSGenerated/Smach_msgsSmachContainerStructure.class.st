@@ -5,6 +5,23 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Smach_msgsSmachContainerStructure class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ string path
+ string[] children
+ string[] internal_outcomes
+ string[] outcomes_from
+ string[] outcomes_to
+ string[] container_outcomes
+'
+]
+
+{ #category : #'as yet unclassified' }
+Smach_msgsSmachContainerStructure class >> rosTypeName [ 
+^'smach_msgs/SmachContainerStructure'
+]
+
+{ #category : #'as yet unclassified' }
 Smach_msgsSmachContainerStructure >> children [
 	^ self getAt: #children. 
 

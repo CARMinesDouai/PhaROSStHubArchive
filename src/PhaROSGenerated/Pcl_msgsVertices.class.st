@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Pcl_msgsVertices class >> rosTypeDefinition [ 
+^' int32[] vertices
+'
+]
+
+{ #category : #'as yet unclassified' }
+Pcl_msgsVertices class >> rosTypeName [ 
+^'pcl_msgs/Vertices'
+]
+
+{ #category : #'as yet unclassified' }
 Pcl_msgsVertices >> initialize [
 	super initialize.
 	 self vertices: OrderedCollection new . 

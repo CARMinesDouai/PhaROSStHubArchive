@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciActionGoal class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalID goal_id
+ actionlib_tutorials/FibonacciGoal goal
+'
+]
+
+{ #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciActionGoal class >> rosTypeName [ 
+^'actionlib_tutorials/FibonacciActionGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsFibonacciActionGoal >> goal [
 	^ self getAt: #goal. 
 

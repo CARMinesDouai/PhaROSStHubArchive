@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsTurtlebotMoveAction class >> rosTypeDefinition [ 
+^' turtlebot_actions/TurtlebotMoveActionGoal action_goal
+ turtlebot_actions/TurtlebotMoveActionResult action_result
+ turtlebot_actions/TurtlebotMoveActionFeedback action_feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Turtlebot_actionsTurtlebotMoveAction class >> rosTypeName [ 
+^'turtlebot_actions/TurtlebotMoveAction'
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsTurtlebotMoveAction >> action_feedback [
 	^ self getAt: #action_feedback. 
 

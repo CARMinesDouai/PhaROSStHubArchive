@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsStringsPair class >> rosTypeDefinition [ 
+^' rocon_std_msgs/StringsPairRequest pair_request
+ rocon_std_msgs/StringsPairResponse pair_response
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_std_msgsStringsPair class >> rosTypeName [ 
+^'rocon_std_msgs/StringsPair'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsStringsPair >> initialize [
 	super initialize.
 	 self pair_request: Rocon_std_msgsStringsPairRequest new. 

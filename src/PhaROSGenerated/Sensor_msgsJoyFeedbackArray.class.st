@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsJoyFeedbackArray class >> rosTypeDefinition [ 
+^' sensor_msgs/JoyFeedback[] array
+'
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsJoyFeedbackArray class >> rosTypeName [ 
+^'sensor_msgs/JoyFeedbackArray'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsJoyFeedbackArray >> array [
 	^ self getAt: #array. 
 

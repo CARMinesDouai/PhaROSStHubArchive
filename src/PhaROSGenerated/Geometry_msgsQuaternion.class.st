@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsQuaternion class >> rosTypeDefinition [ 
+^' float64 x
+ float64 y
+ float64 z
+ float64 w
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsQuaternion class >> rosTypeName [ 
+^'geometry_msgs/Quaternion'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsQuaternion >> initialize [
 	super initialize.
 	 self x: 0.0. 

@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rospy_tutorialsHeaderString class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ string data
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rospy_tutorialsHeaderString class >> rosTypeName [ 
+^'rospy_tutorials/HeaderString'
+]
+
+{ #category : #'as yet unclassified' }
 Rospy_tutorialsHeaderString >> data [
 	^ self getAt: #data. 
 

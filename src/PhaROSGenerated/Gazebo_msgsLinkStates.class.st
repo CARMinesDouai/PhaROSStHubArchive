@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Gazebo_msgsLinkStates class >> rosTypeDefinition [ 
+^' string[] name
+ geometry_msgs/Pose[] pose
+ geometry_msgs/Twist[] twist
+'
+]
+
+{ #category : #'as yet unclassified' }
+Gazebo_msgsLinkStates class >> rosTypeName [ 
+^'gazebo_msgs/LinkStates'
+]
+
+{ #category : #'as yet unclassified' }
 Gazebo_msgsLinkStates >> initialize [
 	super initialize.
 	 self name: OrderedCollection new . 

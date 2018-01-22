@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsThermalSourceVector class >> rosTypeDefinition [ 
+^' stdr_msgs/ThermalSource[] thermal_sources
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsThermalSourceVector class >> rosTypeName [ 
+^'stdr_msgs/ThermalSourceVector'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsThermalSourceVector >> initialize [
 	super initialize.
 	 self thermal_sources: OrderedCollection new . 

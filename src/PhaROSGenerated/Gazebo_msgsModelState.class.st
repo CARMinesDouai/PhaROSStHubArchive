@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Gazebo_msgsModelState class >> rosTypeDefinition [ 
+^' string model_name
+ geometry_msgs/Pose pose
+ geometry_msgs/Twist twist
+ string reference_frame
+'
+]
+
+{ #category : #'as yet unclassified' }
+Gazebo_msgsModelState class >> rosTypeName [ 
+^'gazebo_msgs/ModelState'
+]
+
+{ #category : #'as yet unclassified' }
 Gazebo_msgsModelState >> initialize [
 	super initialize.
 	 self model_name: ''. 

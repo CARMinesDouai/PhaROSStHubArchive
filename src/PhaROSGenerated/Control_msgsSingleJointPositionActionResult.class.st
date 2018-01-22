@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionActionResult class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ control_msgs/SingleJointPositionResult result
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionActionResult class >> rosTypeName [ 
+^'control_msgs/SingleJointPositionActionResult'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsSingleJointPositionActionResult >> header [
 	^ self getAt: #header. 
 

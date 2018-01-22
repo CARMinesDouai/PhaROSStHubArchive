@@ -5,6 +5,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Zeroconf_msgsPublishedService class >> rosTypeDefinition [ 
+^' string name
+ string type
+ string domain
+ int32 port
+ string description
+'
+]
+
+{ #category : #'as yet unclassified' }
+Zeroconf_msgsPublishedService class >> rosTypeName [ 
+^'zeroconf_msgs/PublishedService'
+]
+
+{ #category : #'as yet unclassified' }
 Zeroconf_msgsPublishedService >> description [
 	^ self getAt: #description. 
 

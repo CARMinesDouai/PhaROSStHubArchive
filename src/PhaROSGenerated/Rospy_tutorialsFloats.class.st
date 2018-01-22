@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rospy_tutorialsFloats class >> rosTypeDefinition [ 
+^' float32[] data
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rospy_tutorialsFloats class >> rosTypeName [ 
+^'rospy_tutorials/Floats'
+]
+
+{ #category : #'as yet unclassified' }
 Rospy_tutorialsFloats >> data [
 	^ self getAt: #data. 
 

@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionGoal class >> rosTypeDefinition [ 
+^' float64 position
+ duration min_duration
+ float64 max_velocity
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionGoal class >> rosTypeName [ 
+^'control_msgs/SingleJointPositionGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsSingleJointPositionGoal >> initialize [
 	super initialize.
 	 self position: 0.0. 

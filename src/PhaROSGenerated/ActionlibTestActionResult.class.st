@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+ActionlibTestActionResult class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ actionlib/TestResult result
+'
+]
+
+{ #category : #'as yet unclassified' }
+ActionlibTestActionResult class >> rosTypeName [ 
+^'actionlib/TestActionResult'
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTestActionResult >> header [
 	^ self getAt: #header. 
 

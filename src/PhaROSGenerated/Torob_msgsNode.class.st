@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Torob_msgsNode class >> rosTypeDefinition [ 
+^' float64 x
+ float64 y
+ int64 type
+ float64 weight
+'
+]
+
+{ #category : #'as yet unclassified' }
+Torob_msgsNode class >> rosTypeName [ 
+^'torob_msgs/Node'
+]
+
+{ #category : #'as yet unclassified' }
 Torob_msgsNode >> initialize [
 	super initialize.
 	 self x: 0.0. 

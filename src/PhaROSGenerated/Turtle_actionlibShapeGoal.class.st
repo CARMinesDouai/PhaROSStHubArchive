@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtle_actionlibShapeGoal class >> rosTypeDefinition [ 
+^' int32 edges
+ float32 radius
+'
+]
+
+{ #category : #'as yet unclassified' }
+Turtle_actionlibShapeGoal class >> rosTypeName [ 
+^'turtle_actionlib/ShapeGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Turtle_actionlibShapeGoal >> edges [
 	^ self getAt: #edges. 
 

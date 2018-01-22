@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+ActionlibTwoIntsGoal class >> rosTypeDefinition [ 
+^' int64 a
+ int64 b
+'
+]
+
+{ #category : #'as yet unclassified' }
+ActionlibTwoIntsGoal class >> rosTypeName [ 
+^'actionlib/TwoIntsGoal'
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTwoIntsGoal >> a [
 	^ self getAt: #a. 
 

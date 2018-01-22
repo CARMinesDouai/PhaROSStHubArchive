@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPoseWithCovariance class >> rosTypeDefinition [ 
+^' geometry_msgs/Pose pose
+ float64[36]  covariance
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsPoseWithCovariance class >> rosTypeName [ 
+^'geometry_msgs/PoseWithCovariance'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPoseWithCovariance >> covariance [
 	^ self getAt: #covariance. 
 

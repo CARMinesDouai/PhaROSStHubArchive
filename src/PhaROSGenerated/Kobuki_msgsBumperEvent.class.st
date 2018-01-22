@@ -35,6 +35,23 @@ Kobuki_msgsBumperEvent class >> right [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsBumperEvent class >> rosTypeDefinition [ 
+^' int8 LEFT=0
+ int8 CENTER=1
+ int8 RIGHT=2
+ int8 RELEASED=0
+ int8 PRESSED=1
+ int8 bumper
+ int8 state
+'
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsBumperEvent class >> rosTypeName [ 
+^'kobuki_msgs/BumperEvent'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsBumperEvent >> bumper [
 	^ self getAt: #bumper. 
 

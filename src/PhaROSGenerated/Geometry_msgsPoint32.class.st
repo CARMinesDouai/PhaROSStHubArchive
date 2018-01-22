@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPoint32 class >> rosTypeDefinition [ 
+^' float32 x
+ float32 y
+ float32 z
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsPoint32 class >> rosTypeName [ 
+^'geometry_msgs/Point32'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPoint32 >> initialize [
 	super initialize.
 	 self x: 0.0. 

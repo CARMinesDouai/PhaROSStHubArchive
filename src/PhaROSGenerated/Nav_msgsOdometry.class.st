@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Nav_msgsOdometry class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ string child_frame_id
+ geometry_msgs/PoseWithCovariance pose
+ geometry_msgs/TwistWithCovariance twist
+'
+]
+
+{ #category : #'as yet unclassified' }
+Nav_msgsOdometry class >> rosTypeName [ 
+^'nav_msgs/Odometry'
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsOdometry >> child_frame_id [
 	^ self getAt: #child_frame_id. 
 

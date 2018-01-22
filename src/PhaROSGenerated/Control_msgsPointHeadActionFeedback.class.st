@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsPointHeadActionFeedback class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ control_msgs/PointHeadFeedback feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsPointHeadActionFeedback class >> rosTypeName [ 
+^'control_msgs/PointHeadActionFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsPointHeadActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

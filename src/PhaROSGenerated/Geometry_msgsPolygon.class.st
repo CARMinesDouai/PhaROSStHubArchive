@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPolygon class >> rosTypeDefinition [ 
+^' geometry_msgs/Point32[] points
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsPolygon class >> rosTypeName [ 
+^'geometry_msgs/Polygon'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPolygon >> initialize [
 	super initialize.
 	 self points: OrderedCollection new . 

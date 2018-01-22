@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsTransformStamped class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ string child_frame_id
+ geometry_msgs/Transform transform
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsTransformStamped class >> rosTypeName [ 
+^'geometry_msgs/TransformStamped'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsTransformStamped >> child_frame_id [
 	^ self getAt: #child_frame_id. 
 

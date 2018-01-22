@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Smach_msgsSmachContainerInitialStatusCmd class >> rosTypeDefinition [ 
+^' string path
+ string[] initial_states
+ string local_data
+'
+]
+
+{ #category : #'as yet unclassified' }
+Smach_msgsSmachContainerInitialStatusCmd class >> rosTypeName [ 
+^'smach_msgs/SmachContainerInitialStatusCmd'
+]
+
+{ #category : #'as yet unclassified' }
 Smach_msgsSmachContainerInitialStatusCmd >> initial_states [
 	^ self getAt: #initial_states. 
 

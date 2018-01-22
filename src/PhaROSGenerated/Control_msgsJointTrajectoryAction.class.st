@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryAction class >> rosTypeDefinition [ 
+^' control_msgs/JointTrajectoryActionGoal action_goal
+ control_msgs/JointTrajectoryActionResult action_result
+ control_msgs/JointTrajectoryActionFeedback action_feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryAction class >> rosTypeName [ 
+^'control_msgs/JointTrajectoryAction'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsJointTrajectoryAction >> action_feedback [
 	^ self getAt: #action_feedback. 
 

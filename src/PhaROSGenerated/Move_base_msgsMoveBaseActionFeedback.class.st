@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Move_base_msgsMoveBaseActionFeedback class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ move_base_msgs/MoveBaseFeedback feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Move_base_msgsMoveBaseActionFeedback class >> rosTypeName [ 
+^'move_base_msgs/MoveBaseActionFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Move_base_msgsMoveBaseActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

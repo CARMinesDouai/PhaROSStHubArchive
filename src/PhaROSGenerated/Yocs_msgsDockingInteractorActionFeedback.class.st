@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsDockingInteractorActionFeedback class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ yocs_msgs/DockingInteractorFeedback feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsDockingInteractorActionFeedback class >> rosTypeName [ 
+^'yocs_msgs/DockingInteractorActionFeedback'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsDockingInteractorActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

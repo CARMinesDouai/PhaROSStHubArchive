@@ -5,6 +5,16 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionResult class >> rosTypeDefinition [ 
+^''
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionResult class >> rosTypeName [ 
+^'control_msgs/SingleJointPositionResult'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsSingleJointPositionResult >> initialize [
 	super initialize.
 

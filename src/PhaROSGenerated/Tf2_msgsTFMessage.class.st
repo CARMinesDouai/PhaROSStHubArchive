@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Tf2_msgsTFMessage class >> rosTypeDefinition [ 
+^' geometry_msgs/TransformStamped[] transforms
+'
+]
+
+{ #category : #'as yet unclassified' }
+Tf2_msgsTFMessage class >> rosTypeName [ 
+^'tf2_msgs/TFMessage'
+]
+
+{ #category : #'as yet unclassified' }
 Tf2_msgsTFMessage >> initialize [
 	super initialize.
 	 self transforms: OrderedCollection new . 

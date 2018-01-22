@@ -5,6 +5,23 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsImage class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ int32 height
+ int32 width
+ string encoding
+ int8 is_bigendian
+ int32 step
+ int8[] data
+'
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsImage class >> rosTypeName [ 
+^'sensor_msgs/Image'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsImage >> data [
 	^ self getAt: #data. 
 

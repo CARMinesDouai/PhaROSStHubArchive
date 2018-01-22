@@ -5,6 +5,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsJointState class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ string[] name
+ float64[] position
+ float64[] velocity
+ float64[] effort
+'
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsJointState class >> rosTypeName [ 
+^'sensor_msgs/JointState'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsJointState >> effort [
 	^ self getAt: #effort. 
 

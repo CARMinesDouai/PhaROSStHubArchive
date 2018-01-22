@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsCO2Source class >> rosTypeDefinition [ 
+^' string id
+ float32 ppm
+ geometry_msgs/Pose2D pose
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsCO2Source class >> rosTypeName [ 
+^'stdr_msgs/CO2Source'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsCO2Source >> id [
 	^ self getAt: #id. 
 

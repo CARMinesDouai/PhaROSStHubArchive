@@ -29,6 +29,21 @@ Kobuki_msgsLed class >> red [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsLed class >> rosTypeDefinition [ 
+^' int8 BLACK=0
+ int8 GREEN=1
+ int8 ORANGE=2
+ int8 RED=3
+ int8 value
+'
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsLed class >> rosTypeName [ 
+^'kobuki_msgs/Led'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsLed >> initialize [
 	super initialize.
 	 self value: 0. 

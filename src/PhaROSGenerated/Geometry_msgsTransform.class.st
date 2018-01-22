@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsTransform class >> rosTypeDefinition [ 
+^' geometry_msgs/Vector3 translation
+ geometry_msgs/Quaternion rotation
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsTransform class >> rosTypeName [ 
+^'geometry_msgs/Transform'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsTransform >> initialize [
 	super initialize.
 	 self translation: Geometry_msgsVector3 new. 

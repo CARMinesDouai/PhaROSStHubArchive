@@ -5,6 +5,25 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Controller_manager_msgsControllerStatistics class >> rosTypeDefinition [ 
+^' string name
+ string type
+ time timestamp
+ bool running
+ duration max_time
+ duration mean_time
+ duration variance_time
+ int32 num_control_loop_overruns
+ time time_last_control_loop_overrun
+'
+]
+
+{ #category : #'as yet unclassified' }
+Controller_manager_msgsControllerStatistics class >> rosTypeName [ 
+^'controller_manager_msgs/ControllerStatistics'
+]
+
+{ #category : #'as yet unclassified' }
 Controller_manager_msgsControllerStatistics >> initialize [
 	super initialize.
 	 self name: ''. 

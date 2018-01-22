@@ -5,6 +5,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureGroup class >> rosTypeDefinition [ 
+^' string name
+ string type
+ dynamic_reconfigure/ParamDescription[] parameters
+ int32 parent
+ int32 id
+'
+]
+
+{ #category : #'as yet unclassified' }
+Dynamic_reconfigureGroup class >> rosTypeName [ 
+^'dynamic_reconfigure/Group'
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureGroup >> id [
 	^ self getAt: #id. 
 

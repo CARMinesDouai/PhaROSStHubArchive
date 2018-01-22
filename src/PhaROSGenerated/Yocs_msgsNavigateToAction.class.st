@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigateToAction class >> rosTypeDefinition [ 
+^' yocs_msgs/NavigateToActionGoal action_goal
+ yocs_msgs/NavigateToActionResult action_result
+ yocs_msgs/NavigateToActionFeedback action_feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigateToAction class >> rosTypeName [ 
+^'yocs_msgs/NavigateToAction'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigateToAction >> action_feedback [
 	^ self getAt: #action_feedback. 
 

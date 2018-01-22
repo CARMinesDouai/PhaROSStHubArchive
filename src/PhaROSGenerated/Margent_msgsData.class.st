@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Margent_msgsData class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ string mesage
+ int64[] flag
+ float64[] value
+'
+]
+
+{ #category : #'as yet unclassified' }
+Margent_msgsData class >> rosTypeName [ 
+^'margent_msgs/Data'
+]
+
+{ #category : #'as yet unclassified' }
 Margent_msgsData >> flag [
 	^ self getAt: #flag. 
 

@@ -5,6 +5,26 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Gazebo_msgsODEJointProperties class >> rosTypeDefinition [ 
+^' float64[] damping
+ float64[] hiStop
+ float64[] loStop
+ float64[] erp
+ float64[] cfm
+ float64[] stop_erp
+ float64[] stop_cfm
+ float64[] fudge_factor
+ float64[] fmax
+ float64[] vel
+'
+]
+
+{ #category : #'as yet unclassified' }
+Gazebo_msgsODEJointProperties class >> rosTypeName [ 
+^'gazebo_msgs/ODEJointProperties'
+]
+
+{ #category : #'as yet unclassified' }
 Gazebo_msgsODEJointProperties >> cfm [
 	^ self getAt: #cfm. 
 

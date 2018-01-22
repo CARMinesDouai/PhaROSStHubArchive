@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Create_nodeDrive class >> rosTypeDefinition [ 
+^' float32 velocity
+ float32 radius
+'
+]
+
+{ #category : #'as yet unclassified' }
+Create_nodeDrive class >> rosTypeName [ 
+^'create_node/Drive'
+]
+
+{ #category : #'as yet unclassified' }
 Create_nodeDrive >> initialize [
 	super initialize.
 	 self velocity: 0.0. 

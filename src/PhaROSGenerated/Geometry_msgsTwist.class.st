@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsTwist class >> rosTypeDefinition [ 
+^' geometry_msgs/Vector3 linear
+ geometry_msgs/Vector3 angular
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsTwist class >> rosTypeName [ 
+^'geometry_msgs/Twist'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsTwist >> angular [
 	^ self getAt: #angular. 
 

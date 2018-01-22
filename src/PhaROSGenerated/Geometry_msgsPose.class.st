@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPose class >> rosTypeDefinition [ 
+^' geometry_msgs/Point position
+ geometry_msgs/Quaternion orientation
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsPose class >> rosTypeName [ 
+^'geometry_msgs/Pose'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPose >> initialize [
 	super initialize.
 	 self position: Geometry_msgsPoint new. 

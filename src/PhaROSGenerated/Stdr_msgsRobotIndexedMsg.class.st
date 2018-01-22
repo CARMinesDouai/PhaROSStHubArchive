@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRobotIndexedMsg class >> rosTypeDefinition [ 
+^' string name
+ stdr_msgs/RobotMsg robot
+'
+]
+
+{ #category : #'as yet unclassified' }
+Stdr_msgsRobotIndexedMsg class >> rosTypeName [ 
+^'stdr_msgs/RobotIndexedMsg'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRobotIndexedMsg >> initialize [
 	super initialize.
 	 self name: ''. 

@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Std_msgsString class >> rosTypeDefinition [ 
+^' string data
+'
+]
+
+{ #category : #'as yet unclassified' }
+Std_msgsString class >> rosTypeName [ 
+^'std_msgs/String'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsString >> data [
 	^ self getAt: #data. 
 

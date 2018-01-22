@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsWrench class >> rosTypeDefinition [ 
+^' geometry_msgs/Vector3 force
+ geometry_msgs/Vector3 torque
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsWrench class >> rosTypeName [ 
+^'geometry_msgs/Wrench'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsWrench >> force [
 	^ self getAt: #force. 
 

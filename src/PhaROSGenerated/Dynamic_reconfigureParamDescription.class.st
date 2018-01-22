@@ -5,6 +5,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureParamDescription class >> rosTypeDefinition [ 
+^' string name
+ string type
+ int32 level
+ string description
+ string edit_method
+'
+]
+
+{ #category : #'as yet unclassified' }
+Dynamic_reconfigureParamDescription class >> rosTypeName [ 
+^'dynamic_reconfigure/ParamDescription'
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureParamDescription >> description [
 	^ self getAt: #description. 
 

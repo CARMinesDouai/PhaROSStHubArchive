@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureStrParameter class >> rosTypeDefinition [ 
+^' string name
+ string value
+'
+]
+
+{ #category : #'as yet unclassified' }
+Dynamic_reconfigureStrParameter class >> rosTypeName [ 
+^'dynamic_reconfigure/StrParameter'
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureStrParameter >> initialize [
 	super initialize.
 	 self name: ''. 

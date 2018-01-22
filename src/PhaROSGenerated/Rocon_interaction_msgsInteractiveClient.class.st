@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsInteractiveClient class >> rosTypeDefinition [ 
+^' string name
+ uuid_msgs/UniqueID id
+ rocon_std_msgs/MasterInfo platform_info
+ string[] running_interactions
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_interaction_msgsInteractiveClient class >> rosTypeName [ 
+^'rocon_interaction_msgs/InteractiveClient'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsInteractiveClient >> id [
 	^ self getAt: #id. 
 

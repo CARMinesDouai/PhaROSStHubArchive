@@ -29,6 +29,29 @@ Rosgraph_msgsLog class >> info [
 ]
 
 { #category : #'as yet unclassified' }
+Rosgraph_msgsLog class >> rosTypeDefinition [ 
+^' int8 DEBUG=1
+ int8 INFO=2
+ int8 WARN=4
+ int8 ERROR=8
+ int8 FATAL=16
+ std_msgs/Header header
+ int8 level
+ string name
+ string msg
+ string file
+ string function
+ int32 line
+ string[] topics
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rosgraph_msgsLog class >> rosTypeName [ 
+^'rosgraph_msgs/Log'
+]
+
+{ #category : #'as yet unclassified' }
 Rosgraph_msgsLog class >> warn [
 	^4
 

@@ -5,6 +5,16 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryResult class >> rosTypeDefinition [ 
+^''
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryResult class >> rosTypeName [ 
+^'control_msgs/JointTrajectoryResult'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsJointTrajectoryResult >> initialize [
 	super initialize.
 

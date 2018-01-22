@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Map_msgsProjectedMap class >> rosTypeDefinition [ 
+^' nav_msgs/OccupancyGrid map
+ float64 min_z
+ float64 max_z
+'
+]
+
+{ #category : #'as yet unclassified' }
+Map_msgsProjectedMap class >> rosTypeName [ 
+^'map_msgs/ProjectedMap'
+]
+
+{ #category : #'as yet unclassified' }
 Map_msgsProjectedMap >> initialize [
 	super initialize.
 	 self map: Nav_msgsOccupancyGrid new. 

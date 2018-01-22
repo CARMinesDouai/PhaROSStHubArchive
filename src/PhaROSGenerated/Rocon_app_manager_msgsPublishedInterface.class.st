@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsPublishedInterface class >> rosTypeDefinition [ 
+^' rocon_app_manager_msgs/PublicInterface interface
+ string name
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_app_manager_msgsPublishedInterface class >> rosTypeName [ 
+^'rocon_app_manager_msgs/PublishedInterface'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsPublishedInterface >> initialize [
 	super initialize.
 	 self interface: Rocon_app_manager_msgsPublicInterface new. 

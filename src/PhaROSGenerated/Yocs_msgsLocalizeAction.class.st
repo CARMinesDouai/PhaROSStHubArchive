@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsLocalizeAction class >> rosTypeDefinition [ 
+^' yocs_msgs/LocalizeActionGoal action_goal
+ yocs_msgs/LocalizeActionResult action_result
+ yocs_msgs/LocalizeActionFeedback action_feedback
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsLocalizeAction class >> rosTypeName [ 
+^'yocs_msgs/LocalizeAction'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsLocalizeAction >> action_feedback [
 	^ self getAt: #action_feedback. 
 

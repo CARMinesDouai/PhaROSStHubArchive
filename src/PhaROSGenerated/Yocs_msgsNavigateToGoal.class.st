@@ -17,6 +17,23 @@ Yocs_msgsNavigateToGoal class >> approach_on [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigateToGoal class >> rosTypeDefinition [ 
+^' int8 APPROACH_NEAR=11
+ int8 APPROACH_ON=12
+ string location
+ int8 approach_type
+ int8 num_retry
+ float32 timeout
+ float32 distance
+'
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigateToGoal class >> rosTypeName [ 
+^'yocs_msgs/NavigateToGoal'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigateToGoal >> approach_type [
 	^ self getAt: #approach_type. 
 

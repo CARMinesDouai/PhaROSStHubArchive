@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsRemapping class >> rosTypeDefinition [ 
+^' string remap_from
+ string remap_to
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_std_msgsRemapping class >> rosTypeName [ 
+^'rocon_std_msgs/Remapping'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsRemapping >> initialize [
 	super initialize.
 	 self remap_from: ''. 

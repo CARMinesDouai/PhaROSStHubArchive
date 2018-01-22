@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+ActionlibTestRequestResult class >> rosTypeDefinition [ 
+^' int32 the_result
+ bool is_simple_server
+'
+]
+
+{ #category : #'as yet unclassified' }
+ActionlibTestRequestResult class >> rosTypeName [ 
+^'actionlib/TestRequestResult'
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTestRequestResult >> initialize [
 	super initialize.
 	 self the_result: 0. 

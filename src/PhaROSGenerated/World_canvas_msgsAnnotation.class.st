@@ -5,6 +5,28 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+World_canvas_msgsAnnotation class >> rosTypeDefinition [ 
+^' time timestamp
+ uuid_msgs/UniqueID id
+ uuid_msgs/UniqueID data_id
+ string world
+ string name
+ string type
+ int32 shape
+ std_msgs/ColorRGBA color
+ geometry_msgs/Vector3 size
+ geometry_msgs/PoseWithCovarianceStamped pose
+ string[] keywords
+ uuid_msgs/UniqueID[] relationships
+'
+]
+
+{ #category : #'as yet unclassified' }
+World_canvas_msgsAnnotation class >> rosTypeName [ 
+^'world_canvas_msgs/Annotation'
+]
+
+{ #category : #'as yet unclassified' }
 World_canvas_msgsAnnotation >> color [
 	^ self getAt: #color. 
 

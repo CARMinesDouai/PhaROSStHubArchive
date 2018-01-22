@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureGroupState class >> rosTypeDefinition [ 
+^' string name
+ bool state
+ int32 id
+ int32 parent
+'
+]
+
+{ #category : #'as yet unclassified' }
+Dynamic_reconfigureGroupState class >> rosTypeName [ 
+^'dynamic_reconfigure/GroupState'
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureGroupState >> id [
 	^ self getAt: #id. 
 

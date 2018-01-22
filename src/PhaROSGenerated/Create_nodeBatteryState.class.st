@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Create_nodeBatteryState class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ int8 temperature
+ uint16 charge
+ uint16 capacity
+'
+]
+
+{ #category : #'as yet unclassified' }
+Create_nodeBatteryState class >> rosTypeName [ 
+^'create_node/BatteryState'
+]
+
+{ #category : #'as yet unclassified' }
 Create_nodeBatteryState >> capacity [
 	^ self getAt: #capacity. 
 

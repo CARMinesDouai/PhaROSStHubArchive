@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsAveragingActionResult class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ actionlib_msgs/GoalStatus status
+ actionlib_tutorials/AveragingResult result
+'
+]
+
+{ #category : #'as yet unclassified' }
+Actionlib_tutorialsAveragingActionResult class >> rosTypeName [ 
+^'actionlib_tutorials/AveragingActionResult'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsAveragingActionResult >> header [
 	^ self getAt: #header. 
 

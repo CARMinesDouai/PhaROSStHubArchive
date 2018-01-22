@@ -5,6 +5,23 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsImu class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ geometry_msgs/Quaternion orientation
+ float64[9]  orientation_covariance
+ geometry_msgs/Vector3 angular_velocity
+ float64[9]  angular_velocity_covariance
+ geometry_msgs/Vector3 linear_acceleration
+ float64[9]  linear_acceleration_covariance
+'
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsImu class >> rosTypeName [ 
+^'sensor_msgs/Imu'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsImu >> angular_velocity [
 	^ self getAt: #angular_velocity. 
 

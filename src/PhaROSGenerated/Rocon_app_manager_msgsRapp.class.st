@@ -5,6 +5,26 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsRapp class >> rosTypeDefinition [ 
+^' string name
+ string display_name
+ string description
+ string compatibility
+ string status
+ string[] implementations
+ string preferred
+ rocon_std_msgs/Icon icon
+ rocon_std_msgs/KeyValue[] public_interface
+ rocon_std_msgs/KeyValue[] public_parameters
+'
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_app_manager_msgsRapp class >> rosTypeName [ 
+^'rocon_app_manager_msgs/Rapp'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsRapp >> compatibility [
 	^ self getAt: #compatibility. 
 

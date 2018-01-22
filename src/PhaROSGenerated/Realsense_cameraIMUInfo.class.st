@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Realsense_cameraIMUInfo class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ float64[12]  data
+ float64[3]  noise_variances
+ float64[3]  bias_variances
+'
+]
+
+{ #category : #'as yet unclassified' }
+Realsense_cameraIMUInfo class >> rosTypeName [ 
+^'realsense_camera/IMUInfo'
+]
+
+{ #category : #'as yet unclassified' }
 Realsense_cameraIMUInfo >> bias_variances [
 	^ self getAt: #bias_variances. 
 

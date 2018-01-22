@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsVector3Stamped class >> rosTypeDefinition [ 
+^' std_msgs/Header header
+ geometry_msgs/Vector3 vector
+'
+]
+
+{ #category : #'as yet unclassified' }
+Geometry_msgsVector3Stamped class >> rosTypeName [ 
+^'geometry_msgs/Vector3Stamped'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsVector3Stamped >> header [
 	^ self getAt: #header. 
 
