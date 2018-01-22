@@ -1,0 +1,50 @@
+Class {
+	#name : #'Control_msgsJointTrajectoryActionGoal',
+	#superclass : #PhaROSValue,
+	#category : #PhaROSGenerated
+}
+
+{ #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryActionGoal >> goal [
+	^ self getAt: #goal. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryActionGoal >> goal: aValue [
+	^ self at: #goal put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryActionGoal >> goal_id [
+	^ self getAt: #goal_id. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryActionGoal >> goal_id: aValue [
+	^ self at: #goal_id put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryActionGoal >> header [
+	^ self getAt: #header. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryActionGoal >> header: aValue [
+	^ self at: #header put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryActionGoal >> initialize [
+	super initialize.
+	 self header: Std_msgsHeader new. 
+	 self goal_id: Actionlib_msgsGoalID new. 
+	 self goal: Control_msgsJointTrajectoryGoal new. 
+
+]

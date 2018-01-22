@@ -1,0 +1,37 @@
+Class {
+	#name : #'Kobuki_msgsScanAngle',
+	#superclass : #PhaROSValue,
+	#category : #PhaROSGenerated
+}
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsScanAngle >> header [
+	^ self getAt: #header. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsScanAngle >> header: aValue [
+	^ self at: #header put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsScanAngle >> initialize [
+	super initialize.
+	 self header: Std_msgsHeader new. 
+	 self scan_angle: 0.0. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsScanAngle >> scan_angle [
+	^ self getAt: #scan_angle. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsScanAngle >> scan_angle: aValue [
+	^ self at: #scan_angle put: aValue. 
+
+]

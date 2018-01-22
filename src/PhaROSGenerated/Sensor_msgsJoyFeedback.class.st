@@ -1,0 +1,68 @@
+Class {
+	#name : #'Sensor_msgsJoyFeedback',
+	#superclass : #PhaROSValue,
+	#category : #PhaROSGenerated
+}
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsJoyFeedback class >> type_buzzer [
+	^2
+
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsJoyFeedback class >> type_led [
+	^0
+
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsJoyFeedback class >> type_rumble [
+	^1
+
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsJoyFeedback >> id [
+	^ self getAt: #id. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsJoyFeedback >> id: aValue [
+	^ self at: #id put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsJoyFeedback >> initialize [
+	super initialize.
+	 self type: 0. 
+	 self id: 0. 
+	 self intensity: 0.0. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsJoyFeedback >> intensity [
+	^ self getAt: #intensity. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsJoyFeedback >> intensity: aValue [
+	^ self at: #intensity put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsJoyFeedback >> type [
+	^ self getAt: #type. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Sensor_msgsJoyFeedback >> type: aValue [
+	^ self at: #type put: aValue. 
+
+]

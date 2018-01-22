@@ -1,0 +1,37 @@
+Class {
+	#name : #'Gateway_msgsRemoteRule',
+	#superclass : #PhaROSValue,
+	#category : #PhaROSGenerated
+}
+
+{ #category : #'as yet unclassified' }
+Gateway_msgsRemoteRule >> gateway [
+	^ self getAt: #gateway. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Gateway_msgsRemoteRule >> gateway: aValue [
+	^ self at: #gateway put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Gateway_msgsRemoteRule >> initialize [
+	super initialize.
+	 self gateway: ''. 
+	 self rule: Gateway_msgsRule new. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Gateway_msgsRemoteRule >> rule [
+	^ self getAt: #rule. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Gateway_msgsRemoteRule >> rule: aValue [
+	^ self at: #rule put: aValue. 
+
+]

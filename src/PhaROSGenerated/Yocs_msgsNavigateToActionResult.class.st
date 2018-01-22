@@ -1,0 +1,50 @@
+Class {
+	#name : #'Yocs_msgsNavigateToActionResult',
+	#superclass : #PhaROSValue,
+	#category : #PhaROSGenerated
+}
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigateToActionResult >> header [
+	^ self getAt: #header. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigateToActionResult >> header: aValue [
+	^ self at: #header put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigateToActionResult >> initialize [
+	super initialize.
+	 self header: Std_msgsHeader new. 
+	 self status: Actionlib_msgsGoalStatus new. 
+	 self result: Yocs_msgsNavigateToResult new. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigateToActionResult >> result [
+	^ self getAt: #result. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigateToActionResult >> result: aValue [
+	^ self at: #result put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigateToActionResult >> status [
+	^ self getAt: #status. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigateToActionResult >> status: aValue [
+	^ self at: #status put: aValue. 
+
+]

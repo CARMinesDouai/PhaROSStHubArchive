@@ -1,0 +1,50 @@
+Class {
+	#name : #'Smach_msgsSmachContainerInitialStatusCmd',
+	#superclass : #PhaROSValue,
+	#category : #PhaROSGenerated
+}
+
+{ #category : #'as yet unclassified' }
+Smach_msgsSmachContainerInitialStatusCmd >> initial_states [
+	^ self getAt: #initial_states. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Smach_msgsSmachContainerInitialStatusCmd >> initial_states: aValue [
+	^ self at: #initial_states put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Smach_msgsSmachContainerInitialStatusCmd >> initialize [
+	super initialize.
+	 self path: ''. 
+	 self initial_states: OrderedCollection new . 
+	 self local_data: ''. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Smach_msgsSmachContainerInitialStatusCmd >> local_data [
+	^ self getAt: #local_data. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Smach_msgsSmachContainerInitialStatusCmd >> local_data: aValue [
+	^ self at: #local_data put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Smach_msgsSmachContainerInitialStatusCmd >> path [
+	^ self getAt: #path. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Smach_msgsSmachContainerInitialStatusCmd >> path: aValue [
+	^ self at: #path put: aValue. 
+
+]

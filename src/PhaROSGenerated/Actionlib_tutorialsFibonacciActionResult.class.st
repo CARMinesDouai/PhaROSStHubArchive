@@ -1,0 +1,50 @@
+Class {
+	#name : #'Actionlib_tutorialsFibonacciActionResult',
+	#superclass : #PhaROSValue,
+	#category : #PhaROSGenerated
+}
+
+{ #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciActionResult >> header [
+	^ self getAt: #header. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciActionResult >> header: aValue [
+	^ self at: #header put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciActionResult >> initialize [
+	super initialize.
+	 self header: Std_msgsHeader new. 
+	 self status: Actionlib_msgsGoalStatus new. 
+	 self result: Actionlib_tutorialsFibonacciResult new. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciActionResult >> result [
+	^ self getAt: #result. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciActionResult >> result: aValue [
+	^ self at: #result put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciActionResult >> status [
+	^ self getAt: #status. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciActionResult >> status: aValue [
+	^ self at: #status put: aValue. 
+
+]

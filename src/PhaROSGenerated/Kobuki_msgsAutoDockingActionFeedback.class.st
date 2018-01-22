@@ -1,0 +1,50 @@
+Class {
+	#name : #'Kobuki_msgsAutoDockingActionFeedback',
+	#superclass : #PhaROSValue,
+	#category : #PhaROSGenerated
+}
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingActionFeedback >> feedback [
+	^ self getAt: #feedback. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingActionFeedback >> feedback: aValue [
+	^ self at: #feedback put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingActionFeedback >> header [
+	^ self getAt: #header. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingActionFeedback >> header: aValue [
+	^ self at: #header put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingActionFeedback >> initialize [
+	super initialize.
+	 self header: Std_msgsHeader new. 
+	 self status: Actionlib_msgsGoalStatus new. 
+	 self feedback: Kobuki_msgsAutoDockingFeedback new. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingActionFeedback >> status [
+	^ self getAt: #status. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingActionFeedback >> status: aValue [
+	^ self at: #status put: aValue. 
+
+]

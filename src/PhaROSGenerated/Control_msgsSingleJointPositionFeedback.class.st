@@ -1,0 +1,63 @@
+Class {
+	#name : #'Control_msgsSingleJointPositionFeedback',
+	#superclass : #PhaROSValue,
+	#category : #PhaROSGenerated
+}
+
+{ #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionFeedback >> error [
+	^ self getAt: #error. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionFeedback >> error: aValue [
+	^ self at: #error put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionFeedback >> header [
+	^ self getAt: #header. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionFeedback >> header: aValue [
+	^ self at: #header put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionFeedback >> initialize [
+	super initialize.
+	 self header: Std_msgsHeader new. 
+	 self position: 0.0. 
+	 self velocity: 0.0. 
+	 self error: 0.0. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionFeedback >> position [
+	^ self getAt: #position. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionFeedback >> position: aValue [
+	^ self at: #position put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionFeedback >> velocity [
+	^ self getAt: #velocity. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionFeedback >> velocity: aValue [
+	^ self at: #velocity put: aValue. 
+
+]

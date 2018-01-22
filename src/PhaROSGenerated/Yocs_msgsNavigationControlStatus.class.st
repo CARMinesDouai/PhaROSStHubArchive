@@ -1,0 +1,73 @@
+Class {
+	#name : #'Yocs_msgsNavigationControlStatus',
+	#superclass : #PhaROSValue,
+	#category : #PhaROSGenerated
+}
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigationControlStatus class >> cancelled [
+	^4
+
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigationControlStatus class >> completed [
+	^3
+
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigationControlStatus class >> error [
+	^-1
+
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigationControlStatus class >> idling [
+	^0
+
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigationControlStatus class >> paused [
+	^2
+
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigationControlStatus class >> running [
+	^1
+
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigationControlStatus >> initialize [
+	super initialize.
+	 self status: 0. 
+	 self status_desc: ''. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigationControlStatus >> status [
+	^ self getAt: #status. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigationControlStatus >> status: aValue [
+	^ self at: #status put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigationControlStatus >> status_desc [
+	^ self getAt: #status_desc. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Yocs_msgsNavigationControlStatus >> status_desc: aValue [
+	^ self at: #status_desc put: aValue. 
+
+]

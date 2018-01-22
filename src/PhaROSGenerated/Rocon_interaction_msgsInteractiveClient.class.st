@@ -1,0 +1,63 @@
+Class {
+	#name : #'Rocon_interaction_msgsInteractiveClient',
+	#superclass : #PhaROSValue,
+	#category : #PhaROSGenerated
+}
+
+{ #category : #'as yet unclassified' }
+Rocon_interaction_msgsInteractiveClient >> id [
+	^ self getAt: #id. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_interaction_msgsInteractiveClient >> id: aValue [
+	^ self at: #id put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_interaction_msgsInteractiveClient >> initialize [
+	super initialize.
+	 self name: ''. 
+	 self id: Uuid_msgsUniqueID new. 
+	 self platform_info: Rocon_std_msgsMasterInfo new. 
+	 self running_interactions: OrderedCollection new . 
+
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_interaction_msgsInteractiveClient >> name [
+	^ self getAt: #name. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_interaction_msgsInteractiveClient >> name: aValue [
+	^ self at: #name put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_interaction_msgsInteractiveClient >> platform_info [
+	^ self getAt: #platform_info. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_interaction_msgsInteractiveClient >> platform_info: aValue [
+	^ self at: #platform_info put: aValue. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_interaction_msgsInteractiveClient >> running_interactions [
+	^ self getAt: #running_interactions. 
+
+]
+
+{ #category : #'as yet unclassified' }
+Rocon_interaction_msgsInteractiveClient >> running_interactions: aValue [
+	^ self at: #running_interactions put: aValue. 
+
+]
