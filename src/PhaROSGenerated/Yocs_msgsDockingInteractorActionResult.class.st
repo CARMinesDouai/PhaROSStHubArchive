@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsDockingInteractorActionResult class >> rosMd5Sum [ 
+^'1471476fb0fc7d1ce25819ffcafc3f6d'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsDockingInteractorActionResult class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalStatus status

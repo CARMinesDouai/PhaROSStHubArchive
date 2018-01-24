@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Shape_msgsPlane class >> rosMd5Sum [ 
+^'2c1b92ed8f31492f8e73f6a4a44ca796'
+]
+
+{ #category : #'as yet unclassified' }
 Shape_msgsPlane class >> rosTypeDefinition [ 
 ^' float64[4]  coef
 '

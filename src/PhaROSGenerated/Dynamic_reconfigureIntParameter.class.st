@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureIntParameter class >> rosMd5Sum [ 
+^'65fedc7a0cbfb8db035e46194a350bf1'
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureIntParameter class >> rosTypeDefinition [ 
 ^' string name
  int32 value

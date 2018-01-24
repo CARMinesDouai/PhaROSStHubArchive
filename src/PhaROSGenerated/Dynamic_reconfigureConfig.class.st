@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureConfig class >> rosMd5Sum [ 
+^'958f16a05573709014982821e6822580'
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureConfig class >> rosTypeDefinition [ 
 ^' dynamic_reconfigure/BoolParameter[] bools
  dynamic_reconfigure/IntParameter[] ints

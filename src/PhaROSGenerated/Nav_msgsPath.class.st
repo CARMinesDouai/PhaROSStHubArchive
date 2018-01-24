@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Nav_msgsPath class >> rosMd5Sum [ 
+^'6227e2b7e9cce15051f669a5e197bbf7'
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsPath class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  geometry_msgs/PoseStamped[] poses

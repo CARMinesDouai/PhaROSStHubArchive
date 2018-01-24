@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingResult class >> rosMd5Sum [ 
+^'74697ed3d931f6eede8bf3a8dfeca160'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsAutoDockingResult class >> rosTypeDefinition [ 
 ^' string text
 '

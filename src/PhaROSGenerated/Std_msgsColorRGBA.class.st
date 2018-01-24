@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Std_msgsColorRGBA class >> rosMd5Sum [ 
+^'a29a96539573343b1310c73607334b00'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsColorRGBA class >> rosTypeDefinition [ 
 ^' float32 r
  float32 g

@@ -17,6 +17,11 @@ Yocs_msgsNavigateToGoal class >> approach_on [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigateToGoal class >> rosMd5Sum [ 
+^'1549bb00469af4886dd492a95637d796'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigateToGoal class >> rosTypeDefinition [ 
 ^' int8 APPROACH_NEAR=11
  int8 APPROACH_ON=12

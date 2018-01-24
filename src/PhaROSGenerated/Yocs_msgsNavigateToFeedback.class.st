@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigateToFeedback class >> rosMd5Sum [ 
+^'b7dbba42e365116e557ccba16fa0414a'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigateToFeedback class >> rosTypeDefinition [ 
 ^' int8 STATUS_RETRY=21
  int8 STATUS_INPROGRESS=22

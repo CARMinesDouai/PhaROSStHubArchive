@@ -11,6 +11,11 @@ Yocs_msgsNavigationControl class >> pause [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigationControl class >> rosMd5Sum [ 
+^'f2ddf02b376d1d00aed5addfb5cfe0ba'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigationControl class >> rosTypeDefinition [ 
 ^' int8 STOP=0
  int8 START=1

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+RosapiTypeDef class >> rosMd5Sum [ 
+^'bd8529b0edb168fde8dd58032743f1f7'
+]
+
+{ #category : #'as yet unclassified' }
 RosapiTypeDef class >> rosTypeDefinition [ 
 ^' string type
  string[] fieldnames

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPoint32 class >> rosMd5Sum [ 
+^'cc153912f1453b708d221682bc23d9ac'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPoint32 class >> rosTypeDefinition [ 
 ^' float32 x
  float32 y

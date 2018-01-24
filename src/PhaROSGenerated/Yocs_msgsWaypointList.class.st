@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsWaypointList class >> rosMd5Sum [ 
+^'66731005e3cf60fadb987aba363410ed'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsWaypointList class >> rosTypeDefinition [ 
 ^' yocs_msgs/Waypoint[] waypoints
 '

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Torob_msgsNode class >> rosMd5Sum [ 
+^'be5d6724f5ae8d7705bfb37781c6a9ba'
+]
+
+{ #category : #'as yet unclassified' }
 Torob_msgsNode class >> rosTypeDefinition [ 
 ^' float64 x
  float64 y

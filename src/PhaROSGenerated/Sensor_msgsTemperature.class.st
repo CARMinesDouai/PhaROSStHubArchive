@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsTemperature class >> rosMd5Sum [ 
+^'ff71b307acdbe7c871a5a6d7ed359100'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsTemperature class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  float64 temperature

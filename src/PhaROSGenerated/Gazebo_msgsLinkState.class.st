@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Gazebo_msgsLinkState class >> rosMd5Sum [ 
+^'0818ebbf28ce3a08d48ab1eaa7309ebe'
+]
+
+{ #category : #'as yet unclassified' }
 Gazebo_msgsLinkState class >> rosTypeDefinition [ 
 ^' string link_name
  geometry_msgs/Pose pose

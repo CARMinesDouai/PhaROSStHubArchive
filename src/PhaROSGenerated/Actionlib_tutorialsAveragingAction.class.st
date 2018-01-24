@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsAveragingAction class >> rosMd5Sum [ 
+^'628678f2b4fa6a5951746a4a2d39e716'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsAveragingAction class >> rosTypeDefinition [ 
 ^' actionlib_tutorials/AveragingActionGoal action_goal
  actionlib_tutorials/AveragingActionResult action_result

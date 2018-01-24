@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciActionGoal class >> rosMd5Sum [ 
+^'006871c7fa1d0e3d5fe2226bf17b2a94'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsFibonacciActionGoal class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalID goal_id

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Move_base_msgsMoveBaseGoal class >> rosMd5Sum [ 
+^'257d089627d7eb7136c24d3593d05a16'
+]
+
+{ #category : #'as yet unclassified' }
 Move_base_msgsMoveBaseGoal class >> rosTypeDefinition [ 
 ^' geometry_msgs/PoseStamped target_pose
 '

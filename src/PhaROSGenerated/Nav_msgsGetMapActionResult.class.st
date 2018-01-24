@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Nav_msgsGetMapActionResult class >> rosMd5Sum [ 
+^'ac66e5b9a79bb4bbd33dab245236c892'
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsGetMapActionResult class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalStatus status

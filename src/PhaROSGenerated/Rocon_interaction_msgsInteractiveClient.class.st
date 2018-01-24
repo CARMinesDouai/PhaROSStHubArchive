@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsInteractiveClient class >> rosMd5Sum [ 
+^'8be6d4014d3005ac581b7b0a73488749'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsInteractiveClient class >> rosTypeDefinition [ 
 ^' string name
  uuid_msgs/UniqueID id

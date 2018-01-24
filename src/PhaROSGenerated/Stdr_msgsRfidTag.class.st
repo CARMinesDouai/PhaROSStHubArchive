@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRfidTag class >> rosMd5Sum [ 
+^'e37433c890cfe140ccbef22419fae16c'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRfidTag class >> rosTypeDefinition [ 
 ^' string tag_id
  string message

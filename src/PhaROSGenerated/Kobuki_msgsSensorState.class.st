@@ -137,6 +137,11 @@ Kobuki_msgsSensorState class >> over_current_right_wheel [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsSensorState class >> rosMd5Sum [ 
+^'430a4bfd78449c8740bfef32b26613a6'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsSensorState class >> rosTypeDefinition [ 
 ^' int8 BUMPER_RIGHT=1
  int8 BUMPER_CENTRE=2

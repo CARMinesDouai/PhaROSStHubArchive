@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Tf2_msgsLookupTransformActionResult class >> rosMd5Sum [ 
+^'ac26ce75a41384fa8bb4dc10f491ab90'
+]
+
+{ #category : #'as yet unclassified' }
 Tf2_msgsLookupTransformActionResult class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalStatus status

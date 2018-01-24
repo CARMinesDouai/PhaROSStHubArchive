@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Gateway_msgsRemoteGateway class >> rosMd5Sum [ 
+^'58607c66cd963e494a28cb3f919087f2'
+]
+
+{ #category : #'as yet unclassified' }
 Gateway_msgsRemoteGateway class >> rosTypeDefinition [ 
 ^' int8 WIRED=1
  int8 WIRELESS=2

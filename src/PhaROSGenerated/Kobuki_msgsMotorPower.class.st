@@ -17,6 +17,11 @@ Kobuki_msgsMotorPower class >> on [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsMotorPower class >> rosMd5Sum [ 
+^'8f77c0161e0f2021493136bb5f3f0e51'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsMotorPower class >> rosTypeDefinition [ 
 ^' int8 OFF=0
  int8 ON=1

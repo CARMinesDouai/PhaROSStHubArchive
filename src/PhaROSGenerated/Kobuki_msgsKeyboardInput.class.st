@@ -47,6 +47,11 @@ Kobuki_msgsKeyboardInput class >> keycode_up [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsKeyboardInput class >> rosMd5Sum [ 
+^'9288b95cb32b48719d84d696be253401'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsKeyboardInput class >> rosTypeDefinition [ 
 ^' int8 KeyCode_Right=67
  int8 KeyCode_Left=68

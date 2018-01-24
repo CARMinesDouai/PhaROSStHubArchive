@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsTwist class >> rosMd5Sum [ 
+^'9f195f881246fdfa2798d1d3eebca84a'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsTwist class >> rosTypeDefinition [ 
 ^' geometry_msgs/Vector3 linear
  geometry_msgs/Vector3 angular

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Tf2_msgsTFMessage class >> rosMd5Sum [ 
+^'94810edda583a504dfda3829e70d7eec'
+]
+
+{ #category : #'as yet unclassified' }
 Tf2_msgsTFMessage class >> rosTypeDefinition [ 
 ^' geometry_msgs/TransformStamped[] transforms
 '

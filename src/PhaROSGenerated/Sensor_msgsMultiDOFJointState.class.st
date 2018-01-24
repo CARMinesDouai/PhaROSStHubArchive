@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsMultiDOFJointState class >> rosMd5Sum [ 
+^'690f272f0640d2631c305eeb8301e59d'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsMultiDOFJointState class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  string[] joint_names

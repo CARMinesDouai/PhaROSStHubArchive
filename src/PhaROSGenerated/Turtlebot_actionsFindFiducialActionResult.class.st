@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsFindFiducialActionResult class >> rosMd5Sum [ 
+^'6d0edd723ba2f2ae6bcfa76c98c311f7'
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsFindFiducialActionResult class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalStatus status

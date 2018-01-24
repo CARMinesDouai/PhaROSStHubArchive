@@ -17,6 +17,11 @@ Kobuki_msgsRobotStateEvent class >> online [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsRobotStateEvent class >> rosMd5Sum [ 
+^'c6eccd4cb1f95df95635b56d6226ea32'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsRobotStateEvent class >> rosTypeDefinition [ 
 ^' int8 ONLINE=1
  int8 OFFLINE=0

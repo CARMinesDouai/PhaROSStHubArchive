@@ -11,6 +11,11 @@ Visualization_msgsInteractiveMarkerUpdate class >> keep_alive [
 ]
 
 { #category : #'as yet unclassified' }
+Visualization_msgsInteractiveMarkerUpdate class >> rosMd5Sum [ 
+^'710d308d0a9276d65945e92dd30b3946'
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsInteractiveMarkerUpdate class >> rosTypeDefinition [ 
 ^' int8 KEEP_ALIVE=0
  int8 UPDATE=1

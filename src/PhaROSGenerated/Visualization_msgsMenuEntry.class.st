@@ -11,6 +11,11 @@ Visualization_msgsMenuEntry class >> feedback [
 ]
 
 { #category : #'as yet unclassified' }
+Visualization_msgsMenuEntry class >> rosMd5Sum [ 
+^'b90ec63024573de83b57aa93eb39be2d'
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsMenuEntry class >> rosTypeDefinition [ 
 ^' int8 FEEDBACK=0
  int8 ROSRUN=1

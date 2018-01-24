@@ -41,6 +41,11 @@ BondConstants class >> disable_heartbeat_timeout_param [
 ]
 
 { #category : #'as yet unclassified' }
+BondConstants class >> rosMd5Sum [ 
+^'6fc594dc1d7bd7919077042712f8c8b0'
+]
+
+{ #category : #'as yet unclassified' }
 BondConstants class >> rosTypeDefinition [ 
 ^' float32 DEAD_PUBLISH_PERIOD=0.05
  float32 DEFAULT_CONNECT_TIMEOUT=10.0

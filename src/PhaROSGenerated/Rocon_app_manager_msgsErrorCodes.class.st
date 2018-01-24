@@ -65,6 +65,11 @@ Rocon_app_manager_msgsErrorCodes class >> rapp_is_not_running [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsErrorCodes class >> rosMd5Sum [ 
+^'cec38b743e8d5698477f7be4d8bfebb8'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsErrorCodes class >> rosTypeDefinition [ 
 ^' int8 SUCCESS=0
  int8 UNKNOWN=1

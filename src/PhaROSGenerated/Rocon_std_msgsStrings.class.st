@@ -245,6 +245,11 @@ Rocon_std_msgsStrings class >> rocon_version [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsStrings class >> rosMd5Sum [ 
+^'58fa1e54e6c0338b3faebae82a13e892'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsStrings class >> rosTypeDefinition [ 
 ^' string ROCON_VERSION=''acdc''
  string URI_WILDCARD=''*''

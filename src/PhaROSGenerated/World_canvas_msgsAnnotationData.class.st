@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+World_canvas_msgsAnnotationData class >> rosMd5Sum [ 
+^'e21002b6b9f6af72d6986a93e819ba1b'
+]
+
+{ #category : #'as yet unclassified' }
 World_canvas_msgsAnnotationData class >> rosTypeDefinition [ 
 ^' uuid_msgs/UniqueID id
  string type

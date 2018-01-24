@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Gazebo_msgsODEJointProperties class >> rosMd5Sum [ 
+^'1b744c32a920af979f53afe2f9c3511f'
+]
+
+{ #category : #'as yet unclassified' }
 Gazebo_msgsODEJointProperties class >> rosTypeDefinition [ 
 ^' float64[] damping
  float64[] hiStop

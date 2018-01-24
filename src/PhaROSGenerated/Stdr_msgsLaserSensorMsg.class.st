@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsLaserSensorMsg class >> rosMd5Sum [ 
+^'32812e51fee48d19daf80d745cf2ad57'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsLaserSensorMsg class >> rosTypeDefinition [ 
 ^' float32 maxAngle
  float32 minAngle

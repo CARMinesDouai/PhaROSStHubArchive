@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsInteraction class >> rosMd5Sum [ 
+^'a118201d77d4921a4dbca2d7a413a812'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsInteraction class >> rosTypeDefinition [ 
 ^' int32 UNLIMITED_INTERACTIONS=-1
  string name

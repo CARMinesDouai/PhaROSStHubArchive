@@ -23,6 +23,11 @@ Yocs_msgsDockingInteractorFeedback class >> info [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsDockingInteractorFeedback class >> rosMd5Sum [ 
+^'b042f523c61fe97bdf0d4da2f2289c63'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsDockingInteractorFeedback class >> rosTypeDefinition [ 
 ^' int8 DEBUG=1
  int8 INFO=2

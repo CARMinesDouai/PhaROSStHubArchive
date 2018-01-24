@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Create_nodeTurtle class >> rosMd5Sum [ 
+^'9d5c2dcd348ac8f76ce2a4307bd63a13'
+]
+
+{ #category : #'as yet unclassified' }
 Create_nodeTurtle class >> rosTypeDefinition [ 
 ^' float32 linear
  float32 angular

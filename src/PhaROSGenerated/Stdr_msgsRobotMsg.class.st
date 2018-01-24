@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRobotMsg class >> rosMd5Sum [ 
+^'ffa138f7f6a9c979acfb84d2c8e73a39'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRobotMsg class >> rosTypeDefinition [ 
 ^' geometry_msgs/Pose2D initialPose
  stdr_msgs/FootprintMsg footprint

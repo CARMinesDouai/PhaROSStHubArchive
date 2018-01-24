@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionActionFeedback class >> rosMd5Sum [ 
+^'3503b7cf8972f90d245850a5d8796cfa'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsSingleJointPositionActionFeedback class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalStatus status

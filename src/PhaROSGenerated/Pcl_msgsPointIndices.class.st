@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Pcl_msgsPointIndices class >> rosMd5Sum [ 
+^'458c7998b7eaf99908256472e273b3d4'
+]
+
+{ #category : #'as yet unclassified' }
 Pcl_msgsPointIndices class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  int32[] indices

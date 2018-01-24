@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Visualization_msgsMarkerArray class >> rosMd5Sum [ 
+^'d155b9ce5188fbaf89745847fd5882d7'
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsMarkerArray class >> rosTypeDefinition [ 
 ^' visualization_msgs/Marker[] markers
 '

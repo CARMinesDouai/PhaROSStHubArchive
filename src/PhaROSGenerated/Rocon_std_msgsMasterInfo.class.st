@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsMasterInfo class >> rosMd5Sum [ 
+^'e85613ae2e3faade6b77d94b4e0bf4bf'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsMasterInfo class >> rosTypeDefinition [ 
 ^' string name
  string rocon_uri

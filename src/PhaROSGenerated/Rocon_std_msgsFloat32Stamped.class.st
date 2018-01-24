@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsFloat32Stamped class >> rosMd5Sum [ 
+^'ef848af8cf12f6df11682cc76fba477b'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsFloat32Stamped class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  float32 data

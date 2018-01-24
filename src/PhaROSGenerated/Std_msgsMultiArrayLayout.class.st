@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Std_msgsMultiArrayLayout class >> rosMd5Sum [ 
+^'0fed2a11c13e11c5571b4e2a995a91a3'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsMultiArrayLayout class >> rosTypeDefinition [ 
 ^' std_msgs/MultiArrayDimension[] dim
  int32 data_offset

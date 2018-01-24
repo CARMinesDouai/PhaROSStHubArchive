@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Nav_msgsGetMapResult class >> rosMd5Sum [ 
+^'6cdd0a18e0aff5b0a3ca2326a89b54ff'
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsGetMapResult class >> rosTypeDefinition [ 
 ^' nav_msgs/OccupancyGrid map
 '

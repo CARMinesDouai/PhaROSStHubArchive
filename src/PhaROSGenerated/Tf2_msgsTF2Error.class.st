@@ -35,6 +35,11 @@ Tf2_msgsTF2Error class >> no_error [
 ]
 
 { #category : #'as yet unclassified' }
+Tf2_msgsTF2Error class >> rosMd5Sum [ 
+^'bc6848fd6fd750c92e38575618a4917d'
+]
+
+{ #category : #'as yet unclassified' }
 Tf2_msgsTF2Error class >> rosTypeDefinition [ 
 ^' int8 NO_ERROR=0
  int8 LOOKUP_ERROR=1

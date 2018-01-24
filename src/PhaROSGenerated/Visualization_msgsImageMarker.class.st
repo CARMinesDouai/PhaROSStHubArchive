@@ -47,6 +47,11 @@ Visualization_msgsImageMarker class >> remove [
 ]
 
 { #category : #'as yet unclassified' }
+Visualization_msgsImageMarker class >> rosMd5Sum [ 
+^'1de93c67ec8858b831025a08fbf1b35c'
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsImageMarker class >> rosTypeDefinition [ 
 ^' int8 CIRCLE=0
  int8 LINE_STRIP=1

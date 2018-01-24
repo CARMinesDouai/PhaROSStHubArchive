@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsInertia class >> rosMd5Sum [ 
+^'1d26e4bb6c83ff141c5cf0d883c2b0fe'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsInertia class >> rosTypeDefinition [ 
 ^' float64 m
  geometry_msgs/Vector3 com

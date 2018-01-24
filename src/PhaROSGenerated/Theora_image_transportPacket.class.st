@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Theora_image_transportPacket class >> rosMd5Sum [ 
+^'33ac4e14a7cff32e7e0d65f18bb410f3'
+]
+
+{ #category : #'as yet unclassified' }
 Theora_image_transportPacket class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  int8[] data

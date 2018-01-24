@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Shape_msgsMeshTriangle class >> rosMd5Sum [ 
+^'23688b2e6d2de3d32fe8af104a903253'
+]
+
+{ #category : #'as yet unclassified' }
 Shape_msgsMeshTriangle class >> rosTypeDefinition [ 
 ^' int32[3]  vertex_indices
 '

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsRemapping class >> rosMd5Sum [ 
+^'26f16c667d483280bc5d040bf2c0cd8d'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsRemapping class >> rosTypeDefinition [ 
 ^' string remap_from
  string remap_to

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Tf2_msgsLookupTransformGoal class >> rosMd5Sum [ 
+^'35e3720468131d675a18bb6f3e5f22f8'
+]
+
+{ #category : #'as yet unclassified' }
 Tf2_msgsLookupTransformGoal class >> rosTypeDefinition [ 
 ^' string target_frame
  string source_frame

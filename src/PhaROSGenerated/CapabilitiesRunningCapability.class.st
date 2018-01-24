@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+CapabilitiesRunningCapability class >> rosMd5Sum [ 
+^'f97e2b23f907893008679ba2ff64fafc'
+]
+
+{ #category : #'as yet unclassified' }
 CapabilitiesRunningCapability class >> rosTypeDefinition [ 
 ^' capabilities/Capability capability
  capabilities/Capability[] dependent_capabilities

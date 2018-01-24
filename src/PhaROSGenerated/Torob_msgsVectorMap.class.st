@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Torob_msgsVectorMap class >> rosMd5Sum [ 
+^'7444b0631e4560c504ce75efdb79b59a'
+]
+
+{ #category : #'as yet unclassified' }
 Torob_msgsVectorMap class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  float64 resolution

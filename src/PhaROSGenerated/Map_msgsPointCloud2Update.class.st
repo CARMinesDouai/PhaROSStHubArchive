@@ -17,6 +17,11 @@ Map_msgsPointCloud2Update class >> delete [
 ]
 
 { #category : #'as yet unclassified' }
+Map_msgsPointCloud2Update class >> rosMd5Sum [ 
+^'6c58e4f249ae9cd2b24fb1ee0f99195e'
+]
+
+{ #category : #'as yet unclassified' }
 Map_msgsPointCloud2Update class >> rosTypeDefinition [ 
 ^' int32 ADD=0
  int32 DELETE=1

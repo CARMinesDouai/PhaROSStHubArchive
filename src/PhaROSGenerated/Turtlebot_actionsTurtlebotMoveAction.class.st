@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsTurtlebotMoveAction class >> rosMd5Sum [ 
+^'339929f411dcfd188670046028b412ee'
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsTurtlebotMoveAction class >> rosTypeDefinition [ 
 ^' turtlebot_actions/TurtlebotMoveActionGoal action_goal
  turtlebot_actions/TurtlebotMoveActionResult action_result

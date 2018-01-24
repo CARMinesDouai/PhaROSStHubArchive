@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureConfigDescription class >> rosMd5Sum [ 
+^'757ce9d44ba8ddd801bb30bc456f946f'
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureConfigDescription class >> rosTypeDefinition [ 
 ^' dynamic_reconfigure/Group[] groups
  dynamic_reconfigure/Config max

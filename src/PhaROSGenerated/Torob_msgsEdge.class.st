@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Torob_msgsEdge class >> rosMd5Sum [ 
+^'fe369c94b9e74909b38155fca58e73d2'
+]
+
+{ #category : #'as yet unclassified' }
 Torob_msgsEdge class >> rosTypeDefinition [ 
 ^' int64 src
  int64 trg

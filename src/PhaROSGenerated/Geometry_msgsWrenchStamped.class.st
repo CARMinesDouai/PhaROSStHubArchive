@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsWrenchStamped class >> rosMd5Sum [ 
+^'d78d3cb249ce23087ade7e7d0c40cfa7'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsWrenchStamped class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  geometry_msgs/Wrench wrench

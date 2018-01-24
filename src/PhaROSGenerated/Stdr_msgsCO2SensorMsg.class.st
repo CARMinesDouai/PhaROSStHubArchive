@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsCO2SensorMsg class >> rosMd5Sum [ 
+^'a2ce066e5e102e00628fbb7d1ee5e32b'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsCO2SensorMsg class >> rosTypeDefinition [ 
 ^' float32 maxRange
  float32 frequency

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Visualization_msgsInteractiveMarkerPose class >> rosMd5Sum [ 
+^'a6e6833209a196a38d798dadb02c81f8'
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsInteractiveMarkerPose class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  geometry_msgs/Pose pose

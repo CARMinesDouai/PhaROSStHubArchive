@@ -65,6 +65,11 @@ Visualization_msgsInteractiveMarkerControl class >> none [
 ]
 
 { #category : #'as yet unclassified' }
+Visualization_msgsInteractiveMarkerControl class >> rosMd5Sum [ 
+^'b3c81e785788195d1840b86c28da1aac'
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsInteractiveMarkerControl class >> rosTypeDefinition [ 
 ^' int8 INHERIT=0
  int8 FIXED=1

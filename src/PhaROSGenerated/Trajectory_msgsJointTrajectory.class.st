@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Trajectory_msgsJointTrajectory class >> rosMd5Sum [ 
+^'65b4f94a94d1ed67169da35a02f33d3f'
+]
+
+{ #category : #'as yet unclassified' }
 Trajectory_msgsJointTrajectory class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  string[] joint_names

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Base_local_plannerPosition2DInt class >> rosMd5Sum [ 
+^'3b834ede922a0fff22c43585c533b49f'
+]
+
+{ #category : #'as yet unclassified' }
 Base_local_plannerPosition2DInt class >> rosTypeDefinition [ 
 ^' int64 x
  int64 y

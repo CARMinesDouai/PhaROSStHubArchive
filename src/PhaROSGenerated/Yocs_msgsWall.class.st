@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsWall class >> rosMd5Sum [ 
+^'6fba3b6a148ebf1773d978f0b5f0bde8'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsWall class >> rosTypeDefinition [ 
 ^' string name
  float32 length

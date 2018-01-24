@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsIlluminance class >> rosMd5Sum [ 
+^'8cf5febb0952fca9d650c3d11a81a188'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsIlluminance class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  float64 illuminance

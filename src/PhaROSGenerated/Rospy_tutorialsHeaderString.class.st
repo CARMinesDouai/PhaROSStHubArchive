@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rospy_tutorialsHeaderString class >> rosMd5Sum [ 
+^'c99a9440709e4d4a9716d55b8270d5e7'
+]
+
+{ #category : #'as yet unclassified' }
 Rospy_tutorialsHeaderString class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  string data

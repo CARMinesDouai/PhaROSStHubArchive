@@ -11,6 +11,11 @@ CapabilitiesCapabilityEvent class >> launched [
 ]
 
 { #category : #'as yet unclassified' }
+CapabilitiesCapabilityEvent class >> rosMd5Sum [ 
+^'5a0d82ee1a8e7a5d0b058f0b20305b18'
+]
+
+{ #category : #'as yet unclassified' }
 CapabilitiesCapabilityEvent class >> rosTypeDefinition [ 
 ^' string LAUNCHED=''"launched"''
  string STOPPED=''"stopped"''

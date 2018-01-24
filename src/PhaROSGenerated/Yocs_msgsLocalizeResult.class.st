@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsLocalizeResult class >> rosMd5Sum [ 
+^'937c9679a518e3a18d831e57125ea522'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsLocalizeResult class >> rosTypeDefinition [ 
 ^' bool success
  string message

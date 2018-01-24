@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Realsense_cameraIMUInfo class >> rosMd5Sum [ 
+^'b8a77fbb6e4146ae79c8a943413e4f62'
+]
+
+{ #category : #'as yet unclassified' }
 Realsense_cameraIMUInfo class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  float64[12]  data

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsInteractiveClients class >> rosMd5Sum [ 
+^'5a5f85c169f63b30c61759b0bcca81c4'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsInteractiveClients class >> rosTypeDefinition [ 
 ^' rocon_interaction_msgs/InteractiveClient[] idle_clients
  rocon_interaction_msgs/InteractiveClient[] running_clients

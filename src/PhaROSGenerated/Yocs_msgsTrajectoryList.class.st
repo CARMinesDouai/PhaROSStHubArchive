@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsTrajectoryList class >> rosMd5Sum [ 
+^'f0901d378c8ac2d2d3d8feafaa343a58'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsTrajectoryList class >> rosTypeDefinition [ 
 ^' yocs_msgs/Trajectory[] trajectories
 '

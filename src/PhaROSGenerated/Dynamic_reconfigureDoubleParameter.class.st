@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureDoubleParameter class >> rosMd5Sum [ 
+^'d8512f27253c0f65f928a67c329cd658'
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureDoubleParameter class >> rosTypeDefinition [ 
 ^' string name
  float64 value

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Gazebo_msgsContactState class >> rosMd5Sum [ 
+^'48c0ffb054b8c444f870cecea1ee50d9'
+]
+
+{ #category : #'as yet unclassified' }
 Gazebo_msgsContactState class >> rosTypeDefinition [ 
 ^' string info
  string collision1_name

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+ActionlibTestFeedback class >> rosMd5Sum [ 
+^'49ceb5b32ea3af22073ede4a0328249e'
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTestFeedback class >> rosTypeDefinition [ 
 ^' int32 feedback
 '

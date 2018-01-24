@@ -35,6 +35,11 @@ Sensor_msgsPointField class >> int8 [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsPointField class >> rosMd5Sum [ 
+^'268eacb2962780ceac86cbd17e328150'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsPointField class >> rosTypeDefinition [ 
 ^' int8 INT8=1
  int8 UINT8=2

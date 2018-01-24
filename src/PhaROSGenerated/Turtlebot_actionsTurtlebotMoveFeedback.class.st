@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsTurtlebotMoveFeedback class >> rosMd5Sum [ 
+^'c971f114b08a2a1ad79af4c9ca9f358c'
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsTurtlebotMoveFeedback class >> rosTypeDefinition [ 
 ^' float32 turn_distance
  float32 forward_distance

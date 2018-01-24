@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsLaserEcho class >> rosMd5Sum [ 
+^'8bc5ae449b200fba4d552b4225586696'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsLaserEcho class >> rosTypeDefinition [ 
 ^' float32[] echoes
 '

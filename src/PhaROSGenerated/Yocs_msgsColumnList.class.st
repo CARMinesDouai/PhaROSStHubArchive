@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsColumnList class >> rosMd5Sum [ 
+^'fdf98d2a8a0cfe17000cdb66889826b6'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsColumnList class >> rosTypeDefinition [ 
 ^' yocs_msgs/Column[] obstacles
 '

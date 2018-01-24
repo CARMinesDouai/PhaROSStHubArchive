@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Diagnostic_msgsKeyValue class >> rosMd5Sum [ 
+^'cf57fdc6617a881a88c16e768132149c'
+]
+
+{ #category : #'as yet unclassified' }
 Diagnostic_msgsKeyValue class >> rosTypeDefinition [ 
 ^' string key
  string value

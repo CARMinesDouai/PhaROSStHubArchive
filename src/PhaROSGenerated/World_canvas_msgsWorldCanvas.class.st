@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+World_canvas_msgsWorldCanvas class >> rosMd5Sum [ 
+^'6d7c521a48d85a2b09f0d0c03fe5f648'
+]
+
+{ #category : #'as yet unclassified' }
 World_canvas_msgsWorldCanvas class >> rosTypeDefinition [ 
 ^' time timestamp
  string name

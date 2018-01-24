@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsConnectionCacheSpin class >> rosMd5Sum [ 
+^'b6c0b0ddb1d2a2de9918dc5f6d87680a'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsConnectionCacheSpin class >> rosTypeDefinition [ 
 ^' float32 spin_freq
  float32 spin_timer

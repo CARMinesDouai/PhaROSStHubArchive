@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Smach_msgsSmachContainerStatus class >> rosMd5Sum [ 
+^'5ba2bb79ac19e3842d562a191f2a675b'
+]
+
+{ #category : #'as yet unclassified' }
 Smach_msgsSmachContainerStatus class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  string path

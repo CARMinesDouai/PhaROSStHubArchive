@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsWallList class >> rosMd5Sum [ 
+^'2879979aabb372fc7f6d782228e53412'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsWallList class >> rosTypeDefinition [ 
 ^' yocs_msgs/Wall[] obstacles
 '

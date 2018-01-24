@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsJointControllerState class >> rosMd5Sum [ 
+^'987ad85e4756f3aef7f1e5e7fe0595d1'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsJointControllerState class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  float64 set_point

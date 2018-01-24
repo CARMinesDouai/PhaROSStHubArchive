@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Margent_msgsData class >> rosMd5Sum [ 
+^'c62ce2a4e94b2f1d07f5a52ce1f318f2'
+]
+
+{ #category : #'as yet unclassified' }
 Margent_msgsData class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  string mesage

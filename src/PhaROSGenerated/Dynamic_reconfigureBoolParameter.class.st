@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureBoolParameter class >> rosMd5Sum [ 
+^'23f05028c1a699fb83e22401228c3a9e'
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureBoolParameter class >> rosTypeDefinition [ 
 ^' string name
  bool value

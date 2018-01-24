@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsStringsPair class >> rosMd5Sum [ 
+^'d41c9071bd514be249c417a13ec83e65'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsStringsPair class >> rosTypeDefinition [ 
 ^' rocon_std_msgs/StringsPairRequest pair_request
  rocon_std_msgs/StringsPairResponse pair_response

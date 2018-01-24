@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsPointCloud class >> rosMd5Sum [ 
+^'d8e9c3f5afbdd8a130fd1d2763945fca'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsPointCloud class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  geometry_msgs/Point32[] points

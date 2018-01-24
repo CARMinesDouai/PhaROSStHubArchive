@@ -29,6 +29,11 @@ Yocs_msgsDockingInteractorGoal class >> return_to_dock [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsDockingInteractorGoal class >> rosMd5Sum [ 
+^'a1563535e153244b1a7418f3bdd821d8'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsDockingInteractorGoal class >> rosTypeDefinition [ 
 ^' int8 WAKE_UP=10
  int8 REGISTER_DOCK_IN_GLOBAL_FRAME=20

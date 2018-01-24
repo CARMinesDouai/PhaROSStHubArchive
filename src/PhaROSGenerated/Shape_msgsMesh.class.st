@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Shape_msgsMesh class >> rosMd5Sum [ 
+^'1ffdae9486cd3316a121c578b47a85cc'
+]
+
+{ #category : #'as yet unclassified' }
 Shape_msgsMesh class >> rosTypeDefinition [ 
 ^' shape_msgs/MeshTriangle[] triangles
  geometry_msgs/Point[] vertices

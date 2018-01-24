@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsAveragingActionResult class >> rosMd5Sum [ 
+^'8672cb489d347580acdcd05c5d497497'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsAveragingActionResult class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalStatus status

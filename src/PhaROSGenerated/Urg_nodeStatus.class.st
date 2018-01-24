@@ -11,6 +11,11 @@ Urg_nodeStatus class >> normal [
 ]
 
 { #category : #'as yet unclassified' }
+Urg_nodeStatus class >> rosMd5Sum [ 
+^'b393072b65230b373302bfe803e80784'
+]
+
+{ #category : #'as yet unclassified' }
 Urg_nodeStatus class >> rosTypeDefinition [ 
 ^' uint16 NORMAL=0
  uint16 SETTING=1

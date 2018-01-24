@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsJoy class >> rosMd5Sum [ 
+^'5a9ea5f83505693b71e785041e67a8bb'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsJoy class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  float32[] axes

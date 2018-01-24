@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rosgraph_msgsClock class >> rosMd5Sum [ 
+^'a9c97c1d230cfc112e270351a944ee47'
+]
+
+{ #category : #'as yet unclassified' }
 Rosgraph_msgsClock class >> rosTypeDefinition [ 
 ^' time clock
 '

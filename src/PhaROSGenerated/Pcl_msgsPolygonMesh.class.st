@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Pcl_msgsPolygonMesh class >> rosMd5Sum [ 
+^'45a5fc6ad2cde8489600a790acc9a38a'
+]
+
+{ #category : #'as yet unclassified' }
 Pcl_msgsPolygonMesh class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  sensor_msgs/PointCloud2 cloud

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSpawnRobotGoal class >> rosMd5Sum [ 
+^'918af704950f3898fd078737c940764a'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSpawnRobotGoal class >> rosTypeDefinition [ 
 ^' stdr_msgs/RobotMsg description
 '

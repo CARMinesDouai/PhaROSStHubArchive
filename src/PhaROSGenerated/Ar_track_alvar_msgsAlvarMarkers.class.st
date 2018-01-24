@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Ar_track_alvar_msgsAlvarMarkers class >> rosMd5Sum [ 
+^'943fe17bfb0b4ea7890368d0b25ad0ad'
+]
+
+{ #category : #'as yet unclassified' }
 Ar_track_alvar_msgsAlvarMarkers class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  ar_track_alvar_msgs/AlvarMarker[] markers

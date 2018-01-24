@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Move_base_msgsMoveBaseFeedback class >> rosMd5Sum [ 
+^'3fb824c456a757373a226f6d08071bf0'
+]
+
+{ #category : #'as yet unclassified' }
 Move_base_msgsMoveBaseFeedback class >> rosTypeDefinition [ 
 ^' geometry_msgs/PoseStamped base_position
 '

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+ActionlibTwoIntsAction class >> rosMd5Sum [ 
+^'6d1aa538c4bd6183a2dfb7fcac41ee50'
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTwoIntsAction class >> rosTypeDefinition [ 
 ^' actionlib/TwoIntsActionGoal action_goal
  actionlib/TwoIntsActionResult action_result

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsDockingInteractorAction class >> rosMd5Sum [ 
+^'fb33b77bf3a235c893241fe6926c99eb'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsDockingInteractorAction class >> rosTypeDefinition [ 
 ^' yocs_msgs/DockingInteractorActionGoal action_goal
  yocs_msgs/DockingInteractorActionResult action_result

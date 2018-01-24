@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsLocalizeFeedback class >> rosMd5Sum [ 
+^'5f003d6bcc824cbd51361d66d8e4f76c'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsLocalizeFeedback class >> rosTypeDefinition [ 
 ^' string message
 '

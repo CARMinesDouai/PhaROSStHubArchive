@@ -41,6 +41,11 @@ Kobuki_msgsDockInfraRed class >> near_right [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsDockInfraRed class >> rosMd5Sum [ 
+^'a3d77f7d15e50579473dcc24e9b97b34'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsDockInfraRed class >> rosTypeDefinition [ 
 ^' int8 NEAR_LEFT=1
  int8 NEAR_CENTER=2

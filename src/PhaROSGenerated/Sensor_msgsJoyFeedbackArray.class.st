@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsJoyFeedbackArray class >> rosMd5Sum [ 
+^'cde5730a895b1fc4dee6f91b754b213d'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsJoyFeedbackArray class >> rosTypeDefinition [ 
 ^' sensor_msgs/JoyFeedback[] array
 '

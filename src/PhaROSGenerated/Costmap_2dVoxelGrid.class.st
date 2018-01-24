@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Costmap_2dVoxelGrid class >> rosMd5Sum [ 
+^'48a040827e1322073d78ece5a497029c'
+]
+
+{ #category : #'as yet unclassified' }
 Costmap_2dVoxelGrid class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  int32[] data

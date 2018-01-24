@@ -35,6 +35,11 @@ Kobuki_msgsPowerSystemEvent class >> plugged_to_dockbase [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsPowerSystemEvent class >> rosMd5Sum [ 
+^'f6464657d6c911b00c7bc7b43a154bf8'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsPowerSystemEvent class >> rosTypeDefinition [ 
 ^' int8 UNPLUGGED=0
  int8 PLUGGED_TO_ADAPTER=1

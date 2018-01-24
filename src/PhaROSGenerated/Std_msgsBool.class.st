@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Std_msgsBool class >> rosMd5Sum [ 
+^'8b94c1b53db61fb6aed406028ad6332a'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsBool class >> rosTypeDefinition [ 
 ^' bool data
 '

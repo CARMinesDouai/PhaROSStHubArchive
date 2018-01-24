@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtlebot_msgsPanoramaImg class >> rosMd5Sum [ 
+^'aedf66295b374a7249a786af27aecc87'
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_msgsPanoramaImg class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  string pano_id

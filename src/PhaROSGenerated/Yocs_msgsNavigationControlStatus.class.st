@@ -35,6 +35,11 @@ Yocs_msgsNavigationControlStatus class >> paused [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigationControlStatus class >> rosMd5Sum [ 
+^'f97c2c5903b273dd04cfb815fadb9f56'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigationControlStatus class >> rosTypeDefinition [ 
 ^' int8 ERROR=-1
  int8 IDLING=0

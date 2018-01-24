@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsPublishedInterface class >> rosMd5Sum [ 
+^'0441e6f3dfb91bbff9a213da41a7a0d6'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsPublishedInterface class >> rosTypeDefinition [ 
 ^' rocon_app_manager_msgs/PublicInterface interface
  string name

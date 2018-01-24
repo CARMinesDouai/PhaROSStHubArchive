@@ -131,6 +131,11 @@ Sensor_msgsBatteryState class >> power_supply_technology_unknown [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsBatteryState class >> rosMd5Sum [ 
+^'476f837fa6771f6e16e3bf4ef96f8770'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsBatteryState class >> rosTypeDefinition [ 
 ^' int8 POWER_SUPPLY_STATUS_UNKNOWN=0
  int8 POWER_SUPPLY_STATUS_CHARGING=1

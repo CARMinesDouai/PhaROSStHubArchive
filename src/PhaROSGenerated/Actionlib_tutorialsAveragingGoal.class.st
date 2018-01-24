@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsAveragingGoal class >> rosMd5Sum [ 
+^'32c9b10ef9b253faa93b93f564762c8f'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsAveragingGoal class >> rosTypeDefinition [ 
 ^' int32 samples
 '

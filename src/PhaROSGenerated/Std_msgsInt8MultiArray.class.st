@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Std_msgsInt8MultiArray class >> rosMd5Sum [ 
+^'d7c1af35a1b4781bbe79e03dd94b7c13'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsInt8MultiArray class >> rosTypeDefinition [ 
 ^' std_msgs/MultiArrayLayout layout
  int8[] data

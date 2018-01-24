@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsIncompatibleRappList class >> rosMd5Sum [ 
+^'f8b60bc2510b0df387f6623f3db3a079'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsIncompatibleRappList class >> rosTypeDefinition [ 
 ^' string[] blacklisted_rapps
  string[] non_whitelisted_rapps

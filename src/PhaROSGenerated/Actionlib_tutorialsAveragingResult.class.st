@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsAveragingResult class >> rosMd5Sum [ 
+^'d5c7decf6df75ffb4367a05c1bcc7612'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsAveragingResult class >> rosTypeDefinition [ 
 ^' float32 mean
  float32 std_dev

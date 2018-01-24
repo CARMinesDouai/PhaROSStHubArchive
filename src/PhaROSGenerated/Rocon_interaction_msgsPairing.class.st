@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsPairing class >> rosMd5Sum [ 
+^'ea0c053e41db2888c64e24c141e32271'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsPairing class >> rosTypeDefinition [ 
 ^' string name
  string rapp

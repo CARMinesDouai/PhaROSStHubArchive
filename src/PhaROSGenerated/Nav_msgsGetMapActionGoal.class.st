@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Nav_msgsGetMapActionGoal class >> rosMd5Sum [ 
+^'4b30be6cd12b9e72826df56b481f40e0'
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsGetMapActionGoal class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalID goal_id

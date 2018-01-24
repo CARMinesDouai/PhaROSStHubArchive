@@ -29,6 +29,11 @@ Gateway_msgsConnectionType class >> publisher [
 ]
 
 { #category : #'as yet unclassified' }
+Gateway_msgsConnectionType class >> rosMd5Sum [ 
+^'65d75f1bb32566bfec48966db2073c81'
+]
+
+{ #category : #'as yet unclassified' }
 Gateway_msgsConnectionType class >> rosTypeDefinition [ 
 ^' string PUBLISHER=''publisher''
  string SUBSCRIBER=''subscriber''

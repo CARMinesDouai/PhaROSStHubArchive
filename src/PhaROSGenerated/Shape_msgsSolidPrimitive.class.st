@@ -65,6 +65,11 @@ Shape_msgsSolidPrimitive class >> cylinder_radius [
 ]
 
 { #category : #'as yet unclassified' }
+Shape_msgsSolidPrimitive class >> rosMd5Sum [ 
+^'d8f8cbc74c5ff283fca29569ccefb45d'
+]
+
+{ #category : #'as yet unclassified' }
 Shape_msgsSolidPrimitive class >> rosTypeDefinition [ 
 ^' int8 BOX=1
  int8 SPHERE=2

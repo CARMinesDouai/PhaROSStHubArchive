@@ -41,6 +41,11 @@ Kobuki_msgsExternalPower class >> pwr_5v1a [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsExternalPower class >> rosMd5Sum [ 
+^'95149d524971a4c6d19e64c827307194'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsExternalPower class >> rosTypeDefinition [ 
 ^' int8 PWR_3_3V1A=0
  int8 PWR_5V1A=1

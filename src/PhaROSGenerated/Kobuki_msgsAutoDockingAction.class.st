@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingAction class >> rosMd5Sum [ 
+^'44be114f3afc06365a090db0a5e982b5'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsAutoDockingAction class >> rosTypeDefinition [ 
 ^' kobuki_msgs/AutoDockingActionGoal action_goal
  kobuki_msgs/AutoDockingActionResult action_result

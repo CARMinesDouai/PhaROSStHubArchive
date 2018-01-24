@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsTransformStamped class >> rosMd5Sum [ 
+^'b5764a33bfeb3588febc2682852579b0'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsTransformStamped class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  string child_frame_id

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRfidSensorMsg class >> rosMd5Sum [ 
+^'a210bd881966e92d87b9dcab3e305128'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRfidSensorMsg class >> rosTypeDefinition [ 
 ^' float32 maxRange
  float32 angleSpan

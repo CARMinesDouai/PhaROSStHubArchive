@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsFluidPressure class >> rosMd5Sum [ 
+^'804dc5cea1c5306d6a2eb80b9833befe'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsFluidPressure class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  float64 fluid_pressure

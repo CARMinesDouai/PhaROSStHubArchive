@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtlebot_calibrationScanAngle class >> rosMd5Sum [ 
+^'06e2c839dc5c7f5c13ac09a8b4ff0a6a'
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_calibrationScanAngle class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  float64 scan_angle

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+ActionlibTwoIntsResult class >> rosMd5Sum [ 
+^'b88405221c77b1878a3cbbfff53428d7'
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTwoIntsResult class >> rosTypeDefinition [ 
 ^' int64 sum
 '

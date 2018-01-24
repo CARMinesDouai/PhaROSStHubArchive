@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsFollowJointTrajectoryActionGoal class >> rosMd5Sum [ 
+^'cff5c1d533bf2f82dd0138d57f4304bb'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsFollowJointTrajectoryActionGoal class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalID goal_id

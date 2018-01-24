@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsPointHeadAction class >> rosMd5Sum [ 
+^'7252920f1243de1b741f14f214125371'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsPointHeadAction class >> rosTypeDefinition [ 
 ^' control_msgs/PointHeadActionGoal action_goal
  control_msgs/PointHeadActionResult action_result

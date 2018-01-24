@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Map_msgsProjectedMap class >> rosMd5Sum [ 
+^'7bbe8f96e45089681dc1ea7d023cbfca'
+]
+
+{ #category : #'as yet unclassified' }
 Map_msgsProjectedMap class >> rosTypeDefinition [ 
 ^' nav_msgs/OccupancyGrid map
  float64 min_z

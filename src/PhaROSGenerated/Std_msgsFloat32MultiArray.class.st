@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Std_msgsFloat32MultiArray class >> rosMd5Sum [ 
+^'6a40e0ffa6a17a503ac3f8616991b1f6'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsFloat32MultiArray class >> rosTypeDefinition [ 
 ^' std_msgs/MultiArrayLayout layout
  float32[] data

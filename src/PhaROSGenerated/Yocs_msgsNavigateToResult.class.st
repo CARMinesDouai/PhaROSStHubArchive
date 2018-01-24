@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigateToResult class >> rosMd5Sum [ 
+^'6ca4aa1a986f42110caccf452bbbb702'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigateToResult class >> rosTypeDefinition [ 
 ^' bool success
  float32 distance

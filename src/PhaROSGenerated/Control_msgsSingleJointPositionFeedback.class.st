@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionFeedback class >> rosMd5Sum [ 
+^'8cee65610a3d08e0a1bded82f146f1fd'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsSingleJointPositionFeedback class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  float64 position

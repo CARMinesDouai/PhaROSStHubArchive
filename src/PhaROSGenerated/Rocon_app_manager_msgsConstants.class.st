@@ -17,6 +17,11 @@ Rocon_app_manager_msgsConstants class >> no_remote_controller [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsConstants class >> rosMd5Sum [ 
+^'8dc55825f8d5b0d293568ddca66ef50f'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsConstants class >> rosTypeDefinition [ 
 ^' string NO_REMOTE_CONNECTION=''none''
  string NO_REMOTE_CONTROLLER=''none''

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Pcl_msgsVertices class >> rosMd5Sum [ 
+^'39bd7b1c23763ddd1b882b97cb7cfe11'
+]
+
+{ #category : #'as yet unclassified' }
 Pcl_msgsVertices class >> rosTypeDefinition [ 
 ^' int32[] vertices
 '

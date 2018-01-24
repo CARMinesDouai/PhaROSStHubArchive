@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsImu class >> rosMd5Sum [ 
+^'6a62c6daae103f4ff57a132d6f95cec2'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsImu class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  geometry_msgs/Quaternion orientation

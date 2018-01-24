@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsFollowJointTrajectoryActionResult class >> rosMd5Sum [ 
+^'c4fb3b000dc9da4fd99699380efcc5d9'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsFollowJointTrajectoryActionResult class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalStatus status

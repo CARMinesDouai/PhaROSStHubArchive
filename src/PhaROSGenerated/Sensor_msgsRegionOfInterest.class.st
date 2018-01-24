@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsRegionOfInterest class >> rosMd5Sum [ 
+^'bdb633039d588fcccb441a4d43ccfe09'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsRegionOfInterest class >> rosTypeDefinition [ 
 ^' int32 x_offset
  int32 y_offset

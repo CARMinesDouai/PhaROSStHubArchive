@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsThermalSourceVector class >> rosMd5Sum [ 
+^'dddbbf1cf2eb1ad9e8f6f398fb8b44ac'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsThermalSourceVector class >> rosTypeDefinition [ 
 ^' stdr_msgs/ThermalSource[] thermal_sources
 '

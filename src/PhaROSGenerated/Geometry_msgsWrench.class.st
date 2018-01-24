@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsWrench class >> rosMd5Sum [ 
+^'4f539cf138b23283b520fd271b567936'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsWrench class >> rosTypeDefinition [ 
 ^' geometry_msgs/Vector3 force
  geometry_msgs/Vector3 torque

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Std_msgsFloat64 class >> rosMd5Sum [ 
+^'fdb28210bfa9d7c91146260178d9a584'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsFloat64 class >> rosTypeDefinition [ 
 ^' float64 data
 '

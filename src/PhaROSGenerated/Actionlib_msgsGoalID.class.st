@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_msgsGoalID class >> rosMd5Sum [ 
+^'302881f31927c1df708a2dbab0e80ee8'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_msgsGoalID class >> rosTypeDefinition [ 
 ^' time stamp
  string id

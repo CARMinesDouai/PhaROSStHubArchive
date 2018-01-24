@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingActionResult class >> rosMd5Sum [ 
+^'3fb2b9cd9cec6b4cb23b224521dd7679'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsAutoDockingActionResult class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalStatus status

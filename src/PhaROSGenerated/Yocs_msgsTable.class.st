@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsTable class >> rosMd5Sum [ 
+^'8e1bb2c627c92d4c6f6075fe37858727'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsTable class >> rosTypeDefinition [ 
 ^' string name
  float32 radius

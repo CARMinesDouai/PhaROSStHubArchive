@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsAccelWithCovarianceStamped class >> rosMd5Sum [ 
+^'96adb295225031ec8d57fb4251b0a886'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsAccelWithCovarianceStamped class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  geometry_msgs/AccelWithCovariance accel

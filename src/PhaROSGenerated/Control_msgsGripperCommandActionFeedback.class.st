@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsGripperCommandActionFeedback class >> rosMd5Sum [ 
+^'653dff30c045f5e6ff3feb3409f4558d'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsGripperCommandActionFeedback class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalStatus status

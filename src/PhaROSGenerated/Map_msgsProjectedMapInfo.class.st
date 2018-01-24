@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Map_msgsProjectedMapInfo class >> rosMd5Sum [ 
+^'2dc10595ae94de23f22f8a6d2a0eef7a'
+]
+
+{ #category : #'as yet unclassified' }
 Map_msgsProjectedMapInfo class >> rosTypeDefinition [ 
 ^' string frame_id
  float64 x

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsRemoconStatus class >> rosMd5Sum [ 
+^'a586408ad56a017fbadae95562c0c018'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsRemoconStatus class >> rosTypeDefinition [ 
 ^' rocon_std_msgs/MasterInfo platform_info
  string uuid

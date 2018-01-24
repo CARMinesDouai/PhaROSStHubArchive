@@ -77,6 +77,11 @@ Visualization_msgsMarker class >> points [
 ]
 
 { #category : #'as yet unclassified' }
+Visualization_msgsMarker class >> rosMd5Sum [ 
+^'4048c9de2a16f4ae8e0538085ebf1b97'
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsMarker class >> rosTypeDefinition [ 
 ^' int8 ARROW=0
  int8 CUBE=1

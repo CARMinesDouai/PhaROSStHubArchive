@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+TurtlesimColor class >> rosMd5Sum [ 
+^'353891e354491c51aabe32df673fb446'
+]
+
+{ #category : #'as yet unclassified' }
 TurtlesimColor class >> rosTypeDefinition [ 
 ^' int8 r
  int8 g

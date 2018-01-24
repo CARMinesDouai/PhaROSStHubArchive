@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsAveragingFeedback class >> rosMd5Sum [ 
+^'9e8dfc53c2f2a032ca33fa80ec46fd4f'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsAveragingFeedback class >> rosTypeDefinition [ 
 ^' int32 sample
  float32 data

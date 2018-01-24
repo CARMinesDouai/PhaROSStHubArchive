@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsTwistStamped class >> rosMd5Sum [ 
+^'98d34b0043a2093cf9d9345ab6eef12e'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsTwistStamped class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  geometry_msgs/Twist twist

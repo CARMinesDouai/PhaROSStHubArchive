@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsConnectionsDiff class >> rosMd5Sum [ 
+^'19f9e3bef1153b4bc619ec3d21b94718'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsConnectionsDiff class >> rosTypeDefinition [ 
 ^' rocon_std_msgs/Connection[] added
  rocon_std_msgs/Connection[] lost

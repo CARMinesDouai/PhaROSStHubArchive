@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsLocalizeAction class >> rosMd5Sum [ 
+^'fd676593c44fcb6e96ae1a023d9f596d'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsLocalizeAction class >> rosTypeDefinition [ 
 ^' yocs_msgs/LocalizeActionGoal action_goal
  yocs_msgs/LocalizeActionResult action_result

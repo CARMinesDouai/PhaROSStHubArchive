@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Visualization_msgsInteractiveMarkerInit class >> rosMd5Sum [ 
+^'d5f2c5045a72456d228676ab91048734'
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsInteractiveMarkerInit class >> rosTypeDefinition [ 
 ^' string server_id
  int64 seq_num

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRfidSensorMeasurementMsg class >> rosMd5Sum [ 
+^'274b41808759cfa6e05b69149e9ea1ed'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRfidSensorMeasurementMsg class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  string[] rfid_tags_ids

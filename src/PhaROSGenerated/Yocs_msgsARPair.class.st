@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsARPair class >> rosMd5Sum [ 
+^'9a0e51fbcb2eab37a945707af8ee9a6b'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsARPair class >> rosTypeDefinition [ 
 ^' int16 left_id
  int16 right_id

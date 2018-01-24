@@ -101,6 +101,11 @@ Rocon_interaction_msgsErrorCodes class >> required_rapp_is_not_running [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsErrorCodes class >> rosMd5Sum [ 
+^'07ff328fec8e7125b6dba36ae1479350'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsErrorCodes class >> rosTypeDefinition [ 
 ^' int8 SUCCESS=0
  int8 INTERACTION_UNAVAILABLE=20

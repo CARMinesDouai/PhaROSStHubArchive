@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryControllerState class >> rosMd5Sum [ 
+^'10817c60c2486ef6b33e97dcd87f4474'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsJointTrajectoryControllerState class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  string[] joint_names

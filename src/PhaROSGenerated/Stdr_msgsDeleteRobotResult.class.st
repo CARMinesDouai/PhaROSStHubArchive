@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsDeleteRobotResult class >> rosMd5Sum [ 
+^'358e233cde0c8a8bcfea4ce193f8fc15'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsDeleteRobotResult class >> rosTypeDefinition [ 
 ^' bool success
 '

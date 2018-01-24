@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+ActionlibTestRequestAction class >> rosMd5Sum [ 
+^'dc44b1f4045dbf0d1db54423b3b86b30'
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTestRequestAction class >> rosTypeDefinition [ 
 ^' actionlib/TestRequestActionGoal action_goal
  actionlib/TestRequestActionResult action_result

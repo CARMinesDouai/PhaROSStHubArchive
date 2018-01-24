@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Tf2_msgsLookupTransformActionGoal class >> rosMd5Sum [ 
+^'f2e7bcdb75c847978d0351a13e699da5'
+]
+
+{ #category : #'as yet unclassified' }
 Tf2_msgsLookupTransformActionGoal class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalID goal_id

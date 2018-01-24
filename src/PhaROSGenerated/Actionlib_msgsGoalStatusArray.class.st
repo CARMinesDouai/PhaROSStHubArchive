@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_msgsGoalStatusArray class >> rosMd5Sum [ 
+^'8b2b82f13216d0a8ea88bd3af735e619'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_msgsGoalStatusArray class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalStatus[] status_list

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsImage class >> rosMd5Sum [ 
+^'060021388200f6f0f447d0fcd9c64743'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsImage class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  int32 height

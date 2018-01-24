@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsGripperCommandActionGoal class >> rosMd5Sum [ 
+^'aa581f648a35ed681db2ec0bf7a82bea'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsGripperCommandActionGoal class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalID goal_id

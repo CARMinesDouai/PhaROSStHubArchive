@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciFeedback class >> rosMd5Sum [ 
+^'b81e37d2a31925a0e8ae261a8699cb79'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsFibonacciFeedback class >> rosTypeDefinition [ 
 ^' int32[] sequence
 '

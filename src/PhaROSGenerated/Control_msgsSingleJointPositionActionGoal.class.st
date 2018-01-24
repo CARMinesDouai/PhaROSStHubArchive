@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionActionGoal class >> rosMd5Sum [ 
+^'4b0d3d091471663e17749c1d0db90f61'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsSingleJointPositionActionGoal class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalID goal_id

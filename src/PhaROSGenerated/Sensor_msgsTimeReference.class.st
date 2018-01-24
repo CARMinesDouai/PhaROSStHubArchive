@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsTimeReference class >> rosMd5Sum [ 
+^'fded64a0265108ba86c3d38fb11c0c16'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsTimeReference class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  time time_ref

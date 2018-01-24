@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsNavSatStatus class >> rosMd5Sum [ 
+^'331cdbddfa4bc96ffc3b9ad98900a54c'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsNavSatStatus class >> rosTypeDefinition [ 
 ^' int8 STATUS_NO_FIX=-1
  int8 STATUS_FIX=0

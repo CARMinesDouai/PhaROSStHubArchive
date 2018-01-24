@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsJointTolerance class >> rosMd5Sum [ 
+^'f544fe9c16cf04547e135dd6063ff5be'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsJointTolerance class >> rosTypeDefinition [ 
 ^' string name
  float64 position

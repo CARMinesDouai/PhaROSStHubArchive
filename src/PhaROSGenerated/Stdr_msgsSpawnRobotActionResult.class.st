@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSpawnRobotActionResult class >> rosMd5Sum [ 
+^'f95a810c7b5f2579dca2ec191de2a05c'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSpawnRobotActionResult class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalStatus status

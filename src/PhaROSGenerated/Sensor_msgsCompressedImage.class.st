@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsCompressedImage class >> rosMd5Sum [ 
+^'8f7a12909da2c9d3332d540a0977563f'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsCompressedImage class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  string format

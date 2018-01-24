@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Gazebo_msgsContactsState class >> rosMd5Sum [ 
+^'acbcb1601a8e525bf72509f18e6f668d'
+]
+
+{ #category : #'as yet unclassified' }
 Gazebo_msgsContactsState class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  gazebo_msgs/ContactState[] states

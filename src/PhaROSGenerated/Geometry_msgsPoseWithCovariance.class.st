@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPoseWithCovariance class >> rosMd5Sum [ 
+^'c23e848cf1b7533a8d7c259073a97e6f'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPoseWithCovariance class >> rosTypeDefinition [ 
 ^' geometry_msgs/Pose pose
  float64[36]  covariance

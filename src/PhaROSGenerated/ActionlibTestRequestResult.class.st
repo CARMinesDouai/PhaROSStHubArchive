@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+ActionlibTestRequestResult class >> rosMd5Sum [ 
+^'61c2364524499c7c5017e2f3fce7ba06'
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTestRequestResult class >> rosTypeDefinition [ 
 ^' int32 the_result
  bool is_simple_server

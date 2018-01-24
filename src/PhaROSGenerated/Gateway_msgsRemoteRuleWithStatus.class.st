@@ -29,6 +29,11 @@ Gateway_msgsRemoteRuleWithStatus class >> resend [
 ]
 
 { #category : #'as yet unclassified' }
+Gateway_msgsRemoteRuleWithStatus class >> rosMd5Sum [ 
+^'7892d8834068a87e345fff91adc26a5e'
+]
+
+{ #category : #'as yet unclassified' }
 Gateway_msgsRemoteRuleWithStatus class >> rosTypeDefinition [ 
 ^' string UNKNOWN=''unknown''
  string PENDING=''pending''

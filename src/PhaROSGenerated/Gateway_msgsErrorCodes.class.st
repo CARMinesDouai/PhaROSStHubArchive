@@ -113,6 +113,11 @@ Gateway_msgsErrorCodes class >> remote_gateway_target_has_multiple_matches [
 ]
 
 { #category : #'as yet unclassified' }
+Gateway_msgsErrorCodes class >> rosMd5Sum [ 
+^'cc2f69c68d11f625f99f07d82c572d47'
+]
+
+{ #category : #'as yet unclassified' }
 Gateway_msgsErrorCodes class >> rosTypeDefinition [ 
 ^' int8 SUCCESS=0
  int8 NO_HUB_CONNECTION=1

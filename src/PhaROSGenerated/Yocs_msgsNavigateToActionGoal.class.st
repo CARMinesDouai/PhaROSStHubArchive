@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigateToActionGoal class >> rosMd5Sum [ 
+^'ffa50cda52f07e2549da7c2006eeb671'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigateToActionGoal class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalID goal_id

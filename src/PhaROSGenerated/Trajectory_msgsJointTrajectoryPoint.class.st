@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Trajectory_msgsJointTrajectoryPoint class >> rosMd5Sum [ 
+^'f3cd1e1c4d320c79d6985c904ae5dcd3'
+]
+
+{ #category : #'as yet unclassified' }
 Trajectory_msgsJointTrajectoryPoint class >> rosTypeDefinition [ 
 ^' float64[] positions
  float64[] velocities

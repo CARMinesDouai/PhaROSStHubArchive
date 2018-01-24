@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsPidState class >> rosMd5Sum [ 
+^'b138ec00e886c10e73f27e8712252ea6'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsPidState class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  duration timestep

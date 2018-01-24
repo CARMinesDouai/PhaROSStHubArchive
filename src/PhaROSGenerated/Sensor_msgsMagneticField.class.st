@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsMagneticField class >> rosMd5Sum [ 
+^'2f3b0b43eed0c9501de0fa3ff89a45aa'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsMagneticField class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  geometry_msgs/Vector3 magnetic_field

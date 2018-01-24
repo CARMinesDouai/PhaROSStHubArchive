@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Create_nodeDrive class >> rosMd5Sum [ 
+^'cbd1637d308acca6b24c12a3db426e5e'
+]
+
+{ #category : #'as yet unclassified' }
 Create_nodeDrive class >> rosTypeDefinition [ 
 ^' float32 velocity
  float32 radius

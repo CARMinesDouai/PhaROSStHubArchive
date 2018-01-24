@@ -47,6 +47,11 @@ Kobuki_msgsSound class >> recharge [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsSound class >> rosMd5Sum [ 
+^'dfeab0daae67749c426c1db741a4f420'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsSound class >> rosTypeDefinition [ 
 ^' int8 ON=0
  int8 OFF=1

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+World_canvas_msgsAnnotations class >> rosMd5Sum [ 
+^'5b47cb1c51cbc7a899bf81b52bdb8c27'
+]
+
+{ #category : #'as yet unclassified' }
 World_canvas_msgsAnnotations class >> rosTypeDefinition [ 
 ^' string map_id
  world_canvas_msgs/Annotation[] annotations

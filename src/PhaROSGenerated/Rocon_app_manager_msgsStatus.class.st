@@ -17,6 +17,11 @@ Rocon_app_manager_msgsStatus class >> rapp_stopped [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsStatus class >> rosMd5Sum [ 
+^'845a2087bbeabf6770c4fda9fcc80442'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsStatus class >> rosTypeDefinition [ 
 ^' string RAPP_STOPPED=''stopped''
  string RAPP_RUNNING=''running''

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+TurtlesimPose class >> rosMd5Sum [ 
+^'863b248d5016ca62ea2e895ae5265cf9'
+]
+
+{ #category : #'as yet unclassified' }
 TurtlesimPose class >> rosTypeDefinition [ 
 ^' float32 x
  float32 y

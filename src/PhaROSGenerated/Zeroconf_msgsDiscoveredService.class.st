@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Zeroconf_msgsDiscoveredService class >> rosMd5Sum [ 
+^'3aabc6dd9875ef180c75536ad9a51d86'
+]
+
+{ #category : #'as yet unclassified' }
 Zeroconf_msgsDiscoveredService class >> rosTypeDefinition [ 
 ^' string name
  string type

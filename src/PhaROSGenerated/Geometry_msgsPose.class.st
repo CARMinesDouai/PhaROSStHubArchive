@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPose class >> rosMd5Sum [ 
+^'e45d45a5a1ce597b249e23fb30fc871f'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPose class >> rosTypeDefinition [ 
 ^' geometry_msgs/Point position
  geometry_msgs/Quaternion orientation

@@ -17,6 +17,11 @@ Zeroconf_msgsProtocols class >> ipv6 [
 ]
 
 { #category : #'as yet unclassified' }
+Zeroconf_msgsProtocols class >> rosMd5Sum [ 
+^'6e173730dc50e42e6497a38ee52e9e4d'
+]
+
+{ #category : #'as yet unclassified' }
 Zeroconf_msgsProtocols class >> rosTypeDefinition [ 
 ^' int8 UNSPECIFIED=0
  int8 IPV4=1

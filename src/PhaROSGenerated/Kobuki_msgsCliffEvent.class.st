@@ -35,6 +35,11 @@ Kobuki_msgsCliffEvent class >> right [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsCliffEvent class >> rosMd5Sum [ 
+^'c5b106efbb1427a94f517c5e05f06295'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsCliffEvent class >> rosTypeDefinition [ 
 ^' int8 LEFT=0
  int8 CENTER=1

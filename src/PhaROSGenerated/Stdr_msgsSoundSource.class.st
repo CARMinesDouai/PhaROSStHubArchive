@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSoundSource class >> rosMd5Sum [ 
+^'c45183ddcf94455b2f7bb47f2f3e9f87'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSoundSource class >> rosTypeDefinition [ 
 ^' string id
  float32 dbs

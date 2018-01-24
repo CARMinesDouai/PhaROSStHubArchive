@@ -29,6 +29,11 @@ Rocon_std_msgsConnection class >> publisher [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsConnection class >> rosMd5Sum [ 
+^'0dee991006513320090e2ee648136101'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsConnection class >> rosTypeDefinition [ 
 ^' string PUBLISHER=''publisher''
  string SUBSCRIBER=''subscriber''

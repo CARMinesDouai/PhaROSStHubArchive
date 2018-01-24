@@ -59,6 +59,11 @@ Actionlib_msgsGoalStatus class >> rejected [
 ]
 
 { #category : #'as yet unclassified' }
+Actionlib_msgsGoalStatus class >> rosMd5Sum [ 
+^'d388f9b87b3c471f784434d671988d4a'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_msgsGoalStatus class >> rosTypeDefinition [ 
 ^' int8 PENDING=0
  int8 ACTIVE=1

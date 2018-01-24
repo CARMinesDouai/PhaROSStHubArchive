@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Std_msgsUInt16 class >> rosMd5Sum [ 
+^'1df79edf208b629fe6b81923a544552d'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsUInt16 class >> rosTypeDefinition [ 
 ^' uint16 data
 '

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_service_pair_msgsTestiesResponse class >> rosMd5Sum [ 
+^'f2e0bb16a22dc66826bb64ac8b44aeb3'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_service_pair_msgsTestiesResponse class >> rosTypeDefinition [ 
 ^' uuid_msgs/UniqueID id
  string data

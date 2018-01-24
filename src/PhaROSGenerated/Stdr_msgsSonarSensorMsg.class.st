@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSonarSensorMsg class >> rosMd5Sum [ 
+^'e8b8bd75b2e357572ea0c9ee72ed58c1'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSonarSensorMsg class >> rosTypeDefinition [ 
 ^' float32 maxRange
  float32 minRange

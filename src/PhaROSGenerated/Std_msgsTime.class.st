@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Std_msgsTime class >> rosMd5Sum [ 
+^'cd7166c74c552c311fbcc2fe5a7bc289'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsTime class >> rosTypeDefinition [ 
 ^' time data
 '

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Gazebo_msgsODEPhysics class >> rosMd5Sum [ 
+^'667d56ddbd547918c32d1934503dc335'
+]
+
+{ #category : #'as yet unclassified' }
 Gazebo_msgsODEPhysics class >> rosTypeDefinition [ 
 ^' bool auto_disable_bodies
  int32 sor_pgs_precon_iters

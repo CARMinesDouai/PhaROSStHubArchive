@@ -29,6 +29,11 @@ Kobuki_msgsLed class >> red [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsLed class >> rosMd5Sum [ 
+^'4391183b0cf05f8f25d04220401b9f43'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsLed class >> rosTypeDefinition [ 
 ^' int8 BLACK=0
  int8 GREEN=1

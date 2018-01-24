@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciGoal class >> rosMd5Sum [ 
+^'6889063349a00b249bd1661df429d822'
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsFibonacciGoal class >> rosTypeDefinition [ 
 ^' int32 order
 '

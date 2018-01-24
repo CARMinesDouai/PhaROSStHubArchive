@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsCO2SourceVector class >> rosMd5Sum [ 
+^'5ded45505bc7155e81a2d6033817c7f3'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsCO2SourceVector class >> rosTypeDefinition [ 
 ^' stdr_msgs/CO2Source[] co2_sources
 '

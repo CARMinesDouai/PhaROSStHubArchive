@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsFindFiducialAction class >> rosMd5Sum [ 
+^'87cc8981a7a81f16abc7af19809908dd'
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsFindFiducialAction class >> rosTypeDefinition [ 
 ^' turtlebot_actions/FindFiducialActionGoal action_goal
  turtlebot_actions/FindFiducialActionResult action_result

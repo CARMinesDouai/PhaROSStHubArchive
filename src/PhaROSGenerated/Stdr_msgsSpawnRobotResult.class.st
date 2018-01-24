@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSpawnRobotResult class >> rosMd5Sum [ 
+^'8217dc1798cb6a09c560cd62f710182e'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSpawnRobotResult class >> rosTypeDefinition [ 
 ^' stdr_msgs/RobotIndexedMsg indexedDescription
  string message

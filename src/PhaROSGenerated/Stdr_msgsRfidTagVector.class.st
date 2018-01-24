@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRfidTagVector class >> rosMd5Sum [ 
+^'d1ccd79235f17c9d8c9665681cfa66f7'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRfidTagVector class >> rosTypeDefinition [ 
 ^' stdr_msgs/RfidTag[] rfid_tags
 '

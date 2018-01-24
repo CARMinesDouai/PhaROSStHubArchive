@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsAccelStamped class >> rosMd5Sum [ 
+^'d8a98a5d81351b6eb0578c78557e7659'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsAccelStamped class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  geometry_msgs/Accel accel

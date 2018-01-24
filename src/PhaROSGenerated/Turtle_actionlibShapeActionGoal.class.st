@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtle_actionlibShapeActionGoal class >> rosMd5Sum [ 
+^'dbfccd187f2ec9c593916447ffd6cc77'
+]
+
+{ #category : #'as yet unclassified' }
 Turtle_actionlibShapeActionGoal class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalID goal_id

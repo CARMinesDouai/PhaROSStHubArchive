@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsLaserScan class >> rosMd5Sum [ 
+^'90c7ef2dc6895d81024acba2ac42f369'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsLaserScan class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  float32 angle_min

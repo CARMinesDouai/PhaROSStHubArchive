@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsFollowJointTrajectoryGoal class >> rosMd5Sum [ 
+^'69636787b6ecbde4d61d711979bc7ecb'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsFollowJointTrajectoryGoal class >> rosTypeDefinition [ 
 ^' trajectory_msgs/JointTrajectory trajectory
  control_msgs/JointTolerance[] path_tolerance

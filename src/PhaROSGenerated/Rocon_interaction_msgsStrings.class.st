@@ -11,6 +11,11 @@ Rocon_interaction_msgsStrings class >> remocons_namespace [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsStrings class >> rosMd5Sum [ 
+^'7279ef1b62bbde7b3bec17766ef2c127'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsStrings class >> rosTypeDefinition [ 
 ^' string REMOCONS_NAMESPACE=''/remocons''
 '

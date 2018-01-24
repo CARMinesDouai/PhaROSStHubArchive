@@ -11,6 +11,11 @@ Kobuki_msgsControllerInfo class >> default [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsControllerInfo class >> rosMd5Sum [ 
+^'46af38e72f0640f41ed22174d43a2550'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsControllerInfo class >> rosTypeDefinition [ 
 ^' int8 DEFAULT=0
  int8 USER_CONFIGURED=1

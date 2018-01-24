@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsVector3Stamped class >> rosMd5Sum [ 
+^'7b324c7325e683bf02a9b14b01090ec7'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsVector3Stamped class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  geometry_msgs/Vector3 vector

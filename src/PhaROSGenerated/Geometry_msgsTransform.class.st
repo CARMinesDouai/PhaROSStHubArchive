@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsTransform class >> rosMd5Sum [ 
+^'ac9eff44abf714214112b05d54a3cf9b'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsTransform class >> rosTypeDefinition [ 
 ^' geometry_msgs/Vector3 translation
  geometry_msgs/Quaternion rotation

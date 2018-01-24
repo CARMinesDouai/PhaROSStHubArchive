@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsLocalizeGoal class >> rosMd5Sum [ 
+^'6383995712d8736902464bbea6b0fb6d'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsLocalizeGoal class >> rosTypeDefinition [ 
 ^' int8 STAND_AND_LOCALIZE=10
  int8 SPIN_AND_LOCALIZE=20

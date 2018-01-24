@@ -29,6 +29,11 @@ Rosgraph_msgsLog class >> info [
 ]
 
 { #category : #'as yet unclassified' }
+Rosgraph_msgsLog class >> rosMd5Sum [ 
+^'acffd30cd6b6de30f120938c17c593fb'
+]
+
+{ #category : #'as yet unclassified' }
 Rosgraph_msgsLog class >> rosTypeDefinition [ 
 ^' int8 DEBUG=1
  int8 INFO=2

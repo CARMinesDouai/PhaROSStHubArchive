@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsKinematicMsg class >> rosMd5Sum [ 
+^'75d30a9f55f18dd9353f0abaabfaf261'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsKinematicMsg class >> rosTypeDefinition [ 
 ^' string type
  float32 a_ux_ux

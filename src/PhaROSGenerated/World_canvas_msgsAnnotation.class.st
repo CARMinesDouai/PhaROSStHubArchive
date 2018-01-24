@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+World_canvas_msgsAnnotation class >> rosMd5Sum [ 
+^'ad3b363d73f197c0fc0f70645a6b2598'
+]
+
+{ #category : #'as yet unclassified' }
 World_canvas_msgsAnnotation class >> rosTypeDefinition [ 
 ^' time timestamp
  uuid_msgs/UniqueID id

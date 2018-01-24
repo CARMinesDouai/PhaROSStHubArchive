@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsRapp class >> rosMd5Sum [ 
+^'0214a3ee298e9d3ae08c6ab15b8e910d'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsRapp class >> rosTypeDefinition [ 
 ^' string name
  string display_name

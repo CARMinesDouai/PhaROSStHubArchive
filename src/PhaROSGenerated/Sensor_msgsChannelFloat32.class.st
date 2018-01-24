@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsChannelFloat32 class >> rosMd5Sum [ 
+^'3d40139cdd33dfedcb71ffeeeb42ae7f'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsChannelFloat32 class >> rosTypeDefinition [ 
 ^' string name
  float32[] values

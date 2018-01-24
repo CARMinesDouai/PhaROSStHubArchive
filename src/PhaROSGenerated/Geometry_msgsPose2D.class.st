@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPose2D class >> rosMd5Sum [ 
+^'938fa65709584ad8e77d238529be13b8'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPose2D class >> rosTypeDefinition [ 
 ^' float64 x
  float64 y

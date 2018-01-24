@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPoseArray class >> rosMd5Sum [ 
+^'916c28c5764443f268b296bb671b9d97'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPoseArray class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  geometry_msgs/Pose[] poses

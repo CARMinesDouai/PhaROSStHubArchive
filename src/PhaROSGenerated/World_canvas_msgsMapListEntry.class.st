@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+World_canvas_msgsMapListEntry class >> rosMd5Sum [ 
+^'092f024758d394d17196cd37d999fdb0'
+]
+
+{ #category : #'as yet unclassified' }
 World_canvas_msgsMapListEntry class >> rosTypeDefinition [ 
 ^' string name
  string session_id

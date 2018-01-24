@@ -11,6 +11,11 @@ Sensor_msgsRange class >> infrared [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsRange class >> rosMd5Sum [ 
+^'c005c34273dc426c67a020a87bc24148'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsRange class >> rosTypeDefinition [ 
 ^' int8 ULTRASOUND=0
  int8 INFRARED=1

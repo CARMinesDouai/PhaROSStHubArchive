@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionAction class >> rosMd5Sum [ 
+^'c4a786b7d53e5d0983decf967a5a779e'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsSingleJointPositionAction class >> rosTypeDefinition [ 
 ^' control_msgs/SingleJointPositionActionGoal action_goal
  control_msgs/SingleJointPositionActionResult action_result

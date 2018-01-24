@@ -11,6 +11,11 @@ Kobuki_msgsVersionInfo class >> gyroscope_3d_data [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsVersionInfo class >> rosMd5Sum [ 
+^'3dc0ce6edd49be1fc86730f4a4a21861'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsVersionInfo class >> rosTypeDefinition [ 
 ^' int64 SMOOTH_MOVE_START=0000000000000001
  int64 GYROSCOPE_3D_DATA=0000000000000002

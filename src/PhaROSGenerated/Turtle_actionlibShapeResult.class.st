@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtle_actionlibShapeResult class >> rosMd5Sum [ 
+^'b06c6e2225f820dbc644270387cd1a7c'
+]
+
+{ #category : #'as yet unclassified' }
 Turtle_actionlibShapeResult class >> rosTypeDefinition [ 
 ^' float32 interior_angle
  float32 apothem

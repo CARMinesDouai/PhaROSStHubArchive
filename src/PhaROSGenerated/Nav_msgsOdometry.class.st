@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Nav_msgsOdometry class >> rosMd5Sum [ 
+^'cd5e73d190d741a2f92e81eda573aca7'
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsOdometry class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  string child_frame_id

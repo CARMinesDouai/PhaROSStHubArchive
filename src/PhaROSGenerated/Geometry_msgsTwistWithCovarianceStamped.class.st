@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsTwistWithCovarianceStamped class >> rosMd5Sum [ 
+^'8927a1a12fb2607ceea095b2dc440a96'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsTwistWithCovarianceStamped class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  geometry_msgs/TwistWithCovariance twist

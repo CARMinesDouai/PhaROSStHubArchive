@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPointStamped class >> rosMd5Sum [ 
+^'c63aecb41bfdfd6b7e1fac37c7cbe7bf'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPointStamped class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  geometry_msgs/Point point

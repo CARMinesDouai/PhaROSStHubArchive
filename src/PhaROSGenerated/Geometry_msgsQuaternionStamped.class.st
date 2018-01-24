@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsQuaternionStamped class >> rosMd5Sum [ 
+^'e57f1e547e0e1fd13504588ffc8334e2'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsQuaternionStamped class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  geometry_msgs/Quaternion quaternion

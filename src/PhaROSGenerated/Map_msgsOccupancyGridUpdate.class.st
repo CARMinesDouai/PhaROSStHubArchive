@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Map_msgsOccupancyGridUpdate class >> rosMd5Sum [ 
+^'b295be292b335c34718bd939deebe1c9'
+]
+
+{ #category : #'as yet unclassified' }
 Map_msgsOccupancyGridUpdate class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  int32 x

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stereo_msgsDisparityImage class >> rosMd5Sum [ 
+^'04a177815f75271039fa21f16acad8c9'
+]
+
+{ #category : #'as yet unclassified' }
 Stereo_msgsDisparityImage class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  sensor_msgs/Image image

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureGroup class >> rosMd5Sum [ 
+^'9e8cd9e9423c94823db3614dd8b1cf7a'
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureGroup class >> rosTypeDefinition [ 
 ^' string name
  string type

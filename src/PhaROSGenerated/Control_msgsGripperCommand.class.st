@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsGripperCommand class >> rosMd5Sum [ 
+^'680acaff79486f017132a7f198d40f08'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsGripperCommand class >> rosTypeDefinition [ 
 ^' float64 position
  float64 max_effort

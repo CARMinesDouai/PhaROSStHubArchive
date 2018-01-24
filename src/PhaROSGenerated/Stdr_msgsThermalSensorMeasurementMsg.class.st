@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsThermalSensorMeasurementMsg class >> rosMd5Sum [ 
+^'e4b704fefcd6eb849f164e31d5084251'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsThermalSensorMeasurementMsg class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  float32[] thermal_source_degrees

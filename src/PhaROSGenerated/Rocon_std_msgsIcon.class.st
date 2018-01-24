@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsIcon class >> rosMd5Sum [ 
+^'2ddacfedd31b6da3f723794afbd3b9de'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsIcon class >> rosTypeDefinition [ 
 ^' string resource_name
  string format

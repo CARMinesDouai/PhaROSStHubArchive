@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRegisterRobotAction class >> rosMd5Sum [ 
+^'b39b50bd76f14707645fb1a5dcce213f'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRegisterRobotAction class >> rosTypeDefinition [ 
 ^' stdr_msgs/RegisterRobotActionGoal action_goal
  stdr_msgs/RegisterRobotActionResult action_result

@@ -17,6 +17,11 @@ Diagnostic_msgsDiagnosticStatus class >> ok [
 ]
 
 { #category : #'as yet unclassified' }
+Diagnostic_msgsDiagnosticStatus class >> rosMd5Sum [ 
+^'d0ce08bc6e5ba34c7754f563a9cabaf1'
+]
+
+{ #category : #'as yet unclassified' }
 Diagnostic_msgsDiagnosticStatus class >> rosTypeDefinition [ 
 ^' int8 OK=0
  int8 WARN=1

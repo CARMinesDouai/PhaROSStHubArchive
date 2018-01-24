@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsThermalSource class >> rosMd5Sum [ 
+^'b732f325d4ba0a2977192d50dca59310'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsThermalSource class >> rosTypeDefinition [ 
 ^' string id
  float32 degrees

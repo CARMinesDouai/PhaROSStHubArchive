@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsNoise class >> rosMd5Sum [ 
+^'a882ac96256e87f019f2655e9d7f0f81'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsNoise class >> rosTypeDefinition [ 
 ^' bool noise
  float32 noiseMean

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSoundSourceVector class >> rosMd5Sum [ 
+^'b0990ed9e7eeb58876a06c8b484951b4'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSoundSourceVector class >> rosTypeDefinition [ 
 ^' stdr_msgs/SoundSource[] sound_sources
 '

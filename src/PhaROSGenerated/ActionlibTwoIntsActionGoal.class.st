@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+ActionlibTwoIntsActionGoal class >> rosMd5Sum [ 
+^'684a2db55d6ffb8046fb9d6764ce0860'
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTwoIntsActionGoal class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalID goal_id

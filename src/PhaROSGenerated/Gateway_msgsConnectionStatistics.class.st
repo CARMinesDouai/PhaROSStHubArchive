@@ -11,6 +11,11 @@ Gateway_msgsConnectionStatistics class >> max_ttl [
 ]
 
 { #category : #'as yet unclassified' }
+Gateway_msgsConnectionStatistics class >> rosMd5Sum [ 
+^'672067d5ab3e6157dcf8224022da3ee6'
+]
+
+{ #category : #'as yet unclassified' }
 Gateway_msgsConnectionStatistics class >> rosTypeDefinition [ 
 ^' int8 WIRED=1
  int8 WIRELESS=2

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsStringArray class >> rosMd5Sum [ 
+^'51789d20146e565223d0963361aecda1'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsStringArray class >> rosTypeDefinition [ 
 ^' string[] strings
 '

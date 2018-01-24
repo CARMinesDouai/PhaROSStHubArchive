@@ -23,6 +23,11 @@ Dynamic_reconfigureSensorLevels class >> reconfigure_stop [
 ]
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureSensorLevels class >> rosMd5Sum [ 
+^'6322637bee96d5489db6e2127c47602c'
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureSensorLevels class >> rosTypeDefinition [ 
 ^' int8 RECONFIGURE_CLOSE=3
  int8 RECONFIGURE_STOP=1

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsGripperCommandAction class >> rosMd5Sum [ 
+^'950b2a6ebe831f5d4f4ceaba3d8be01e'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsGripperCommandAction class >> rosTypeDefinition [ 
 ^' control_msgs/GripperCommandActionGoal action_goal
  control_msgs/GripperCommandActionResult action_result

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsPointHeadGoal class >> rosMd5Sum [ 
+^'8b92b1cd5e06c8a94c917dc3209a4c1d'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsPointHeadGoal class >> rosTypeDefinition [ 
 ^' geometry_msgs/PointStamped target
  geometry_msgs/Vector3 pointing_axis

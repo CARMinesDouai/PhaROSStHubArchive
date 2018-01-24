@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Tf2_msgsLookupTransformResult class >> rosMd5Sum [ 
+^'3fe5db6a19ca9cfb675418c5ad875c36'
+]
+
+{ #category : #'as yet unclassified' }
 Tf2_msgsLookupTransformResult class >> rosTypeDefinition [ 
 ^' geometry_msgs/TransformStamped transform
  tf2_msgs/TF2Error error

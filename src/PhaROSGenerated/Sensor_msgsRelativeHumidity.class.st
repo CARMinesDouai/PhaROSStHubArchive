@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsRelativeHumidity class >> rosMd5Sum [ 
+^'8730015b05955b7e992ce29a2678d90f'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsRelativeHumidity class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  float64 relative_humidity

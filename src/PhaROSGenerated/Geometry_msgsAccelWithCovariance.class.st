@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsAccelWithCovariance class >> rosMd5Sum [ 
+^'ad5a718d699c6be72a02b8d6a139f334'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsAccelWithCovariance class >> rosTypeDefinition [ 
 ^' geometry_msgs/Accel accel
  float64[36]  covariance

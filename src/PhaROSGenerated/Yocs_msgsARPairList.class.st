@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsARPairList class >> rosMd5Sum [ 
+^'0d0cfdee6418b6b3edd41c0abc93d76f'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsARPairList class >> rosTypeDefinition [ 
 ^' yocs_msgs/ARPair[] pairs
 '

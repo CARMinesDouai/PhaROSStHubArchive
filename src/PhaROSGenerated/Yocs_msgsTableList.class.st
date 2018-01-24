@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsTableList class >> rosMd5Sum [ 
+^'88fff7e2df98bd37f03f85cffc55624b'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsTableList class >> rosTypeDefinition [ 
 ^' yocs_msgs/Table[] tables
 '

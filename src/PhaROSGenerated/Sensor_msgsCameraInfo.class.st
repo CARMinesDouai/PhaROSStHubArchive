@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsCameraInfo class >> rosMd5Sum [ 
+^'c9a58c1b0b154e0e6da7578cb991d214'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsCameraInfo class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  int32 height

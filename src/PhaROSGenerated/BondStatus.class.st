@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+BondStatus class >> rosMd5Sum [ 
+^'eacc84bf5d65b6777d4c50f463dfb9c8'
+]
+
+{ #category : #'as yet unclassified' }
 BondStatus class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  string id

@@ -41,6 +41,11 @@ Visualization_msgsInteractiveMarkerFeedback class >> pose_update [
 ]
 
 { #category : #'as yet unclassified' }
+Visualization_msgsInteractiveMarkerFeedback class >> rosMd5Sum [ 
+^'ab0f1eee058667e28c19ff3ffc3f4b78'
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsInteractiveMarkerFeedback class >> rosTypeDefinition [ 
 ^' int8 KEEP_ALIVE=0
  int8 POSE_UPDATE=1

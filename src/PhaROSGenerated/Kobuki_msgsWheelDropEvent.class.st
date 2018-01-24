@@ -29,6 +29,11 @@ Kobuki_msgsWheelDropEvent class >> right [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsWheelDropEvent class >> rosMd5Sum [ 
+^'e102837d89384d67669a0df86b63f33b'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsWheelDropEvent class >> rosTypeDefinition [ 
 ^' int8 LEFT=0
  int8 RIGHT=1

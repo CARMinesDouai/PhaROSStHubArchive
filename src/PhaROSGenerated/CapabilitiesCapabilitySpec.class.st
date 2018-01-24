@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+CapabilitiesCapabilitySpec class >> rosMd5Sum [ 
+^'410c606586817322b7ad85c73e4a4c9f'
+]
+
+{ #category : #'as yet unclassified' }
 CapabilitiesCapabilitySpec class >> rosTypeDefinition [ 
 ^' string package
  string type

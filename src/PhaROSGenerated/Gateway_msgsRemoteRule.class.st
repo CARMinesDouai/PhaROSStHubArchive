@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Gateway_msgsRemoteRule class >> rosMd5Sum [ 
+^'14f4c5aaf33b32b22c50fd514747f99f'
+]
+
+{ #category : #'as yet unclassified' }
 Gateway_msgsRemoteRule class >> rosTypeDefinition [ 
 ^' string gateway
  gateway_msgs/Rule rule

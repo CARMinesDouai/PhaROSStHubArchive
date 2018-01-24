@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingActionFeedback class >> rosMd5Sum [ 
+^'6f7132467beab5153587d9ebb8d8262d'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsAutoDockingActionFeedback class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalStatus status

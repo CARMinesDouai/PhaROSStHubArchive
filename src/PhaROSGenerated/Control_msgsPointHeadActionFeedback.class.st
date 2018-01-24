@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsPointHeadActionFeedback class >> rosMd5Sum [ 
+^'33c9244957176bbba97dd641119e8460'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsPointHeadActionFeedback class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  actionlib_msgs/GoalStatus status

@@ -35,6 +35,11 @@ Kobuki_msgsButtonEvent class >> released [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsButtonEvent class >> rosMd5Sum [ 
+^'49eca512765dbdec759a79083ffcec8d'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsButtonEvent class >> rosTypeDefinition [ 
 ^' int8 Button0=0
  int8 Button1=1

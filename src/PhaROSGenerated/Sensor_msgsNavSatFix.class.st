@@ -29,6 +29,11 @@ Sensor_msgsNavSatFix class >> covariance_type_unknown [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsNavSatFix class >> rosMd5Sum [ 
+^'2d3a8cd499b9b4a0249fb98fd05cfa48'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsNavSatFix class >> rosTypeDefinition [ 
 ^' int8 COVARIANCE_TYPE_UNKNOWN=0
  int8 COVARIANCE_TYPE_APPROXIMATED=1

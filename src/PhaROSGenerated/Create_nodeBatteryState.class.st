@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Create_nodeBatteryState class >> rosMd5Sum [ 
+^'481447a4e24f212e7b403e4f04aa2ac9'
+]
+
+{ #category : #'as yet unclassified' }
 Create_nodeBatteryState class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  int8 temperature

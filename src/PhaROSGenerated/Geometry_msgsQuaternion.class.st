@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsQuaternion class >> rosMd5Sum [ 
+^'a779879fadf0160734f906b8c19c7004'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsQuaternion class >> rosTypeDefinition [ 
 ^' float64 x
  float64 y

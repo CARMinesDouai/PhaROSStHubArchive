@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPolygon class >> rosMd5Sum [ 
+^'cd60a26494a087f577976f0329fa120e'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPolygon class >> rosTypeDefinition [ 
 ^' geometry_msgs/Point32[] points
 '

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Yocs_msgsTrajectory class >> rosMd5Sum [ 
+^'ff318cb77adf15ade6b9b9b13aff3a64'
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsTrajectory class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  string name

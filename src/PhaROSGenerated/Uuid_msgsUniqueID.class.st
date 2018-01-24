@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Uuid_msgsUniqueID class >> rosMd5Sum [ 
+^'fec2a93b6f5367ee8112c9c0b41ff310'
+]
+
+{ #category : #'as yet unclassified' }
 Uuid_msgsUniqueID class >> rosTypeDefinition [ 
 ^' int8[16]  uuid
 '

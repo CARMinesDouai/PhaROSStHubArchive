@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rosgraph_msgsTopicStatistics class >> rosMd5Sum [ 
+^'10152ed868c5097a5e2e4a89d7daa710'
+]
+
+{ #category : #'as yet unclassified' }
 Rosgraph_msgsTopicStatistics class >> rosTypeDefinition [ 
 ^' string topic
  string node_pub

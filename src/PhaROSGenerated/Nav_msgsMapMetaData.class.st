@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Nav_msgsMapMetaData class >> rosMd5Sum [ 
+^'10cfc8a2818024d3248802c00c95f11b'
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsMapMetaData class >> rosTypeDefinition [ 
 ^' time map_load_time
  float32 resolution

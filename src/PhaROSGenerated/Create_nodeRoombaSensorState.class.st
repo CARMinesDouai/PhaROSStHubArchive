@@ -41,6 +41,11 @@ Create_nodeRoombaSensorState class >> charging_waiting [
 ]
 
 { #category : #'as yet unclassified' }
+Create_nodeRoombaSensorState class >> rosMd5Sum [ 
+^'9e8632c0937537603a670e96e85cd991'
+]
+
+{ #category : #'as yet unclassified' }
 Create_nodeRoombaSensorState class >> rosTypeDefinition [ 
 ^' int8 CHARGING_NOT_CHARGING=0
  int8 CHARGING_CHARGING_RECOVERY=1

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsDigitalOutput class >> rosMd5Sum [ 
+^'1e97cd7f196a0270516b506e8bf29ca2'
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsDigitalOutput class >> rosTypeDefinition [ 
 ^' bool[4]  values
  bool[4]  mask

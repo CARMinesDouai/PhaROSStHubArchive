@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsCO2Source class >> rosMd5Sum [ 
+^'5d5cdddff090254ed6052018cd9b2686'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsCO2Source class >> rosTypeDefinition [ 
 ^' string id
  float32 ppm

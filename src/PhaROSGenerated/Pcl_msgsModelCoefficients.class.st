@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Pcl_msgsModelCoefficients class >> rosMd5Sum [ 
+^'ca27dea75e72cb894cd36f9e5005e93e'
+]
+
+{ #category : #'as yet unclassified' }
 Pcl_msgsModelCoefficients class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  float32[] values

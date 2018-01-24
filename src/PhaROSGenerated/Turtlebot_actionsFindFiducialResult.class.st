@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsFindFiducialResult class >> rosMd5Sum [ 
+^'3f8930d968a3e84d471dff917bb1cdae'
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsFindFiducialResult class >> rosTypeDefinition [ 
 ^' geometry_msgs/PoseStamped pose
 '

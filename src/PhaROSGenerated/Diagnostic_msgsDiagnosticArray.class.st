@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Diagnostic_msgsDiagnosticArray class >> rosMd5Sum [ 
+^'60810da900de1dd6ddd437c3503511da'
+]
+
+{ #category : #'as yet unclassified' }
 Diagnostic_msgsDiagnosticArray class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  diagnostic_msgs/DiagnosticStatus[] status

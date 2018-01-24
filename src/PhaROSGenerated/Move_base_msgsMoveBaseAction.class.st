@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Move_base_msgsMoveBaseAction class >> rosMd5Sum [ 
+^'70b6aca7c7f7746d8d1609ad94c80bb8'
+]
+
+{ #category : #'as yet unclassified' }
 Move_base_msgsMoveBaseAction class >> rosTypeDefinition [ 
 ^' move_base_msgs/MoveBaseActionGoal action_goal
  move_base_msgs/MoveBaseActionResult action_result

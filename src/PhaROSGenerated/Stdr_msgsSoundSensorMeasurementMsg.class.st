@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSoundSensorMeasurementMsg class >> rosMd5Sum [ 
+^'1f73a234937f6d19824ea2a78f157d78'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSoundSensorMeasurementMsg class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  float32 sound_dbs

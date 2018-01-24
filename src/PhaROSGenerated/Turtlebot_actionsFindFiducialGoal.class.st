@@ -23,6 +23,11 @@ Turtlebot_actionsFindFiducialGoal class >> circles_grid [
 ]
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsFindFiducialGoal class >> rosMd5Sum [ 
+^'8906385fe785bb5733551eb61968fe5b'
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsFindFiducialGoal class >> rosTypeDefinition [ 
 ^' int8 CHESSBOARD=1
  int8 CIRCLES_GRID=2

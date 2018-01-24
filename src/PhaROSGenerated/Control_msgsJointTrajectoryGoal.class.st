@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryGoal class >> rosMd5Sum [ 
+^'2a0eff76c870e8595636c2a562ca298e'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsJointTrajectoryGoal class >> rosTypeDefinition [ 
 ^' trajectory_msgs/JointTrajectory trajectory
 '

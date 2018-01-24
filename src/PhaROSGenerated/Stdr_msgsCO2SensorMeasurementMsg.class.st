@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsCO2SensorMeasurementMsg class >> rosMd5Sum [ 
+^'ea3141a4e89d798f2735cb324ffcd870'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsCO2SensorMeasurementMsg class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  float32 co2_ppm

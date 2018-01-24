@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Nav_msgsGetMapAction class >> rosMd5Sum [ 
+^'e611ad23fbf237c031b7536416dc7cd7'
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsGetMapAction class >> rosTypeDefinition [ 
 ^' nav_msgs/GetMapActionGoal action_goal
  nav_msgs/GetMapActionResult action_result

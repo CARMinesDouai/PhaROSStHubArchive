@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sensor_msgsJoyFeedback class >> rosMd5Sum [ 
+^'f4dcd73460360d98f36e55ee7f2e46f1'
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsJoyFeedback class >> rosTypeDefinition [ 
 ^' int8 TYPE_LED=0
  int8 TYPE_RUMBLE=1

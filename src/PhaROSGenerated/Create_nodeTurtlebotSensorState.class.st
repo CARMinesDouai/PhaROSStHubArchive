@@ -215,6 +215,11 @@ Create_nodeTurtlebotSensorState class >> remote_spot [
 ]
 
 { #category : #'as yet unclassified' }
+Create_nodeTurtlebotSensorState class >> rosMd5Sum [ 
+^'d8f8ec7fa031fc9cc88e8319cd08a785'
+]
+
+{ #category : #'as yet unclassified' }
 Create_nodeTurtlebotSensorState class >> rosTypeDefinition [ 
 ^' int8 OI_MODE_OFF=0
  int8 OI_MODE_PASSIVE=1

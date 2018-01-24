@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsRappList class >> rosMd5Sum [ 
+^'796706b807515187050df80223ad161e'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsRappList class >> rosTypeDefinition [ 
 ^' rocon_app_manager_msgs/Rapp[] available_rapps
 '

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Gateway_msgsGatewayInfo class >> rosMd5Sum [ 
+^'8e8f7efa326aa247c5cb6a9692ec8014'
+]
+
+{ #category : #'as yet unclassified' }
 Gateway_msgsGatewayInfo class >> rosTypeDefinition [ 
 ^' string name
  bool connected

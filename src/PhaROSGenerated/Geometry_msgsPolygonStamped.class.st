@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPolygonStamped class >> rosMd5Sum [ 
+^'c6be8f7dc3bee7fe9e8d296070f53340'
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPolygonStamped class >> rosTypeDefinition [ 
 ^' std_msgs/Header header
  geometry_msgs/Polygon polygon

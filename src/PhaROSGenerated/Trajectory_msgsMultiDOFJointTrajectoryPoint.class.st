@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Trajectory_msgsMultiDOFJointTrajectoryPoint class >> rosMd5Sum [ 
+^'3ebe08d1abd5b65862d50e09430db776'
+]
+
+{ #category : #'as yet unclassified' }
 Trajectory_msgsMultiDOFJointTrajectoryPoint class >> rosTypeDefinition [ 
 ^' geometry_msgs/Transform[] transforms
  geometry_msgs/Twist[] velocities

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsPairingStatus class >> rosMd5Sum [ 
+^'b404b2284f2d7e4f38394ad5a36be453'
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsPairingStatus class >> rosTypeDefinition [ 
 ^' string active_pairing
 '

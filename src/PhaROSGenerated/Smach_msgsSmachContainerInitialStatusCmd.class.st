@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Smach_msgsSmachContainerInitialStatusCmd class >> rosMd5Sum [ 
+^'45f8cf31fc29b829db77f23001f788d6'
+]
+
+{ #category : #'as yet unclassified' }
 Smach_msgsSmachContainerInitialStatusCmd class >> rosTypeDefinition [ 
 ^' string path
  string[] initial_states

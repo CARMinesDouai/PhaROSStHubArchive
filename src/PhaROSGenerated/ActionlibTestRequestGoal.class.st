@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+ActionlibTestRequestGoal class >> rosMd5Sum [ 
+^'db5d00ba98302d6c6dd3737e9a03ceea'
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTestRequestGoal class >> rosTypeDefinition [ 
 ^' int32 TERMINATE_SUCCESS=0
  int32 TERMINATE_ABORTED=1

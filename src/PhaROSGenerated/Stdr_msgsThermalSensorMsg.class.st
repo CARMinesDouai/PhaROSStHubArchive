@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Stdr_msgsThermalSensorMsg class >> rosMd5Sum [ 
+^'fea53ce0501404c91ee4c18275946ca8'
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsThermalSensorMsg class >> rosTypeDefinition [ 
 ^' float32 maxRange
  float32 frequency

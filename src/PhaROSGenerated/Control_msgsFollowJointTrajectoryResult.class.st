@@ -35,6 +35,11 @@ Control_msgsFollowJointTrajectoryResult class >> path_tolerance_violated [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsFollowJointTrajectoryResult class >> rosMd5Sum [ 
+^'493383b18409bfb604b4e26c676401d2'
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsFollowJointTrajectoryResult class >> rosTypeDefinition [ 
 ^' int32 SUCCESSFUL=0
  int32 INVALID_GOAL=-1
