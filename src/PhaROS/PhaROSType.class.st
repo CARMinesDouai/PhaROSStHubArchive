@@ -91,9 +91,9 @@ PhaROSType >> encodeSelector [
 	^ encodeSelector.
 ]
 
-{ #category : #accessing }
+{ #category : #initialize }
 PhaROSType >> initialize [ 
-	self setEncodeDecodeSelectors.
+	self setEncodeDecodeSelectors
 ]
 
 { #category : #accessing }
@@ -119,6 +119,11 @@ PhaROSType >> newPacket [
 { #category : #accessing }
 PhaROSType >> serialize:aValue into: anEncoder [
 	^ anEncoder perform: encodeSelector with: aValue.
+]
+
+{ #category : #initialize }
+PhaROSType >> setEncodeDecodeSelectors [ 
+	^ self subclassResponsibility 
 ]
 
 { #category : #accessing }

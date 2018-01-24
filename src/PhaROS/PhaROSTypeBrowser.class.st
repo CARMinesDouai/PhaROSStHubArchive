@@ -93,23 +93,38 @@ PhaROSTypeBrowser >> definition: aTypeId [
 { #category : #private }
 PhaROSTypeBrowser >> fillWithExistingGeneratedTypeClasses [
 	
-	| existingTypeClasses |
+	| existingTypeClasses processLater count |
 		
 	"we miss classes if we restrict on the Generated RPackage"
 	"[ existingTypeClasses := (RPackageOrganizer default  packageNamed: 'PhaROSGenerated') classes ] on: KeyNotFound do: [ :e | ^ self ]."
 	
 	existingTypeClasses := PhaROSValue allSubclasses select: [ :c | c respondsTo: #rosTypeName ].
-		
-	existingTypeClasses do: [ : aTypeClass | 
-		|aTypeId|
+	processLater := OrderedCollection new.
+	count := 1.
+	
+	[ existingTypeClasses notEmpty and: [count < 5] ] whileTrue: [
+		|aTypeClass aTypeId|
+		aTypeClass := existingTypeClasses removeFirst.
 		aTypeId := aTypeClass rosTypeName.
-		self browser at: aTypeId ifAbsentPut: [
-			|firstLevel newType|
-			firstLevel := (Character lf split: aTypeClass rosTypeDefinition) select: [ :str | (str beginsWith: ' ') not & (str size > 3) ].
-			newType := self typeNamed: aTypeId for: firstLevel.
-			newType build.
-			newType
-		]
+		
+		[  
+			self browser at: aTypeId ifAbsentPut: [
+				|firstLevel newMessageType newType|
+				firstLevel := (Character cr split: aTypeClass rosTypeDefinition) select: [ :str | str trim size > 3 ] thenCollect: [:each | each trim].
+	
+				newMessageType := self typeNamed: aTypeId for: firstLevel.
+				newType := newMessageType build.
+				newType md5Sum: aTypeClass rosMd5Sum.
+				newMessageType
+			]	
+		] on: Error do: [ :e | 
+			"we cannot add this type because it probably depends on other types not build yet"
+			existingTypeClasses add: aTypeClass ].
+		
+		existingTypeClasses ifEmpty: [ 
+			existingTypeClasses := processLater.
+			processLater := OrderedCollection new.
+			count := count + 1 ]
 	]
 	
 ]

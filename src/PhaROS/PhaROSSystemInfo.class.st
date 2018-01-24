@@ -16,23 +16,8 @@ Class {
 }
 
 { #category : #distro }
-PhaROSSystemInfo class >> fuerte [
-	^'/opt/ros/fuerte/bin/'
-]
-
-{ #category : #distro }
-PhaROSSystemInfo class >> groovy [
-	^'/opt/ros/groovy/bin/'
-]
-
-{ #category : #distro }
-PhaROSSystemInfo class >> hydro [
-	^ '/opt/ros/hydro/bin/'
-]
-
-{ #category : #distro }
-PhaROSSystemInfo class >> indigo [
-	^'/opt/ros/indigo/bin/'
+PhaROSSystemInfo class >> defaultDistro [
+	^ 'kinetic'
 ]
 
 { #category : #initialization }
@@ -44,11 +29,6 @@ PhaROSSystemInfo class >> initialize [
 PhaROSSystemInfo class >> instance [
 
 	^ Instance ifNil: [ Instance := super new ]
-]
-
-{ #category : #distro }
-PhaROSSystemInfo class >> kinetic [
-	^'/opt/ros/kinetic/bin/'
 ]
 
 { #category : #'instance creation' }
@@ -103,7 +83,7 @@ PhaROSSystemInfo >> distro [
 PhaROSSystemInfo >> distroFromSystem [
 	| distroFromSystem |
 	distroFromSystem := OSProcess thisOSProcess waitForCommandOutput: 'rosversion -d'.
-	distroFromSystem ifEmpty: [ ^nil ].
+	distroFromSystem ifEmpty: [ ^self class defaultDistro ].
 	^(distroFromSystem substrings: String lf) first
 ]
 
@@ -276,7 +256,7 @@ PhaROSSystemInfo >> publishingRateOf: aTopicName [
 { #category : #accessing }
 PhaROSSystemInfo >> rospath [
 
-	^ path ifNil: [ path := self class perform: self distro asSymbol ]
+	^ path ifNil: [ path := '/opt/ros/', self distro ,'/bin/' ]
 ]
 
 { #category : #run }

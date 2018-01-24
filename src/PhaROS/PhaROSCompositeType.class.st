@@ -163,7 +163,7 @@ PhaROSCompositeType >> isAPossibleValue: aValue [
 	^ aValue isBasic not.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 PhaROSCompositeType >> isZeroSized [
 	^ typeDefinition size = 0
 ]
@@ -175,6 +175,11 @@ PhaROSCompositeType >> md5Sum [
 		md5Sum:= PhaROSTypeBrowser instance md5Sum: typeName.
 	].
 	^ md5Sum
+]
+
+{ #category : #accessing }
+PhaROSCompositeType >> md5Sum: aString [
+	md5Sum := aString
 ]
 
 { #category : #serializing }
@@ -205,11 +210,6 @@ PhaROSCompositeType >> serialize:aValue into: aFLEncoder [
 	].
 	
 
-]
-
-{ #category : #'as yet unclassified' }
-PhaROSCompositeType >> setEncodeDecodeSelectors [ 
-	
 ]
 
 { #category : #serializing }

@@ -25,7 +25,7 @@ Class {
 { #category : #construction }
 PhaROSHandleController class >> homeWithNodeNamed: aString [
 
-	^self url: (OSProcessAccessor forThisOSProcess  environmentAt:'ROS_MASTER_URI') nodeNamed: aString.
+	^self url: (OSEnvironment default at: 'ROS_MASTER_URI') nodeNamed: aString.
 	
 ]
 
@@ -97,8 +97,7 @@ PhaROSHandleController >> defaultNodeName [
 { #category : #accessing }
 PhaROSHandleController >> domain [
 	| hostName |
-	self flag: #askToTheHost.
-	hostName := OSProcess thisOSProcess environmentAt: 'ROS_HOSTNAME'.
+	hostName := OSEnvironment default getEnv: 'ROS_HOSTNAME'.
 	hostName ifNotNil: [ ^hostName ].
 	^NetNameResolver localHostName 
 ]
