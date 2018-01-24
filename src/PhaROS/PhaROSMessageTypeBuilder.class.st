@@ -119,7 +119,9 @@ PhaROSMessageTypeBuilder >> installMethodsIn: aClass [
 	
 	"save ros definitions on class-side too"
 	aClass class compile: 'rosTypeName ', String lf, '^', self name printString.
-	aClass class compile: 'rosTypeDefinition ', String lf, '^', self rosdefinition printString.		
+	aClass class compile: 'rosTypeDefinition ', String lf, '^', self rosdefinition printString.	
+	aClass class compile: 'rosMd5Sum ', String lf, '^', (PhaROSTypeBrowser instance md5Sum: self name) printString
+		
 ]
 
 { #category : #proto }
