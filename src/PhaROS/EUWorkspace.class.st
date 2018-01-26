@@ -11,9 +11,10 @@ Class {
 EUWorkspace class >> open [
 
 	|workspace|
-	workspace := Workspace openContents: '
-"# Commands"
+	workspace := Workspace openContents: '"# Commands"
+PhaROSTypeBrowser reset.
 PhaROSSystem cleanAll.
+
 ProxySwitch on.
 ProxySwitch off.
 
