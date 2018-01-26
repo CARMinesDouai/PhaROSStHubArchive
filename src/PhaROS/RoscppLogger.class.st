@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+RoscppLogger class >> rosMd5Sum [
+	^ 'a6069a2ff40db7bd32143dd66e1f408e'
+]
+
+{ #category : #'as yet unclassified' }
 RoscppLogger class >> rosTypeDefinition [ 
 ^' string name
  string level
@@ -14,6 +19,11 @@ RoscppLogger class >> rosTypeDefinition [
 { #category : #'as yet unclassified' }
 RoscppLogger class >> rosTypeName [ 
 ^'roscpp/Logger'
+]
+
+{ #category : #'as yet unclassified' }
+RoscppLogger class >> typeCreationOrder [
+	^ 0
 ]
 
 { #category : #'as yet unclassified' }

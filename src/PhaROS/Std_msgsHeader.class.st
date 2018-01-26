@@ -26,6 +26,11 @@ Std_msgsHeader class >> initialize [
 ]
 
 { #category : #'as yet unclassified' }
+Std_msgsHeader class >> rosMd5Sum [
+^'2176decaecbce78abc3b96ef049fabed'
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsHeader class >> rosTypeDefinition [ 
 ^' int32 seq
  time stamp
@@ -36,6 +41,11 @@ Std_msgsHeader class >> rosTypeDefinition [
 { #category : #'as yet unclassified' }
 Std_msgsHeader class >> rosTypeName [ 
 ^'std_msgs/Header'
+]
+
+{ #category : #'as yet unclassified' }
+Std_msgsHeader class >> typeCreationOrder [
+	^ 0
 ]
 
 { #category : #'as yet unclassified' }

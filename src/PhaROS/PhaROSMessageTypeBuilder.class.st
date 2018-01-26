@@ -16,6 +16,9 @@ Class {
 		'definition',
 		'package'
 	],
+	#classVars : [
+		'TypeCreationOrder'
+	],
 	#category : #'PhaROS-Types-DSL'
 }
 
@@ -97,6 +100,14 @@ PhaROSMessageTypeBuilder >> forPhaROSTyping [
 ]
 
 { #category : #'related class building' }
+PhaROSMessageTypeBuilder >> initTypeCreationOrder [
+	TypeCreationOrder := PhaROSValue allSubclasses detectMax: [ :c | 
+		(c respondsTo: #typeCreationOrder) ifTrue: [ c typeCreationOrder ] ifFalse: [ 0 ] ] 
+		
+
+]
+
+{ #category : #'related class building' }
 PhaROSMessageTypeBuilder >> installConstantsIn: aClass [
 	
 	self definition constants do: [ :constant |
@@ -120,7 +131,8 @@ PhaROSMessageTypeBuilder >> installMethodsIn: aClass [
 	"save ros definitions on class-side too"
 	aClass class compile: 'rosTypeName ', String lf, '^', self name printString.
 	aClass class compile: 'rosTypeDefinition ', String lf, '^', self rosdefinition printString.	
-	aClass class compile: 'rosMd5Sum ', String lf, '^', (PhaROSTypeBrowser instance md5Sum: self name) printString
+	aClass class compile: 'rosMd5Sum ', String lf, '^', (PhaROSTypeBrowser instance md5Sum: self name) printString.
+	aClass class compile: 'typeCreationOrder ', String lf, '^', self typeCreationOrder asString
 		
 ]
 
@@ -160,4 +172,11 @@ PhaROSMessageTypeBuilder >> rosdefinition [
 { #category : #accessing }
 PhaROSMessageTypeBuilder >> shortName [
 	^ name
+]
+
+{ #category : #'related class building' }
+PhaROSMessageTypeBuilder >> typeCreationOrder [
+	TypeCreationOrder ifNil: [ self initTypeCreationOrder ].
+	TypeCreationOrder := TypeCreationOrder + 1.
+	^ TypeCreationOrder
 ]
