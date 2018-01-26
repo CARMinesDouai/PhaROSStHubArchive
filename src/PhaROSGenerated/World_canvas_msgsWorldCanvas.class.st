@@ -24,6 +24,11 @@ World_canvas_msgsWorldCanvas class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+World_canvas_msgsWorldCanvas class >> typeCreationOrder [ 
+^423
+]
+
+{ #category : #'as yet unclassified' }
 World_canvas_msgsWorldCanvas >> description [
 	^ self getAt: #description. 
 

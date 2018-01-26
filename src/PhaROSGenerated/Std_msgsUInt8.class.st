@@ -21,6 +21,11 @@ Std_msgsUInt8 class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Std_msgsUInt8 class >> typeCreationOrder [ 
+^318
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsUInt8 >> data [
 	^ self getAt: #data. 
 

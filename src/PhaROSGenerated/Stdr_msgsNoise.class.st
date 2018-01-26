@@ -23,6 +23,11 @@ Stdr_msgsNoise class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsNoise class >> typeCreationOrder [ 
+^333
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsNoise >> initialize [
 	super initialize.
 	 self noise: false. 

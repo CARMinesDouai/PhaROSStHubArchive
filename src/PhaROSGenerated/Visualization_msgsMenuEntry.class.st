@@ -46,6 +46,11 @@ Visualization_msgsMenuEntry class >> rosrun [
 ]
 
 { #category : #'as yet unclassified' }
+Visualization_msgsMenuEntry class >> typeCreationOrder [ 
+^410
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsMenuEntry >> command [
 	^ self getAt: #command. 
 

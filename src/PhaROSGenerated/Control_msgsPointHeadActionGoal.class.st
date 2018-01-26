@@ -23,6 +23,11 @@ Control_msgsPointHeadActionGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsPointHeadActionGoal class >> typeCreationOrder [ 
+^84
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsPointHeadActionGoal >> goal [
 	^ self getAt: #goal. 
 

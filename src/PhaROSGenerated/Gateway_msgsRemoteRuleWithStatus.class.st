@@ -51,6 +51,11 @@ Gateway_msgsRemoteRuleWithStatus class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Gateway_msgsRemoteRuleWithStatus class >> typeCreationOrder [ 
+^123
+]
+
+{ #category : #'as yet unclassified' }
 Gateway_msgsRemoteRuleWithStatus class >> unknown [
 	^'unknown'
 

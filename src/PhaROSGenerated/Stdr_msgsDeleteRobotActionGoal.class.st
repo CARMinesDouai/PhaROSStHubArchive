@@ -23,6 +23,11 @@ Stdr_msgsDeleteRobotActionGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsDeleteRobotActionGoal class >> typeCreationOrder [ 
+^325
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsDeleteRobotActionGoal >> goal [
 	^ self getAt: #goal. 
 

@@ -24,6 +24,11 @@ Nav_msgsOdometry class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Nav_msgsOdometry class >> typeCreationOrder [ 
+^206
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsOdometry >> child_frame_id [
 	^ self getAt: #child_frame_id. 
 

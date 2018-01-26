@@ -22,6 +22,11 @@ Stdr_msgsThermalSensorMeasurementMsg class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsThermalSensorMeasurementMsg class >> typeCreationOrder [ 
+^362
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsThermalSensorMeasurementMsg >> header [
 	^ self getAt: #header. 
 

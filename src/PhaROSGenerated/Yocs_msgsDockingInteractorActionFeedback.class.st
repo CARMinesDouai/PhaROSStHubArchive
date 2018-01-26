@@ -23,6 +23,11 @@ Yocs_msgsDockingInteractorActionFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsDockingInteractorActionFeedback class >> typeCreationOrder [ 
+^433
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsDockingInteractorActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

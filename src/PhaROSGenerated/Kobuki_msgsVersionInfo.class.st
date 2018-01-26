@@ -39,6 +39,11 @@ Kobuki_msgsVersionInfo class >> smooth_move_start [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsVersionInfo class >> typeCreationOrder [ 
+^180
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsVersionInfo >> features [
 	^ self getAt: #features. 
 

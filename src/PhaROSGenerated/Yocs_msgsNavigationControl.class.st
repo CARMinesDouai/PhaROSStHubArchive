@@ -43,6 +43,11 @@ Yocs_msgsNavigationControl class >> stop [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigationControl class >> typeCreationOrder [ 
+^449
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigationControl >> control [
 	^ self getAt: #control. 
 

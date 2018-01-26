@@ -21,6 +21,11 @@ Nav_msgsGetMapResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Nav_msgsGetMapResult class >> typeCreationOrder [ 
+^200
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsGetMapResult >> initialize [
 	super initialize.
 	 self map: Nav_msgsOccupancyGrid new. 

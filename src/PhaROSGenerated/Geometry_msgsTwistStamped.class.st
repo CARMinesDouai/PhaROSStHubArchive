@@ -22,6 +22,11 @@ Geometry_msgsTwistStamped class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsTwistStamped class >> typeCreationOrder [ 
+^152
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsTwistStamped >> header [
 	^ self getAt: #header. 
 

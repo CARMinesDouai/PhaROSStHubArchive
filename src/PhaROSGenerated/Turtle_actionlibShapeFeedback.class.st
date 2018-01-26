@@ -20,6 +20,11 @@ Turtle_actionlibShapeFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Turtle_actionlibShapeFeedback class >> typeCreationOrder [ 
+^386
+]
+
+{ #category : #'as yet unclassified' }
 Turtle_actionlibShapeFeedback >> initialize [
 	super initialize.
 

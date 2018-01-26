@@ -29,6 +29,11 @@ Stdr_msgsLaserSensorMsg class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsLaserSensorMsg class >> typeCreationOrder [ 
+^334
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsLaserSensorMsg >> frame_id [
 	^ self getAt: #frame_id. 
 

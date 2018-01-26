@@ -23,6 +23,11 @@ Actionlib_tutorialsFibonacciActionResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciActionResult class >> typeCreationOrder [ 
+^35
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsFibonacciActionResult >> header [
 	^ self getAt: #header. 
 

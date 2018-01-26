@@ -21,6 +21,11 @@ Stdr_msgsDeleteRobotGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsDeleteRobotGoal class >> typeCreationOrder [ 
+^324
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsDeleteRobotGoal >> initialize [
 	super initialize.
 	 self name: ''. 

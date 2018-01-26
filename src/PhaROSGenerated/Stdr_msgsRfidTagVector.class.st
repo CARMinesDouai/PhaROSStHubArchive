@@ -21,6 +21,11 @@ Stdr_msgsRfidTagVector class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRfidTagVector class >> typeCreationOrder [ 
+^349
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRfidTagVector >> initialize [
 	super initialize.
 	 self rfid_tags: OrderedCollection new . 

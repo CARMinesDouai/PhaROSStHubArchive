@@ -27,6 +27,11 @@ Visualization_msgsInteractiveMarker class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Visualization_msgsInteractiveMarker class >> typeCreationOrder [ 
+^413
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsInteractiveMarker >> controls [
 	^ self getAt: #controls. 
 

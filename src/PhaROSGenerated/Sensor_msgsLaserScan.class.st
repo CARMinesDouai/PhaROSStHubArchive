@@ -30,6 +30,11 @@ Sensor_msgsLaserScan class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsLaserScan class >> typeCreationOrder [ 
+^271
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsLaserScan >> angle_increment [
 	^ self getAt: #angle_increment. 
 

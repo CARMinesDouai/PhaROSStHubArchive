@@ -23,6 +23,11 @@ Yocs_msgsDockingInteractorActionResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsDockingInteractorActionResult class >> typeCreationOrder [ 
+^431
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsDockingInteractorActionResult >> header [
 	^ self getAt: #header. 
 

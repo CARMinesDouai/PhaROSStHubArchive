@@ -23,6 +23,11 @@ Tf2_msgsLookupTransformAction class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Tf2_msgsLookupTransformAction class >> typeCreationOrder [ 
+^374
+]
+
+{ #category : #'as yet unclassified' }
 Tf2_msgsLookupTransformAction >> action_feedback [
 	^ self getAt: #action_feedback. 
 

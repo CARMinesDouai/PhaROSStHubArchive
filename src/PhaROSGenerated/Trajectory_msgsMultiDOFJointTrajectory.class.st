@@ -23,6 +23,11 @@ Trajectory_msgsMultiDOFJointTrajectory class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Trajectory_msgsMultiDOFJointTrajectory class >> typeCreationOrder [ 
+^381
+]
+
+{ #category : #'as yet unclassified' }
 Trajectory_msgsMultiDOFJointTrajectory >> header [
 	^ self getAt: #header. 
 

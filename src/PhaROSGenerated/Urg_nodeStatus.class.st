@@ -41,6 +41,11 @@ Urg_nodeStatus class >> setting [
 ]
 
 { #category : #'as yet unclassified' }
+Urg_nodeStatus class >> typeCreationOrder [ 
+^408
+]
+
+{ #category : #'as yet unclassified' }
 Urg_nodeStatus >> angle [
 	^ self getAt: #angle. 
 

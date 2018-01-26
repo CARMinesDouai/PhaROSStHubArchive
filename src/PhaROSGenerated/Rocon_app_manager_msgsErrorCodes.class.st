@@ -98,6 +98,11 @@ Rocon_app_manager_msgsErrorCodes class >> success [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsErrorCodes class >> typeCreationOrder [ 
+^214
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsErrorCodes class >> unknown [
 	^1
 

@@ -27,6 +27,11 @@ Sensor_msgsImu class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsImu class >> typeCreationOrder [ 
+^265
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsImu >> angular_velocity [
 	^ self getAt: #angular_velocity. 
 

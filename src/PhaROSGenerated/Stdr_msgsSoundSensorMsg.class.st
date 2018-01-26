@@ -25,6 +25,11 @@ Stdr_msgsSoundSensorMsg class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSoundSensorMsg class >> typeCreationOrder [ 
+^339
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSoundSensorMsg >> angleSpan [
 	^ self getAt: #angleSpan. 
 

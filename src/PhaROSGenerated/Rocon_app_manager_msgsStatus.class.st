@@ -40,6 +40,11 @@ Rocon_app_manager_msgsStatus class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsStatus class >> typeCreationOrder [ 
+^222
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsStatus >> application_namespace [
 	^ self getAt: #application_namespace. 
 

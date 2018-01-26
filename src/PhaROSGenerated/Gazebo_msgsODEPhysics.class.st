@@ -30,6 +30,11 @@ Gazebo_msgsODEPhysics class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Gazebo_msgsODEPhysics class >> typeCreationOrder [ 
+^135
+]
+
+{ #category : #'as yet unclassified' }
 Gazebo_msgsODEPhysics >> auto_disable_bodies [
 	^ self getAt: #auto_disable_bodies. 
 

@@ -21,6 +21,11 @@ Actionlib_tutorialsAveragingGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsAveragingGoal class >> typeCreationOrder [ 
+^25
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsAveragingGoal >> initialize [
 	super initialize.
 	 self samples: 0. 

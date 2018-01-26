@@ -106,6 +106,11 @@ Shape_msgsSolidPrimitive class >> sphere_radius [
 ]
 
 { #category : #'as yet unclassified' }
+Shape_msgsSolidPrimitive class >> typeCreationOrder [ 
+^285
+]
+
+{ #category : #'as yet unclassified' }
 Shape_msgsSolidPrimitive >> dimensions [
 	^ self getAt: #dimensions. 
 

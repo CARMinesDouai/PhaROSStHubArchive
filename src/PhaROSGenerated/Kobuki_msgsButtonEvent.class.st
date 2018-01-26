@@ -57,6 +57,11 @@ Kobuki_msgsButtonEvent class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsButtonEvent class >> typeCreationOrder [ 
+^165
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsButtonEvent >> button [
 	^ self getAt: #button. 
 

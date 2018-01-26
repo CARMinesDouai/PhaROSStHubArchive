@@ -64,6 +64,11 @@ Kobuki_msgsDockInfraRed class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsDockInfraRed class >> typeCreationOrder [ 
+^170
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsDockInfraRed >> data [
 	^ self getAt: #data. 
 

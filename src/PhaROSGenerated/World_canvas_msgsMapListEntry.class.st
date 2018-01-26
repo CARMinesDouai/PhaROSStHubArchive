@@ -24,6 +24,11 @@ World_canvas_msgsMapListEntry class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+World_canvas_msgsMapListEntry class >> typeCreationOrder [ 
+^422
+]
+
+{ #category : #'as yet unclassified' }
 World_canvas_msgsMapListEntry >> date [
 	^ self getAt: #date. 
 

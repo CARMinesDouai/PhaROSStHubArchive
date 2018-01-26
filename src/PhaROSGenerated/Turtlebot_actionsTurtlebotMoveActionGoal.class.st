@@ -23,6 +23,11 @@ Turtlebot_actionsTurtlebotMoveActionGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsTurtlebotMoveActionGoal class >> typeCreationOrder [ 
+^398
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsTurtlebotMoveActionGoal >> goal [
 	^ self getAt: #goal. 
 

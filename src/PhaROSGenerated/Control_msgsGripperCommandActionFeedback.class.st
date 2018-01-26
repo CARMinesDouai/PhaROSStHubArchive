@@ -23,6 +23,11 @@ Control_msgsGripperCommandActionFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsGripperCommandActionFeedback class >> typeCreationOrder [ 
+^69
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsGripperCommandActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

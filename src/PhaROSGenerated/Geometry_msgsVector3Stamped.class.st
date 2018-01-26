@@ -22,6 +22,11 @@ Geometry_msgsVector3Stamped class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsVector3Stamped class >> typeCreationOrder [ 
+^155
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsVector3Stamped >> header [
 	^ self getAt: #header. 
 

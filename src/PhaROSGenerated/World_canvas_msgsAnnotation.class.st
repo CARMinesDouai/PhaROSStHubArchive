@@ -32,6 +32,11 @@ World_canvas_msgsAnnotation class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+World_canvas_msgsAnnotation class >> typeCreationOrder [ 
+^419
+]
+
+{ #category : #'as yet unclassified' }
 World_canvas_msgsAnnotation >> color [
 	^ self getAt: #color. 
 

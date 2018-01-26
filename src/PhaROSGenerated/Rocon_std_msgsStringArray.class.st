@@ -21,6 +21,11 @@ Rocon_std_msgsStringArray class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsStringArray class >> typeCreationOrder [ 
+^244
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsStringArray >> initialize [
 	super initialize.
 	 self strings: OrderedCollection new . 

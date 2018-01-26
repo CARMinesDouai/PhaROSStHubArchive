@@ -25,6 +25,11 @@ Sensor_msgsRegionOfInterest class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsRegionOfInterest class >> typeCreationOrder [ 
+^258
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsRegionOfInterest >> do_rectify [
 	^ self getAt: #do_rectify. 
 

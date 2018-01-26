@@ -34,6 +34,11 @@ Zeroconf_msgsDiscoveredService class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Zeroconf_msgsDiscoveredService class >> typeCreationOrder [ 
+^459
+]
+
+{ #category : #'as yet unclassified' }
 Zeroconf_msgsDiscoveredService >> cached [
 	^ self getAt: #cached. 
 

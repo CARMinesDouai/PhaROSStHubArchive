@@ -25,6 +25,11 @@ Nav_msgsMapMetaData class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Nav_msgsMapMetaData class >> typeCreationOrder [ 
+^186
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsMapMetaData >> height [
 	^ self getAt: #height. 
 

@@ -23,6 +23,11 @@ Gazebo_msgsModelStates class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Gazebo_msgsModelStates class >> typeCreationOrder [ 
+^133
+]
+
+{ #category : #'as yet unclassified' }
 Gazebo_msgsModelStates >> initialize [
 	super initialize.
 	 self name: OrderedCollection new . 

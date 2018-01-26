@@ -23,6 +23,11 @@ Stdr_msgsCO2Source class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsCO2Source class >> typeCreationOrder [ 
+^322
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsCO2Source >> id [
 	^ self getAt: #id. 
 

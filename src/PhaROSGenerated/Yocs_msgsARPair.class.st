@@ -25,6 +25,11 @@ Yocs_msgsARPair class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsARPair class >> typeCreationOrder [ 
+^424
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsARPair >> baseline [
 	^ self getAt: #baseline. 
 

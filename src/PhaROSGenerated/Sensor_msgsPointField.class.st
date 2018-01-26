@@ -62,6 +62,11 @@ Sensor_msgsPointField class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsPointField class >> typeCreationOrder [ 
+^183
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsPointField class >> uint16 [
 	^4
 

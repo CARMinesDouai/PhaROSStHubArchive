@@ -21,6 +21,11 @@ Visualization_msgsMarkerArray class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Visualization_msgsMarkerArray class >> typeCreationOrder [ 
+^418
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsMarkerArray >> initialize [
 	super initialize.
 	 self markers: OrderedCollection new . 

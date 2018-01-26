@@ -22,6 +22,11 @@ Geometry_msgsPoseStamped class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPoseStamped class >> typeCreationOrder [ 
+^42
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPoseStamped >> header [
 	^ self getAt: #header. 
 

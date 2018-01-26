@@ -22,6 +22,11 @@ Diagnostic_msgsKeyValue class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Diagnostic_msgsKeyValue class >> typeCreationOrder [ 
+^105
+]
+
+{ #category : #'as yet unclassified' }
 Diagnostic_msgsKeyValue >> initialize [
 	super initialize.
 	 self key: ''. 

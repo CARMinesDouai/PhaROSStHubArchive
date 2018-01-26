@@ -24,6 +24,11 @@ Rocon_interaction_msgsRemoconStatus class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsRemoconStatus class >> typeCreationOrder [ 
+^232
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsRemoconStatus >> initialize [
 	super initialize.
 	 self platform_info: Rocon_std_msgsMasterInfo new. 

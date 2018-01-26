@@ -22,6 +22,11 @@ Create_nodeDrive class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Create_nodeDrive class >> typeCreationOrder [ 
+^100
+]
+
+{ #category : #'as yet unclassified' }
 Create_nodeDrive >> initialize [
 	super initialize.
 	 self velocity: 0.0. 

@@ -22,6 +22,11 @@ Std_msgsMultiArrayLayout class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Std_msgsMultiArrayLayout class >> typeCreationOrder [ 
+^292
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsMultiArrayLayout >> data_offset [
 	^ self getAt: #data_offset. 
 

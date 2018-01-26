@@ -22,6 +22,11 @@ Turtlebot_actionsTurtlebotMoveFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsTurtlebotMoveFeedback class >> typeCreationOrder [ 
+^401
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsTurtlebotMoveFeedback >> forward_distance [
 	^ self getAt: #forward_distance. 
 

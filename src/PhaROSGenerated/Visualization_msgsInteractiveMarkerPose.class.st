@@ -23,6 +23,11 @@ Visualization_msgsInteractiveMarkerPose class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Visualization_msgsInteractiveMarkerPose class >> typeCreationOrder [ 
+^416
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsInteractiveMarkerPose >> header [
 	^ self getAt: #header. 
 

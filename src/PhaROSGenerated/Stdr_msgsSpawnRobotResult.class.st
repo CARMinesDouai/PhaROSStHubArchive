@@ -22,6 +22,11 @@ Stdr_msgsSpawnRobotResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSpawnRobotResult class >> typeCreationOrder [ 
+^357
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSpawnRobotResult >> indexedDescription [
 	^ self getAt: #indexedDescription. 
 

@@ -21,6 +21,11 @@ Actionlib_tutorialsFibonacciResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciResult class >> typeCreationOrder [ 
+^34
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsFibonacciResult >> initialize [
 	super initialize.
 	 self sequence: OrderedCollection new . 

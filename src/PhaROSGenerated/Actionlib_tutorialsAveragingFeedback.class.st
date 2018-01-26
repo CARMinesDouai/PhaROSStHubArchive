@@ -24,6 +24,11 @@ Actionlib_tutorialsAveragingFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsAveragingFeedback class >> typeCreationOrder [ 
+^29
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsAveragingFeedback >> data [
 	^ self getAt: #data. 
 

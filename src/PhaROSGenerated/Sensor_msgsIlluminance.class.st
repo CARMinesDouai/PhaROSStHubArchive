@@ -23,6 +23,11 @@ Sensor_msgsIlluminance class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsIlluminance class >> typeCreationOrder [ 
+^263
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsIlluminance >> header [
 	^ self getAt: #header. 
 

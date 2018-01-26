@@ -20,6 +20,11 @@ Move_base_msgsMoveBaseResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Move_base_msgsMoveBaseResult class >> typeCreationOrder [ 
+^193
+]
+
+{ #category : #'as yet unclassified' }
 Move_base_msgsMoveBaseResult >> initialize [
 	super initialize.
 

@@ -27,6 +27,11 @@ Rocon_interaction_msgsStrings class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsStrings class >> typeCreationOrder [ 
+^233
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsStrings >> initialize [
 	super initialize.
 

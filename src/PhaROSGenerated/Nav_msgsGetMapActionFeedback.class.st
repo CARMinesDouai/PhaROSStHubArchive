@@ -23,6 +23,11 @@ Nav_msgsGetMapActionFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Nav_msgsGetMapActionFeedback class >> typeCreationOrder [ 
+^203
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsGetMapActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

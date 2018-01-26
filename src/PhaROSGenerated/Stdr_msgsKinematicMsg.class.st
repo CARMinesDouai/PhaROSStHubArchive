@@ -33,6 +33,11 @@ Stdr_msgsKinematicMsg class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsKinematicMsg class >> typeCreationOrder [ 
+^332
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsKinematicMsg >> a_g_ux [
 	^ self getAt: #a_g_ux. 
 

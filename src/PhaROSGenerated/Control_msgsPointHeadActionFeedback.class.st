@@ -23,6 +23,11 @@ Control_msgsPointHeadActionFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsPointHeadActionFeedback class >> typeCreationOrder [ 
+^88
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsPointHeadActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

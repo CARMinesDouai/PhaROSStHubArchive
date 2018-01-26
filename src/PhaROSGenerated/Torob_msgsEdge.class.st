@@ -24,6 +24,11 @@ Torob_msgsEdge class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Torob_msgsEdge class >> typeCreationOrder [ 
+^377
+]
+
+{ #category : #'as yet unclassified' }
 Torob_msgsEdge >> initialize [
 	super initialize.
 	 self src: 0. 

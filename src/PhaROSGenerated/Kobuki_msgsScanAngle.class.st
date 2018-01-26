@@ -22,6 +22,11 @@ Kobuki_msgsScanAngle class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsScanAngle class >> typeCreationOrder [ 
+^177
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsScanAngle >> header [
 	^ self getAt: #header. 
 

@@ -23,6 +23,11 @@ Control_msgsPointHeadActionResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsPointHeadActionResult class >> typeCreationOrder [ 
+^86
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsPointHeadActionResult >> header [
 	^ self getAt: #header. 
 

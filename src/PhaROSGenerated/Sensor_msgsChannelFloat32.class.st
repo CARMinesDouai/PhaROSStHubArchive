@@ -22,6 +22,11 @@ Sensor_msgsChannelFloat32 class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsChannelFloat32 class >> typeCreationOrder [ 
+^260
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsChannelFloat32 >> initialize [
 	super initialize.
 	 self name: ''. 

@@ -22,6 +22,11 @@ Pcl_msgsModelCoefficients class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Pcl_msgsModelCoefficients class >> typeCreationOrder [ 
+^208
+]
+
+{ #category : #'as yet unclassified' }
 Pcl_msgsModelCoefficients >> header [
 	^ self getAt: #header. 
 

@@ -20,6 +20,11 @@ Nav_msgsGetMapGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Nav_msgsGetMapGoal class >> typeCreationOrder [ 
+^198
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsGetMapGoal >> initialize [
 	super initialize.
 

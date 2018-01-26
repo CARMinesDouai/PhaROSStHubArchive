@@ -23,6 +23,11 @@ ActionlibTwoIntsActionGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+ActionlibTwoIntsActionGoal class >> typeCreationOrder [ 
+^18
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTwoIntsActionGoal >> goal [
 	^ self getAt: #goal. 
 

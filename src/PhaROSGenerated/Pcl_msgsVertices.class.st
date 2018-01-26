@@ -21,6 +21,11 @@ Pcl_msgsVertices class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Pcl_msgsVertices class >> typeCreationOrder [ 
+^210
+]
+
+{ #category : #'as yet unclassified' }
 Pcl_msgsVertices >> initialize [
 	super initialize.
 	 self vertices: OrderedCollection new . 

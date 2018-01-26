@@ -26,6 +26,11 @@ Smach_msgsSmachContainerStatus class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Smach_msgsSmachContainerStatus class >> typeCreationOrder [ 
+^287
+]
+
+{ #category : #'as yet unclassified' }
 Smach_msgsSmachContainerStatus >> active_states [
 	^ self getAt: #active_states. 
 

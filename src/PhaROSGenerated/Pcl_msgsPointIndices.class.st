@@ -22,6 +22,11 @@ Pcl_msgsPointIndices class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Pcl_msgsPointIndices class >> typeCreationOrder [ 
+^209
+]
+
+{ #category : #'as yet unclassified' }
 Pcl_msgsPointIndices >> header [
 	^ self getAt: #header. 
 

@@ -70,6 +70,11 @@ ActionlibTestRequestGoal class >> terminate_success [
 ]
 
 { #category : #'as yet unclassified' }
+ActionlibTestRequestGoal class >> typeCreationOrder [ 
+^10
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTestRequestGoal >> delay_accept [
 	^ self getAt: #delay_accept. 
 

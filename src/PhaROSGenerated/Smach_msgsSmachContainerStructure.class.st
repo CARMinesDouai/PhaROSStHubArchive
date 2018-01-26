@@ -27,6 +27,11 @@ Smach_msgsSmachContainerStructure class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Smach_msgsSmachContainerStructure class >> typeCreationOrder [ 
+^288
+]
+
+{ #category : #'as yet unclassified' }
 Smach_msgsSmachContainerStructure >> children [
 	^ self getAt: #children. 
 

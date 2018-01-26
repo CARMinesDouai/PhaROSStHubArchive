@@ -22,6 +22,11 @@ Control_msgsGripperCommand class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsGripperCommand class >> typeCreationOrder [ 
+^63
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsGripperCommand >> initialize [
 	super initialize.
 	 self position: 0.0. 

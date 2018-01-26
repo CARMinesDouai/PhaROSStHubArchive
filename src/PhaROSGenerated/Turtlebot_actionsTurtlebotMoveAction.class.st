@@ -23,6 +23,11 @@ Turtlebot_actionsTurtlebotMoveAction class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsTurtlebotMoveAction class >> typeCreationOrder [ 
+^403
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsTurtlebotMoveAction >> action_feedback [
 	^ self getAt: #action_feedback. 
 

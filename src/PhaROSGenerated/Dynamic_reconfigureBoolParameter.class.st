@@ -22,6 +22,11 @@ Dynamic_reconfigureBoolParameter class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureBoolParameter class >> typeCreationOrder [ 
+^108
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureBoolParameter >> initialize [
 	super initialize.
 	 self name: ''. 

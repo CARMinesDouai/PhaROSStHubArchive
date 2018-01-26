@@ -22,6 +22,11 @@ Rocon_std_msgsFloat32Stamped class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsFloat32Stamped class >> typeCreationOrder [ 
+^243
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsFloat32Stamped >> data [
 	^ self getAt: #data. 
 

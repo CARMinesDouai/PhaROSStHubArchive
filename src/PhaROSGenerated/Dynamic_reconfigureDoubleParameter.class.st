@@ -22,6 +22,11 @@ Dynamic_reconfigureDoubleParameter class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureDoubleParameter class >> typeCreationOrder [ 
+^111
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureDoubleParameter >> initialize [
 	super initialize.
 	 self name: ''. 

@@ -20,6 +20,11 @@ Control_msgsPointHeadResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsPointHeadResult class >> typeCreationOrder [ 
+^85
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsPointHeadResult >> initialize [
 	super initialize.
 

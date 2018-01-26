@@ -147,6 +147,11 @@ Visualization_msgsMarker class >> triangle_list [
 ]
 
 { #category : #'as yet unclassified' }
+Visualization_msgsMarker class >> typeCreationOrder [ 
+^411
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsMarker >> action [
 	^ self getAt: #action. 
 

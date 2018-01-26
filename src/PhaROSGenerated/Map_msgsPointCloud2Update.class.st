@@ -37,6 +37,11 @@ Map_msgsPointCloud2Update class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Map_msgsPointCloud2Update class >> typeCreationOrder [ 
+^185
+]
+
+{ #category : #'as yet unclassified' }
 Map_msgsPointCloud2Update >> header [
 	^ self getAt: #header. 
 

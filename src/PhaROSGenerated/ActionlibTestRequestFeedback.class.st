@@ -20,6 +20,11 @@ ActionlibTestRequestFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+ActionlibTestRequestFeedback class >> typeCreationOrder [ 
+^14
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTestRequestFeedback >> initialize [
 	super initialize.
 

@@ -23,6 +23,11 @@ Yocs_msgsNavigateToActionResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigateToActionResult class >> typeCreationOrder [ 
+^445
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigateToActionResult >> header [
 	^ self getAt: #header. 
 

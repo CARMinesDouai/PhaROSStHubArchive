@@ -22,6 +22,11 @@ Stdr_msgsSoundSensorMeasurementMsg class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSoundSensorMeasurementMsg class >> typeCreationOrder [ 
+^352
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSoundSensorMeasurementMsg >> header [
 	^ self getAt: #header. 
 

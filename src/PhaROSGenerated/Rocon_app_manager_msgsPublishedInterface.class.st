@@ -22,6 +22,11 @@ Rocon_app_manager_msgsPublishedInterface class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsPublishedInterface class >> typeCreationOrder [ 
+^217
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsPublishedInterface >> initialize [
 	super initialize.
 	 self interface: Rocon_app_manager_msgsPublicInterface new. 

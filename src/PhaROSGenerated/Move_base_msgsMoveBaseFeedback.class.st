@@ -21,6 +21,11 @@ Move_base_msgsMoveBaseFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Move_base_msgsMoveBaseFeedback class >> typeCreationOrder [ 
+^195
+]
+
+{ #category : #'as yet unclassified' }
 Move_base_msgsMoveBaseFeedback >> base_position [
 	^ self getAt: #base_position. 
 

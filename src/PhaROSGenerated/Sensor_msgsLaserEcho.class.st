@@ -21,6 +21,11 @@ Sensor_msgsLaserEcho class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsLaserEcho class >> typeCreationOrder [ 
+^270
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsLaserEcho >> echoes [
 	^ self getAt: #echoes. 
 

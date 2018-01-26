@@ -49,6 +49,11 @@ Kobuki_msgsLed class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsLed class >> typeCreationOrder [ 
+^173
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsLed >> initialize [
 	super initialize.
 	 self value: 0. 

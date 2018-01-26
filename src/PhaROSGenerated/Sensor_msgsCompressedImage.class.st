@@ -23,6 +23,11 @@ Sensor_msgsCompressedImage class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsCompressedImage class >> typeCreationOrder [ 
+^261
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsCompressedImage >> data [
 	^ self getAt: #data. 
 

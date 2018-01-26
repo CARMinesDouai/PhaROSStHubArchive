@@ -21,6 +21,11 @@ Shape_msgsPlane class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Shape_msgsPlane class >> typeCreationOrder [ 
+^284
+]
+
+{ #category : #'as yet unclassified' }
 Shape_msgsPlane >> coef [
 	^ self getAt: #coef. 
 

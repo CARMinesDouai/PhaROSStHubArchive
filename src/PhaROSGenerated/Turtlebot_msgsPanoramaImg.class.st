@@ -27,6 +27,11 @@ Turtlebot_msgsPanoramaImg class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Turtlebot_msgsPanoramaImg class >> typeCreationOrder [ 
+^405
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_msgsPanoramaImg >> geo_tag [
 	^ self getAt: #geo_tag. 
 

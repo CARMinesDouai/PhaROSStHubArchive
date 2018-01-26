@@ -23,6 +23,11 @@ Control_msgsSingleJointPositionGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionGoal class >> typeCreationOrder [ 
+^90
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsSingleJointPositionGoal >> initialize [
 	super initialize.
 	 self position: 0.0. 

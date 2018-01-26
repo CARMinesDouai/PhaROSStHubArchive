@@ -21,6 +21,11 @@ Rocon_app_manager_msgsRappList class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsRappList class >> typeCreationOrder [ 
+^221
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsRappList >> available_rapps [
 	^ self getAt: #available_rapps. 
 

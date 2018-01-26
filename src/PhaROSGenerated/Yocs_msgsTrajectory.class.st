@@ -23,6 +23,11 @@ Yocs_msgsTrajectory class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsTrajectory class >> typeCreationOrder [ 
+^454
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsTrajectory >> header [
 	^ self getAt: #header. 
 

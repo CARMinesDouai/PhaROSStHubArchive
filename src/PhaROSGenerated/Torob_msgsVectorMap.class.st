@@ -24,6 +24,11 @@ Torob_msgsVectorMap class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Torob_msgsVectorMap class >> typeCreationOrder [ 
+^379
+]
+
+{ #category : #'as yet unclassified' }
 Torob_msgsVectorMap >> edges [
 	^ self getAt: #edges. 
 

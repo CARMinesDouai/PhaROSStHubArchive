@@ -27,6 +27,11 @@ Map_msgsProjectedMapInfo class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Map_msgsProjectedMapInfo class >> typeCreationOrder [ 
+^189
+]
+
+{ #category : #'as yet unclassified' }
 Map_msgsProjectedMapInfo >> frame_id [
 	^ self getAt: #frame_id. 
 

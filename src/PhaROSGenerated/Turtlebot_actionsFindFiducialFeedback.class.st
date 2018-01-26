@@ -20,6 +20,11 @@ Turtlebot_actionsFindFiducialFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsFindFiducialFeedback class >> typeCreationOrder [ 
+^394
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsFindFiducialFeedback >> initialize [
 	super initialize.
 

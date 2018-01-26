@@ -21,6 +21,11 @@ Yocs_msgsLocalizeFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsLocalizeFeedback class >> typeCreationOrder [ 
+^439
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsLocalizeFeedback >> initialize [
 	super initialize.
 	 self message: ''. 

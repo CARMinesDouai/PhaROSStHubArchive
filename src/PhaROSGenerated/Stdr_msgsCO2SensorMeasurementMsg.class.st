@@ -22,6 +22,11 @@ Stdr_msgsCO2SensorMeasurementMsg class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsCO2SensorMeasurementMsg class >> typeCreationOrder [ 
+^320
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsCO2SensorMeasurementMsg >> co2_ppm [
 	^ self getAt: #co2_ppm. 
 

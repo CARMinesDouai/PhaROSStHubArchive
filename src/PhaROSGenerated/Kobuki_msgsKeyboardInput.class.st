@@ -70,6 +70,11 @@ Kobuki_msgsKeyboardInput class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsKeyboardInput class >> typeCreationOrder [ 
+^172
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsKeyboardInput >> initialize [
 	super initialize.
 	 self pressedKey: 0. 

@@ -25,6 +25,11 @@ TurtlesimPose class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+TurtlesimPose class >> typeCreationOrder [ 
+^407
+]
+
+{ #category : #'as yet unclassified' }
 TurtlesimPose >> angular_velocity [
 	^ self getAt: #angular_velocity. 
 

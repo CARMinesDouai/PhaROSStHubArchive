@@ -22,6 +22,11 @@ Rocon_service_pair_msgsTestiesPair class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_service_pair_msgsTestiesPair class >> typeCreationOrder [ 
+^238
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_service_pair_msgsTestiesPair >> initialize [
 	super initialize.
 	 self pair_request: Rocon_service_pair_msgsTestiesPairRequest new. 

@@ -22,6 +22,11 @@ ActionlibTestRequestResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+ActionlibTestRequestResult class >> typeCreationOrder [ 
+^12
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTestRequestResult >> initialize [
 	super initialize.
 	 self the_result: 0. 

@@ -22,6 +22,11 @@ Shape_msgsMesh class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Shape_msgsMesh class >> typeCreationOrder [ 
+^283
+]
+
+{ #category : #'as yet unclassified' }
 Shape_msgsMesh >> initialize [
 	super initialize.
 	 self triangles: OrderedCollection new . 

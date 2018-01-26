@@ -22,6 +22,11 @@ Gazebo_msgsContactsState class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Gazebo_msgsContactsState class >> typeCreationOrder [ 
+^128
+]
+
+{ #category : #'as yet unclassified' }
 Gazebo_msgsContactsState >> header [
 	^ self getAt: #header. 
 

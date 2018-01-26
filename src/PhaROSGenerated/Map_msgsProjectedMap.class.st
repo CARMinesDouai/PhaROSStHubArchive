@@ -23,6 +23,11 @@ Map_msgsProjectedMap class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Map_msgsProjectedMap class >> typeCreationOrder [ 
+^188
+]
+
+{ #category : #'as yet unclassified' }
 Map_msgsProjectedMap >> initialize [
 	super initialize.
 	 self map: Nav_msgsOccupancyGrid new. 

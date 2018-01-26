@@ -23,6 +23,11 @@ Stdr_msgsSpawnRobotActionGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSpawnRobotActionGoal class >> typeCreationOrder [ 
+^356
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSpawnRobotActionGoal >> goal [
 	^ self getAt: #goal. 
 

@@ -25,6 +25,11 @@ Dynamic_reconfigureGroup class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureGroup class >> typeCreationOrder [ 
+^115
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureGroup >> id [
 	^ self getAt: #id. 
 

@@ -21,6 +21,11 @@ Stdr_msgsCO2SourceVector class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsCO2SourceVector class >> typeCreationOrder [ 
+^323
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsCO2SourceVector >> co2_sources [
 	^ self getAt: #co2_sources. 
 

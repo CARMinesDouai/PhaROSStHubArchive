@@ -22,6 +22,11 @@ Stdr_msgsRobotIndexedMsg class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRobotIndexedMsg class >> typeCreationOrder [ 
+^350
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRobotIndexedMsg >> initialize [
 	super initialize.
 	 self name: ''. 

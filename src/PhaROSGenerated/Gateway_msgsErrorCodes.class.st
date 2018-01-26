@@ -154,6 +154,11 @@ Gateway_msgsErrorCodes class >> success [
 ]
 
 { #category : #'as yet unclassified' }
+Gateway_msgsErrorCodes class >> typeCreationOrder [ 
+^120
+]
+
+{ #category : #'as yet unclassified' }
 Gateway_msgsErrorCodes class >> unknown_advertisement_error [
 	^39
 

@@ -22,6 +22,11 @@ CapabilitiesCapability class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+CapabilitiesCapability class >> typeCreationOrder [ 
+^48
+]
+
+{ #category : #'as yet unclassified' }
 CapabilitiesCapability >> capability [
 	^ self getAt: #capability. 
 

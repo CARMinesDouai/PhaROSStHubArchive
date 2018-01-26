@@ -23,6 +23,11 @@ Sensor_msgsJoy class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsJoy class >> typeCreationOrder [ 
+^267
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsJoy >> axes [
 	^ self getAt: #axes. 
 

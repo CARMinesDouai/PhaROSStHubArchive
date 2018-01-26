@@ -23,6 +23,11 @@ Sensor_msgsPointCloud class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsPointCloud class >> typeCreationOrder [ 
+^277
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsPointCloud >> channels [
 	^ self getAt: #channels. 
 

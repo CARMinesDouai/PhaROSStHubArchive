@@ -57,6 +57,11 @@ Kobuki_msgsPowerSystemEvent class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsPowerSystemEvent class >> typeCreationOrder [ 
+^175
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsPowerSystemEvent class >> unplugged [
 	^0
 

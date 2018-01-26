@@ -24,6 +24,11 @@ Control_msgsGripperCommandResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsGripperCommandResult class >> typeCreationOrder [ 
+^66
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsGripperCommandResult >> effort [
 	^ self getAt: #effort. 
 

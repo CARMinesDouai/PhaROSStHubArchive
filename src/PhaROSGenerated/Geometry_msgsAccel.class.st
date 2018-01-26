@@ -22,6 +22,11 @@ Geometry_msgsAccel class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsAccel class >> typeCreationOrder [ 
+^137
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsAccel >> angular [
 	^ self getAt: #angular. 
 

@@ -22,6 +22,11 @@ Geometry_msgsQuaternionStamped class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsQuaternionStamped class >> typeCreationOrder [ 
+^149
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsQuaternionStamped >> header [
 	^ self getAt: #header. 
 

@@ -23,6 +23,11 @@ Actionlib_tutorialsFibonacciActionGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciActionGoal class >> typeCreationOrder [ 
+^33
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsFibonacciActionGoal >> goal [
 	^ self getAt: #goal. 
 

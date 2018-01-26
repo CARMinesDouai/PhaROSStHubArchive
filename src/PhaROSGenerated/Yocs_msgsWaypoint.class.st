@@ -23,6 +23,11 @@ Yocs_msgsWaypoint class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsWaypoint class >> typeCreationOrder [ 
+^453
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsWaypoint >> header [
 	^ self getAt: #header. 
 

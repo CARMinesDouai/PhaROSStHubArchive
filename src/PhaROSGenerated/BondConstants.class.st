@@ -62,6 +62,11 @@ BondConstants class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+BondConstants class >> typeCreationOrder [ 
+^46
+]
+
+{ #category : #'as yet unclassified' }
 BondConstants >> initialize [
 	super initialize.
 

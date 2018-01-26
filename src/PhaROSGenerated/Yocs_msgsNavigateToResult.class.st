@@ -23,6 +23,11 @@ Yocs_msgsNavigateToResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigateToResult class >> typeCreationOrder [ 
+^444
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigateToResult >> distance [
 	^ self getAt: #distance. 
 

@@ -25,6 +25,11 @@ Dynamic_reconfigureParamDescription class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureParamDescription class >> typeCreationOrder [ 
+^114
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureParamDescription >> description [
 	^ self getAt: #description. 
 

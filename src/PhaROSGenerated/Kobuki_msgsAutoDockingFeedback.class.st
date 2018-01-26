@@ -22,6 +22,11 @@ Kobuki_msgsAutoDockingFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingFeedback class >> typeCreationOrder [ 
+^161
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsAutoDockingFeedback >> initialize [
 	super initialize.
 	 self state: ''. 

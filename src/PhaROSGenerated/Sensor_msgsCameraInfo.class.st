@@ -31,6 +31,11 @@ Sensor_msgsCameraInfo class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsCameraInfo class >> typeCreationOrder [ 
+^259
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsCameraInfo >> D [
 	^ self getAt: #D. 
 

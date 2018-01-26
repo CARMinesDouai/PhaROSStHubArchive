@@ -50,6 +50,11 @@ Kobuki_msgsWheelDropEvent class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsWheelDropEvent class >> typeCreationOrder [ 
+^181
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsWheelDropEvent >> initialize [
 	super initialize.
 	 self wheel: 0. 

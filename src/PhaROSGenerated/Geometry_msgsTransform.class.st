@@ -22,6 +22,11 @@ Geometry_msgsTransform class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsTransform class >> typeCreationOrder [ 
+^150
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsTransform >> initialize [
 	super initialize.
 	 self translation: Geometry_msgsVector3 new. 

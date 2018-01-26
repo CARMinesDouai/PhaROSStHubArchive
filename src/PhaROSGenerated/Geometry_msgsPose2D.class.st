@@ -23,6 +23,11 @@ Geometry_msgsPose2D class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPose2D class >> typeCreationOrder [ 
+^145
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPose2D >> initialize [
 	super initialize.
 	 self x: 0.0. 

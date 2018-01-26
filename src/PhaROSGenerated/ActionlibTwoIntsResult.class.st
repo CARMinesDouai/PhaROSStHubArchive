@@ -21,6 +21,11 @@ ActionlibTwoIntsResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+ActionlibTwoIntsResult class >> typeCreationOrder [ 
+^19
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTwoIntsResult >> initialize [
 	super initialize.
 	 self sum: 0. 

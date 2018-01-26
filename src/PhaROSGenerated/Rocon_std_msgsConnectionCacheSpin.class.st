@@ -22,6 +22,11 @@ Rocon_std_msgsConnectionCacheSpin class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsConnectionCacheSpin class >> typeCreationOrder [ 
+^240
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsConnectionCacheSpin >> initialize [
 	super initialize.
 	 self spin_freq: 0.0. 

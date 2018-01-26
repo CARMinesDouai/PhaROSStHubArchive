@@ -20,6 +20,11 @@ Tf2_msgsLookupTransformFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Tf2_msgsLookupTransformFeedback class >> typeCreationOrder [ 
+^372
+]
+
+{ #category : #'as yet unclassified' }
 Tf2_msgsLookupTransformFeedback >> initialize [
 	super initialize.
 

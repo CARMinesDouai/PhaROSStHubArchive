@@ -23,6 +23,11 @@ Stdr_msgsSoundSource class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSoundSource class >> typeCreationOrder [ 
+^353
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSoundSource >> dbs [
 	^ self getAt: #dbs. 
 

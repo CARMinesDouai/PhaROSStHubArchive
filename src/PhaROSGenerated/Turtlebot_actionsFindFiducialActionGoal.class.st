@@ -23,6 +23,11 @@ Turtlebot_actionsFindFiducialActionGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsFindFiducialActionGoal class >> typeCreationOrder [ 
+^391
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsFindFiducialActionGoal >> goal [
 	^ self getAt: #goal. 
 

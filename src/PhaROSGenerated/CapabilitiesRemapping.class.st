@@ -22,6 +22,11 @@ CapabilitiesRemapping class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+CapabilitiesRemapping class >> typeCreationOrder [ 
+^51
+]
+
+{ #category : #'as yet unclassified' }
 CapabilitiesRemapping >> initialize [
 	super initialize.
 	 self key: ''. 

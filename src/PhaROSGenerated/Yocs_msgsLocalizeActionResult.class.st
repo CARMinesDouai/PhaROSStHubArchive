@@ -23,6 +23,11 @@ Yocs_msgsLocalizeActionResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsLocalizeActionResult class >> typeCreationOrder [ 
+^438
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsLocalizeActionResult >> header [
 	^ self getAt: #header. 
 

@@ -22,6 +22,11 @@ Geometry_msgsWrenchStamped class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsWrenchStamped class >> typeCreationOrder [ 
+^156
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsWrenchStamped >> header [
 	^ self getAt: #header. 
 

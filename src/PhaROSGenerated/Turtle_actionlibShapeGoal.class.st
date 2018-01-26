@@ -22,6 +22,11 @@ Turtle_actionlibShapeGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Turtle_actionlibShapeGoal class >> typeCreationOrder [ 
+^382
+]
+
+{ #category : #'as yet unclassified' }
 Turtle_actionlibShapeGoal >> edges [
 	^ self getAt: #edges. 
 

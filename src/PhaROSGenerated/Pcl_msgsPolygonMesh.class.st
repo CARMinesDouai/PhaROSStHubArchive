@@ -23,6 +23,11 @@ Pcl_msgsPolygonMesh class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Pcl_msgsPolygonMesh class >> typeCreationOrder [ 
+^211
+]
+
+{ #category : #'as yet unclassified' }
 Pcl_msgsPolygonMesh >> cloud [
 	^ self getAt: #cloud. 
 

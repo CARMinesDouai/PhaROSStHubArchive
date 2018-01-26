@@ -23,6 +23,11 @@ Move_base_msgsMoveBaseActionResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Move_base_msgsMoveBaseActionResult class >> typeCreationOrder [ 
+^194
+]
+
+{ #category : #'as yet unclassified' }
 Move_base_msgsMoveBaseActionResult >> header [
 	^ self getAt: #header. 
 

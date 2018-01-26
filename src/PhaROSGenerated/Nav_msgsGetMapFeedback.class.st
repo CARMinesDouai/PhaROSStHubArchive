@@ -20,6 +20,11 @@ Nav_msgsGetMapFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Nav_msgsGetMapFeedback class >> typeCreationOrder [ 
+^202
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsGetMapFeedback >> initialize [
 	super initialize.
 

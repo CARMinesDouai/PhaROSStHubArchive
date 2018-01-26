@@ -23,6 +23,11 @@ Control_msgsGripperCommandActionResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsGripperCommandActionResult class >> typeCreationOrder [ 
+^67
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsGripperCommandActionResult >> header [
 	^ self getAt: #header. 
 

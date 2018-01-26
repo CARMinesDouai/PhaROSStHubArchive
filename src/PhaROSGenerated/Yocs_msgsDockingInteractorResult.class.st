@@ -22,6 +22,11 @@ Yocs_msgsDockingInteractorResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsDockingInteractorResult class >> typeCreationOrder [ 
+^430
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsDockingInteractorResult >> initialize [
 	super initialize.
 	 self success: false. 

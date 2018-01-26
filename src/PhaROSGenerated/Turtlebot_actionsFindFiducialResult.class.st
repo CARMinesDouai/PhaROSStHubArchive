@@ -21,6 +21,11 @@ Turtlebot_actionsFindFiducialResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsFindFiducialResult class >> typeCreationOrder [ 
+^392
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsFindFiducialResult >> initialize [
 	super initialize.
 	 self pose: Geometry_msgsPoseStamped new. 

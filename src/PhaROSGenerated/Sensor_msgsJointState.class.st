@@ -25,6 +25,11 @@ Sensor_msgsJointState class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsJointState class >> typeCreationOrder [ 
+^266
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsJointState >> effort [
 	^ self getAt: #effort. 
 

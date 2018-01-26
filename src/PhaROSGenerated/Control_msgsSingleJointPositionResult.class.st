@@ -20,6 +20,11 @@ Control_msgsSingleJointPositionResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionResult class >> typeCreationOrder [ 
+^92
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsSingleJointPositionResult >> initialize [
 	super initialize.
 

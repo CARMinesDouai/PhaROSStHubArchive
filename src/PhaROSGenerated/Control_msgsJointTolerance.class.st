@@ -24,6 +24,11 @@ Control_msgsJointTolerance class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsJointTolerance class >> typeCreationOrder [ 
+^55
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsJointTolerance >> acceleration [
 	^ self getAt: #acceleration. 
 

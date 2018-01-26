@@ -22,6 +22,11 @@ Std_msgsUInt8MultiArray class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Std_msgsUInt8MultiArray class >> typeCreationOrder [ 
+^319
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsUInt8MultiArray >> data [
 	^ self getAt: #data. 
 

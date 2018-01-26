@@ -21,6 +21,11 @@ Yocs_msgsWaypointList class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsWaypointList class >> typeCreationOrder [ 
+^458
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsWaypointList >> initialize [
 	super initialize.
 	 self waypoints: OrderedCollection new . 

@@ -22,6 +22,11 @@ Rospy_tutorialsHeaderString class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rospy_tutorialsHeaderString class >> typeCreationOrder [ 
+^256
+]
+
+{ #category : #'as yet unclassified' }
 Rospy_tutorialsHeaderString >> data [
 	^ self getAt: #data. 
 

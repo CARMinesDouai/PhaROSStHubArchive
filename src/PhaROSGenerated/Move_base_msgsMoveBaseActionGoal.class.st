@@ -23,6 +23,11 @@ Move_base_msgsMoveBaseActionGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Move_base_msgsMoveBaseActionGoal class >> typeCreationOrder [ 
+^192
+]
+
+{ #category : #'as yet unclassified' }
 Move_base_msgsMoveBaseActionGoal >> goal [
 	^ self getAt: #goal. 
 

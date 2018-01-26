@@ -23,6 +23,11 @@ ActionlibTestAction class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+ActionlibTestAction class >> typeCreationOrder [ 
+^9
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTestAction >> action_feedback [
 	^ self getAt: #action_feedback. 
 

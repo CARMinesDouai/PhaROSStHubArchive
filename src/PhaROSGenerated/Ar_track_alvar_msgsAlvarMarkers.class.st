@@ -22,6 +22,11 @@ Ar_track_alvar_msgsAlvarMarkers class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Ar_track_alvar_msgsAlvarMarkers class >> typeCreationOrder [ 
+^44
+]
+
+{ #category : #'as yet unclassified' }
 Ar_track_alvar_msgsAlvarMarkers >> header [
 	^ self getAt: #header. 
 

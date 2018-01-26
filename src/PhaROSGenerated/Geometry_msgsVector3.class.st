@@ -23,6 +23,11 @@ Geometry_msgsVector3 class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsVector3 class >> typeCreationOrder [ 
+^82
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsVector3 >> initialize [
 	super initialize.
 	 self x: 0.0. 

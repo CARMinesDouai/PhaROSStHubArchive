@@ -22,6 +22,11 @@ Turtle_actionlibShapeResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Turtle_actionlibShapeResult class >> typeCreationOrder [ 
+^384
+]
+
+{ #category : #'as yet unclassified' }
 Turtle_actionlibShapeResult >> apothem [
 	^ self getAt: #apothem. 
 

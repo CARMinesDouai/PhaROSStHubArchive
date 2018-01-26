@@ -23,6 +23,11 @@ Control_msgsJointTrajectoryActionFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryActionFeedback class >> typeCreationOrder [ 
+^77
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsJointTrajectoryActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

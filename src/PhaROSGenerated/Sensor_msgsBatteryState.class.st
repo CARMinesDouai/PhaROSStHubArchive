@@ -181,6 +181,11 @@ Sensor_msgsBatteryState class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsBatteryState class >> typeCreationOrder [ 
+^257
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsBatteryState >> capacity [
 	^ self getAt: #capacity. 
 

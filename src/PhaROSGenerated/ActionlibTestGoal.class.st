@@ -21,6 +21,11 @@ ActionlibTestGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+ActionlibTestGoal class >> typeCreationOrder [ 
+^2
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTestGoal >> goal [
 	^ self getAt: #goal. 
 

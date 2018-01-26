@@ -23,6 +23,11 @@ Stdr_msgsSpawnRobotAction class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSpawnRobotAction class >> typeCreationOrder [ 
+^361
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSpawnRobotAction >> action_feedback [
 	^ self getAt: #action_feedback. 
 

@@ -25,6 +25,11 @@ Yocs_msgsWall class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsWall class >> typeCreationOrder [ 
+^456
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsWall >> height [
 	^ self getAt: #height. 
 

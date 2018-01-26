@@ -28,6 +28,11 @@ Geometry_msgsInertia class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsInertia class >> typeCreationOrder [ 
+^141
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsInertia >> com [
 	^ self getAt: #com. 
 

@@ -23,6 +23,11 @@ Kobuki_msgsAutoDockingActionResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingActionResult class >> typeCreationOrder [ 
+^160
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsAutoDockingActionResult >> header [
 	^ self getAt: #header. 
 

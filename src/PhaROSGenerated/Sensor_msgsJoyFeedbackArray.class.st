@@ -21,6 +21,11 @@ Sensor_msgsJoyFeedbackArray class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsJoyFeedbackArray class >> typeCreationOrder [ 
+^269
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsJoyFeedbackArray >> array [
 	^ self getAt: #array. 
 

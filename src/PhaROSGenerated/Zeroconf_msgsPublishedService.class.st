@@ -25,6 +25,11 @@ Zeroconf_msgsPublishedService class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Zeroconf_msgsPublishedService class >> typeCreationOrder [ 
+^461
+]
+
+{ #category : #'as yet unclassified' }
 Zeroconf_msgsPublishedService >> description [
 	^ self getAt: #description. 
 

@@ -71,6 +71,11 @@ Visualization_msgsInteractiveMarkerFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Visualization_msgsInteractiveMarkerFeedback class >> typeCreationOrder [ 
+^414
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsInteractiveMarkerFeedback >> client_id [
 	^ self getAt: #client_id. 
 

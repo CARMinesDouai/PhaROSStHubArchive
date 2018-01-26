@@ -47,6 +47,11 @@ Diagnostic_msgsDiagnosticStatus class >> stale [
 ]
 
 { #category : #'as yet unclassified' }
+Diagnostic_msgsDiagnosticStatus class >> typeCreationOrder [ 
+^106
+]
+
+{ #category : #'as yet unclassified' }
 Diagnostic_msgsDiagnosticStatus class >> warn [
 	^1
 

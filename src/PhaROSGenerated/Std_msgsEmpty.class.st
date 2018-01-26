@@ -20,6 +20,11 @@ Std_msgsEmpty class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Std_msgsEmpty class >> typeCreationOrder [ 
+^297
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsEmpty >> initialize [
 	super initialize.
 

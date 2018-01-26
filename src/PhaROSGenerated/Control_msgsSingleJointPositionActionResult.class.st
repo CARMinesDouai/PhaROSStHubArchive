@@ -23,6 +23,11 @@ Control_msgsSingleJointPositionActionResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionActionResult class >> typeCreationOrder [ 
+^93
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsSingleJointPositionActionResult >> header [
 	^ self getAt: #header. 
 

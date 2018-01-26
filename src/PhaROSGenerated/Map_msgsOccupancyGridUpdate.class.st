@@ -26,6 +26,11 @@ Map_msgsOccupancyGridUpdate class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Map_msgsOccupancyGridUpdate class >> typeCreationOrder [ 
+^182
+]
+
+{ #category : #'as yet unclassified' }
 Map_msgsOccupancyGridUpdate >> data [
 	^ self getAt: #data. 
 

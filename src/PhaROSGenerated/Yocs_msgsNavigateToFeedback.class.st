@@ -45,6 +45,11 @@ Yocs_msgsNavigateToFeedback class >> status_retry [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigateToFeedback class >> typeCreationOrder [ 
+^446
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigateToFeedback >> distance [
 	^ self getAt: #distance. 
 

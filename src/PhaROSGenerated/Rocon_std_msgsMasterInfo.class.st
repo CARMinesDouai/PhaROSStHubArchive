@@ -25,6 +25,11 @@ Rocon_std_msgsMasterInfo class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsMasterInfo class >> typeCreationOrder [ 
+^227
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsMasterInfo >> description [
 	^ self getAt: #description. 
 

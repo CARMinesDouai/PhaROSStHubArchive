@@ -21,6 +21,11 @@ Yocs_msgsWallList class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsWallList class >> typeCreationOrder [ 
+^457
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsWallList >> initialize [
 	super initialize.
 	 self obstacles: OrderedCollection new . 

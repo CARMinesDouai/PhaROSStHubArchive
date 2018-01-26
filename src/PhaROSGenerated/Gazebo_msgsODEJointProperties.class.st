@@ -30,6 +30,11 @@ Gazebo_msgsODEJointProperties class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Gazebo_msgsODEJointProperties class >> typeCreationOrder [ 
+^134
+]
+
+{ #category : #'as yet unclassified' }
 Gazebo_msgsODEJointProperties >> cfm [
 	^ self getAt: #cfm. 
 

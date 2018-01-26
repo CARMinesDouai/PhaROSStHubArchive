@@ -23,6 +23,11 @@ Stdr_msgsRfidTag class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRfidTag class >> typeCreationOrder [ 
+^348
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRfidTag >> initialize [
 	super initialize.
 	 self tag_id: ''. 

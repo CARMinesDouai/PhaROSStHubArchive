@@ -22,6 +22,11 @@ Rocon_std_msgsRemapping class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsRemapping class >> typeCreationOrder [ 
+^224
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsRemapping >> initialize [
 	super initialize.
 	 self remap_from: ''. 

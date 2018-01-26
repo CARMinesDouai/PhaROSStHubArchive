@@ -21,6 +21,11 @@ Std_msgsFloat64 class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Std_msgsFloat64 class >> typeCreationOrder [ 
+^300
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsFloat64 >> data [
 	^ self getAt: #data. 
 

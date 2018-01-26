@@ -22,6 +22,11 @@ Yocs_msgsLocalizeResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsLocalizeResult class >> typeCreationOrder [ 
+^437
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsLocalizeResult >> initialize [
 	super initialize.
 	 self success: false. 

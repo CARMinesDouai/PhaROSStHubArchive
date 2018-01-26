@@ -22,6 +22,11 @@ Diagnostic_msgsDiagnosticArray class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Diagnostic_msgsDiagnosticArray class >> typeCreationOrder [ 
+^107
+]
+
+{ #category : #'as yet unclassified' }
 Diagnostic_msgsDiagnosticArray >> header [
 	^ self getAt: #header. 
 

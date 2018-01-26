@@ -21,6 +21,11 @@ Rocon_std_msgsStringsResponse class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsStringsResponse class >> typeCreationOrder [ 
+^248
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsStringsResponse >> data [
 	^ self getAt: #data. 
 

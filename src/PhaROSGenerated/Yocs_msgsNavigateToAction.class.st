@@ -23,6 +23,11 @@ Yocs_msgsNavigateToAction class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigateToAction class >> typeCreationOrder [ 
+^448
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigateToAction >> action_feedback [
 	^ self getAt: #action_feedback. 
 

@@ -58,6 +58,11 @@ Kobuki_msgsCliffEvent class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsCliffEvent class >> typeCreationOrder [ 
+^166
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsCliffEvent >> bottom [
 	^ self getAt: #bottom. 
 

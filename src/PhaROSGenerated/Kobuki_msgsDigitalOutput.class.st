@@ -22,6 +22,11 @@ Kobuki_msgsDigitalOutput class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsDigitalOutput class >> typeCreationOrder [ 
+^169
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsDigitalOutput >> initialize [
 	super initialize.
 	 self values:  (OrderedCollection new: 4). 

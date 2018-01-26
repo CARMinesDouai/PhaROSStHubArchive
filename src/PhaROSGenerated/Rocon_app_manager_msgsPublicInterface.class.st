@@ -23,6 +23,11 @@ Rocon_app_manager_msgsPublicInterface class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsPublicInterface class >> typeCreationOrder [ 
+^216
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsPublicInterface >> connection_type [
 	^ self getAt: #connection_type. 
 

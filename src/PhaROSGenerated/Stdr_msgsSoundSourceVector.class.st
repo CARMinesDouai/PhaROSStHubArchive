@@ -21,6 +21,11 @@ Stdr_msgsSoundSourceVector class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSoundSourceVector class >> typeCreationOrder [ 
+^354
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSoundSourceVector >> initialize [
 	super initialize.
 	 self sound_sources: OrderedCollection new . 

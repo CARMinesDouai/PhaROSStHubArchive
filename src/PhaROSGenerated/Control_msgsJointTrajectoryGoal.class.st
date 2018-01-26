@@ -21,6 +21,11 @@ Control_msgsJointTrajectoryGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryGoal class >> typeCreationOrder [ 
+^72
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsJointTrajectoryGoal >> initialize [
 	super initialize.
 	 self trajectory: Trajectory_msgsJointTrajectory new. 

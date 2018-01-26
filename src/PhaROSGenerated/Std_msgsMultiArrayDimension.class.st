@@ -23,6 +23,11 @@ Std_msgsMultiArrayDimension class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Std_msgsMultiArrayDimension class >> typeCreationOrder [ 
+^291
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsMultiArrayDimension >> initialize [
 	super initialize.
 	 self label: ''. 

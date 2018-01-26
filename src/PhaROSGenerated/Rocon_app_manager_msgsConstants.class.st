@@ -34,6 +34,11 @@ Rocon_app_manager_msgsConstants class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsConstants class >> typeCreationOrder [ 
+^213
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsConstants >> initialize [
 	super initialize.
 

@@ -22,6 +22,11 @@ Geometry_msgsAccelWithCovariance class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsAccelWithCovariance class >> typeCreationOrder [ 
+^139
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsAccelWithCovariance >> accel [
 	^ self getAt: #accel. 
 

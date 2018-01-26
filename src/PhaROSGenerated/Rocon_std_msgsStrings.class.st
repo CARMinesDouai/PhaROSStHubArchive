@@ -329,6 +329,11 @@ Rocon_std_msgsStrings class >> tag_software [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsStrings class >> typeCreationOrder [ 
+^245
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsStrings class >> uri_wildcard [
 	^'*'
 

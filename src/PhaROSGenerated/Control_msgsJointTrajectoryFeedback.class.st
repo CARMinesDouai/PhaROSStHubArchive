@@ -20,6 +20,11 @@ Control_msgsJointTrajectoryFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryFeedback class >> typeCreationOrder [ 
+^76
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsJointTrajectoryFeedback >> initialize [
 	super initialize.
 

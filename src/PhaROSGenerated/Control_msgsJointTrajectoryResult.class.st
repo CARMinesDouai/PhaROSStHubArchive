@@ -20,6 +20,11 @@ Control_msgsJointTrajectoryResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryResult class >> typeCreationOrder [ 
+^74
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsJointTrajectoryResult >> initialize [
 	super initialize.
 

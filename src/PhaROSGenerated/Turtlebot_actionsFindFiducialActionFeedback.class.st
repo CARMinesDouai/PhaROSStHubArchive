@@ -23,6 +23,11 @@ Turtlebot_actionsFindFiducialActionFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsFindFiducialActionFeedback class >> typeCreationOrder [ 
+^395
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsFindFiducialActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

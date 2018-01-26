@@ -21,6 +21,11 @@ Uuid_msgsUniqueID class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Uuid_msgsUniqueID class >> typeCreationOrder [ 
+^226
+]
+
+{ #category : #'as yet unclassified' }
 Uuid_msgsUniqueID >> initialize [
 	super initialize.
 	 self uuid:  (OrderedCollection new: 16). 

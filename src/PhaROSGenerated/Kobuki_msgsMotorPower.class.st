@@ -35,6 +35,11 @@ Kobuki_msgsMotorPower class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsMotorPower class >> typeCreationOrder [ 
+^174
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsMotorPower >> initialize [
 	super initialize.
 	 self state: 0. 

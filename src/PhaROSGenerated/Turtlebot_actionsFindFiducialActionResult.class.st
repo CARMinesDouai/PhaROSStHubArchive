@@ -23,6 +23,11 @@ Turtlebot_actionsFindFiducialActionResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsFindFiducialActionResult class >> typeCreationOrder [ 
+^393
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsFindFiducialActionResult >> header [
 	^ self getAt: #header. 
 

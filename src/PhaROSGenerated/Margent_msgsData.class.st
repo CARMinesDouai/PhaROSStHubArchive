@@ -24,6 +24,11 @@ Margent_msgsData class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Margent_msgsData class >> typeCreationOrder [ 
+^190
+]
+
+{ #category : #'as yet unclassified' }
 Margent_msgsData >> flag [
 	^ self getAt: #flag. 
 

@@ -23,6 +23,11 @@ ActionlibTwoIntsActionResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+ActionlibTwoIntsActionResult class >> typeCreationOrder [ 
+^20
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTwoIntsActionResult >> header [
 	^ self getAt: #header. 
 

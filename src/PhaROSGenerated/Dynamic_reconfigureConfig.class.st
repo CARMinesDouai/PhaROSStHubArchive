@@ -25,6 +25,11 @@ Dynamic_reconfigureConfig class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureConfig class >> typeCreationOrder [ 
+^113
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureConfig >> bools [
 	^ self getAt: #bools. 
 

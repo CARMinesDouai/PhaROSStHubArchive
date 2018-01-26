@@ -22,6 +22,11 @@ Turtlebot_calibrationScanAngle class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Turtlebot_calibrationScanAngle class >> typeCreationOrder [ 
+^404
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_calibrationScanAngle >> header [
 	^ self getAt: #header. 
 

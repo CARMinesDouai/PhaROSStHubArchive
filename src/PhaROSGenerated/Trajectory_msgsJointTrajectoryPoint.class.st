@@ -25,6 +25,11 @@ Trajectory_msgsJointTrajectoryPoint class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Trajectory_msgsJointTrajectoryPoint class >> typeCreationOrder [ 
+^53
+]
+
+{ #category : #'as yet unclassified' }
 Trajectory_msgsJointTrajectoryPoint >> accelerations [
 	^ self getAt: #accelerations. 
 

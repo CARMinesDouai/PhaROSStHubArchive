@@ -34,6 +34,11 @@ Rosgraph_msgsTopicStatistics class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rosgraph_msgsTopicStatistics class >> typeCreationOrder [ 
+^254
+]
+
+{ #category : #'as yet unclassified' }
 Rosgraph_msgsTopicStatistics >> delivered_msgs [
 	^ self getAt: #delivered_msgs. 
 

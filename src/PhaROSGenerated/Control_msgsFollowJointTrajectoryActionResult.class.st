@@ -23,6 +23,11 @@ Control_msgsFollowJointTrajectoryActionResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsFollowJointTrajectoryActionResult class >> typeCreationOrder [ 
+^59
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsFollowJointTrajectoryActionResult >> header [
 	^ self getAt: #header. 
 

@@ -24,6 +24,11 @@ Dynamic_reconfigureConfigDescription class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureConfigDescription class >> typeCreationOrder [ 
+^116
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureConfigDescription >> dflt [
 	^ self getAt: #dflt. 
 

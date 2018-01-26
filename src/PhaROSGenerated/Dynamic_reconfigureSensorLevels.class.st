@@ -41,6 +41,11 @@ Dynamic_reconfigureSensorLevels class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureSensorLevels class >> typeCreationOrder [ 
+^117
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureSensorLevels >> initialize [
 	super initialize.
 

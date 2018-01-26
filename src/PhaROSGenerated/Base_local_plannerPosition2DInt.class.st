@@ -22,6 +22,11 @@ Base_local_plannerPosition2DInt class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Base_local_plannerPosition2DInt class >> typeCreationOrder [ 
+^45
+]
+
+{ #category : #'as yet unclassified' }
 Base_local_plannerPosition2DInt >> initialize [
 	super initialize.
 	 self x: 0. 

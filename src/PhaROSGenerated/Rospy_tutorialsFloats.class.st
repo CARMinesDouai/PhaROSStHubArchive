@@ -21,6 +21,11 @@ Rospy_tutorialsFloats class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rospy_tutorialsFloats class >> typeCreationOrder [ 
+^255
+]
+
+{ #category : #'as yet unclassified' }
 Rospy_tutorialsFloats >> data [
 	^ self getAt: #data. 
 

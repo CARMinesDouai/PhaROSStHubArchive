@@ -21,6 +21,11 @@ Rocon_std_msgsConnectionsList class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsConnectionsList class >> typeCreationOrder [ 
+^242
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsConnectionsList >> connections [
 	^ self getAt: #connections. 
 

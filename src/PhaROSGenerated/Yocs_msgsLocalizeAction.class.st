@@ -23,6 +23,11 @@ Yocs_msgsLocalizeAction class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsLocalizeAction class >> typeCreationOrder [ 
+^441
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsLocalizeAction >> action_feedback [
 	^ self getAt: #action_feedback. 
 

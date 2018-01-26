@@ -23,6 +23,11 @@ Gateway_msgsRule class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Gateway_msgsRule class >> typeCreationOrder [ 
+^121
+]
+
+{ #category : #'as yet unclassified' }
 Gateway_msgsRule >> initialize [
 	super initialize.
 	 self type: ''. 

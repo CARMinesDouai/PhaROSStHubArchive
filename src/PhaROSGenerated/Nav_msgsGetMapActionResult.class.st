@@ -23,6 +23,11 @@ Nav_msgsGetMapActionResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Nav_msgsGetMapActionResult class >> typeCreationOrder [ 
+^201
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsGetMapActionResult >> header [
 	^ self getAt: #header. 
 

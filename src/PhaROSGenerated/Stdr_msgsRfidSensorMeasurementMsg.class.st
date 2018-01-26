@@ -24,6 +24,11 @@ Stdr_msgsRfidSensorMeasurementMsg class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRfidSensorMeasurementMsg class >> typeCreationOrder [ 
+^347
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRfidSensorMeasurementMsg >> header [
 	^ self getAt: #header. 
 

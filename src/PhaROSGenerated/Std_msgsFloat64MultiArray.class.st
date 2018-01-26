@@ -22,6 +22,11 @@ Std_msgsFloat64MultiArray class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Std_msgsFloat64MultiArray class >> typeCreationOrder [ 
+^301
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsFloat64MultiArray >> data [
 	^ self getAt: #data. 
 

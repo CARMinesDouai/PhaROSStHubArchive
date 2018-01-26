@@ -26,6 +26,11 @@ Theora_image_transportPacket class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Theora_image_transportPacket class >> typeCreationOrder [ 
+^376
+]
+
+{ #category : #'as yet unclassified' }
 Theora_image_transportPacket >> b_o_s [
 	^ self getAt: #b_o_s. 
 

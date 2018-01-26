@@ -25,6 +25,11 @@ Gazebo_msgsWorldState class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Gazebo_msgsWorldState class >> typeCreationOrder [ 
+^136
+]
+
+{ #category : #'as yet unclassified' }
 Gazebo_msgsWorldState >> header [
 	^ self getAt: #header. 
 

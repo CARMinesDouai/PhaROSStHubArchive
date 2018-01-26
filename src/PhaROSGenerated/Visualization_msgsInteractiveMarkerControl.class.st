@@ -113,6 +113,11 @@ Visualization_msgsInteractiveMarkerControl class >> rotate_axis [
 ]
 
 { #category : #'as yet unclassified' }
+Visualization_msgsInteractiveMarkerControl class >> typeCreationOrder [ 
+^412
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsInteractiveMarkerControl class >> view_facing [
 	^2
 

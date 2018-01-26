@@ -22,6 +22,11 @@ Actionlib_msgsGoalID class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Actionlib_msgsGoalID class >> typeCreationOrder [ 
+^1
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_msgsGoalID >> id [
 	^ self getAt: #id. 
 

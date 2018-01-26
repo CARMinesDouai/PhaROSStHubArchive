@@ -39,6 +39,11 @@ Yocs_msgsNavigateToGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigateToGoal class >> typeCreationOrder [ 
+^442
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigateToGoal >> approach_type [
 	^ self getAt: #approach_type. 
 

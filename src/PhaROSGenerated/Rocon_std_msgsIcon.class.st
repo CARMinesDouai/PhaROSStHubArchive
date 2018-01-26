@@ -23,6 +23,11 @@ Rocon_std_msgsIcon class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsIcon class >> typeCreationOrder [ 
+^218
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsIcon >> data [
 	^ self getAt: #data. 
 

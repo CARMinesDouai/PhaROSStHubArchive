@@ -21,6 +21,11 @@ Std_msgsString class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Std_msgsString class >> typeCreationOrder [ 
+^310
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsString >> data [
 	^ self getAt: #data. 
 

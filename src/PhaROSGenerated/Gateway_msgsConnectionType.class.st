@@ -62,6 +62,11 @@ Gateway_msgsConnectionType class >> subscriber [
 ]
 
 { #category : #'as yet unclassified' }
+Gateway_msgsConnectionType class >> typeCreationOrder [ 
+^119
+]
+
+{ #category : #'as yet unclassified' }
 Gateway_msgsConnectionType >> initialize [
 	super initialize.
 

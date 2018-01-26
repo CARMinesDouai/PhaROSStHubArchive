@@ -21,6 +21,11 @@ Rosgraph_msgsClock class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rosgraph_msgsClock class >> typeCreationOrder [ 
+^252
+]
+
+{ #category : #'as yet unclassified' }
 Rosgraph_msgsClock >> clock [
 	^ self getAt: #clock. 
 

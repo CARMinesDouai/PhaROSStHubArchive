@@ -153,6 +153,11 @@ Rocon_interaction_msgsErrorCodes class >> success [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsErrorCodes class >> typeCreationOrder [ 
+^223
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsErrorCodes >> initialize [
 	super initialize.
 

@@ -22,6 +22,11 @@ Gateway_msgsRemoteRule class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Gateway_msgsRemoteRule class >> typeCreationOrder [ 
+^122
+]
+
+{ #category : #'as yet unclassified' }
 Gateway_msgsRemoteRule >> gateway [
 	^ self getAt: #gateway. 
 

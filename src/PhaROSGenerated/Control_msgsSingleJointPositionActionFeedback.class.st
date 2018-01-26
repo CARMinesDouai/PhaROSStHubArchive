@@ -23,6 +23,11 @@ Control_msgsSingleJointPositionActionFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsSingleJointPositionActionFeedback class >> typeCreationOrder [ 
+^95
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsSingleJointPositionActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

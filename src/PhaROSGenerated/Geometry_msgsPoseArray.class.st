@@ -22,6 +22,11 @@ Geometry_msgsPoseArray class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPoseArray class >> typeCreationOrder [ 
+^146
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPoseArray >> header [
 	^ self getAt: #header. 
 

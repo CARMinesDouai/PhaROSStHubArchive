@@ -21,6 +21,11 @@ Geometry_msgsPolygon class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPolygon class >> typeCreationOrder [ 
+^143
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPolygon >> initialize [
 	super initialize.
 	 self points: OrderedCollection new . 

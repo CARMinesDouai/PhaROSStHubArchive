@@ -21,6 +21,11 @@ Rocon_service_pair_msgsTestiesRequest class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_service_pair_msgsTestiesRequest class >> typeCreationOrder [ 
+^234
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_service_pair_msgsTestiesRequest >> data [
 	^ self getAt: #data. 
 

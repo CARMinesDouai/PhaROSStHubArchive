@@ -23,6 +23,11 @@ Geometry_msgsTransformStamped class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsTransformStamped class >> typeCreationOrder [ 
+^151
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsTransformStamped >> child_frame_id [
 	^ self getAt: #child_frame_id. 
 

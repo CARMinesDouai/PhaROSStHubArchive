@@ -21,6 +21,11 @@ Stdr_msgsThermalSourceVector class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsThermalSourceVector class >> typeCreationOrder [ 
+^364
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsThermalSourceVector >> initialize [
 	super initialize.
 	 self thermal_sources: OrderedCollection new . 

@@ -25,6 +25,11 @@ Control_msgsPointHeadGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsPointHeadGoal class >> typeCreationOrder [ 
+^83
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsPointHeadGoal >> initialize [
 	super initialize.
 	 self target: Geometry_msgsPointStamped new. 

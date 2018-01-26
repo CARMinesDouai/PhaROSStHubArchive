@@ -24,6 +24,11 @@ Gazebo_msgsLinkState class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Gazebo_msgsLinkState class >> typeCreationOrder [ 
+^130
+]
+
+{ #category : #'as yet unclassified' }
 Gazebo_msgsLinkState >> initialize [
 	super initialize.
 	 self link_name: ''. 

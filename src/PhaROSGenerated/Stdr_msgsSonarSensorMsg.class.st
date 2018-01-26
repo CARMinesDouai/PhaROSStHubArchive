@@ -27,6 +27,11 @@ Stdr_msgsSonarSensorMsg class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSonarSensorMsg class >> typeCreationOrder [ 
+^337
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSonarSensorMsg >> coneAngle [
 	^ self getAt: #coneAngle. 
 

@@ -23,6 +23,11 @@ Actionlib_tutorialsAveragingActionResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsAveragingActionResult class >> typeCreationOrder [ 
+^28
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsAveragingActionResult >> header [
 	^ self getAt: #header. 
 

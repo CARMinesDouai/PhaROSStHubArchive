@@ -23,6 +23,11 @@ Sensor_msgsFluidPressure class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsFluidPressure class >> typeCreationOrder [ 
+^262
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsFluidPressure >> fluid_pressure [
 	^ self getAt: #fluid_pressure. 
 

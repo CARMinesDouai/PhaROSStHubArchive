@@ -25,6 +25,11 @@ Control_msgsJointTrajectoryControllerState class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryControllerState class >> typeCreationOrder [ 
+^79
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsJointTrajectoryControllerState >> actual [
 	^ self getAt: #actual. 
 

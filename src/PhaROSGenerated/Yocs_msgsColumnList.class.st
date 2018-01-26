@@ -21,6 +21,11 @@ Yocs_msgsColumnList class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsColumnList class >> typeCreationOrder [ 
+^427
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsColumnList >> initialize [
 	super initialize.
 	 self obstacles: OrderedCollection new . 

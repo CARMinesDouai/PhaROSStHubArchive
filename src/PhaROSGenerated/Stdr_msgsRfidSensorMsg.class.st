@@ -26,6 +26,11 @@ Stdr_msgsRfidSensorMsg class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRfidSensorMsg class >> typeCreationOrder [ 
+^338
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRfidSensorMsg >> angleSpan [
 	^ self getAt: #angleSpan. 
 

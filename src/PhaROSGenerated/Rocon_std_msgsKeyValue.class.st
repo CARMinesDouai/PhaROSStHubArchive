@@ -22,6 +22,11 @@ Rocon_std_msgsKeyValue class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsKeyValue class >> typeCreationOrder [ 
+^219
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsKeyValue >> initialize [
 	super initialize.
 	 self key: ''. 

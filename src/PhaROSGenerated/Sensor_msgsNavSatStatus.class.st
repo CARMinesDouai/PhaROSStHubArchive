@@ -78,6 +78,11 @@ Sensor_msgsNavSatStatus class >> status_sbas_fix [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsNavSatStatus class >> typeCreationOrder [ 
+^275
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsNavSatStatus >> initialize [
 	super initialize.
 	 self status: 0. 

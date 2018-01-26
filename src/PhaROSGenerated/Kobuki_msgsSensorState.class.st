@@ -193,6 +193,11 @@ Kobuki_msgsSensorState class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsSensorState class >> typeCreationOrder [ 
+^178
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsSensorState class >> wheel_drop_left [
 	^2
 

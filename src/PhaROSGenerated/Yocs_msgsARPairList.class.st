@@ -21,6 +21,11 @@ Yocs_msgsARPairList class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsARPairList class >> typeCreationOrder [ 
+^425
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsARPairList >> initialize [
 	super initialize.
 	 self pairs: OrderedCollection new . 

@@ -35,6 +35,11 @@ Kobuki_msgsRobotStateEvent class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsRobotStateEvent class >> typeCreationOrder [ 
+^176
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsRobotStateEvent >> initialize [
 	super initialize.
 	 self state: 0. 

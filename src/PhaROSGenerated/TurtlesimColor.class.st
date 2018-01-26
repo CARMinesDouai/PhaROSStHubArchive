@@ -23,6 +23,11 @@ TurtlesimColor class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+TurtlesimColor class >> typeCreationOrder [ 
+^406
+]
+
+{ #category : #'as yet unclassified' }
 TurtlesimColor >> b [
 	^ self getAt: #b. 
 

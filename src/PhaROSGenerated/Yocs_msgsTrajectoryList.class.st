@@ -21,6 +21,11 @@ Yocs_msgsTrajectoryList class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsTrajectoryList class >> typeCreationOrder [ 
+^455
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsTrajectoryList >> initialize [
 	super initialize.
 	 self trajectories: OrderedCollection new . 

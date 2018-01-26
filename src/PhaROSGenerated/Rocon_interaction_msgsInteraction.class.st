@@ -35,6 +35,11 @@ Rocon_interaction_msgsInteraction class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsInteraction class >> typeCreationOrder [ 
+^225
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsInteraction class >> unlimited_interactions [
 	^-1
 

@@ -21,6 +21,11 @@ Move_base_msgsMoveBaseGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Move_base_msgsMoveBaseGoal class >> typeCreationOrder [ 
+^191
+]
+
+{ #category : #'as yet unclassified' }
 Move_base_msgsMoveBaseGoal >> initialize [
 	super initialize.
 	 self target_pose: Geometry_msgsPoseStamped new. 

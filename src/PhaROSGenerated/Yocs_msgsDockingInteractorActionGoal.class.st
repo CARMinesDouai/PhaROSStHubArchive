@@ -23,6 +23,11 @@ Yocs_msgsDockingInteractorActionGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsDockingInteractorActionGoal class >> typeCreationOrder [ 
+^429
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsDockingInteractorActionGoal >> goal [
 	^ self getAt: #goal. 
 

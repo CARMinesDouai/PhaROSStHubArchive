@@ -20,6 +20,11 @@ Stdr_msgsSpawnRobotFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsSpawnRobotFeedback class >> typeCreationOrder [ 
+^359
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsSpawnRobotFeedback >> initialize [
 	super initialize.
 

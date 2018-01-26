@@ -27,6 +27,11 @@ Tf2_msgsLookupTransformGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Tf2_msgsLookupTransformGoal class >> typeCreationOrder [ 
+^367
+]
+
+{ #category : #'as yet unclassified' }
 Tf2_msgsLookupTransformGoal >> advanced [
 	^ self getAt: #advanced. 
 

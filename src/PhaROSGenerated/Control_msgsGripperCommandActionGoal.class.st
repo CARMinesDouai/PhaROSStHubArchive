@@ -23,6 +23,11 @@ Control_msgsGripperCommandActionGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsGripperCommandActionGoal class >> typeCreationOrder [ 
+^65
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsGripperCommandActionGoal >> goal [
 	^ self getAt: #goal. 
 

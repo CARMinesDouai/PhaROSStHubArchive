@@ -21,6 +21,11 @@ Tf2_msgsTFMessage class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Tf2_msgsTFMessage class >> typeCreationOrder [ 
+^375
+]
+
+{ #category : #'as yet unclassified' }
 Tf2_msgsTFMessage >> initialize [
 	super initialize.
 	 self transforms: OrderedCollection new . 

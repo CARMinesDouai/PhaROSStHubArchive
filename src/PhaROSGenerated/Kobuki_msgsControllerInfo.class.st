@@ -32,6 +32,11 @@ Kobuki_msgsControllerInfo class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsControllerInfo class >> typeCreationOrder [ 
+^167
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsControllerInfo class >> user_configured [
 	^1
 

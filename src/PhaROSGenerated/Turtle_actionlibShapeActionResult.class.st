@@ -23,6 +23,11 @@ Turtle_actionlibShapeActionResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Turtle_actionlibShapeActionResult class >> typeCreationOrder [ 
+^385
+]
+
+{ #category : #'as yet unclassified' }
 Turtle_actionlibShapeActionResult >> header [
 	^ self getAt: #header. 
 

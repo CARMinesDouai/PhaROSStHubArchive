@@ -35,6 +35,11 @@ Zeroconf_msgsProtocols class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Zeroconf_msgsProtocols class >> typeCreationOrder [ 
+^460
+]
+
+{ #category : #'as yet unclassified' }
 Zeroconf_msgsProtocols class >> unspecified [
 	^0
 

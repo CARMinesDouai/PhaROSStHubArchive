@@ -23,6 +23,11 @@ Stdr_msgsRegisterRobotActionFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRegisterRobotActionFeedback class >> typeCreationOrder [ 
+^345
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRegisterRobotActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

@@ -23,6 +23,11 @@ ActionlibTestRequestActionResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+ActionlibTestRequestActionResult class >> typeCreationOrder [ 
+^13
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTestRequestActionResult >> header [
 	^ self getAt: #header. 
 

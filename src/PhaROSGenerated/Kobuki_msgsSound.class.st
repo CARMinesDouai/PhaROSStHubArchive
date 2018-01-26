@@ -70,6 +70,11 @@ Kobuki_msgsSound class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsSound class >> typeCreationOrder [ 
+^179
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsSound >> initialize [
 	super initialize.
 	 self value: 0. 

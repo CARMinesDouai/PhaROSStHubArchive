@@ -23,6 +23,11 @@ Turtle_actionlibShapeActionGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Turtle_actionlibShapeActionGoal class >> typeCreationOrder [ 
+^383
+]
+
+{ #category : #'as yet unclassified' }
 Turtle_actionlibShapeActionGoal >> goal [
 	^ self getAt: #goal. 
 

@@ -57,6 +57,11 @@ Kobuki_msgsBumperEvent class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsBumperEvent class >> typeCreationOrder [ 
+^164
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsBumperEvent >> bumper [
 	^ self getAt: #bumper. 
 

@@ -22,6 +22,11 @@ Rocon_std_msgsConnectionsDiff class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsConnectionsDiff class >> typeCreationOrder [ 
+^241
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsConnectionsDiff >> added [
 	^ self getAt: #added. 
 

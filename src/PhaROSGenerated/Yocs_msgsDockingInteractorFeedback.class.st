@@ -44,6 +44,11 @@ Yocs_msgsDockingInteractorFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsDockingInteractorFeedback class >> typeCreationOrder [ 
+^432
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsDockingInteractorFeedback class >> warn [
 	^4
 

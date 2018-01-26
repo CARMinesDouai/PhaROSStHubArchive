@@ -93,6 +93,11 @@ Actionlib_msgsGoalStatus class >> succeeded [
 ]
 
 { #category : #'as yet unclassified' }
+Actionlib_msgsGoalStatus class >> typeCreationOrder [ 
+^4
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_msgsGoalStatus >> goal_id [
 	^ self getAt: #goal_id. 
 

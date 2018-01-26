@@ -51,6 +51,11 @@ Yocs_msgsDockingInteractorGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsDockingInteractorGoal class >> typeCreationOrder [ 
+^428
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsDockingInteractorGoal class >> wake_up [
 	^10
 

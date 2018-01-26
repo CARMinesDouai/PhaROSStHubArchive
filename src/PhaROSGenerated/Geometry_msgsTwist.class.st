@@ -22,6 +22,11 @@ Geometry_msgsTwist class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsTwist class >> typeCreationOrder [ 
+^129
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsTwist >> angular [
 	^ self getAt: #angular. 
 

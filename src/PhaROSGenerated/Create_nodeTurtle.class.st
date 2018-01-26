@@ -22,6 +22,11 @@ Create_nodeTurtle class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Create_nodeTurtle class >> typeCreationOrder [ 
+^103
+]
+
+{ #category : #'as yet unclassified' }
 Create_nodeTurtle >> angular [
 	^ self getAt: #angular. 
 

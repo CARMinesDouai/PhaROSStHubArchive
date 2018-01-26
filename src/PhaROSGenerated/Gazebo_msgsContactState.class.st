@@ -28,6 +28,11 @@ Gazebo_msgsContactState class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Gazebo_msgsContactState class >> typeCreationOrder [ 
+^127
+]
+
+{ #category : #'as yet unclassified' }
 Gazebo_msgsContactState >> collision1_name [
 	^ self getAt: #collision1_name. 
 

@@ -22,6 +22,11 @@ Stdr_msgsFootprintMsg class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsFootprintMsg class >> typeCreationOrder [ 
+^331
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsFootprintMsg >> initialize [
 	super initialize.
 	 self points: OrderedCollection new . 

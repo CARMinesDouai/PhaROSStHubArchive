@@ -22,6 +22,11 @@ Turtle_actionlibVelocity class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Turtle_actionlibVelocity class >> typeCreationOrder [ 
+^389
+]
+
+{ #category : #'as yet unclassified' }
 Turtle_actionlibVelocity >> angular [
 	^ self getAt: #angular. 
 

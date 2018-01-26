@@ -22,6 +22,11 @@ Nav_msgsPath class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Nav_msgsPath class >> typeCreationOrder [ 
+^207
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsPath >> header [
 	^ self getAt: #header. 
 

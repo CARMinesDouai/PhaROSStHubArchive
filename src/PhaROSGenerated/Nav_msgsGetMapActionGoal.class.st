@@ -23,6 +23,11 @@ Nav_msgsGetMapActionGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Nav_msgsGetMapActionGoal class >> typeCreationOrder [ 
+^199
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsGetMapActionGoal >> goal [
 	^ self getAt: #goal. 
 

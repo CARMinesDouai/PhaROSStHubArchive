@@ -82,6 +82,11 @@ Visualization_msgsImageMarker class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Visualization_msgsImageMarker class >> typeCreationOrder [ 
+^409
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsImageMarker >> action [
 	^ self getAt: #action. 
 

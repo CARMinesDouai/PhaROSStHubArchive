@@ -24,6 +24,11 @@ Control_msgsFollowJointTrajectoryGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsFollowJointTrajectoryGoal class >> typeCreationOrder [ 
+^56
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsFollowJointTrajectoryGoal >> goal_time_tolerance [
 	^ self getAt: #goal_time_tolerance. 
 

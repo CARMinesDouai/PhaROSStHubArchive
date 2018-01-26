@@ -24,6 +24,11 @@ Create_nodeBatteryState class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Create_nodeBatteryState class >> typeCreationOrder [ 
+^99
+]
+
+{ #category : #'as yet unclassified' }
 Create_nodeBatteryState >> capacity [
 	^ self getAt: #capacity. 
 

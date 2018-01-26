@@ -28,6 +28,11 @@ Stereo_msgsDisparityImage class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stereo_msgsDisparityImage class >> typeCreationOrder [ 
+^365
+]
+
+{ #category : #'as yet unclassified' }
 Stereo_msgsDisparityImage >> T [
 	^ self getAt: #T. 
 

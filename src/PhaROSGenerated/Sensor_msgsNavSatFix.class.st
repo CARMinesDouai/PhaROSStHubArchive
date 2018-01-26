@@ -55,6 +55,11 @@ Sensor_msgsNavSatFix class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsNavSatFix class >> typeCreationOrder [ 
+^276
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsNavSatFix >> altitude [
 	^ self getAt: #altitude. 
 

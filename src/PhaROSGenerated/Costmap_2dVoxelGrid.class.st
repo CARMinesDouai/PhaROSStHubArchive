@@ -27,6 +27,11 @@ Costmap_2dVoxelGrid class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Costmap_2dVoxelGrid class >> typeCreationOrder [ 
+^98
+]
+
+{ #category : #'as yet unclassified' }
 Costmap_2dVoxelGrid >> data [
 	^ self getAt: #data. 
 

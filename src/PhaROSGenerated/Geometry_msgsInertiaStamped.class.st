@@ -22,6 +22,11 @@ Geometry_msgsInertiaStamped class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsInertiaStamped class >> typeCreationOrder [ 
+^142
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsInertiaStamped >> header [
 	^ self getAt: #header. 
 

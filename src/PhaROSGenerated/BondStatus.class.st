@@ -26,6 +26,11 @@ BondStatus class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+BondStatus class >> typeCreationOrder [ 
+^47
+]
+
+{ #category : #'as yet unclassified' }
 BondStatus >> active [
 	^ self getAt: #active. 
 

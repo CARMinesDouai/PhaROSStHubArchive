@@ -23,6 +23,11 @@ Trajectory_msgsJointTrajectory class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Trajectory_msgsJointTrajectory class >> typeCreationOrder [ 
+^54
+]
+
+{ #category : #'as yet unclassified' }
 Trajectory_msgsJointTrajectory >> header [
 	^ self getAt: #header. 
 

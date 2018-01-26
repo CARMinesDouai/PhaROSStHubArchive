@@ -22,6 +22,11 @@ Tf2_msgsLookupTransformResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Tf2_msgsLookupTransformResult class >> typeCreationOrder [ 
+^370
+]
+
+{ #category : #'as yet unclassified' }
 Tf2_msgsLookupTransformResult >> error [
 	^ self getAt: #error. 
 

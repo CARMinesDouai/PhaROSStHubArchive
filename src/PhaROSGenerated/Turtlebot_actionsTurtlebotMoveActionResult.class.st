@@ -23,6 +23,11 @@ Turtlebot_actionsTurtlebotMoveActionResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsTurtlebotMoveActionResult class >> typeCreationOrder [ 
+^400
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsTurtlebotMoveActionResult >> header [
 	^ self getAt: #header. 
 

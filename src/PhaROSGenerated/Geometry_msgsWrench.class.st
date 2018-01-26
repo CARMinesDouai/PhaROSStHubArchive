@@ -22,6 +22,11 @@ Geometry_msgsWrench class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsWrench class >> typeCreationOrder [ 
+^126
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsWrench >> force [
 	^ self getAt: #force. 
 

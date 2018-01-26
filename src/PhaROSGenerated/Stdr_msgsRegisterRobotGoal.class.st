@@ -21,6 +21,11 @@ Stdr_msgsRegisterRobotGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRegisterRobotGoal class >> typeCreationOrder [ 
+^335
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRegisterRobotGoal >> initialize [
 	super initialize.
 	 self name: ''. 

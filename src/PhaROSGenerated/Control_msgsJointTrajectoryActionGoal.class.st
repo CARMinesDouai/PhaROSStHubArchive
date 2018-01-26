@@ -23,6 +23,11 @@ Control_msgsJointTrajectoryActionGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsJointTrajectoryActionGoal class >> typeCreationOrder [ 
+^73
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsJointTrajectoryActionGoal >> goal [
 	^ self getAt: #goal. 
 

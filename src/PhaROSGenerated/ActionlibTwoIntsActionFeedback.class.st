@@ -23,6 +23,11 @@ ActionlibTwoIntsActionFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+ActionlibTwoIntsActionFeedback class >> typeCreationOrder [ 
+^22
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTwoIntsActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

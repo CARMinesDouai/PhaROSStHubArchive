@@ -21,6 +21,11 @@ Stdr_msgsRobotIndexedVectorMsg class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRobotIndexedVectorMsg class >> typeCreationOrder [ 
+^351
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRobotIndexedVectorMsg >> initialize [
 	super initialize.
 	 self robots: OrderedCollection new . 

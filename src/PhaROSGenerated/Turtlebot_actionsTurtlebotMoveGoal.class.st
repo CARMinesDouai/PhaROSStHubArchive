@@ -22,6 +22,11 @@ Turtlebot_actionsTurtlebotMoveGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Turtlebot_actionsTurtlebotMoveGoal class >> typeCreationOrder [ 
+^397
+]
+
+{ #category : #'as yet unclassified' }
 Turtlebot_actionsTurtlebotMoveGoal >> forward_distance [
 	^ self getAt: #forward_distance. 
 

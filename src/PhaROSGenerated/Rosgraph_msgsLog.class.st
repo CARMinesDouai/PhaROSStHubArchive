@@ -57,6 +57,11 @@ Rosgraph_msgsLog class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rosgraph_msgsLog class >> typeCreationOrder [ 
+^253
+]
+
+{ #category : #'as yet unclassified' }
 Rosgraph_msgsLog class >> warn [
 	^4
 

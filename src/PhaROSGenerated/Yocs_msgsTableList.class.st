@@ -21,6 +21,11 @@ Yocs_msgsTableList class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsTableList class >> typeCreationOrder [ 
+^452
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsTableList >> initialize [
 	super initialize.
 	 self tables: OrderedCollection new . 

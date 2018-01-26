@@ -36,6 +36,11 @@ Yocs_msgsLocalizeGoal class >> stand_and_localize [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsLocalizeGoal class >> typeCreationOrder [ 
+^435
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsLocalizeGoal >> command [
 	^ self getAt: #command. 
 

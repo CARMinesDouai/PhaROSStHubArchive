@@ -30,6 +30,11 @@ Rocon_app_manager_msgsRapp class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsRapp class >> typeCreationOrder [ 
+^220
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsRapp >> compatibility [
 	^ self getAt: #compatibility. 
 

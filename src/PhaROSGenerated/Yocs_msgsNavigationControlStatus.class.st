@@ -64,6 +64,11 @@ Yocs_msgsNavigationControlStatus class >> running [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsNavigationControlStatus class >> typeCreationOrder [ 
+^450
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsNavigationControlStatus >> initialize [
 	super initialize.
 	 self status: 0. 

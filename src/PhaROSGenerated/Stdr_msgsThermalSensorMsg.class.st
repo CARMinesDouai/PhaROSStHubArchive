@@ -25,6 +25,11 @@ Stdr_msgsThermalSensorMsg class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsThermalSensorMsg class >> typeCreationOrder [ 
+^340
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsThermalSensorMsg >> angleSpan [
 	^ self getAt: #angleSpan. 
 

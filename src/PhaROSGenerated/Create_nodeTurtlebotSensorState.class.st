@@ -303,6 +303,11 @@ Create_nodeTurtlebotSensorState class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Create_nodeTurtlebotSensorState class >> typeCreationOrder [ 
+^104
+]
+
+{ #category : #'as yet unclassified' }
 Create_nodeTurtlebotSensorState >> angle [
 	^ self getAt: #angle. 
 

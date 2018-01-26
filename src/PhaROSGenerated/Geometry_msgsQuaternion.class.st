@@ -24,6 +24,11 @@ Geometry_msgsQuaternion class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsQuaternion class >> typeCreationOrder [ 
+^40
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsQuaternion >> initialize [
 	super initialize.
 	 self x: 0.0. 

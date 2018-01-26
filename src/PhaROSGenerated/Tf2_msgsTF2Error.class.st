@@ -71,6 +71,11 @@ Tf2_msgsTF2Error class >> transform_error [
 ]
 
 { #category : #'as yet unclassified' }
+Tf2_msgsTF2Error class >> typeCreationOrder [ 
+^369
+]
+
+{ #category : #'as yet unclassified' }
 Tf2_msgsTF2Error >> error [
 	^ self getAt: #error. 
 

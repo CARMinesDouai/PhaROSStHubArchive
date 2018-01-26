@@ -34,6 +34,11 @@ Visualization_msgsInteractiveMarkerUpdate class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Visualization_msgsInteractiveMarkerUpdate class >> typeCreationOrder [ 
+^417
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsInteractiveMarkerUpdate class >> update [
 	^1
 

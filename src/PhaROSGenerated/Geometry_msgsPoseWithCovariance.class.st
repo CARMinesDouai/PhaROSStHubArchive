@@ -22,6 +22,11 @@ Geometry_msgsPoseWithCovariance class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPoseWithCovariance class >> typeCreationOrder [ 
+^147
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPoseWithCovariance >> covariance [
 	^ self getAt: #covariance. 
 

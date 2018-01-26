@@ -24,6 +24,11 @@ Yocs_msgsColumn class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsColumn class >> typeCreationOrder [ 
+^426
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsColumn >> height [
 	^ self getAt: #height. 
 

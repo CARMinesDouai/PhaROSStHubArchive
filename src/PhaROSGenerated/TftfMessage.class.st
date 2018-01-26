@@ -21,6 +21,11 @@ TftfMessage class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+TftfMessage class >> typeCreationOrder [ 
+^366
+]
+
+{ #category : #'as yet unclassified' }
 TftfMessage >> initialize [
 	super initialize.
 	 self transforms: OrderedCollection new . 

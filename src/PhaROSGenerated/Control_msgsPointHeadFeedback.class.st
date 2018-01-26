@@ -21,6 +21,11 @@ Control_msgsPointHeadFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsPointHeadFeedback class >> typeCreationOrder [ 
+^87
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsPointHeadFeedback >> initialize [
 	super initialize.
 	 self pointing_angle_error: 0.0. 

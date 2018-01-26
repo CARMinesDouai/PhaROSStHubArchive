@@ -64,6 +64,11 @@ Kobuki_msgsExternalPower class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsExternalPower class >> typeCreationOrder [ 
+^171
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsExternalPower >> initialize [
 	super initialize.
 	 self source: 0. 

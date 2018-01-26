@@ -25,6 +25,11 @@ RosapiTypeDef class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+RosapiTypeDef class >> typeCreationOrder [ 
+^251
+]
+
+{ #category : #'as yet unclassified' }
 RosapiTypeDef >> examples [
 	^ self getAt: #examples. 
 

@@ -26,6 +26,11 @@ Sensor_msgsJoyFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsJoyFeedback class >> typeCreationOrder [ 
+^268
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsJoyFeedback class >> type_buzzer [
 	^2
 

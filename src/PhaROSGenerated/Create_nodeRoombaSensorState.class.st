@@ -83,6 +83,11 @@ Create_nodeRoombaSensorState class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Create_nodeRoombaSensorState class >> typeCreationOrder [ 
+^102
+]
+
+{ #category : #'as yet unclassified' }
 Create_nodeRoombaSensorState >> angle [
 	^ self getAt: #angle. 
 

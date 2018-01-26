@@ -20,6 +20,11 @@ Kobuki_msgsAutoDockingGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsAutoDockingGoal class >> typeCreationOrder [ 
+^157
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsAutoDockingGoal >> initialize [
 	super initialize.
 

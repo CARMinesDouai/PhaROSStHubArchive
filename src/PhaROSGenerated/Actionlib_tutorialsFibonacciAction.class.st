@@ -23,6 +23,11 @@ Actionlib_tutorialsFibonacciAction class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsFibonacciAction class >> typeCreationOrder [ 
+^38
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsFibonacciAction >> action_feedback [
 	^ self getAt: #action_feedback. 
 

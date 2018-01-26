@@ -23,6 +23,11 @@ Smach_msgsSmachContainerInitialStatusCmd class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Smach_msgsSmachContainerInitialStatusCmd class >> typeCreationOrder [ 
+^286
+]
+
+{ #category : #'as yet unclassified' }
 Smach_msgsSmachContainerInitialStatusCmd >> initial_states [
 	^ self getAt: #initial_states. 
 

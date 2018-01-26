@@ -24,6 +24,11 @@ Rocon_app_manager_msgsIncompatibleRappList class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_app_manager_msgsIncompatibleRappList class >> typeCreationOrder [ 
+^215
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_app_manager_msgsIncompatibleRappList >> blacklisted_rapps [
 	^ self getAt: #blacklisted_rapps. 
 

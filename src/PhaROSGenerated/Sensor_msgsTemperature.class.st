@@ -23,6 +23,11 @@ Sensor_msgsTemperature class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsTemperature class >> typeCreationOrder [ 
+^280
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsTemperature >> header [
 	^ self getAt: #header. 
 

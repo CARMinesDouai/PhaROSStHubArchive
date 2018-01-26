@@ -22,6 +22,11 @@ Dynamic_reconfigureStrParameter class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Dynamic_reconfigureStrParameter class >> typeCreationOrder [ 
+^110
+]
+
+{ #category : #'as yet unclassified' }
 Dynamic_reconfigureStrParameter >> initialize [
 	super initialize.
 	 self name: ''. 

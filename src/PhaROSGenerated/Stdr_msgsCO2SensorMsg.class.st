@@ -24,6 +24,11 @@ Stdr_msgsCO2SensorMsg class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsCO2SensorMsg class >> typeCreationOrder [ 
+^321
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsCO2SensorMsg >> frame_id [
 	^ self getAt: #frame_id. 
 

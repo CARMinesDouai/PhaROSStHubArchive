@@ -22,6 +22,11 @@ Geometry_msgsPose class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPose class >> typeCreationOrder [ 
+^41
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPose >> initialize [
 	super initialize.
 	 self position: Geometry_msgsPoint new. 

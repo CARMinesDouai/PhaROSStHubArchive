@@ -24,6 +24,11 @@ Gazebo_msgsModelState class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Gazebo_msgsModelState class >> typeCreationOrder [ 
+^132
+]
+
+{ #category : #'as yet unclassified' }
 Gazebo_msgsModelState >> initialize [
 	super initialize.
 	 self model_name: ''. 

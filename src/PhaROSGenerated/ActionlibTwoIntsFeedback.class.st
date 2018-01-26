@@ -20,6 +20,11 @@ ActionlibTwoIntsFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+ActionlibTwoIntsFeedback class >> typeCreationOrder [ 
+^21
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTwoIntsFeedback >> initialize [
 	super initialize.
 

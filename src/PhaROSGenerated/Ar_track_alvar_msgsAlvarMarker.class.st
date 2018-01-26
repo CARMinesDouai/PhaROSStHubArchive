@@ -24,6 +24,11 @@ Ar_track_alvar_msgsAlvarMarker class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Ar_track_alvar_msgsAlvarMarker class >> typeCreationOrder [ 
+^43
+]
+
+{ #category : #'as yet unclassified' }
 Ar_track_alvar_msgsAlvarMarker >> confidence [
 	^ self getAt: #confidence. 
 

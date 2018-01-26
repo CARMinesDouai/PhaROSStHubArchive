@@ -23,6 +23,11 @@ Visualization_msgsInteractiveMarkerInit class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Visualization_msgsInteractiveMarkerInit class >> typeCreationOrder [ 
+^415
+]
+
+{ #category : #'as yet unclassified' }
 Visualization_msgsInteractiveMarkerInit >> initialize [
 	super initialize.
 	 self server_id: ''. 

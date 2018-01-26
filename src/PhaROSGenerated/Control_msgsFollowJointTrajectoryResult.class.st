@@ -64,6 +64,11 @@ Control_msgsFollowJointTrajectoryResult class >> successful [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsFollowJointTrajectoryResult class >> typeCreationOrder [ 
+^58
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsFollowJointTrajectoryResult >> error_code [
 	^ self getAt: #error_code. 
 

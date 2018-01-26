@@ -22,6 +22,11 @@ Actionlib_tutorialsAveragingResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Actionlib_tutorialsAveragingResult class >> typeCreationOrder [ 
+^27
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_tutorialsAveragingResult >> initialize [
 	super initialize.
 	 self mean: 0.0. 

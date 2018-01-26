@@ -23,6 +23,11 @@ Yocs_msgsLocalizeActionGoal class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Yocs_msgsLocalizeActionGoal class >> typeCreationOrder [ 
+^436
+]
+
+{ #category : #'as yet unclassified' }
 Yocs_msgsLocalizeActionGoal >> goal [
 	^ self getAt: #goal. 
 

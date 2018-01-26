@@ -29,6 +29,11 @@ Stdr_msgsRobotMsg class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsRobotMsg class >> typeCreationOrder [ 
+^341
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsRobotMsg >> co2Sensors [
 	^ self getAt: #co2Sensors. 
 

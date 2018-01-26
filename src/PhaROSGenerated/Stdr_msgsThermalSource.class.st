@@ -23,6 +23,11 @@ Stdr_msgsThermalSource class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsThermalSource class >> typeCreationOrder [ 
+^363
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsThermalSource >> degrees [
 	^ self getAt: #degrees. 
 

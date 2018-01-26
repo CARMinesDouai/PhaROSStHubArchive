@@ -24,6 +24,11 @@ Nav_msgsGridCells class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Nav_msgsGridCells class >> typeCreationOrder [ 
+^205
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsGridCells >> cell_height [
 	^ self getAt: #cell_height. 
 

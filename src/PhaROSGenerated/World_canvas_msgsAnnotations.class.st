@@ -22,6 +22,11 @@ World_canvas_msgsAnnotations class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+World_canvas_msgsAnnotations class >> typeCreationOrder [ 
+^421
+]
+
+{ #category : #'as yet unclassified' }
 World_canvas_msgsAnnotations >> annotations [
 	^ self getAt: #annotations. 
 

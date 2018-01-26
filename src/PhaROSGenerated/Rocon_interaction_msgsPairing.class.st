@@ -26,6 +26,11 @@ Rocon_interaction_msgsPairing class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsPairing class >> typeCreationOrder [ 
+^230
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsPairing >> description [
 	^ self getAt: #description. 
 

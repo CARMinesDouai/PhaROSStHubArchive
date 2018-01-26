@@ -22,6 +22,11 @@ Actionlib_msgsGoalStatusArray class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Actionlib_msgsGoalStatusArray class >> typeCreationOrder [ 
+^24
+]
+
+{ #category : #'as yet unclassified' }
 Actionlib_msgsGoalStatusArray >> header [
 	^ self getAt: #header. 
 

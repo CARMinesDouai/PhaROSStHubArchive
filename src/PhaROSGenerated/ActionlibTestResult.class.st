@@ -21,6 +21,11 @@ ActionlibTestResult class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+ActionlibTestResult class >> typeCreationOrder [ 
+^5
+]
+
+{ #category : #'as yet unclassified' }
 ActionlibTestResult >> initialize [
 	super initialize.
 	 self result: 0. 

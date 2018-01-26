@@ -32,6 +32,11 @@ Control_msgsJointControllerState class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsJointControllerState class >> typeCreationOrder [ 
+^71
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsJointControllerState >> antiwindup [
 	^ self getAt: #antiwindup. 
 

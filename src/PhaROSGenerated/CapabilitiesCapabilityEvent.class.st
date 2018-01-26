@@ -53,6 +53,11 @@ CapabilitiesCapabilityEvent class >> terminated [
 ]
 
 { #category : #'as yet unclassified' }
+CapabilitiesCapabilityEvent class >> typeCreationOrder [ 
+^49
+]
+
+{ #category : #'as yet unclassified' }
 CapabilitiesCapabilityEvent >> capability [
 	^ self getAt: #capability. 
 

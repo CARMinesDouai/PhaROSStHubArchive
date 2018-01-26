@@ -23,6 +23,11 @@ Sensor_msgsRelativeHumidity class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsRelativeHumidity class >> typeCreationOrder [ 
+^279
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsRelativeHumidity >> header [
 	^ self getAt: #header. 
 

@@ -23,6 +23,11 @@ Stdr_msgsDeleteRobotActionFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsDeleteRobotActionFeedback class >> typeCreationOrder [ 
+^329
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsDeleteRobotActionFeedback >> feedback [
 	^ self getAt: #feedback. 
 

@@ -34,6 +34,11 @@ Sensor_msgsRange class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsRange class >> typeCreationOrder [ 
+^278
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsRange class >> ultrasound [
 	^0
 

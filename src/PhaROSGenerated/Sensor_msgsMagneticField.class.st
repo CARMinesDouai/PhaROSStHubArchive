@@ -23,6 +23,11 @@ Sensor_msgsMagneticField class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsMagneticField class >> typeCreationOrder [ 
+^272
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsMagneticField >> header [
 	^ self getAt: #header. 
 

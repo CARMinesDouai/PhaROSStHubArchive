@@ -29,6 +29,11 @@ Gateway_msgsRemoteGateway class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Gateway_msgsRemoteGateway class >> typeCreationOrder [ 
+^125
+]
+
+{ #category : #'as yet unclassified' }
 Gateway_msgsRemoteGateway class >> wired [
 	^1
 

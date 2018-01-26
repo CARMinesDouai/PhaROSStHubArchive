@@ -22,6 +22,11 @@ Geometry_msgsPolygonStamped class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsPolygonStamped class >> typeCreationOrder [ 
+^144
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsPolygonStamped >> header [
 	^ self getAt: #header. 
 

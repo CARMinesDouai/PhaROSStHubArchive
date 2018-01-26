@@ -68,6 +68,11 @@ Rocon_std_msgsConnection class >> subscriber [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_std_msgsConnection class >> typeCreationOrder [ 
+^239
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_std_msgsConnection >> initialize [
 	super initialize.
 	 self type: ''. 

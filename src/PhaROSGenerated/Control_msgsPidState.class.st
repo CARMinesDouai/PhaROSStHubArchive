@@ -33,6 +33,11 @@ Control_msgsPidState class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Control_msgsPidState class >> typeCreationOrder [ 
+^80
+]
+
+{ #category : #'as yet unclassified' }
 Control_msgsPidState >> d_error [
 	^ self getAt: #d_error. 
 

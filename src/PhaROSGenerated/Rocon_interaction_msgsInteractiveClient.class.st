@@ -24,6 +24,11 @@ Rocon_interaction_msgsInteractiveClient class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsInteractiveClient class >> typeCreationOrder [ 
+^228
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsInteractiveClient >> id [
 	^ self getAt: #id. 
 

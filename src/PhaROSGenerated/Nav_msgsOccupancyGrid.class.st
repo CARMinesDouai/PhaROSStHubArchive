@@ -23,6 +23,11 @@ Nav_msgsOccupancyGrid class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Nav_msgsOccupancyGrid class >> typeCreationOrder [ 
+^187
+]
+
+{ #category : #'as yet unclassified' }
 Nav_msgsOccupancyGrid >> data [
 	^ self getAt: #data. 
 

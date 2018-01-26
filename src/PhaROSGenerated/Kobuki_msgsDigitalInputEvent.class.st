@@ -21,6 +21,11 @@ Kobuki_msgsDigitalInputEvent class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Kobuki_msgsDigitalInputEvent class >> typeCreationOrder [ 
+^168
+]
+
+{ #category : #'as yet unclassified' }
 Kobuki_msgsDigitalInputEvent >> initialize [
 	super initialize.
 	 self values:  (OrderedCollection new: 4). 

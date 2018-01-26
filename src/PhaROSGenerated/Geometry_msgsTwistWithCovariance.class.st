@@ -22,6 +22,11 @@ Geometry_msgsTwistWithCovariance class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Geometry_msgsTwistWithCovariance class >> typeCreationOrder [ 
+^153
+]
+
+{ #category : #'as yet unclassified' }
 Geometry_msgsTwistWithCovariance >> covariance [
 	^ self getAt: #covariance. 
 

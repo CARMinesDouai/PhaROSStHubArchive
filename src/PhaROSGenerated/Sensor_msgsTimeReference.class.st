@@ -23,6 +23,11 @@ Sensor_msgsTimeReference class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsTimeReference class >> typeCreationOrder [ 
+^281
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsTimeReference >> header [
 	^ self getAt: #header. 
 

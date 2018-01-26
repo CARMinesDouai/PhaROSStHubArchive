@@ -21,6 +21,11 @@ Rocon_interaction_msgsPairingStatus class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Rocon_interaction_msgsPairingStatus class >> typeCreationOrder [ 
+^231
+]
+
+{ #category : #'as yet unclassified' }
 Rocon_interaction_msgsPairingStatus >> active_pairing [
 	^ self getAt: #active_pairing. 
 

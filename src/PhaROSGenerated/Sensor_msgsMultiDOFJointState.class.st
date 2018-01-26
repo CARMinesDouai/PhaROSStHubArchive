@@ -25,6 +25,11 @@ Sensor_msgsMultiDOFJointState class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Sensor_msgsMultiDOFJointState class >> typeCreationOrder [ 
+^273
+]
+
+{ #category : #'as yet unclassified' }
 Sensor_msgsMultiDOFJointState >> header [
 	^ self getAt: #header. 
 

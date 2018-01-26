@@ -20,6 +20,11 @@ Stdr_msgsDeleteRobotFeedback class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Stdr_msgsDeleteRobotFeedback class >> typeCreationOrder [ 
+^328
+]
+
+{ #category : #'as yet unclassified' }
 Stdr_msgsDeleteRobotFeedback >> initialize [
 	super initialize.
 

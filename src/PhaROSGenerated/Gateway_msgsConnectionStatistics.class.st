@@ -41,6 +41,11 @@ Gateway_msgsConnectionStatistics class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Gateway_msgsConnectionStatistics class >> typeCreationOrder [ 
+^118
+]
+
+{ #category : #'as yet unclassified' }
 Gateway_msgsConnectionStatistics class >> wired [
 	^1
 

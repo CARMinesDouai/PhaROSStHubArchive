@@ -24,6 +24,11 @@ Std_msgsColorRGBA class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Std_msgsColorRGBA class >> typeCreationOrder [ 
+^295
+]
+
+{ #category : #'as yet unclassified' }
 Std_msgsColorRGBA >> a [
 	^ self getAt: #a. 
 

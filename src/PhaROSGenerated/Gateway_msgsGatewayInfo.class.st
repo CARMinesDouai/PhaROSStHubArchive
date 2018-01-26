@@ -33,6 +33,11 @@ Gateway_msgsGatewayInfo class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Gateway_msgsGatewayInfo class >> typeCreationOrder [ 
+^124
+]
+
+{ #category : #'as yet unclassified' }
 Gateway_msgsGatewayInfo >> connected [
 	^ self getAt: #connected. 
 

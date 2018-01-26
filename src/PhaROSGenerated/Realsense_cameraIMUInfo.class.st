@@ -24,6 +24,11 @@ Realsense_cameraIMUInfo class >> rosTypeName [
 ]
 
 { #category : #'as yet unclassified' }
+Realsense_cameraIMUInfo class >> typeCreationOrder [ 
+^212
+]
+
+{ #category : #'as yet unclassified' }
 Realsense_cameraIMUInfo >> bias_variances [
 	^ self getAt: #bias_variances. 
 
