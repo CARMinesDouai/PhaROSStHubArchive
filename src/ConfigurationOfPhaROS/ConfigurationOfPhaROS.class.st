@@ -779,7 +779,7 @@ ConfigurationOfPhaROS >> baseline15: spec [
 				"this group is currently used by the pharos commander"
 				group: 'all' with: #( 'default' 'examples' 'tests');
 				
-				group: 'all+types' with: #( 'default' 'PhaROSGenerated').
+				group: 'all+types' with: #( 'all' 'PhaROSGenerated').
 	].
 	
 		
