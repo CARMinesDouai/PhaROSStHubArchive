@@ -1,3 +1,10 @@
+"
+I represent the announcement issued when echoes obtrained from a new  laser scan are available
+
+    Instance Variables
+	echoes:		<Object>
+
+"
 Class {
 	#name : #BcLaserScanAnnouncement,
 	#superclass : #Announcement,

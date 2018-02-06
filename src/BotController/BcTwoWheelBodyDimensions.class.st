@@ -1,3 +1,15 @@
+"
+I represent the physical dimensions of a two wheeld robot body.
+
+Class side methods include constructors of usual robots:
+-robulab
+-turtleBot
+ 
+Instance Variables
+	interWheelsDistance:		<Number>
+	laserToSideDistance:		<Number>
+
+"
 Class {
 	#name : #BcTwoWheelBodyDimensions,
 	#superclass : #BcBodyDimensions,

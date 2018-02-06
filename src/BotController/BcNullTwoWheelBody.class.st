@@ -1,3 +1,6 @@
+"
+I am a null two wheeled body. My main purpose is testing. I simply store values I get.
+"
 Class {
 	#name : #BcNullTwoWheelBody,
 	#superclass : #BcTwoWheelBody,
@@ -13,9 +16,13 @@ BcNullTwoWheelBody >> forwardSpeed [
 	^ forwardSpeed
 ]
 
-{ #category : #acting }
-BcNullTwoWheelBody >> interWheelsDistance [
-	^1
+{ #category : #initialization }
+BcNullTwoWheelBody >> initialize [
+	super initialize.
+	self dimensions: (BcTwoWheelBodyDimensions new
+		interWheelsDistance: 1;
+		laserToSideDistance: 0.5;
+		yourself)
 ]
 
 { #category : #initialization }

@@ -1,3 +1,6 @@
+"
+I am the action of following the left wall at fixed speed
+"
 Class {
 	#name : #BcFollowLeftWallAtFixedSpeed,
 	#superclass : #BcFollowWallAtFixedSpeed,

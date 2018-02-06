@@ -1,3 +1,15 @@
+"
+I am a two wheeld robot body. My motion is performed by controlling the rotation of two driving wheels.
+
+Public API and Key Messages
+
+- lastLaserScan: 
+
+    Instance Variables
+	latestLaserScan:		<Collection of PNGLaserEcho>
+
+
+"
 Class {
 	#name : #BcTwoWheelBody,
 	#superclass : #BcBody,
@@ -6,6 +18,20 @@ Class {
 	],
 	#category : #'BotController-Bodies'
 }
+
+{ #category : #'instance creation' }
+BcTwoWheelBody class >> robulab [
+	^self new
+		dimensions: BcTwoWheelBodyDimensions robulab;
+		yourself
+]
+
+{ #category : #'instance creation' }
+BcTwoWheelBody class >> turtleBot [
+	^self new
+		dimensions: BcTwoWheelBodyDimensions turtleBot;
+		yourself
+]
 
 { #category : #accessing }
 BcTwoWheelBody >> interWheelsDistance [

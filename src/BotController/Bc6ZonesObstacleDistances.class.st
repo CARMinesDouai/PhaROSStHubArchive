@@ -1,3 +1,17 @@
+"
+I represent a world model of obstacles in front and on the sides of a robot. I provide only distances to nearest obstacles in 6 areas defined by the 6 instances variables
+
+    Instance Variables
+	frontLeft:		<Number>
+	frontRight:		<Number>
+	sideLeftFront:		<Number>
+	sideLeftRear:		<Number>
+	sideRightFront:		<Number>
+	sideRightRear:		<Number>
+
+
+    Implementation Points
+"
 Class {
 	#name : #Bc6ZonesObstacleDistances,
 	#superclass : #BcWorldModel,

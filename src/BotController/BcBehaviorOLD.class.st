@@ -16,7 +16,7 @@ BcBehaviorOLD class >> body: aBody [
 
 { #category : #'instance creation' }
 BcBehaviorOLD class >> onTurtleBot [
-	^self body: BcTurtleBot
+	^self body: BcTurtleBotBodyOLD
 ]
 
 { #category : #accessing }

@@ -5,11 +5,20 @@ I also rely on annoucements to allow observing robot activity. Examples of obser
 
     Instance Variables
 	announcer:		<Announcer>
-	dimensions:		<BcBodyDimensions>
+	dimensions:		<BcBodyDimensions>  dimensions of the robot (e.g. width).
 
-I am abstract. Subclasses should implement:
--newDimensions
-Answers an object that provides dimensions of the robot.
+I am abstract. Subclasses must ensure that the dimensions  of the robot is set prior to use.
+
+Subclasses should also override:
+-velocityForward: forwardSpeed rotation: rotationSpeed
+Send new speed to actuators
+-startUp
+Make the body ready for sensing and acting
+-shutDown
+Turne the body off. Ensure all motion is stopped.
+
+Public API and Key Messages
+
 
 "
 Class {
@@ -42,15 +51,9 @@ BcBody >> dimensions [
 	^dimensions
 ]
 
-{ #category : #initialization }
-BcBody >> initialize [
-	super initialize.
-	dimensions := self newDimensions
-]
-
-{ #category : #initialization }
-BcBody >> newDimensions [
-	self subclassResponsibility
+{ #category : #accessing }
+BcBody >> dimensions: newDimensions [
+	^dimensions := newDimensions
 ]
 
 { #category : #announcing }

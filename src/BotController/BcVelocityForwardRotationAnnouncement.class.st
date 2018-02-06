@@ -1,3 +1,11 @@
+"
+I am an announcement issued when the forward speed and the rotation speed of the robot are set
+
+    Instance Variables
+	forward:		<Number>
+	rotation:		<Number>
+
+"
 Class {
 	#name : #BcVelocityForwardRotationAnnouncement,
 	#superclass : #Announcement,

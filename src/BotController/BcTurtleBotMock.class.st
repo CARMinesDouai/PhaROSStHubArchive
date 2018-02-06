@@ -1,6 +1,6 @@
 Class {
 	#name : #BcTurtleBotMock,
-	#superclass : #BcTurtleBot,
+	#superclass : #BcTurtleBotBodyOLD,
 	#instVars : [
 		'leftSpeed',
 		'rightSpeed'

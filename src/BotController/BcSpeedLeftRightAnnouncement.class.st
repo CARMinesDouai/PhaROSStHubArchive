@@ -1,3 +1,11 @@
+"
+I am an announcement issued when the left and right speeds of the robot are set
+
+    Instance Variables
+	left:		<Number>
+	right:		<Number>
+
+"
 Class {
 	#name : #BcSpeedLeftRightAnnouncement,
 	#superclass : #Announcement,

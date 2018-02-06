@@ -1,3 +1,6 @@
+"
+I represent a stop action. When I am performed, the robot stops moving.
+"
 Class {
 	#name : #BcStop,
 	#superclass : #BcAction,

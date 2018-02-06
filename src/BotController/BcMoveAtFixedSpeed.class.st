@@ -1,3 +1,11 @@
+"
+I represent a motion action. When I am performed, the robot moves at a fixed speed. The speed is a combination of forwradSpeed and rotationSpeed.
+
+    Instance Variables
+	forwardSpeed:		<Number>  Positive = forward. Negative = backwards
+	rotationSpeed:		<Number> Positive = left. Negative = right
+
+"
 Class {
 	#name : #BcMoveAtFixedSpeed,
 	#superclass : #BcAction,

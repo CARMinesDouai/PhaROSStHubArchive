@@ -1,3 +1,6 @@
+"
+I represent a world model built on every Sense step of a Sense-Plan-Act robot controller
+"
 Class {
 	#name : #BcWorldModel,
 	#superclass : #Object,
