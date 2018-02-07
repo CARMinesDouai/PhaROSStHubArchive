@@ -135,7 +135,12 @@ ConfigurationOfBotController >> baseline01: spec [
 				spec
 					className: #ConfigurationOfPureNG;
 					versionString: #'bleedingEdge';
-					repository: 'http://smalltalkhub.com/mc/CAR/Robulab/main/' ].
+					repository: 'http://smalltalkhub.com/mc/CAR/Robulab/main/' ];
+			project: 'ReusableBricks' with: [
+				spec
+					className: #ConfigurationOfReusableBricks;
+					versionString: #'bleedingEdge';
+					repository: 'http://smalltalkhub.com/mc/CAR/ReusableBricks/main/' ].
 		spec 
 			package: #BotController;
 			package: #ReactiveRobot with: [
