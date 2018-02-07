@@ -36,8 +36,8 @@ BcFollowWallAtFixedSpeed >> distanceToFollowedWall [
 { #category : #initialization }
 BcFollowWallAtFixedSpeed >> initialize [
 	super initialize.
-	self minAcceptableDistance: 0.2.
-	self maxAcceptableDistance: 0.4.
+	self minAcceptableDistance: 0.4.
+	self maxAcceptableDistance: 0.5.
 ]
 
 { #category : #testing }

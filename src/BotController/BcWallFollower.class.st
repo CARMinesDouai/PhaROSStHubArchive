@@ -17,12 +17,16 @@ Upon calling these messages, the moveActionClass is replaced by the appropriate 
 Example
 ""Create, set up, and start a controller to follow the right wall""
 bot := BcWallFollower pureRobulab2.
-bot minAcceptableDistance: 0.6.
+
+""Optional settings""
+bot runnerClass: BcLaserDrivenSensePlanActRunner. ""By default the runner has its own thread""
+bot followRightWall. ""By default the robot follows left wall""
+bot minAcceptableDistance: 0.6. ""Meters""
 bot maxAcceptableDistance: 0.7.
-bot followRightWall.
+
 bot start.
 
-""Once done perform""
+""Once done stop the robot""
 bot stop
 
 
