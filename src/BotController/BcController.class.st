@@ -57,15 +57,20 @@ BcController class >> defaultRunnerClass [
 { #category : #'instance creation' }
 BcController class >> pureRobulab1 [
 	^ self
-		body: BcRobulabPure robulab1
+		body: self robulabBodyClass robulab1
 		runnerClass: self defaultRunnerClass
 ]
 
 { #category : #'instance creation' }
 BcController class >> pureRobulab2 [
 	^ self
-		body: BcRobulabPure robulab2
+		body: self robulabBodyClass robulab2
 		runnerClass: self defaultRunnerClass
+]
+
+{ #category : #'instance creation' }
+BcController class >> robulabBodyClass [
+	^ BcRobulabPure
 ]
 
 { #category : #accessing }

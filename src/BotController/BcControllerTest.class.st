@@ -10,6 +10,11 @@ Class {
 }
 
 { #category : #testing }
+BcControllerTest >> bodyClass [
+	^ BcNullTwoWheelBody
+]
+
+{ #category : #testing }
 BcControllerTest >> controllerClass [
 	self subclassResponsibility
 ]
@@ -17,11 +22,12 @@ BcControllerTest >> controllerClass [
 { #category : #testing }
 BcControllerTest >> setUp [
 	super setUp.
-	body := BcNullTwoWheelBody new.
-	controller := self controllerClass body: body runnerClass: BcNullSensePlanActRunner.
+	body := self bodyClass new.
+	controller := self controllerClass
+		body: body
+		runnerClass: BcNullSensePlanActRunner.
 	runner := controller runner.
-	controller start.
-
+	controller start
 ]
 
 { #category : #testing }

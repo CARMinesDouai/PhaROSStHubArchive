@@ -75,3 +75,8 @@ Bc2ZonesObstacleDistancesBuilderFromLaser270 >> updateFromRightEcho: anEcho [
 	newDistances frontRight: (self min: newDistances frontRight frontEcho: anEcho).
 
 ]
+
+{ #category : #building }
+Bc2ZonesObstacleDistancesBuilderFromLaser270 >> worldModelClass [
+	^Bc2ZonesObstacleDistances
+]

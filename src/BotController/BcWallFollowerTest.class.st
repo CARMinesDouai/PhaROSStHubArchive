@@ -59,7 +59,7 @@ BcWallFollowerTest >> testKeepRotationSpeedToZeroIfMinDistanceWithinAcceptableRa
 	echo := PNGLaserEcho new.
 	echo angle: 1.57. "HalfPi"
 	(self minAcceptableDistance + 0.01 to: self maxAcceptableDistance - 0.01 by: 0.01) do: [ : distance |
-		echo distance: distance.
+		echo distance: distance + body laserToSideDistance.
 		body latestLaserScan: {echo}.
 		runner step.
 		self assert: body rotationSpeed equals: 0.
@@ -74,7 +74,7 @@ BcWallFollowerTest >> testKeepRotationSpeedToZeroIfMinDistanceWithinAcceptableRa
 	echo := PNGLaserEcho new.
 	echo angle: -1.57. "HalfPi"
 	(self minAcceptableDistance + 0.01 to: self maxAcceptableDistance - 0.01 by: 0.01) do: [ : distance |
-		echo distance: distance.
+		echo distance: distance + body laserToSideDistance.
 		body latestLaserScan: {echo}.
 		runner step.
 		self assert: body rotationSpeed equals: 0.

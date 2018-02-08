@@ -58,6 +58,16 @@ Bc4ZonesObstacleDistances >> sideLeft: anObject [
 ]
 
 { #category : #accessing }
+Bc4ZonesObstacleDistances >> sideLeftFront [
+	^self sideLeft
+]
+
+{ #category : #accessing }
+Bc4ZonesObstacleDistances >> sideLeftRear [
+	^self sideLeft
+]
+
+{ #category : #accessing }
 Bc4ZonesObstacleDistances >> sideRight [
 	^ sideRight
 ]
@@ -65,4 +75,14 @@ Bc4ZonesObstacleDistances >> sideRight [
 { #category : #accessing }
 Bc4ZonesObstacleDistances >> sideRight: anObject [
 	sideRight := anObject
+]
+
+{ #category : #accessing }
+Bc4ZonesObstacleDistances >> sideRightFront [
+	^self sideLeft
+]
+
+{ #category : #accessing }
+Bc4ZonesObstacleDistances >> sideRightRear [
+	^self sideLeft
 ]
