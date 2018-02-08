@@ -101,10 +101,10 @@ PhaROSMessageTypeBuilder >> forPhaROSTyping [
 
 { #category : #'related class building' }
 PhaROSMessageTypeBuilder >> initTypeCreationOrder [
-	TypeCreationOrder := PhaROSValue allSubclasses detectMax: [ :c | 
-		(c respondsTo: #typeCreationOrder) ifTrue: [ c typeCreationOrder ] ifFalse: [ 0 ] ] 
+	TypeCreationOrder := (PhaROSValue allSubclasses 
+		select: [ :typeClass | typeClass respondsTo: #typeCreationOrder ]
+		thenCollect: [ :each | each typeCreationOrder ]) max
 		
-
 ]
 
 { #category : #'related class building' }
