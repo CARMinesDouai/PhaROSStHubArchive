@@ -1,80 +1,63 @@
 "
-I represent a world model of obstacles in front and on the sides of a robot. I provide only distances to nearest obstacles in 6 areas defined by the 6 instances variables
+I represent a world model of obstacles in front and on the sides of a robot. I provide only distances to nearest obstacles in 6 areas defined by the 6 instances variables.
 
     Instance Variables
-	frontLeft:		<Number>
-	frontRight:		<Number>
 	sideLeftFront:		<Number>
 	sideLeftRear:		<Number>
 	sideRightFront:		<Number>
 	sideRightRear:		<Number>
 
+Public API and Key Messages
+- reset
+Reset all distances to infinity
+-front
+Minimum distance at the nearest obstacle at the front of the robot
+-frontLeft
+Minimum distance to nearest obstacle at the left front
+-frontRight
+Minimum distance to nearest obstacle at the right front
+-sideLeft
+Minimum distance at the nearest obstacle at the left side of the robot
+-left
+Minimum distance at the nearest obstacle at the left of the robot (front and side)
+-sideRight
+Minimum distance at the nearest obstacle at the right side of the robot
+-right
+Minimum distance at the nearest obstacle at the right of the robot  (front and side)
+-sideLeftFront
+Minimum distance at the nearest obstacle at the left side of the robot , closer to the front
+-sideLeftRear
+Minimum distance at the nearest obstacle at the left side of the robot , closer to the rear
+-sideRightFront
+Minimum distance at the nearest obstacle at the right side of the robot , closer to the front
+-sideRightRear
+Minimum distance at the nearest obstacle at the right side of the robot , closer to the rear
 
-    Implementation Points
+
+
+ 
 "
 Class {
 	#name : #Bc6ZonesObstacleDistances,
-	#superclass : #BcWorldModel,
+	#superclass : #Bc2ZonesObstacleDistances,
+	#traits : 'BcTFrontSideZoneObstacleDistances',
+	#classTraits : 'BcTFrontSideZoneObstacleDistances classTrait',
 	#instVars : [
 		'sideLeftFront',
 		'sideRightFront',
 		'sideRightRear',
-		'sideLeftRear',
-		'frontLeft',
-		'frontRight'
+		'sideLeftRear'
 	],
 	#category : #'BotController-WorldModel'
 }
 
-{ #category : #accessing }
-Bc6ZonesObstacleDistances >> front [
-	^self frontLeft min: self frontRight 
-]
-
-{ #category : #accessing }
-Bc6ZonesObstacleDistances >> frontLeft [
-	^ frontLeft
-]
-
-{ #category : #accessing }
-Bc6ZonesObstacleDistances >> frontLeft: anObject [
-	^ frontLeft := anObject
-]
-
-{ #category : #accessing }
-Bc6ZonesObstacleDistances >> frontRight [
-	^ frontRight
-]
-
-{ #category : #accessing }
-Bc6ZonesObstacleDistances >> frontRight: anObject [
-	^ frontRight := anObject
-]
-
-{ #category : #'initialize-release' }
-Bc6ZonesObstacleDistances >> initialize [
-	super initialize.
-	self reset.
-]
-
-{ #category : #accessing }
-Bc6ZonesObstacleDistances >> left [
-	^self frontLeft min: self sideLeft
-]
-
 { #category : #'initialize-release' }
 Bc6ZonesObstacleDistances >> reset [
-	self frontLeft: Float infinity.
-	self frontRight: Float infinity.
+	super reset.
 	self sideLeftFront: Float infinity.
 	self sideLeftRear: Float infinity.
 	self sideRightFront: Float infinity.
 	self sideRightRear: Float infinity
-]
-
-{ #category : #accessing }
-Bc6ZonesObstacleDistances >> right [
-	^self frontRight min: self sideRight
 ]
 
 { #category : #accessing }

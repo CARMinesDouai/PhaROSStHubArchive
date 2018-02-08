@@ -11,6 +11,8 @@ Trigger refreshing the world model
 I am an abstract class. Subclasses should define:
 -newWorldModel
 Build a new world model based on the latest sensory data read from the robot body.
+-worldModelClass
+Answers the class for creating a new world model
 
     Instance Variables
 	worldModel:		<BcWorldModel> The latest ready to use world model
@@ -45,4 +47,9 @@ BcWorldModelBuilder >> worldModel [
 { #category : #accessing }
 BcWorldModelBuilder >> worldModel: anObject [
 	worldModel := anObject
+]
+
+{ #category : #building }
+BcWorldModelBuilder >> worldModelClass [
+	self subclassResponsibility
 ]

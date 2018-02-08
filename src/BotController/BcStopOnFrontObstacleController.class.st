@@ -145,5 +145,5 @@ BcStopOnFrontObstacleController >> stopDistance: newStopDistance [
 
 { #category : #'initialize-release' }
 BcStopOnFrontObstacleController >> worldModelBuilderClass [
-	^Bc6ZonesObstacleDistancesBuilderFromLaser270 
+	^Bc2ZonesObstacleDistancesBuilderFromLaser270 
 ]

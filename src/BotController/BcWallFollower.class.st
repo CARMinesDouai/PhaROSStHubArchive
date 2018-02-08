@@ -99,3 +99,8 @@ BcWallFollower >> resetMoveAction [
 		minAcceptableDistance: oldMoveAction minAcceptableDistance;
 		maxAcceptableDistance: oldMoveAction maxAcceptableDistance. 
 ]
+
+{ #category : #'initialize-release' }
+BcWallFollower >> worldModelBuilderClass [
+	^Bc6ZonesObstacleDistancesBuilderFromLaser270 
+]
