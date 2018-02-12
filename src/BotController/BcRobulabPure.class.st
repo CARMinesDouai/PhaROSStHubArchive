@@ -77,6 +77,7 @@ BcRobulabPure >> startLaserScannerPeriod: durationInClockCycles [
 		"Filter away errors due to laser detecting the robot's chassis"
 		obstacleEchoes := notif echoes copyFrom: 2 to: 269.
 		self latestLaserScan: obstacleEchoes].
+	serviceRegistry laserService disableNotifications.
 	serviceRegistry laserService enableNotificationsEvery: durationInClockCycles.
 
 ]
