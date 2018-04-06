@@ -26,19 +26,20 @@ BGSExplorationSimulationWindow >> addButtonsToPanel: panel [
 ]
 
 { #category : #'initialize-release' }
-BGSExplorationSimulationWindow >> addCountersToPanel: panel [ 
+BGSExplorationSimulationWindow >> addCountersToPanel: panel [
 	| frontierView unexploredView |
 	self frontierCounterMorph: (LabelMorph contents: '0').
-	frontierView := self wrapMorph: self frontierCounterMorph andAddLabel: 'Frontier cells'. 		
+	frontierView := self wrapMorph: self frontierCounterMorph andAddLabel: 'Frontier cells'.
 	self unexploredCounterMorph: (LabelMorph contents: '1000').
-	unexploredView := self wrapMorph: self unexploredCounterMorph andAddLabel: 'Unexplored cells'.
-	{frontierView. unexploredView} do: [:view|
-	panel 
-		addMorph: view
-		fullFrame: (LayoutFrame 
-				fractions: (0 @ 0 corner: 1 @ 0)
-				offsets: (4 @ 4 corner: -8 @ 44)).
-	].
+	unexploredView := self
+		wrapMorph: self unexploredCounterMorph
+		andAddLabel: 'Unexplored cells'.
+	{frontierView.
+	unexploredView}
+		do: [ :view | 
+			panel
+				addMorph: view
+				fullFrame: (LayoutFrame identity fromArray: #(0 0 1 0 -8 4 4 44)) ].
 	super addCountersToPanel: panel
 ]
 

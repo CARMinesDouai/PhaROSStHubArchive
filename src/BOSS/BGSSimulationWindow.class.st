@@ -63,15 +63,13 @@ BGSSimulationWindow >> addButtonsToPanel: panel [
 ]
 
 { #category : #'initialize-release' }
-BGSSimulationWindow >> addCountersToPanel: panel [ 
+BGSSimulationWindow >> addCountersToPanel: panel [
 	| stepsView |
 	self stepCounterMorph: (LabelMorph contents: '0').
-	stepsView := self wrapMorph: self stepCounterMorph andAddLabel: 'Steps:'. 
-	panel 
+	stepsView := self wrapMorph: self stepCounterMorph andAddLabel: 'Steps:'.
+	panel
 		addMorph: stepsView
-		fullFrame: (LayoutFrame 
-				fractions: (0 @ 0 corner: 1 @ 0)
-				offsets: (4 @ 4 corner: -8 @ 44))
+		fullFrame: (LayoutFrame identity fromArray: #(0 0 1 0 -8 4 4 44))
 ]
 
 { #category : #'initialize-release' }

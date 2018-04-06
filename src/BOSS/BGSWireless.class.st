@@ -47,10 +47,10 @@ BGSWireless >> peerAt: cell [
 BGSWireless >> peers [
 	| peers |
 	peers := Set new.
-	(self terrain cellsAround: self cell range: self range) do: [:cell|
-		(self peerAt: cell) ifNotNilDo: [:wireless| peers add: wireless]
-	].
-	^peers
+	((self terrain cellsAround: self cell range: self range)
+		select: [ :cell | (self peerAt: cell) notNil ])
+		do: [ :fullCell | peers add: (self peerAt: fullCell) ].
+	^ peers
 ]
 
 { #category : #accessing }
