@@ -45,6 +45,11 @@ VMTransformationFrame >> asRenderableElement [
 	^ self class rendererClass new model: self
 ]
 
+{ #category : #'as yet unclassified' }
+VMTransformationFrame >> asVMTransformationFrame [
+	^self.
+]
+
 { #category : #accessing }
 VMTransformationFrame >> children [
 	^children.

@@ -23,6 +23,7 @@ VMLocalMapSimplifier >> ifNotMergeAbleType: aType do: aBlock [
 
 { #category : #'as yet unclassified' }
 VMLocalMapSimplifier >> ifNotMergeAbleType: aType do: aBlock otherwiseDo: bBlock [
+	1 halt.
 	(aType = 1) ifTrue: [
 		^bBlock value.
 	].
@@ -50,7 +51,7 @@ VMLocalMapSimplifier >> maxError: error [
 VMLocalMapSimplifier >> meanSquareError [
 	| index squareErrorSum tempLine pointCount |
 	
-	tempLine := VMLineSegment from: (oldCollection at: startIndex) pointA to: (oldCollection at: endIndex) pointB.
+	tempLine := VMLineSegment from: (oldCollection at: startIndex) pointA to: (oldCollection at: endIndex) pointB type: ((oldCollection at: startIndex) type).
 	index := startIndex + 1.
 	squareErrorSum:= 0.
 	pointCount := 0.
@@ -100,13 +101,22 @@ VMLocalMapSimplifier >> simplify: aCollection [
 	endIndex := 2.
 	
 	[ (endIndex) <= (oldCollection size+1) ] whileTrue: [
+		(oldCollection at: startIndex) type
+			ifMergeableTypeDo: [ self tryMerge. ]
+			otherwiseDo: [
+				newCollection add: (oldCollection at: startIndex).
+				startIndex := startIndex + 1.
+				endIndex := startIndex + 1.
+			].
+		
+		"
 		self ifNotMergeAbleType: (oldCollection at: startIndex) type do: [
 			newCollection add: (oldCollection at: startIndex).
 			startIndex := startIndex + 1.
 			endIndex := startIndex + 1.
 		] otherwiseDo: [
 			self tryMerge.
-		].
+		]."
 	].
 	
 	^newCollection.
@@ -127,12 +137,20 @@ VMLocalMapSimplifier >> tryMerge [
 		^true.
 	].
 	
-	self ifNotMergeAbleType: (oldCollection at: endIndex) type do: [
+	
+	(oldCollection at: endIndex) type ifMergeableTypeDo: [] otherwiseDo: [
 		self mergeFrom: startIndex to: (endIndex - 1).
 		startIndex := endIndex.
 		endIndex := startIndex + 1.
 		^true.
 	].
+	"
+	self ifNotMergeAbleType: (oldCollection at: endIndex) type do: [
+		self mergeFrom: startIndex to: (endIndex - 1).
+		startIndex := endIndex.
+		endIndex := startIndex + 1.
+		^true.
+	]."
 	
 	(self meanSquareError > maxError) ifTrue: [
 		self mergeFrom: startIndex to: (endIndex - 1).

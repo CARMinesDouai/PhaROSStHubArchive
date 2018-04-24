@@ -4,24 +4,26 @@ Class {
 	#category : #'VectorMaps-Examples'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'obsolete / unused' }
 VMDataSet class >> dataLocalMap_1 [
 	"a very small local map, designed to test the map merging on stright line segments.
 	this local map has a 'gap' (a frontier) that should be filled when merged with the local
 	map from dataLocalMap_2."
-	| data lineSegments localMap |
+	| data lineSegments localMap obst front |
+	obst := VMLineTypeObstacle new.
+	front := VMLineTypeFrontier new.
 	
 	data := {
-		{ 0@0. 2@0. 1 }.
-		{ 2@0. 4@0. 1 }.
-		{ 4@0. 6@0. 2 }.
-		{ 6@0. 8@0. 1 }.
-		{ 8@0. 10@0. 1 }.
-		{ 10@0. 5@5. 2 }.
-		{ 5@5. 0@0. 2 }.
+		{ 0@0. 2@0. obst }.
+		{ 2@0. 4@0. obst }.
+		{ 4@0. 6@0. front }.
+		{ 6@0. 8@0. obst }.
+		{ 8@0. 10@0. obst }.
+		{ 10@0. 5@5. front }.
+		{ 5@5. 0@0. front }.
 	}.
 	
-	lineSegments := data collect: [ :obj |
+	lineSegments := data asOrderedCollection collect: [ :obj |
 		(VMLineSegment from: obj first to: obj second type: (obj third))
 	].
 	
@@ -33,22 +35,140 @@ VMDataSet class >> dataLocalMap_1 [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'obsolete / unused' }
 VMDataSet class >> dataLocalMap_2 [
 	"a very small local map, designed to test the map merging on stright line segments.
 	this local map is meant to be used in conjungtion with dataLocalMap_1."
-	| data lineSegments localMap |
+	| data lineSegments localMap obst front |
+	obst := VMLineTypeObstacle new.
+	front := VMLineTypeFrontier new.
 	
 	data := {
-		{ 1@0. 3@0. 1 }.
-		{ 3@0. 5@0. 1 }.
-		{ 5@0. 7@0. 1 }.
-		{ 7@0. 9@0. 1 }.
-		{ 9@0. 4.5@5. 2 }.
-		{ 4.5@5. 1@0. 2 }.
+		{ 1@0. 3@0. obst }.
+		{ 3@0. 5@0. obst }.
+		{ 5@0. 7@0. obst }.
+		{ 7@0. 9@0. obst }.
+		{ 9@0. 4.5@5. front }.
+		{ 4.5@5. 1@0. front }.
 	}.
 	
-	lineSegments := data collect: [ :obj |
+	lineSegments := data asOrderedCollection collect: [ :obj |
+		(VMLineSegment from: obj first to: obj second type: (obj third))
+	].
+	
+	localMap := (VMLocalMap new)
+		lineSegments: lineSegments;
+		yourself.
+	
+	^localMap.
+	
+]
+
+{ #category : #'obsolete / unused' }
+VMDataSet class >> dataLocalMap_3 [
+	"a very small local map, designed to test the map merging in a corner.
+	this local map is meant to be used in conjungtion with dataLocalMap_4."
+	| data lineSegments localMap obst front |
+	obst := VMLineTypeObstacle new.
+	front := VMLineTypeFrontier new.
+	
+	data := {
+		{ 1@0. 1@2. obst }.
+		{ 1@2. 2@3. obst }.
+		{ 2@3. 4@3. obst }.
+		{ 4@3. 4@0. front }.
+		{ 4@0. 1@0. front }.
+	}.
+	
+	lineSegments := data asOrderedCollection collect: [ :obj |
+		(VMLineSegment from: obj first to: obj second type: (obj third))
+	].
+	
+	localMap := (VMLocalMap new)
+		lineSegments: lineSegments;
+		yourself.
+	
+	^localMap.
+	
+]
+
+{ #category : #'obsolete / unused' }
+VMDataSet class >> dataLocalMap_4 [
+	"a very small local map, designed to test the map merging in a corner.
+	this local map is meant to be used in conjungtion with dataLocalMap_3."
+	| data lineSegments localMap obst front |
+	obst := VMLineTypeObstacle new.
+	front := VMLineTypeFrontier new.
+	
+	data := {
+		{ 1@0.5. 1@2.9. obst }.
+		{ 1@2.9. 3@3. obst }.
+		{ 3@3. 5@3. obst }.
+		{ 5@3. 5@0. front }.
+		{ 5@0. 1@0.5. front }.
+	}.
+	
+	lineSegments := data asOrderedCollection collect: [ :obj |
+		(VMLineSegment from: obj first to: obj second type: (obj third))
+	].
+	
+	localMap := (VMLocalMap new)
+		lineSegments: lineSegments;
+		yourself.
+	
+	^localMap.
+	
+]
+
+{ #category : #'obsolete / unused' }
+VMDataSet class >> dataLocalMap_5 [
+	"a very small local map, designed to test the map merging.
+	this local map is meant to be used in conjungtion with dataLocalMap_6."
+	| data lineSegments localMap obst front |
+	obst := VMLineTypeObstacle new.
+	front := VMLineTypeFrontier new.
+	
+	data := {
+		{ -2@ -4. -2@ -1. obst }.
+		{ -2@ -1. 0@0. obst }.
+		{ 0@0. 2@0. obst }.
+		{ 2@0. 4@0. obst }.
+		{ 4@0. 2@ -4. front }.
+		{ 2@ -4. -2@ -4. front }.
+	}.
+	
+	lineSegments := data asOrderedCollection collect: [ :obj |
+		(VMLineSegment from: obj first to: obj second type: (obj third))
+	].
+	
+	localMap := (VMLocalMap new)
+		lineSegments: lineSegments;
+		yourself.
+	
+	^localMap.
+	
+]
+
+{ #category : #'obsolete / unused' }
+VMDataSet class >> dataLocalMap_6 [
+	"a very small local map, designed to test the map merging.
+	this local map is meant to be used in conjungtion with dataLocalMap_5."
+	| data lineSegments localMap obst front |
+	obst := VMLineTypeObstacle new.
+	front := VMLineTypeFrontier new.
+	
+	data := {
+		{ -1.9@ -3. -1@ 0. obst }.
+		{ -1@0. 1@0.1. obst }.
+		{ 1@0.1. 3@0.1. obst }.
+		{ 3@0.1. 5@0.1. obst }.
+		{ 5@0.1. 5@ -2. obst }.
+		{ 5@ -2. 5@ -5. obst }.
+		{ 5@ -5. 2.5@ -5. front }.
+		{ 2.5@ -5. -1.9@ -3. front }.
+	}.
+	
+	lineSegments := data asOrderedCollection collect: [ :obj |
 		(VMLineSegment from: obj first to: obj second type: (obj third))
 	].
 	
@@ -520,6 +640,49 @@ VMDataSet class >> dataPolygon_Triangles [
 
 ]
 
+{ #category : #'obsolete / unused' }
+VMDataSet class >> localMap_1 [
+	"
+	(VMViewer openOn: { self localMap_1.  VMGridRenderer new }) autozoom; backgroundColor: Color gray.
+	"
+
+	^VMLocalMap lineSegments: {VMLineSegment from:(0.326@8.01) to:(0.634@8.06) type: 1. VMLineSegment from:(0.634@8.06) to:(0.902@8.11) type: 1. VMLineSegment from:(0.902@8.11) to:(1.166@8.128) type: 1. VMLineSegment from:(1.166@8.128) to:(1.47@8.034) type: 1. VMLineSegment from:(1.47@8.034) to:(1.6580000000000001@8.084) type: 1. VMLineSegment from:(1.6580000000000001@8.084) to:(1.842@8.116) type: 1. VMLineSegment from:(1.842@8.116) to:(2.028@8.132) type: 1. VMLineSegment from:(2.028@8.132) to:(2.21@8.13) type: 1. VMLineSegment from:(2.21@8.13) to:(2.378@8.164) type: 1. VMLineSegment from:(2.378@8.164) to:(2.5500000000000003@8.182) type: 1. VMLineSegment from:(2.5500000000000003@8.182) to:(2.722@8.236) type: 1. VMLineSegment from:(2.722@8.236) to:(2.898@8.226) type: 1. VMLineSegment from:(2.898@8.226) to:(3.082@8.252) type: 1. VMLineSegment from:(3.082@8.252) to:(3.258@8.212) type: 1. VMLineSegment from:(3.258@8.212) to:(3.314@7.83) type: 1. VMLineSegment from:(3.314@7.83) to:(3.352@7.5440000000000005) type: 1. VMLineSegment from:(3.352@7.5440000000000005) to:(3.396@7.354) type: 1. VMLineSegment from:(3.396@7.354) to:(3.442@7.21) type: 1. VMLineSegment from:(3.442@7.21) to:(3.594@7.222) type: 1. VMLineSegment from:(3.594@7.222) to:(3.786@7.2540000000000004) type: 1. VMLineSegment from:(3.786@7.2540000000000004) to:(3.988@7.26) type: 1. VMLineSegment from:(3.988@7.26) to:(4.122@7.182) type: 1. VMLineSegment from:(4.122@7.182) to:(4.162@7.032) type: 1. VMLineSegment from:(4.162@7.032) to:(4.148@6.862) type: 1. VMLineSegment from:(4.148@6.862) to:(4.298@6.78) type: 1. VMLineSegment from:(4.298@6.78) to:(4.446@6.678) type: 1. VMLineSegment from:(4.446@6.678) to:(4.44@6.5200000000000005) type: 1. VMLineSegment from:(4.44@6.5200000000000005) to:(4.47@6.376) type: 1. VMLineSegment from:(4.47@6.376) to:(4.488@6.23) type: 1. VMLineSegment from:(4.488@6.23) to:(4.494@6.082) type: 1. VMLineSegment from:(4.494@6.082) to:(4.5360000000000005@5.93) type: 1. VMLineSegment from:(4.5360000000000005@5.93) to:(4.566@5.772) type: 1. VMLineSegment from:(4.566@5.772) to:(4.534@5.62) type: 1. VMLineSegment from:(4.534@5.62) to:(4.3020000000000005@5.534) type: 1. VMLineSegment from:(4.3020000000000005@5.534) to:(4.296@5.384) type: 1. VMLineSegment from:(4.296@5.384) to:(4.322@5.208) type: 1. VMLineSegment from:(4.322@5.208) to:(4.328@5.022) type: 1. VMLineSegment from:(4.328@5.022) to:(4.356@4.8) type: 1. VMLineSegment from:(4.356@4.8) to:(4.354@4.5680000000000005) type: 1. VMLineSegment from:(4.354@4.5680000000000005) to:(4.362@4.29) type: 1. VMLineSegment from:(4.362@4.29) to:(0.0@0.0) type: 2. VMLineSegment from:(0.0@0.0) to:(0.326@8.01) type: 2.  } asOrderedCollection.
+
+]
+
+{ #category : #'obsolete / unused' }
+VMDataSet class >> localMap_2 [
+	"
+	(VMViewer openOn: { self localMap_2.  VMGridRenderer new }) autozoom; backgroundColor: Color gray.
+	"
+	^VMLocalMap lineSegments: {VMLineSegment from:(-1.476@6.2) to:(-1.536@6.5440000000000005) type: 1. VMLineSegment from:(-1.536@6.5440000000000005) to:(-1.618@6.9) type: 1. VMLineSegment from:(-1.618@6.9) to:(-1.672@7.272) type: 1. VMLineSegment from:(-1.672@7.272) to:(-1.6420000000000001@7.640000000000001) type: 1. VMLineSegment from:(-1.6420000000000001@7.640000000000001) to:(-0.11800000000000001@7.5) type: 2. VMLineSegment from:(-0.11800000000000001@7.5) to:(0.016@7.71) type: 1. VMLineSegment from:(0.016@7.71) to:(0.21@7.88) type: 1. VMLineSegment from:(0.21@7.88) to:(0.41600000000000004@8.024000000000001) type: 1. VMLineSegment from:(0.41600000000000004@8.024000000000001) to:(0.744@8.054) type: 1. VMLineSegment from:(0.744@8.054) to:(0.986@8.108) type: 1. VMLineSegment from:(0.986@8.108) to:(1.224@8.134) type: 1. VMLineSegment from:(1.224@8.134) to:(1.514@8.054) type: 1. VMLineSegment from:(1.514@8.054) to:(1.7@8.064) type: 1. VMLineSegment from:(1.7@8.064) to:(1.854@8.098) type: 1. VMLineSegment from:(1.854@8.098) to:(2.008@8.116) type: 1. VMLineSegment from:(2.008@8.116) to:(2.142@8.168000000000001) type: 1. VMLineSegment from:(2.142@8.168000000000001) to:(2.29@8.162) type: 1. VMLineSegment from:(2.29@8.162) to:(2.426@8.192) type: 1. VMLineSegment from:(2.426@8.192) to:(2.566@8.21) type: 1. VMLineSegment from:(2.566@8.21) to:(2.704@8.216) type: 1. VMLineSegment from:(2.704@8.216) to:(2.848@8.26) type: 1. VMLineSegment from:(2.848@8.26) to:(2.998@8.294) type: 1. VMLineSegment from:(2.998@8.294) to:(3.156@8.314) type: 1. VMLineSegment from:(3.156@8.314) to:(3.236@8.08) type: 1. VMLineSegment from:(3.236@8.08) to:(3.286@7.8500000000000005) type: 1. VMLineSegment from:(3.286@7.8500000000000005) to:(3.298@7.62) type: 1. VMLineSegment from:(3.298@7.62) to:(3.334@7.484) type: 1. VMLineSegment from:(3.334@7.484) to:(3.352@7.352) type: 1. VMLineSegment from:(3.352@7.352) to:(3.384@7.258) type: 1. VMLineSegment from:(3.384@7.258) to:(3.442@7.202) type: 1. VMLineSegment from:(3.442@7.202) to:(3.612@7.234) type: 1. VMLineSegment from:(3.612@7.234) to:(3.794@7.242) type: 1. VMLineSegment from:(3.794@7.242) to:(4.0680000000000005@7.274) type: 1. VMLineSegment from:(4.0680000000000005@7.274) to:(4.078@7.138) type: 1. VMLineSegment from:(4.078@7.138) to:(4.126@7.024) type: 1. VMLineSegment from:(4.126@7.024) to:(4.116@6.894) type: 1. VMLineSegment from:(4.116@6.894) to:(4.142@6.7780000000000005) type: 1. VMLineSegment from:(4.142@6.7780000000000005) to:(4.408@6.686) type: 1. VMLineSegment from:(4.408@6.686) to:(4.416@6.546) type: 1. VMLineSegment from:(4.416@6.546) to:(4.462@6.404) type: 1. VMLineSegment from:(4.462@6.404) to:(0.0@0.0) type: 2. VMLineSegment from:(0.0@0.0) to:(-1.476@6.2) type: 2.  }.
+
+
+]
+
+{ #category : #'obsolete / unused' }
+VMDataSet class >> localMap_3 [
+	"
+	(VMViewer openOn: { self localMap_3.  VMGridRenderer new }) autozoom; backgroundColor: Color gray.
+	"
+	^VMLocalMap lineSegments: {VMLineSegment from:(-1.31@5.152) to:(-1.3920000000000001@5.496) type: 1. VMLineSegment from:(-1.3920000000000001@5.496) to:(-1.446@5.8420000000000005) type: 1. VMLineSegment from:(-1.446@5.8420000000000005) to:(-1.518@6.18) type: 1. VMLineSegment from:(-1.518@6.18) to:(-1.564@6.5200000000000005) type: 1. VMLineSegment from:(-1.564@6.5200000000000005) to:(-1.6280000000000001@6.864) type: 1. VMLineSegment from:(-1.6280000000000001@6.864) to:(-1.668@7.216) type: 1. VMLineSegment from:(-1.668@7.216) to:(-1.726@7.582) type: 1. VMLineSegment from:(-1.726@7.582) to:(-0.05@7.546) type: 2. VMLineSegment from:(-0.05@7.546) to:(0.012@7.7620000000000005) type: 1. VMLineSegment from:(0.012@7.7620000000000005) to:(0.182@7.934) type: 1. VMLineSegment from:(0.182@7.934) to:(0.452@8.038) type: 1. VMLineSegment from:(0.452@8.038) to:(0.724@8.104000000000001) type: 1. VMLineSegment from:(0.724@8.104000000000001) to:(0.988@8.134) type: 1. VMLineSegment from:(0.988@8.134) to:(1.206@8.164) type: 1. VMLineSegment from:(1.206@8.164) to:(1.52@8.06) type: 1. VMLineSegment from:(1.52@8.06) to:(1.6500000000000001@8.106) type: 1. VMLineSegment from:(1.6500000000000001@8.106) to:(1.808@8.1) type: 1. VMLineSegment from:(1.808@8.1) to:(1.936@8.116) type: 1. VMLineSegment from:(1.936@8.116) to:(2.058@8.124) type: 1. VMLineSegment from:(2.058@8.124) to:(2.16@8.166) type: 1. VMLineSegment from:(2.16@8.166) to:(2.2800000000000002@8.152000000000001) type: 1. VMLineSegment from:(2.2800000000000002@8.152000000000001) to:(2.384@8.176) type: 1. VMLineSegment from:(2.384@8.176) to:(2.488@8.192) type: 1. VMLineSegment from:(2.488@8.192) to:(2.596@8.198) type: 1. VMLineSegment from:(2.596@8.198) to:(2.702@8.196) type: 1. VMLineSegment from:(2.702@8.196) to:(2.816@8.234) type: 1. VMLineSegment from:(2.816@8.234) to:(2.924@8.214) type: 1. VMLineSegment from:(2.924@8.214) to:(3.0460000000000003@8.23) type: 1. VMLineSegment from:(3.0460000000000003@8.23) to:(3.174@8.238) type: 1. VMLineSegment from:(3.174@8.238) to:(3.258@8.142) type: 1. VMLineSegment from:(3.258@8.142) to:(3.2800000000000002@7.96) type: 1. VMLineSegment from:(3.2800000000000002@7.96) to:(3.3040000000000003@7.822) type: 1. VMLineSegment from:(3.3040000000000003@7.822) to:(3.314@7.688) type: 1. VMLineSegment from:(3.314@7.688) to:(3.338@7.5920000000000005) type: 1. VMLineSegment from:(3.338@7.5920000000000005) to:(3.356@7.5) type: 1. VMLineSegment from:(3.356@7.5) to:(3.362@7.41) type: 1. VMLineSegment from:(3.362@7.41) to:(3.358@7.322) type: 1. VMLineSegment from:(3.358@7.322) to:(3.346@7.24) type: 1. VMLineSegment from:(3.346@7.24) to:(3.372@7.18) type: 1. VMLineSegment from:(3.372@7.18) to:(3.488@7.144) type: 1. VMLineSegment from:(3.488@7.144) to:(0.0@0.0) type: 2. VMLineSegment from:(0.0@0.0) to:(-1.31@5.152) type: 2.  }
+
+
+
+]
+
+{ #category : #'obsolete / unused' }
+VMDataSet class >> localMap_4 [
+	"
+	(VMViewer openOn: { self localMap_4.  VMGridRenderer new }) autozoom; backgroundColor: Color gray.
+	"
+	^VMLocalMap lineSegments: {VMLineSegment from:(4.2860000000000005@2.192) to:(3.838@2.078) type: 1. VMLineSegment from:(3.838@2.078) to:(3.39@2.004) type: 1. VMLineSegment from:(3.39@2.004) to:(2.96@1.92) type: 1. VMLineSegment from:(2.96@1.92) to:(2.536@1.824) type: 1. VMLineSegment from:(2.536@1.824) to:(2.106@1.762) type: 1. VMLineSegment from:(2.106@1.762) to:(1.6620000000000001@2.236) type: 2. VMLineSegment from:(1.6620000000000001@2.236) to:(1.262@2.146) type: 1. VMLineSegment from:(1.262@2.146) to:(0.762@1.498) type: 2. VMLineSegment from:(0.762@1.498) to:(0.276@1.436) type: 1. VMLineSegment from:(0.276@1.436) to:(-0.254@1.324) type: 2. VMLineSegment from:(-0.254@1.324) to:(-0.658@1.6320000000000001) type: 2. VMLineSegment from:(-0.658@1.6320000000000001) to:(-1.46@1.118) type: 2. VMLineSegment from:(-1.46@1.118) to:(-2.172@1.006) type: 2. VMLineSegment from:(-2.172@1.006) to:(-1.014@3.544) type: 2. VMLineSegment from:(-1.014@3.544) to:(-1.096@3.992) type: 1. VMLineSegment from:(-1.096@3.992) to:(-1.192@4.36) type: 1. VMLineSegment from:(-1.192@4.36) to:(-1.248@4.722) type: 1. VMLineSegment from:(-1.248@4.722) to:(-1.304@5.048) type: 1. VMLineSegment from:(-1.304@5.048) to:(-1.372@5.338) type: 1. VMLineSegment from:(-1.372@5.338) to:(-1.408@5.63) type: 1. VMLineSegment from:(-1.408@5.63) to:(-1.468@5.896) type: 1. VMLineSegment from:(-1.468@5.896) to:(-1.504@6.162) type: 1. VMLineSegment from:(-1.504@6.162) to:(-1.566@6.418) type: 1. VMLineSegment from:(-1.566@6.418) to:(-1.606@6.678) type: 1. VMLineSegment from:(-1.606@6.678) to:(-1.624@6.938) type: 1. VMLineSegment from:(-1.624@6.938) to:(-1.67@7.204) type: 1. VMLineSegment from:(-1.67@7.204) to:(-1.696@7.476) type: 1. VMLineSegment from:(-1.696@7.476) to:(-1.748@7.764) type: 1. VMLineSegment from:(-1.748@7.764) to:(-0.29@7.61) type: 2. VMLineSegment from:(-0.29@7.61) to:(-0.006@7.668) type: 1. VMLineSegment from:(-0.006@7.668) to:(0.008@7.816) type: 1. VMLineSegment from:(0.008@7.816) to:(0.078@7.942) type: 1. VMLineSegment from:(0.078@7.942) to:(0.196@8.034) type: 1. VMLineSegment from:(0.196@8.034) to:(0.322@8.11) type: 1. VMLineSegment from:(0.322@8.11) to:(0.482@8.14) type: 1. VMLineSegment from:(0.482@8.14) to:(0.61@8.186) type: 1. VMLineSegment from:(0.61@8.186) to:(0.764@8.178) type: 1. VMLineSegment from:(0.764@8.178) to:(0.886@8.2) type: 1. VMLineSegment from:(0.886@8.2) to:(1.006@8.208) type: 1. VMLineSegment from:(1.006@8.208) to:(1.102@8.25) type: 1. VMLineSegment from:(1.102@8.25) to:(0.0@0.0) type: 2. VMLineSegment from:(0.0@0.0) to:(4.2860000000000005@2.192) type: 2.  }
+
+
+
+
+]
+
 { #category : #'data - maps' }
 VMDataSet class >> map_7 [
 	"a test map to test poly-lines
@@ -527,7 +690,7 @@ VMDataSet class >> map_7 [
 	returns: an array of three strings (info, vertices, and edges) that can be used to create a VMMap object"
 	| map roomA roomB roomC polygons |
 	
-	map := VMMap new.
+	map := VMPolygonMap new.
 	map origin: 0@0.
 	polygons := OrderedCollection new.
 	
@@ -618,4 +781,156 @@ VMDataSet class >> sensor2 [
 		maxRange: 10.0;
 		rayCount: (151).
 	
+]
+
+{ #category : #'toy-example: polygons' }
+VMDataSet class >> toyExample_polygons [
+	"a small toy examples consisting of 4 polygons that cover a small room with one obstacle"
+	| points types polygons |
+	points := {
+		{ -2 @ -2.  -2 @ 5.5. -1.5 @ 6.  0.5 @ 6.  2 @ 3.5.  2 @ 2.  3 @ 2.  2.5 @ -2 }.
+		{ -2 @ 3.  -2 @ 6.  6 @ 6.  6 @ 5.  4 @ 4.  2 @ 4.  2 @ 2.25 }.
+		{ -2 @ 4.  -2 @ 6.  3.5 @ 6.  6 @ 5.  6 @ -1.  4 @ 2.  4 @ 4.  2 @ 4 }.
+		{ -2 @ 0.  -2 @ 2.  2 @ 3.  2 @ 2.  4 @ 2.  6 @ 3.  6 @ -2.  0 @ -2 }.
+	}.
+	types := {
+		{ 1.  1.  1.  2.  1.  1.  2.  1. }.
+		{ 1.  1.  1.  2.  1.  1.  2. }.
+		{ 1.  1.  2.  1.  2.  1.  1.  2. }.
+		{ 1.  2.  1.  1.  2.  1.  1.  2. }.
+	}.
+	
+	polygons := points collect: [ :pointCollection | VMPolygon new fromPoints: pointCollection ].
+	polygons doWithIndex: [ :p :polygonIndex |
+		p doWithIndex: [ :lineSeg : lineSegIndex |
+			lineSeg type: ((types at:polygonIndex) at: lineSegIndex).
+		].
+	].
+	
+	^polygons
+
+]
+
+{ #category : #'toy-example: polygons' }
+VMDataSet class >> toyExample_polygons2 [
+	"a small toy examples consisting of 2 polygons"
+	| points types polygons |
+	points := {
+		{ -3 @ -2.  -3 @ 0.  1 @ 2.  3 @ 2. }.
+		{ -3 @ -1.  -2 @ 2.  2 @ 2.  2 @ -2. }.
+	}.
+	types := {
+		{ 1.  1.  1.  2. }.
+		{ 1.  1.  2.  2. }.
+	}.
+	
+	polygons := points collect: [ :pointCollection | VMPolygon new fromPoints: pointCollection ].
+	polygons doWithIndex: [ :p :polygonIndex |
+		p doWithIndex: [ :lineSeg : lineSegIndex |
+			lineSeg type: ((types at:polygonIndex) at: lineSegIndex).
+		].
+	].
+	
+	^polygons
+
+]
+
+{ #category : #'toy-example: polygons' }
+VMDataSet class >> toyExample_polygons3 [
+	"a small toy examples consisting of 2 polygons. this is used to test merging of concave structures"
+	| points types polygons |
+	points := {
+		{ -2 @ -2.  -2 @ -0.5.  0.5 @ 2.  2 @ 2.  2 @ -2 }.
+		{ -2 @ -0.1.  0 @ 0.  0.1 @ 2.  1.5 @ -1.5. }.
+	}.
+	types := {
+		{ 1.  1.  1.  2.  2. }.
+		{ 1.  1.  2.  2. }.
+	}.
+	
+	polygons := points collect: [ :pointCollection | VMPolygon new fromPoints: pointCollection ].
+	polygons doWithIndex: [ :p :polygonIndex |
+		p doWithIndex: [ :lineSeg : lineSegIndex |
+			lineSeg type: ((types at:polygonIndex) at: lineSegIndex).
+		].
+	].
+	
+	^polygons
+
+]
+
+{ #category : #'toy-example: polygons' }
+VMDataSet class >> toyExample_polygons4 [
+	"a small toy examples consisting of 2 polygons. used to test polygon merging."
+	| points types polygons |
+	points := {
+		{ -4 @ -3.  -4 @ -1.  -3 @ 0.  0 @ 1.  1 @ -3 }.
+		{ -3 @ -4.  -4 @ -0.5.  -0.5 @ 0.  0 @ 1.5.  2 @ 4.  2 @ 1 }.
+	}.
+	types := {
+		{ 1.  1.  1.  2.  2. }.
+		{ 1.  1.  1.  1.  2.  2. }.
+	}.
+	
+	polygons := points collect: [ :pointCollection | VMPolygon new fromPoints: pointCollection ].
+	polygons doWithIndex: [ :p :polygonIndex |
+		p doWithIndex: [ :lineSeg : lineSegIndex |
+			lineSeg type: ((types at:polygonIndex) at: lineSegIndex).
+		].
+	].
+	
+	^polygons
+
+]
+
+{ #category : #'toy-example: polygons' }
+VMDataSet class >> toyExample_polygons5 [
+	"a small toy examples consisting of 2 polygons. used for space carving test."
+	| points types polygons |
+	points := {
+		{ -4 @ 4.  4 @ 4.  4 @ -4.  -4 @ -4. }.
+		{ -5 @ -1.  -5 @ 1.  2 @ 0. }.
+	}.
+	types := {
+		{ 1.  1.  1.  1. }.
+		{ 1.  2.  2. }.
+	}.
+	
+	polygons := points collect: [ :pointCollection | VMPolygon new fromPoints: pointCollection ].
+	polygons doWithIndex: [ :p :polygonIndex |
+		p doWithIndex: [ :lineSeg : lineSegIndex |
+			lineSeg type: ((types at:polygonIndex) at: lineSegIndex).
+		].
+	].
+	
+	^polygons
+
+]
+
+{ #category : #'toy-example: polygons' }
+VMDataSet class >> toyExample_polygons_ICIRA [
+	"a small toy examples consisting of 4 polygons that cover a small room with one obstacle"
+	| points types polygons |
+	points := {
+		{ -2 @ -2.  -2 @ 5.5. -1.5 @ 6.  0.5 @ 6.  2 @ 3.5.  2 @ 2.  3 @ 2.  2.5 @ -2 }.
+		{ -2 @ 3.  -2 @ 6.  6 @ 6.  6 @ 5.  4 @ 4.  2 @ 4.  2 @ 2.25 }.
+		{ -2 @ 4.  -2 @ 6.  3.5 @ 6.  6 @ 5.  6 @ -1.  4 @ 2.  4 @ 4.  2 @ 4 }.
+		{ -2 @ 0.  -2 @ 2.  2 @ 3.  2 @ 2.  4 @ 2.  6 @ 3.  6 @ -2.  5.5 @ -2.  6.8 @ -3.5. 4.4 @ -3.5. 4 @ -2.  0 @ -2 }.
+	}.
+	types := {
+		{ 1.  3.  1.  3.  1.  1.  3.  1. }.
+		{ 1.  1.  1.  3.  1.  1.  3. }.
+		{ 1.  1.  3.  1.  3.  1.  1.  3. }.
+		{ 1.  3.  1.  1.  3.  1.  1.  2.  1.  2.  1.  3. }.
+	}.
+	
+	polygons := points collect: [ :pointCollection | VMPolygon new fromPoints: pointCollection ].
+	polygons doWithIndex: [ :p :polygonIndex |
+		p doWithIndex: [ :lineSeg : lineSegIndex |
+			lineSeg type: ((types at:polygonIndex) at: lineSegIndex).
+		].
+	].
+	
+	^polygons
+
 ]

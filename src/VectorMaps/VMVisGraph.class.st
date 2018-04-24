@@ -25,7 +25,7 @@ VMVisGraph class >> fromMap: map [
 
 { #category : #'rendering support' }
 VMVisGraph class >> rendererClass [
-	^ VMGraphRenderer 
+	^ VMVisGraphRenderer 
 ]
 
 { #category : #'add / remove' }

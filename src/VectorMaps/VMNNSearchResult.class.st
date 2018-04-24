@@ -36,14 +36,14 @@ VMNNSearchResult >> object: obj [
 	object := obj.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #printing }
 VMNNSearchResult >> printString [
 	^object printString, ' dist=', (squareDist sqrt) printString.
 ]
 
 { #category : #accessing }
 VMNNSearchResult >> result [
-	"an alias to provide more semantic information"
+	"an alias for #object to provide more semantic information"
 	^object
 ]
 

@@ -5,15 +5,28 @@ Class {
 }
 
 { #category : #examples }
-VMDemosExamples class >> example1 [
-	(VMMapViewer openOn: [ :can |  
-		can pathTransform translateX: 30 Y: 30.
-		can pathTransform rotateByDegrees: 35.
-		can setPaint: Color red.
-			
-		can setShape: (-20@ -20 corner: 20@ 20).
-			2 timesRepeat: [ can draw. can setPaint: (Color blue alpha:0.5)].
-	]) panTo: 263@243
+VMDemosExamples class >> exampleBSPTree [
+	| polygons root viewer |
+	
+	polygons := VMDataSet toyExample_polygons.
+
+	root := VMBSPLeaf new.
+	
+	root := root insert: polygons first.
+	root := root insert: polygons second.
+	root := root insert: polygons third.
+	root := root insert: polygons fourth.
+	
+	"viewer := (VMViewer openOn: { polygons asVMPolygonCollection })
+		backgroundColor: Color gray;
+		autozoom.
+	"
+	
+	viewer := (VMViewer openOn: { root })
+		backgroundColor: Color gray;
+		autozoom.
+	
+
 ]
 
 { #category : #examples }
@@ -87,7 +100,7 @@ VMDemosExamples class >> exampleICPVisualisation3 [
 
 ]
 
-{ #category : #examples }
+{ #category : #deprecated }
 VMDemosExamples class >> exampleMap1 [
 	| map |
 	map := VMMapFactory fromData: VMDataSet dataMap_1.
@@ -100,7 +113,7 @@ VMDemosExamples class >> exampleMap1 [
 		
 ]
 
-{ #category : #examples }
+{ #category : #deprecated }
 VMDemosExamples class >> exampleMap2 [
 	| map |
 	map := VMMapFactory fromData: VMDataSet dataMap_2.
@@ -114,7 +127,7 @@ VMDemosExamples class >> exampleMap2 [
 		
 ]
 
-{ #category : #examples }
+{ #category : #deprecated }
 VMDemosExamples class >> exampleMap3 [
 	| map |
 	map := VMMapFactory fromData: VMDataSet dataMap_3.
@@ -129,7 +142,7 @@ VMDemosExamples class >> exampleMap3 [
 	
 ]
 
-{ #category : #examples }
+{ #category : #deprecated }
 VMDemosExamples class >> exampleMap4 [
 	| map |
 	map := VMMapFactory fromData: VMDataSet dataMap_4.
@@ -146,7 +159,7 @@ VMDemosExamples class >> exampleMap4 [
 	
 ]
 
-{ #category : #examples }
+{ #category : #deprecated }
 VMDemosExamples class >> exampleMap5 [
 	| map |
 	map := VMMapFactory fromData: VMDataSet dataMap_8.
@@ -160,6 +173,18 @@ VMDemosExamples class >> exampleMap5 [
 ]
 
 { #category : #examples }
+VMDemosExamples class >> exampleMapViewer [
+	(VMMapViewer openOn: [ :can |  
+		can pathTransform translateX: 30 Y: 30.
+		can pathTransform rotateByDegrees: 35.
+		can setPaint: Color red.
+			
+		can setShape: (-20@ -20 corner: 20@ 20).
+			2 timesRepeat: [ can draw. can setPaint: (Color blue alpha:0.5)].
+	]) panTo: 263@243
+]
+
+{ #category : #broken }
 VMDemosExamples class >> examplePathSearch [
 	
 	| elements searchPathNode pathRenderer elem |
@@ -201,7 +226,7 @@ VMDemosExamples class >> examplePathSearch [
 	
 ]
 
-{ #category : #examples }
+{ #category : #deprecated }
 VMDemosExamples class >> examplePolygonExpand [
 	
 	| elements polygon |
@@ -243,7 +268,7 @@ VMDemosExamples class >> examplePolygonExpand [
 
 ]
 
-{ #category : #examples }
+{ #category : #deprecated }
 VMDemosExamples class >> examplePolygonExpand2 [
 	| polygon polygonEx |
 	
@@ -260,7 +285,7 @@ VMDemosExamples class >> examplePolygonExpand2 [
 
 ]
 
-{ #category : #examples }
+{ #category : #deprecated }
 VMDemosExamples class >> examplePolygonExpand3 [
 	
 	| polygon polygonEx |
@@ -287,7 +312,7 @@ VMDemosExamples class >> examplePolygonExpand3 [
 
 ]
 
-{ #category : #examples }
+{ #category : #deprecated }
 VMDemosExamples class >> examplePolygons [
 	| polygons colors |
 	
@@ -310,7 +335,7 @@ VMDemosExamples class >> examplePolygons [
 		panTo: 4@36
 ]
 
-{ #category : #examples }
+{ #category : #deprecated }
 VMDemosExamples class >> examplePolygons2 [
 	| boundary polygons colors positions |
 	
@@ -339,7 +364,7 @@ VMDemosExamples class >> examplePolygons2 [
 
 ]
 
-{ #category : #examples }
+{ #category : #deprecated }
 VMDemosExamples class >> examplePolygons3 [
 	
 	| polygons |
@@ -360,7 +385,7 @@ VMDemosExamples class >> examplePolygons3 [
 
 ]
 
-{ #category : #examples }
+{ #category : #deprecated }
 VMDemosExamples class >> examplePolygons4 [
 	| polygons |
 	
@@ -421,7 +446,7 @@ VMDemosExamples class >> exampleSegmentIntersection [
 	
 ]
 
-{ #category : #examples }
+{ #category : #broken }
 VMDemosExamples class >> exampleSimulator1 [
 	"a small example that places a robot with a single laser range finder in a small map"
 	| map renderMap robot renderRobot sensor |
@@ -460,7 +485,7 @@ VMDemosExamples class >> exampleSimulator1 [
 
 ]
 
-{ #category : #examples }
+{ #category : #broken }
 VMDemosExamples class >> exampleSimulator2 [
 	| map renderMap robot renderRobot sensor sim renderCollection |
 	
@@ -503,6 +528,26 @@ VMDemosExamples class >> exampleSimulator2 [
 		panTo: 400@280.
 		
 	
+
+]
+
+{ #category : #examples }
+VMDemosExamples class >> exampleTopologicalGraph [
+	|polygons root builder graph |
+	polygons := VMDataSet toyExample_polygons_ICIRA.
+	
+	
+	root := VMBSPLeaf new.
+	polygons do: [ :p | root := root insert: p ].
+	
+	
+	builder := VMGraphBuilder new.
+	
+	graph := builder buildGraphFromBSPTree: root.
+	
+	(VMViewer openOn: { VMGridRenderer new.  root.  graph. })
+		autozoom.
+
 
 ]
 

@@ -3,6 +3,8 @@ VMLineSegment
 
 Instances of this class are use to represent a line segment, defined through two points. A intersectsWith method is provided to test if two line segments intersect.
 
+if used as obstacle borders/frontiers, directed line segments by convention have the left side as traversable space and the right side as unkown/unexplored space.
+
 
 Public API and Key Messages
 
@@ -26,14 +28,8 @@ Public API and Key Messages
 "
 Class {
 	#name : #VMLineSegment,
-	#superclass : #Object,
-	#instVars : [
-		'pointA',
-		'pointB',
-		'type',
-		'angle'
-	],
-	#category : #'VectorMaps-kernel'
+	#superclass : #VMLine,
+	#category : #'VectorMaps-Data Structures: Points & Lines'
 }
 
 { #category : #'instance creation' }
@@ -59,19 +55,16 @@ VMLineSegment class >> from: a to: b type: aNumber [
 
 { #category : #'rendering support' }
 VMLineSegment class >> rendererClass [
-	^ VMSegmentRenderer 
+	^ VMLineSegRenderer 
 ]
 
-{ #category : #accessing }
-VMLineSegment >> angle [
+{ #category : #comparing }
+VMLineSegment >> = aLineSegment [
 
-	angle ifNil: [
-		angle := (pointB - pointA) angle.
-		angle < 0.0 ifTrue: [ angle := angle + Float twoPi. ].
-	].
-
-	^angle.
-
+^ ((pointA = aLineSegment pointA)
+		and: [ pointB = aLineSegment pointB ])
+		and: [ type = aLineSegment type]
+		
 ]
 
 { #category : #'rendering support' }
@@ -79,12 +72,39 @@ VMLineSegment >> asRenderableElement [
 	^ self class rendererClass new model: self
 ]
 
+{ #category : #conversion }
+VMLineSegment >> asVMLine [
+	^ VMLine pointA: pointA pointB: pointB type: type
+]
+
+{ #category : #conversion }
+VMLineSegment >> asVMLineSegment [
+	^self.
+]
+
 { #category : #testing }
 VMLineSegment >> distanceToLineSeg: lineSeg [
-	"note: this funtion has a lot of potential for optimization. in other words, the current implementation is slower than necessary"
-	| dA dB dC dD minAB minCD |
+	self distanceToLineSeg: lineSeg ifIntersectsDo: [ :a :b | ] otherwiseDo: [ :a | ].
+
+]
+
+{ #category : #testing }
+VMLineSegment >> distanceToLineSeg: lineSeg ifIntersectsDo: intersectsBlock otherwiseDo: otherBlock [
+	"the basic idea of the algorithm in this function is the following:
+	the distance between two line segments is zero, if the line segments intersect. if
+	the line segments don't intersect, the minimum distance is also the minimum
+	distance between an end point of one line segment and the other line segment.
+	
+	so we first check if the line segments intersect. if they don't intersect, we
+	compute the distance between each end point and the oposing line segment, returning
+	the minimum.
+	
+	note: this funtion has a lot of potential for optimization. in other words, the
+	current implementation is slower than necessary"
+	| dA dB dC dD dist |
 	
 	self ifIntersectsWith: lineSeg do: [ :point :k |
+		intersectsBlock value: point value: k.
 		^0.0.
 	].
 	
@@ -93,23 +113,15 @@ VMLineSegment >> distanceToLineSeg: lineSeg [
 	dC := lineSeg distanceToPoint: pointA.
 	dD := lineSeg distanceToPoint: pointB.
 	
-	"find the minimum"
-	(dA < dB)
-		ifTrue: [ minAB:= dA ]
-		ifFalse: [ minAB := dB ].
-	(dC < dD)
-		ifTrue: [ minCD := dC ]
-		ifFalse: [ minCD := dD ].
+	dist := (dA min: dB) min: (dC min: dD).
 	
-	(minAB < minCD)
-		ifTrue: [ ^minAB ]
-		ifFalse: [ ^minCD ].
+	otherBlock value: dist.
 
 ]
 
 { #category : #testing }
 VMLineSegment >> distanceToPoint: aPoint [
-	"source: http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
+	"source: https://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
 	(javascript code by Joshua)"
 	| a b c d dot lengthSquared param xx yy dx dy |
 	
@@ -183,10 +195,21 @@ VMLineSegment >> factorToPointProjection: aPoint [
 
 ]
 
-{ #category : #testing }
+{ #category : #comparing }
+VMLineSegment >> hash [
+	| value |
+	value := (pointA hash
+		bitXor: pointB hash)
+		bitXor: type asInteger hash.
+
+	^value hashMultiply
+		
+]
+
+{ #category : #'intersecting (old code)' }
 VMLineSegment >> ifIntersectsWith: line do: aBlock [
 	"computes if this line segement intersects with the provided line segement. if the lines intersect we execute
-	the block 'aBlock' with two parameters: the intersection point and the distantce from pointA as convex
+	the block 'aBlock' with two parameters: the intersection point and the distance from pointA as convex
 	combination factor."
 	| vectorV vectorW crossVW p ts tr t u epsilon |
 	
@@ -250,7 +273,47 @@ VMLineSegment >> ifIntersectsWith: line do: aBlock [
 
 ]
 
-{ #category : #testing }
+{ #category : #intersecting }
+VMLineSegment >> ifIntersectsWithLineSegment: aLineSeg do: aBlock [
+	"note, that hitting an start/end point of the line segment is still considered intersecting"
+	| iObj |
+	
+	iObj := VMIntersection intersectLine: self withLine: aLineSeg.
+	
+	iObj
+		ifIntersectsDo: [
+			((iObj insideLineASegment) and: [iObj insideLineBSegment]) ifTrue: [.
+				aBlock value: iObj. ^true
+			].
+			^false.
+		]
+		ifParallelDo: [ ^false ]
+		ifCollinearDo: [ aBlock value: iObj. ^true ].
+	^false.
+
+]
+
+{ #category : #intersecting }
+VMLineSegment >> ifIntersectsWithRay: aRay do: aBlock [
+	| iObj |
+	
+	iObj := VMIntersection intersectLine: aRay withLine: self.
+	iObj ifIntersectsDo: [
+			aBlock value: iObj.
+			^true.
+		] ifParallelDo: [
+			aBlock value: iObj.
+			^false.
+		] ifCollinearDo: [
+			| factors |
+			factors := iObj rayFactors.
+			(factors first positive and: [factors second positive]) ifTrue: [ aBlock value: iObj. ^true ].
+			^false.
+		].
+
+]
+
+{ #category : #'intersecting (old code)' }
 VMLineSegment >> ifStrictIntersectsWith: line do: aBlock [
 	"computes if this line segement intersects with the provided line segement. if the lines intersect we execute
 	the block 'aBlock' with two parameters: the intersection point and the distantce from pointA as convex
@@ -328,18 +391,18 @@ VMLineSegment >> ifStrictIntersectsWith: line do: aBlock [
 
 { #category : #initialization }
 VMLineSegment >> initialize [
-	type := 1.
+	type := VMLineTypeObstacle new.
 	angle := nil.
 ]
 
-{ #category : #intersection }
+{ #category : #'intersecting (old code)' }
 VMLineSegment >> intersectionPointOrNilWith: aLineSegment [ 
 	self intersectionPointWith: aLineSegment ifPresentDo: [ :p | ^ p ].
 	^ nil
 
 ]
 
-{ #category : #intersection }
+{ #category : #'intersecting (old code)' }
 VMLineSegment >> intersectionPointWith: aLineSegment ifPresentDo: aBlock [
 	"for the line intersection algorithm see:
 		http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
@@ -376,7 +439,70 @@ VMLineSegment >> intersectionPointWith: aLineSegment ifPresentDo: aBlock [
 
 ]
 
-{ #category : #testing }
+{ #category : #'intersecting (old code)' }
+VMLineSegment >> intersectsOrSharesWith: line [
+	"computes if this line segement intersects with the provided line segement"
+	| vectorV vectorW crossVW p ts tr t u epsilon |
+	
+	epsilon := 0.0001.
+	vectorV := ((pointA x) - (pointB x)) @ ((pointA y) - (pointB y)).
+	vectorW := ((line pointA x) - (line pointB x)) @ ((line pointA y) - (line pointB y)).
+	
+	"compute the cross product of the vectors. if it is zero than the two lines are parallel"
+	crossVW := self vector: vectorV cross: vectorW.
+	p := pointA - (line pointA).
+	ts := self vector: p cross: vectorW.
+	tr := self vector: p cross: vectorV.
+	
+	crossVW = 0
+		ifTrue: [
+			"the two lines are parallel.
+			
+			Note: we return False here no matter whether the lines intersect or not, because the edges of the visibility graph should be able to run along the walls"
+			
+			tr = 0
+			ifTrue: [
+				"the lines are colinear - we need to check the segments overlap
+				 note: in a virtual map this case should never happen, because such lines would be merged."
+				^false.
+			]
+			ifFalse: [
+				"the lines are not identical, hence the line segments cannot overlap"
+				^false.
+			].
+		]
+		ifFalse: [
+			"the two lines are not parallel"
+			
+			t := ts / crossVW . "the intersection point is at:  pointA + t*vectorV "
+			u := tr / crossVW . "the intersection point is at:  (line pointA) + u*vectorW "
+			
+			"now we check for the special case, where both lines share a common start/end point. for numerical reasons, we accept a tolerance of epsilon."
+			((( t abs ) < epsilon) | ((t-1) abs < epsilon) ) ifTrue: [
+				((( u abs ) < epsilon) | ((u-1) abs < epsilon) ) ifTrue: [
+					^true.
+				].
+			].
+			
+			"todo: incoperate epsilon in these conditions"
+			((0.0 <= t) & (t <= 1.0)) ifTrue: [
+				((0.0 <= u) & (u <= 1.0)) ifTrue: [
+					^true.
+				].
+			].
+			
+			^false.
+		].
+	
+	^true.
+	
+
+
+
+
+]
+
+{ #category : #intersecting }
 VMLineSegment >> intersectsWith: line [
 	"computes if this line segement intersects with the provided line segement"
 	| vectorV vectorW crossVW p ts tr t u epsilon |
@@ -424,7 +550,7 @@ VMLineSegment >> intersectsWith: line [
 			"todo: incoperate epsilon in these conditions"
 			((0.0 <= t) & (t <= 1.0)) ifTrue: [
 				((0.0 <= u) & (u <= 1.0)) ifTrue: [
-					^ true.
+					^true.
 				].
 			].
 			
@@ -436,6 +562,13 @@ VMLineSegment >> intersectsWith: line [
 
 
 
+
+]
+
+{ #category : #'intersecting (old code)' }
+VMLineSegment >> intersectsWithLineSeg: aLineSegment [ 
+	self intersectionPointWith: aLineSegment ifPresentDo: [ :p | ^true ].
+	^false.
 
 ]
 
@@ -452,22 +585,49 @@ VMLineSegment >> inverse [
 
 { #category : #testing }
 VMLineSegment >> isFrontier [
+	^type isFrontier.
+	"
 	(type = 2) ifTrue: [
 		^true.
 	].
 	^false.
+	"
+	
+
 ]
 
 { #category : #testing }
 VMLineSegment >> isObstacle [
+
+	^type isObstacle.
+	"
 	(type = 1) ifTrue: [
 		^true.
 	].
 	
 	^false.
+	"
+	
+
 ]
 
-{ #category : #testing }
+{ #category : #comparing }
+VMLineSegment >> isSimilarTo: aLineSegment [
+	| maxDist |
+	maxDist := 0.000001.
+	
+	^ (((pointA dist: aLineSegment pointA) < maxDist)
+		and: [ (pointB dist: aLineSegment pointB) < maxDist])
+		and: [ type = aLineSegment type]
+		
+]
+
+{ #category : #accessing }
+VMLineSegment >> length [
+	^(pointA dist: pointB).
+]
+
+{ #category : #'intersecting (old code)' }
 VMLineSegment >> myIntersectsWith: aLineSeg do: aBlock [
 	"see: http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect"
 	| p q r s u qMp rXs qpXr |
@@ -493,7 +653,7 @@ VMLineSegment >> myIntersectsWith: aLineSeg do: aBlock [
 	u := qpXr / (rXs).
 ]
 
-{ #category : #testing }
+{ #category : #'intersecting (old code)' }
 VMLineSegment >> myIntersectsWith: aLineSeg ifTurnsLeft: leftBlock ifTurnsRight: rightBlock ifParallel: parallelBlock ifBackwards: backwardsBlock [
 	"for the line intersection algorithm see:
 		http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
@@ -567,38 +727,16 @@ VMLineSegment >> myIntersectsWith: aLineSeg ifTurnsLeft: leftBlock ifTurnsRight:
 
 ]
 
-{ #category : #accessing }
-VMLineSegment >> pointA [
-	^pointA.
-]
-
-{ #category : #accessing }
-VMLineSegment >> pointA: point [
-	pointA := point.
-	angle := nil.
-	
-]
-
-{ #category : #accessing }
-VMLineSegment >> pointB [
-	^pointB.
-]
-
-{ #category : #accessing }
-VMLineSegment >> pointB: point [
-	pointB := point.
-	angle := nil.
-
-]
-
 { #category : #printing }
 VMLineSegment >> printString [
 	"returns a string with the coordinates of the start and end point of the line segment"
-	^('from:',(pointA printString),' to:',(pointB printString)).
+	^('VMLineSegment from:',(pointA printString),' to:',(pointB printString)), ' type: ', type asInteger printString.
 ]
 
 { #category : #tranformation }
 VMLineSegment >> transform: frame [
+	^super transform: frame
+	"
 	self pointA: (
 		(pointA rotateBy: (frame orientation) about: (0@0)) +
 			(frame position)
@@ -608,20 +746,7 @@ VMLineSegment >> transform: frame [
 		(pointB rotateBy: (frame orientation) about: (0@0)) +
 			(frame position)
 	).
-	
-]
-
-{ #category : #accessing }
-VMLineSegment >> type [
-	^type.
-]
-
-{ #category : #accessing }
-VMLineSegment >> type: aNumber [
-	"current supported types:
-		1: obstacle
-		2: frontier"
-	type := aNumber.
+	"
 ]
 
 { #category : #'vector operations' }

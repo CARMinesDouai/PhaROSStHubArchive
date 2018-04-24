@@ -3,7 +3,7 @@ An isolated point is - as the name implies - a single point with no length or vo
 "
 Class {
 	#name : #VMIsolatedPoint,
-	#superclass : #VMPolygon,
+	#superclass : #VMVerticesPolygon,
 	#category : #'VectorMaps-kernel'
 }
 

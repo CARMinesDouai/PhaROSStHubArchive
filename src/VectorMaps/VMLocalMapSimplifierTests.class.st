@@ -110,7 +110,7 @@ VMLocalMapSimplifierTests >> testSimplify [
 	simplifier := VMLocalMapSimplifier new.
 	
 	data doWithIndex: [ :point :index |
-		lineSegments add: (VMLineSegment from: point to: (data atWrap: (index+1))).
+		lineSegments add: (VMLineSegment from: point to: (data atWrap: (index+1)) type: (VMLineTypeObstacle new)).
 	].
 
 	newCollection := simplifier simplify: lineSegments.

@@ -1,6 +1,6 @@
 Class {
 	#name : #VMLineSegmentTests,
-	#superclass : #VMTests,
+	#superclass : #Object,
 	#category : #'VectorMaps-Tests'
 }
 

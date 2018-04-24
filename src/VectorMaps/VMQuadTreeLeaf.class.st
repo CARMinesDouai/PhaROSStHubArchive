@@ -49,6 +49,12 @@ VMQuadTreeLeaf >> add: pointLikeObject ifNewNode: aBlock [
 ]
 
 { #category : #accessing }
+VMQuadTreeLeaf >> anyOne [
+	data ifEmpty: [ ^nil. ].
+	^data anyOne.
+]
+
+{ #category : #accessing }
 VMQuadTreeLeaf >> centerX: aNumber [
 	centerX := aNumber.
 ]

@@ -1,88 +1,91 @@
 Class {
 	#name : #VMPolygonRenderer,
-	#superclass : #VMFigureRenderer,
+	#superclass : #VMBaseRenderer,
 	#instVars : [
-		'solid',
-		'fillColor'
+		'autoColor',
+		'renderSectorBorder'
 	],
 	#category : #'VectorMaps-GUI-Athens'
 }
 
 { #category : #accessing }
-VMPolygonRenderer >> fillColor [
-	^ fillColor
+VMPolygonRenderer >> autoColor [
+	autoColor := true.
 ]
 
 { #category : #accessing }
-VMPolygonRenderer >> fillColor: anObject [
-	fillColor := anObject
+VMPolygonRenderer >> autoColor: aBoolean [
+	autoColor := aBoolean.
+]
+
+{ #category : #accessing }
+VMPolygonRenderer >> color: aColor [
+	super color: aColor.
+	autoColor := false.
 ]
 
 { #category : #initialization }
 VMPolygonRenderer >> initialize [
 	super initialize.
-	solid := true.
-	fillColor := Color gray.
-]
-
-{ #category : #accessing }
-VMPolygonRenderer >> labelPosition [
-	^ self model vertices first
-]
-
-{ #category : #accessing }
-VMPolygonRenderer >> length [
-	^ self model vertices size
-	
-]
-
-{ #category : #accessing }
-VMPolygonRenderer >> points [ 
-	^ self model vertices 
+	renderSectorBorder := true.
+	autoColor := true.
 ]
 
 { #category : #rendering }
-VMPolygonRenderer >> renderOn: canvas [	
+VMPolygonRenderer >> renderFilledOn: aCanvas [
 	
-	self solid ifTrue: [
-		|c path|
-		c := self fillColor.
-		self model cw ifTrue: [
-			c := Color white ].
-		canvas setPaint: c.
-		
-		path := canvas createPath: [ :builder |
-			builder absolute.
-			builder moveTo: self vertices first.
-			1 to: (self length - 1) do: [ :i |
-				builder lineTo: (self vertices at: i+1).
-			].
-			builder lineTo: self vertices first.
+	model isCW ifTrue: [
+		self renderFilledPolygonOn: aCanvas lineSegments: model color: Color veryLightGray.
+	] ifFalse: [
+		self renderFilledPolygonOn: aCanvas lineSegments: model color: Color white.
+	]
+
+
+]
+
+{ #category : #rendering }
+VMPolygonRenderer >> renderOn: aCanvas [
+
+	self renderFilledOn: aCanvas.
+	self renderOutlineOn: aCanvas.
+
+	
+]
+
+{ #category : #rendering }
+VMPolygonRenderer >> renderOutlineOn: aCanvas [
+
+	autoColor ifTrue: [
+		self model do: [ :lineSeg |
+			"sectors are rendered as line segments, obstacles and frontiers as arrows"
+			lineSeg type isSector
+				ifTrue: [
+					renderSectorBorder ifTrue: [
+						self renderStyledLineSegFrom: lineSeg pointA to: lineSeg pointB on: aCanvas color: lineSeg type renderColor. ] ]
+				ifFalse: [ self renderArrow: lineSeg on: aCanvas. ].
+			
+			"(lineSeg asRenderableElement)
+				lineWidth: self lineWidth;
+				renderOn: aCanvas."
 		].
-
-		canvas drawShape: path.
+	] ifFalse: [
+		self model do: [ :lineSeg |
+			(lineSeg asRenderableElement)
+				color: color;
+				lineWidth: self lineWidth;
+				renderOn: aCanvas.
+		].
 	].
-
-	1 to: (self length - 1) do: [ :i |
-		self renderStyledLineFrom: (self model vertices at: i) to: (self model vertices at: (i+1) ) in: canvas
-	].
-	self renderStyledLineFrom: self model vertices last to: self model vertices first in: canvas	.
 	
-	super renderOn: canvas.
 
 ]
 
 { #category : #accessing }
-VMPolygonRenderer >> solid [
-	^ solid
+VMPolygonRenderer >> renderSectorBorder [
+	^renderSectorBorder
 ]
 
 { #category : #accessing }
-VMPolygonRenderer >> solid: anObject [
-	solid := anObject
-]
-
-{ #category : #accessing }
-VMPolygonRenderer >> vertices [
-	^ self model vertices
+VMPolygonRenderer >> renderSectorBorder: aBoolean [
+	renderSectorBorder := aBoolean
 ]

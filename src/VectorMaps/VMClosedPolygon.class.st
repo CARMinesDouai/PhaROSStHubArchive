@@ -17,7 +17,7 @@ messages:
 "
 Class {
 	#name : #VMClosedPolygon,
-	#superclass : #VMPolygon,
+	#superclass : #VMVerticesPolygon,
 	#category : #'VectorMaps-kernel'
 }
 
@@ -628,7 +628,7 @@ VMClosedPolygon >> setWindingOrderByOrigin: aPoint [
 
 { #category : #testing }
 VMClosedPolygon >> testCW [
-	"tests the winding order of the polygon"
+	"tests the winding order of the polygon."
 	
 	| point index iLeft iRight pLeft pRight dxLeft dyLeft dxRight dyRight aLeft aRight |
 	
@@ -679,12 +679,13 @@ VMClosedPolygon >> testCW [
 	
 	"handle the special case where the right neighbor has no change in x"
 	dxRight = 0 ifTrue: [
-		dxLeft > 0 ifTrue: [
+		^false.
+		"dxLeft > 0 ifTrue: [
 			self  logCr: 'true (3)'.
 			^true.
 		].
 		self  logCr: 'false (4)'.
-		^false.
+		^false."
 	].
 	
 	"compute the slope of the two neighbors and compare them"
@@ -748,7 +749,7 @@ VMClosedPolygon >> windingNumber: p [
 		].
 	].
 
-	"iterate over all but the last vertex. the last vertex is treated seperatly because it is connected witht the first one"
+	"iterate over all but the last vertex. the last vertex is treated seperatly because it is connected with the first one"
 	1 to: (length-1) do: [ :i |
 		fun value: (vertices at: i) value: (vertices at: (i+1)).
 	].

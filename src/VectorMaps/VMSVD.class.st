@@ -48,13 +48,6 @@ VMSVD >> matrix: m [
 	mmT := m * (m transpose).
 	
 	eigen := VMEigen2d matrix: mmT.
-	
-	"
-	Transcript show: 'mmT='; cr; show: mmT; cr.
-	Transcript show: 'eigen (mmT): ', eigen printString; cr.
-	Transcript show: 'eigen det=', eigen det printString; cr.
-	"
-	
 	u := DhbMatrix rows: 2 columns: 2.
 	u at: 1 at: 1 put: (eigen vector1 x).
 	u at: 1 at: 2 put: (eigen vector1 y).

@@ -212,7 +212,7 @@ VMMapFactory >> fromStringsInfo: strInfo vertices: strVertices edges: strEdges [
 		' map bounds=(', (bounds)printString, ')',
 		' origin=', origin asPoint printString.
 	
-	^(VMMap new)
+	^(VMPolygonMap new)
 		"vertices: vertices;"
 		polygons: polygons;
 		bounds: bounds;

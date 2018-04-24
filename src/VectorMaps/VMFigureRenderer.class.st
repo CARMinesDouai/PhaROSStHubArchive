@@ -4,7 +4,9 @@ Class {
 	#instVars : [
 		'showVertices',
 		'showArrowHead',
-		'verticeRenderer'
+		'verticeRenderer',
+		'minArrowLength',
+		'maxArrowLength'
 	],
 	#category : #'VectorMaps-GUI-Athens'
 }
@@ -13,17 +15,31 @@ Class {
 VMFigureRenderer >> initialize [
 	super initialize.
 	showVertices := false.
-	showArrowHead := true
+	showArrowHead := true.
+	minArrowLength := 0.001.
+	maxArrowLength := 0.05.
 ]
 
 { #category : #accessing }
 VMFigureRenderer >> labelPosition [
+	((self points isNil) or: [self points isEmpty]) ifTrue: [ 0@0 ].
+	
 	^self points first.
 ]
 
 { #category : #accessing }
 VMFigureRenderer >> points [
 	self subclassResponsibility 
+]
+
+{ #category : #'drawing support' }
+VMFigureRenderer >> renderLineCollection: aCollection color: aColor on: aCanvas [
+	
+	aCollection ifNil: [ ^self ].
+	
+	aCollection do: [ :lineSeg |
+		self renderStyledLineFrom: (lineSeg pointA) to: (lineSeg pointB) in: aCanvas color: aColor.
+	].
 ]
 
 { #category : #rendering }
@@ -39,6 +55,33 @@ VMFigureRenderer >> renderOn: canvas [
 			pointRenderer renderOn: canvas
 		]							
 	]
+]
+
+{ #category : #'drawing support' }
+VMFigureRenderer >> renderOn: canvas pointCollection: pointCollection color: renderColor [
+	
+	pointCollection ifNil: [ ^self. ].
+	pointCollection ifEmpty: [ ^self. ].
+	
+	pointCollection do: [ :p |
+		self renderPoint: p radius: lineWidth in: canvas color: renderColor.
+	].
+
+]
+
+{ #category : #'drawing support' }
+VMFigureRenderer >> renderOn: canvas pointCollection: pointCollection color: renderColor label: aString [
+	
+	pointCollection ifNil: [ ^self. ].
+	pointCollection ifEmpty: [ ^self. ].
+	
+	pointCollection do: [ :p |
+		self renderPoint: p radius: lineWidth in: canvas color: renderColor.
+	].
+
+	self renderString: aString at: (pointCollection first) in: canvas color: renderColor.
+	
+
 ]
 
 { #category : #'drawing support' }
@@ -118,26 +161,21 @@ VMFigureRenderer >> renderStyledLineFrom: fromPoint to: toPoint in: canvas [
 VMFigureRenderer >> renderStyledLineFrom: fromPoint to: toPoint in: canvas color: lineColor [
 	| path stroke arrowPath |
 	
-	fromPoint == toPoint ifTrue: [ ^self ].
+	((fromPoint dist: toPoint) < 0.0000000001) ifTrue: [ ^self ].
 	
-	canvas	setPaint: lineColor.
+	canvas setPaint: lineColor.
 	stroke := canvas setStrokePaint: lineColor.
 	stroke width: self lineWidth.
 
 	self showArrowHead ifTrue: [
-		| lineLength arrowWidth arrowLength lineVector lineNormal maxArrowLength|
+		| lineLength arrowWidth arrowLength lineVector lineNormal |
 		lineLength := fromPoint dist: toPoint.
-		maxArrowLength := lineLength * 0.8.
+		arrowLength := lineLength * 0.8.
 		
-		arrowWidth := self lineWidth * 4.
-		arrowLength:= self lineWidth * 6.
+		arrowLength > maxArrowLength ifTrue: [ arrowLength := maxArrowLength ].
+		arrowLength < minArrowLength ifTrue: [ arrowLength := minArrowLength ].
 		
-		arrowLength > maxArrowLength ifTrue: [
-			| factor |
-			factor := maxArrowLength / arrowLength.
-			arrowLength := arrowLength * factor.
-			arrowWidth := arrowWidth * factor.
-		].
+		arrowWidth := arrowLength * 0.6667.
 		
 		lineVector := ((fromPoint - toPoint) normalized) * arrowLength.
 		lineNormal := lineVector normal * arrowWidth.

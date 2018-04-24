@@ -46,6 +46,16 @@ VMElementRenderer >> beSolid [
 ]
 
 { #category : #accessing }
+VMElementRenderer >> bounds [
+	"expected to return a Rectangle that represents the boundaries of the model.
+	if the object has no rectangle, nil should be returned"
+	
+	model ifNotNil: [ ^model bounds ].
+	
+	^ nil
+]
+
+{ #category : #accessing }
 VMElementRenderer >> color [
 	^ color
 ]
@@ -107,7 +117,8 @@ VMElementRenderer >> labelPosition [
 
 { #category : #accessing }
 VMElementRenderer >> lineWidth [
-	^ lineWidth
+	^lineWidth.
+
 ]
 
 { #category : #accessing }
@@ -126,10 +137,16 @@ VMElementRenderer >> model: anObject [
 ]
 
 { #category : #rendering }
-VMElementRenderer >> renderOn: canvas [
+VMElementRenderer >> renderLabel: canvas [
 	(self showLabel and: [self label notNil]) ifTrue: [
 		self renderString: self label at: self labelPosition in: canvas
 	]
+
+]
+
+{ #category : #rendering }
+VMElementRenderer >> renderOn: canvas [
+	self renderLabel: canvas.
 ]
 
 { #category : #'drawing support' }

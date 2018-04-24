@@ -1,7 +1,7 @@
 "
 VMActiveNeighborCount
 
-This class is used to memorize how many edges (connection) of a vertex are currently used.
+This class is used to memorize how many edges (connections) of a vertex are currently used.
 
 The polygon creation process in VMPolygonFactory and related classes are using this to keep track of the neighbors in use.
 

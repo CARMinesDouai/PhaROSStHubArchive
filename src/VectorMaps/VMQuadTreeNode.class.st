@@ -31,22 +31,7 @@ Instance-side messages:
 - maxLeafData
 	returns the maximum amound of objects a leaf is allowed to hold until it is replaced by a node and four new leaves. leaves don't grow if the maximum depth has been reached.
 	
-	
-   One simple example is simply gorgeous.
- 
-Internal Representation and Key Implementation Points.
 
-    Instance Variables
-	centerX:		<Object>
-	centerY:		<Object>
-	children:		<Object>
-	depth:		<Object>
-	halfHeight:		<Object>
-	halfWidth:		<Object>
-	parent:		<Object>
-
-
-    Implementation Points
 "
 Class {
 	#name : #VMQuadTreeNode,
@@ -62,6 +47,20 @@ Class {
 	],
 	#category : #'VectorMaps-SLAM - Data Structures'
 }
+
+{ #category : #'as yet unclassified' }
+VMQuadTreeNode class >> fromCollection: aCollection [
+	| center node |
+	
+	center := aCollection
+		ifEmpty: [ 0@0 ]
+		ifNotEmpty: [ aCollection first ].
+	
+	node := self size: 1@1 center: center depth: 0.
+	node addAll: aCollection.
+	^node root.
+		
+]
 
 { #category : #'as yet unclassified' }
 VMQuadTreeNode class >> parent: aNode [
@@ -119,6 +118,23 @@ VMQuadTreeNode >> addAll: aCollection [
 	].
 	^self root.
 
+]
+
+{ #category : #accessing }
+VMQuadTreeNode >> anyOne [
+	children do: [ :child |
+		| obj |
+		obj := child anyOne.
+		obj ifNotNil: [ ^obj. ].
+	].
+
+	^nil.
+]
+
+{ #category : #converting }
+VMQuadTreeNode >> asVMQuadTree [
+	"note: we are just returning this node. the root of the tree might be a different node."
+	^self.
 ]
 
 { #category : #accessing }
@@ -262,6 +278,11 @@ VMQuadTreeNode >> findNearest: pointLikeObject result: resultObj [
 		].
 	].
 
+]
+
+{ #category : #accessing }
+VMQuadTreeNode >> first [
+	^self anyOne.
 ]
 
 { #category : #accessing }

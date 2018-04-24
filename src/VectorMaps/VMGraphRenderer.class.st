@@ -1,29 +1,28 @@
 Class {
 	#name : #VMGraphRenderer,
-	#superclass : #VMFigureRenderer,
+	#superclass : #VMBaseRenderer,
 	#category : #'VectorMaps-GUI-Athens'
 }
 
-{ #category : #initialization }
-VMGraphRenderer >> initialize [
-	super initialize.
-	showVertices := true.
-	showArrowHead := false
-]
-
-{ #category : #accessing }
-VMGraphRenderer >> points [
-	^ self model vertices
-]
-
-{ #category : #rendering }
-VMGraphRenderer >> renderOn: canvas [
-	super renderOn: canvas.
-				
-	self model vertices do: [ :v |
-		v neighbors do: [ :neighbor |			
-			self renderStyledLineFrom: v to: neighbor in: canvas
-		]
-	]
-				
+{ #category : #'as yet unclassified' }
+VMGraphRenderer >> renderOn: aCanvas [
+	| sectorsCovered |
+	
+	model ifNil: [ ^self ].
+	
+	sectorsCovered := Set new.
+	
+	model do: [ :aNode |
+		self renderPoint: aNode center radius: (lineWidth * 2) on: aCanvas color: color.
+		sectorsCovered add: aNode sector.
+		aNode neighbors do: [ :sector |
+			sector ifNotNil: [
+				(sectorsCovered includes: sector) ifFalse: [
+					self renderStyledLineSegFrom: aNode center to: sector centroid on: aCanvas color: color
+				].
+			].
+		].
+	].
+	
+	
 ]

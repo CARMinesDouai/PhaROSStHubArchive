@@ -3,10 +3,21 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'collectionA',
-		'infoCollection'
+		'infoCollection',
+		'globalMapFrame'
 	],
 	#category : #'VectorMaps-SLAM - Maps'
 }
+
+{ #category : #'as yet unclassified' }
+VMLocalMapMerger class >> rendererClass [
+	^VMLocalMapMergerRenderer.
+]
+
+{ #category : #'render support' }
+VMLocalMapMerger >> asRenderableElement [
+	^ self class rendererClass new model: self
+]
 
 { #category : #helper }
 VMLocalMapMerger >> checkStartInfo: infoObj ifObstacle: obstacleBlock ifFrontier: frontierBlock ifIsolated: isolatedBlock [
@@ -127,7 +138,7 @@ VMLocalMapMerger >> computeUntilEndInfoObj: infoObj [
 		maxIterations := maxIterations - 1.
 		testLineSeg := self getNextLineSeg: testLineSeg.
 		
-		"if we encounter a frontier (i.e. non-obstacle), we set a high default score and return immediately"
+		"if we encounter a non-obstacle (i.e. frontier), we set a high default score and return immediately"
 		(testLineSeg isObstacle) ifFalse: [
 			infoObj alignmentScore: 99.9.
 			^self.
@@ -141,7 +152,9 @@ VMLocalMapMerger >> computeUntilEndInfoObj: infoObj [
 		].
 				
 		factor := self computeNextFactor: testLineSeg infoObj: infoObj.
+		
 		Transcript show: '  i=', (collectionA indexOf: testLineSeg) printString, ', f=', factor printString, ', s=', newScore printString; cr.
+		
 		(maxIterations < 0) ifTrue: [
 			Transcript show: 'max iteration count reach - aborting loop'; cr.
 			^self.
@@ -168,6 +181,11 @@ VMLocalMapMerger >> findNearestStartLineSeg: lineSeg inCollection: collection [
 
 ]
 
+{ #category : #'render support' }
+VMLocalMapMerger >> frame [
+	^globalMapFrame.
+]
+
 { #category : #helper }
 VMLocalMapMerger >> getNextLineSeg: currentLineSeg [
 	| curEndPoint |
@@ -183,11 +201,19 @@ VMLocalMapMerger >> getNextLineSeg: currentLineSeg [
 	self error: 'unable to find next line segment in collection'.
 ]
 
+{ #category : #'render support' }
+VMLocalMapMerger >> infoCollection [
+	^infoCollection.
+]
+
 { #category : #'public - merging' }
 VMLocalMapMerger >> mergeMap: mapA withMap: mapB [
 	| frame |
 
 	frame := mapB tf multiplyLeft: (mapA tf inverse).
+	
+	"globalMapFrame is for debugging and visualization only"
+	globalMapFrame := mapA tf.
 	
 	collectionA := mapA lineSegments.
 	infoCollection := mapB lineSegments collect: [ :lineSegObj |
@@ -216,8 +242,8 @@ VMLocalMapMerger >> mergeObstacleInfo: infoObj startLineSeg: start [
 	infoLineSeg := infoObj lineSeg.
 	collection := OrderedCollection new.
 	
-	collection add: (  VMLineSegment from: (start pointA) to: (infoLineSeg pointA)  ).
-	collection add:(  VMLineSegment from: (infoLineSeg pointA) to: (start pointB)  ).
+	collection add: (  VMLineSegment from: (start pointA) to: (infoLineSeg pointA) type: (start type)  ).
+	collection add:(  VMLineSegment from: (infoLineSeg pointA) to: (start pointB) type: (start type)  ).
 	
 	"remove 'start' from the collection, replacing it with the new line segment"
 	"find the end point for the new line segment"

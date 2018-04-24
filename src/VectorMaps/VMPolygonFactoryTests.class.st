@@ -1,6 +1,6 @@
 Class {
 	#name : #VMPolygonFactoryTests,
-	#superclass : #VMTests,
+	#superclass : #Object,
 	#instVars : [
 		'map'
 	],

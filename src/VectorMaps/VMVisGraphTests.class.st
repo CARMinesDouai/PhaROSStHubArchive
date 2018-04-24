@@ -1,6 +1,6 @@
 Class {
 	#name : #VMVisGraphTests,
-	#superclass : #VMTests,
+	#superclass : #Object,
 	#instVars : [
 		'maps'
 	],

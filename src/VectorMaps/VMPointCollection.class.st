@@ -8,21 +8,31 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+VMPointCollection class >> rendererClass [
+	^VMNNCollectionRenderer
+]
+
+{ #category : #adding }
 VMPointCollection >> add: aPoint [
 	collection add: aPoint.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #adding }
 VMPointCollection >> addAll: aCollection [
 	collection addAll: aCollection.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #converting }
+VMPointCollection >> asRenderableElement [
+	^ self class rendererClass new model: self
+]
+
+{ #category : #accessing }
 VMPointCollection >> collection [
 	^collection.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 VMPointCollection >> initialize [
 	collection := OrderedCollection new.
 ]

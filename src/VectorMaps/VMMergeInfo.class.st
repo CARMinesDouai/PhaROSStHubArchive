@@ -21,6 +21,11 @@ VMMergeInfo class >> lineSeg: lineSegObj [
 		yourself.
 ]
 
+{ #category : #'as yet unclassified' }
+VMMergeInfo class >> rendererClass [
+	^VMMergeInfoRenderer.
+]
+
 { #category : #accessing }
 VMMergeInfo >> alignmentScore [
 	^alignmentScore.
@@ -29,6 +34,11 @@ VMMergeInfo >> alignmentScore [
 { #category : #accessing }
 VMMergeInfo >> alignmentScore: aNumber [
 	alignmentScore := aNumber.
+]
+
+{ #category : #'as yet unclassified' }
+VMMergeInfo >> asRenderableElement [
+	^ self class rendererClass new model: self
 ]
 
 { #category : #computing }

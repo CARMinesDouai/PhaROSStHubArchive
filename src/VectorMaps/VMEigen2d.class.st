@@ -12,7 +12,7 @@ Public API and Key Messages
 	returns the first or second eigen-value. eigen values are not sorted
 	
 - vector1/2
-	returns the eigen vector to the corresponding eigen value
+	returns the eigen vector (as a Point object) to the corresponding eigen value
 
 
 "

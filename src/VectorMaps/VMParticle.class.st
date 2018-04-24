@@ -3,7 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'keyFrameCollection',
-		'quadtree',
+		'nnCollection',
 		'icp'
 	],
 	#category : #'VectorMaps-SLAM - Particle Filter'
@@ -19,7 +19,9 @@ VMParticle >> addKeyFrame: aKeyFrame [
 	
 	keyFrameCollection collection ifEmpty: [
 		keyFrameCollection add: aKeyFrame.
-		quadtree addAll: (aKeyFrame data collection).
+		"ToDo: transform the points from the scan data (from the sensor's frame to the robot's frame"
+		nnCollection addAll: (aKeyFrame data first collection).
+		nnCollection := nnCollection root.
 		^self.
 	].
 	
@@ -40,7 +42,7 @@ VMParticle >> icp [
 { #category : #initialization }
 VMParticle >> initialize [
 	keyFrameCollection := VMKeyFrameCollection new.
-	quadtree := VMQuadTreeNode size: (1@1) center: (0@0).
+	nnCollection := VMQuadTreeNode size: (1@1) center: (0@0).
 
 ]
 
@@ -51,8 +53,8 @@ VMParticle >> keyFrameCollection [
 
 { #category : #adding }
 VMParticle >> processKeyFrame: aKeyFrame [
-	icp := VMICP.
+	icp := VMICP new.
 	
-	icp alignPointCollection: (aKeyFrame data collection) withNNCollection: quadtree.
+	icp alignPointCollection: (aKeyFrame data first collection) withNNCollection: nnCollection.
 
 ]

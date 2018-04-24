@@ -85,7 +85,41 @@ VMQuadTreeTests >> testAddingPoints2 [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
+VMQuadTreeTests >> testContructFromCollection [
+	"adding points to a quad tree that has to grow, creating new parent nodes.
+	we check the size of a few selected nodes, including the new true root of the tree."
+	| root data |
+	
+	data := {
+		1@1.
+		0.333@2.
+		0.333@2.1.
+		0.3@2.2.
+		0.3@2.21.
+		0.3@2.2.
+		0.3@2.22.
+		0.3@2.23.
+		0.5@2.2.
+		1@ -2.
+		1@ -1.4.
+		-2@ -2.
+		-0.5@ 3.
+		-0.5@ 3.2.
+		-0.5@ 3.4.
+		-0.5@ 3.6.
+		-0.5@ 3.8.
+	}.
+	
+	root := data asVMQuadTree.
+	self assert: (root size = data size).
+	
+	root := data asOrderedCollection asVMQuadTree.
+	self assert: (root size = data size).
+
+]
+
+{ #category : #tests }
 VMQuadTreeTests >> testFindNearest [
 	"in this test we check the findNearest method. for this we create a data set of points that spiral around a given point. we add point
 	after point from the data set, starting with the point furthest away, and call findNearest each time. since the latest added point is by

@@ -3,7 +3,7 @@ This class is similar to a closed polygon, but the start and end vertices are no
 "
 Class {
 	#name : #VMPolygonChain,
-	#superclass : #VMPolygon,
+	#superclass : #VMVerticesPolygon,
 	#category : #'VectorMaps-kernel'
 }
 
