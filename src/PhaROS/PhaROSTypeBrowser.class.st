@@ -104,10 +104,12 @@ PhaROSTypeBrowser >> fillWithExistingGeneratedTypeClasses [
 	existingTypeClasses do: [ : aTypeClass |
 		|aTypeId|
 		aTypeId := aTypeClass rosTypeName.
-		
+
 		self browser at: aTypeId ifAbsentPut: [
-				|firstLevel newMessageType newType|
-				firstLevel := (Character lf split: aTypeClass rosTypeDefinition) collect: [:each | each trim ] thenSelect: [ :str | str size > 3 ].
+				|firstLevel newMessageType newType rosTypeDefinition|
+				
+				rosTypeDefinition := aTypeClass rosTypeDefinition replaceAll: Character cr with: Character lf. "be carreful, Pharo put Character cr ..."
+				firstLevel := (Character lf split: rosTypeDefinition) collect: [:each | each trim ] thenSelect: [ :str | str size > 3 ].
 				
 				newMessageType := self typeNamed: aTypeId for: firstLevel.
 				newType := newMessageType build.
