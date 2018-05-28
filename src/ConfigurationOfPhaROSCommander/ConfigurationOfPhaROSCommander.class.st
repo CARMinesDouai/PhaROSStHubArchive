@@ -170,6 +170,30 @@ ConfigurationOfPhaROSCommander >> baseline11: spec [
 
 ]
 
+{ #category : #baselines }
+ConfigurationOfPhaROSCommander >> baseline12: spec [
+	<version:'1.2-baseline'>
+	spec for: #common do: [
+			spec blessing: #baseline.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main'.
+			
+			spec project: 'OSProcess' with: [
+				spec 
+					className: 'ConfigurationOfOSProcess';
+					file: 'ConfigurationOfOSProcess' ;
+					repository: 'http://www.squeaksource.com/OSProcess'; 
+					versionString: #stable.
+			].
+		
+			spec package: 'PhaROSCommander' with: [ spec requires: #('OSProcess' ) ].
+		
+			spec group: 'core'  with: #( 'PhaROSCommander' ).	
+			spec group: 'default'  with: #( 'core' ).	
+	].
+
+
+]
+
 { #category : #accessing }
 ConfigurationOfPhaROSCommander >> project [
 
@@ -192,8 +216,9 @@ ConfigurationOfPhaROSCommander >> project [
 { #category : #'symbolic versions' }
 ConfigurationOfPhaROSCommander >> stable: spec [
 	<symbolicVersion: #'stable'>
-	spec for: #'common' version: '1.1.3'
-	
+	spec 
+		for: #'common' version: '1.1.3';
+		for: #'pharo7.x' version: '1.2'
 ]
 
 { #category : #versions }
@@ -296,6 +321,17 @@ ConfigurationOfPhaROSCommander >> version113: spec [
 		spec blessing: #'new update command'.
 		spec author: 'LucFabresse'.
 		spec timestamp: '6/5/2015 12:07'.
+		spec package: 'PhaROSCommander' with: 'PhaROSCommander-LucFabresse.99'.
+	]
+]
+
+{ #category : #versions }
+ConfigurationOfPhaROSCommander >> version12: spec [ 
+	<version: '1.2' imports: #('1.2-baseline') >
+	
+	spec for: #common do: [ 
+		spec author: 'LucFabresse'.
+		spec timestamp: '28/6/2018 12:07'.
 		spec package: 'PhaROSCommander' with: 'PhaROSCommander-LucFabresse.99'.
 	]
 ]
