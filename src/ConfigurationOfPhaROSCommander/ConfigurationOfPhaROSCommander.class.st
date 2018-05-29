@@ -217,8 +217,8 @@ ConfigurationOfPhaROSCommander >> project [
 ConfigurationOfPhaROSCommander >> stable: spec [
 	<symbolicVersion: #'stable'>
 	spec 
-		for: #'common' version: '1.1.3';
-		for: #'pharo7.x' version: '1.2'
+		for: #'pharo5.x' version: '1.1.3';
+		for: #'common' version: '1.2'
 ]
 
 { #category : #versions }
