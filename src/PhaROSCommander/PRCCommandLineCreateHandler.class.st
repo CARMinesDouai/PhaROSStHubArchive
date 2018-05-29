@@ -91,9 +91,8 @@ PRCCommandLineCreateHandler >> generateCatkinDirectoryNamed: package atLocation:
 	(catkinPackageDirectory / 'image' ) createDirectory.
 		
 	self stdout: ('Copying pharo vm from {1} to {2}' format: { (Smalltalk imageDirectory / 'pharo-vm') pathString.  (catkinPackageDirectory / 'vm' ) pathString}).
-	(Smalltalk imageDirectory / 'pharo-vm') copyAllTo: (catkinPackageDirectory / 'vm' ).
+	OSProcess command: ('ln -s {1} {2}' format: { (Smalltalk imageDirectory / 'pharo-vm') pathString.  (catkinPackageDirectory / 'vm' ) pathString}).
 	
-	self chmod: '775' ofFile: (catkinPackageDirectory / 'vm' / 'pharo') pathString.
 ]
 
 { #category : #accessing }
