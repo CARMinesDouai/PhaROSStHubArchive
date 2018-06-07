@@ -148,12 +148,12 @@ ConfigurationOfVectorMapsPhaROS >> baseline02: spec [
 		spec package: 'VectorMaps_PhaROS' with: [
 			spec requires: #('PhaROS' 'VectorMaps') ].
 		
-		spec package: 'ScanToVmapPackage' with: [
+		spec package: 'ScantovmapPackage' with: [
 			spec requires: #('VectorMaps_PhaROS') ].
 		
 		spec 
 			group: 'default' with: #('VectorMaps_PhaROS') ;
-			group: 'ScanToVmap' with: #( 'ScanToVmapPackage' )
+			group: 'ScanToVmap' with: #( 'ScantovmapPackage' )
 			
 	].
 
