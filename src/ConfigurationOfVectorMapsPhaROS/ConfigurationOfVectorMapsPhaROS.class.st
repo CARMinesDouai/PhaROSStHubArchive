@@ -124,6 +124,41 @@ ConfigurationOfVectorMapsPhaROS >> baseline01: spec [
 
 ]
 
+{ #category : #baselines }
+ConfigurationOfVectorMapsPhaROS >> baseline02: spec [
+	<version: '0.2-baseline'>
+
+	spec for: #'common' do: [
+		spec blessing: #'baseline'.
+		spec repository: 'http://www.smalltalkhub.com/mc/CAR/VectorMaps/main'.
+		
+		spec project: 'PhaROS' with: [
+				spec
+					className: #ConfigurationOfPhaROS;
+					versionString: #'stable';
+					repository: 'http://www.smalltalkhub.com/mc/CAR/PhaROS/main';
+					loads: #('all') ].
+		
+		spec project: 'VectorMaps' with: [
+				spec
+					className: #ConfigurationOfVectorMaps;
+					versionString: #'bleedingEdge';
+					repository: 'http://www.smalltalkhub.com/mc/CAR/VectorMaps/main' ].				
+		
+		spec package: 'VectorMaps_PhaROS' with: [
+			spec requires: #('PhaROS' 'VectorMaps') ].
+		
+		spec package: 'ScanToVmapPackage' with: [
+			spec requires: #('VectorMaps_PhaROS') ].
+		
+		spec 
+			group: 'default' with: #('VectorMaps_PhaROS') ;
+			group: 'ScanToVmap' with: #( 'ScanToVmapPackage' )
+			
+	].
+
+]
+
 { #category : #accessing }
 ConfigurationOfVectorMapsPhaROS >> customProjectAttributes [
     "Edit to return a collection of any custom attributes e.g. for conditional loading: Array with: #'Condition1' with: #'Condition2.
@@ -136,7 +171,7 @@ ConfigurationOfVectorMapsPhaROS >> customProjectAttributes [
 ConfigurationOfVectorMapsPhaROS >> development: spec [
 	<symbolicVersion: #'development'>
 
-	spec for: #'common' version: '0.1-baseline'.
+	spec for: #'common' version: '0.2-baseline'.
 
 ]
 
