@@ -1,5 +1,20 @@
 "
-This PhaROS node provides 2 ways to convert a scan to a vmap: through a topic or using a ROS service
+rosservice call /scan_to_vmap ""scan:
+  header: 
+    seq: 0
+    stamp: 
+      secs: 0
+      nsecs: 0
+    frame_id: ''
+  angle_min: -2.35619449615
+  angle_max: 2.09234976768
+  angle_increment: 0.00613592332229
+  time_increment: 9.76562732831e-05
+  scan_time: 0.10000000149
+  range_min: 0.019999999553
+  range_max: 5.59999990463
+  ranges: [0.01899999938905239, 0.01899999938905239, 0.01899999938905239, 0.01899999938905239]
+  intensities: []""
 "
 Class {
 	#name : #ScantovmapPackage,
@@ -34,8 +49,7 @@ ScantovmapPackage >> processLaserScan: scan into: rosVMap [
 				y: lineSeg pointB y;
 				type: lineSeg type asInteger;
 				flags: 0).
-	].
-	
+	]
 ]
 
 { #category : #'script - publish vmap' }
@@ -63,11 +77,30 @@ ScantovmapPackage >> scriptPublishVMapFromScan [
 { #category : #'script - vmap service' }
 ScantovmapPackage >> scriptScanToVmapService [
 	"defines a ROS service that converts a scan to a vmap"
-	self controller node serve: [ :req :rsp | 
-		| vMap |
-		vMap :=  self vmapClass new.
-		self processLaserScan: req scan into: vMap.
-		rsp map: vMap. 
+	
+	"To test it (remove one "" in command line):
+
+	rosservice call /scan_to_vmap ""scan:
+  header: 
+    seq: 0
+    stamp: 
+      secs: 0
+      nsecs: 0
+    frame_id: ''
+  angle_min: -2.35619449615
+  angle_max: 2.09234976768
+  angle_increment: 0.00613592332229
+  time_increment: 9.76562732831e-05
+  scan_time: 0.10000000149
+  range_min: 0.019999999553
+  range_max: 5.59999990463
+  ranges: [0.01899999938905239, 0.01899999938905239, 0.01899999938905239, 0.01899999938905239]
+  intensities: []""
+
+	"
+	
+	self controller node serve: [ :req :resp | 
+		self processLaserScan: req scan into: resp map
 	] at: '/scan_to_vmap' typedAs:'car_msgs/ScanToVmap'.
 	
 ]
