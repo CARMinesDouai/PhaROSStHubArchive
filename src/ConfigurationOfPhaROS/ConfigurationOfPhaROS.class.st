@@ -786,6 +786,105 @@ ConfigurationOfPhaROS >> baseline15: spec [
 	
 ]
 
+{ #category : #baselines }
+ConfigurationOfPhaROS >> baseline16: spec [
+	<version:'1.6-baseline'>
+	
+	spec for: #common do: [
+			spec blessing: #baseline.
+			spec repository: 'http://smalltalkhub.com/mc/CAR/PhaROS/main'.
+			
+			spec project: 'XMLRPC' with: [
+				spec 
+					className: 'ConfigurationOfXMLRPC';
+					file: 'ConfigurationOfXMLRPC' ;
+					repository: 'http://ss3.gemstone.com/ss/XMLRPC'; 
+					versionString: #bleedingEdge;
+					loads: #('XMLRPC-Client-Core' 'XMLRPC-Client-Tests' 'XMLRPC-Server-Core' 'XMLRPC-Server-Tests')
+			].
+		
+			spec project: 'PaulLePoulpe' with: [ 
+				spec 	className: 'ConfigurationOfPaulLePoulpe'; 
+						loads: #('default' );
+						file: 'ConfigurationOfPaulLePoulpe';
+						repository: 'http://ss3.gemstone.com/ss/PaulLePoulpe';
+						versionString: #bleedingEdge.
+			].
+			
+			spec package: 'CommonTraits' with: [
+				spec repository: 'http://smalltalkhub.com/mc/CAR/ReusableBricks/main'
+			].
+			spec package: 'Equals' with: [
+				spec repository: 'http://smalltalkhub.com/mc/CAR/ReusableBricks/main'
+			].
+	
+			spec project: 'TaskITProject' with: [
+				spec 
+					className: 'ConfigurationOfTaskIT';
+					file: 'ConfigurationOfTaskIT' ;
+					repository: 'http://smalltalkhub.com/mc/CAR/TaskIT/main'
+			].
+		
+			"Testing"
+			spec package: 'PhaROSTest' with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSTestROS' with: [ spec requires: #('PhaROS')].
+			
+			spec package: 'PhaROSExperiments' with: [ spec requires: #('PhaROS')].
+			
+			"Infrastructure: deployment and generation of code"
+			spec package: 'PhaROSInfrastructure' with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSDeploymentDirectory'.
+	
+			"examples"
+			spec package: 'PhaROSNodeletsTurtlesim' with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROS-PackageExample' with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSPackage_TFSplitter'.
+			
+			"doc"
+			spec package: 'PhaROS-Doc'.
+
+			"Some already implemented nodelets"	
+			spec package: 'PhaROSNodeletsAction' 	with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSNodeletsLocalizer'	with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSNodeletsMerger' 	with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSNodeletsMoveBase' with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSNodeletsOdometry' with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSNodeletsPosition'	 with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSNodeletsRPC' 		with: [ spec requires: #('PhaROS')].
+			spec package: 'PhaROSNodeletsTF' 		with: [ spec requires: #('PhaROS')].			
+			spec package: 'PhaROSNodeletsPoseTracker' with: [
+				spec requires: #('PhaROS' 'PhaROSNodeletsLocalizer' 'PhaROSNodeletsTF') ].
+			
+			spec package: 'PhaROSGenerated' 		with: [ spec requires: #('PhaROS')].
+					
+			"PhaROS Configuration"
+			spec package: 'PhaROS' with: [
+				spec requires: #('XMLRPC' 'CommonTraits' 'Equals' 'PaulLePoulpe' 'TaskITProject').
+			].
+	
+			"groups"
+			spec 
+				group: 'default' with: #('PhaROS' 'PhaROSInfrastructure' );
+				
+				group: 'examples' with: #( 'PhaROS-PackageExample' 'PhaROSNodeletsTurtlesim' 'PhaROS-Doc' );
+					 
+				group: 'tests' with: #('PhaROSTest'  'PhaROSTestROS') ;
+				
+				group: 'nodelets' with: #('PhaROSNodeletsAction' 'PhaROSNodeletsLocalizer'
+				'PhaROSNodeletsMerger' 'PhaROSNodeletsMoveBase' 'PhaROSNodeletsOdometry' 'PhaROSNodeletsTF' 'PhaROSNodeletsPosition'  'PhaROSNodeletsPoseTracker' 'PhaROSNodeletsRPC');
+				
+				group: 'packages' with: #('PhaROSPackage_TFSplitter');
+				
+				"this group is currently used by the pharos commander"
+				group: 'all' with: #( 'default' 'examples' 'tests');
+				
+				group: 'all+types' with: #( 'all' 'PhaROSGenerated').
+	].
+	
+		
+	
+]
+
 { #category : #'old fixed versions' }
 ConfigurationOfPhaROS >> pharosRoboshop1: spec [
 	"symbolic version name used in the RoboShop deliverable 1"
@@ -834,7 +933,7 @@ ConfigurationOfPhaROS >> stable: spec [
 	<symbolicVersion: #'stable'>
 
 		spec for: #'pharo4.x' version: '1.4.2'.
-		spec for: #'common' version: '1.5.4'
+		spec for: #'common' version: '1.6'
 ]
 
 { #category : #'old fixed versions' }
@@ -1167,6 +1266,37 @@ ConfigurationOfPhaROS >> version154: spec [
 		spec package: 'PhaROSTest' with: 'PhaROSTest-LucFabresse.11'.
 		spec package: 'PhaROSTestROS' with: 'PhaROSTestROS-LucFabresse.16'.
 		spec package: 'PhaROSGenerated' with: 'PhaROSGenerated-LucFabresse.5'.
+		
+		"old stuff"
+		spec package: 'PhaROSNodeletsMerger' with: 'PhaROSNodeletsMerger-LucFabresse.2'.
+		spec package: 'PhaROSNodeletsMoveBase' with: 'PhaROSNodeletsMoveBase-LucFabresse.6'.
+		spec package: 'PhaROSNodeletsOdometry' with: 'PhaROSNodeletsOdometry-LucFabresse.9'.
+		spec package: 'PhaROSNodeletsPoseTracker' with: 'PhaROSNodeletsPoseTracker-pharos.2'.
+		spec package: 'PhaROSNodeletsPosition' with: 'PhaROSNodeletsPosition-LucFabresse.3'.
+		spec package: 'PhaROSNodeletsRPC' with: 'PhaROSNodeletsRPC-LucFabresse.4'.
+		spec package: 'PhaROSNodeletsTF' with: 'PhaROSNodeletsTF-robulabdriver.11'.
+		spec package: 'PhaROSNodeletsTurtlesim' with: 'PhaROSNodeletsTurtlesim-LucFabresse.6'.
+	]
+]
+
+{ #category : #versions }
+ConfigurationOfPhaROS >> version16: spec [ 
+	<version: '1.6' imports: #('1.6-baseline') >
+	
+	spec for: #common do: [ 
+		spec blessing: #'v1.5.4'.
+		spec author: 'LucFabresse'.
+		spec timestamp: 'September 28th 2018'.
+		spec project: 'XMLRPC' with: '1.03'.
+		spec project: 'TaskITProject' with: '2.3'.
+		spec project: 'PaulLePoulpe' with: '1.0.1'.
+		spec package: 'PhaROS' with: 'PhaROS-Luc.774'.
+		spec package: 'PhaROSInfrastructure' with: 'PhaROSInfrastructure-pharos.41'.
+		spec package: 'PhaROS-Doc' with: 'PhaROS-Doc-LucFabresse.8'.
+		spec package: 'PhaROS-PackageExample' with: 'PhaROS-PackageExample-LucFabresse.7'.
+		spec package: 'PhaROSTest' with: 'PhaROSTest-LucFabresse.11'.
+		spec package: 'PhaROSTestROS' with: 'PhaROSTestROS-LucFabresse.16'.
+		spec package: 'PhaROSGenerated' with: 'PhaROSGenerated-LucFabresse.6'.
 		
 		"old stuff"
 		spec package: 'PhaROSNodeletsMerger' with: 'PhaROSNodeletsMerger-LucFabresse.2'.
