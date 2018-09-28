@@ -1290,7 +1290,7 @@ ConfigurationOfPhaROS >> version16: spec [
 		spec project: 'XMLRPC' with: '1.03'.
 		spec project: 'TaskITProject' with: '2.3'.
 		spec project: 'PaulLePoulpe' with: '1.0.1'.
-		spec package: 'PhaROS' with: 'PhaROS-Luc.774'.
+		spec package: 'PhaROS' with: 'PhaROS-LucFabresse.775'.
 		spec package: 'PhaROSInfrastructure' with: 'PhaROSInfrastructure-pharos.41'.
 		spec package: 'PhaROS-Doc' with: 'PhaROS-Doc-LucFabresse.8'.
 		spec package: 'PhaROS-PackageExample' with: 'PhaROS-PackageExample-LucFabresse.7'.
