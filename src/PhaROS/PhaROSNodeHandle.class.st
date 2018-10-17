@@ -103,3 +103,12 @@ PhaROSNodeHandle >> topicPublisher: aTopicName typedAs: aTypeId [
 	
 	^ self publisher: (self resolveName: aTopicName) typedAs: aTypeId.
 ]
+
+{ #category : #building }
+PhaROSNodeHandle >> unsubscribe: aFlux [
+	topicHandle keysAndValuesDo: [ :k :v|
+		(v includes: aFlux) ifTrue: [ 
+			v remove: aFlux
+		]
+	]
+]
