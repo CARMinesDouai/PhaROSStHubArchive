@@ -1284,7 +1284,7 @@ ConfigurationOfPhaROS >> version16: spec [
 	<version: '1.6' imports: #('1.6-baseline') >
 	
 	spec for: #common do: [ 
-		spec blessing: #'v1.6'.
+		spec blessing: #'v1.5.4'.
 		spec author: 'LucFabresse'.
 		spec timestamp: 'September 28th 2018'.
 		spec project: 'XMLRPC' with: '1.03'.
