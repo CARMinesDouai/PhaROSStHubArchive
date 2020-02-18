@@ -332,6 +332,6 @@ ConfigurationOfPhaROSCommander >> version12: spec [
 	spec for: #common do: [ 
 		spec author: 'LucFabresse'.
 		spec timestamp: '28/6/2018 12:07'.
-		spec package: 'PhaROSCommander' with: 'PhaROSCommander-Luc.100'.
+		spec package: 'PhaROSCommander' with: 'PhaROSCommander-Luc.101'.
 	]
 ]
