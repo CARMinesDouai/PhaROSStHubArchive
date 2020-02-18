@@ -276,7 +276,7 @@ ConfigurationOfPureROS >> baseline12: spec [
 				spec requires: #('PureROS' 'PureROSNodeletsKompai' 'PureROSNodeletsMovement') ]. 
 			
 			spec package: 'PureROSPackageRobulab' with:[
-				spec requires: #( 'PureROSPackageKompai'  'StarGazer') ]. 
+				spec requires: #( 'PureROSPackageKompai') ]. 
 
 			spec package: 'PureROSNodeletsCaire'.			
 			spec package: 'PureROSPackageCaire' with:[
