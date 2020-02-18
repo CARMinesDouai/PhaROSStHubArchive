@@ -89,9 +89,12 @@ PRCCommandLineCreateHandler >> generateCatkinDirectoryNamed: package atLocation:
 	self stdout: ('Generating catkin package for {1}' format: { package }).
 	self forceNewIfNeededAt: catkinPackageDirectory.
 	(catkinPackageDirectory / 'image' ) createDirectory.
+	
+	self stdout: ('Copying source file from {1} to {2}' format: { (Smalltalk imageDirectory / '*.sources') pathString.  (catkinPackageDirectory / 'image' ) pathString}).
+	OSProcess command: ('cp {1} {2}' format:  { (Smalltalk imageDirectory / '*.sources') pathString.  (catkinPackageDirectory / 'image/' ) pathString}).
 		
 	self stdout: ('Copying pharo vm from {1} to {2}' format: { (Smalltalk imageDirectory / 'pharo-vm') pathString.  (catkinPackageDirectory / 'vm' ) pathString}).
-	OSProcess command: ('ln -s {1} {2}' format: { (Smalltalk imageDirectory / 'pharo-vm') pathString.  (catkinPackageDirectory / 'vm' ) pathString}).
+	OSProcess command: ('cp -fr {1} {2}' format: { (Smalltalk imageDirectory / 'pharo-vm') pathString.  (catkinPackageDirectory / 'vm' ) pathString}).
 	
 ]
 
